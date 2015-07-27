@@ -1,0 +1,17 @@
+/* 手机版 */
+@import url('./survey_phone.css') screen and (max-width: 768px);
+
+/* 电脑版 */
+@import url('./survey_desktop.css') screen and (min-width: 768px);
+
+/* 公共版 */
+body {
+    font-family: "微软雅黑";
+    background-color: rgb(181,219,211);
+    font-weight: bold;
+}
+
+.question-option-box{
+    padding-top: 8px;
+}
+

@@ -1,0 +1,19 @@
+body{
+    background-image: url('../img/green.jpg');
+}
+
+#page-title{
+    color:#DDDDDD;
+    font-family: "微软雅黑";
+    margin-bottom: 150px;
+}
+
+.request-form{
+    border: 5px solid #555555;
+    padding: 20px;
+}
+
+#content-div{
+    color:#DDDDDD;
+    background-color: transparent;
+}

@@ -1,0 +1,24 @@
+.title {
+        font-size: 26px;
+        color: #ffffff;
+        font-family: "华文新魏";
+    }
+
+    #widget-box {
+        border: 7px solid #394557;
+    }
+
+    .alert-div {
+        text-align: center;
+    }
+
+    #start {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        cursor: pointer ;
+    }
+
+    body {
+        background-image: url("/css/images/meteorshower2.jpg");
+    }

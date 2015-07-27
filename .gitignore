@@ -1,0 +1,12 @@
+cache/cachefile/*.txt
+cache/volt/*.php
+cache/temp/*.xls
+doc/
+cache/backup/*.bak
+app/config/config.ini
+public/upload/*.xls
+.idea/
+.phpintel/
+question.sublime-project
+question.sublime-workspace
+*.*~

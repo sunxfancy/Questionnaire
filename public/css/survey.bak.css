@@ -1,0 +1,8 @@
+/*desktop.css*/
+@import url("survey_desktop.css") only screen and (min-width: 481px);
+
+/*tablet*/
+@import url("survey_tablet.css") only screen and (min-width: 481px) and (max-width: 991px);
+
+/*phone*/
+@import url("survey_phone.css") only screen and (max-width: 480px);

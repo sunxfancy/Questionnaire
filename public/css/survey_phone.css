@@ -1,0 +1,100 @@
+.title {
+    font-size: x-large;
+    text-align: center;
+    letter-spacing: 2px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.question-div {
+    background-color: #dddddd;
+    padding: 20px 30px;
+    margin-bottom: 20px;
+    box-shadow: 1px 1px 1px 2px #999999;
+}
+
+.question-option {
+    float: left;
+    width: 100%;
+    padding: 0px;
+    letter-spacing: 5px;
+}
+
+.unchecked label{
+    color: rgb(229,64,25);
+}
+
+.question-option label {
+    width: 100%;
+    padding: 15px 5px;
+    margin-bottom: 0;
+}
+
+.question-div hr {
+    border-top: 1px solid #cccccc;
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.question-topic label {
+    letter-spacing: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+#instruction{
+    Z-index: 1000;
+}
+
+.timer{
+    display: none;
+}
+
+.instruction , .instruction-short{
+    width: 100%;
+    padding: 15px;
+    font-size: large;
+    background-color: #dddddd;
+    box-shadow: 1px 1px 1px 2px #999999;
+}
+
+.instruction{
+    display: none;
+}
+
+.isStuck {
+    left: 0%;
+    width: 100%;
+}
+
+.container-fluid {
+    padding: 0;
+}
+.btn-up {
+    position: fixed;
+    background-color: #9999;
+    bottom: 0;
+    /*left: 33.33%;*/
+    left: 0;
+    /*width: 32%;*/
+    width: 49%;
+    margin: 3px;
+}
+.btn-next {
+    position: fixed;
+    background-color: #9999;
+    bottom: 0;
+    right: 0;
+    /*width: 32%;*/
+    width: 49%;
+    margin: 3px;
+}
+.pageNum{
+    text-align: center;
+    letter-spacing: 5px;
+}
+
+#xqx {
+    display: none;
+}

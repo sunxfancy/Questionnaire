@@ -1,0 +1,256 @@
+<h4 class="header blue lighter">
+    <ol class="breadcrumb">
+      <span class='glyphicon glyphicon-home blue'></span>
+	  <li><a href="#" >Home</a></li>
+	  <li class="active">DashBoard</li>
+	</ol>
+</h4>
+
+
+<div class="space-6"></div>
+<div class="row">
+	<div class="infobox-container">
+		<!-- #section:pages/dashboard.infobox -->
+		<div class="infobox infobox-green">
+			<div class="infobox-icon">
+				<i class="ace-icon fa fa-comments"></i>
+			</div>
+
+			<div class="infobox-data">
+				<span class="infobox-data-number">32</span>
+				<div class="infobox-content">comments + 2 reviews</div>
+			</div>
+
+			<!-- #section:pages/dashboard.infobox.stat -->
+			<div class="stat stat-success">8%</div>
+
+			<!-- /section:pages/dashboard.infobox.stat -->
+		</div>
+
+		<div class="infobox infobox-blue">
+			<div class="infobox-icon">
+				<i class="ace-icon fa fa-twitter"></i>
+			</div>
+
+			<div class="infobox-data">
+				<span class="infobox-data-number">11</span>
+				<div class="infobox-content">new followers</div>
+			</div>
+
+			<div class="badge badge-success">
+				+32%
+				<i class="ace-icon fa fa-arrow-up"></i>
+			</div>
+		</div>
+
+		<div class="infobox infobox-pink">
+			<div class="infobox-icon">
+				<i class="ace-icon fa fa-shopping-cart"></i>
+			</div>
+
+			<div class="infobox-data">
+				<span class="infobox-data-number">8</span>
+				<div class="infobox-content">new orders</div>
+			</div>
+			<div class="stat stat-important">4%</div>
+		</div>
+
+		<div class="infobox infobox-red">
+			<div class="infobox-icon">
+				<i class="ace-icon fa fa-flask"></i>
+			</div>
+
+			<div class="infobox-data">
+				<span class="infobox-data-number">7</span>
+				<div class="infobox-content">experiments</div>
+			</div>
+		</div>
+
+		<div class="infobox infobox-orange2">
+			<!-- #section:pages/dashboard.infobox.sparkline -->
+			<div class="infobox-chart">
+				<span class="sparkline" data-values="196,128,202,177,154,94,100,170,224"></span>
+			</div>
+
+			<!-- /section:pages/dashboard.infobox.sparkline -->
+			<div class="infobox-data">
+				<span class="infobox-data-number">6,251</span>
+				<div class="infobox-content">pageviews</div>
+			</div>
+
+			<div class="badge badge-success">
+				7.2%
+				<i class="ace-icon fa fa-arrow-up"></i>
+			</div>
+		</div>
+
+		<div class="infobox infobox-blue2">
+			<div class="infobox-progress">
+				<!-- #section:pages/dashboard.infobox.easypiechart -->
+				<div class="easy-pie-chart percentage" data-percent="42" data-size="46">
+					<span class="percent">42</span>%
+				</div>
+
+				<!-- /section:pages/dashboard.infobox.easypiechart -->
+			</div>
+
+			<div class="infobox-data">
+				<span class="infobox-text">traffic used</span>
+
+				<div class="infobox-content">
+					<span class="bigger-110">~</span>
+					58GB remaining
+				</div>
+			</div>
+		</div>
+
+		<!-- /section:pages/dashboard.infobox -->
+		<div class="space-6"></div>
+
+		<!-- #section:pages/dashboard.infobox.dark -->
+		<div class="infobox infobox-green infobox-small infobox-dark">
+			<div class="infobox-progress">
+				<!-- #section:pages/dashboard.infobox.easypiechart -->
+				<div class="easy-pie-chart percentage" data-percent="61" data-size="39">
+					<span class="percent">61</span>%
+				</div>
+
+				<!-- /section:pages/dashboard.infobox.easypiechart -->
+			</div>
+
+			<div class="infobox-data">
+				<div class="infobox-content">Task</div>
+				<div class="infobox-content">Completion</div>
+			</div>
+		</div>
+
+		<div class="infobox infobox-blue infobox-small infobox-dark">
+			<!-- #section:pages/dashboard.infobox.sparkline -->
+			<div class="infobox-chart">
+				<span class="sparkline" data-values="3,4,2,3,4,4,2,2"></span>
+			</div>
+
+			<!-- /section:pages/dashboard.infobox.sparkline -->
+			<div class="infobox-data">
+				<div class="infobox-content">Earnings</div>
+				<div class="infobox-content">$32,000</div>
+			</div>
+		</div>
+
+		<div class="infobox infobox-grey infobox-small infobox-dark">
+			<div class="infobox-icon">
+				<i class="ace-icon fa fa-download"></i>
+			</div>
+
+			<div class="infobox-data">
+				<div class="infobox-content">Downloads</div>
+				<div class="infobox-content">1,205</div>
+			</div>
+		</div>
+
+		<!-- /section:pages/dashboard.infobox.dark -->
+	</div>
+						
+</div>
+
+
+<div class="row dashboard-layout">
+	<div class="widget-box transparent visible">
+		<div class="widget-header widget-header-flat">
+			<h4 class="widget-title lighter">
+				<i class="ace-icon fa fa-signal"></i>
+				Sale Stats
+			</h4>
+
+			<div class="widget-toolbar">
+				<a href="#" data-action="collapse">
+					<i class="ace-icon fa fa-chevron-up"></i>
+				</a>
+			</div>
+		</div>
+
+		<div class="widget-body">
+			<div class="widget-main padding-4">
+				<div id="sales-charts"></div>
+			</div><!-- /.widget-main -->
+		</div><!-- /.widget-body -->
+	</div><!-- /.widget-box -->
+	<script src="/lib/flot/jquery.flot.min.js"></script>
+	<script src="/lib/jquery.easypiechart.min.js"></script>
+	<script src="/lib/jquery.sparkline.min.js"></script>
+	<script type="text/javascript" src="/lib/ace-elements.min.js"></script>
+	<script type="text/javascript">
+		$('.easy-pie-chart.percentage').each(function(){
+			var $box = $(this).closest('.infobox');
+			var barColor = $(this).data('color') || (!$box.hasClass('infobox-dark') ? $box.css('color') : 'rgba(255,255,255,0.95)');
+			var trackColor = barColor == 'rgba(255,255,255,0.95)' ? 'rgba(255,255,255,0.25)' : '#E2E2E2';
+			var size = parseInt($(this).data('size')) || 50;
+			$(this).easyPieChart({
+				barColor: barColor,
+				trackColor: trackColor,
+				scaleColor: false,
+				lineCap: 'butt',
+				lineWidth: parseInt(size/10),
+				animate: /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase()) ? false : 1000,
+				size: size
+			});
+		})
+	
+		$('.sparkline').each(function(){
+			var $box = $(this).closest('.infobox');
+			var barColor = !$box.hasClass('infobox-dark') ? $box.css('color') : '#FFF';
+			$(this).sparkline('html',
+			 {
+				tagValuesAttribute:'data-values',
+				type: 'bar',
+				barColor: barColor ,
+				chartRangeMin:$(this).data('min') || 0
+			 });
+		});
+
+
+		var d1 = [];
+		for (var i = 0; i < Math.PI * 2; i += 0.5) {
+			d1.push([i, Math.sin(i)]);
+		}
+	
+		var d2 = [];
+		for (var i = 0; i < Math.PI * 2; i += 0.5) {
+			d2.push([i, Math.cos(i)]);
+		}
+	
+		var d3 = [];
+		for (var i = 0; i < Math.PI * 2; i += 0.2) {
+			d3.push([i, Math.tan(i)]);
+		}
+		
+	
+		var sales_charts = $('#sales-charts').css({'width':'100%' , 'height':'220px'});
+		$.plot("#sales-charts", [
+			{ label: "Domains", data: d1 },
+			{ label: "Hosting", data: d2 },
+			{ label: "Services", data: d3 }
+		], {
+			hoverable: true,
+			shadowSize: 0,
+			series: {
+				lines: { show: true },
+				points: { show: true }
+			},
+			xaxis: {
+				tickLength: 0
+			},
+			yaxis: {
+				ticks: 10,
+				min: -2,
+				max: 2,
+				tickDecimals: 3
+			},
+			grid: {
+				backgroundColor: { colors: [ "#fff", "#fff" ] },
+				borderWidth: 1,
+				borderColor:'#555'
+			}
+		});
+	</script>
+</div>

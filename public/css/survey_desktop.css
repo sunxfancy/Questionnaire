@@ -1,0 +1,187 @@
+.title {
+    font-size: x-large;
+    text-align: center;
+    letter-spacing: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.question-div {
+    background-color: rgb(238, 247, 251);
+    padding: 20px 30px;
+    margin-bottom: 20px;
+    box-shadow: 1px 1px 1px 2px #999999;
+}
+
+.question-option {
+    float: left;
+    min-width: 20%;
+    padding: 0px;
+    letter-spacing: 5px;
+}
+
+.question-option label {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 0;
+    cursor: pointer;
+}
+
+.question-div hr {
+    border-top: 1px solid #cccccc;
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.question-topic label {
+    letter-spacing: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+#instruction {
+    Z-index: 1000;
+}
+
+.instruction {
+    margin-left: 16.67%;
+    width: 66.66%;
+    padding: 15px;
+    font-size: large;
+    background-color: rgb(238, 247, 251);
+    box-shadow: 1px 1px 1px 2px #999999;
+}
+
+.unchecked {
+    background-color: #fcac6f;
+}
+
+.timer {
+    position: fixed;
+    left: 30px;
+    top: 10px;
+    color: #ffffff;
+    font: bold 40px Arial, Helvetica, sans-serif;
+}
+
+.timer ul {
+    padding: 0;
+}
+
+.timer li {
+    list-style: none;
+    float: left;
+    text-shadow: 0px 0px 5px #00C6FF;
+}
+
+.timer .mh {
+    animation: mymove 1s ease infinite;
+    -webkit-animation: mymove 1s ease infinite;
+    -moz-animation: mymove 1s ease infinite;
+    -o-animation: mymove 1s ease infinite;
+}
+
+.isStuck {
+    left: 0%;
+    width: 100%;
+}
+
+.container-fluid {
+    padding: 0;
+}
+
+.btn-up {
+    position: fixed;
+    background-color: #9999;
+    bottom: 10%;
+    right: 3%;
+    margin: 5px;
+}
+
+.instruction-short {
+    display: none;
+}
+
+.btn-next {
+    position: fixed;
+    background-color: #9999;
+    bottom: 2%;
+    right: 3%;
+    margin: 5px;
+}
+
+.pageNum {
+    text-align: center;
+    letter-spacing: 5px;
+}
+
+#xqx {
+    position: fixed;
+    bottom: 50px;
+    left: 30px;
+    Z-index: -10;
+}
+
+@keyframes mymove {
+    0% {
+        opacity: 1;
+        text-shadow: 0px 0px 20px #00C6FF;
+    }
+    50% {
+        opacity: 0;
+        text-shadow: none;
+    }
+    100% {
+        opacity: 1;
+        text-shadow: 0px 0px 20px #00C6FF;
+    }
+}
+
+@-moz-keyframes mymove /* Firefox */
+{
+    0% {
+        opacity: 1;
+        text-shadow: 0px 0px 20px #00C6FF;
+    }
+    50% {
+        opacity: 0;
+        text-shadow: none;
+    }
+    100% {
+        opacity: 1;
+        text-shadow: 0px 0px 20px #00C6FF;
+    }
+}
+
+@-webkit-keyframes mymove /* Safari 和 Chrome */
+{
+    0% {
+        opacity: 1;
+        text-shadow: 0px 0px 20px #00C6FF;
+    }
+    50% {
+        opacity: 0;
+        text-shadow: none;
+    }
+    100% {
+        opacity: 1;
+        text-shadow: 0px 0px 20px #00C6FF;
+    }
+}
+
+@-o-keyframes mymove /* Opera */
+{
+    0% {
+        opacity: 1;
+        text-shadow: 0px 0px 20px #00C6FF;
+    }
+    50% {
+        opacity: 0;
+        text-shadow: none;
+    }
+    100% {
+        opacity: 1;
+        text-shadow: 0px 0px 20px #00C6FF;
+    }
+}
