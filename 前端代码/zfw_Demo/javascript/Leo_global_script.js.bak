@@ -1,0 +1,38 @@
+﻿// JavaScript source code
+
+function $(id) {
+    return document.getElementById(id);
+}
+
+function Logout() {
+    var t = confirm("您确定要登出吗？");
+    if (t) {
+        window.opener = null;
+        window.open('', '_self');
+        window.close();
+
+    }
+}
+
+function Logout2() {
+    var t = confirm("您确定要登出吗？")  ;
+    if (t) {
+        window.location.href = "Leo_login.html";
+
+    }
+}
+
+function Logout3() {
+    var t = confirm("您确定要登出吗？")  ;
+    if (t) {
+        window.location.href = "../Leo_login.html";
+
+    }
+}
+
+function ABSurl(url) {
+    var img = new Image();
+    img.src = url;
+    var a = img.src;
+    return a;
+}

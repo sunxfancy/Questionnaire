@@ -1,0 +1,468 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <title>测评系统</title>
+    <link rel="stylesheet" type="text/css" href="../css/Leo_global_css.css" />
+    <link rel="stylesheet" type="text/css" href="../css/Leo_normal_css.css" />
+    <script src="../javascript/Leo_global_script.js" type="text/javascript"></script>
+    <script src="../javascript/question.js" type="text/javascript"></script>
+    <script src="../javascript/excel_model1.js" type="text/javascript"></script>
+    
+    
+</head>
+
+<body >
+   <div class="Leo_title">
+       
+       <div class="Leo_title_l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人 才 测 评 系 统</div>
+       <div style="width:100%;height:2px;background-color:white;"></div>
+   </div>
+
+    <div class="Leo_info">
+        <div style="width:100%;height:50px;"></div>
+        <div class="Leo_info_user">
+            <img src="../images/user2.png" />
+            
+        </div>
+        <div class="Leo_info_l">
+            <table cellspacing="0">
+                <tr><td>姓名</td><td style="text-align:left;">张晓强</td></tr>
+                <tr><td>编号</td><td style="text-align:left;">us001</td></tr>
+                <tr><td>角色</td><td style="text-align:left;">被试人员</td></tr>
+                <tr><td></td><td></td></tr>
+                <tr><td></td><td></td></tr>
+                <tr><td></td><td></td></tr>
+                
+            </table>
+        </div>
+    </div>
+
+    <div class="Leo_question_v2" id="Leo_question_v2">
+        <div style="width:100%;height:30px;background-color:#eeed6a;text-align:center;font-size:20px;font-family:'Microsoft YaHei';overflow:hidden;"><table style="width:100%;height:100%;text-align:center;vertical-align:middle;cursor:pointer;" onclick="alert('本测验包括许多问题和选择，任何答案选择都无所谓对错，对它们所描述的特征，你可能喜欢，也可能不喜欢，其方式你可能曾感觉到，也可能没有感觉到，请你从中选出最能表现或接近你当前特征或感觉的那一个，并将你的选择标记于相应的位置处。如果答案中都没有正确描述你的情况，那你应当选择你认为能比较正确反映你的情况的那一个。总之，对于每道题的选项你必须有所选择。')"><tr style="width:100%;height:100%;"><td style="width:100%;height:100%;" id="classInfo"></td></tr></table></div>
+        <div class="Leo_question_l" style="height:400px;" id="Leo_question_panel"></div>
+        <div id="Leo_control" style="width:600px;height:60px;text-align:center;">
+            <table style="width:30%;height:60px;margin:0 auto;"><tr style="width:100%;height:100%;"><td style="width:25%;">
+                           <img style="height:40px;display:none;" src="../images/left.png" id="Leo_pageup" onclick="Leo_pageup()" />
+
+                </td><td style="width:25%;">
+                            <img style="height:40px" src="../images/pause.png" onclick="pause()" id="Leo_pause" />
+
+                </td><td style="width:25%;">
+                            <img style="height: 40px;display:none" id="Leo_pagedown_next" src="../images/right.png" onclick="Leo_pagedown()" />
+
+                </td><td style="width:25%;">
+                            <img style="height: 40px; display: none;" id="Leo_pagedown" src="../images/signin.png" onclick="changepage(questions.length - 1); Leo_pagedown();" />
+
+                </td></tr>
+            
+            </table>
+
+        </div>
+
+        <div id="Leo_hiden" class="Leo_hiden" style="top:-500px;" >
+		<table style="height:100%;width:100%;text-align:center;vertical-align:middle;">
+		<tr><td id="Leo_hiden_td" style="font-size:18px;text-align:left;"></td></tr>
+		<tr><td id="Leo_hiden_td2"><div id="Leo_hiden_ctrl" style="cursor:pointer;margin-left:45%;width:0;height:0;border-top: 30px solid transparent;border-bottom:30px solid transparent;border-left:50px solid green;" onclick="Leo_doques()"></div><br /></td></tr></table></div>
+    </div>
+    <div class="Leo_question_t_v2">
+
+        <table style="width:92%;text-align:center;vertical-align:middle;table-layout:fixed;margin:0 auto;" id="Leo_question_table" cellspacing="0"></table>
+    </div>
+    <div class="Leo_Timer_v2">
+        <table style="width:145px;height:120px;text-align:center;vertical-align:middle;margin:0 auto;table-layout:fixed;" cellspacing="0"><tr style="width:245px;height:50px;"><td colspan="5">已用时</td></tr>
+            <tr><td id="hour">00</td><td>:</td><td id="minute">00</td><td>:</td><td id="second">00</td></tr></table>
+    </div>
+    <!--<div class="Leo_question" style="overflow:hidden;">
+        <table style="height:100%;width:100%;border:0px;table-layout:fixed;" cellspacing="0">
+            <tr style="width:100%;">
+                <td style="width:70%;height:100%;">
+
+                    <table style="width:100%;height:100%;border:0px;" cellspacing="0">
+                    <tr style="height:85%;"><td>
+                        <div style="width:100%;height:30px;background-color:#eeed6a;text-align:center;font-size:20px;font-family:'Microsoft YaHei';" ><table style="width:100%;height:100%;text-align:center;vertical-align:middle;"><tr style="width:100%;height:100%;"><td style="width:100%;height:100%;" id="classInfo"></td></tr></table></div>
+                        <div style="width:100%;height:7%;"></div>
+                         <div class="Leo_question_l" id="Leo_question_panel"></div>
+                        </td></tr>
+                    <tr style="height:1%;"><td style="background-color: #b9e5d6;"></td></tr>
+                    <tr style="height:15%"><td>
+                            <div id="Leo_control" style="width:100%;height:100%;text-align:center;margin-top:15px;">
+                                <img style="height:70px;" src="images/left.png" onclick="Leo_pageup()"/>
+                                <img style="height: 70px; display: none;" id="Leo_pagedown" src="images/signin.png" onclick="Leo_pagedown()" />
+                                
+                            </div>
+                        </td></tr>
+                    </table>
+                    
+                </td>
+                <td style="width: 0.5%; height: 100%; background-color: #b9e5d6;" ></td>
+                <td style="width:29.5%;height:100%;" >
+                   <table style="width:100%;height:100%;border:0px;table-layout:fixed;margin:0 auto;" cellspacing="0">
+                        <tr style="height:200px;width:100%;">
+                             <td style="overflow:auto;white-space:nowrap;">
+                               <div id="Leo_question_t" class="Leo_question_t" ><table style="width:92%;text-align:center;vertical-align:middle;table-layout:fixed;" id="Leo_question_table" cellspacing="0"></table></div>
+                            </td>
+                        </tr>
+                        <tr style="height:1%;"><td style="background-color: #b9e5d6;"></td></tr>
+                        <tr style="height:25%;width:100%">
+                            <td style="width:100%;">
+                                <div id="Leo_timer" style="width:100%;height:20px;text-align:center;">
+                                    <table style="width:100%;height:100%;border:1px solid black;" cellspacing="0">
+                                        <tr style="width:100%;height:100%;"><td rowspan="2"></td><td colspan="6">已用时</td></tr>
+                                        <tr style="width:100%;height:100%;"><td></td><td>时</td><td></td><td>分</td><td></td><td>秒</td></tr>
+                                    </table>
+
+                                </div>
+                                
+                            </td>
+                        </tr>
+                    </table>
+                    
+                </td>
+            </tr>
+
+            
+
+        </table>
+        <div id="Leo_hiden" class="Leo_hiden" style="top:-500px;display:none;" onclick="Leo_doques()"><table style="height:100%;width:100%;text-align:center;vertical-align:middle;"><tr><td id="Leo_hiden_td"><br /></td></tr></table></div>
+       
+        
+    </div>-->
+    <footer>
+        <div class="Leo_foot">
+            Leonardo&S
+        </div>
+
+    </footer>
+</body>
+
+</html>
+
+<script type="text/javascript">
+
+    var url = "六套题_格式化.xlsx";
+    url = ABSurl(url);
+
+
+    var Leo_now_index=0;
+
+
+    var questions = new Array();
+    var Leo_title = new Array();
+    var Leo_ans = new Array();
+    var Leo_type = new Array();
+
+    var class1 = new Array();
+    var classdetail = new Array();
+    var classdetail1 = new Array();
+    
+  
+    /*
+    classdetail.push("下面的问题，请根据您的自身情况回答");
+    classdetail1.push("单击开始答题");
+    class1.push(7);
+    classdetail.push("下面的问题，请根据您对下属的评价回答");
+    class1.push(10);
+    classdetail.push("下面的问题，请您根据同事对您的评价回答");
+   
+    */
+
+    classdetail1.push("单击开始答题");
+    initTitles(url, 1, -1);
+
+    function initTitles(url) {
+       
+        var tem = new Array();
+        tem = excel_excute(url, false);
+        var num = 0;
+        var varnum = 0;
+        var classcount = 0;
+        var count = tem[0].WorkSheets(1).UsedRange.Cells.Rows.Count;
+        
+        try{
+            for (var i = 1; i <= count; i++) {
+                
+                if (varnum == num) {
+                    classcount++;
+                    varnum = 0;
+                    
+                    class1.push( i - classcount );
+                    num = parseInt(tem[1].Cells(i, 3).value);
+                    classdetail.push(tem[1].Cells(i, 4).value);
+                    
+                } else {
+                    
+                    varnum++;
+                    Leo_title.push(tem[1].Cells(i, 1).value);
+                    var ans = new Array();
+                    for (var j =2; 1; j++) {
+
+
+                        if (!tem[1].Cells(i, j).value) {
+                            break;
+                        } else {
+                            ans.push(tem[1].Cells(i, j).value);
+                        }
+                    }
+                    Leo_ans.push(ans);
+                    Leo_type.push(true);
+                }
+            }
+            tem[0].Close(savechanges = false);
+        } catch (e) {
+            alert(e);
+            tem[0].Close(savechanges = false);
+        }
+        
+
+    }
+
+    for (var i = 0; i < Leo_title.length; i++) {
+        var q = new Leo_question(i, Leo_title[i], Leo_type[i], Leo_ans[i]);
+        questions.push(q);
+    }
+    class1.push(questions.length);
+
+
+
+    /*
+    Leo_title.push("您的职务(单选）：");
+    var ans = new Array();
+    ans.push("集团二级公司副职");
+    ans.push("集团二级公司中层正职");
+    ans.push("集团二级公司中层副职");
+    ans.push("集团机关部室副职");
+    ans.push("集团机关部室科员");
+
+    Leo_ans.push(ans);
+    Leo_type.push(true);
+
+    Leo_title.push("性别(单选）：");
+    var ans = new Array();
+    ans.push("男");
+    ans.push("女");
+    Leo_ans.push(ans);
+    Leo_type.push(true);
+
+    Leo_title.push("年龄(单选）：");
+    var ans = new Array();
+    ans.push("30岁及以下");
+    ans.push("31-35岁");
+    ans.push("36-40岁");
+    ans.push("41-45岁");
+    ans.push("46-50岁");
+    ans.push("50岁以上");
+    Leo_ans.push(ans);
+    Leo_type.push(true);
+
+
+    Leo_title.push("您最初参加工作时的学历(单选）：");
+    var ans = new Array();
+    ans.push("中专");
+    ans.push("高职");
+    ans.push("大专");
+    ans.push("本科");
+    ans.push("硕士");
+    ans.push("博士");
+    ans.push("其他");
+    Leo_ans.push(ans);
+    Leo_type.push(true);
+
+    Leo_title.push("您的职务(单选）：");
+    var ans = new Array();
+    ans.push("集团二级公司副职");
+    ans.push("集团二级公司中层正职");
+    ans.push("集团二级公司中层副职");
+    ans.push("集团机关部室副职");
+    ans.push("集团机关部室科员");
+    Leo_ans.push(ans);
+    Leo_type.push(true);
+
+    Leo_title.push("性别(单选）：");
+    var ans = new Array();
+    ans.push("男");
+    ans.push("女");
+    Leo_ans.push(ans);
+    Leo_type.push(true);
+
+    Leo_title.push("年龄(单选）：");
+    var ans = new Array();
+    ans.push("30岁及以下");
+    ans.push("31-35岁");
+    ans.push("36-40岁");
+    ans.push("41-45岁");
+    ans.push("46-50岁");
+    ans.push("50岁以上");
+    Leo_ans.push(ans);
+    Leo_type.push(true);
+
+    for (var i = 0; i < 9; i++) {
+        Leo_title.push("年龄(单选）：");
+        var ans = new Array();
+        ans.push("30岁及以下");
+        ans.push("31-35岁");
+        ans.push("36-40岁");
+        ans.push("41-45岁");
+        ans.push("46-50岁");
+        ans.push("50岁以上");
+        Leo_ans.push(ans);
+        Leo_type.push(true);
+    }
+
+    Leo_title.push("您最初参加工作时的学历(单选）：");
+    var ans = new Array();
+    ans.push("中专");
+    ans.push("高职");
+    ans.push("大专");
+    ans.push("本科");
+    ans.push("硕士");
+    ans.push("博士");
+    ans.push("其他");
+    Leo_ans.push(ans);
+    Leo_type.push(true);
+
+   
+    
+    
+    
+   
+    
+   
+
+
+
+    */
+
+    
+    
+
+
+    $("Leo_hiden_td").innerText += classdetail[0];
+    // $("classInfo").innerText += classdetail[0].substr(6, classdetail[0].length-6);
+    $("classInfo").innerText += classdetail[0];
+    
+    Leo_initPanel();
+
+
+    function Leo_initPanel() {
+        var row_count_total=0;
+        for (var j = 0; j < classdetail.length; j++) {
+            var fenge = $("Leo_question_table").insertRow(row_count_total);
+            
+            var fengecell = fenge.insertCell(0);
+            fengecell.colSpan = 5;
+            fengecell.style.backgroundColor = "#eeed6a";
+            fengecell.style.height = "30px";
+            fengecell.style.width = "100%";
+            fengecell.innerText = "类型" + (j + 1);
+            fengecell.style.fontSize = "18px";
+            row_count_total++;
+            /*var fengexian = document.createElement("div");
+            fengexian.style.width = "100%";
+            fengexian.style.height = "2px";
+            fengexian.style.backgroundColor = "brown";
+            fengexian.style.display = "block";
+            $("Leo_question_t").appendChild(fengexian);
+            */
+            var rows_count = Math.ceil((class1[j + 1] - class1[j]) / 5);
+            
+            for (var k = 0; k < rows_count; k++) {
+                
+                var row_now = $("Leo_question_table").insertRow(row_count_total+k);
+               
+                if (k < rows_count - 1) {
+                    
+                    for (var i = 0; i < 5; i++) {
+                        var cell_now=row_now.insertCell(i);
+                        
+                        var newdiv = document.createElement("div");
+                        newdiv.style.float = "left";
+                       
+
+                            newdiv.style.margin = "5px";
+                            newdiv.style.width = "40px";
+                            newdiv.style.height = "40px";
+                            newdiv.id = "newdiv_" + (class1[j]+5*k+i);
+                            newdiv.style.textAlign = "center";
+                            newdiv.style.cursor = "pointer";
+                            newdiv.style.backgroundColor = "gray";
+                            newdiv.innerText = (class1[j] + 5 * k + i) + 1 + "";
+                            newdiv.style.fontSize = "21px";
+                            newdiv.tabIndex = "0";
+                            cell_now.appendChild(newdiv);
+                            if (i == 0 && j == 0 && k == 0) {
+                                newdiv.onclick = new Function("changepage(parseInt(this.innerText)-1)");
+                            }
+                    }
+                    //newdiv.onclick =new Function( "changepage(parseInt(this.innerText)-1)");
+                    
+                } else {
+                    
+                    for (var i = 0; i < (class1[j + 1] - class1[j])-(rows_count-1)*5 ; i++) {
+                        var cell_now=row_now.insertCell(i);
+
+                        var newdiv = document.createElement("div");
+                        newdiv.style.float = "left";
+
+                        newdiv.style.margin = "5px";
+                        newdiv.style.width = "40px";
+                        newdiv.style.height = "40px";
+                        newdiv.id = "newdiv_" + (class1[j]+5 * k + i);
+                        newdiv.style.textAlign = "center";
+                        newdiv.style.cursor = "pointer";
+                        newdiv.style.backgroundColor = "gray";
+                        newdiv.innerText = (class1[j] + 5 * k + i) + 1 + "";
+                        newdiv.style.fontSize = "21px";
+                        newdiv.tabIndex = "0";
+                        cell_now.appendChild(newdiv);
+                        if (i == 0 && j == 0 && k == 0) {
+                            newdiv.onclick = new Function("changepage(parseInt(this.innerText)-1)");
+                        }
+                    }
+
+                    for (var i = (class1[j + 1] - class1[j]) - (rows_count - 1) * 5; i < 5; i++) {
+                        var cell_now = row_now.insertCell(i);
+                        
+                    }
+                    
+                    //newdiv.onclick =new Function( "changepage(parseInt(this.innerText)-1)");
+                    
+                }
+
+            }
+            row_count_total += rows_count;
+            
+            }
+
+        $("Leo_question_panel").appendChild(questions[Leo_now_index]);
+        
+    }
+
+    
+    function Leo_checkcomplete() {
+        var badques=new Array();
+        for (var i = 0; i < questions.length; i++) {
+            if ($("newdiv_" + i).style.backgroundColor == "gray") {
+                badques.push((i+1));
+            }
+        }
+        if(badques.length!=0){
+            alert("您的答题是不完整的，其中第" + badques + "题缺少必要的答案！请继续答题！");
+           
+            changepage(badques[0]-1);
+        } else {
+            var t = confirm("您确定要提交吗？");
+            if (t) {
+                alert("共用时"+$("hour").innerText+"小时"+$("minute").innerText+"分钟"+$("second").innerText+"秒");
+                alert("感谢您的配合，我们将在答案提交完毕后，注销您的登录");
+                window.location.href = "../index.html";
+            } 
+        }
+    }
+
+    
+    
+
+</script>

@@ -1,0 +1,10 @@
+.Leo_info_tb{
+	text-align:center;
+	width:100%;
+	height:400px;
+	overflow:auto;
+}
+
+.Leo_info_tb td{
+	width:25%;
+}

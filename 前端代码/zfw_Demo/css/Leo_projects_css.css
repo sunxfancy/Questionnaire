@@ -1,0 +1,28 @@
+﻿.Leo_project_manage{
+    width:100%;
+    height:50px;
+    
+    text-align:right;
+
+}
+
+.Leo_project_addnew{
+    width:200px;
+    height:40px;
+    margin-right:5px;
+    text-align:center;
+    background-color:lightgray;
+}
+
+.Leo_project_head{
+    width:100%;
+    height:30px;
+    text-align:center;
+    background-color:silver;
+}
+
+.Leo_project_body{
+    width:100%;
+    height:400px;
+    overflow:auto;
+}

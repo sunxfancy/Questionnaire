@@ -1,0 +1,237 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <title>人员分配</title>
+    <link rel="stylesheet" type="text/css" href="../css/Leo_global_css.css" />
+    <link rel="stylesheet" type="text/css" href="../css/Leo_normal_css.css" />
+    <link rel="stylesheet" type="text/css" href="../css/Leo_personalResult_css.css" />
+    <script src="../javascript/Leo_global_script.js" type="text/javascript"></script>
+
+
+
+</head>
+
+<body>
+    <div class="Leo_title">
+
+        <div class="Leo_title_l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被 测 人 员 面 询 分 配</div>
+        <div style="width:100%;height:2px;background-color:white;"></div>
+    </div>
+
+    <div class="Leo_info">
+        <div style="width:100%;height:50px;"></div>
+        <div class="Leo_info_user">
+            <img src="../images/user2.png" />
+          
+        </div>
+        <div class="Leo_info_l">
+            <table cellspacing="0">
+                <tr><td>姓名</td><td style="text-align:left">李婷</td></tr>
+                <tr><td>编号</td><td style="text-align:left">p001</td></tr>
+                <tr><td>角色</td><td style="text-align:left">项目经理</td></tr>
+                
+            </table>
+        </div>
+        <div class="Leo_info_l_logout" onclick="Logout3()"><table><tr><td>退出</td></tr></table></div>
+
+    </div>
+
+    <div class="Leo_question" style="overflow:hidden;">
+        <div style="height:5px;"></div>
+        <div style="margin:0 auto;text-align:center;">分配人员</div>
+        <div style="width:95%;height:3px;background-color:red;margin:0 auto;"></div>
+        <div style="width:50%;height:450px;float:left;">
+            <ul style="list-style:none;margin-left:150px;">
+                <li>
+                    <input type="checkbox" /><span>1~10</span>
+                </li>
+                <li>
+                    <input type="checkbox" /><span>11~20</span>
+                </li>
+                <li>
+                    <input type="checkbox" /><span>21~30</span>
+                </li>
+                <li>
+                    <input type="checkbox" /><span>31~40</span>
+                </li>
+                <li>
+                    <input type="checkbox" /><span>41~50</span>
+                </li>
+                <li>
+                    <input type="checkbox" /><span>51~60</span>
+                </li>
+                <li>
+                    <input type="checkbox" /><span>61~70</span>
+                </li>
+                <li>
+                    <input type="checkbox" /><span>71~80</span>
+                </li>
+                <li>
+                     <input type="checkbox" /><span>81~90</span>
+                </li>
+            </ul>
+
+        </div>
+
+        <div style="width:50%;height:300px;float:left;margin-top:100px;">
+            <div style="margin:0 auto;text-align:center;">
+                <input type="text" style="width:100px;height:30px;" />
+                <input type="button" value="特别添加" />
+                <input type="button" value="特别删除" />
+            </div>
+            <div style="width:100%;height:50px;margin-top:100px;">
+                <div style="width: 60%; height: 80%; text-align: center; margin: 0 auto; background-color: green; background-repeat: no-repeat; border-radius: 5px;cursor:pointer;" onclick="window.location.href = '../Leo_Manager.html';">提交</div>
+
+            </div>
+        </div>
+
+        
+
+
+
+       <!--<div style="width:500px;height:500px;float:left;">
+            <div style="width:500px;height:150px;background-color:white;text-align:center;">
+                <div style="margin:0 auto;font-size:18px;height:20px;">可供选择的人员编号为:</div>
+                <div id="accessPeo" style="height:75px;overflow:auto;">
+                    <table></table>
+                </div>
+            </div>
+            <div style="width:500px;height:250px;background-color:silver;">
+                <table style="margin:0 auto;text-align:center;" cellspacing="10">
+                    <tr style="height:50px;"><td></td></tr>
+                    <tr style="height:30px;"><td><input style="height:30px;" type="text" id="begin" /></td><td>~</td><td><input style="height:30px;" type="text" id="end"/></td></tr>
+                    <tr style="height:30px;"><td style="background-color:blue;" onmousedown="this.style.backgroundColor = 'green';" onmouseup="this.style.backgroundColor='blue'" onclick="Leo_clickButton(this);">+</td><td></td><td style="background-color:red;" onmousedown="this.style.backgroundColor = 'green';" onmouseup="this.style.backgroundColor='red'">-</td></tr>
+                </table>
+            </div>
+            <div style="width:500px;height:100px;"><input style="width:100%;height:100%;" value="确认" type="button" onclick="window.location.href='../Leo_Manager.html'"/></div>
+        </div>
+        <div style="width:360px;height:500px;background-color:silver;float:left;">
+            
+            <table style="width:100%;height:100%;text-align:center;" ><tr style="width:100%;height:100%;"><td style="width:100%;height:100%;">
+                <textarea id="readyPeo" style="width:300px;height:400px;margin:0 auto;background-color:white;text-align:center;" disabled="disabled">已选人员名单</textarea>
+                </td></tr></table>
+            
+        </div>
+        
+        --> 
+    </div>
+
+    <footer>
+        <div class="Leo_foot">
+            Leonardo&S
+        </div>
+
+    </footer>
+</body>
+
+</html>
+
+<script type="text/javascript">
+
+    var accessPeo = new Array();
+    accessPeo.push("0,28");
+    accessPeo.push("35,40");
+    accessPeo.push("47,47");
+    accessPeo.push("60,82");
+    initaccessPeo();
+
+   
+
+    function initaccessPeo() {
+        $("accessPeo").removeChild($("accessPeo").childNodes[0]);
+
+        var ntable = document.createElement("table");
+        ntable.style.textAlign = "center";
+        ntable.style.fontSize = "12px";
+        ntable.style.margin = "0 auto";
+        $("accessPeo").appendChild(ntable);
+        for (var i = 0; i < accessPeo.length; i++) {
+            var ntr=ntable.insertRow(i);
+            var ntd = ntr.insertCell(0);
+            var s = accessPeo[i].split(",");
+            ntd.innerText = s[0] + "~" + s[1];
+        }
+    }
+    
+    var readyPeo = new Array();
+    readyPeo.push("29,32");
+    
+    function initreadyPeo() {
+        $("readyPeo").value = "已选人员名单\n";
+
+        for (var i = 0; i < readyPeo.length; i++) {
+            var s = readyPeo[i].split(",");
+            $("readyPeo").value+=s[0]+"~"+s[1]+"\n";
+        }
+       
+    }
+
+    initreadyPeo();
+
+    function Leo_clickButton(t) {
+        switch(t.innerText){
+            case "+": addReady(); break;
+            case "-": delReady(); break;
+            default: alert("Something was wrong!");
+        }
+    }
+    function addReady(){
+        /*if(checkInput(1)){
+        var jud1 = parseInt($("begin").innerText);
+        var jud2 = parseInt($("end").innerText);
+        var ed=Math.max(jud2,parseInt(accessPeo[accessPeo.length-1].split(",")[1]));
+        var tem = new Array();
+
+        for (var i = 0; i < ed;i++){
+
+        }
+            }*/
+        
+        $("readyPeo").value += $("begin").value + "~" + $("end").value + "\n";
+    }
+
+    function delReady() {
+
+    }
+
+    function checkInput(n) {
+        var jud1 = parseInt($("begin").innerText);
+        var jud2 = parseInt($("end").innerText);
+        if (isNaN(jud1) || isNaN(jud2) || (jud1 < 0) || jud1 > 999 || jud2 < 0 || jud2 > 999||jud1>jud2) {
+            alert("您的输入非法！");
+            return false;
+        }
+        var bo = true;
+        if (n) {
+            
+            for (var i = jud1; i <= jud2; i++) {
+                bo = judge(i, accessPeo);
+            }
+        } else {
+            
+            for (var i = jud1; i <= jud2; i++) {
+                bo = judge(i, readyPeo);
+            }
+        }
+        return bo;
+        function judge(num,x)
+        {
+            var b = true;
+            for (var j = 0; j < x.length; j++) {
+                var s=x[i].split(",")
+                if (num > parseInt(s[0]) && num < parseInt(s[1])) {
+                    continue;
+                } else {
+                    b = false;
+                    break;
+
+                }
+            }
+            return b;
+
+        }
+    }
+</script>

@@ -1,0 +1,186 @@
+﻿// JavaScript source code
+function projects(Num,Name,Manager,Leaders,BgTime,EdTime,NumofPeople) {
+    var div = document.createElement("div");
+    if ($("Leo_project_body").lastChild){
+        if ($("Leo_project_body").lastChild.style.backgroundColor == "silver") {
+            div.style.backgroundColor = "white";
+        } else {
+            div.style.backgroundColor = "silver";
+        }
+    }
+
+    div.id = Num;
+    div.style.cursor = "pointer";
+
+    var table = document.createElement("table");
+    table.cellSpacing = "0";
+    
+    table.style.height = "50px";
+    table.style.width = "100%";
+    table.style.fontSize = "15px";
+    table.style.textAlign = "center";
+    table.style.margin = "0 auto";
+
+
+    var tr = document.createElement("tr");
+    tr.style.width = "100%";
+    tr.style.height = "100%";
+    tr.style.verticalAlign = "middle";
+
+    var tdDel = document.createElement("td");
+
+    tdDel.style.width = "5%";
+    var imgdel = document.createElement("img");
+    imgdel.src = "images/del.png";
+	imgdel.style.width="20px";
+    imgdel.style.height = "20px";
+    tdDel.appendChild(imgdel);
+    tdDel.onmouseover = new Function("this.style.color = 'red'");
+    tdDel.onmouseout = new Function("this.style.color = 'black'");
+    tdDel.onclick = new Function("Leo_deleteTduser(this)");
+
+    var tdNum = document.createElement("td");
+    tdNum.onclick = new Function("Leo_toEdit(this)");
+    tdNum.style.width = "10%";
+    tdNum.innerText = Num;
+    tdNum.style.textAlign = "center";
+    
+    var tdName = document.createElement("td");
+    tdName.onclick = new Function("Leo_toEdit(this)");
+    tdName.style.width = "35%";
+    tdName.innerText = Name;
+
+    var tdManager = document.createElement("td");
+    tdManager.onclick = new Function("Leo_toEdit(this)");
+    tdManager.style.width = "10%";
+    tdManager.innerText = Manager;
+
+    //本条目作为经理账号在使用，如实在不便，再在变量名更改
+    var tdLeaders = document.createElement("td");
+    tdLeaders.onclick = new Function("Leo_toEdit(this)");
+    tdLeaders.style.width = "15%";
+    tdLeaders.innerText =Leaders;
+
+    var tdPeriod = document.createElement("td");
+    
+    tdPeriod.style.width = "15%";
+
+    var timetable = document.createElement("table");
+    timetable.style.margin = "0 auto";
+    var timetr1 = document.createElement("tr");
+        var timetd1 = document.createElement("td");
+        timetd1.innerText = BgTime;
+        timetd1.onclick = new Function("Leo_toEdit(this)");
+        timetr1.appendChild(timetd1);
+    var timetr2 = document.createElement("tr");
+    var timetd2 = document.createElement("td");
+        timetd2.name="td2";
+        timetd2.innerText = EdTime;
+        timetd2.onclick = new Function("Leo_toEdit(this);");
+        
+        checkEdtime(timetd2,EdTime);
+        timetr2.appendChild(timetd2);
+        timetable.appendChild(timetr1);
+        timetable.appendChild(timetd2);
+    tdPeriod.appendChild(timetable);
+
+    var tdNumofPeople = document.createElement("td");
+    tdNumofPeople.style.width = "15%";
+    tdNumofPeople.innerText = NumofPeople + "";
+
+
+    tr.appendChild(tdDel);
+    tr.appendChild(tdNum);
+    tr.appendChild(tdName);
+    tr.appendChild(tdManager);
+    tr.appendChild(tdLeaders);
+    tr.appendChild(tdPeriod);
+    tr.appendChild(tdNumofPeople);
+
+    table.appendChild(tr);
+    div.appendChild(table);
+
+   
+
+    return div;
+}
+
+function checkEdtime(t, e) {
+    var s=e.split("-");
+    var date = new Date();
+    var m = (parseInt(s[0]) - parseInt(date.getFullYear())) * 12 - parseInt(date.getMonth()) + parseInt(s[1]) - 1;
+
+    if (parseInt(date.getDate()) > parseInt(s[2])) {
+        m--;
+    }
+   
+    if (m == 0 && m <= 1) {
+        t.style.color = "red";
+    } else if (m < 0) {
+        t.style.color = "green";
+    } else {
+        t.style.color = "black";
+    }
+}
+
+
+
+function Leo_toEdit(t) {
+    if($("editable").checked){
+    t.onclick = null;
+    var content = t.innerText;
+    t.innerText = "";
+    var edit = document.createElement("input");
+    edit.style.width = "70%";
+    edit.type = "text";
+    edit.value = content;
+    edit.style.textAlign = "center";
+    edit.onblur = new Function("Leo_exitEdit(this)");
+    t.appendChild(edit);
+    edit.focus();
+    edit.select();
+    } else {
+        window.location.href = "proDetail.html";
+    }
+}
+
+function Leo_exitEdit(t) {
+    var content = t.value;
+    var s = t.parentNode;
+    s.removeChild(t);
+    s.innerText = content;
+    s.onclick = new Function("Leo_toEdit(this)");
+    if (s.name == "td2") {
+        checkEdtime(s, s.innerText);
+    }
+}
+
+function Leo_deleteTduser(t) {
+    if ($("editable").checked) {
+        var boa = confirm("您确定要删除" + t.parentNode.childNodes[2].innerText + "?");
+        if(boa){
+            var tem = new Array();
+            var b = false;
+            var l = pro_name.length;
+            for (var i = 0; i < l; i++) {
+
+                if (!b && pro_name[i].substr(0, 5) == t.parentNode.childNodes[1].innerText) {
+                    b = true;
+                }
+                if (b) {
+                    if (i != l - 1) { tem.push(pro_name[pro_name.length - 1]); }
+
+                    pro_name.pop();
+                }
+            }
+
+            if (!b) { alert("wrong"); }
+
+            for (var i = 0; i < tem.length; i++) {
+                pro_name.push(tem[tem.length - i - 1]);
+            }
+
+            initprojs();
+    }
+    }
+}

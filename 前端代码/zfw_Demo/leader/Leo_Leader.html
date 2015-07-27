@@ -1,0 +1,235 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <title>测评系统</title>
+    <link rel="stylesheet" type="text/css" href="../css/Leo_global_css.css" />
+    <link rel="stylesheet" type="text/css" href="../css/Leo_normal_css.css" />
+    <link rel="stylesheet" type="text/css" href="../css/Leo_manager_css.css" />
+    <script src="../javascript/Leo_global_script.js" type="text/javascript"></script>
+    <script src="../javascript/leaders.js" type="text/javascript"></script>
+
+
+</head>
+
+<body>
+    <div class="Leo_title">
+
+        <div class="Leo_title_l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;测 评 结 果</div>
+        <div style="width:100%;height:2px;background-color:white;"></div>
+    </div>
+
+    <div class="Leo_info">
+        <div style="height:50px;"></div>
+        <div class="Leo_info_user">
+            <img src="../images/user2.png" />
+
+        </div>
+        <div class="Leo_info_l">
+            <table cellspacing="0">
+                <tr><td>姓名</td><td style="text-align:left;">王强</td></tr>
+                <tr><td>编号</td><td style="text-align:left;">ld001</td></tr>
+                <tr><td>角色</td><td style="text-align:left;">领导</td></tr>
+               
+            </table>
+        </div>
+		<div class="Leo_info_l_logout" onclick="Logout3()" ><table><tr><td>退出</td></tr></table></div>
+    </div>
+
+    <div class="Leo_question" style="overflow:hidden;background-color:white;" >
+
+       <div style="width:100%;height:50px;background-color:blue;">
+           
+           <table id="labels" style="text-align: center;width:100%; height: 100%;cursor:pointer;background-color:white; " cellspacing="0" cellpadding="0" border="0">
+           <tr style="width:100%;height:inherit;margin:0px;">
+               
+               <td id="label_users" style="width: 50%; height: 100%; background-image: url(../images/label4.png); " onclick="Leo_switch(this)">被试个体结果</td>
+               <td id="label_results" style="width: 50%; height: 100%; background-image: url(../images/label3.png); " onclick="Leo_switch(this)">查看总体结果</td>
+
+               </tr></table>
+
+       </div>
+        
+        
+
+        <div class="Leo_scroll_panel" style="margin:0 auto;top:0px;" id="Leo_manager_users">
+            <div class="Leo_userlist">
+                <div class="Leo_users_manage">
+                    <div style="height:5px;"></div>
+                    <table style="width:100%;">
+                        <tr style="width:100%;">
+                            
+                            <td>
+                                <input type="text" style="width:200px;height:25px;" />
+                                <input type="button" value="搜索" style="width:50px;height:25px;" />
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <div class="Leo_project_head">
+                    <table style="width:98%;font-size:15px;text-align:center;height:100%;" cellspacing="0">
+                        <tr style="height: 100%; vertical-align: middle;"><td style="width:20%;">被试人员编号</td><td style="width:15%;">姓名</td><td style="width:10%;">性别</td><td style="width:20%;">是否测试完毕</td><td style="width:20%;">最后登录时间</td><td style="width:15%;">查看</td></tr>
+                    </table>
+
+                </div>
+                <div class="Leo_project_body" id="Leo_project_body"></div>
+
+            </div>
+        </div>
+
+        
+
+        
+        
+        <div class="Leo_scroll_panel" style="margin:0 auto;top:0px;display:none;" id="Leo_manager_experts">
+            <div style="width:100%;height:40px;background-color:pink ;margin:0 auto;text-align:center;margin-top:50px;">综合素质</div>
+            <div style="width:600px;height:60px;margin-top:30px;"><ul><li><a target="_blank" href="../总体分析报告.pdf">人才综合测评总体分析报告</a><input style="margin-left:10px;" type="button" value="导出word" onclick="window.location.href='../附件3.docx'" /></li></ul></div>
+            <div style="width:100%;height:40px;background-color:pink;margin:0 auto;text-align:center;margin-top:30px;">胜任力模型</div>
+            <div style="width:600px;height:60px;margin-top:30px;"><ul><li><a target="_blank" href="Leo_sysResult2.html">班子胜任力模型测评报告</a><input style="margin-left:10px;" type="button" value="导出word" onclick="window.location.href='../附件4.docx'" /></li><li><a target="_blank" href="../leader/Leo_sysResult1.html">系统胜任力模型测评报告</a><input style="margin-left:10px;" type="button" value="导出word" onclick="window.location.href='../附件5.docx'" /></li></ul></div>
+        </div>
+        
+    </div>
+
+    
+    <footer>
+        <div class="Leo_foot">
+            Leonardo&S
+        </div>
+
+    </footer>
+</body>
+
+</html>
+<script type="text/javascript">
+
+    var date = new Date();
+    
+    
+
+    
+
+    
+
+    var Users_name = new Array();
+    Users_name.push("us001," + "张晓强," + "2014-07-15,"  + "1");
+    
+    Users_name.push("us002," + "王凯," + "2014-07-15,"  + "0");
+    Users_name.push("us003," + "李菲娜," + "2014-07-15,"  + "0");
+    Users_name.push("us004," + "江山," + "2014-07-15,"  + "0");
+    Users_name.push("us005," + "李宏霏," + "2014-07-15,"  + "0");
+    Users_name.push("us006," + "马天天," + "2014-07-15,"  + "0");
+    Users_name.push("us007," + "刘烨," + "2014-07-15,"  + "0");
+    Users_name.push("us008," + "赵白依依," + "2014-07-15,"  + "0");
+
+    Users_name.push("us009," + "王超," + "2014-07-15," + "0");
+    Users_name.push("us010," + "黄海滨," + "2014-07-15,"  + "0");
+    Users_name.push("us011," + "赵丰," + "2014-07-15,"  + "0");
+    Users_name.push("us012," + "牛奔," + "2014-07-15,"  + "0");
+    Users_name.push("us013," + "石磊," + "2014-07-15,"  + "0");
+    Users_name.push("us014," + "李圣优," + "2014-07-15," + "0");
+
+    Users_name.push("us001," + "白莲," + "2014-07-15," + "0");
+
+    
+   
+    function initusers() {
+        var l = $("Leo_project_body").childNodes.length;
+        for (var i = 0; i < l ; i++) {
+
+            $("Leo_project_body").removeChild($("Leo_project_body").childNodes[0]);
+        }
+       
+        for (var i = 0; i < Users_name.length; i++) {
+            var s = Users_name[i].split(",");
+            var newdiv = new users(s[0], s[1], "男", s[2], s[3]);
+            $("Leo_project_body").appendChild(newdiv);
+        }
+
+    }
+    initusers();
+    
+   
+    
+
+    
+
+
+    
+
+    
+    /*
+    function Leo_newLeader() {
+        var newdiv = new leaders("ld999", "点击编辑", "男", "否", "未登录", "123456");
+        Leaders_name.push("ld999点击编辑");
+        $("Leo_leaders_body").appendChild(newdiv);
+        Leo_toEdit(newdiv.childNodes[0].childNodes[0].childNodes[1]);
+        
+    }
+
+    function Leo_newUser() {
+        var newdiv = new users("us999", "点击编辑", "男", "未登录", "123456", "0");
+        Users_name.push("ld999点击编辑");
+        $("Leo_project_body").appendChild(newdiv);
+        Leo_toEdit(newdiv.childNodes[0].childNodes[0].childNodes[1]);
+
+    }
+    function Leo_newexpert() {
+        var newdiv = new zhuanjia("us999", "点击编辑", "男", "未登录", "123456", "0");
+        Experts_name.push("ld999点击编辑");
+        $("Leo_zhuanjia_body").appendChild(newdiv);
+        Leo_toEdit(newdiv.childNodes[0].childNodes[0].childNodes[1]);
+
+    }
+    */
+
+    function toCode(num, bit) {
+        if (num > Math.pow(10, bit) - 1) {
+            return "wrong";
+        } else if (num != 0) {
+            var tem = "" + num;
+            while (num < Math.pow(10, bit - 1)) {
+                tem = "0" + tem;
+                num = 10 * num;
+            }
+            return tem;
+        } else {
+            tem = "";
+            for (var i = 0; i < bit; i++) {
+                tem = "0" + tem;
+            }
+            return tem;
+        }
+
+    }
+
+    function Leo_switch(t) {
+
+        switch (t.id) {
+            case "label_users": sw(0); break;
+            case "label_results": sw(1); break;
+            
+            default: sw(0);
+        }
+
+        function sw(n) {
+            
+            var s1 = $("labels").rows[0].cells;
+            var s2 = document.getElementsByClassName("Leo_scroll_panel");
+            
+            for (var i = 0; i < s2.length; i++) {
+                s1[i].style.backgroundImage ="url(../images/label3.png)";
+                s2[i].style.display = "none";
+            }
+
+            s1[n].style.backgroundImage = "url(../images/label4.png)";
+            
+
+            s2[n].style.display = "";
+        }
+
+    }
+</script>

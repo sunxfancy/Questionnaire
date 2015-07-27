@@ -1,0 +1,28 @@
+﻿.Leo_result_panel{
+    width:90%;
+    height:100%;
+    margin:0 auto;
+    position:relative;
+    
+}
+.Leo_float_last{
+    width:50px;
+    height:50px;
+    position:absolute;
+    left:1000px;
+    top:550px;
+    background-color:rgba(189, 232, 13, 0.46);
+    cursor:pointer;
+
+}
+
+.Leo_float_next{
+    width:50px;
+    height:50px;
+    position:absolute;
+    left:1100px;
+    top:550px;
+    background-color:rgba(189, 232, 13, 0.46);
+    cursor:pointer;
+ 
+}
