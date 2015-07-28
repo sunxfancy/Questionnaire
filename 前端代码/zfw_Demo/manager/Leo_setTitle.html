@@ -1,0 +1,192 @@
+﻿<!DOCTYPE html>
+<!--这个页面暂时就这样，在用户体验上还可以加入新的功能-->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <title>测评系统</title>
+    <link rel="stylesheet" type="text/css" href="../css/Leo_global_css.css" />
+    <link rel="stylesheet" type="text/css" href="../css/Leo_normal_css.css" />
+    <script src="../javascript/Leo_global_script.js" type="text/javascript"></script>
+   
+
+
+</head>
+
+<body>
+    <div class="Leo_title">
+
+        <div class="Leo_title_l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;题 目 选 择</div>
+    </div>
+
+    <div class="Leo_info">
+        <div style="height:50px;"></div>
+        <div class="Leo_info_user">
+            <img src="../images/user2.png" />
+            
+        </div>
+        <div class="Leo_info_l">
+            <table cellspacing="0">
+                <tr><td>姓名</td><td style="text-align:left;">李婷</td></tr>
+                <tr><td>编号</td><td style="text-align:left;">p001</td></tr>
+                <tr><td>角色</td><td style="text-align:left;">项目经理</td></tr>
+                <tr><td></td><td></td></tr>
+				<tr><td></td><td></td></tr>
+            </table>
+
+        </div>
+		<div class="Leo_info_l_logout" onclick="Logout3()" ><table><tr><td>退出</td></tr></table></div>
+    </div>
+
+    <div class="Leo_question" style="overflow:hidden;padding:0px;">
+
+        <div style="width:50%;height:450px;background-color:white;float:left;">
+			<div id="leibie" style="width:90%;height:90%;margin-top:5%;margin-left:10%;float:left;"></div>
+		</div>
+
+        <div  style="width:50%;height:450px;background-color:pink;float:left;">
+		<div id="xifen" style="width:95%;height:90%;margin-top:5%;margin-left:5%;float:left;"></div></div>
+
+        <div style="width:100%;height:50px;background-color:orange;text-align:right;float:left;" >
+		<input style="cursor:pointer;margin-left:10px;" type="button" value="全选" onclick="Leo_selectAll()" />
+		<input style="cursor:pointer;margin-left:10px;margin-right:10px;" type="button" value="全不选" onclick="Leo_unselectAll()" />
+		<input style="cursor:pointer;margin-right:10px;" type="button" value="确定" onclick="window.location.href = 'Leo_Manager.html'" />
+		</div>
+
+       <!-- <table style="height:100%;width:100%;border:0px;" cellspacing="0">
+            <tr style="width:100%;height:10%"><td colspan="2" style="width:100%;"><div style="width:100%;height:100%;background-color:green;text-align:right;">
+                    <input type="button" value="全选" onclick="Leo_selectAll()"/><input type="button" value="全不选" onclick="Leo_unselectAll()"/>
+                </div></td></tr>
+            <tr style="width:100%;height:80%">
+                <td id="leibie" style="width:50%;height:100%;background-color:pink;vertical-align:top;cursor:pointer;"></td>
+                <td id="xifen" style="width: 50%; height: 100%; background-color: yellow; vertical-align: top; cursor: pointer; "></td>
+                
+            </tr>
+            <tr style="width:100%;height:10%"><td colspan="2" style="width:100%;height:100%;"><div style="width:100%;height:100%;background-color:silver;" onmousedown="this.style.backgroundColor = 'green';" onmouseup="    this.style.backgroundColor = 'silver';"></div></td></tr>
+
+
+        </table>
+-->
+
+    </div>
+    <footer>
+        <div class="Leo_foot">
+            Leonardo&S
+        </div>
+
+    </footer>
+</body>
+
+</html>
+<script type="text/javascript">
+
+    
+    function leibie(Num,Name,xifen) {
+        var div=document.createElement("div");
+        div.id = "leibie_" + Num;
+        div.style.width = "100%";
+        div.style.height = "30px";
+        div.style.cursor = "pointer";
+        div.innerText = Name;
+        div.onclick = new Function("Leo_mouseclick(this)");
+
+        div.xifen_div = document.createElement("div");
+        for (var i = 0; i < xifen.length; i++) {
+            mk_div = document.createElement("div");
+            var mk_checkbox = document.createElement("input");
+            var mk_span = document.createElement("span");
+            mk_checkbox.type = "checkbox";
+			mk_div.appendChild(mk_checkbox);
+            mk_span.innerText = xifen[i];
+			mk_checkbox.style.width="8%";
+			mk_checkbox.style.height="60%";
+			mk_checkbox.name = div.id;
+            mk_div.appendChild(mk_span);
+            mk_span.onclick = new Function("this.parentNode.childNodes[0].checked=!this.parentNode.childNodes[0].checked;");
+            mk_div.style.cursor = "pointer";
+            mk_div.style.width = "100%";
+            mk_div.style.height = "30px";
+			
+            div.xifen_div.appendChild(mk_div);
+        }
+
+		
+        return div;
+    }
+
+   
+
+    var leibie_name = new Array();
+    var leibie_xifen = new Array();
+    
+
+
+    leibie_name.push("领导力模块");
+    var leibie_xifen_lidaoli = new Array();
+   
+
+    leibie_xifen_lidaoli.push("领导能力");
+    leibie_xifen_lidaoli.push("职业素质");
+    leibie_xifen_lidaoli.push("思维能力");
+    leibie_xifen_lidaoli.push("态度品质");
+    leibie_xifen_lidaoli.push("专业能力");
+    leibie_xifen_lidaoli.push("个人特质");
+    leibie_xifen.push(leibie_xifen_lidaoli);
+   
+  
+    var newdiv = new leibie(1, leibie_name[0], leibie_xifen[0]);
+	newdiv.style.backgroundColor="pink";
+    $("leibie").appendChild(newdiv);
+    $("xifen").appendChild(newdiv.xifen_div);
+   
+
+    leibie_name.push("综合素质模块");
+    var leibie_xifen_lidaoli = new Array();
+
+
+    leibie_xifen_lidaoli.push("心理健康");
+    leibie_xifen_lidaoli.push("素质结构");
+    leibie_xifen_lidaoli.push("能力结构");
+    leibie_xifen_lidaoli.push("智体结构");
+    leibie_xifen.push(leibie_xifen_lidaoli);
+
+
+    var newdiv = new leibie(2, leibie_name[1], leibie_xifen[1]);
+    $("leibie").appendChild(newdiv);
+   
+    
+    
+
+    function Leo_mouseclick(t) {
+        $("xifen").removeChild($("xifen").childNodes[0]);
+        $("xifen").appendChild(t.xifen_div);
+		var length=$("leibie").childNodes.length;
+		for(var i=0;i<length;i++){
+			$("leibie").childNodes[i].style.backgroundColor="white";
+		}
+		t.style.backgroundColor="pink";
+    }
+
+    function Leo_selectAll() {
+        var length=$("leibie").childNodes.length;
+        for (var i = 0; i < length; i++) {
+            for (var j = 0; j < $("leibie").childNodes[i].xifen_div.childNodes.length; j++) {
+                $("leibie").childNodes[i].xifen_div.childNodes[j].childNodes[0].checked = true;
+            }
+           
+        }
+    }
+
+    function Leo_unselectAll() {
+        var length = $("leibie").childNodes.length;
+        for (var i = 0; i < length; i++) {
+            for (var j = 0; j < $("leibie").childNodes[i].xifen_div.childNodes.length; j++) {
+                $("leibie").childNodes[i].xifen_div.childNodes[j].childNodes[0].checked = false;
+            }
+
+        }
+    }
+
+   
+
+</script>

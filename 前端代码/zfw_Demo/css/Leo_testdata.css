@@ -1,0 +1,16 @@
+.Leo_heart_index{
+	overflow:auto;
+	width:100%;
+	height:400px;
+
+}
+
+.Leo_heart_index table{
+	width:450px;
+	text-align:center;
+	margin:0 auto;
+}
+.Leo_heart_index td{
+	width:80px;
+	height:50px;
+}
