@@ -10,7 +10,7 @@
 $dbserver   = "localhost";
 $dbusername = "root";
 $dbpassword = "12306";
-$database   = 'question';
+$database   = 'questionaire';
 //其他配置
 $title = '系统数据字典';
 

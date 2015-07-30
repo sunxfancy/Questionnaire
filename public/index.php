@@ -2,7 +2,9 @@
 
 try {
 
-    $config = new Phalcon\Config\Adapter\Ini('../app/config/config.ini');
+    // $config = new Phalcon\Config\Adapter\Ini('../app/config/config.ini');
+    $config = include(__DIR__."/../app/config/config.php");
+
     //Register an autoloader
     $loader = new \Phalcon\Loader();
     $loader->registerDirs(
@@ -38,20 +40,6 @@ try {
         ));
         return $view;
     });
-
-    // $di['router'] = function() {
-
-    //     //Use the annotations router
-    //     $router = new \Phalcon\Mvc\Router\Annotations();
-
-    //     //Read the annotations from ProductsController if the uri starts with /api/products
-    //     $router->addResource('UserApi', '/UserApi');
-    //     $router->addResource('UserData', '/UserData');
-    //     $router->addResource('AccountApi', '/AccountApi');
-    //     $router->addResource('AuthApi', '/AuthApi');
-    //     $router->addResource('UserGroup', '/UserGroup');
-    //     return $router;
-    // };
 
     //Setup a base URI so that all generated URIs include the "tutorial" folder
     $di->set('url', function() use($config){

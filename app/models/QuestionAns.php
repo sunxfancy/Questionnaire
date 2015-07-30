@@ -1,7 +1,7 @@
 <?php
 
 
-class Factor extends \Phalcon\Mvc\Model 
+class QuestionAns extends \Phalcon\Mvc\Model 
 {
 
     /**
@@ -11,34 +11,28 @@ class Factor extends \Phalcon\Mvc\Model
     public $id;
 
     /**
-     * @var string
+     * @var integer
      *
      */
-    public $name;
-
-    /**
-     * @var string
-     *
-     */
-    public $factor;
+    public $option;
 
     /**
      * @var integer
      *
      */
-    public $father_factor;
+    public $score;
 
     /**
      * @var integer
      *
      */
-    public $module_id;
+    public $question_id;
 
     /**
      * @var integer
      *
      */
-    public $paper_id;
+    public $examinee_id;
 
 
 }

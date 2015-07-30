@@ -1,7 +1,7 @@
 <?php
 
 
-class Manager extends \Phalcon\Mvc\Model 
+class Project extends \Phalcon\Mvc\Model 
 {
 
     /**
@@ -14,25 +14,31 @@ class Manager extends \Phalcon\Mvc\Model
      * @var string
      *
      */
-    public $username;
+    public $begintime;
 
     /**
      * @var string
      *
      */
-    public $password;
+    public $endtime;
 
     /**
      * @var string
      *
      */
-    public $role;
+    public $name;
+
+    /**
+     * @var string
+     *
+     */
+    public $description;
 
     /**
      * @var integer
      *
      */
-    public $project_id;
+    public $manager_id;
 
 
 }

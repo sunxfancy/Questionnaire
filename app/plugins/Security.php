@@ -89,32 +89,7 @@
                 $acl->allow('Admin', 'admin', '*');
                 $acl->allow('Admin', 'import', '*');
                 $acl->allow('Manager', 'index', '*');
-                //Grant acess to private area to role Users
-                // foreach ($studentResources as $resource => $actions)
-                // {
-                //     foreach ($actions as $action)
-                //     {
-                //         $acl->allow('Student', $resource, $action);
-                //     }
-                // }
-                //Grant acess to private area to role Users
-                // foreach ($adminResources as $resource => $actions)
-                // {
-                //     foreach ($actions as $action)
-                //     {
-                //         $acl->allow('Admin', $resource, $action);
-                //     }
-                // }
 
-                //Grant acess to private area to role Users
-                // foreach ($managerResources as $resource => $actions)
-                // {
-                //     foreach ($actions as $action)
-                //     {
-                //         $acl->allow('Manager', $resource, $action);
-                //     }
-                // }
-                
                 //The acl is stored in session, APC would be useful here too
                 $this->persistent->acl = $acl;
             }

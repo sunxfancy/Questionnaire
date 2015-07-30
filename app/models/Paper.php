@@ -1,7 +1,7 @@
 <?php
 
 
-class Question extends \Phalcon\Mvc\Model 
+class Paper extends \Phalcon\Mvc\Model 
 {
 
     /**
@@ -14,19 +14,13 @@ class Question extends \Phalcon\Mvc\Model
      * @var string
      *
      */
-    public $topic;
+    public $description;
 
     /**
      * @var string
      *
      */
-    public $options;
-
-    /**
-     * @var string
-     *
-     */
-    public $grade;
+    public $name;
 
 
 }
