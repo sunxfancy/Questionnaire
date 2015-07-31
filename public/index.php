@@ -9,10 +9,10 @@ try {
     $loader = new \Phalcon\Loader();
     $loader->registerDirs(
         array(
-            __DIR__.$config->application->controllersDir,
-            __DIR__.$config->application->pluginsDir,
-            __DIR__.$config->application->libraryDir,
-            __DIR__.$config->application->modelsDir
+            $config->application->controllersDir,
+            $config->application->pluginsDir,
+            $config->application->libraryDir,
+            $config->application->modelsDir
         )
     )->register();
 
@@ -33,7 +33,7 @@ try {
     //Setup the view component
     $di->set('view', function() use($config){
         $view = new \Phalcon\Mvc\View();
-        $view->setViewsDir( __DIR__.$config->application->viewsDir );
+        $view->setViewsDir( $config->application->viewsDir );
         $view->registerEngines(array(
             ".phtml" => 'Phalcon\Mvc\View\Engine\Php',
             ".volt" => 'volt'

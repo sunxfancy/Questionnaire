@@ -13,7 +13,7 @@ return new \Phalcon\Config(array(
 		'modelsDir'      => __DIR__ . '/../../app/models/',
 		'viewsDir'       => __DIR__ . '/../../app/views/',
 		'pluginsDir'     => __DIR__ . '/../../app/plugins/',
-		'libraryDir'     => __DIR__ . '/../../app/library/',
+		'libraryDir'     => __DIR__ . '/../../app/library/'
 		
 	),
 	'resource' => array(
@@ -21,10 +21,10 @@ return new \Phalcon\Config(array(
 		'baseUri' => '/'
 	),
 	'cache' => array(
-		'voltCacheDir' => __DIR__ . '../cache/volt/'
+		'voltCacheDir' => __DIR__ . '/../../cache/volt/'
 	),
 	'security' => array(
-		'protectBackend' => 0,
+		'protectBackend' => 1,
 		'openHttps' => 0
 	),
 	'models' => array(
