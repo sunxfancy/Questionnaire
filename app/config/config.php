@@ -6,7 +6,7 @@ return new \Phalcon\Config(array(
 		'host'     => 'localhost',
 		'username' => 'root',
 		'password' => '12306',
-		'name'     => 'questionnaire',
+		'dbname'   => 'questionnaire',
 	),
 	'application' => array(
 		'controllersDir' => __DIR__ . '/../../app/controllers/',
@@ -14,7 +14,6 @@ return new \Phalcon\Config(array(
 		'viewsDir'       => __DIR__ . '/../../app/views/',
 		'pluginsDir'     => __DIR__ . '/../../app/plugins/',
 		'libraryDir'     => __DIR__ . '/../../app/library/'
-		
 	),
 	'resource' => array(
 		'useCDN' => 0,
