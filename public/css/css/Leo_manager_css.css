@@ -1,0 +1,58 @@
+﻿/*次css多个文件参考，请慎重修改！！！*/
+
+.Leo_scroll_panel{
+    width:92%;
+    height:100%;
+    margin:0 auto;
+    position:relative;
+    top:0px;
+}
+
+.Leo_users_manage{
+    width:100%;
+    height:50px;
+    
+    text-align:right;
+
+}
+
+.Leo_userlist{
+    width:100%;
+    height:100%;
+    margin:0 auto;
+}
+
+.Leo_project_head{
+    width:100%;
+    height:60px;
+    text-align:center;
+    background-color:silver;
+}
+
+.Leo_project_body{
+    width:100%;
+    height:330px;
+    overflow:auto;
+}
+
+.Leo_float_last{
+    width:50px;
+    height:50px;
+    position:absolute;
+    left:1000px;
+    top:550px;
+    background-color:rgba(189, 232, 13, 0.46);
+    cursor:pointer;
+
+}
+
+.Leo_float_next{
+    width:50px;
+    height:50px;
+    position:absolute;
+    left:1100px;
+    top:550px;
+    background-color:rgba(189, 232, 13, 0.46);
+    cursor:pointer;
+ 
+}
