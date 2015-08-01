@@ -11,7 +11,7 @@
  <table>
      <tr style="height:100px;"><td style="width:500px;font-size:40px;color:purple;">欢 迎 登 录</td></tr>
        </table>
-            <form action="/managerlogin/login" method="POST">
+            <form action="/managerlogin/login" id='myform' method="POST">
             <table>
                 <tr>
                     <td style="width:100px; font-family:'Microsoft YaHei' ">帐号</td>
@@ -34,10 +34,10 @@
             <table style="width:90%;margin:0 auto;">
                  <tr>
                    <td style="width:100%;text-align:center;">
-                     <div onmousedown="    this.style.backgroundColor = '#e56419'" onmouseup="    this.style.backgroundColor = '#d49a3e'" style="width:100%;height:40px;background-color:#d49a3e;font-family:'Microsoft YaHei';font-size:21px;text-align:center;cursor:pointer;"  >
+                     <div onclick="document.getElementById('myform').submit();" onmousedown="    this.style.backgroundColor = '#e56419'" onmouseup="this.style.backgroundColor = '#d49a3e'" onclick="document.getElementBuId('myform').submit();" style="width:100%;height:40px;background-color:#d49a3e;font-family:'Microsoft YaHei';font-size:21px;text-align:center;cursor:pointer;"  >
                          <table style="width:100%;height:100%" cellspacing="0">
                             <tr style="width:100%;height:100%;">
-                                  <td style="width:100%;height:100%;vertical-align:middle"><input style='width:100%;height:100%;background-color:' type='submit' value='登录'/></td>
+                                  <td style="width:100%;height:100%;vertical-align:middle">登录</td>
                              </tr>
                         </table>
                      </div>
