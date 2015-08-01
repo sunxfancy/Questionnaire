@@ -21,11 +21,14 @@
                 </tr>
 
                 <tr>
-                    <td style="width: 100px; font-family: 'Microsoft YaHei' ">密码</td><td>
-                    <input onfocus="getfocus(this);" onblur="getblur(this);" type="text" dir="ltr" id="password" name="password" style="font-size:20px; height: 36px;line-height: 36px;outline: none;font-size: 20px;width: 180px;border: 1px solid #C7C7C7;background: #F3F3F3;border-radius: 2px;padding: 0 5px;font-family:'Microsoft YaHei';color:silver;">
+                    <td style="width: 100px; font-family: 'Microsoft YaHei' ">密码</td>
+                    <td>
+                    <input onfocus="this.style.backgroundColor = 'white';" onblur="    this.style.backgroundColor='#F3F3F3';" type="password" dir="ltr" id="password" name="password" style="font-size:20px; height: 36px;line-height: 36px;outline: none;font-size: 20px;width: 180px;border: 1px solid #C7C7C7;background: #F3F3F3;border-radius: 2px;padding: 0 5px;font-family:'Microsoft YaHei';">
                     </td>
                 </tr>
             </table>
+
+            
 
             <div style="height:20px;"></div>
             <table style="width:90%;margin:0 auto;">
@@ -44,19 +47,3 @@
             </form>
                 
 </div>
-
-function getfocus(t) {
-        t.style.backgroundColor = 'white';
-        t.value = "";
-        t.type = "password";
-        t.style.color = "black";
-    }
-
-    function getblur(t) {
-        t.style.backgroundColor = '#F3F3F3';
-        if (t.value == "") {
-            t.type = "text";
-            t.style.color = "silver";
-            t.value="初始密码为123456"
-        }
-    }
