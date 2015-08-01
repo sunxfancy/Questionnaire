@@ -24,7 +24,7 @@ return new \Phalcon\Config(array(
 		'voltCacheDir' => __DIR__ . '/../../cache/volt/'
 	),
 	'security' => array(
-		'protectBackend' => 1,
+		'protectBackend' => 0,
 		'openHttps' => 0
 	),
 	'models' => array(

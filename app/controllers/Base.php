@@ -13,21 +13,9 @@ class Base extends \Phalcon\Mvc\Controller
 {
     public function initialize()
     {
-        Phalcon\Tag::prependTitle('大学生心理健康测评系统 | ');
+        Phalcon\Tag::prependTitle('政法委胜任力测评软件 | ');
         $this->response->setHeader("Content-Type", "text/html; charset=utf-8");
-        $this->assets->collection('footer');
-        $this->assets->collection('header');
-        if ($this->usecdn) {
-            $this->assets->addCss("http://cdn.staticfile.org/twitter-bootstrap/3.3.0/css/bootstrap.min.css");
-            // $this->assets->collection('header')
-            // ->addJs("http://cdn.staticfile.org/jquery/1.9.1/jquery.min.js")
-            // ->addJs("http://cdn.staticfile.org/twitter-bootstrap/3.3.0/js/bootstrap.min.js");
-        } else {
-            $this->assets->addCss("bootstrap/css/bootstrap.min.css");
-            // $this->assets->collection('header')->addJs("js/jquery.js")->addJs("bootstrap/js/bootstrap.min.js");
-        }
     }
-
 
     public function forward($controller, $action)
     {
