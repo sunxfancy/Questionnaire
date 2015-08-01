@@ -1,6 +1,6 @@
 <?php
 
-class ManagerloginController extends \Phalcon\Mvc\Controller
+class ManagerloginController extends Base
 {
 
     public function indexAction()
