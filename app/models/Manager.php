@@ -34,5 +34,29 @@ class Manager extends \Phalcon\Mvc\Model
      */
     public $project_id;
 
+    public static function checkLogin($username,$password)
+    {
+        $manager = Manager::findFirst(array(
+            "username = :str:",
+            "bind" => array("str" => $username)
+        ));
+        if (!$manager) {
+            return -1;
+        }
+        if ($password == $manager->password) {
+            return $manager;
+        } else {
+            return 0;
+        }
+    }
+
+    public static function checkUsername($username)
+    {
+        $manager = Manager::findFirst(array(
+            "username=:username:",
+            "bind" => array("username" => $username)
+        ));
+        return $manager;
+    }
 
 }
