@@ -33,6 +33,7 @@ class AdminController extends Base
 			$manager->username   = $this->request->getPost('username', 'string');
 			$manager->password   = $this->request->getPost('password', 'string');
 			$manager->role       = $this->request->getPost('role', 'string');
+			$manager->name       = $this->request->getPost('name', 'string');
 			$manager->project_id = $this->request->getPost('project_id', 'integer');
             if (!$manager->save()) {
                 foreach ($manager->getMessages() as $message) {
