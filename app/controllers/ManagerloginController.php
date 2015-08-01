@@ -21,6 +21,7 @@ class ManagerloginController extends Base
         if ($manager === 0)
         {
             $this->view->setVar('error', '密码不正确');
+             $this->view->setTemplateAfter('blank');
             $this->view->pick('managerlogin/error');
             return;
         }
@@ -28,6 +29,7 @@ class ManagerloginController extends Base
         if ($manager === -1)
         {
             $this->view->setVar('error', '用户不存在');
+             $this->view->setTemplateAfter('blank');
             $this->view->pick('managerlogin/error');
             return;
         }
@@ -47,7 +49,7 @@ class ManagerloginController extends Base
 
 	        		break;
 
-	        	case 'I': // 面询人员
+	        	case 'I': // 面询专家
 	        		break;
 
 	        	default:
