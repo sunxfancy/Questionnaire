@@ -117,6 +117,18 @@ try {
         return $cookies;
     });
 
+    /**
+     * If the configuration specify the use of metadata adapter use it or use memory otherwise
+     */
+    $di->set('modelsMetadata', function() use ($config) {
+        if (isset($config->models->metadata)) {
+            $metadataAdapter = 'Phalcon\Mvc\Model\Metadata\\'.$config->models->metadata->adapter;
+            return new $metadataAdapter();
+        } else {
+            return new \Phalcon\Mvc\Model\Metadata\Memory();
+        }
+    });
+
     //Handle the request
     $app = new \Phalcon\Mvc\Application($di);
 
