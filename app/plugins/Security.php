@@ -23,11 +23,13 @@
                 $acl->setDefaultAction(Phalcon\Acl::DENY);
                 //Register roles
                 $roles = array(
-                    'admin'    => new Phalcon\Acl\Role("Admin"),
-                    // 'admin' => new Phalcon\Acl\Role("Admin"), 待添加领导们
-                    'manager'  => new Phalcon\Acl\Role('Manager'),
-                    'student'  => new Phalcon\Acl\Role("Student"),
-                    'guests'   => new Phalcon\Acl\Role('Guests'));
+                    'admin'       => new Phalcon\Acl\Role("Admin"),
+                    'leader'      => new Phalcon\Acl\Role("Leader"),
+                    'pm'          => new Phalcon\Acl\Role('PM'),
+                    'examinee'    => new Phalcon\Acl\Role("Examinee"),
+                    'interviewer' => new Phalcon\Acl\Role("Interviewer");
+                    'guests'      => new Phalcon\Acl\Role('Guests'));
+                
                 foreach ($roles as $role)
                 {
                     $acl->addRole($role);

@@ -36,7 +36,7 @@ class ManagerloginController extends Base
             $this->session->set('Manager', $manager);
             $this->response->redirect('index');
 
-	        switch ($manager->auth) {
+	        switch ($manager->role) {
 	        	case 'M': // 管理员
 	        		# code...
 	        		break;
