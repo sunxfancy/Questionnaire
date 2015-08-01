@@ -2,6 +2,10 @@
 
 class ManagerloginController extends \Phalcon\Mvc\Controller
 {
+    public function initialize()
+    {
+          $this->view->setTemplateAfter('base1');
+    }
 
     public function indexAction()
     {
