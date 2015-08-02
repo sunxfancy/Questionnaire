@@ -40,7 +40,7 @@ class ManagerloginController extends Base
 
 	        switch ($manager->role) {
 	        	case 'M': // 管理员
-	        		# code...
+	        		$this->response->redirect('admin/index');
 	        		break;
 	        	case 'P': // 项目经理
 

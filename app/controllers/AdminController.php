@@ -2,10 +2,20 @@
 
 class AdminController extends Base
 {
+    public function initialize()
+    {
+          $this->view->setTemplateAfter('base2');
+    }
 
     public function indexAction()
     {
-
+        /****************这一段可以抽象成一个通用的方法**********************/
+        $manager=$this->session->get('Manager');
+        $this->view->setVar('page_title','项 目 管 理');
+        $this->view->setVar('user_name',$manager->name);
+        $this->view->setVar('user_id',$manager->username);
+        $this->view->setVar('user_role',"管理员");
+        /*******************************************************************/
     }
 
     public function listAction()
