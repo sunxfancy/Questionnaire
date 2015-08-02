@@ -7,9 +7,29 @@
     <title>政府评测系统</title>
     <link rel="stylesheet" type="text/css" href="/css/css/Leo_global_css.css" />
     <link rel="stylesheet" type="text/css" href="/css/css/Leo_normal_css.css" />
-    <link rel="stylesheet" type="text/css" href="/css/css/Leo_projects_css.css" />
+    
 </head>
 
 <body style="background-image:url(/image/fcbg_blur.png);">
+	<div class="Leo_title">
+	    <div class="Leo_title_l"><center> {{ page_title }} </center></div>
+	    <div style="width:100%;height:2px;background-color:white;"></div>
+	</div>
+
+<div class="Leo_info">
+    <div style="width:100%;height:50px;"></div>
+    <div class="Leo_info_user">
+        <img src="/image/user2.png" />
+    </div>
+    <div class="Leo_info_l">
+        <table cellspacing="0">
+            <tr><td>姓名</td><td style="text-align:left;">{{ user_name }}</td></tr>
+            <tr><td>编号</td><td style="text-align:left;">{{ user_id }}</td></tr>
+            <tr><td>角色</td><td style="text-align:left;">{{ user_role }}</td></tr>
+        </table>
+    </div>
+    <div class="Leo_info_l_logout" onclick="window.location.href='/managerlogin/logout'"><table><tr><td>退出</td></tr></table></div>
+</div>
+
 	{{ content() }}
 </body>
