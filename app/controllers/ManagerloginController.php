@@ -18,29 +18,20 @@ class ManagerloginController extends Base
         $password = $this->request->getPost("password", "string");
         $manager = Manager::checkLogin($username, $password);
 
-        if ($manager === 0)
-        {
-            $this->view->setVar('error', '密码不正确');
-             $this->view->setTemplateAfter('blank');
-            $this->view->pick('managerlogin/error');
+        if ($manager === 0) {
+            dataReturn(array('error' => '密码不正确'));
             return;
         }
-
-        if ($manager === -1)
-        {
-            $this->view->setVar('error', '用户不存在');
-             $this->view->setTemplateAfter('blank');
-            $this->view->pick('managerlogin/error');
+        if ($manager === -1) {
+            dataReturn(array('error' => '用户不存在'));
             return;
         }
         if ($manager != 0)
         {
             $this->session->set('Manager', $manager);
-            $this->response->redirect('index');
-
 	        switch ($manager->role) {
 	        	case 'M': // 管理员
-	        		$this->response->redirect('admin/index');
+                    dataReturn(array('url' => 'admin/index'));
 	        		break;
 	        	case 'P': // 项目经理
 
@@ -53,7 +44,7 @@ class ManagerloginController extends Base
 	        		break;
 
 	        	default:
-	        		$this->forward('managerlogin', 'index');
+	        		dataReturn(array('error' => '用户权限异常'));
 	        		break;
         	}
         }
@@ -62,6 +53,12 @@ class ManagerloginController extends Base
     public function logoutAction()
     {
     	
+    }
+
+    public function dataReturn($ans)
+    {
+        echo json_encode($ans);
+        $this->view->disable();
     }
 
 }

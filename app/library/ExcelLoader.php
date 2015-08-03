@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-02 15:33:40
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-03 10:17:51
+ * @Last Modified time: 2015-08-03 10:24:35
  */
 
 /**
@@ -51,7 +51,7 @@ class ExcelLoader
 			}
 			
 			if (!$examinee->save()) {
-				
+				throw new Exception("Error Processing Request", 1);
 			}
 			$i++;
 		}
