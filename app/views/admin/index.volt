@@ -1,17 +1,18 @@
 
 <link rel="stylesheet" type="text/css" href="/css/css/Leo_projects_css.css" />
+<link rel="stylesheet" type="text/css" href="/pagecss/admin.min.css">
+<script type="text/javascript" src="/jqGrid/js/jquery.jqGrid.min.js"></script>
+<script type="text/javascript" src="/jqGrid/js/i18n/grid.locale-cn.js"></script>
 <div class="Leo_question">
     <div class="Leo_project_manage"><div style="height:5px;"></div>
     <input type="text" style="width:200px;height:25px;" />
     <input type="button" value="搜索" style="width:50px;height:25px;"/>
     <input type="button" class="Leo_project_addnew" onclick="window.location.href='/admin/addnew'" value="添加一个新项目" />
     </div>
-
-
-	<div style="width:100%;height:450px;overflow:hidden;">
-			<table id="grid-table"></table>
-			<div id="grid-pager"></div>
-	</div>
+<div style="width:100%;height:450px;overflow:hidden;">
+		<table id="grid-table"></table>
+		<div id="grid-pager"></div>
+</div>
 	
 
 <script type="text/javascript">
@@ -34,14 +35,14 @@
 		jQuery(grid_selector).jqGrid({
 			subGrid : false,
 
-			url: "/index/list",
+			url: "/admin/list",
 			datatype: "json",
-			height: '300px',
+			height: '450x',
 			shrinkToFit:false,
 			autowidth: true,
-			colNames:[' ', 'ID','用户名','密码', '昵称', 'Email'],
+			colNames:[' ', '项目编号','项目名称','项目经理', '经理账号', '开始时间','结束时间'],
 			colModel:[
-				{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
+				{name:'myac',index:'', width:60, fixed:true, sortable:false, resize:false,
 					formatter:'actions', 
 					formatoptions:{ 
 						keys:true,
@@ -49,11 +50,12 @@
 						delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
 					}
 				},
-				{name:'id',index:'id', width:160, sorttype:"int", editable: false},
-				{name:'username',index:'username',width:110, sortable:true, sorttype:"string", editable:true},
-				{name:'password',index:'password',width:70, sortable:false, sorttype:"string", editable:true},
-				{name:'name',index:'name', width:130, sortable:true, editable: true},
-				{name:'email',index:'email', width:180, sortable:true, editable: true}
+				{name:'id',index:'id', width:160, sorttype:"int", editable: false,align:'center'},
+				{name:'name',index:'name',width:110, sortable:true, sorttype:"string", editable:true},
+				{name:'manager',index:'',width:70, sortable:false, sorttype:"string", editable:true},
+				{name:'manager_id',index:'',width:70, sortable:false, sorttype:"string", editable:true},
+				{name:'begintime',index:'begintime', width:130, sortable:true, editable: true},
+				{name:'endtime',index:'endtime', width:180, sortable:true, editable: true}
 			], 
 	
 			viewrecords : true, 
@@ -76,9 +78,12 @@
 					updatePagerIcons(table);
 					enableTooltips(table);
 				}, 0);
+
+						
+
 			},
 	
-			editurl: "/index/update",//nothing is saved
+			editurl: "/admin/update",//nothing is saved
 			caption: "用户账户管理"
 	
 			,autowidth: true
