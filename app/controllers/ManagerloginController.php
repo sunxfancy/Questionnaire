@@ -19,11 +19,11 @@ class ManagerloginController extends Base
         $manager = Manager::checkLogin($username, $password);
 
         if ($manager === 0) {
-            dataReturn(array('error' => '密码不正确'));
+            $this->dataReturn(array('error' => '密码不正确'));
             return;
         }
         if ($manager === -1) {
-            dataReturn(array('error' => '用户不存在'));
+            $this->dataReturn(array('error' => '用户不存在'));
             return;
         }
         if ($manager != 0)
@@ -31,10 +31,10 @@ class ManagerloginController extends Base
             $this->session->set('Manager', $manager);
 	        switch ($manager->role) {
 	        	case 'M': // 管理员
-                    dataReturn(array('url' => 'admin/index'));
+                    $this->dataReturn(array('url' => '/admin/index'));
 	        		break;
 	        	case 'P': // 项目经理
-
+                    $this->dataReturn(array('url' => '/pm/index'));
 	        		break;
 	        	case 'L':  // 领导
 
@@ -44,7 +44,7 @@ class ManagerloginController extends Base
 	        		break;
 
 	        	default:
-	        		dataReturn(array('error' => '用户权限异常'));
+	        		$this->dataReturn(array('error' => '用户权限异常'));
 	        		break;
         	}
         }
@@ -57,6 +57,7 @@ class ManagerloginController extends Base
 
     public function dataReturn($ans)
     {
+        $this->response->setHeader("Content-Type", "text/json; charset=utf-8");
         echo json_encode($ans);
         $this->view->disable();
     }
