@@ -11,7 +11,7 @@
  <table>
      <tr style="height:100px;"><td style="width:500px;font-size:40px;color:purple;">欢 迎 登 录</td></tr>
        </table>
-            <form action="/managerlogin/login" id='myform' method="POST">
+            
             <table>
                 <tr>
                     <td style="width:100px; font-family:'Microsoft YaHei' ">帐号</td>
@@ -37,13 +37,41 @@
                      <div onclick="document.getElementById('myform').submit();" onmousedown="    this.style.backgroundColor = '#e56419'" onmouseup="this.style.backgroundColor = '#d49a3e'" onclick="document.getElementBuId('myform').submit();" style="width:100%;height:40px;background-color:#d49a3e;font-family:'Microsoft YaHei';font-size:21px;text-align:center;cursor:pointer;"  >
                          <table style="width:100%;height:100%" cellspacing="0">
                             <tr style="width:100%;height:100%;">
-                                  <td style="width:100%;height:100%;vertical-align:middle">登录</td>
+                                  <td style="width:100%;height:100%;vertical-align:middle" id='submit'>登录</td>
                              </tr>
                         </table>
                      </div>
                  </td>
             </tr>
             </table>
-            </form>
                 
 </div>
+
+
+<script type='text/javascript'>
+<!--
+$(document).ready(function() {
+
+    $("#submit").click(fuction(){
+            var login_info={
+                        "username":$("#uaername").value,
+                        "password" :$("#password").value
+                    }
+
+            $.post('/managerlogin/login', login_info, callbk);
+
+    })
+
+
+    function callbk(data){
+        if(data.url){
+            alert(data.error);
+        }else{
+            window.location.href(data.url);
+        }
+    }
+
+   
+}
+//-->
+</script>
