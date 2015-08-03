@@ -34,7 +34,7 @@
             <table style="width:90%;margin:0 auto;">
                  <tr>
                    <td style="width:100%;text-align:center;">
-                     <div onclick="document.getElementById('myform').submit();" onmousedown="    this.style.backgroundColor = '#e56419'" onmouseup="this.style.backgroundColor = '#d49a3e'" onclick="document.getElementBuId('myform').submit();" style="width:100%;height:40px;background-color:#d49a3e;font-family:'Microsoft YaHei';font-size:21px;text-align:center;cursor:pointer;"  >
+                     <div  onmousedown="    this.style.backgroundColor = '#e56419'" onmouseup="this.style.backgroundColor = '#d49a3e'" style="width:100%;height:40px;background-color:#d49a3e;font-family:'Microsoft YaHei';font-size:21px;text-align:center;cursor:pointer;"  >
                          <table style="width:100%;height:100%" cellspacing="0">
                             <tr style="width:100%;height:100%;">
                                   <td style="width:100%;height:100%;vertical-align:middle" id='submit'>登录</td>
@@ -49,22 +49,24 @@
 
 
 <script type='text/javascript'>
-<!--
+
+
 $(document).ready(function() {
 
     $("#submit").click(fuction(){
             var login_info={
-                        "username":$("#uaername").value,
+                        "username":$("#username").value,
                         "password" :$("#password").value
                     }
-
+                    
             $.post('/managerlogin/login', login_info, callbk);
 
     })
 
 
+
     function callbk(data){
-        if(data.url){
+        if(!data.url){
             alert(data.error);
         }else{
             window.location.href(data.url);
@@ -72,6 +74,6 @@ $(document).ready(function() {
     }
 
    
-}
-//-->
+});
+
 </script>
