@@ -62,7 +62,7 @@ class Examinee extends \Phalcon\Mvc\Model
      * @var string
      *
      */
-    public $ professional;
+    public $professional;
 
     /**
      * @var string

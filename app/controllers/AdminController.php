@@ -4,29 +4,32 @@ class AdminController extends Base
 {
     public function initialize()
     {
-          $this->view->setTemplateAfter('base2');
+        $this->view->setTemplateAfter('base2');
     }
 
     public function indexAction()
     {
-        /****************这一段可以抽象成一个通用的方法**********************/
-        $manager=$this->session->get('Manager');
-        $this->view->setVar('page_title','项 目 管 理');
-        $this->view->setVar('user_name',$manager->name);
-        $this->view->setVar('user_id',$manager->username);
-        $this->view->setVar('user_role',"管理员");
-        /*******************************************************************/
+        $this->leftRender();
     }
 
     public function addnewAction()
     {
-        
+        $this->leftRender();
     }
 
     public function listAction()
-	{
+    {
         $builder = $this->modelsManager->createBuilder()
-                                       ->from('Manager');
+                                       ->columns(array(
+                                        'Project.id as id', 'Project.begintime as begintime',
+                                        'Project.endtime as endtime', 'Project.description as description',
+                                        'Project.name as name', 'Manager.name as manager_name', 
+                                        'Manager.username as manager_username', 'COUNT(Examinee.id) as user_count' ))
+                                       ->from('Project')
+                                       ->join('Manager', 'Project.manager_id = Manager.id')
+                                       ->leftJoin('Examinee', 'Project.id = Examinee.project_id')
+                                       ->groupBy('Examinee.id')
+                                       ;
         $sidx = $this->request->getQuery('sidx','string');
         $sord = $this->request->getQuery('sord','string');
         if ($sidx != null)
@@ -37,21 +40,22 @@ class AdminController extends Base
             $sort = $sort.' '.$sord;
         $builder = $builder->orderBy($sort);
         $this->datareturn($builder);
-	}
+    }
 
-	public function updateAction()
-	{
-		$oper = $this->request->getPost('oper', 'string');
+
+    public function updateAction()
+    {
+        $oper = $this->request->getPost('oper', 'string');
         if ($oper == 'edit') {
             $id = $this->request->getPost('id', 'int');
-            $manager = Manager::findFirst($id);
-			$manager->username   = $this->request->getPost('username', 'string');
-			$manager->password   = $this->request->getPost('password', 'string');
-			$manager->role       = $this->request->getPost('role', 'string');
-			$manager->name       = $this->request->getPost('name', 'string');
-			$manager->project_id = $this->request->getPost('project_id', 'integer');
-            if (!$manager->save()) {
-                foreach ($manager->getMessages() as $message) {
+            $project = Project::findFirst($id);
+            $project->username   = $this->request->getPost('begintime', 'string');
+            $project->password   = $this->request->getPost('endtime', 'string');
+            $project->role       = $this->request->getPost('name', 'string');
+            $project->name       = $this->request->getPost('description', 'string');
+            $project->manager_id = $this->request->getPost('manager_id', 'integer');
+            if (!$project->save()) {
+                foreach ($project->getMessages() as $message) {
                     echo $message;
                 }
             }
@@ -65,7 +69,18 @@ class AdminController extends Base
                 }
             }
         }
-	}
+    }
+
+    function leftRender()
+    {
+        /****************这一段可以抽象成一个通用的方法**********************/
+        $manager = $this->session->get('Manager');
+        $this->view->setVar('page_title','项 目 管 理');
+        $this->view->setVar('user_name',$manager->name);
+        $this->view->setVar('user_id',  $manager->username);
+        $this->view->setVar('user_role',"管理员");
+        /*******************************************************************/
+    }
 
 	public function datareturn($builder)
     {
