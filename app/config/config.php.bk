@@ -20,7 +20,7 @@ return new \Phalcon\Config(array(
 		'baseUri' => '/'
 	),
 	'cache' => array(
-		'voltCacheDir' => __DIR__ . '../cache/volt/'
+		'voltCacheDir' => __DIR__ . '/../../cache/volt/'
 	),
 	'security' => array(
 		'protectBackend' => 0,
