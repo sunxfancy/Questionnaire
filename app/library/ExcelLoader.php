@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-02 15:33:40
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-02 16:21:46
+ * @Last Modified time: 2015-08-03 10:04:19
  */
 
 /**
@@ -14,152 +14,58 @@ class ExcelLoader
 	public function LoadExaminee ($filename, $db)
     {
         PHPExcel_Settings::setCacheStorageMethod(PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip);
-        $files = scandir("./upload");
-        array_shift($files);
-        array_shift($files);
-        $errors = array();
-        $factors = array();
-        $j = 0;
-        $db->begin();
-        foreach ($files as $file)
+        $db->begin(); 
+        if (is_readable($filename))
         {
-            if (strstr($file, $filename))
-            {
-                $objexcel = PHPExcel_IOFactory::load("./upload/".$file);
-                $personsheet = $objexcel->getSheet(0);
-                $part->name = (string)$factorsheet->getCell("B2")
-                                                  ->getValue();
-                $part->description = (string)$factorsheet->getCell("B3")
-                                                         ->getValue();
-                try
-                {
-                    if (!$part->save())
-                    {
-                        $errors[$j]['error'] = "part";
-                        foreach ($part->getMessages() as $key => $message)
-                        {
-                            $errors[$j][$key] = $message;
-                        }
-                        $j++;
-                        $this->db->rollback();
-                        $objexcel->disconnectWorksheets();
-                        unlink("./upload/".$file);
+            $objexcel = PHPExcel_IOFactory::load("./upload/".$filename);
+            $personsheet = $objexcel->getSheet(0);
 
-                        return $errors;
-                    }
-                    else
-                    {
-                        $higestrow = $factorsheet->getHighestRow();
-                        $i = 5;
-                        while ($i <= $higestrow)
-                        {
-                            $factor = new Factor();
-                            $factor->ratio = $factorsheet->getCell("B".$i)
-                                                         ->getValue();
-                            $k = $factorsheet->getCell("A".$i)
-                                             ->getValue();
-                            if (is_null($k) || $k == "") break;
-                            if ($factor->save())
-                            {
-                                $factors["$k"] = $factor->f_id;
-                                $fprel = new Fprel();
-                                $fprel->factor_id = $factor->f_id;
-                                $fprel->part_id = $part->p_id;
-                                if (!$fprel->save())
-                                {
-                                    $errors[$j]['error'] = "fprel";
-                                    foreach ($fprel->getMessages() as $key => $message)
-                                    {
-                                        $errors[$j][$key] = $message;
-                                    }
-                                    $j++;
-                                    $this->db->rollback();
-                                    $objexcel->disconnectWorksheets();
-                                    unlink("./upload/".$file);
 
-                                    return $errors;
-                                }
-                            }
-                            else
-                            {
-                                $errors[$j]['error'] = "factor";
-                                foreach ($factor->getMessages() as $key => $message)
-                                {
-                                    $errors[$j][$key] = $message;
-                                }
-                                $j++;
-                                $this->db->rollback();
-                                $objexcel->disconnectWorksheets();
-                                unlink("./upload/".$file);
-
-                                return $errors;
-                            }
-                            $i++;
-                        }
-                        $higestrow = $questionsheet->getHighestRow(); //不可靠
-                        $i = 3;
-                        while ($i <= $higestrow)
-                        {
-                            $question = new Question();
-                            $topic = (string)$questionsheet->getCell("A".$i)
-                                                           ->getValue();
-                            if (is_null($topic) || $topic == "") break;
-                            $question->topic = $topic;
-                            $question->factor_id = $factors[$questionsheet->getCell("C".$i)
-                                                                          ->getValue()];
-                            $question->options = "";
-                            $question->grade = "";
-                            $col = "D";
-                            $colnum = $questionsheet->getCell("B".$i)
-                                                    ->getValue();
-                            for ($k = 1; $k <= $colnum; $k++, $col++)
-                            {
-                                $str = $questionsheet->getCell($col.$i)
-                                                     ->getValue();
-                                $mem = explode("|", $str);
-                                $question->options .= "|".$mem[0];
-                                $question->grade .= "|".$mem[1];
-                            }
-                            $question->options = substr($question->options, 1);
-                            $question->grade = substr($question->grade, 1);
-                            if (!$question->save())
-                            {
-                                $errors[$j]['error'] = "question";
-                                $errors[$j]['maxrow'] = $higestrow;
-                                foreach ($question->getMessages() as $key => $message)
-                                {
-                                    $errors[$j][$key] = $message;
-                                }
-                                $j++;
-                                $db->rollback();
-                                $objexcel->disconnectWorksheets();
-                                unlink("./upload/".$file);
-
-                                return $errors;
-                            }
-                            $i++;
-                        }
-                    }
-                }
-                catch (PDOException $ex)
-                {
-                    foreach ($ex->getMessages() as $key => $message)
-                    {
-                        $errors[$j][$key] = $message;
-                    }
-                    $j++;
-                    $db->rollback();
-                    $objexcel->disconnectWorksheets();
-                    unlink("./upload/".$file);
-                    throw $ex;
-                    //return $errors;
-                }
-                $objexcel->disconnectWorksheets();
-                unlink("./upload/".$file);
-            }
         }
-        $db->commit();
-
-        return $errors;
     }
+
+    $excel_col = array( 'C' => 'name',     'D' => 'sex' ,     'E' => 'native' ,'F' => 'education'
+    					'G' => 'birthday', 'H' => 'politics', 'I' => 'professional', 
+    					'J' => 'employer', 'K' => 'unit',     'L' => 'duty')
+
+    public function readline_examinee($db)
+    {
+    	try {
+			$higestrow = $sheet->getHighestRow();
+			$i = 3;
+			while ($i <= $higestrow) {
+				$k = $sheet->getCell("C".$i)->getValue();
+				if (is_null($k) || $k == "") break;
+				
+				$name = (string)$sheet->getCell($this->excel_col[0].$i)->getValue();
+				$password = (string)$sheet->getCell($this->excel_col[1].$i)->getValue();
+				$district = (string)$sheet->getCell($this->excel_col[2].$i)->getValue();
+				$schoolname = (string)$sheet->getCell($this->excel_col[3].$i)->getValue();
+				$realname = (string)$sheet->getCell($this->excel_col[4].$i)->getValue();
+				$phone = (string)$sheet->getCell($this->excel_col[5].$i)->getValue();
+				$email = (string)$sheet->getCell($this->excel_col[6].$i)->getValue();
+				$ID_number = (string)$sheet->getCell($this->excel_col[7].$i)->getValue();
+
+				$manager = new Manager();
+				if ($manager->signup($username, $password, $phone, $email, $realname, $ID_number))
+				{
+					$this->newschool($schoolname,$district,$manager);
+				} else {
+					throw new PDOException();
+				}
+
+				$i++;
+			}
+		}
+		catch (PDOException $ex)
+		{
+			$errors['PDOException'] = $ex->getMessage();
+			$this->db->rollback();
+			$objexcel->disconnectWorksheets();
+			unlink("./upload/".$file);
+			// throw $ex;
+			return $errors;
+		}    
+	}
+           
 }

@@ -18,6 +18,11 @@ class AdminController extends Base
         /*******************************************************************/
     }
 
+    public function addnewAction()
+    {
+        
+    }
+
     public function listAction()
 	{
         $builder = $this->modelsManager->createBuilder()
