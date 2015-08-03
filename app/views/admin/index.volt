@@ -1,10 +1,11 @@
 
 <link rel="stylesheet" type="text/css" href="/css/css/Leo_projects_css.css" />
 <link rel="stylesheet" type="text/css" href="/pagecss/admin.min.css">
-<link rel="stylesheet" type="text/css" href="/css/datepicker.css" />
+<link rel="stylesheet" type="text/css" href="/css/bootstrap-datetimepicker.css" />
+<link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
 
 <script type="text/javascript" src="/jqGrid/js/jquery.jqGrid.min.js"></script>
-<script type="text/javascript" src="/lib/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="/lib/bootstrap-datetimepicker.js"></script>
 <script type="text/javascript" src="/jqGrid/js/i18n/grid.locale-cn.js"></script>
 
 
@@ -46,9 +47,9 @@
 			shrinkToFit:true,
 			forceFit:true,
 			autowidth: true,
-			colNames:[' ', '项目编号','项目名称','项目经理', '经理账号', '开始时间','结束时间'],
+			colNames:[' ', '项目编号','项目名称','项目经理', '经理账号', '开始时间','结束时间','参与人数'],
 			colModel:[
-				{name:'myac',index:'', width:60, fixed:true, sortable:false, resize:false,
+				{name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
 					formatter:'actions', 
 					formatoptions:{ 
 						keys:true,
@@ -56,12 +57,13 @@
 						delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
 					}
 				},
-				{name:'id',index:'id', sorttype:"int", editable: false,align:'center'},
-				{name:'name',index:'name', sortable:true, sorttype:"string", editable:true},
-				{name:'manager_name',index:'manager_name', sortable:false, sorttype:"string", editable:true},
-				{name:'manager_username',index:'manager_username', sortable:false, sorttype:"string", editable:true},
-				{name:'begintime',index:'begintime', sortable:true, editable: true,formatter:'date',edittype:'text',unformat:pickDate},
-				{name:'endtime',index:'endtime', sortable:true, editable: true,formatter:'date',unformat:pickDate}
+				{name:'id',index:'id', sorttype:"int",width:70, editable: false,align:'center'},
+				{name:'name',index:'name', sortable:true, width:230,sorttype:"string", editable:true,align:'center'},
+				{name:'manager_name',index:'manager_name',width:80, sortable:false, sorttype:"string", editable:true,align:'center'},
+				{name:'manager_username',index:'manager_username',width:80, sortable:false, sorttype:"string", editable:true,align:'center'},
+				{name:'begintime',index:'begintime', sortable:true,width:160, editable: true,edittype:'text',unformat:pickDate,align:'center'},
+				{name:'endtime',index:'endtime', sortable:true,width:160, editable: true,unformat:pickDate,align:'center'},
+				{name:'user_count',index:'user_count', sortable:true,width:70, editable: false,align:'center'}
 			], 
 	
 			viewrecords : true, 
@@ -250,7 +252,12 @@
 		function updateActionIcons(table) {
 
 		}
-		
+		function pickDate( cellvalue, options, cell ) {
+			setTimeout(function(){
+				$(cell) .find('input[type=text]')
+						.datetimepicker({format:'yyyy-mm-dd hh:ii' , autoclose:true}); 
+			}, 0);
+		}
 		//replace icons with FontAwesome icons like above
 		function updatePagerIcons(table) {
 			var replacement = 
