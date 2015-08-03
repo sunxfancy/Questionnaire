@@ -1,8 +1,13 @@
 
 <link rel="stylesheet" type="text/css" href="/css/css/Leo_projects_css.css" />
 <link rel="stylesheet" type="text/css" href="/pagecss/admin.min.css">
+<link rel="stylesheet" type="text/css" href="/css/datepicker.css" />
+
 <script type="text/javascript" src="/jqGrid/js/jquery.jqGrid.min.js"></script>
+<script type="text/javascript" src="/lib/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="/jqGrid/js/i18n/grid.locale-cn.js"></script>
+
+
 <div class="Leo_question">
     <div class="Leo_project_manage"><div style="height:5px;"></div>
     <input type="text" style="width:200px;height:25px;" />
@@ -55,8 +60,8 @@
 				{name:'name',index:'name', sortable:true, sorttype:"string", editable:true},
 				{name:'manager_name',index:'manager_name', sortable:false, sorttype:"string", editable:true},
 				{name:'manager_username',index:'manager_username', sortable:false, sorttype:"string", editable:true},
-				{name:'begintime',index:'begintime', sortable:true, editable: true,formatter:'date',edittype:'text'},
-				{name:'endtime',index:'endtime', sortable:true, editable: true,formatter:'date'}
+				{name:'begintime',index:'begintime', sortable:true, editable: true,formatter:'date',edittype:'text',unformat:pickDate},
+				{name:'endtime',index:'endtime', sortable:true, editable: true,formatter:'date',unformat:pickDate}
 			], 
 	
 			viewrecords : true, 
