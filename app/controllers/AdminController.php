@@ -20,7 +20,14 @@ class AdminController extends Base
     public function listAction()
     {
         $builder = $this->modelsManager->createBuilder()
-                                       ->from('Project');
+                                       ->columns(array(
+                                        'Project.id as id', 'Project.begintime as begintime',
+                                        'Project.endtime as endtime', 'Project.description as description',
+                                        'Project.name as name', 'Manager.name as manager_name', 
+                                        'Manager.username as manager_username'))
+                                       ->from('Project')
+                                       ->join('Manager', 'Project.manager_id = Manager.id');
+                                       ;
         $sidx = $this->request->getQuery('sidx','string');
         $sord = $this->request->getQuery('sord','string');
         if ($sidx != null)
