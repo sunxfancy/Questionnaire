@@ -70,6 +70,8 @@ $(document).ready(function() {
             window.location.href(data.url);
         }
     }
+
+   
 }
 //-->
 </script>
