@@ -37,8 +37,9 @@
 
 			url: "/admin/list",
 			datatype: "json",
-			height: '450x',
-			shrinkToFit:false,
+			height: '300px',
+			shrinkToFit:true,
+			forceFit:true,
 			autowidth: true,
 			colNames:[' ', '项目编号','项目名称','项目经理', '经理账号', '开始时间','结束时间'],
 			colModel:[
@@ -50,12 +51,12 @@
 						delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
 					}
 				},
-				{name:'id',index:'id', width:160, sorttype:"int", editable: false,align:'center'},
-				{name:'name',index:'name',width:110, sortable:true, sorttype:"string", editable:true},
-				{name:'manager',index:'',width:70, sortable:false, sorttype:"string", editable:true},
-				{name:'manager_id',index:'',width:70, sortable:false, sorttype:"string", editable:true},
-				{name:'begintime',index:'begintime', width:130, sortable:true, editable: true},
-				{name:'endtime',index:'endtime', width:180, sortable:true, editable: true}
+				{name:'id',index:'id', sorttype:"int", editable: false,align:'center'},
+				{name:'name',index:'name', sortable:true, sorttype:"string", editable:true},
+				{name:'manager_name',index:'manager_name', sortable:false, sorttype:"string", editable:true},
+				{name:'manager_username',index:'manager_username', sortable:false, sorttype:"string", editable:true},
+				{name:'begintime',index:'begintime', sortable:true, editable: true,formatter:'date',edittype:'text'},
+				{name:'endtime',index:'endtime', sortable:true, editable: true,formatter:'date'}
 			], 
 	
 			viewrecords : true, 
