@@ -6,12 +6,10 @@
     <input type="button" value="搜索" style="width:50px;height:25px;"/>
     <input type="button" class="Leo_project_addnew" onclick="window.location.href='/admin/addnew'" value="添加一个新项目" />
     </div>
-
-
-	<div style="width:100%;height:450px;overflow:hidden;">
-			<table id="grid-table"></table>
-			<div id="grid-pager"></div>
-	</div>
+<div style="width:100%;height:450px;overflow:hidden;">
+		<table id="grid-table"></table>
+		<div id="grid-pager"></div>
+</div>
 	
 
 <script type="text/javascript">
@@ -34,12 +32,12 @@
 		jQuery(grid_selector).jqGrid({
 			subGrid : false,
 
-			url: "/index/list",
+			url: "/admin/list",
 			datatype: "json",
-			height: '300px',
+			height: '450x',
 			shrinkToFit:false,
 			autowidth: true,
-			colNames:[' ', 'ID','用户名','密码', '昵称', 'Email'],
+			colNames:[' ', '项目编号','项目名称','项目经理', '经理账号', '起止时间'],
 			colModel:[
 				{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
 					formatter:'actions', 
@@ -78,7 +76,7 @@
 				}, 0);
 			},
 	
-			editurl: "/index/update",//nothing is saved
+			editurl: "/admin/update",//nothing is saved
 			caption: "用户账户管理"
 	
 			,autowidth: true
