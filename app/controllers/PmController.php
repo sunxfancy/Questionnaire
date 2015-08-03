@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-01 16:18:46
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-03 14:44:04
+ * @Last Modified time: 2015-08-03 16:43:01
  */
 
 /**
@@ -11,6 +11,11 @@
 */
 class PmController extends Base
 {
+    public function initialize()
+    {
+        $this->view->setTemplateAfter('base2');
+    }
+
 	public function indexAction()
     {
 
