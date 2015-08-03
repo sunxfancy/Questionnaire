@@ -31,7 +31,7 @@ class ManagerloginController extends Base
             $this->session->set('Manager', $manager);
 	        switch ($manager->role) {
 	        	case 'M': // 管理员
-                    dataReturn(array('url' => 'admin/index'));
+                    dataReturn(array('url' => '/admin/index'));
 	        		break;
 	        	case 'P': // 项目经理
 
@@ -41,7 +41,7 @@ class ManagerloginController extends Base
 	        		break;
 
 	        	case 'I': // 面询专家
-	        		break;
+	        		break; error
 
 	        	default:
 	        		dataReturn(array('error' => '用户权限异常'));
