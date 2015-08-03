@@ -57,6 +57,7 @@ class ManagerloginController extends Base
 
     public function dataReturn($ans)
     {
+        $this->response->setHeader("Content-Type", "text/json; charset=utf-8");
         echo json_encode($ans);
         $this->view->disable();
     }
