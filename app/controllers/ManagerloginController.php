@@ -4,7 +4,7 @@ class ManagerloginController extends Base
 {
     public function initialize()
     {
-          $this->view->setTemplateAfter('base1');
+        $this->view->setTemplateAfter('base1');
     }
 
     public function indexAction()
@@ -26,7 +26,7 @@ class ManagerloginController extends Base
             $this->dataReturn(array('error' => '用户不存在'));
             return;
         }
-        if ($manager != 0)
+        if ($manager)
         {
             $this->session->set('Manager', $manager);
 	        switch ($manager->role) {
