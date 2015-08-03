@@ -7,7 +7,7 @@
     <title>政府评测系统</title>
     <link rel="stylesheet" type="text/css" href="/css/css/Leo_global_css.css" />
     <link rel="stylesheet" type="text/css" href="/css/css/Leo_normal_css.css" />
-    
+    <script type='text/javascript' src='/js/jquery.js'></script>
 </head>
 
 <body style="background-image:url(/image/fcbg_blur.png);">
@@ -21,12 +21,21 @@
     <div class="Leo_info_user">
         <img src="/image/user2.png" />
     </div>
+
     <div class="Leo_info_l">
+
+        <div style='width:190px;text-align:center;margin:0 auto;'>
+            <span style='font-size:20px;'>{{user_name}}</span><br/>
+            <span>{{user_id}}</span><br/>
+            <span>{{user_role}}</span><br/>
+
+        </div>
+        <!--
         <table cellspacing="0">
-            <tr><td>姓名</td><td style="text-align:left;">{{ user_name }}</td></tr>
+            <tr><td></td><td style="text-align:left;"></td></tr>
             <tr><td>编号</td><td style="text-align:left;">{{ user_id }}</td></tr>
             <tr><td>角色</td><td style="text-align:left;">{{ user_role }}</td></tr>
-        </table>
+        </table>-->
     </div>
     <div class="Leo_info_l_logout" onclick="window.location.href='/managerlogin/logout'"><table><tr><td>退出</td></tr></table></div>
 </div>
