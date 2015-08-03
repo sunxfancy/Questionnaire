@@ -37,7 +37,7 @@
 
 			url: "/admin/list",
 			datatype: "json",
-			height: '450x',
+			height: '450px',
 			shrinkToFit:false,
 			autowidth: true,
 			colNames:[' ', '项目编号','项目名称','项目经理', '经理账号', '开始时间','结束时间'],
