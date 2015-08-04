@@ -5,26 +5,26 @@
     <table cellspacing="10">
         <tr>
             <td style=" width:160px;font-size:16px;line-height:28px; text-align:right;">项目名称：</td>
-            <td style="width:530px;"colspan="3"><input id="name" type="text" style="height: 26px;width: 530px;"></td>
+            <td style="width:530px;"colspan="3"><input id="project_name" type="text" style="height: 26px;width: 530px;"></td>
         </tr>
         <tr>
             <td style=" width:160px;font-size:16px;line-height:28px; text-align:right;">项目开始时间：</td>
             <td style="width:200px;"><input id="begintime" name="txtDate_3" type="date" class="inputtxt" style="height: 26px;width: 150px;"></td>
             <td style=" width:160px;font-size:16px;line-height:28px; text-align:right;">项目经理姓名：</td>
-            <td style="width:200px;"><input id="manager_name" type="text" style="height: 26px;width: 150px;"></td>
+            <td style="width:200px;"><input id="pm_name" type="text" style="height: 26px;width: 150px;"></td>
             
         </tr>
         <tr>
             <td style=" width:160px;font-size:16px;line-height:28px; text-align:right;">项目结束时间：</td>
             <td style="width:200px;"><input id="endtime" name="txtDate_3" type="date" class="inputtxt" style="height: 26px;width: 150px;"></td>
             <td style=" width:160px;font-size:16px;line-height:28px; text-align:right;">项目经理账号：</td>
-            <td style="width:200px;"><input id="manager_username" type="text" id="magname" style="height: 26px;width: 150px;"></td>
+            <td style="width:200px;"><input id="pm_username" type="text" id="magname" style="height: 26px;width: 150px;"></td>
         </tr>
         <tr>
             <td style=" width:160px;font-size:16px;line-height:28px; text-align:right;">项目经理密码：</td>
-            <td style="width:200px;"><input id="manager_password" type="password" style="height:26px;width:150px;"></td>
+            <td style="width:200px;"><input id="pm_password" type="password" style="height:26px;width:150px;"></td>
             <td style=" width:160px;font-size:16px;line-height:28px; text-align:right;">确认项目经理密码：</td>
-            <td style="width:200px;"><input id="re_manager_password" type="password" style="height: 26px;width: 150px;" onblur="check()"></td>
+            <td style="width:200px;"><input id="re_pm_password" type="password" style="height: 26px;width: 150px;" onblur="check()"></td>
         </tr>
     </table>
     <div style=" width:150px;font-size:16px; float:left; line-height:28px; text-align:right;">备注：</div>
@@ -39,15 +39,15 @@ $(document).ready(function() {
 
     $("#submit").click(function(){
             var project_info ={
-                "name" :$("#name").val(),
+                "project_name" :$("#project_name").val(),
                 "begintime" :$("#begintime").val(),
                 "endtime" :$("#endtime").val(),
-                "manager_name" :$("#manager_name").val(),
-                "manager_username" :$("#manager_username").val(),
-                "manager_password" :$("#manager_password").val()
+                "pm_name" :$("#pm_name").val(),
+                "pm_username" :$("#pm_username").val(),
+                "pm_password" :$("#pm_password").val()
             }
 
-            $.post('/admin/addnew', project_info);
+            $.post('/admin/newproject', project_info);
 
     }); 
 
@@ -57,11 +57,11 @@ $(document).ready(function() {
 function check()
 { 
     with(document.all){
-    if(manager_password.value!=re_manager_password.value)
+    if(pm_password.value!=re_pm_password.value)
         {
             alert("两次密码输入不一致！请重新输入...")
-            manager_password.value = "";
-            re_manager_password.value = "";
+            pm_password.value = "";
+            re_pm_password.value = "";
         }
     }
 }
