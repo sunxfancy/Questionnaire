@@ -25,16 +25,16 @@
     <div class="Leo_info_l">
 
         <div style='width:190px;text-align:center;margin:0 auto;'>
-            <span style='font-size:20px;'>{{user_name}}</span><br/>
-            <span>{{user_id}}</span><br/>
-            <span>{{user_role}}</span><br/>
+            <span style="font-size:20px;font-family:'Times New Roman'">{{user_name}}</span><br/>
+            <span style="font-size:20px;font-family:'Times New Roman'">{{user_id}}</span><br/>
+            <span style="font-size:20px;font-family:'宋体';">{{user_role}}</span><br/>
 
         </div>
         <!--
         <table cellspacing="0">
             <tr><td></td><td style="text-align:left;"></td></tr>
             <tr><td>编号</td><td style="text-align:left;">{{ user_id }}</td></tr>
-            <tr><td>角色</td><td style="text-align:left;">{{ user_role }}</td></tr>
+            <tr><td>角色</td><td style="text-align:left;">{{ user_role }}</td></tr>dsfaffafadjjjjhdjfdfslfsdf
         </table>-->
     </div>
     <div class="Leo_info_l_logout" onclick="window.location.href='/managerlogin/logout'"><table><tr><td>退出</td></tr></table></div>
