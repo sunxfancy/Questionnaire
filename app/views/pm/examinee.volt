@@ -1,11 +1,18 @@
 <script type="text/javascript" src="/jqGrid/js/jquery.jqGrid.min.js"></script>
-<script type="text/javascript" src="/lib/bootstrap-datetimepicker.js"></script>
 <script type="text/javascript" src="/jqGrid/js/i18n/grid.locale-cn.js"></script>
-
-<div class="Leo_userlist">
-        <div style="width:100%;height:470px;overflow:hidden;">
+<script type="text/javascript" src="/js/bootstrap.js"></script>
+<script type="text/javascript" src="/lib/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="/lib/bootstrap-datetimepicker.js"></script>
+<div>
+       
+        <div style="width:100%;height:460px;overflow:hidden;">
             <table id="grid-table"></table>
         <div id="grid-pager"></div>   
+        
+        <div style="width:100%;height:40px;background-color:silver;text-align:center;">
+            <button>导入</button>
+            <button>导出</button>
+        </div>
 
 </div>
 
@@ -32,7 +39,7 @@
 
             url: "/admin/list",
             datatype: "json",
-            height: '310px',
+            height: '285px',
             shrinkToFit:true,
             forceFit:true,
             autowidth: true,
@@ -47,14 +54,14 @@
                     }
                 },
                 {name:'id',index:'id', sorttype:"int",width:70, editable: false,align:'center'},
-                {name:'name',index:'name', sortable:true, width:230,sorttype:"string", editable:true,align:'center'},
+                {name:'name',index:'name', sortable:true, width:220,sorttype:"string", editable:true,align:'center'},
                 {name:'manager_name',index:'manager_name',width:80, sortable:false, sorttype:"string", editable:true,align:'center'},
                 {name:'manager_username',index:'manager_username',width:80, sortable:false, sorttype:"string", editable:true,align:'center'},
                 {name:'begintime',index:'begintime', sortable:true,width:160, editable: true,edittype:'text',unformat:pickDate,align:'center'},
                 {name:'endtime',index:'endtime', sortable:true,width:160, editable: true,unformat:pickDate,align:'center'},
-                {name:'user_count',index:'user_count', sortable:true,width:70, editable: false,align:'center'}
+                {name:'user_count',index:'user_count', sortable:true,width:80, editable: false,align:'center'}
             ], 
-    
+            
             viewrecords : true, 
             rowNum:10,
             rowList:[10,20,30],
