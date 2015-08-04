@@ -9,13 +9,40 @@ class AdminController extends Base
 
     public function indexAction()
     {
-        $this->leftRender();
+        $this->leftRender('项 目 管 理');
     }
 
     public function addnewAction()
     {
-        $this->leftRender();
+        $this->leftRender('新 建 项 目');
     }
+
+    public function newprojectAction()
+    {
+        $project_name = $this->request->getPost('project_name', 'string');
+        $description  = $this->request->getPost('description', 'string');
+        $begintime    = $this->request->getPost('begintime', 'string');
+        $endtime      = $this->request->getPost('endtime', 'string');
+        $pm_name      = $this->request->getPost('pm_name', 'string');
+        $pm_username  = $this->request->getPost('pm_username', 'string');
+        $pm_password  = $this->request->getPost('pm_password', 'string');
+
+        $manager = new Manager();
+        $this->getData($manager, array(
+            'name' => 'pm_name',
+            'username' => 'pm_username',
+            'password' => 'pm_password'));
+
+        $project = new Project();
+        $this->getData($project, array(
+            'name' => 'project_name', 
+            'description' => 'description',
+            'begintime' => 'begintime',
+            'endtime' => 'endtime'));
+
+    }
+
+
 
     public function listAction()
     {
@@ -30,6 +57,7 @@ class AdminController extends Base
                                        ->leftJoin('Examinee', 'Project.id = Examinee.project_id')
                                        ->groupBy('Examinee.id')
                                        ;
+
         $sidx = $this->request->getQuery('sidx','string');
         $sord = $this->request->getQuery('sord','string');
         if ($sidx != null)
@@ -71,16 +99,7 @@ class AdminController extends Base
         }
     }
 
-    function leftRender()
-    {
-        /****************这一段可以抽象成一个通用的方法**********************/
-        $manager = $this->session->get('Manager');
-        $this->view->setVar('page_title','项 目 管 理');
-        $this->view->setVar('user_name',$manager->name);
-        $this->view->setVar('user_id',  $manager->username);
-        $this->view->setVar('user_role',"管理员");
-        /*******************************************************************/
-    }
+
 
 	public function datareturn($builder)
     {
