@@ -8,7 +8,7 @@
         <div style="width:100%;height:460px;overflow:hidden;">
             <table id="grid-table"></table>
         <div id="grid-pager"></div>   
-        
+
         <div style="width:100%;height:40px;background-color:silver;text-align:center;">
             <button>导入</button>
             <button>导出</button>
@@ -37,7 +37,7 @@
         jQuery(grid_selector).jqGrid({
             subGrid : false,
 
-            url: "/admin/list",
+            url: "/pm/list",
             datatype: "json",
             height: '285px',
             shrinkToFit:true,
@@ -87,7 +87,7 @@
 
             },
     
-            editurl: "/admin/update",//nothing is saved
+            editurl: "/pm/update",//nothing is saved
             caption: "用户账户管理"
     
             ,autowidth: true
