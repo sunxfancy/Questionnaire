@@ -1,4 +1,4 @@
-<div style="margin:0 auto;width:100%;height:45px;text-align:center;"><span style="font-size:30px;font-family:'Microsoft YaHei UI'">{{proj_name}}项目详情</span></div>
+<div style="margin:0 auto;width:100%;height:45px;text-align:center;"><span style="font-size:30px;font-family:'Microsoft YaHei UI'">项目详情</span></div>
 <table style="width:100%;height:220px;margin:0 auto;text-align:center;"><tr style="width:100%;margin:0 auto;"><td style="width:50%;">
 <div id="project-completeness" style="height:200px;"></div>
 </td><td>
