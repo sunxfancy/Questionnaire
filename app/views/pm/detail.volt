@@ -1,8 +1,8 @@
 <div style="margin:0 auto;width:100%;height:45px;text-align:center;"><span style="font-size:30px;font-family:'Microsoft YaHei UI'">{{proj_name}}项目详情</span></div>
 <table style="width:100%;height:220px;margin:0 auto;text-align:center;"><tr style="width:100%;margin:0 auto;"><td style="width:50%;">
-<div id="project-completeness"></div>
+<div id="project-completeness" style="height:200px;"></div>
 </td><td>
-<img style="height:220px;" src="../images/ZhangXiaoyu/zhuanjia.png" />
+<div id="interviewer-completeness" style="height:200px;"></div>
 </td></tr></table>
 <div style="width:100%;height:100px;">
    <span style="margin-left:40px;font-size:26px;color:red;"> 项目时间计划</span><br />
@@ -27,12 +27,12 @@
 <script type="text/javascript" src="/lib/flotr2.min.js"></script>
 
 <script type="text/javascript">
-(function basic_pie(container) {
+(function project_pie(container) {
     var graph = Flotr.draw(container, [{
-        data: 15,
+        data: [[0,15]],
         label: '已完成'
     }, {
-        data: 45,
+        data: [[0,45]],
         label: '未完成'
     }], {
         HtmlText: false,
@@ -59,4 +59,37 @@
         } 
     });
 })(document.getElementById("project-completeness"));
+
+(function interviewer_pie(container) {
+    var graph = Flotr.draw(container, [{
+        data: [[0, 0]],
+        label: '已完成'
+    }, {
+        data: [[0,100]],
+        label: '未完成'
+    }], {
+        HtmlText: false,
+        grid: {
+            verticalLines: false,
+            horizontalLines: false
+        },
+        xaxis: {
+            showLabels: false
+        },
+        yaxis: {
+            showLabels: false
+        },
+        pie: {
+            show: true,
+            explode: 6
+        },
+        mouse: {
+            track: true
+        },
+        legend: {
+            position: 'se',
+            backgroundColor: '#D2E8FF'
+        }
+    });
+})(document.getElementById("interviewer-completeness"));
 </script>
