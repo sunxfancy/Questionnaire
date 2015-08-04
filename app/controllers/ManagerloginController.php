@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * 后台登录页面
+ */
 class ManagerloginController extends Base
 {
     public function initialize()
