@@ -2,10 +2,8 @@
 <script type="text/javascript" src="/lib/bootstrap-datetimepicker.js"></script>
 <script type="text/javascript" src="/jqGrid/js/i18n/grid.locale-cn.js"></script>
 
-123
-<!--
 <div class="Leo_userlist">
-        <div style="width:100%;height:450px;overflow:hidden;">
+        <div style="width:100%;height:470px;overflow:hidden;">
             <table id="grid-table"></table>
         <div id="grid-pager"></div>   
 
@@ -34,7 +32,7 @@
 
             url: "/admin/list",
             datatype: "json",
-            height: '300px',
+            height: '310px',
             shrinkToFit:true,
             forceFit:true,
             autowidth: true,
@@ -273,5 +271,3 @@
 
     });
 </script>
-
--->
