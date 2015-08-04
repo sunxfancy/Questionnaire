@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-01 16:18:46
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-03 16:43:01
+ * @Last Modified time: 2015-08-04 14:19:26
  */
 
 /**
@@ -13,11 +13,12 @@ class PmController extends Base
 {
     public function initialize()
     {
-        $this->view->setTemplateAfter('base2');
+        parent::initialize();
     }
 
-	public function indexAction()
+    public function indexAction()
     {
+        $this->view->setTemplateAfter('base2');
         $this->leftRender();
     }
 
@@ -68,11 +69,8 @@ class PmController extends Base
         if ($oper == 'edit') {
             $id = $this->request->getPost('id', 'int');
             $manager = Manager::findFirst($id);
-            $manager->username   = $this->request->getPost('username', 'string');
-            $manager->password   = $this->request->getPost('password', 'string');
-            $manager->role       = $this->request->getPost('role', 'string');
-            $manager->name       = $this->request->getPost('name', 'string');
-            $manager->project_id = $this->request->getPost('project_id', 'integer');
+            $this->getData($manager, array('username', 'password', 'role', 'name'));
+            $manager->project_id = $this->request->getPost('project_id', 'int');
             if (!$manager->save()) {
                 foreach ($manager->getMessages() as $message) {
                     echo $message;
