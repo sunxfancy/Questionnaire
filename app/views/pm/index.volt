@@ -62,7 +62,7 @@
                                         break;
                   case "label_leaders": sw(3); 
 
-                                        $.get('pm/leader', function(data) {
+                                        $.get('/pm/leader', function(data) {
                                         /*optional stuff to do after success */
 
                                         $("#Leo_manager_home").html(data);
