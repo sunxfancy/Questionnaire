@@ -25,7 +25,7 @@ class Base extends \Phalcon\Mvc\Controller
         );
     }
 
-    public function getData($model, $names, $method)
+    public function getData($model, $names, $method = 'POST')
     {
         $b = false;
         if (strtoupper($method) == 'POST') $b = true;
@@ -34,9 +34,9 @@ class Base extends \Phalcon\Mvc\Controller
             if (is_numeric($key)) $item = $value; 
             else $item = $key;
             if ($b)  
-                $model[$item] = $this->request->getPost($value, 'string');
+                $model->$item = $this->request->getPost($value, 'string');
             else 
-                $model[$item] = $this->request->getQuery($value, 'string');
+                $model->$item = $this->request->getQuery($value, 'string');
         }
     }
 

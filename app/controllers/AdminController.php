@@ -31,16 +31,23 @@ class AdminController extends Base
             'description' => 'description',
             'begintime' => 'begintime',
             'endtime' => 'endtime'));
-
-        if (!$manager->save()) {
-            foreach ($manager->getMessages() as $message) {
-                echo $message;
+        try {
+            if (!$manager->save()) {
+                foreach ($manager->getMessages() as $message) {
+                    echo $message;
+                }
             }
-        }
-        if (!$project->save()) {
-            foreach ($project->getMessages() as $message) {
-                echo $message;
+            $project->manager_id = $manager->id;
+            if (!$project->save()) {
+                foreach ($project->getMessages() as $message) {
+                    echo $message;
+                }
             }
+            $manager->project_id = $project->id;
+            $manager->save();
+        } catch( Exception $e ) {
+            echo $e->getMessage();
+            return;
         }
         $this->response->redirect('admin');
     }

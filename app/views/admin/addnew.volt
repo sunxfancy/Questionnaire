@@ -38,7 +38,7 @@
     <tr><td><textarea type="text" id="description" style=" line-height: 28px;outline: none;height: 100px;width: 600px;font-size:16px;">更详细的信息描述...</textarea></td></tr>
     </table>
     <div id='submit' class="submitpro" style="display:block;text-align:center;margin-top:15px;">
-        <img src="../images/submit.jpg" type="submit" style="cursor:pointer;" onclick="window.location.href='/admin/index'" />
+        <img src="../images/submit.jpg" type="submit" style="cursor:pointer;" />
     </div>
 </div>
 
