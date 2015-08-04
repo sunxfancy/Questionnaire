@@ -21,18 +21,18 @@
 
 <script type='text/javascript'>
 
-
+     Leo_switch(document.getElementById("label_detail"));
 
 
 
         function Leo_switch(t) {
-      
+                 
               switch (t.id) {
                   case "label_detail": sw(0); 
 
                                           //to first page
 
-                                     $.get('pm/detail', function(data) {
+                                     $.get('/pm/detail', function(data) {
                                         /*optional stuff to do after success */
 
                                         $("#Leo_manager_home").html(data);
@@ -41,7 +41,7 @@
                                       break;
                   case "label_users": sw(1);
 
-                                        $.get('pm/examinee', function(data) {
+                                        $.get('/pm/examinee', function(data) {
                                         /*optional stuff to do after success */
 
                                         $("#Leo_manager_home").html(data);
@@ -52,7 +52,7 @@
                  
                   case "label_experts": sw(2);
 
-                                        $.get('pm/interviewer', function(data) {
+                                        $.get('/pm/interviewer', function(data) {
                                         /*optional stuff to do after success */
 
                                         $("#Leo_manager_home").html(data);
@@ -71,7 +71,7 @@
 
                                        break;
                   case "label_results": sw(4);
-                                        $.get('pm/result', function(data) {
+                                        $.get('/pm/result', function(data) {
                                         /*optional stuff to do after success */
 
                                         $("#Leo_manager_home").html(data);
