@@ -18,7 +18,7 @@
            <div style="margin:0 auto;width:100%;height:45px;text-align:center;"><span style="font-size:30px;font-family:'Microsoft YaHei UI'">我的项目详情(p001)</span></div>
             <table style="width:100%;height:220px;margin:0 auto;text-align:center;"><tr style="width:100%;margin:0 auto;"><td style="width:50%;"><img style="height:220px;margin:0 auto;" src="../images/ZhangXiaoyu/people.png" /></td><td><img style="height:220px;" src="../images/ZhangXiaoyu/zhuanjia.png" /></td></tr></table>
             <div style="width:100%;height:100px;">
-               <span style="font-size:26px;color:red;"> 项目时间计划</span><br />
+               <span style="margin-left:40px;font-size:26px;color:red;"> 项目时间计划</span><br />
                 <table style="width: 100%; font-size: 18px;text-align:center;">
                     <tr style="width:100%;height:25px"><td style="width:20%;height:25px">2014-03-14</td><td style="width:20%;height:25px"></td><td style="width:20%;height:25px"></td><td id="now" style="width:20%;height:25px">当前</td><td style="width:20%;height:25px">2014-07-28</td></tr>
 
