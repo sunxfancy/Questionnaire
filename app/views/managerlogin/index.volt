@@ -9,7 +9,7 @@
 <div class="Leo_login">
  <div style="height:10px;"></div>
  <table>
-     <tr style="height:100px;"><td style="width:500px;font-size:40px;color:purple;">欢 迎 登 录</td></tr>
+     <tr style="height:100px;"><td style="width:500px;font-size:40px;color:purple;">后台登录入口</td></tr>
        </table>
             
             <table>

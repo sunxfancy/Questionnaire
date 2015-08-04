@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-02 15:33:40
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-03 11:26:32
+ * @Last Modified time: 2015-08-04 09:16:28
  */
 
 /**
@@ -13,29 +13,30 @@ class ExcelLoader
 {
 	public function LoadExaminee ($filename, $db)
     {
+    	$full_path = "./upload/".$filename;
         PHPExcel_Settings::setCacheStorageMethod(PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip);
         $db->begin(); 
-        if (is_readable($filename))
+        if (is_readable($full_path))
         {
         	try {
-	            $objexcel = PHPExcel_IOFactory::load("./upload/".$filename);
+	            $objexcel = PHPExcel_IOFactory::load($full_path);
 	            $personsheet = $objexcel->getSheet(0);
-            }
-			catch (Exception $ex)
-			{
+            } catch (Exception $ex) {
 				$errors['Exception'] = $ex->getMessage();
 				$db->rollback();
 				$objexcel->disconnectWorksheets();
-				unlink("./upload/".$file);
+				unlink($full_path);
 				return $errors;
-			}    
+			}
         }
         $db->commit();
+        unlink($full_path);
+        return 0;
     }
 
-    $excel_col = array( 'C' => 'name',     'D' => 'sex',      'E' => 'native',       'F' => 'education',
-    					'G' => 'birthday', 'H' => 'politics', 'I' => 'professional', 'J' => 'employer', 
-    					'K' => 'unit',     'L' => 'duty');
+	$excel_col = array( 'C' => 'name',     'D' => 'sex',      'E' => 'native',       'F' => 'education',
+						'G' => 'birthday', 'H' => 'politics', 'I' => 'professional', 'J' => 'employer', 
+						'K' => 'unit',     'L' => 'duty');
 	$edu_name = array('school','profession','degree','date');
 	$work_name = array('employer','unit','duty','date');
 
@@ -55,7 +56,8 @@ class ExcelLoader
 			$work = array();
 			$this->readother_examinee($education,$edu_name,$i);
 			$this->readother_examinee($work,$work_name,$i);
-
+			$examinee->other = json_encode(array('education' => $education, 'work' => $work));
+			
 			if (!$examinee->save()) {
 				foreach ($student->getMessages() as $message) {
 					throw new Exception($message);
@@ -64,7 +66,6 @@ class ExcelLoader
 			$i++;
 		}
 	}
-    
 
     function readother_examinee($other_array, $name_array, $i)
     {
