@@ -35,7 +35,9 @@
         data: [[0,45]],
         label: '未完成'
     }], {
-        HtmlText: false,
+        title: '项目完成度',
+        resolution: 1,
+        HtmlText: true,
         grid: {
             verticalLines: false,
             horizontalLines: false
@@ -68,7 +70,8 @@
         data: [[0,100]],
         label: '未完成'
     }], {
-        HtmlText: false,
+        title: '面询完成度',
+        HtmlText: true,
         grid: {
             verticalLines: false,
             horizontalLines: false
