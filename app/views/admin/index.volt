@@ -5,6 +5,7 @@
 <script type="text/javascript" src="/jqGrid/js/jquery.jqGrid.min.js"></script>
 <script type="text/javascript" src="/lib/bootstrap-datetimepicker.js"></script>
 <script type="text/javascript" src="/jqGrid/js/i18n/grid.locale-cn.js"></script>
+<script type="text/javascript" src="/js/bootstrap.js"></script>
 
 
 <div class="Leo_question">
