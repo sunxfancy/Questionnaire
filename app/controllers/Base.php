@@ -41,7 +41,7 @@ class Base extends \Phalcon\Mvc\Controller
     }
 
     /**
-     * 传入当前页面的title即可，渲染左边栏
+     * 传入当前页面的title即可，渲染左边栏，仅用于base2
      */
     public function leftRender($title)
     {
