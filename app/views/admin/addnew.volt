@@ -9,11 +9,11 @@
         </tr>
         <tr>
             <td style=" width:150px;font-size:16px;line-height:28px; text-align:right;font-family:'Microsoft YaHei';">项目开始时间：</td>
-            <td><input id="begintime" name="txtDate_3" type="date" class="inputtxt" style="height: 26px;width: 200px;"></td>
+            <td><input id="begintime" type="text" readonly class="form_datetime" style="height: 26px;width: 200px;"></td>
         </tr>
         <tr>
             <td style=" width:150px;font-size:16px;line-height:28px; text-align:right;font-family:'Microsoft YaHei';">项目结束时间：</td>
-            <td><input id="endtime" name="txtDate_3" type="date" class="inputtxt" style="height: 26px;width: 200px;"></td>
+            <td><input id="endtime" type="text" readonly class="form_datetime" style="height: 26px;width: 200px;"></td>
         </tr>
         <tr>
             <td style=" width:150px;font-size:16px;line-height:28px; text-align:right;font-family:'Microsoft YaHei';">项目经理姓名：</td>
@@ -38,7 +38,7 @@
     <tr><td><textarea type="text" id="description" style=" line-height: 28px;outline: none;height: 100px;width: 600px;font-size:16px;">更详细的信息描述...</textarea></td></tr>
     </table>
     <div id='submit' class="submitpro" style="display:block;text-align:center;margin-top:15px;">
-        <img src="../images/submit.jpg" type="submit" style="cursor:pointer;" />
+        <img src="../images/submit.jpg" type="submit" style="cursor:pointer;"/>
     </div>
 </div>
 
@@ -54,8 +54,11 @@
                         "pm_username" :$("#pm_username").val(),
                         "pm_password" :$("#pm_password").val()
                     }
-                    $.post('/admin/newproject', project_info);
+                    $.post('/admin/newproject', project_info,callbk);
             }); 
+            function callbk(){
+                    window.location.href = "/admin/index";
+            }
         });
 
         function check()
@@ -69,4 +72,7 @@
                 }
             }
         }
+
+    $(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
+
 </script>
