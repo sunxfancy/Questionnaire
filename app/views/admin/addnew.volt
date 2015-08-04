@@ -47,6 +47,7 @@
             $("#submit").click(function(){
                     var project_info ={
                         "project_name" :$("#project_name").val(),
+                        "description" :$("#description").val(),
                         "begintime" :$("#begintime").val(),
                         "endtime" :$("#endtime").val(),
                         "pm_name" :$("#pm_name").val(),
