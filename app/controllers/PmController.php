@@ -20,17 +20,6 @@ class PmController extends Base
     {
         $this->leftRender();
     }
-	
-       function leftRender()
-    {
-        /****************这一段可以抽象成一个通用的方法**********************/
-        $manager = $this->session->get('Manager');
-        $this->view->setVar('page_title','北京政法系统人才测评项目管理平台');
-        $this->view->setVar('user_name',$manager->name);
-        $this->view->setVar('user_id',  $manager->username);
-        $this->view->setVar('user_role',"项目经理");
-        /*******************************************************************/
-    }
 
 	public function detailAction()
 	{
@@ -122,5 +111,16 @@ class PmController extends Base
         }
         echo json_encode($ans);
         $this->view->disable();
+    }
+
+        function leftRender()
+    {
+        /****************这一段可以抽象成一个通用的方法**********************/
+        $manager = $this->session->get('Manager');
+        $this->view->setVar('page_title','北京政法系统人才测评项目管理平台');
+        $this->view->setVar('user_name',$manager->name);
+        $this->view->setVar('user_id',  $manager->username);
+        $this->view->setVar('user_role',"项目经理");
+        /*******************************************************************/
     }
 }
