@@ -87,11 +87,10 @@ class AdminController extends Base
         if ($oper == 'edit') {
             $id = $this->request->getPost('id', 'int');
             $project = Project::findFirst($id);
-            $project->username   = $this->request->getPost('begintime', 'string');
-            $project->password   = $this->request->getPost('endtime', 'string');
-            $project->role       = $this->request->getPost('name', 'string');
-            $project->name       = $this->request->getPost('description', 'string');
-            $project->manager_id = $this->request->getPost('manager_id', 'integer');
+            $project->username    = $this->request->getPost('begintime', 'string');
+            $project->password    = $this->request->getPost('endtime', 'string');
+            $project->name        = $this->request->getPost('name', 'string');
+            $project->description = $this->request->getPost('description', 'string');
             if (!$project->save()) {
                 foreach ($project->getMessages() as $message) {
                     echo $message;
@@ -100,7 +99,7 @@ class AdminController extends Base
         }
         if ($oper == 'del') {
             $id = $this->request->getPost('id', 'int');
-            $manager = Manager::findFirst($id);
+            $manager = Project::findFirst($id);
             if (!$manager->delete()) {
                 foreach ($manager->getMessages() as $message) {
                     echo $message;
