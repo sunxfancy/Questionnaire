@@ -37,7 +37,7 @@
         <table cellspacing="0">
             <tr><td></td><td style="text-align:left;"></td></tr>
             <tr><td>编号</td><td style="text-align:left;">{{ user_id }}</td></tr>
-            <tr><td>角色</td><td style="text-align:left;">{{ user_role }}</td></tr>dsfaffafadjjjjhdjfdfslfsdf
+            <tr><td>角色</td><td style="text-align:left;">{{ user_role }}</td></tr>
         </table>-->
     </div>
     <div class="Leo_info_l_logout" onclick="window.location.href='/managerlogin/logout'"><table><tr><td>退出</td></tr></table></div>
