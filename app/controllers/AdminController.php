@@ -19,14 +19,6 @@ class AdminController extends Base
 
     public function newprojectAction()
     {
-        $project_name = $this->request->getPost('project_name', 'string');
-        $description  = $this->request->getPost('description', 'string');
-        $begintime    = $this->request->getPost('begintime', 'string');
-        $endtime      = $this->request->getPost('endtime', 'string');
-        $pm_name      = $this->request->getPost('pm_name', 'string');
-        $pm_username  = $this->request->getPost('pm_username', 'string');
-        $pm_password  = $this->request->getPost('pm_password', 'string');
-
         $manager = new Manager();
         $this->getData($manager, array(
             'name' => 'pm_name',
@@ -40,6 +32,17 @@ class AdminController extends Base
             'begintime' => 'begintime',
             'endtime' => 'endtime'));
 
+        if (!$manager->save()) {
+            foreach ($manager->getMessages() as $message) {
+                echo $message;
+            }
+        }
+        if (!$project->save()) {
+            foreach ($project->getMessages() as $message) {
+                echo $message;
+            }
+        }
+        $this->response->redirect('admin');
     }
 
 
