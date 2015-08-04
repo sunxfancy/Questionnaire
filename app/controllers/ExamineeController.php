@@ -11,8 +11,17 @@
 */
 class ExamineeController extends Base
 {
+    public function initialize()
+    {
+        $this->view->setTemplateAfter('base2');
+    }
+
 	public function indexAction()
 	{
-		
+		$this->leftRender("kasldf");
 	}
+
+    public function addAction()
+    {
+    }
 }
