@@ -99,6 +99,23 @@ class Examinee extends \Phalcon\Mvc\Model
      *
      */
     public $project_id;
+    
+    // 被试人员登陆验证
+    public static function checkLogin($username,$password)
+    {
+        $examinee = Examinee::findFirst(array(
+            "username = :str:",
+            "bind" => array("str" => $username)
+        ));
+        if (!$examinee) {
+            return -1;
+        }
+        if ($password == $examinee->password) {
+            return $examinee;
+        } else {
+            return 0;
+        }
+    }
 
 
 }
