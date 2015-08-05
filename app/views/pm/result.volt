@@ -9,7 +9,7 @@
 		        		<a target="_blank" style="font-size:20px;" href="../总体分析报告.pdf">人才综合测评总体分析报告</a>
 		        	</div>
 		            <div class="form-group">
-		                <input type="file" name="file" input enctype="multipart/form-data" maxlength="100" style="height:30px">
+		                <input type="file" name="file" input enctype="multipart/form-data" maxlength="100" style="height:30px;cursor:pointer;">
 		            </div>
 		            <div class="form-group">
 		                <button class="btn btn-success" type="submit">导入</button>
@@ -32,7 +32,7 @@
 		        		<a target="_blank" style="font-size:20px;" href="../manager/Leo_sysResult2.html">班子胜任力模型测评报告</a>
 		        	</div>
 		            <div class="form-group">
-		                <input type="file" name="file" input enctype="multipart/form-data" maxlength="100" style="height:30px">
+		                <input type="file" name="file" input enctype="multipart/form-data" maxlength="100" style="height:30px;cursor:pointer;">
 		            </div>
 		            <div class="form-group">
 		                <button class="btn btn-success" type="submit">导入</button>
@@ -50,7 +50,7 @@
 		        		<a target="_blank" style="font-size:20px;" href="Leo_sysResult1.html">系统胜任力模型测评报告</a>
 		        		</div>
 		            <div class="form-group">
-		                <input type="file" name="file" input enctype="multipart/form-data" maxlength="100" style="height:30px">
+		                <input type="file" name="file" input enctype="multipart/form-data" maxlength="100" style="height:30px;cursor:pointer;">
 		            </div>
 		            <div class="form-group">
 		                <button class="btn btn-success" type="submit">导入</button>
