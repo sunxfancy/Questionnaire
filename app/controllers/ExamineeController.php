@@ -20,14 +20,7 @@ class ExamineeController extends Base
 
 	public function indexAction()
 	{
-        //获取登录用户的信息
-		$user = array('name'=>"username",'number'=>"us00001",'role'=>"被试人员");
         
-        $this->view->setVar("user",$user);
-        // Paper::findFirst();
-        $paper = $this->modelsManager->executeQuery("select * from Paper");
-        $this->view->setVar("paper",$paper);
-		$this->response->redirect('/Examinee/inquery');
 	}
 
     public function loginAction()
@@ -47,7 +40,7 @@ class ExamineeController extends Base
         if ($examinee)
         {
             $this->session->set('Examinee', $examinee);
-            $this->dataReturn(array('url' =>'/examinee/inquerry'))
+            $this->dataReturn(array('url' =>'/examinee/inquery'));
             return;
         }
     }
@@ -81,4 +74,12 @@ class ExamineeController extends Base
         $this->view->setVar("paper",$paper);
 
     }
+
+    public function dataReturn($ans)
+    {
+        $this->response->setHeader("Content-Type", "text/json; charset=utf-8");
+        echo json_encode($ans);
+        $this->view->disable();
+    }
+
 }
