@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-01 16:18:46
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-05 16:50:36
+ * @Last Modified time: 2015-08-05 17:13:58
  */
 
 /**
@@ -69,6 +69,7 @@ class PmController extends Base
             $filename = "Import-".date("YmdHis");
             $excel = ExcelLoader::getInstance();
             $project_id = $this->session->get('Manager')->project_id;
+            echo $project_id ."\n";
             $i = 1;
             foreach ($files as $file) {
                 $newname = "./upload/".$filename."-".$i.".xls";

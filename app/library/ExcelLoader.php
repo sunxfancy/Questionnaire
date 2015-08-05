@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-02 15:33:40
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-05 16:44:12
+ * @Last Modified time: 2015-08-05 17:21:01
  */
 
 include("../app/classes/PHPExcel.php");
@@ -21,10 +21,14 @@ class ExcelLoader
 		$this->work_name = array('employer','unit','duty','date');
 	}
 
+	private static $instance;  
 	public static function getInstance()
 	{
-		static $instance = new self();
-		return $instance;
+		if (!(self::$instance instanceof self))  
+        {  
+            self::$instance = new self();  
+        }  
+        return self::$instance;  
 	}
 
 	public function LoadExaminee ($filename, $project_id, $db)
@@ -39,12 +43,13 @@ class ExcelLoader
 	            $higestrow = $sheet->getHighestRow();
 
 	            $last_number = Examinee::lastNum($project_id);
-
+	            echo $last_number."\n";
 				$i = 3;
 				while ($i <= $higestrow) {
 					$k = $sheet->getCell("C".$i)->getValue();
 					if (is_null($k) || $k == "") break;
-		            $this->readline_examinee($sheet, $i);
+					$last_number++;
+		            $this->readline_examinee($sheet, $project_id, $last_number, $i);
 		            $i++;
 				}
             } catch (Exception $ex) {
@@ -56,13 +61,14 @@ class ExcelLoader
 			}
         }
         $db->commit();
+        $objexcel->disconnectWorksheets();
         unlink($filename);
         return 0;
     }
 
 	
 
-    public function readline_examinee($sheet, $i)
+    public function readline_examinee($sheet, $project_id, $number, $i)
     {
 		$examinee = new Examinee();
 		foreach ($this->excel_col as $key => $value) {
@@ -73,7 +79,10 @@ class ExcelLoader
 		$this->readother_examinee($sheet,$education,$this->edu_name, $i);
 		$this->readother_examinee($sheet,$work,     $this->work_name,$i);
 		$examinee->other = json_encode(array('education' => $education, 'work' => $work));
-		
+		$examinee->number = date('y').sprintf("%02d", $project_id).sprintf("%04d", $number);
+		$examinee->password = $this->random_string();
+		$examinee->project_id = $project_id;
+
 		if (!$examinee->save()) {
 			foreach ($examinee->getMessages() as $message) {
 				throw new Exception($message);
@@ -90,5 +99,14 @@ class ExcelLoader
 				$other_col++;
 			}
 		}
+    }
+
+    function random_string($max = 6){
+        $chars = explode(" ", "a b c d e f g h i j k l m n o p q r s t u v w x y z 0 1 2 3 4 5 6 7 8 9");
+        for($i = 0; $i < $max; $i++){
+            $rnd = array_rand($chars);
+            $rtn .= base64_encode(md5($chars[$rnd]));
+        }
+        return substr(str_shuffle(strtolower($rtn)), 0, $max);
     }
 }
