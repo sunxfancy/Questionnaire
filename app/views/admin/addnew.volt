@@ -5,15 +5,22 @@
     <table style="margin:0 auto;">
         <tr>
             <td style=" width:150px;font-size:16px;line-height:28px; text-align:right;font-family:'Microsoft YaHei';">项目名称：</td>
-            <td colspan="3"><input id="project_name" type="text" style="width:200px;height:26px;font-"></td>
+            <td colspan="3"><input id="project_name" type="text" style="width:200px;height:26px;"></td>
         </tr>
         <tr>
             <td style=" width:150px;font-size:16px;line-height:28px; text-align:right;font-family:'Microsoft YaHei';">项目开始时间：</td>
-            <td><input id="begintime" type="text" readonly class="form_datetime" style="height: 26px;width: 200px;"></td>
+            <td><div class="input-append date form_datetime">
+                <input id="begintime" type="text" value="" readonly style="width:200px;height:26px;">
+                <span class="add-on"><i class="icon-th"></i></span>
+                </div>
+            </td>
         </tr>
         <tr>
             <td style=" width:150px;font-size:16px;line-height:28px; text-align:right;font-family:'Microsoft YaHei';">项目结束时间：</td>
-            <td><input id="endtime" type="text" readonly class="form_datetime" style="height: 26px;width: 200px;"></td>
+            <td><div class="input-append date form_datetime">
+                <input id="endtime" type="text" value="" readonly style="width:200px;height:26px;">
+                <span class="add-on"><i class="icon-th"></i></span>
+                </div></td>
         </tr>
         <tr>
             <td style=" width:150px;font-size:16px;line-height:28px; text-align:right;font-family:'Microsoft YaHei';">项目经理姓名：</td>
@@ -73,6 +80,11 @@
             }
         }
 
-    $(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
+    $(".form_datetime").datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        autoclose: true,
+        todayBtn: true,
+        pickerPosition: "bottom-left"
+    });
 
 </script>

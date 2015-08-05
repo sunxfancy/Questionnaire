@@ -3,17 +3,24 @@
 <script type="text/javascript" src="/js/bootstrap.js"></script>
 <script type="text/javascript" src="/lib/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="/lib/bootstrap-datetimepicker.js"></script>
-<div>
-       
-        <div style="width:100%;height:460px;overflow:hidden;">
-            <table id="grid-table"></table>
-        <div id="grid-pager"></div>   
 
-        <div style="width:100%;height:40px;background-color:silver;text-align:center;">
-            <button>导入</button>
-            <button>导出</button>
-        </div>
+<div style="width:100%;height:460px;overflow:hidden;">
+    <table id="grid-table"></table>
+    <div id="grid-pager"></div>   
 
+    <div style="width:100%;height:40px;text-align:center;margin: 5px 10px;">
+        <form class="form-inline">
+            <div class="form-group">
+                <input type="file" name="file" input enctype="multipart/form-data" maxlength="100" style="height:30px">
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success" type="submit" >导入</button>
+            </div>
+            <div class="form-group">
+                <a class="btn btn-primary" href="#">导出</a>
+            </div>
+        </form>
+    </div>
 </div>
 
 
@@ -39,11 +46,11 @@
 
             url: "/pm/list",
             datatype: "json",
-            height: '285px',
+            height: '270px',
             shrinkToFit:true,
             forceFit:true,
             autowidth: true,
-            colNames:[' ', '项目编号','项目名称','项目经理', '经理账号', '开始时间','结束时间','参与人数'],
+            colNames:[' ', '用户编号','姓名','性别', '是否答题完毕', '查看结果','最后登录时间','密码','是否测试结束','查看报告'],
             colModel:[
                 {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
                     formatter:'actions', 
@@ -53,13 +60,15 @@
                         delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
                     }
                 },
-                {name:'number',index:'number', sorttype:"int",width:70, editable: false,align:'center'},
-                {name:'name',index:'name', sortable:true, width:220,sorttype:"string", editable:true,align:'center'},
-                {name:'manager_name',index:'manager_name',width:80, sortable:false, sorttype:"string", editable:true,align:'center'},
-                {name:'manager_username',index:'manager_username',width:80, sortable:false, sorttype:"string", editable:true,align:'center'},
-                {name:'begintime',index:'begintime', sortable:true,width:160, editable: true,edittype:'text',unformat:pickDate,align:'center'},
-                {name:'endtime',index:'endtime', sortable:true,width:160, editable: true,unformat:pickDate,align:'center'},
-                {name:'user_count',index:'user_count', sortable:true,width:80, editable: false,align:'center'}
+                {name:'number',index:'number', sorttype:"int",width:100, editable: false,align:'center'},
+                {name:'name',index:'name', sortable:true, width:110,sorttype:"string", editable:true,align:'center'},
+                {name:'sex',index:'sex',width:60, sortable:false, sorttype:"string", editable:false,align:'center'},
+                {name:'is_exam_com',index:'is_exam_com',width:135, sortable:false, sorttype:"string", editable:false,align:'center'},
+                {name:'data',index:'data', sortable:false,width:120, editable: false,edittype:'text',unformat:pickDate,align:'center'},
+                {name:'endtime',index:'endtime', sortable:true,width:200, editable: false,unformat:pickDate,align:'center'},
+                {name:'password',index:'password', sortable:false,width:80, editable: true,align:'center'},
+                {name:'is_ques_com',index:'is_ques_com', sorttype:"int",width:160, sortable:false, editable: false,align:'center'},
+                {name:'result',index:'result', sortable:false, width:130,sorttype:"string", editable:false,align:'center'}
             ], 
             
             viewrecords : true, 

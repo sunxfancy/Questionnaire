@@ -6,7 +6,6 @@ function Leo_question(index_i, que, kind, ans) {
     var question_panel;
     init();
 
-
     return question_panel;
 
 
@@ -24,7 +23,7 @@ function Leo_question(index_i, que, kind, ans) {
         var newspan = document.createElement("span");
         newspan.style.width = "100%";
         newspan.style.height = "80px";
-        newspan.innerText = (index_i + 1) + "." + que;
+        newspan.innerText = index_i  + "." + que;
         newspan.style.fontWeight = "normal";
         newspan.style.fontSize = "28px";
         newspan.style.display = "block";
@@ -32,7 +31,7 @@ function Leo_question(index_i, que, kind, ans) {
 
         question_panel.appendChild(newspan);
 
-        if (kind) {
+        if (!kind) {
             initRadio();
         } else {
             initCheckBox();
@@ -42,32 +41,7 @@ function Leo_question(index_i, que, kind, ans) {
 
 
     function initRadio() {
-        /*这一套用ul 包li的方法，用起来不是很方便，定位也有问题
-        var newUl = document.createElement("ul");
-        newUl.style.listStyle = "none";
-        newUl.style.width = "100%";
-        newUl.style.marginLeft = "0px";
-        for (var i = 0; i < ans.length ; i++) {
-            var newli = document.createElement("li");
-
-
-            var newbaodiv = document.createElement("div");//做一个div把选项包起来
-                var newRadio = document.createElement("input");
-                newRadio.type = "radio";
-                newRadio.name = index_i + "";
-               newRadio.onclick = new Function("Leo_clickRadio(this);");
-               var newspan = document.createElement("span");
-               newbaodiv.style.width = "100%";
-               newbaodiv.style.backgroundColor = "red";
-               newbaodiv.style.height = "30px";
-
-           
-            newspan.innerText = ans[i];
-            newbaodiv.appendChild(newRadio);
-            newbaodiv.appendChild(newspan);
-            newli.appendChild(newbaodiv);
-            newUl.appendChild(newli);
-            */
+       
 			var overdiv=document.createElement("div");
 			overdiv.style.overflow="auto";
 			overdiv.style.height="330px";
@@ -97,28 +71,6 @@ function Leo_question(index_i, que, kind, ans) {
 
     }
     function initCheckBox() {
-        /*
-        var newUl = document.createElement("ul");
-        newUl.style.listStyle = "none";
-        for (var i = 0; i < ans.length ; i++) {
-            var newli = document.createElement("li");
-            var newRadio = document.createElement("input");
-            newRadio.type = "checkbox";
-            newRadio.name = index_i + "";
-            newRadio.onclick = new Function("changeColor(this);checkcheckbox(this.name)");
-            var newspan = document.createElement("span");
-
-
-            newspan.innerText = ans[i];
-            newli.appendChild(newRadio);
-            newli.appendChild(newspan);
-            newUl.appendChild(newli);
-
-
-
-        }
-
-        question_panel.appendChild(newUl);*/
 
 			var overdiv=document.createElement("div");
 			overdiv.style.overflow="auto";
@@ -144,7 +96,7 @@ function Leo_question(index_i, que, kind, ans) {
             answersdiv.onmouseout = new Function("this.style.backgroundColor='white'");
             overdiv.appendChild(answersdiv);
         }
-question_panel.appendChild(overdiv);
+        question_panel.appendChild(overdiv);
 
     }
 }
@@ -171,29 +123,7 @@ function Leo_pagedown() {
 
 }
 
-function changepage(newpage) {
-    //newpage为从0开始的计数方式
-    $("Leo_question_panel").removeChild($("Leo_question_panel").childNodes[0]);
-    Leo_now_index = newpage;
-    $("Leo_question_panel").appendChild(questions[Leo_now_index]);
 
-    if (newpage == 0) {
-        $("Leo_pageup").style.display = "none";
-    } else {
-        $("Leo_pageup").style.display = "";
-    }
-
-    if (newpage == questions.length - 1) {
-       
-        $("Leo_pagedown").style.display = "none";
-    } else {
-        $("Leo_pagedown").style.display = "";
-    }
-
-    $("newdiv_" + newpage).focus();
-
-
-}
 
 
 
@@ -211,14 +141,14 @@ function Leo_clickRadio(t) {
 
     } else {
 
-        $("Leo_pagedown").style.display = "";
+        $("#Leo_pagedown").css('display','');
 
     }
 
 }
 
 function changeColor(t) {
-    $("newdiv_" + t.name).style.backgroundColor = "green";
+    $("#newdiv_" + t.name).css('background-color',"green");
 
     var f = parseInt(t.name);
    
@@ -235,9 +165,9 @@ function checkcheckbox(name) {
 
 
     if (!b) {
-        $("newdiv_" + name).style.backgroundColor = "gray";
+        $("#newdiv_" + name).css('background-color',"gray");
     } else {
-        $("newdiv_" + name).style.backgroundColor = "green";
+        $("#newdiv_" + name).css('background-color',"green");
     }
 }
 
