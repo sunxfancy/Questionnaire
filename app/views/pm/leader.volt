@@ -5,17 +5,24 @@
 <script type="text/javascript" src="/lib/bootstrap-datetimepicker.js"></script>
 
 
-<div>
-       
-        <div style="width:100%;height:460px;overflow:hidden;">
-            <table id="grid-table"></table>
-        <div id="grid-pager"></div>   
-        
-        <div style="width:100%;height:40px;background-color:silver;text-align:center;">
-            <button>导入</button>
-            <button>导出</button>
-        </div>
 
+<div style="width:100%;height:460px;overflow:hidden;">
+    <table id="grid-table"></table>
+    <div id="grid-pager"></div>   
+  
+    <div style="width:100%;height:40px;text-align:center;margin: 5px 10px;">
+        <form class="form-inline">
+            <div class="form-group">
+                <input type="file" name="file" input enctype="multipart/form-data" maxlength="100">
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success" type="submit">导入</button>
+            </div>
+            <div class="form-group">
+                <a class="btn btn-primary" href="#">导出</a>
+            </div>
+        </form>
+    </div>
 </div>
 
 
@@ -41,7 +48,7 @@
 
             url: "/pm/list",
             datatype: "json",
-            height: '285px',
+            height: '270px',
             shrinkToFit:true,
             forceFit:true,
             autowidth: true,
