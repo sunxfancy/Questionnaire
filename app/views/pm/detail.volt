@@ -19,13 +19,13 @@
     <div  style="width:100%;height:40px;text-align:center;margin: 5px 10px;">
         <form class="form-inline">
             <div class="form-group">
-                <input type="file" name="file" input enctype="multipart/form-data" maxlength="100" style="height:30px">
+                <input type="file" name="file" input enctype="multipart/form-data" maxlength="100" style="height:30px;cursor:pointer;">
             </div>
             <div class="form-group">
                 <button class="btn btn-success" type="submit" >上传需求量表</button>
             </div>
             <div class="form-group">
-                <a class="btn btn-primary" href="#">配置测试题目模块</a>
+                <a class="btn btn-primary" href="/pm/selectmodule">配置测试题目模块</a>
             </div>
         </form>
     </div>
