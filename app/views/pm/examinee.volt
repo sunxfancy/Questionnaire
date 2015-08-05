@@ -11,7 +11,7 @@
     <div style="width:100%;height:40px;text-align:center;margin: 5px 10px;">
         <form class="form-inline" action="/pm/uploadexaminee">
             <div class="form-group">
-                <input type="file" name="file" input enctype="multipart/form-data" maxlength="100">
+                <input type="file" name="file" input enctype="multipart/form-data" maxlength="100" style="height:30px">
             </div>
             <div class="form-group">
                 <button class="btn btn-success" type="submit" >导入</button>
@@ -61,14 +61,14 @@
                     }
                 },
                 {name:'number',index:'number', sorttype:"int",width:100, editable: false,align:'center'},
-                {name:'name',index:'name', sortable:true, width:120,sorttype:"string", editable:true,align:'center'},
-                {name:'sex',index:'sex',width:50, sortable:false, sorttype:"string", editable:true,align:'center'},
-                {name:'is_exam_com',index:'is_exam_com',width:135, sortable:false, sorttype:"string", editable:true,align:'center'},
-                {name:'data',index:'data', sortable:true,width:160, editable: true,edittype:'text',unformat:pickDate,align:'center'},
-                {name:'endtime',index:'endtime', sortable:true,width:160, editable: true,unformat:pickDate,align:'center'},
-                {name:'password',index:'password', sortable:true,width:80, editable: false,align:'center'},
-                {name:'is_ques_com',index:'is_ques_com', sorttype:"int",width:70, editable: false,align:'center'},
-                {name:'result',index:'result', sortable:true, width:220,sorttype:"string", editable:true,align:'center'}
+                {name:'name',index:'name', sortable:true, width:110,sorttype:"string", editable:true,align:'center'},
+                {name:'sex',index:'sex',width:60, sortable:false, sorttype:"string", editable:false,align:'center'},
+                {name:'is_exam_com',index:'is_exam_com',width:135, sortable:false, sorttype:"string", editable:false,align:'center'},
+                {name:'data',index:'data', sortable:false,width:120, editable: false,edittype:'text',unformat:pickDate,align:'center'},
+                {name:'endtime',index:'endtime', sortable:true,width:200, editable: false,unformat:pickDate,align:'center'},
+                {name:'password',index:'password', sortable:false,width:80, editable: true,align:'center'},
+                {name:'is_ques_com',index:'is_ques_com', sorttype:"int",width:160, sortable:false, editable: false,align:'center'},
+                {name:'result',index:'result', sortable:false, width:130,sorttype:"string", editable:false,align:'center'}
             ], 
             
             viewrecords : true, 
