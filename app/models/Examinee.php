@@ -104,7 +104,7 @@ class Examinee extends \Phalcon\Mvc\Model
     public static function checkLogin($username,$password)
     {
         $examinee = Examinee::findFirst(array(
-            "username = :str:",
+            "number = :str:",
             "bind" => array("str" => $username)
         ));
         if (!$examinee) {
