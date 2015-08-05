@@ -23,7 +23,7 @@ function Leo_question(index_i, que, kind, ans) {
         var newspan = document.createElement("span");
         newspan.style.width = "100%";
         newspan.style.height = "80px";
-        newspan.innerText = index_i  + "." + que;
+        newspan.innerText = index_i+1  + "." + que;
         newspan.style.fontWeight = "normal";
         newspan.style.fontSize = "28px";
         newspan.style.display = "block";
@@ -49,7 +49,7 @@ function Leo_question(index_i, que, kind, ans) {
             var answersdiv = document.createElement("div");
             var newRadio = document.createElement("input");
             newRadio.type = "radio";
-            newRadio.name = index_i-1 + "";
+            newRadio.name = index_i + "";
 
             var newspan = document.createElement("span");
             answersdiv.style.width = "100%";
@@ -209,7 +209,6 @@ function Leo_checkcomplete() {
         }
         if (badques.length != 0) {
             alert("您的答题是不完整的，其中第" + badques + "题缺少必要的答案！请继续答题！");
-
             changepage(badques[0] - 1);
         } else {
             var t = confirm("您确定要提交吗？");
@@ -222,6 +221,7 @@ function Leo_checkcomplete() {
     }
 
 
+/*cookie操作*/
 
 
 
