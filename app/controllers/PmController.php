@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-01 16:18:46
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-05 14:14:04
+ * @Last Modified time: 2015-08-05 16:37:41
  */
 
 /**
@@ -47,21 +47,30 @@ class PmController extends Base
 		# code...
 	}
 
+    public function testAction()
+    {
+        echo date('y');
+        $this->view->disable();
+    }
+
     public function uploadexamineeAction()
     {
         $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
         $this->view->disable();
-
         if ($this->request->isPost() && $this->request->hasFiles())
         {
             $files = $this->request->getUploadedFiles();
             $filename = "Import-".date("YmdHis");
+            $excel = ExcelLoader::getInstance();
+            $project_id = $this->session->get('Manager')->project_id;
             $i = 1;
             foreach ($files as $file) {
                 $newname = "./upload/".$filename."-".$i.".xls";
+                echo $newname."\n";
                 $file->moveTo($newname);
-                $excel = new ExcelLoader();
-                $excel->LoadExaminee($newname);
+                $ans = $excel->LoadExaminee($newname, $project_id, $this->db);
+                echo $ans ."\n";
+                if ($ans != 0) { echo json_encode($ans); return; }
                 $i++;
             }
             echo 0;
@@ -134,7 +143,7 @@ class PmController extends Base
         $this->view->disable();
     }
 
-        function leftRender()
+    function leftRender()
     {
         /****************这一段可以抽象成一个通用的方法**********************/
         $manager = $this->session->get('Manager');

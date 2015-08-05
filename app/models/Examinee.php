@@ -100,5 +100,14 @@ class Examinee extends \Phalcon\Mvc\Model
      */
     public $project_id;
 
-
+    public static function lastNum($project_id)
+    {
+        $examinee = Examinee::findFirst(array(
+            'project = :project_id:',
+            'bind' => array('project_id' => $project_id),
+            'order' => 'number desc'
+        ));
+        $ans = substr($examinee->number, 4, 4);
+        return $ans;
+    }
 }
