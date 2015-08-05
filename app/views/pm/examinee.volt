@@ -55,13 +55,13 @@
                 },
                 {name:'number',index:'number', sorttype:"int",width:100, editable: false,align:'center'},
                 {name:'name',index:'name', sortable:true, width:120,sorttype:"string", editable:true,align:'center'},
-                {name:'sex',index:'sex',width:50, sortable:false, sorttype:"string", editable:true,align:'center'},
-                {name:'is_exam_com',index:'is_exam_com',width:135, sortable:false, sorttype:"string", editable:true,align:'center'},
-                {name:'data',index:'data', sortable:true,width:160, editable: true,edittype:'text',unformat:pickDate,align:'center'},
-                {name:'endtime',index:'endtime', sortable:true,width:160, editable: true,unformat:pickDate,align:'center'},
-                {name:'password',index:'password', sortable:true,width:80, editable: false,align:'center'},
-                {name:'is_ques_com',index:'is_ques_com', sorttype:"int",width:70, editable: false,align:'center'},
-                {name:'result',index:'result', sortable:true, width:220,sorttype:"string", editable:true,align:'center'}
+                {name:'sex',index:'sex',width:50, sortable:false, sorttype:"string", editable:false,align:'center'},
+                {name:'is_exam_com',index:'is_exam_com',width:135, sortable:false, sorttype:"string", editable:false,align:'center'},
+                {name:'data',index:'data', sortable:false,width:160, editable: false,edittype:'text',unformat:pickDate,align:'center'},
+                {name:'endtime',index:'endtime', sortable:true,width:160, editable: false,unformat:pickDate,align:'center'},
+                {name:'password',index:'password', sortable:false,width:80, editable: true,align:'center'},
+                {name:'is_ques_com',index:'is_ques_com', sorttype:"int",width:160, sortable:false, editable: false,align:'center'},
+                {name:'result',index:'result', sortable:false, width:130,sorttype:"string", editable:false,align:'center'}
             ], 
             
             viewrecords : true, 

@@ -4,7 +4,6 @@
 <script type="text/javascript" src="/lib/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="/lib/bootstrap-datetimepicker.js"></script>
 
-
 <div>
        
         <div style="width:100%;height:460px;overflow:hidden;">
@@ -55,9 +54,9 @@
                         delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
                     }
                 },
-                {name:'username',index:'username', sorttype:"int",width:100, editable: false,align:'center'},
+                {name:'username',index:'username', sorttype:"int",width:100,sortable:true, editable: false,align:'center'},
                 {name:'name',index:'name', sortable:true, width:100,sorttype:"string", editable:true,align:'center'},
-                {name:'last_login_time',index:'last_login_time',width:250, sortable:false, sorttype:"string", editable:true,align:'center'},
+                {name:'last_login_time',index:'last_login_time',width:250, sortable:false, sorttype:"string", editable:false,align:'center'},
                 {name:'password',index:'password',width:100, sortable:false, sorttype:"string", editable:true,align:'center'},
                 
             ], 
