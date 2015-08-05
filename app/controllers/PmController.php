@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-01 16:18:46
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-05 11:49:51
+ * @Last Modified time: 2015-08-05 14:14:04
  */
 
 /**
@@ -49,23 +49,24 @@ class PmController extends Base
 
     public function uploadexamineeAction()
     {
+        $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
+        $this->view->disable();
+
         if ($this->request->isPost() && $this->request->hasFiles())
         {
             $files = $this->request->getUploadedFiles();
             $filename = "Import-".date("YmdHis");
             $i = 1;
             foreach ($files as $file) {
-                $file->moveTo("./upload/".$filename."-".$i.".xls");
+                $newname = "./upload/".$filename."-".$i.".xls";
+                $file->moveTo($newname);
                 $excel = new ExcelLoader();
-                $excel->LoadExaminee($file);
+                $excel->LoadExaminee($newname);
                 $i++;
             }
-            $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
-            echo json_encode();
-            $this->view->disable();
+            echo 0;
         } else {
-            $this->flash->error("错误的接口访问");
-            $this->response->redirect("pm/index");
+            echo json_encode(array('error' => '错误的接口访问'));
         }
     }
 
