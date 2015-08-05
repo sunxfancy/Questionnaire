@@ -1,4 +1,2 @@
 ﻿// JavaScript source code
 
-
-
