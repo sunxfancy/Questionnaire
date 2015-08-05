@@ -50,7 +50,7 @@
             shrinkToFit:true,
             forceFit:true,
             autowidth: true,
-            colNames:[' ', '项目编号','项目名称','项目经理', '经理账号', '开始时间','结束时间','参与人数'],
+            colNames:[' ', '用户编号','姓名','性别', '是否答题完毕', '查看结果','最后登录时间','密码','是否测试结束','查看报告'],
             colModel:[
                 {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
                     formatter:'actions', 
@@ -60,13 +60,15 @@
                         delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
                     }
                 },
-                {name:'number',index:'number', sorttype:"int",width:70, editable: false,align:'center'},
-                {name:'name',index:'name', sortable:true, width:220,sorttype:"string", editable:true,align:'center'},
-                {name:'manager_name',index:'manager_name',width:80, sortable:false, sorttype:"string", editable:true,align:'center'},
-                {name:'manager_username',index:'manager_username',width:80, sortable:false, sorttype:"string", editable:true,align:'center'},
-                {name:'begintime',index:'begintime', sortable:true,width:160, editable: true,edittype:'text',unformat:pickDate,align:'center'},
+                {name:'number',index:'number', sorttype:"int",width:100, editable: false,align:'center'},
+                {name:'name',index:'name', sortable:true, width:120,sorttype:"string", editable:true,align:'center'},
+                {name:'sex',index:'sex',width:50, sortable:false, sorttype:"string", editable:true,align:'center'},
+                {name:'is_exam_com',index:'is_exam_com',width:135, sortable:false, sorttype:"string", editable:true,align:'center'},
+                {name:'data',index:'data', sortable:true,width:160, editable: true,edittype:'text',unformat:pickDate,align:'center'},
                 {name:'endtime',index:'endtime', sortable:true,width:160, editable: true,unformat:pickDate,align:'center'},
-                {name:'user_count',index:'user_count', sortable:true,width:80, editable: false,align:'center'}
+                {name:'password',index:'password', sortable:true,width:80, editable: false,align:'center'},
+                {name:'is_ques_com',index:'is_ques_com', sorttype:"int",width:70, editable: false,align:'center'},
+                {name:'result',index:'result', sortable:true, width:220,sorttype:"string", editable:true,align:'center'}
             ], 
             
             viewrecords : true, 
