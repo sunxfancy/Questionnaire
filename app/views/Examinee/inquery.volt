@@ -1,5 +1,6 @@
+  <script type='text/javascript' src='/js/demand.js'></script>
   <div class="Leo_question_v2" id="Leo_question_v2">
-        <div class="Leo_question_l" id="Leo_question_panel" style="margin-top:30px;"></div>
+        <div class="Leo_question_l" id="Leo_question_panel" style="margin-top:30px;"><div></div></div>
         <div id="Leo_control" style="width:600px;height:60px;text-align:center;">
             <table style="width:30%;height:60px;margin:0 auto;">
                 <tr style="width:100%;height:100%;">
@@ -35,12 +36,20 @@
         'index':12,
         'title':"您认为公司发展最需提升哪些能力(最多选三项):",
         'options':"资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力",
-        'is_multi':true;
+        'is_multi':true
     }
 
 
     Leo_initPanel();
+    initTitle(data);
 
+    function initTitle(data){
+        var ans=data.options.split('|');
+        var q = new Leo_question(data.index, data.title, data.is_multi, ans);
+        document.getElementById("Leo_question_panel").removeChild(document.getElementById("Leo_question_panel").childNodes[0]);
+        document.getElementById("Leo_question_panel").appendChild(q);
+    }
+    
 
     function Leo_initPanel() {
         
