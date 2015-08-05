@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-01 16:18:46
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-05 16:37:41
+ * @Last Modified time: 2015-08-05 16:50:36
  */
 
 /**
@@ -19,7 +19,7 @@ class PmController extends Base
     public function indexAction()
     {
         $this->view->setTemplateAfter('base2');
-        $this->leftRender();
+        $this->leftRender('北京政法系统人才测评项目管理平台');
     }
 
 	public function detailAction()
@@ -51,6 +51,12 @@ class PmController extends Base
     {
         echo date('y');
         $this->view->disable();
+    }
+
+    public function selectmoduleAction()
+    {
+        $this->view->setTemplateAfter('base2');
+        $this->leftRender('测 试 模 块 选 择');
     }
 
     public function uploadexamineeAction()
@@ -143,14 +149,13 @@ class PmController extends Base
         $this->view->disable();
     }
 
-    function leftRender()
+/*  function leftRender()
     {
-        /****************这一段可以抽象成一个通用的方法**********************/
         $manager = $this->session->get('Manager');
         $this->view->setVar('page_title','北京政法系统人才测评项目管理平台');
         $this->view->setVar('user_name',$manager->name);
         $this->view->setVar('user_id',  $manager->username);
         $this->view->setVar('user_role',"项目经理");
-        /*******************************************************************/
-    }
+   }
+*/
 }
