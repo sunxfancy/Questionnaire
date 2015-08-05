@@ -9,9 +9,18 @@
     <table id="grid-table"></table>
     <div id="grid-pager"></div>   
      
-    <div style="width:100%;height:40px;background-color:silver;text-align:center;">
-        <button>导入</button>
-        <button>导出</button>
+    <div style="width:100%;height:40px;text-align:center;margin: 5px 10px;">
+        <form class="form-inline">
+            <div class="form-group">
+                <input type="file" name="file" input enctype="multipart/form-data" maxlength="100" style="height:30px">
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success" type="submit" >导入</button>
+            </div>
+            <div class="form-group">
+                <a class="btn btn-primary" href="#">导出</a>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -52,12 +61,12 @@
                         delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
                     }
                 },
-                {name:'username',index:'username', sorttype:"int",width:70, editable: false,align:'center'},
-                {name:'name',index:'name', sortable:true, width:220,sorttype:"string", editable:true,align:'center'},
-                {name:'last_login_time',index:'last_login_time',width:80, sortable:false, sorttype:"string", editable:true,align:'center'},
-                {name:'password',index:'password',width:80, sortable:false, sorttype:"string", editable:true,align:'center'},
-                {name:'degree_of_complete',index:'degree_of_complete', sortable:true,width:160, editable: false,align:'center'},
-                {name:'user_divide',index:'user_divide', sortable:false,width:80, editable: false,align:'center'}
+                {name:'username',index:'username', sorttype:"int",width:100, editable: false,align:'center'},
+                {name:'name',index:'name', sortable:true, width:100,sorttype:"string", editable:true,align:'center'},
+                {name:'last_login_time',index:'last_login_time',width:140, sortable:true, sorttype:"string", editable:false,align:'center'},
+                {name:'password',index:'password',width:130, sortable:false, sorttype:"string", editable:true,align:'center'},
+                {name:'degree_of_complete',index:'degree_of_complete', sortable:false,width:120, editable: false,align:'center'},
+                {name:'user_divide',index:'user_divide', sortable:false,width:100, editable: false,align:'center'}
             ], 
             
             viewrecords : true, 
