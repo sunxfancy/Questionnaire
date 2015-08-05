@@ -19,14 +19,6 @@ class AdminController extends Base
 
     public function newprojectAction()
     {
-        $project_name = $this->request->getPost('project_name', 'string');
-        $description  = $this->request->getPost('description', 'string');
-        $begintime    = $this->request->getPost('begintime', 'string');
-        $endtime      = $this->request->getPost('endtime', 'string');
-        $pm_name      = $this->request->getPost('pm_name', 'string');
-        $pm_username  = $this->request->getPost('pm_username', 'string');
-        $pm_password  = $this->request->getPost('pm_password', 'string');
-
         $manager = new Manager();
         $this->getData($manager, array(
             'name' => 'pm_name',
@@ -39,7 +31,25 @@ class AdminController extends Base
             'description' => 'description',
             'begintime' => 'begintime',
             'endtime' => 'endtime'));
-
+        try {
+            if (!$manager->save()) {
+                foreach ($manager->getMessages() as $message) {
+                    echo $message;
+                }
+            }
+            $project->manager_id = $manager->id;
+            if (!$project->save()) {
+                foreach ($project->getMessages() as $message) {
+                    echo $message;
+                }
+            }
+            $manager->project_id = $project->id;
+            $manager->save();
+        } catch( Exception $e ) {
+            echo $e->getMessage();
+            return;
+        }
+        $this->response->redirect('admin');
     }
 
 
@@ -77,11 +87,10 @@ class AdminController extends Base
         if ($oper == 'edit') {
             $id = $this->request->getPost('id', 'int');
             $project = Project::findFirst($id);
-            $project->username   = $this->request->getPost('begintime', 'string');
-            $project->password   = $this->request->getPost('endtime', 'string');
-            $project->role       = $this->request->getPost('name', 'string');
-            $project->name       = $this->request->getPost('description', 'string');
-            $project->manager_id = $this->request->getPost('manager_id', 'integer');
+            $project->username    = $this->request->getPost('begintime', 'string');
+            $project->password    = $this->request->getPost('endtime', 'string');
+            $project->name        = $this->request->getPost('name', 'string');
+            $project->description = $this->request->getPost('description', 'string');
             if (!$project->save()) {
                 foreach ($project->getMessages() as $message) {
                     echo $message;
@@ -90,7 +99,7 @@ class AdminController extends Base
         }
         if ($oper == 'del') {
             $id = $this->request->getPost('id', 'int');
-            $manager = Manager::findFirst($id);
+            $manager = Project::findFirst($id);
             if (!$manager->delete()) {
                 foreach ($manager->getMessages() as $message) {
                     echo $message;

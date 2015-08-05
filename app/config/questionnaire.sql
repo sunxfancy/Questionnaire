@@ -41,21 +41,13 @@ CREATE TABLE `examinee` (
   `team` varchar(200) DEFAULT NULL COMMENT '班子/系统成员',
   `duty` varchar(200) DEFAULT NULL COMMENT '职务',
   `project_id` int(11) NOT NULL COMMENT '所属项目id',
+  `birthday` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_UNIQUE` (`number`),
   KEY `index3` (`project_id`),
   CONSTRAINT `fk_examinee_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `examinee`
---
-
-LOCK TABLES `examinee` WRITE;
-/*!40000 ALTER TABLE `examinee` DISABLE KEYS */;
-/*!40000 ALTER TABLE `examinee` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `factor`
@@ -65,7 +57,7 @@ DROP TABLE IF EXISTS `factor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `factor` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `factor` double DEFAULT NULL COMMENT '因子系数，并未使用，暂时保留',
   `father_factor` int(11) DEFAULT NULL COMMENT '父因子id，在不存在时为空',
@@ -73,19 +65,10 @@ CREATE TABLE `factor` (
   PRIMARY KEY (`id`),
   KEY `index2` (`father_factor`),
   KEY `index4` (`paper_id`),
-  CONSTRAINT `fk_factor_1` FOREIGN KEY (`father_factor`) REFERENCES `factor` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_factor_1` FOREIGN KEY (`father_factor`) REFERENCES `factor` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
   CONSTRAINT `fk_factor_3` FOREIGN KEY (`paper_id`) REFERENCES `paper` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `factor`
---
-
-LOCK TABLES `factor` WRITE;
-/*!40000 ALTER TABLE `factor` DISABLE KEYS */;
-/*!40000 ALTER TABLE `factor` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `factor_ans`
@@ -95,7 +78,7 @@ DROP TABLE IF EXISTS `factor_ans`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `factor_ans` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `score` int(11) DEFAULT NULL COMMENT '因子得分',
   `std_score` int(11) DEFAULT NULL COMMENT '因子标准分',
   `examinee_id` int(11) NOT NULL COMMENT '被试人员id，并非编号',
@@ -104,19 +87,10 @@ CREATE TABLE `factor_ans` (
   PRIMARY KEY (`id`),
   KEY `fk_factor_ans_1_idx` (`examinee_id`),
   KEY `fk_factor_ans_2_idx` (`factor_id`),
-  CONSTRAINT `fk_factor_ans_1` FOREIGN KEY (`examinee_id`) REFERENCES `examinee` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_factor_ans_2` FOREIGN KEY (`factor_id`) REFERENCES `factor` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_factor_ans_1` FOREIGN KEY (`examinee_id`) REFERENCES `examinee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_factor_ans_2` FOREIGN KEY (`factor_id`) REFERENCES `factor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `factor_ans`
---
-
-LOCK TABLES `factor_ans` WRITE;
-/*!40000 ALTER TABLE `factor_ans` DISABLE KEYS */;
-/*!40000 ALTER TABLE `factor_ans` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `firel`
@@ -136,15 +110,6 @@ CREATE TABLE `firel` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `firel`
---
-
-LOCK TABLES `firel` WRITE;
-/*!40000 ALTER TABLE `firel` DISABLE KEYS */;
-/*!40000 ALTER TABLE `firel` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `fqrel`
 --
 
@@ -162,15 +127,6 @@ CREATE TABLE `fqrel` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `fqrel`
---
-
-LOCK TABLES `fqrel` WRITE;
-/*!40000 ALTER TABLE `fqrel` DISABLE KEYS */;
-/*!40000 ALTER TABLE `fqrel` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `index`
 --
 
@@ -178,26 +134,17 @@ DROP TABLE IF EXISTS `index`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `index` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL COMMENT '指标名',
   `father_index` int(11) DEFAULT NULL COMMENT '父指标id，计算时会使用',
   `module_id` int(11) NOT NULL COMMENT '模块id',
   PRIMARY KEY (`id`),
   KEY `index2` (`father_index`),
   KEY `index3` (`module_id`),
-  CONSTRAINT `fk_index_1` FOREIGN KEY (`father_index`) REFERENCES `index` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_index_1` FOREIGN KEY (`father_index`) REFERENCES `index` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
   CONSTRAINT `fk_index_2` FOREIGN KEY (`module_id`) REFERENCES `module` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `index`
---
-
-LOCK TABLES `index` WRITE;
-/*!40000 ALTER TABLE `index` DISABLE KEYS */;
-/*!40000 ALTER TABLE `index` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `index_ans`
@@ -207,26 +154,17 @@ DROP TABLE IF EXISTS `index_ans`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `index_ans` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `score` int(11) DEFAULT NULL COMMENT '指标最终得分\n',
   `index_id` int(11) NOT NULL COMMENT '指标id',
   `examinee_id` int(11) NOT NULL COMMENT '被试人员id，并非编号',
   PRIMARY KEY (`id`),
   KEY `fk_index_ans_1_idx` (`examinee_id`),
   KEY `fk_index_ans_2_idx` (`index_id`),
-  CONSTRAINT `fk_index_ans_1` FOREIGN KEY (`examinee_id`) REFERENCES `examinee` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_index_ans_2` FOREIGN KEY (`index_id`) REFERENCES `index` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_index_ans_1` FOREIGN KEY (`examinee_id`) REFERENCES `examinee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_index_ans_2` FOREIGN KEY (`index_id`) REFERENCES `index` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `index_ans`
---
-
-LOCK TABLES `index_ans` WRITE;
-/*!40000 ALTER TABLE `index_ans` DISABLE KEYS */;
-/*!40000 ALTER TABLE `index_ans` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `manager`
@@ -245,19 +183,9 @@ CREATE TABLE `manager` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `index3` (`username`),
   KEY `index2` (`project_id`),
-  CONSTRAINT `fk_manager_project` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  CONSTRAINT `fk_manager_project` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `manager`
---
-
-LOCK TABLES `manager` WRITE;
-/*!40000 ALTER TABLE `manager` DISABLE KEYS */;
-INSERT INTO `manager` VALUES (1,'sa','123456','M',NULL,'gly');
-/*!40000 ALTER TABLE `manager` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `module`
@@ -267,21 +195,12 @@ DROP TABLE IF EXISTS `module`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `module` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL COMMENT '模块名',
   `belong_module` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `module`
---
-
-LOCK TABLES `module` WRITE;
-/*!40000 ALTER TABLE `module` DISABLE KEYS */;
-/*!40000 ALTER TABLE `module` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `paper`
@@ -291,21 +210,12 @@ DROP TABLE IF EXISTS `paper`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `paper` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(2000) DEFAULT NULL COMMENT '指导语',
   `name` varchar(200) DEFAULT NULL COMMENT '试卷名',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `paper`
---
-
-LOCK TABLES `paper` WRITE;
-/*!40000 ALTER TABLE `paper` DISABLE KEYS */;
-/*!40000 ALTER TABLE `paper` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `pmrel`
@@ -325,15 +235,6 @@ CREATE TABLE `pmrel` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `pmrel`
---
-
-LOCK TABLES `pmrel` WRITE;
-/*!40000 ALTER TABLE `pmrel` DISABLE KEYS */;
-/*!40000 ALTER TABLE `pmrel` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `project`
 --
 
@@ -341,7 +242,7 @@ DROP TABLE IF EXISTS `project`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `project` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `begintime` datetime DEFAULT NULL COMMENT '开始时间',
   `endtime` datetime DEFAULT NULL COMMENT '结束时间',
   `name` varchar(200) NOT NULL COMMENT '项目名',
@@ -349,18 +250,9 @@ CREATE TABLE `project` (
   `manager_id` int(11) NOT NULL COMMENT '项目经理id',
   PRIMARY KEY (`id`),
   KEY `fk_project_1_idx` (`manager_id`),
-  CONSTRAINT `fk_project_1` FOREIGN KEY (`manager_id`) REFERENCES `manager` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `fk_project_1` FOREIGN KEY (`manager_id`) REFERENCES `manager` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `project`
---
-
-LOCK TABLES `project` WRITE;
-/*!40000 ALTER TABLE `project` DISABLE KEYS */;
-/*!40000 ALTER TABLE `project` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `question`
@@ -370,22 +262,13 @@ DROP TABLE IF EXISTS `question`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `question` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `topic` text COMMENT '题目描述',
   `options` text COMMENT '题目选项，不同选项用竖线隔开',
   `grade` text COMMENT '得分表，各个选项的得分数字依次用竖线隔开，总个数和options对应',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `question`
---
-
-LOCK TABLES `question` WRITE;
-/*!40000 ALTER TABLE `question` DISABLE KEYS */;
-/*!40000 ALTER TABLE `question` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `question_ans`
@@ -395,7 +278,7 @@ DROP TABLE IF EXISTS `question_ans`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `question_ans` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `option` int(11) DEFAULT NULL COMMENT '题目原始选项，目前是单选，如果要考虑多选时，最后将这里改成字符串存储',
   `score` int(11) DEFAULT NULL COMMENT '原始选项得分',
   `question_id` int(11) NOT NULL COMMENT '对应题目的id',
@@ -403,19 +286,10 @@ CREATE TABLE `question_ans` (
   PRIMARY KEY (`id`),
   KEY `fk_question_ans_1_idx` (`examinee_id`),
   KEY `fk_question_ans_2_idx` (`question_id`),
-  CONSTRAINT `fk_question_ans_1` FOREIGN KEY (`examinee_id`) REFERENCES `examinee` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_question_ans_2` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_question_ans_1` FOREIGN KEY (`examinee_id`) REFERENCES `examinee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_question_ans_2` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `question_ans`
---
-
-LOCK TABLES `question_ans` WRITE;
-/*!40000 ALTER TABLE `question_ans` DISABLE KEYS */;
-/*!40000 ALTER TABLE `question_ans` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -426,4 +300,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-08-02 16:20:42
+-- Dump completed on 2015-08-04 17:54:09
