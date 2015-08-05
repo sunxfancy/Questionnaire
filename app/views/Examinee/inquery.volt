@@ -186,6 +186,18 @@ function changepage(newpage) {
 
     $.post('/Examinee/getques',newpagejson, function(data) {
         /*optional stuff to do after success */
+
+        var ans_ori=document.getElementsByName(Leo_now_index);
+        var ans_str="";
+        for(var i=0;i<ans_ori.length;i++){
+            if(ans_ori.checked){
+                ans_str+=String.fromCharCode(i+)
+            }
+        }
+
+
+
+
         Leo_now_index = newpage;
         initTitle(data);
         if (newpage == 0) {
