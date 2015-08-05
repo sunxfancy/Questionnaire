@@ -9,9 +9,18 @@
     <table id="grid-table"></table>
     <div id="grid-pager"></div>   
      
-    <div style="width:100%;height:40px;background-color:silver;text-align:center;">
-        <button>导入</button>
-        <button>导出</button>
+    <div style="width:100%;height:40px;text-align:center;margin: 5px 10px;">
+        <form class="form-inline">
+            <div class="form-group">
+                <input type="file" name="file" input enctype="multipart/form-data" maxlength="100" style="height:30px">
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success" type="submit" >导入</button>
+            </div>
+            <div class="form-group">
+                <a class="btn btn-primary" href="#">导出</a>
+            </div>
+        </form>
     </div>
 </div>
 
