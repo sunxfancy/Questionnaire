@@ -39,13 +39,13 @@
         jQuery(grid_selector).jqGrid({
             subGrid : false,
 
-            url: "/admin/list",
+            url: "/pm/list",
             datatype: "json",
             height: '285px',
             shrinkToFit:true,
             forceFit:true,
             autowidth: true,
-            colNames:[' ', '专家编号','姓名','性别', '经理账号', '开始时间','结束时间','参与人数'],
+            colNames:[' ', '领导编号','姓名', '最后登录时间', '密码'],
             colModel:[
                 {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
                     formatter:'actions', 
@@ -55,13 +55,11 @@
                         delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
                     }
                 },
-                {name:'id',index:'id', sorttype:"int",width:70, editable: false,align:'center'},
-                {name:'name',index:'name', sortable:true, width:220,sorttype:"string", editable:true,align:'center'},
-                {name:'manager_name',index:'manager_name',width:80, sortable:false, sorttype:"string", editable:true,align:'center'},
-                {name:'manager_username',index:'manager_username',width:80, sortable:false, sorttype:"string", editable:true,align:'center'},
-                {name:'begintime',index:'begintime', sortable:true,width:160, editable: true,edittype:'text',unformat:pickDate,align:'center'},
-                {name:'endtime',index:'endtime', sortable:true,width:160, editable: true,unformat:pickDate,align:'center'},
-                {name:'user_count',index:'user_count', sortable:true,width:80, editable: false,align:'center'}
+                {name:'username',index:'username', sorttype:"int",width:100, editable: false,align:'center'},
+                {name:'name',index:'name', sortable:true, width:100,sorttype:"string", editable:true,align:'center'},
+                {name:'last_login_time',index:'last_login_time',width:250, sortable:false, sorttype:"string", editable:true,align:'center'},
+                {name:'password',index:'password',width:100, sortable:false, sorttype:"string", editable:true,align:'center'},
+                
             ], 
             
             viewrecords : true, 
@@ -89,7 +87,7 @@
 
             },
     
-            editurl: "/admin/update",//nothing is saved
+            editurl: "/pm/update",//nothing is saved
             caption: "用户账户管理"
     
             ,autowidth: true
@@ -106,6 +104,7 @@
             }, 0);
         }
     
+
         //navButtons
         jQuery(grid_selector).jqGrid('navGrid',pager_selector,
             {   //navbar options
