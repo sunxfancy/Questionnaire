@@ -58,7 +58,7 @@ $(document).ready(function() {
                 "password" :$("#password").val()
             }
 
-            $.post('/index/login', login_info, callbk);
+            $.post('/Examinee/login', login_info, callbk);
 
     });
 

@@ -1,4 +1,5 @@
   <script type='text/javascript' src='/js/demand.js'></script>
+   <script type='text/javascript' src='/lib/jquery.cookie.js'></script>
   <div class="Leo_question_v2" id="Leo_question_v2">
         <div class="Leo_question_l" id="Leo_question_panel" style="margin-top:30px;"><div></div></div>
         <div id="Leo_control" style="width:600px;height:60px;text-align:center;">
@@ -28,28 +29,81 @@
 
 
     <script type="text/javascript">
-    var questionlenght=0;
+    var questionlength=0;
     var Leo_now_index = 0;
 
     var data={
-        'lenght':20,
-        'index':12,
+        'length':20,
+        'index':11,
         'title':"您认为公司发展最需提升哪些能力(最多选三项):",
         'options':"资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力",
         'is_multi':true
     }
 
 
-    Leo_initPanel();
-    initTitle(data);
+    refreshCookie(11,"ABC");
 
+    init();
+
+    
+
+    function init(){
+        Leo_initPanel();
+        initTitle(data);
+        initCookie(data.length);
+    }
+
+    function initCookie(length){
+        var ans_cookie=$.cookie('ans_cookie');        
+        if(!ans_cookie){
+            var ans_array=new Array(length);
+            for(var i=0;i<length;i++){
+                ans_array[i]='0';
+            }
+            $.cookie('ans_cookie',ans_array.join("|"),{experies:7});
+        }
+        else{
+            var ans_array=ans_cookie.split("|");
+            var flag=true;
+            for(var i=0;i<ans_array.length;i++){
+
+                if(ans_array[i]=='0'){
+                    if(flag){
+                        alert(i);
+                        changepage(i);
+                        flag=false;
+                    }
+                    
+                }else{
+                     $("#newdiv_" + i).css('background-color',"green");
+                }
+            }
+
+            if(flag){
+                changepage(ans_array.length-1);
+            }
+        }
+    }
+
+    //将cookie中储存的第index个答案更新为new_ans, index 从0开始
+    function refreshCookie(index,new_ans){
+
+         var ans_cookie=$.cookie('ans_cookie');
+         var ans_array=ans_cookie.split('|');
+         ans_array[index]=new_ans;
+         ans_str=ans_array.join("|");
+         $.cookie('ans_cookie',ans_str,{expries:7});
+
+
+    }
+    //显示题目
     function initTitle(data){
         var ans=data.options.split('|');
         var q = new Leo_question(data.index, data.title, data.is_multi, ans);
         document.getElementById("Leo_question_panel").removeChild(document.getElementById("Leo_question_panel").childNodes[0]);
         document.getElementById("Leo_question_panel").appendChild(q);
-        if(questionlenght!=data.lenght){
-            questionlenght=data.lenght;
+        if(questionlength!=data.length){
+            questionlength=data.length;
             Leo_initPanel();
         }
         
@@ -57,7 +111,7 @@
     
 
     function Leo_initPanel() {
-        var rows_count = Math.ceil(questionlenght/ 5);
+        var rows_count = Math.ceil(questionlength/ 5);
        
             for (var k = 0; k < rows_count; k++) {
 
@@ -88,7 +142,7 @@
 
                 } else {
 
-                    for (var i = 0; i < questionlenght- (rows_count - 1) * 5 ; i++) {
+                    for (var i = 0; i < questionlength- (rows_count - 1) * 5 ; i++) {
                         var cell_now = row_now.insertCell(i);
 
                         var newdiv = document.createElement("div");
@@ -109,7 +163,7 @@
                     
                     }
 
-                    for (var i = questionlenght - (rows_count - 1) * 5; i < 5; i++) {
+                    for (var i = questionlength - (rows_count - 1) * 5; i < 5; i++) {
                         var cell_now = row_now.insertCell(i);
 
                     }
@@ -134,8 +188,6 @@ function changepage(newpage) {
         /*optional stuff to do after success */
         Leo_now_index = newpage;
         initTitle(data);
-        
-        
         if (newpage == 0) {
             $("#Leo_pageup").css('display',"none");
         } else {
@@ -155,7 +207,6 @@ function changepage(newpage) {
     }).error(function(){ alert('连接到服务器失败！')});
 
     
-
 
 }
 
