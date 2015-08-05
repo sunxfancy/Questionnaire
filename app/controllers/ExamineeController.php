@@ -13,12 +13,16 @@ class ExamineeController extends Base
 {
     public function initialize()
     {
-        $this->view->setTemplateAfter('base2');
+        $this->view->setTemplateAfter('base1');
     }
 
 	public function indexAction()
 	{
-		$this->leftRender("kasldf");
+        //获取登录用户的信息
+		$user = array('name'=>"username",'number'=>"us00001",'role'=>"被试人员");
+        
+        $this->view->setVar("user",$user);
+
 	}
 
     public function addAction()
