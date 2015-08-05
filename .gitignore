@@ -12,3 +12,4 @@ question.sublime-project
 question.sublime-workspace
 *.*~
 .fuse_hidden*
+*.bak

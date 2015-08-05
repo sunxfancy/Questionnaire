@@ -49,7 +49,7 @@ function Leo_question(index_i, que, kind, ans) {
             var answersdiv = document.createElement("div");
             var newRadio = document.createElement("input");
             newRadio.type = "radio";
-            newRadio.name = index_i + "";
+            newRadio.name = index_i-1 + "";
 
             var newspan = document.createElement("span");
             answersdiv.style.width = "100%";
@@ -90,7 +90,7 @@ function Leo_question(index_i, que, kind, ans) {
             answersdiv.appendChild(newspan);
             answersdiv.style.cursor = "pointer";
             answersdiv.style.marginTop = "15px";
-            //answersdiv.onclick = new Function("this.childNodes[0].checked=!this.childNodes[0].checked;checkcheckbox(this.childNodes[0].name)");
+            
             answersdiv.onclick = new Function("clickCheckBox(this)");
             answersdiv.onmouseover = new Function("this.style.backgroundColor='silver'");
             answersdiv.onmouseout = new Function("this.style.backgroundColor='white'");
@@ -162,8 +162,6 @@ function checkcheckbox(name) {
             b = true;
         }
     }
-
-
     if (!b) {
         $("#newdiv_" + name).css('background-color',"gray");
     } else {
@@ -202,7 +200,26 @@ function clickCheckBox(t) {
 
 }
 
+function Leo_checkcomplete() {
+        var badques = new Array();
+        for (var i = 0; i < questionlength; i++) {
+            if ($("newdiv_" + i).style.backgroundColor == "gray") {
+                badques.push((i + 1));
+            }
+        }
+        if (badques.length != 0) {
+            alert("您的答题是不完整的，其中第" + badques + "题缺少必要的答案！请继续答题！");
 
+            changepage(badques[0] - 1);
+        } else {
+            var t = confirm("您确定要提交吗？");
+            if (t) {
+                
+                alert("感谢您的配合，我们将在答案提交完毕后，进入问卷调查");
+                window.location.href = "testinfo.html";
+            }
+        }
+    }
 
 
 

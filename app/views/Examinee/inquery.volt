@@ -122,37 +122,20 @@
 
     }
 
-/*
-    function Leo_checkcomplete() {
-        var badques = new Array();
-        for (var i = 0; i < questionlength; i++) {
-            if ($("newdiv_" + i).style.backgroundColor == "gray") {
-                badques.push((i + 1));
-            }
-        }
-        if (badques.length != 0) {
-            alert("您的答题是不完整的，其中第" + badques + "题缺少必要的答案！请继续答题！");
 
-            changepage(badques[0] - 1);
-        } else {
-            var t = confirm("您确定要提交吗？");
-            if (t) {
-                
-                alert("感谢您的配合，我们将在答案提交完毕后，进入问卷调查");
-                window.location.href = "testinfo.html";
-            }
-        }
-    }
-*/
+    
 
 function changepage(newpage) {
     //newpage为从0开始的计数方式
     
     var newpagejson={'index':newpage};
+
     $.post('/Examinee/getques',newpagejson, function(data) {
         /*optional stuff to do after success */
         Leo_now_index = newpage;
         initTitle(data);
+        
+        
         if (newpage == 0) {
             $("#Leo_pageup").css('display',"none");
         } else {
