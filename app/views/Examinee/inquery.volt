@@ -28,11 +28,11 @@
 
 
     <script type="text/javascript">
-    var questionlenght=100;
+    var questionlenght=0;
     var Leo_now_index = 0;
 
     var data={
-        'lenght':100,
+        'lenght':20,
         'index':12,
         'title':"您认为公司发展最需提升哪些能力(最多选三项):",
         'options':"资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力",
@@ -48,11 +48,15 @@
         var q = new Leo_question(data.index, data.title, data.is_multi, ans);
         document.getElementById("Leo_question_panel").removeChild(document.getElementById("Leo_question_panel").childNodes[0]);
         document.getElementById("Leo_question_panel").appendChild(q);
+        if(questionlenght!=data.lenght){
+            questionlenght=data.lenght;
+            Leo_initPanel();
+        }
+        
     }
     
 
     function Leo_initPanel() {
-        
         var rows_count = Math.ceil(questionlenght/ 5);
        
             for (var k = 0; k < rows_count; k++) {
@@ -118,47 +122,39 @@
 
     }
 
-/*
-    function Leo_checkcomplete() {
-        var badques = new Array();
-        for (var i = 0; i < questionlength; i++) {
-            if ($("newdiv_" + i).style.backgroundColor == "gray") {
-                badques.push((i + 1));
-            }
-        }
-        if (badques.length != 0) {
-            alert("您的答题是不完整的，其中第" + badques + "题缺少必要的答案！请继续答题！");
 
-            changepage(badques[0] - 1);
-        } else {
-            var t = confirm("您确定要提交吗？");
-            if (t) {
-                
-                alert("感谢您的配合，我们将在答案提交完毕后，进入问卷调查");
-                window.location.href = "testinfo.html";
-            }
-        }
-    }
-*/
+    
 
 function changepage(newpage) {
     //newpage为从0开始的计数方式
-    Leo_now_index = newpage;
+    
+    var newpagejson={'index':newpage};
 
-    if (newpage == 0) {
-        $("#Leo_pageup").css('display',"none");
-    } else {
-        $("#Leo_pageup").css('display',"");
-    }
+    $.post('/Examinee/getques',newpagejson, function(data) {
+        /*optional stuff to do after success */
+        Leo_now_index = newpage;
+        initTitle(data);
+        
+        
+        if (newpage == 0) {
+            $("#Leo_pageup").css('display',"none");
+        } else {
+            $("#Leo_pageup").css('display',"");
+        }
 
-    if (newpage == questions.length - 1) {
-       
-        ("#Leo_pagedown").css('display',"none");
-    } else {
-        $("#Leo_pagedown").css('display',"");
-    }
+        if (newpage == questions.length - 1) {
+           
+            ("#Leo_pagedown").css('display',"none");
+        } else {
+            $("#Leo_pagedown").css('display',"");
+        }
 
-    $("#newdiv_" + newpage).focus();
+        $("#newdiv_" + newpage).focus();
+
+
+    }).error(function(){ alert('连接到服务器失败！')});
+
+    
 
 
 }

@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-01 16:18:46
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-04 14:19:26
+ * @Last Modified time: 2015-08-05 14:14:04
  */
 
 /**
@@ -51,6 +51,29 @@ class PmController extends Base
     {
         $this->view->setTemplateAfter('base2');
         $this->leftRender('测 试 模 块 选 择');
+    }
+
+    public function uploadexamineeAction()
+    {
+        $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
+        $this->view->disable();
+
+        if ($this->request->isPost() && $this->request->hasFiles())
+        {
+            $files = $this->request->getUploadedFiles();
+            $filename = "Import-".date("YmdHis");
+            $i = 1;
+            foreach ($files as $file) {
+                $newname = "./upload/".$filename."-".$i.".xls";
+                $file->moveTo($newname);
+                $excel = new ExcelLoader();
+                $excel->LoadExaminee($newname);
+                $i++;
+            }
+            echo 0;
+        } else {
+            echo json_encode(array('error' => '错误的接口访问'));
+        }
     }
 
 	public function listAction()

@@ -9,7 +9,7 @@
     <div id="grid-pager"></div>   
 
     <div style="width:100%;height:40px;text-align:center;margin: 5px 10px;">
-        <form class="form-inline">
+        <form class="form-inline" action="/pm/uploadexaminee">
             <div class="form-group">
                 <input type="file" name="file" input enctype="multipart/form-data" maxlength="100" style="height:30px;cursor:pointer;">
             </div>
