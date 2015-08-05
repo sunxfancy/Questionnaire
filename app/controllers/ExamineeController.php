@@ -41,4 +41,9 @@ class ExamineeController extends Base
 	{
 
 	}
+
+	public function getquesAction()
+	{
+		
+	}
 }
