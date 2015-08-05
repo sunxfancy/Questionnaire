@@ -30,7 +30,7 @@
         <div class="Leo_info_l">
             <table cellspacing="0">
                 <tr><td>姓名</td><td style="text-align:left;">{{user['name']}}</td></tr>
-                <tr><td>编号</td><td style="text-align:left;">us001</td></tr>
+                <tr><td>编号</td><td style="text-align:left;">{{paper[0].id}}</td></tr>
                 <tr><td>角色</td><td style="text-align:left;">被试人员</td></tr>
                 
 

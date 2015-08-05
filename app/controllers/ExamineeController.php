@@ -22,10 +22,18 @@ class ExamineeController extends Base
 		$user = array('name'=>"username",'number'=>"us00001",'role'=>"被试人员");
         
         $this->view->setVar("user",$user);
+        // Paper::findFirst();
+        $paper = $this->modelsManager->executeQuery("select * from Paper");
+        $this->view->setVar("paper",$paper);
 
 	}
 
     public function addAction()
     {
+        // $paper = new Paper("select * from paper"); 
+        $sql = "select * from Paper";
+        $paper = $this->modelsManager->executeQuery($sql);
+        $this->view->setVar("paper",$paper);
+
     }
 }
