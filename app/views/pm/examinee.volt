@@ -44,7 +44,7 @@
         jQuery(grid_selector).jqGrid({
             subGrid : false,
 
-            url: "/pm/list",
+            url: "/pm/listexaminee",
             datatype: "json",
             height: '270px',
             shrinkToFit:true,
@@ -96,7 +96,7 @@
 
             },
     
-            editurl: "/pm/update",//nothing is saved
+            editurl: "/pm/updateexaminee",//nothing is saved
             caption: "用户账户管理"
     
             ,autowidth: true
