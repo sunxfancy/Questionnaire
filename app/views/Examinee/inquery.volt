@@ -13,6 +13,7 @@
                     </td>
                     <td style="width:30%;">
                         <img style="height: 40px;" id="Leo_signin" src="../images/signin.png" onclick="Leo_checkcomplete()" />
+                        <input type="button" value='test' onclick="test()"/>
                     </td>
                 </tr>
             </table>
@@ -40,13 +41,7 @@
         'is_multi':true
     }
 
-
-    refreshCookie(11,"ABC");
-
     init();
-
-    
-
     function init(){
         Leo_initPanel();
         initTitle(data);
@@ -54,7 +49,8 @@
     }
 
     function initCookie(length){
-        var ans_cookie=$.cookie('ans_cookie');        
+        var ans_cookie=$.cookie('ans_cookie'); 
+
         if(!ans_cookie){
             var ans_array=new Array(length);
             for(var i=0;i<length;i++){
@@ -69,8 +65,7 @@
 
                 if(ans_array[i]=='0'){
                     if(flag){
-                        alert(i);
-                        changepage(i);
+                        //changepage(i);
                         flag=false;
                     }
                     
@@ -80,7 +75,7 @@
             }
 
             if(flag){
-                changepage(ans_array.length-1);
+                //changepage(ans_array.length-1);
             }
         }
     }
@@ -176,29 +171,37 @@
 
     }
 
-
+function get_ans_str(index){
+    var ans_ori=document.getElementsByName(index);
+        var ans_str="";
+        for(var i=0;i<ans_ori.length;i++){
+            if(ans_ori[i].checked){
+                ans_str+=String.fromCharCode(i+97);
+            }
+        }
+        if(ans_str==""){
+            ans_str="0";
+        }
+        return ans_str;
+}
     
 
 function changepage(newpage) {
     //newpage为从0开始的计数方式
+
+    
     
     var newpagejson={'index':newpage};
-
-    $.post('/Examinee/getques',newpagejson, function(data) {
+    $.post('/Examine/getques',newpagejson,function(data) {
         /*optional stuff to do after success */
-
-        var ans_ori=document.getElementsByName(Leo_now_index);
-        var ans_str="";
-        for(var i=0;i<ans_ori.length;i++){
-            if(ans_ori.checked){
-                ans_str+=String.fromCharCode(i+)
-            }
-        }
-
-
-
-
+       if(!data.title){
+            alert('连接到服务器失败！');
+            return;
+       }
+        var now_ans=get_ans_str(Leo_now_index);
+        refreshCookie(Leo_now_index,now_ans);
         Leo_now_index = newpage;
+
         initTitle(data);
         if (newpage == 0) {
             $("#Leo_pageup").css('display',"none");
@@ -216,10 +219,12 @@ function changepage(newpage) {
         $("#newdiv_" + newpage).focus();
 
 
-    }).error(function(){ alert('连接到服务器失败！')});
+    });
 
-    
+}
 
+function test(){
+    changepage(1);
 }
 
 
