@@ -116,7 +116,7 @@ class Examinee extends \Phalcon\Mvc\Model
             return 0;
         }
     }
-
+    /*
     public static function lastNum($project_id)
     {
         $examinee = Examinee::findFirst(array(
@@ -127,4 +127,6 @@ class Examinee extends \Phalcon\Mvc\Model
         $ans = substr($examinee->number, 4, 4);
         return $ans;
     }
+    */
 }
+
