@@ -47,13 +47,13 @@ class ExamineeController extends Base
 
 	public function inqueryAction()
 	{	
-		$user_name='张晓强';
-		$user_id='us001';
+		$name='张晓强';
+		$number='us001';
 
 		$this->view->setVar('page_title','需求量表');
-		$this->view->setVar('user_name',$user_name);
-		$this->view->setVar('user_id',$user_id);
-		$this->view->setVar('user_role','被试人员');
+		$this->view->setVar('name',$name);
+		$this->view->setVar('number',$number);
+		$this->view->setVar('role','被试人员');
 	}
     public function getquesAction()
     {

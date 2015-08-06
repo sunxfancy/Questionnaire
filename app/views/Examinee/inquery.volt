@@ -30,6 +30,8 @@
 
 
     <script type="text/javascript">
+
+
     var questionlength=0;
     var Leo_now_index = 0;
 
@@ -49,17 +51,19 @@
     }
 
     function initCookie(q_length){
-        var ans_cookie=$.cookie('ans_cookie'); 
+        var ans_cookie=$.cookie('ans_cookie'+'{{ number }}'); 
+
+
 
         if(!ans_cookie){
             var ans_array=new Array(q_length);
             for(var i=0;i<q_length;i++){
                 ans_array[i]='0';
             }
-            $.cookie('ans_cookie',ans_array.join("|"),{experies:7});
-        }
-        else{
+            $.cookie('ans_cookie'+'{{ number }}',ans_array.join("|"),{experies:7});
+        }else{
             var ans_array=ans_cookie.split("|");
+
             var flag=true;
             for(var i=0;i<ans_array.length;i++){
 
@@ -83,11 +87,11 @@
     //将cookie中储存的第index个答案更新为new_ans, index 从0开始
     function refreshCookie(index,new_ans){
 
-         var ans_cookie=$.cookie('ans_cookie');
+         var ans_cookie=$.cookie('ans_cookie'+'{{ number }}');
          var ans_array=ans_cookie.split('|');
          ans_array[index]=new_ans;
          ans_str=ans_array.join("|");
-         $.cookie('ans_cookie',ans_str,{expires:7});
+         $.cookie('ans_cookie'+'{{ number }}',ans_str,{expires:7});
 
 
     }
@@ -186,7 +190,7 @@ function get_ans_str(index){
 }
 
 function get_ans_array_from_cookie(index){
-    var ans_cookie=$.cookie('ans_cookie');
+    var ans_cookie=$.cookie('ans_cookie'+'{{ number }}');
     var ans_array=ans_cookie.split("|");
     var ans_ori=ans_array[index].split("");
     var ans_ori_array=new Array();
