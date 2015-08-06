@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-02 15:33:40
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-06 10:25:48
+ * @Last Modified time: 2015-08-06 14:08:01
  */
 
 include("../app/classes/PHPExcel.php");
@@ -48,7 +48,6 @@ class ExcelLoader
 	            $higestrow = $sheet->getHighestRow();
 
 	            $last_number = $project->last_examinee_id;
-	            echo $last_number."\n";
 				$i = 3;
 				while ($i <= $higestrow) {
 					$k = $sheet->getCell("C".$i)->getValue();
@@ -108,6 +107,50 @@ class ExcelLoader
 			}
 		}
     }
+
+
+
+    /**
+	 * 需求量表导入
+	 */
+	public function LoadInquery ($filename, $project_id, $db)
+    {
+        $this->baseLoad('readline_inquery');
+    }
+
+    function baseLoad($funcname)
+    {
+    	PHPExcel_Settings::setCacheStorageMethod(PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip);
+        $db->begin(); 
+        if (is_readable($filename))
+        {
+        	try {
+				$objexcel = PHPExcel_IOFactory::load($filename);
+				$sheet = $objexcel->getSheet(0);
+				$higestrow = $sheet->getHighestRow();
+
+				$i = 3;
+				while ($i <= $higestrow) {
+					$k = $sheet->getCell("C".$i)->getValue();
+					if (is_null($k) || $k == "") break;
+					$this->$funcname($sheet, $project_id, $i);
+					$i++;
+				}
+			} catch (Exception $ex) {
+				$errors['Exception'] = $ex->getMessage();
+				$db->rollback();
+				$objexcel->disconnectWorksheets();
+				unlink($filename);
+				return $errors;
+			}
+        }
+        $db->commit();
+
+        $objexcel->disconnectWorksheets();
+        unlink($filename);
+        return 0;
+    }
+
 
     function random_string($max = 6){
         $chars = explode(" ", "a b c d e f g h i j k l m n o p q r s t u v w x y z 0 1 2 3 4 5 6 7 8 9");
