@@ -62,7 +62,6 @@ class ExamineeController extends Base
     public function getquesAction()
     {
     	$index=$this->request->getPost('index','int');
-        
         //需要按照index在数据库中搜索量化考评题目       
         $question = array('ques_length'=>(int)20,
                             'index'=>(int)$index,
