@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-01 16:18:46
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-05 17:13:58
+ * @Last Modified time: 2015-08-06 16:33:09
  */
 
 /**
@@ -61,6 +61,21 @@ class PmController extends Base
 
     public function uploadexamineeAction()
     {
+        $this->upload_base('LoadExaminee');
+    }
+
+    public function uploadinterviewerAction()
+    {
+        $this->upload_base('LoadInterviewer');
+    }
+
+    public function uploadleaderAction()
+    {
+        $this->upload_base('LoadLeader');
+    }
+
+    public function upload_base($method)
+    {
         $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
         $this->view->disable();
         if ($this->request->isPost() && $this->request->hasFiles())
@@ -75,7 +90,7 @@ class PmController extends Base
                 $newname = "./upload/".$filename."-".$i.".xls";
                 echo $newname."\n";
                 $file->moveTo($newname);
-                $ans = $excel->LoadExaminee($newname, $project_id, $this->db);
+                $ans = $excel->$method($newname, $project_id, $this->db);
                 echo $ans ."\n";
                 if ($ans != 0) { echo json_encode($ans); return; }
                 $i++;
@@ -125,29 +140,6 @@ class PmController extends Base
                 }
             }
         }
-    }
-
-    public function datareturn($builder)
-    {
-        $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
-        $limit = $this->request->getQuery('rows', 'int');
-        $page = $this->request->getQuery('page', 'int');
-        if (is_null($limit)) $limit = 10;
-        if (is_null($page)) $page = 1;
-        $paginator = new Phalcon\Paginator\Adapter\QueryBuilder(array("builder" => $builder,
-                                                                      "limit" => $limit,
-                                                                      "page" => $page));
-        $page = $paginator->getPaginate();
-        $ans = array();
-        $ans['total'] = $page->total_pages;
-        $ans['page'] = $page->current;
-        $ans['records'] = $page->total_items;
-        foreach ($page->items as $key => $item)
-        {
-            $ans['rows'][$key] = $item;
-        }
-        echo json_encode($ans);
-        $this->view->disable();
     }
 
 /*  function leftRender()
