@@ -44,7 +44,7 @@
         jQuery(grid_selector).jqGrid({
             subGrid : false,
 
-            url: "/pm/list",
+            url: "/pm/listexaminee",
             datatype: "json",
             height: '270px',
             shrinkToFit:true,
@@ -65,7 +65,7 @@
                 {name:'sex',index:'sex',width:60, sortable:false, sorttype:"string", editable:false,align:'center'},
                 {name:'is_exam_com',index:'is_exam_com',width:135, sortable:false, sorttype:"string", editable:false,align:'center'},
                 {name:'data',index:'data', sortable:false,width:120, editable: false,edittype:'text',unformat:pickDate,align:'center'},
-                {name:'endtime',index:'endtime', sortable:true,width:200, editable: false,unformat:pickDate,align:'center'},
+                {name:'last_login',index:'last_login', sortable:true,width:200, editable: false,unformat:pickDate,align:'center'},
                 {name:'password',index:'password', sortable:false,width:80, editable: true,align:'center'},
                 {name:'is_ques_com',index:'is_ques_com', sorttype:"int",width:160, sortable:false, editable: false,align:'center'},
                 {name:'result',index:'result', sortable:false, width:130,sorttype:"string", editable:false,align:'center'}
@@ -96,7 +96,7 @@
 
             },
     
-            editurl: "/pm/update",//nothing is saved
+            editurl: "/pm/updateexaminee",//nothing is saved
             caption: "用户账户管理"
     
             ,autowidth: true
