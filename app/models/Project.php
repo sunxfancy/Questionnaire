@@ -40,5 +40,9 @@ class Project extends \Phalcon\Mvc\Model
      */
     public $manager_id;
 
-
+    /**
+     * @var integer
+     *
+     */
+    public $last_examinee_id;
 }
