@@ -86,10 +86,98 @@ class PmController extends Base
         }
     }
 
-	public function listAction()
+	public function listexamineeAction()
 	{
+        $builder = $this->modelsManager->createBuilder()                            
+                                       ->from('Examinee');
+        $sidx = $this->request->getQuery('sidx','string');
+        $sord = $this->request->getQuery('sord','string');
+        if ($sidx != null)
+            $sort = $sidx;
+        else
+            $sort = 'number';
+        if ($sord != null)
+            $sort = $sort.' '.$sord;
+        $builder = $builder->orderBy($sort);
+        $this->datareturn($builder);
+	}
+
+	public function updateexamineeAction()
+    {
+        $oper = $this->request->getPost('oper', 'string');
+        if ($oper == 'edit') {
+            $id = $this->request->getPost('id', 'int');
+            $examinee = Examinee::findFirst($id);
+            $examinee->name       = $this->request->getPost('name', 'string');
+            $examinee->password   = $this->request->getPost('password', 'string');
+            $examinee->project_id = $this->request->getPost('project_id', 'int');
+            if (!$examinee->save()) {
+                foreach ($examinee->getMessages() as $message) {
+                    echo $message;
+                }
+            }
+        }
+        if ($oper == 'del') {
+            $id = $this->request->getPost('id', 'int');
+            $examinee = Examinee::findFirst($id);
+            if (!$examinee->delete()) {
+                foreach ($examinee->getMessages() as $message) {
+                    echo $message;
+                }
+            }
+        }
+    }
+
+    public function listinterviewerAction()
+    {
         $builder = $this->modelsManager->createBuilder()
-                                       ->from('Manager');
+                                       ->from('Manager')
+                                       //->join('Project','Project.project_id=Manager.project_id')
+                                       ->where('Manager.role = "I"');
+        $sidx = $this->request->getQuery('sidx','string');
+        $sord = $this->request->getQuery('sord','string');
+        if ($sidx != null)
+            $sort = $sidx;
+        else
+            $sort = 'username';
+        if ($sord != null)
+            $sort = $sort.' '.$sord;
+        $builder = $builder->orderBy($sort);
+        $this->datareturn($builder);
+    }
+
+    public function updateinterviewerAction()
+    {
+        $oper = $this->request->getPost('oper', 'string');
+        if ($oper == 'edit') {
+            $id = $this->request->getPost('id', 'int');
+            $manager = Manager::findFirst($id);
+            $manager->name       = $this->request->getPost('name', 'string');
+            $manager->password       = $this->request->getPost('password', 'string');
+            $manager->project_id = $this->request->getPost('project_id', 'int');
+            if (!$manager->save()) {
+                foreach ($manager->getMessages() as $message) {
+                    echo $message;
+                }
+            }
+        }
+        if ($oper == 'del') {
+            $id = $this->request->getPost('id', 'int');
+            $manager = Manager::findFirst($id);
+            if (!$manager->delete()) {
+                foreach ($manager->getMessages() as $message) {
+                    echo $message;
+                }
+            }
+        }
+    }
+
+    public function listleaderAction()
+    {
+        $builder = $this->modelsManager->createBuilder()
+                                       ->from('Manager')
+                                       //->join('Project','Project.project_id=Manager.project_id')
+                                       ->where('Manager.role = "L"');
         $sidx = $this->request->getQuery('sidx','string');
         $sord = $this->request->getQuery('sord','string');
         if ($sidx != null)
@@ -100,15 +188,16 @@ class PmController extends Base
             $sort = $sort.' '.$sord;
         $builder = $builder->orderBy($sort);
         $this->datareturn($builder);
-	}
+    }
 
-	public function updateAction()
+    public function updateleaderAction()
     {
         $oper = $this->request->getPost('oper', 'string');
         if ($oper == 'edit') {
             $id = $this->request->getPost('id', 'int');
             $manager = Manager::findFirst($id);
-            $this->getData($manager, array('username', 'password', 'role', 'name'));
+            $manager->name       = $this->request->getPost('name', 'string');
+            $manager->password       = $this->request->getPost('password', 'string');
             $manager->project_id = $this->request->getPost('project_id', 'int');
             if (!$manager->save()) {
                 foreach ($manager->getMessages() as $message) {

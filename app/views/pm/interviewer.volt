@@ -45,7 +45,7 @@
         jQuery(grid_selector).jqGrid({
             subGrid : false,
 
-            url: "/pm/list",
+            url: "/pm/listinterviewer",
             datatype: "json",
             height: '270px',
             shrinkToFit:true,
@@ -63,10 +63,10 @@
                 },
                 {name:'username',index:'username', sorttype:"int",width:100, editable: false,align:'center'},
                 {name:'name',index:'name', sortable:true, width:100,sorttype:"string", editable:true,align:'center'},
-                {name:'last_login_time',index:'last_login_time',width:140, sortable:true, sorttype:"string", editable:false,align:'center'},
+                {name:'last_login',index:'last_login',width:140, sortable:true, sorttype:"string", editable:false,align:'center'},
                 {name:'password',index:'password',width:130, sortable:false, sorttype:"string", editable:true,align:'center'},
                 {name:'degree_of_complete',index:'degree_of_complete', sortable:false,width:120, editable: false,align:'center'},
-                {name:'user_divide',index:'user_divide', sortable:false,width:100, editable: false,align:'center'}
+                {name:'user_divide',index:'user_divide', sortable:false,width:100, editable: false,align:'center',url:'pm/userdivide',}
             ], 
             
             viewrecords : true, 
@@ -94,7 +94,7 @@
 
             },
     
-            editurl: "/pm/update",//nothing is saved
+            editurl: "/pm/updateinterviewer",//nothing is saved
             caption: "用户账户管理"
     
             ,autowidth: true
