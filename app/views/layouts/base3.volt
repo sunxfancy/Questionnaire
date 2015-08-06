@@ -29,9 +29,9 @@
     <div class="Leo_info_l">
 
         <div style='width:190px;text-align:center;margin:0 auto;'>
-            <span style="font-size:25px;font-family:'Times New Roman';font-weight:bold;">{{user_name}}</span><br/>
-            <span style="font-size:25px;font-family:'Times New Roman';font-weight:bold;">{{user_id}}</span><br/>
-            <span style="font-size:25px;font-family:'宋体';font-weight:bold;">{{user_role}}</span><br/>
+            <span style="font-size:25px;font-family:'Times New Roman';font-weight:bold;">{{name}}</span><br/>
+            <span style="font-size:25px;font-family:'Times New Roman';font-weight:bold;">{{number}}</span><br/>
+            <span style="font-size:25px;font-family:'宋体';font-weight:bold;">{{role}}</span><br/>
 
         </div>
         
