@@ -195,7 +195,7 @@ function clickCheckBox(t) {
 function Leo_checkcomplete() {
         var badques = new Array();
         for (var i = 0; i < questionlength; i++) {
-            if ($("newdiv_" + i).style.backgroundColor == "gray") {
+            if (document.getElementById("newdiv_" + i).style.backgroundColor=='gray') {
                 badques.push((i + 1));
             }
         }
@@ -207,7 +207,8 @@ function Leo_checkcomplete() {
             if (t) {
                 
                 alert("感谢您的配合，我们将在答案提交完毕后，进入问卷调查");
-                window.location.href = "testinfo.html";
+                //跳转代码
+                //window.location.href = "testinfo.html";
             }
         }
     }
