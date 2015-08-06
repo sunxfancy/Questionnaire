@@ -57,8 +57,10 @@ class ExamineeController extends Base
 	}
     public function getquesAction()
     {
-        $question = array('ques_length'=>'20',
-                            'index'=>'11',
+    	$index=$this->request->getPost('index','int');
+
+        $question = array('ques_length'=>(int)20,
+                            'index'=>(int)$index,
                             'title'=>"test您认为公司发展",
                             'options'=>"资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力",
                             'is_multi'=>true);
