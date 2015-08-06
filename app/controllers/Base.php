@@ -61,5 +61,28 @@ class Base extends \Phalcon\Mvc\Controller
         $this->view->setVar('user_role', $role);
         /*******************************************************************/
     }
+
+    public function datareturn($builder)
+    {
+        $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
+        $limit = $this->request->getQuery('rows', 'int');
+        $page = $this->request->getQuery('page', 'int');
+        if (is_null($limit)) $limit = 10;
+        if (is_null($page)) $page = 1;
+        $paginator = new Phalcon\Paginator\Adapter\QueryBuilder(array("builder" => $builder,
+                                                                      "limit" => $limit,
+                                                                      "page" => $page));
+        $page = $paginator->getPaginate();
+        $ans = array();
+        $ans['total'] = $page->total_pages;
+        $ans['page'] = $page->current;
+        $ans['records'] = $page->total_items;
+        foreach ($page->items as $key => $item)
+        {
+            $ans['rows'][$key] = $item;
+        }
+        echo json_encode($ans);
+        $this->view->disable();
+    }
 }
 

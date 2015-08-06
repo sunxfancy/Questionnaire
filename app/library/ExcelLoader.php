@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-02 15:33:40
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-06 16:11:53
+ * @Last Modified time: 2015-08-06 17:17:09
  */
 
 include("../app/classes/PHPExcel.php");
@@ -118,7 +118,7 @@ class ExcelLoader
 	 */
 	public function LoadInquery ($filename, $project_id, $db)
     {
-        $this->baseLoad('readline_inquery');
+        $this->baseLoad('readline_inquery',$filename, $project_id, $db);
     }
 
     public function readline_inquery($sheet, $project_id, $i)
@@ -131,7 +131,7 @@ class ExcelLoader
 	 */
 	public function LoadInterviewer ($filename, $project_id, $db)
 	{
-		$this->baseLoad('readline_interviewer');
+		$this->baseLoad('readline_interviewer',$filename, $project_id, $db);
 	}
 
     public function readline_interviewer($sheet, $project_id, $i)
@@ -139,8 +139,8 @@ class ExcelLoader
 		$interviewer = new Manager();
 		
 		$interviewer->name = self::filter($sheet->getCell('C'.$i)->getValue());
-		$interviewer->username = random_string();
-		$interviewer->password = random_string();
+		$interviewer->username = $this->random_string();
+		$interviewer->password = $this->random_string();
 		$interviewer->role = 'I';
 		if (!$interviewer->save()) {
 			foreach ($interviewer->getMessages() as $message) {
@@ -155,7 +155,7 @@ class ExcelLoader
      */
     public function LoadLeader ($filename, $project_id, $db)
     {
-        $this->baseLoad('readline_leader');
+        $this->baseLoad('readline_leader',$filename, $project_id, $db);
     }
 
     public function readline_leader($sheet, $project_id, $i)
@@ -163,8 +163,8 @@ class ExcelLoader
     	$interviewer = new Manager();
 		
 		$interviewer->name = self::filter($sheet->getCell('C'.$i)->getValue());
-		$interviewer->username = random_string();
-		$interviewer->password = random_string();
+		$interviewer->username = $this->random_string();
+		$interviewer->password = $this->random_string();
 		$interviewer->role = 'L';
 		if (!$interviewer->save()) {
 			foreach ($interviewer->getMessages() as $message) {
@@ -176,7 +176,7 @@ class ExcelLoader
 
 
 
-    function baseLoad($funcname)
+    function baseLoad($funcname,$filename, $project_id, $db)
     {
     	PHPExcel_Settings::setCacheStorageMethod(PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip);
         $db->begin(); 
@@ -214,17 +214,18 @@ class ExcelLoader
 	 */
 	static function filter($data) {
 		$str = (string)$data;
-		$str = preg_replace('^[A-Za-z0-9\u4e00-\u9fa5\-_]','',$str);
+		$str = preg_replace('/[^A-Za-z0-9\x{4e00}-\x{9fa5}\-_]/iu','',$str);
 		return $str;
 	}
 
-    function random_string($max = 6){
+	function random_string($max = 6){
         $chars = explode(" ", "a b c d e f g h i j k l m n o p q r s t u v w x y z 0 1 2 3 4 5 6 7 8 9");
+        $rtn = '';
         for($i = 0; $i < $max; $i++){
             $rnd = array_rand($chars);
-            $rtn .= base64_encode(md5($chars[$rnd]));
+            $rtn .= $chars[$rnd];
         }
-        return substr(str_shuffle(strtolower($rtn)), 0, $max);
+        return $rtn;
     }
 }
 

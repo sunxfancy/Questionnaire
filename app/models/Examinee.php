@@ -99,6 +99,12 @@ class Examinee extends \Phalcon\Mvc\Model
      *
      */
     public $project_id;
+
+    /**
+     * @var datetime
+     */
+    public $last_login;
+    
     
     // 被试人员登陆验证
     public static function checkLogin($username,$password)
