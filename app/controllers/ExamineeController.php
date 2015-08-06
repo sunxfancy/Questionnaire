@@ -49,8 +49,8 @@ class ExamineeController extends Base
 	{
         //获得被试者的登陆信息
         $examinee = $this->session->get('Examinee');
-        $name = $examinee.name;
-        $number = $examinee.number;
+        $name = $examinee->name;
+        $number = $examinee->number;
         // $name='张晓强';
 		// $number='us001';
 

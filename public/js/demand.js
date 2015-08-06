@@ -103,31 +103,23 @@ function Leo_question(index_i, que, kind, ans) {
 
 
 
-
-
-
-
-
-function Leo_pagedown() {
-
-    if (Leo_now_index == questions.length - 1) {
+function Leo_pagedown_f(){
+    if (Leo_now_index == questionlength - 1) {
         Leo_checkcomplete();
-    } else if (Leo_now_index < questions.length - 1) {
+    } else if (Leo_now_index < questionlength - 1) {
 
-        changepage(Leo_now_index-1,true);
+        changepage(Leo_now_index+1,true);
     }
-
-   
     //这里答题希望一套一套来答，还是提示只出现一次
-
-
 }
 
 
+function test(){
+    alert("aaa");
+}
 
 
-
-function Leo_pageup() {
+function Leo_pageup_f() {
 
     if (Leo_now_index > 0) {
         changepage(Leo_now_index - 1,true);
@@ -136,8 +128,8 @@ function Leo_pageup() {
 function Leo_clickRadio(t) {
 
     changeColor(t);
-    if (Leo_now_index != questions.length - 1) {
-        Leo_pagedown();
+    if (Leo_now_index != questionlength - 1) {
+        Leo_pagedown_f();
 
     } else {
 
@@ -203,7 +195,7 @@ function clickCheckBox(t) {
 function Leo_checkcomplete() {
         var badques = new Array();
         for (var i = 0; i < questionlength; i++) {
-            if ($("newdiv_" + i).style.backgroundColor == "gray") {
+            if (document.getElementById("newdiv_" + i).style.backgroundColor=='gray') {
                 badques.push((i + 1));
             }
         }
@@ -215,7 +207,8 @@ function Leo_checkcomplete() {
             if (t) {
                 
                 alert("感谢您的配合，我们将在答案提交完毕后，进入问卷调查");
-                window.location.href = "testinfo.html";
+                //跳转代码
+                //window.location.href = "testinfo.html";
             }
         }
     }
