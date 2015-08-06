@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-02 15:33:40
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-06 10:07:54
+ * @Last Modified time: 2015-08-06 10:25:48
  */
 
 include("../app/classes/PHPExcel.php");
@@ -14,9 +14,9 @@ include("../app/classes/PHPExcel.php");
 class ExcelLoader
 {
 	private function __construct() {
-		$this->excel_col = array( 'C' => 'name',     'D' => 'sex',      'E' => 'native',       'F' => 'education',
-						'G' => 'birthday', 'H' => 'politics', 'I' => 'professional', 'J' => 'employer', 
-						'K' => 'unit',     'L' => 'duty');
+		$this->excel_col = array( 'C' => 'name',     'E' => 'native',   'F' => 'education',
+								  'G' => 'birthday', 'H' => 'politics', 'I' => 'professional', 
+								  'J' => 'employer', 'K' => 'unit',     'L' => 'duty');
 		$this->edu_name = array('school','profession','degree','date');
 		$this->work_name = array('employer','unit','duty','date');
 	}
@@ -31,6 +31,9 @@ class ExcelLoader
         return self::$instance;  
 	}
 
+	/**
+	 * 被试人员导入
+	 */
 	public function LoadExaminee ($filename, $project_id, $db)
     {
         PHPExcel_Settings::setCacheStorageMethod(PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip);
@@ -62,6 +65,7 @@ class ExcelLoader
 			}
         }
         $project->last_examinee_id = $last_number;
+        $project->save();
         $db->commit();
 
         $objexcel->disconnectWorksheets();
@@ -69,14 +73,15 @@ class ExcelLoader
         return 0;
     }
 
-	
-
     public function readline_examinee($sheet, $project_id, $number, $i)
     {
 		$examinee = new Examinee();
 		foreach ($this->excel_col as $key => $value) {
 			$examinee->$value = (string)$sheet->getCell($key.$i)->getValue();
 		}
+		$sex = (string)$sheet->getCell($key.$i)->getValue();
+		if ($sex == '男' || $sex == 1) $examinee->sex = 1;
+		else $examinee->sex = 1;
 		$education = array();
 		$work = array();
 		$this->readother_examinee($sheet,$education,$this->edu_name, $i);
