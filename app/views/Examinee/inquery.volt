@@ -13,7 +13,7 @@
                     </td>
                     <td style="width:30%;">
                         <img style="height: 40px;" id="Leo_signin" src="../images/signin.png" onclick="Leo_checkcomplete()" />
-                        
+                        <input type="button" value="test" onclick='test()'/>
                     </td>
                 </tr>
             </table>
@@ -30,6 +30,8 @@
 
 
     <script type="text/javascript">
+
+
     var questionlength=0;
     var Leo_now_index = 0;
 
@@ -49,23 +51,25 @@
     }
 
     function initCookie(q_length){
-        var ans_cookie=$.cookie('ans_cookie'); 
+        var ans_cookie=$.cookie('ans_cookie'+'{{ number }}'); 
+
+
 
         if(!ans_cookie){
             var ans_array=new Array(q_length);
             for(var i=0;i<q_length;i++){
                 ans_array[i]='0';
             }
-            $.cookie('ans_cookie',ans_array.join("|"),{experies:7});
-        }
-        else{
+            $.cookie('ans_cookie'+'{{ number }}',ans_array.join("|"),{experies:7});
+        }else{
             var ans_array=ans_cookie.split("|");
+
             var flag=true;
             for(var i=0;i<ans_array.length;i++){
 
                 if(ans_array[i]=='0'){
                     if(flag){
-                        changepage(i);
+                        changepage(i,false);
                         flag=false;
                     }
                     
@@ -75,7 +79,7 @@
             }
 
             if(flag){
-                changepage(ans_array.length-1);
+                changepage(ans_array.length-1,false);
             }
         }
     }
@@ -83,11 +87,11 @@
     //将cookie中储存的第index个答案更新为new_ans, index 从0开始
     function refreshCookie(index,new_ans){
 
-         var ans_cookie=$.cookie('ans_cookie');
+         var ans_cookie=$.cookie('ans_cookie'+'{{ number }}');
          var ans_array=ans_cookie.split('|');
          ans_array[index]=new_ans;
          ans_str=ans_array.join("|");
-         $.cookie('ans_cookie',ans_str,{expries:7});
+         $.cookie('ans_cookie'+'{{ number }}',ans_str,{expires:7});
 
 
     }
@@ -130,7 +134,7 @@
                         newdiv.style.fontSize = "21px";
                         newdiv.tabIndex = "0";
                         cell_now.appendChild(newdiv);
-                        newdiv.onclick = new Function("changepage(parseInt(this.innerText)-1)");
+                        newdiv.onclick = new Function("changepage(parseInt(this.innerText)-1,true)");
                         
                     }
                     //newdiv.onclick =new Function( "changepage(parseInt(this.innerText)-1)");
@@ -154,7 +158,7 @@
                         newdiv.style.fontSize = "21px";
                         newdiv.tabIndex = "0";
                         cell_now.appendChild(newdiv);
-                        newdiv.onclick = new Function("changepage(parseInt(this.innerText)-1)");
+                        newdiv.onclick = new Function("changepage(parseInt(this.innerText)-1,true)");
                     
                     }
 
@@ -186,7 +190,7 @@ function get_ans_str(index){
 }
 
 function get_ans_array_from_cookie(index){
-    var ans_cookie=$.cookie('ans_cookie');
+    var ans_cookie=$.cookie('ans_cookie'+'{{ number }}');
     var ans_array=ans_cookie.split("|");
     var ans_ori=ans_array[index].split("");
     var ans_ori_array=new Array();
@@ -198,28 +202,35 @@ function get_ans_array_from_cookie(index){
     return ans_ori_array;
 }  
 
-function changepage(newpage) {
+function changepage(newpage,isCookie) {
     //newpage为从0开始的计数方式
 
-    
-    
     var newpagejson={'index':newpage};
-    $.post('/Examine/getques',newpagejson,function(data) {
+    $.post('/Examinee/getques',newpagejson,function(data) {
         /*optional stuff to do after success */
-       
        if(!data.title){
         alert("服务器不理我们了 0_0!");
        }
-        var now_ans=get_ans_str(Leo_now_index);
-        refreshCookie(Leo_now_index,now_ans);
-        Leo_now_index = newpage;
-        initTitle(data);
-        var ans=get_ans_array_from_cookie(newpage);
-        var ans_ori=document.getElementsByName(newpage);
-        alert(ans_ori.length);
-        for(var i=0;i<ans.length;i++){
-            ans_ori[ans[i]].checked=true;
+
+        
+
+       if(isCookie){
+            var now_ans=get_ans_str(Leo_now_index);
+            refreshCookie(Leo_now_index,now_ans);
+            Leo_now_index = newpage;
+            initTitle(data);
+            var ans=get_ans_array_from_cookie(newpage);
+            var ans_ori=document.getElementsByName(newpage);
+            for(var i=0;i<ans.length;i++){
+                ans_ori[ans[i]].checked=true;
+            }
+        }else{
+            Leo_now_index = newpage;
+            initTitle(data);
         }
+
+
+        
 
         if (newpage == 0) {
             $("#Leo_pageup").css('display',"none");
@@ -241,6 +252,8 @@ function changepage(newpage) {
 
 }
 
-
+function test(){
+    changepage(11,true);
+}
 
 </script>

@@ -114,7 +114,7 @@ function Leo_pagedown() {
         Leo_checkcomplete();
     } else if (Leo_now_index < questions.length - 1) {
 
-        changepage(Leo_now_index + 1);
+        changepage(Leo_now_index-1,true);
     }
 
    
@@ -130,7 +130,7 @@ function Leo_pagedown() {
 function Leo_pageup() {
 
     if (Leo_now_index > 0) {
-        changepage(Leo_now_index - 1);
+        changepage(Leo_now_index - 1,true);
     }
 }
 function Leo_clickRadio(t) {
@@ -209,7 +209,7 @@ function Leo_checkcomplete() {
         }
         if (badques.length != 0) {
             alert("您的答题是不完整的，其中第" + badques + "题缺少必要的答案！请继续答题！");
-            changepage(badques[0] - 1);
+            changepage(badques[0] - 1,true);
         } else {
             var t = confirm("您确定要提交吗？");
             if (t) {
