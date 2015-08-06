@@ -46,9 +46,13 @@ class ExamineeController extends Base
     }
 
 	public function inqueryAction()
-	{	
-		$name='张晓强';
-		$number='us001';
+	{
+        //获得被试者的登陆信息
+        $examinee = $this->session->get('Examinee');
+        $name = $examinee.name;
+        $number = $examinee.number;
+        // $name='张晓强';
+		// $number='us001';
 
 		$this->view->setVar('page_title','需求量表');
 		$this->view->setVar('name',$name);
@@ -58,7 +62,8 @@ class ExamineeController extends Base
     public function getquesAction()
     {
     	$index=$this->request->getPost('index','int');
-
+        
+        //需要按照index在数据库中搜索量化考评题目       
         $question = array('ques_length'=>(int)20,
                             'index'=>(int)$index,
                             'title'=>"test您认为公司发展",
