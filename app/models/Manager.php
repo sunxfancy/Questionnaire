@@ -40,6 +40,12 @@ class Manager extends \Phalcon\Mvc\Model
      */
     public $name;
 
+
+    /**
+     * @var datetime
+     */
+    public $last_login;
+
     public static function checkLogin($username,$password)
     {
         $manager = Manager::findFirst(array(
