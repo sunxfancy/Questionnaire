@@ -6,14 +6,14 @@
             <table style="width:30%;height:60px;margin:0 auto;">
                 <tr style="width:100%;height:100%;">
                     <td style="width:30%;">
-                        <img style="height:40px;display:none;" id="Leo_pageup" src="../images/left.png" onclick="Leo_pageup()" />
+                        <img style="height:40px;display:none;" id="Leo_pageup" src="../images/left.png" onclick="Leo_pageup_f()" />
                     </td>
                     <td style="width:30%;">
-                        <img style="height: 40px;" id="Leo_pagedown" src="../images/right.png" onclick="Leo_pagedown()" />
+                        <img style="height: 40px;" id="Leo_pagedown" src="../images/right.png" onclick="Leo_pagedown_f()" />
                     </td>
                     <td style="width:30%;">
                         <img style="height: 40px;" id="Leo_signin" src="../images/signin.png" onclick="Leo_checkcomplete()" />
-                        <input type="button" value="test" onclick='test()'/>
+                      
                     </td>
                 </tr>
             </table>
@@ -240,7 +240,7 @@ function changepage(newpage,isCookie) {
 
         if (newpage == questionlength - 1) {
            
-            ("#Leo_pagedown").css('display',"none");
+            $("#Leo_pagedown").css('display',"none");
         } else {
             $("#Leo_pagedown").css('display',"");
         }
@@ -252,8 +252,5 @@ function changepage(newpage,isCookie) {
 
 }
 
-function test(){
-    changepage(11,true);
-}
-
+    
 </script>
