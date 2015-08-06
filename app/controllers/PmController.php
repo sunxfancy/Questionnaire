@@ -88,12 +88,7 @@ class PmController extends Base
 
 	public function listexamineeAction()
 	{
-        $builder = $this->modelsManager->createBuilder()
-                                        ->columns(array(
-                                        'Examinee.id as id',
-                                        'Examinee.number as number', 'Examinee.name as name',
-                                        'Examinee.sex as sex', 'Examinee.password as password'                                       
-                                         ))
+        $builder = $this->modelsManager->createBuilder()                            
                                        ->from('Examinee');
         $sidx = $this->request->getQuery('sidx','string');
         $sord = $this->request->getQuery('sord','string');
@@ -135,21 +130,20 @@ class PmController extends Base
 
     public function listinterviewerAction()
     {
-        
-        while($manager->role == 'M'){           
-            $builder = $this->modelsManager->createBuilder()
-                                           ->from('Manager');
-            $sidx = $this->request->getQuery('sidx','string');
-            $sord = $this->request->getQuery('sord','string');
-            if ($sidx != null)
-                $sort = $sidx;
-            else
-                $sort = 'username';
-            if ($sord != null)
-                $sort = $sort.' '.$sord;
-            $builder = $builder->orderBy($sort);
-            $this->datareturn($builder);
-        }
+        $builder = $this->modelsManager->createBuilder()
+                                       ->from('Manager')
+                                       //->join('Project','Project.project_id=Manager.project_id')
+                                       ->where('Manager.role = "I"');
+        $sidx = $this->request->getQuery('sidx','string');
+        $sord = $this->request->getQuery('sord','string');
+        if ($sidx != null)
+            $sort = $sidx;
+        else
+            $sort = 'username';
+        if ($sord != null)
+            $sort = $sort.' '.$sord;
+        $builder = $builder->orderBy($sort);
+        $this->datareturn($builder);
     }
 
     public function updateinterviewerAction()
@@ -181,7 +175,9 @@ class PmController extends Base
     public function listleaderAction()
     {
         $builder = $this->modelsManager->createBuilder()
-                                       ->from('Manager');
+                                       ->from('Manager')
+                                       //->join('Project','Project.project_id=Manager.project_id')
+                                       ->where('Manager.role = "L"');
         $sidx = $this->request->getQuery('sidx','string');
         $sord = $this->request->getQuery('sord','string');
         if ($sidx != null)
