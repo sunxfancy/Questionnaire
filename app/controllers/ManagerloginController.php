@@ -55,7 +55,8 @@ class ManagerloginController extends Base
 
     public function logoutAction()
     {
-    	
+        $this->session->remove('Manager');
+    	$this->response->redirect('managerlogin');
     }
 
     public function dataReturn($ans)

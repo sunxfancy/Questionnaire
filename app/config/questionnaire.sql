@@ -42,12 +42,24 @@ CREATE TABLE `examinee` (
   `duty` varchar(200) DEFAULT NULL COMMENT '职务',
   `project_id` int(11) NOT NULL COMMENT '所属项目id',
   `birthday` date DEFAULT NULL,
+  `last_login` datetime DEFAULT NULL,
+  `is_exam_com` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_UNIQUE` (`number`),
   KEY `index3` (`project_id`),
   CONSTRAINT `fk_examinee_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `examinee`
+--
+
+LOCK TABLES `examinee` WRITE;
+/*!40000 ALTER TABLE `examinee` DISABLE KEYS */;
+INSERT INTO `examinee` VALUES (3,'01','123','s1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,0),(4,'151','mymf5j','孙西风','{\"education\":[],\"work\":[]}',0,'河北','大本','群众',NULL,NULL,'','',NULL,'',1,'0000-00-00',NULL,0),(5,'15010000','0ygjy3','孙西风','{\"education\":[],\"work\":[]}',0,'河北','大本','群众',NULL,NULL,'','',NULL,'',1,'0000-00-00',NULL,0);
+/*!40000 ALTER TABLE `examinee` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `factor`
@@ -69,6 +81,15 @@ CREATE TABLE `factor` (
   CONSTRAINT `fk_factor_3` FOREIGN KEY (`paper_id`) REFERENCES `paper` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `factor`
+--
+
+LOCK TABLES `factor` WRITE;
+/*!40000 ALTER TABLE `factor` DISABLE KEYS */;
+/*!40000 ALTER TABLE `factor` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `factor_ans`
@@ -93,6 +114,15 @@ CREATE TABLE `factor_ans` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `factor_ans`
+--
+
+LOCK TABLES `factor_ans` WRITE;
+/*!40000 ALTER TABLE `factor_ans` DISABLE KEYS */;
+/*!40000 ALTER TABLE `factor_ans` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `firel`
 --
 
@@ -110,6 +140,15 @@ CREATE TABLE `firel` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `firel`
+--
+
+LOCK TABLES `firel` WRITE;
+/*!40000 ALTER TABLE `firel` DISABLE KEYS */;
+/*!40000 ALTER TABLE `firel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `fqrel`
 --
 
@@ -125,6 +164,15 @@ CREATE TABLE `fqrel` (
   CONSTRAINT `fk_fqrel_2` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `fqrel`
+--
+
+LOCK TABLES `fqrel` WRITE;
+/*!40000 ALTER TABLE `fqrel` DISABLE KEYS */;
+/*!40000 ALTER TABLE `fqrel` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `index`
@@ -147,6 +195,15 @@ CREATE TABLE `index` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `index`
+--
+
+LOCK TABLES `index` WRITE;
+/*!40000 ALTER TABLE `index` DISABLE KEYS */;
+/*!40000 ALTER TABLE `index` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `index_ans`
 --
 
@@ -167,6 +224,15 @@ CREATE TABLE `index_ans` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `index_ans`
+--
+
+LOCK TABLES `index_ans` WRITE;
+/*!40000 ALTER TABLE `index_ans` DISABLE KEYS */;
+/*!40000 ALTER TABLE `index_ans` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `manager`
 --
 
@@ -180,12 +246,23 @@ CREATE TABLE `manager` (
   `role` varchar(45) DEFAULT NULL COMMENT '角色信息，目前仅能存入以下大写字符：M-Manager管理者，P-PM项目经理，E-Examinee被试，G-Guest访客，L-Leader领导，I-Interviewer面询',
   `project_id` int(11) DEFAULT NULL COMMENT '所属项目编号，只有在角色是项目经理、领导、面试官等角色时才会有值，否则为空',
   `name` varchar(45) DEFAULT NULL,
+  `last_login` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index3` (`username`),
   KEY `index2` (`project_id`),
   CONSTRAINT `fk_manager_project` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `manager`
+--
+
+LOCK TABLES `manager` WRITE;
+/*!40000 ALTER TABLE `manager` DISABLE KEYS */;
+INSERT INTO `manager` VALUES (1,'sa','123456','M',NULL,'gly',NULL),(2,'pm','123456','P',1,'经理',NULL),(8,'hh','123456',NULL,NULL,'哈哈',NULL),(11,'hw','123456',NULL,NULL,'汉王',NULL);
+/*!40000 ALTER TABLE `manager` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `module`
@@ -203,6 +280,15 @@ CREATE TABLE `module` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `module`
+--
+
+LOCK TABLES `module` WRITE;
+/*!40000 ALTER TABLE `module` DISABLE KEYS */;
+/*!40000 ALTER TABLE `module` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `paper`
 --
 
@@ -216,6 +302,15 @@ CREATE TABLE `paper` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `paper`
+--
+
+LOCK TABLES `paper` WRITE;
+/*!40000 ALTER TABLE `paper` DISABLE KEYS */;
+/*!40000 ALTER TABLE `paper` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `pmrel`
@@ -235,6 +330,15 @@ CREATE TABLE `pmrel` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `pmrel`
+--
+
+LOCK TABLES `pmrel` WRITE;
+/*!40000 ALTER TABLE `pmrel` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pmrel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `project`
 --
 
@@ -248,11 +352,22 @@ CREATE TABLE `project` (
   `name` varchar(200) NOT NULL COMMENT '项目名',
   `description` varchar(2000) DEFAULT NULL COMMENT '项目备注，详细描述',
   `manager_id` int(11) NOT NULL COMMENT '项目经理id',
+  `last_examinee_id` int(11) DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `fk_project_1_idx` (`manager_id`),
   CONSTRAINT `fk_project_1` FOREIGN KEY (`manager_id`) REFERENCES `manager` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `project`
+--
+
+LOCK TABLES `project` WRITE;
+/*!40000 ALTER TABLE `project` DISABLE KEYS */;
+INSERT INTO `project` VALUES (1,'2015-07-01 15:42:00','2015-08-03 15:43:00','小测验','这是周五的小测验',2,1);
+/*!40000 ALTER TABLE `project` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `question`
@@ -269,6 +384,15 @@ CREATE TABLE `question` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `question`
+--
+
+LOCK TABLES `question` WRITE;
+/*!40000 ALTER TABLE `question` DISABLE KEYS */;
+/*!40000 ALTER TABLE `question` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `question_ans`
@@ -290,6 +414,15 @@ CREATE TABLE `question_ans` (
   CONSTRAINT `fk_question_ans_2` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `question_ans`
+--
+
+LOCK TABLES `question_ans` WRITE;
+/*!40000 ALTER TABLE `question_ans` DISABLE KEYS */;
+/*!40000 ALTER TABLE `question_ans` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -300,4 +433,4 @@ CREATE TABLE `question_ans` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-08-04 17:54:09
+-- Dump completed on 2015-08-06 10:04:23

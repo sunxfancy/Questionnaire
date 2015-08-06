@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-02 15:33:40
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-05 17:21:01
+ * @Last Modified time: 2015-08-06 10:07:54
  */
 
 include("../app/classes/PHPExcel.php");
@@ -34,6 +34,8 @@ class ExcelLoader
 	public function LoadExaminee ($filename, $project_id, $db)
     {
         PHPExcel_Settings::setCacheStorageMethod(PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip);
+        $project = Project::findFirst($project_id);
+        $last_number = 1;
         $db->begin(); 
         if (is_readable($filename))
         {
@@ -42,15 +44,14 @@ class ExcelLoader
 	            $sheet = $objexcel->getSheet(0);
 	            $higestrow = $sheet->getHighestRow();
 
-	            $last_number = Examinee::lastNum($project_id);
+	            $last_number = $project->last_examinee_id;
 	            echo $last_number."\n";
 				$i = 3;
 				while ($i <= $higestrow) {
 					$k = $sheet->getCell("C".$i)->getValue();
 					if (is_null($k) || $k == "") break;
-					$last_number++;
-		            $this->readline_examinee($sheet, $project_id, $last_number, $i);
-		            $i++;
+					$this->readline_examinee($sheet, $project_id, $last_number, $i);
+					$i++; $last_number++;
 				}
             } catch (Exception $ex) {
 				$errors['Exception'] = $ex->getMessage();
@@ -60,7 +61,9 @@ class ExcelLoader
 				return $errors;
 			}
         }
+        $project->last_examinee_id = $last_number;
         $db->commit();
+
         $objexcel->disconnectWorksheets();
         unlink($filename);
         return 0;
