@@ -13,6 +13,7 @@
                     </td>
                     <td style="width:30%;">
                         <img style="height: 40px;" id="Leo_signin" src="../images/signin.png" onclick="Leo_checkcomplete()" />
+                        
                     </td>
                 </tr>
             </table>
@@ -33,31 +34,26 @@
     var Leo_now_index = 0;
 
     var data={
-        'length':20,
+        'ques_length':20,
         'index':11,
         'title':"您认为公司发展最需提升哪些能力(最多选三项):",
         'options':"资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力",
         'is_multi':true
     }
 
-
-    refreshCookie(11,"ABC");
-
     init();
-
-    
-
     function init(){
         Leo_initPanel();
         initTitle(data);
-        initCookie(data.length);
+        initCookie(data.ques_length);
     }
 
-    function initCookie(length){
-        var ans_cookie=$.cookie('ans_cookie');        
+    function initCookie(q_length){
+        var ans_cookie=$.cookie('ans_cookie'); 
+
         if(!ans_cookie){
-            var ans_array=new Array(length);
-            for(var i=0;i<length;i++){
+            var ans_array=new Array(q_length);
+            for(var i=0;i<q_length;i++){
                 ans_array[i]='0';
             }
             $.cookie('ans_cookie',ans_array.join("|"),{experies:7});
@@ -69,7 +65,6 @@
 
                 if(ans_array[i]=='0'){
                     if(flag){
-                        alert(i);
                         changepage(i);
                         flag=false;
                     }
@@ -102,8 +97,8 @@
         var q = new Leo_question(data.index, data.title, data.is_multi, ans);
         document.getElementById("Leo_question_panel").removeChild(document.getElementById("Leo_question_panel").childNodes[0]);
         document.getElementById("Leo_question_panel").appendChild(q);
-        if(questionlength!=data.length){
-            questionlength=data.length;
+        if(questionlength!=data.ques_length){
+            questionlength=data.ques_length;
             Leo_initPanel();
         }
         
@@ -176,37 +171,63 @@
 
     }
 
+function get_ans_str(index){
+    var ans_ori=document.getElementsByName(index);
+        var ans_str="";
+        for(var i=0;i<ans_ori.length;i++){
+            if(ans_ori[i].checked){
+                ans_str+=String.fromCharCode(i+97);
+            }
+        }
+        if(ans_str==""){
+            ans_str="0";
+        }
+        return ans_str;
+}
 
-    
+function get_ans_array_from_cookie(index){
+    var ans_cookie=$.cookie('ans_cookie');
+    var ans_array=ans_cookie.split("|");
+    var ans_ori=ans_array[index].split("");
+    var ans_ori_array=new Array();
+    if(ans_ori[0]!="0"){
+        for(var i=0;i<ans_ori.length;i++){
+            ans_ori_array[i]=ans_ori[i].charCodeAt()-97;
+        }
+    }
+    return ans_ori_array;
+}  
 
 function changepage(newpage) {
     //newpage为从0开始的计数方式
+
+    
     
     var newpagejson={'index':newpage};
-
-    $.post('/Examinee/getques',newpagejson, function(data) {
+    $.post('/Examine/getques',newpagejson,function(data) {
         /*optional stuff to do after success */
-
-        var ans_ori=document.getElementsByName(Leo_now_index);
-        var ans_str="";
-        for(var i=0;i<ans_ori.length;i++){
-            if(ans_ori.checked){
-                ans_str+=String.fromCharCode(i+)
-            }
-        }
-
-
-
-
+       
+       if(!data.title){
+        alert("服务器不理我们了 0_0!");
+       }
+        var now_ans=get_ans_str(Leo_now_index);
+        refreshCookie(Leo_now_index,now_ans);
         Leo_now_index = newpage;
         initTitle(data);
+        var ans=get_ans_array_from_cookie(newpage);
+        var ans_ori=document.getElementsByName(newpage);
+        alert(ans_ori.length);
+        for(var i=0;i<ans.length;i++){
+            ans_ori[ans[i]].checked=true;
+        }
+
         if (newpage == 0) {
             $("#Leo_pageup").css('display',"none");
         } else {
             $("#Leo_pageup").css('display',"");
         }
 
-        if (newpage == questions.length - 1) {
+        if (newpage == questionlength - 1) {
            
             ("#Leo_pagedown").css('display',"none");
         } else {
@@ -216,11 +237,10 @@ function changepage(newpage) {
         $("#newdiv_" + newpage).focus();
 
 
-    }).error(function(){ alert('连接到服务器失败！')});
-
-    
+    });
 
 }
+
 
 
 </script>
