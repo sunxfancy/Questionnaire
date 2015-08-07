@@ -53,6 +53,13 @@ class AdminController extends Base
     }
 
 
+    public function detailAction($project_id)
+    {
+        $this->leftRender('项 目 详 情');
+        $project = Project::findFirst($project_id);
+        $this->view->setVar('project_name',$project->name);
+    }
+
 
     public function listAction()
     {
