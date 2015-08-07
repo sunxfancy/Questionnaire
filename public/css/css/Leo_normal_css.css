@@ -177,7 +177,7 @@
     width:245px;
     height:120px;
     background-color:white;
-    overflow:auto;
+    overflow:hidden;
     margin-left:15px;
     margin-top:10px;
      -webkit-box-shadow:2px 2px 10px #202020 ;	/*for chrome,safari*/
@@ -189,4 +189,40 @@
 .Leo_Timer_v2 td{
     width:35px;
     height:inherit;
+}
+
+.Leo_title_text{
+    width:100%;
+    height:auto;
+    font-weight:normal;
+    font-size:28px;
+    word-break:break-all;
+    overflow:auto;
+}
+
+.Leo_ans_div{
+    cursor:pointer;
+    width:100%;
+    height:auto;
+    margin-top:15px;
+
+}
+
+
+
+.Leo_ans_checkdiv{
+    float:left;
+    width:5%;
+    text-align:center;
+    cursor:pointer;
+}
+
+.Leo_ans_checktext{
+    width:95%;
+    float:left;
+    font-size:22px;
+    
+}
+.Leo_ans_checktext:hover{
+    background-color: red;
 }

@@ -1,13 +1,21 @@
+<script type="text/javascript" src="/js/Leo_clock.js"></script>
 <div class="Leo_question_v2" id="Leo_question_v2">
         <div style="overflow:hidden;width:600px;height:440px;">
         <div style="width:95%;height:410px;margin:0 auto;display:none;font-size:25px;font-family:'微软雅黑'" id='announce_panel'><p></p></div><div id='do_announce' style="width:100%;height:30px;background-color:#eeed6a;text-align:center;font-size:20px;font-family:'Microsoft YaHei';overflow:hidden;"><table style="width:100%;height:100%;text-align:center;vertical-align:middle;cursor:pointer;"><tr style="width:100%;height:100%;"><td style="width:100%;height:100%;" id="classInfo"></td></tr></table></div>
         <div class="Leo_question_l" style="height:400px;" id="Leo_question_panel">
         <div style='width:95%;height:400px;margin:0 auto;'>
-        <div id="title_div" style='width:100%;height:auto;font-weight:normal;font-size:28px;background-color:green;word-break:break-all;overflow:auto;'><span></span></div>
-        <div id='ans_div' style="overflow:auto;">
-           <div style="width:100%;height:auto;"><div style="float:left;"><input type='checkbox' id='123'/></div><div style='width:auto;background-color:black;display:inline;'>测验包括许多问题和选择，任何答案选择都无所谓对错，对它们所描述的特征，你可能喜欢，也可能不喜欢，其方式你可能曾感觉到，也可能没有感觉到，请你从中选出最能表现或接近你当前特征或感觉的那一个，并将你的选择标记于相应的位置处。如果答案中都没有正确描述你的情况，那你应当选择你认为能比较正确反映你的情况的那一个。总之，对</div></div><br/>
-           <div style="width:100%;height:auto;"><input type='checkbox' id='123'/><span style='width:auto;background-color:black;display:inline;'>测验包括许多问题和选择，任何答案选择都无所谓对错，对它们所描述的特征，你可能喜欢，也可能不喜欢，其方式你可能曾感觉到，也可能没有感觉到，请你从中选出最能表现或接近你当前特征或感觉的那一个，并将你的选择标记于相应的位置处。如果答案中都没有正确描述你的情况，那你应当选择你认为能比较正确反映你的情况的那一个。总之，对</span></div>
-        </div>
+        <div id="title_div" class="Leo_title_text" =''><span></span></div>
+
+            <!--只需在代码中，对这一部分进行解析，替换，实现题目切换-->
+            <div id='ans_div' style="overflow:auto;font-family:'微软雅黑';">
+               <div class="Leo_ans_div"><div class="Leo_ans_checkdiv"><input name="ans_sel" type='radio' id='123' style="cursor:pointer;" /></div><div class="Leo_ans_checktext">测验包括许多问题和选择，任何答案选择都无所谓对错，对</div></div>
+               <div class="Leo_ans_div"><div class="Leo_ans_checkdiv"><input name="ans_sel" type='radio' id='123' style="cursor:pointer;" /></div><div class="Leo_ans_checktext">测验包括许多问题和选择，任何答案选择都无所谓对错，对</div></div>
+               <div class="Leo_ans_div"><div class="Leo_ans_checkdiv"><input name="ans_sel" type='radio' id='123' style="cursor:pointer;" /></div><div class="Leo_ans_checktext">测验包括许多问题和选择，任何答案选择都无所谓对错，对</div></div>
+               <div class="Leo_ans_div"><div class="Leo_ans_checkdiv"><input name="ans_sel" type='radio' id='123' style="cursor:pointer;" /></div><div class="Leo_ans_checktext">测验包括许多问题和选择，任何答案选择都无所谓对错，对</div></div>
+               <div class="Leo_ans_div"><div class="Leo_ans_checkdiv"><input name="ans_sel" type='radio' id='123' style="cursor:pointer;" /></div><div class="Leo_ans_checktext">测验包括许多问题和选择，任何答案选择都无所谓对错，对</div></div>
+               <div class="Leo_ans_div"><div class="Leo_ans_checkdiv"><input name="ans_sel" type='radio' id='123' style="cursor:pointer;" /></div><div class="Leo_ans_checktext">测验包括许多问题和选择，任何答案选择都无所谓对错，对</div></div>
+            </div>
+
         </div>
         </div>
         </div>
@@ -41,8 +49,22 @@
         <table style="width:92%;text-align:center;vertical-align:middle;table-layout:fixed;margin:0 auto;" id="Leo_question_table" cellspacing="0"></table>
     </div>
     <div class="Leo_Timer_v2">
+
+    <!--
         <table style="width:145px;height:120px;text-align:center;vertical-align:middle;margin:0 auto;table-layout:fixed;" cellspacing="0"><tr style="width:245px;height:50px;"><td colspan="5">已用时</td></tr>
-            <tr><td id="hour">00</td><td>:</td><td id="minute">00</td><td>:</td><td id="second">00</td></tr></table>
+            <tr><td id="hour">00</td><td>:</td><td id="minute">00</td><td>:</td><td id="second">00</td></tr></table>-->
+    <div style="float:left;width:120px;height:120px;">
+        <div id="Leo_clock" style='width:120px;height:120px;'>
+            <canvas id="myCanvas" style="background-image:url(/image/watch1.png);background-size:100%;">
+            </canvas>
+        </div>
+    </div>
+    <div style="float:left;width:125px; background-color:blue;">
+        <button id='start'>开始</button>
+        <button id="pause">暂停</button>
+        <button id="reset">重置</button>
+    <div>
+    
     </div>
    
     
@@ -53,6 +75,10 @@
 $(function(){
 
     $('#title_div').children('span').replaceWith('<span>本测验包括许多问题和选择，任何答案选择都无所谓对错，</span>');
+    $('.Leo_ans_checktext').click(function(){
+        var temp=$(this).parent().children('div').children(':radio')[0];
+        temp.checked=!temp.checked;
+    });
         
     $("#ans_div").css('width','100%');
     var ans_div_height=$("#title_div").outerHeight();
@@ -63,7 +89,7 @@ $(function(){
         $("#ans_div").css('height',250);
     }
     
-    $("#ans_div").css('background-color','pink');
+   
 
     $('#announce_panel').children('p').replaceWith('<p>本测验包括许多问题和选择，任何答案选择都无所谓对错，对它们所描述的特征，你可能喜欢，也可能不喜欢，其方式你可能曾感觉到，也可能没有感觉到，请你从中选出最能表现或接近你当前特征或感觉的那一个，并将你的选择标记于相应的位置处。如果答案中都没有正确描述你的情况，那你应当选择你认为能比较正确反映你的情况的那一个。总之，对于每道题的选项你必须有所选择。</p>');
 
