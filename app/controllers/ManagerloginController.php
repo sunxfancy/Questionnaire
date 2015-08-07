@@ -40,10 +40,11 @@ class ManagerloginController extends Base
                     $this->dataReturn(array('url' => '/pm/index'));
 	        		break;
 	        	case 'L':  // 领导
-
+                    $this->dataReturn(array('url' => '/leader/index'));
 	        		break;
 
 	        	case 'I': // 面询专家
+                    $this->dataReturn(array('url' => '/interviewer/index'));
 	        		break;
 
 	        	default:

@@ -18,7 +18,7 @@
 		<table id="grid-table"></table>
 		<div id="grid-pager"></div>
 </div>
-	
+</div>
 
 <script type="text/javascript">
 	jQuery(function($) {
