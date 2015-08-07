@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-02 15:33:40
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-07 14:27:16
+ * @Last Modified time: 2015-08-07 15:47:00
  */
 
 include("../app/classes/PHPExcel.php");
@@ -219,7 +219,7 @@ class ExcelLoader
 	}
 
 	function random_string($max = 6){
-        $chars = explode(" ", "a b c d e f g h i j k l m n o p q r s t u v w x y z 0 1 2 3 4 5 6 7 8 9");
+        $chars = explode(" ", "0 1 2 3 4 5 6 7 8 9");
         $rtn = '';
         for($i = 0; $i < $max; $i++){
             $rnd = array_rand($chars);
