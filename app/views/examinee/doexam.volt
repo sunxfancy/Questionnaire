@@ -4,7 +4,10 @@
         <div class="Leo_question_l" style="height:400px;" id="Leo_question_panel">
         <div style='width:95%;height:400px;margin:0 auto;'>
         <div id="title_div" style='width:100%;height:auto;font-weight:normal;font-size:28px;background-color:green;word-break:break-all;overflow:auto;'><span></span></div>
-        <div id='ans_div' style="overflow:auto;"></div>
+        <div id='ans_div' style="overflow:auto;">
+           <div style="width:100%;height:auto;"><div style="float:left;"><input type='checkbox' id='123'/></div><div style='width:auto;background-color:black;display:inline;'>测验包括许多问题和选择，任何答案选择都无所谓对错，对它们所描述的特征，你可能喜欢，也可能不喜欢，其方式你可能曾感觉到，也可能没有感觉到，请你从中选出最能表现或接近你当前特征或感觉的那一个，并将你的选择标记于相应的位置处。如果答案中都没有正确描述你的情况，那你应当选择你认为能比较正确反映你的情况的那一个。总之，对</div></div><br/>
+           <div style="width:100%;height:auto;"><input type='checkbox' id='123'/><span style='width:auto;background-color:black;display:inline;'>测验包括许多问题和选择，任何答案选择都无所谓对错，对它们所描述的特征，你可能喜欢，也可能不喜欢，其方式你可能曾感觉到，也可能没有感觉到，请你从中选出最能表现或接近你当前特征或感觉的那一个，并将你的选择标记于相应的位置处。如果答案中都没有正确描述你的情况，那你应当选择你认为能比较正确反映你的情况的那一个。总之，对</span></div>
+        </div>
         </div>
         </div>
         </div>
@@ -54,7 +57,6 @@ $(function(){
     $("#ans_div").css('width','100%');
     var ans_div_height=$("#title_div").outerHeight();
     if(ans_div_height<150){
-        alert('ok');
         $("#ans_div").css('height',400-ans_div_height);
     }else{
         $("#title_div").css('height',150);
