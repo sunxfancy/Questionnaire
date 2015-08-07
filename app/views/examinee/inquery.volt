@@ -33,7 +33,7 @@
                  return;
                }
             questionlength=data.ques_length;
-            Leo_initPanel();
+            Leo_initPanel(questionlength);
             initCookie(questionlength);
         }); 
     }
@@ -79,10 +79,10 @@
         document.getElementById("Leo_question_panel").appendChild(q);
         if(questionlength!=data.ques_length){
             questionlength=data.ques_length;
-            Leo_initPanel();
+            Leo_initPanel(questionlength);
         }
     }
-    function Leo_initPanel() {
+    function Leo_initPanel(questionlength) {
         var rows_count = Math.ceil(questionlength/ 5);
             for (var k = 0; k < rows_count; k++) {
                 var row_now = document.getElementById("Leo_question_table").insertRow(k);
