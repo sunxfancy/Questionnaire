@@ -56,6 +56,8 @@ class Manager extends \Phalcon\Mvc\Model
             return -1;
         }
         if ($password == $manager->password) {
+            $manager->last_login = date("Y-m-d H:i:s");
+            $manager->save();
             return $manager;
         } else {
             return 0;

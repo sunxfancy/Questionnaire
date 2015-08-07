@@ -12,7 +12,7 @@
     <div style="width:100%;height:40px;text-align:center;margin:26px;">             
         <button class="btn btn-primary" onclick="Leo_selectAll()" >全选</button>        
         <button class="btn btn-primary" onclick="Leo_unselectAll()">全不选</button>
-        <button class="btn btn-primary" type="submit" onclick="alert($('module_info'))">确定</button>
+        <button class="btn btn-primary" type="submit" onclick="getmodule()">确定</button>
     </div>
 </div>
 
@@ -32,6 +32,7 @@
             mk_div = document.createElement("div");
             var mk_checkbox = document.createElement("input");
             var mk_span = document.createElement("span");
+            mk_span.id=Num+"_"+i;
             mk_checkbox.type = "checkbox";
 			mk_div.appendChild(mk_checkbox);
             mk_span.innerText = xifen[i];
@@ -101,14 +102,15 @@
     }
     function getmodule(){
         var mudule_array = new array();
-        var k = 0;
         for (var i = 0; i < document.getElementById('leibie').childNodes.length; i++) {
             for (var j = 0; j < document.getElementById('leibie').childNodes[i].xifen_div.childNodes.length; j++) {
                 if(document.getElementById('leibie').childNodes[i].xifen_div.childNodes[j].childNodes[0].checked == true){
-                    //module_array[k++] = document.getElementById('leibie').childNodes[i].xifen_div.childNodes[j].value;
-                    module_array.push(j);
+                    module_array.push(document.getElementById('leibie').childNodes[i].xifen_div.childNodes[j].value);
                 }
             }
+        }
+        if(module_array.length !=0){
+            alert(module_array);
         }
     }
 
