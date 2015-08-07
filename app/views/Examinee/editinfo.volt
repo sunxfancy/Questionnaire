@@ -1,3 +1,7 @@
+<!-- <script type="text/javascript" src="/jqGrid/js/jquery.jqGrid.min.js"></script>
+<script type="text/javascript" src="/jqGrid/js/i18n/grid.locale-cn.js"></script>
+<script type="text/javascript" src="/js/bootstrap.js"></script>
+
 <script language="javascript">
         var count1=1;
         var count2=2;
@@ -59,18 +63,18 @@
     <div class="baseinfo" style="width:100%;height:100%;">
         <div style="overflow:auto;height:440px;">
             <div style="height:40px;text-align:center;font-size:28px;">基本信息</div>
-            <table border="1" cellspacing="0" cellpadding="0" style="margin:0 auto;text-align:center;font-size:16px; font-family:'微软雅黑'">
+            <table border="1" cellspacing="0" cellpadding="0" style="margin:0 auto;font-size:16px; font-family:'微软雅黑'">
                 <tr>
                     <td style="width:120px;line-height:33px;">姓名</td>
-                    <td id="name" style="width:180px;" onclick="Leo_toEdit(this)"></td>
+                    <td style="width:180px;" onclick="Leo_toEdit(this)">{{ name }}</td>
                     <td style="width:120px;line-height:33px;">性别</td>
-                    <td id="sex" style="width: 180px;" onclick="Leo_toEdit(this)"></td>
+                    <td style="width: 180px;" onclick="Leo_toEdit(this)">{{ sex }}</td>
                 </tr>
                 <tr>
                     <td style="width:120px;line-height:33px;">学历</td>
-                    <td id="education" style="width:180px;">
+                    <td style="width:180px;">
                         <select style="width:178px;font-size:16px;line-height:28px;font-family:'微软雅黑'">
-                            <option value="空">请选择</option>
+                            <option value="">{{ education }}</option>
                             <option value="函授大专">函授大专</option>
                             <option value="在职大专">在职大专</option>
                             <option value="全日制大专">全日制大专</option>
@@ -86,7 +90,7 @@
                     <td style=" width:120px;line-height:33px;">学位</td>
                     <td id="degree" style="width:180px;">
                         <select style="width:178px;font-size:16px;line-height:28px; font-family:'微软雅黑'">
-                            <option value="空">请选择</option>
+                            <option value="">{{ degree }}</option>
                             <option value="工科学士学位">工科学士学位</option>
                             <option value="理科学士学位">理科学士学位</option>
                             <option value="文科学士学位">文科学士学位</option>
@@ -107,53 +111,50 @@
                     </td>
                     <td style=" width:120px;line-height:33px;">籍贯</td>
                     <td style="width:180px;">
-                        <input id="native" style="width:116px;margin-top:3px;font-size:16px;line-height:28px;font-family:'微软雅黑'">
-                        <span class="span">
-                            <select id="addselect" onblur="return Item_onBlur(this,addtxt)" onmouseover="return Item_onMouseOver(this)" onchange="return Input_onchange(this)" style="width:20px;height:33px;font-size:16px;line-height:28px; font-family:'微软雅黑'">
-                                <option value="请选择">请选择</option>
-                                <option value="北京市">北京市</option>
-                                <option value="安徽省">安徽省</option>
-                                <option value="重庆市">重庆市</option>
-                                <option value="福建省">福建省</option>
-                                <option value="甘肃省">甘肃省</option>
-                                <option value="广东省">广东省</option>
-                                <option value="广西壮族自治区">广西壮族自治区</option>
-                                <option value="贵州省">贵州省</option>
-                                <option value="海南省">海南省</option>
-                                <option value="河北省">河北省</option>
-                                <option value="河南省">河南省</option>
-                                <option value="黑龙江省">黑龙江省</option>
-                                <option value="湖北省">湖北省</option>
-                                <option value="湖南省">湖南省</option>
-                                <option value="吉林省">吉林省</option>
-                                <option value="江苏省">江苏省</option>
-                                <option value="江西省">江西省</option>
-                                <option value="辽宁省">辽宁省</option>
-                                <option value="内蒙古自治区">内蒙古自治区</option>
-                                <option value="宁夏回族自治区">宁夏回族自治区</option>
-                                <option value="青海省">青海省</option>
-                                <option value="山东省">山东省</option>
-                                <option value="山西省">山西省</option>
-                                <option value="陕西省">陕西省</option>
-                                <option value="上海市">上海市</option>
-                                <option value="四川省">四川省</option>
-                                <option value="天津市">天津市</option>
-                                <option value="西藏自治区">西藏自治区</option>
-                                <option value="新疆维吾尔族自治区">新疆维吾尔族自治区</option>
-                                <option value="云南省">云南省</option>
-                                <option value="浙江省">浙江省</option>
-                                <option value="台湾省">台湾省</option>
-                                <option value="香港">香港</option>
-                                <option value="澳门">澳门</option>
-                            </select>
-                        </span>
+                        <select style="width:178px;font-size:16px;line-height:28px; font-family:'微软雅黑'">
+                            <option value="">{{ native }}</option>
+                            <option value="北京市">北京市</option>
+                            <option value="安徽省">安徽省</option>
+                            <option value="重庆市">重庆市</option>
+                            <option value="福建省">福建省</option>
+                            <option value="甘肃省">甘肃省</option>
+                            <option value="广东省">广东省</option>
+                            <option value="广西壮族自治区">广西壮族自治区</option>
+                            <option value="贵州省">贵州省</option>
+                            <option value="海南省">海南省</option>
+                            <option value="河北省">河北省</option>
+                            <option value="河南省">河南省</option>
+                            <option value="黑龙江省">黑龙江省</option>
+                            <option value="湖北省">湖北省</option>
+                            <option value="湖南省">湖南省</option>
+                            <option value="吉林省">吉林省</option>
+                            <option value="江苏省">江苏省</option>
+                            <option value="江西省">江西省</option>
+                            <option value="辽宁省">辽宁省</option>
+                            <option value="内蒙古自治区">内蒙古自治区</option>
+                            <option value="宁夏回族自治区">宁夏回族自治区</option>
+                            <option value="青海省">青海省</option>
+                            <option value="山东省">山东省</option>
+                            <option value="山西省">山西省</option>
+                            <option value="陕西省">陕西省</option>
+                            <option value="上海市">上海市</option>
+                            <option value="四川省">四川省</option>
+                            <option value="天津市">天津市</option>
+                            <option value="西藏自治区">西藏自治区</option>
+                            <option value="新疆维吾尔族自治区">新疆维吾尔族自治区</option>
+                            <option value="云南省">云南省</option>
+                            <option value="浙江省">浙江省</option>
+                            <option value="台湾省">台湾省</option>
+                            <option value="香港">香港</option>
+                            <option value="澳门">澳门</option>
+                        </select>
                     </td>
                 </tr>
                 <tr>
                     <td style=" width:120px;line-height:33px;">政治面貌</td>
-                    <td id="politics" style="width:180px;">
+                    <td style="width:180px;">
                         <select style="width:178px;font-size:16px;line-height:28px;font-family:'微软雅黑'">
-                            <option value="空">请选择</option>
+                            <option value="">{{ politics }}</option>
                             <option value="无">无党派</option>
                             <option value="团员">团员</option>
                             <option value="党员">党员</option>
@@ -162,9 +163,9 @@
                         </select>
                     </td>
                     <td style=" width:120px;line-height:33px;">职称</td>
-                    <td id="professional" style="width:180px;">
+                    <td style="width:180px;">
                         <select style="width:178px;font-size:16px;line-height:28px;font-family:'微软雅黑'">
-                            <option value="空">请选择</option>
+                            <option value="空">{{ professional }}</option>
                             <option value="无职称">无职称</option>
                             <option value="初级">初级</option>
                             <option value="中级">中级</option>
@@ -175,24 +176,24 @@
                 </tr>
                 <tr>
                     <td style=" width:120px;line-height:33px;">工作单位</td>
-                    <td colspan="3" style=" width:180px;font-size:16px;" onclick="Leo_toEdit(this)"></td>
+                    <td colspan="3" style=" width:180px;font-size:16px;" onclick="Leo_toEdit(this)">{{ employer }}</td>
                 </tr>
                 <tr>
                     <td style=" width:120px;line-height:33px;">部门</td>
-                    <td colspan="3" style="width: 180px; font-size: 16px;" onclick="Leo_toEdit(this)"></td>
+                    <td colspan="3" style="width: 180px; font-size: 16px;" onclick="Leo_toEdit(this)">{{ unit }}</td>
                 </tr>
                 <tr>
                     <td style=" width:120px;line-height:33px;">岗位/职务</td>
-                    <td colspan="3" style="width: 180px; font-size: 16px;" onclick="Leo_toEdit(this)"></td>
+                    <td colspan="3" style="width: 180px; font-size: 16px;" onclick="Leo_toEdit(this)">{{ duty }}</td>
                 </tr>
             </table>
             <div style="height:40px;text-align:center;font-size:28px;">教育经历</div>
             <table id="myTable1" style="margin: 0 auto;text-align:center; font-family:'微软雅黑'" border="1" cellspacing="0" cellpadding="1" >
                 <tr>
-                    <th style=" width:150px;line-height:33px;">毕业院校</th>
-                    <th style=" width:150px;line-height:33px;">专业</th>
-                    <th style=" width:150px;line-height:33px;">所获学位</th>
-                    <th style=" width:150px;line-height:33px;">时间</th>
+                    <td style=" width:150px;line-height:33px;">毕业院校</td>
+                    <td style=" width:150px;line-height:33px;">专业</td>
+                    <td style=" width:150px;line-height:33px;">所获学位</td>
+                    <td style=" width:150px;line-height:33px;">时间</td>
                 </tr>
                 <tr style="font-size:16px;text-align:center;line-height:33px;font-family:'微软雅黑'">
                     <td style="width:150px;" onclick="Leo_toEdit(this)"></td>
@@ -241,7 +242,6 @@
 			<div id="Leo_add" style="width:86.5%;height:50px;margin:0 auto;;text-align:center;">
                 <input type='button' value='增加一行' onclick="insertRow2()" >
             </div>
-
             <div class="submit" style="display:block;text-align:center;margin-top:15px;">
                 <img src="../images/submit.jpg" type="submit" onclick="window.location.href='Leo_examination.html'" />
             </div>
@@ -283,4 +283,49 @@ function Leo_exitEdit(t) {
         checkEdtime(s, s.innerText);
     }
 }
+
+</script> -->
+
+ <link rel="stylesheet" type="text/css"  href="css/ui-lightness/jquery-ui-1.8.2.custom.css" />
+<link rel="stylesheet" type="text/css"  href="css/ui.jqgrid.css" />
+    <link rel="stylesheet" type="text/css" href="/pagecss/admin.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap-datetimepicker.css" />
+    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
+<script src="js/i18n/grid.locale-en.js" type="text/javascript"></script>
+<script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
+<script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
+
+ 
+<script type="text/javascript">
+$(function () {
+    $("#list").jqGrid({
+        url: "/Examinee/editinfo",
+        datatype: "json",
+        mtype: "GET",
+        colNames: ["Inv No", "Date", "Amount", "Tax", "Total", "Notes"],
+        colModel: [
+            { name: "invid", width: 55 },
+            { name: "invdate", width: 90 },
+            { name: "amount", width: 80, align: "right" },
+            { name: "tax", width: 80, align: "right" },
+            { name: "total", width: 80, align: "right" },
+            { name: "note", width: 150, sortable: false }
+        ],
+        pager: "#pager",
+        rowNum: 10,
+        rowList: [10, 20, 30],
+        sortname: "invid",
+        sortorder: "desc",
+        viewrecords: true,
+        gridview: true,
+        autoencode: true,
+        caption: "My first grid"
+    }); 
+}); 
 </script>
+ 
+
+<div class="Leo_question">
+    <table id="list"></table> 
+    <div id="pager"></div> 
+</div>

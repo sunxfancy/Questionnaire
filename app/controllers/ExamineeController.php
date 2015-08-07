@@ -40,7 +40,7 @@ class ExamineeController extends Base
         if ($examinee)
         {
             $this->session->set('Examinee', $examinee);
-            $this->dataReturn(array('url' =>'/examinee/doexam'));
+            $this->dataReturn(array('url' =>'/examinee/editinfo'));
             return;
         }
     }
@@ -65,7 +65,35 @@ class ExamineeController extends Base
 
 	public function editinfoAction()
 	{
+        $this->leftRender("个 人 信 息 填 写");
 
+        /*$examinee = $this->session->get('Examinee');
+        $name = $examinee->name;
+        $sex = $examinee->sex;
+        $education = $examinee->education;
+        $degree = $examinee->degree;
+        $birthday = $examinee->birthday;
+        $native = $examinee->native; 
+        $politics = $examinee->politics;
+        $professional = $examinee->professional;
+        $employer = $examinee->employer;
+        $unit = $examinee->unit;
+        $duty = $examinee->duty;
+        $json = json_decode($examinee->other);
+        $json['education'][0]['school']
+
+        
+        $this->view->setVar('name',$name);
+        $this->view->setVar('sex',$sex);
+        $this->view->setVar('education',$education);
+        $this->view->setVar('degree',$degree);
+        $this->view->setVar('birthday',$birthday);
+        $this->view->setVar('native',$native);
+        $this->view->setVar('politics',$politics);
+        $this->view->setVar('professional',$professional);
+        $this->view->setVar('employer',$employer);
+        $this->view->setVar('unit',$unit);
+        $this->view->setVar('duty',$duty);*/
 	}
 
 	public function doexamAction()
@@ -75,14 +103,10 @@ class ExamineeController extends Base
 
     public function addAction()
     {
-        $this->leftRender("个 人 信 息 填 写");
-
-
-        
         // $paper = new Paper("select * from paper"); 
-        /*$sql = "select * from Paper";
+        $sql = "select * from Paper";
         $paper = $this->modelsManager->executeQuery($sql);
-        $this->view->setVar("paper",$paper);*/
+        $this->view->setVar("paper",$paper);
 
     }
 
