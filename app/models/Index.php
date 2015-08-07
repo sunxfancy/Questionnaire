@@ -28,5 +28,15 @@ class Index extends \Phalcon\Mvc\Model
      */
     public $module_id;
 
+    public function initialize()
+    {
+        $this->belongsTo('index_id', 'Index', 'id');
+        $this->belongsTo('paper_id', 'Paper', 'id');
+        $this->hasManyToMany(
+            "id", "Fqrel", "factor_id", 
+            "question_id", "Question", "id"
+        );
+        $this->hasMany("id", "FactorAns", "factor_id");
+    }
 
 }

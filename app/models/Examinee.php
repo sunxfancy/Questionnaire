@@ -104,6 +104,12 @@ class Examinee extends \Phalcon\Mvc\Model
      * @var datetime
      */
     public $last_login;
+
+
+    public function initialize()
+    {
+        $this->belongsTo('project_id', 'Project', 'id');
+    }
     
     
     // 被试人员登陆验证

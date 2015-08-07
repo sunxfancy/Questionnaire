@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-02 15:33:40
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-07 15:47:00
+ * @Last Modified time: 2015-08-07 17:04:14
  */
 
 include("../app/classes/PHPExcel.php");
@@ -142,6 +142,7 @@ class ExcelLoader
 		$interviewer->username = $this->random_string();
 		$interviewer->password = $this->random_string();
 		$interviewer->role = 'I';
+		$interviewer->project_id = $project_id;
 		if (!$interviewer->save()) {
 			foreach ($interviewer->getMessages() as $message) {
 				throw new Exception($message);
@@ -160,14 +161,15 @@ class ExcelLoader
 
     public function readline_leader($sheet, $project_id, $i)
     {
-    	$interviewer = new Manager();
+    	$leader = new Manager();
 		
-		$interviewer->name = self::filter($sheet->getCell('C'.$i)->getValue());
-		$interviewer->username = $this->random_string();
-		$interviewer->password = $this->random_string();
-		$interviewer->role = 'L';
-		if (!$interviewer->save()) {
-			foreach ($interviewer->getMessages() as $message) {
+		$leader->name = self::filter($sheet->getCell('C'.$i)->getValue());
+		$leader->username = $this->random_string();
+		$leader->password = $this->random_string();
+		$leader->role = 'L';
+		$leader->project_id = $project_id;
+		if (!$leader->save()) {
+			foreach ($leader->getMessages() as $message) {
 				throw new Exception($message);
 			}
 		}

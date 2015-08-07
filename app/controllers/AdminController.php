@@ -24,7 +24,8 @@ class AdminController extends Base
             'name' => 'pm_name',
             'username' => 'pm_username',
             'password' => 'pm_password'));
-
+        $manager->role = 'P';
+        
         $project = new Project();
         $this->getData($project, array(
             'name' => 'project_name', 

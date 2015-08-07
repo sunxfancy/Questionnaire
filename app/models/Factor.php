@@ -32,7 +32,7 @@ class Factor extends \Phalcon\Mvc\Model
      * @var integer
      *
      */
-    public $module_id;
+    public $index_id;
 
     /**
      * @var integer
@@ -40,5 +40,15 @@ class Factor extends \Phalcon\Mvc\Model
      */
     public $paper_id;
 
+
+    public function initialize()
+    {
+        $this->belongsTo('paper_id', 'Paper', 'id');
+        $this->hasManyToMany(
+            "id", "Fqrel", "factor_id", 
+            "question_id", "Question", "id"
+        );
+        $this->hasMany("id", "FactorAns", "factor_id");
+    }
 
 }
