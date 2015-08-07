@@ -117,6 +117,8 @@ class Examinee extends \Phalcon\Mvc\Model
             return -1;
         }
         if ($password == $examinee->password) {
+            $examinee->last_login = date("Y-m-d H:i:s");
+            $examinee->save();
             return $examinee;
         } else {
             return 0;

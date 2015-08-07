@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-02 15:33:40
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-06 17:17:09
+ * @Last Modified time: 2015-08-07 14:27:16
  */
 
 include("../app/classes/PHPExcel.php");
@@ -27,10 +27,10 @@ class ExcelLoader
 	public static function getInstance()
 	{
 		if (!(self::$instance instanceof self))  
-        {  
-            self::$instance = new self();  
-        }  
-        return self::$instance;  
+		{  
+		    self::$instance = new self();  
+		}  
+		return self::$instance;  
 	}
 
 	/**
@@ -46,11 +46,11 @@ class ExcelLoader
         if (is_readable($filename))
         {
         	try {
-	            $objexcel = PHPExcel_IOFactory::load($filename);
-	            $sheet = $objexcel->getSheet(0);
-	            $higestrow = $sheet->getHighestRow();
+				$objexcel = PHPExcel_IOFactory::load($filename);
+				$sheet = $objexcel->getSheet(0);
+				$higestrow = $sheet->getHighestRow();
 
-	            $last_number = $project->last_examinee_id;
+				$last_number = $project->last_examinee_id;
 				$i = 3;
 				while ($i <= $higestrow) {
 					$k = $sheet->getCell("C".$i)->getValue();
