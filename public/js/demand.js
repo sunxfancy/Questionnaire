@@ -193,6 +193,9 @@ function clickCheckBox(t) {
 }
 
 function Leo_checkcomplete() {
+
+        var now_ans=get_ans_str(Leo_now_index);
+        refreshCookie(Leo_now_index,now_ans);
         var badques = new Array();
         for (var i = 0; i < questionlength; i++) {
             if (document.getElementById("newdiv_" + i).style.backgroundColor=='gray') {

@@ -40,24 +40,16 @@ class ExamineeController extends Base
         if ($examinee)
         {
             $this->session->set('Examinee', $examinee);
-            $this->dataReturn(array('url' =>'/examinee/inquery'));
+            $this->dataReturn(array('url' =>'/examinee/doexam'));
             return;
         }
     }
 
 	public function inqueryAction()
 	{
+		$this->leftRender("需求量表");
         //获得被试者的登陆信息
-        $examinee = $this->session->get('Examinee');
-        $name = $examinee->name;
-        $number = $examinee->number;
-        // $name='张晓强';
-		// $number='us001';
-
-		$this->view->setVar('page_title','需求量表');
-		$this->view->setVar('name',$name);
-		$this->view->setVar('number',$number);
-		$this->view->setVar('role','被试人员');
+        
 	}
     public function getquesAction()
     {
@@ -78,7 +70,7 @@ class ExamineeController extends Base
 
 	public function doexamAction()
 	{
-
+		$this->leftRender("需求量表");
 	}
 
     public function addAction()
@@ -96,5 +88,20 @@ class ExamineeController extends Base
         echo json_encode($ans);
         $this->view->disable();
     }
+
+    public function leftRender($title)
+    {
+        /****************这一段可以抽象成一个通用的方法**********************/
+        $examinee = $this->session->get('Examinee');
+        $name = $examinee->name;
+        $number = $examinee->number;
+        
+		$this->view->setVar('page_title',$title);
+		$this->view->setVar('name',$name);
+		$this->view->setVar('number',$number);
+		$this->view->setVar('role','被试人员');
+        /*******************************************************************/
+    }
+
 
 }
