@@ -75,10 +75,14 @@ class ExamineeController extends Base
 
     public function addAction()
     {
+        $this->leftRender("个 人 信 息 填 写");
+
+
+        
         // $paper = new Paper("select * from paper"); 
-        $sql = "select * from Paper";
+        /*$sql = "select * from Paper";
         $paper = $this->modelsManager->executeQuery($sql);
-        $this->view->setVar("paper",$paper);
+        $this->view->setVar("paper",$paper);*/
 
     }
 
