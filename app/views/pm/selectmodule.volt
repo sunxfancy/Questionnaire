@@ -12,7 +12,7 @@
     <div style="width:100%;height:40px;text-align:center;margin:26px;">             
         <button class="btn btn-primary" onclick="Leo_selectAll()" >全选</button>        
         <button class="btn btn-primary" onclick="Leo_unselectAll()">全不选</button>
-        <button class="btn btn-primary" type="submit" onclick="window.location.href='/pm/index'">确定</button>
+        <button class="btn btn-primary" type="submit">确定</button>
     </div>
 </div>
 
@@ -105,4 +105,22 @@
             }
         }
     }
+
+    $(document).ready(function() {
+            $("#submit").click(function(){
+                    var module_info ={
+                        "project_name" :$("#project_name").val(),
+                        "description" :$("#description").val(),
+                        "begintime" :$("#begintime").val(),
+                        "endtime" :$("#endtime").val(),
+                        "pm_name" :$("#pm_name").val(),
+                        "pm_username" :$("#pm_username").val(),
+                        "pm_password" :$("#pm_password").val()
+                    }
+                    $.post('/pm/selectmodule', module_info,callbk);
+            }); 
+            function callbk(){
+                    window.location.href = "/pm/index";
+            }
+        });
 </script>
