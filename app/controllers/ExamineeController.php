@@ -70,7 +70,7 @@ class ExamineeController extends Base
 
 	public function doexamAction()
 	{
-		$this->leftRender("需求量表");
+		$this->leftRender("答题");
 	}
 
     public function addAction()
