@@ -12,7 +12,7 @@
     <div style="width:100%;height:40px;text-align:center;margin:26px;">             
         <button class="btn btn-primary" onclick="Leo_selectAll()" >全选</button>        
         <button class="btn btn-primary" onclick="Leo_unselectAll()">全不选</button>
-        <button class="btn btn-primary" type="submit" onclick="window.location.href='/pm/index'">确定</button>
+        <button class="btn btn-primary" type="submit" onclick="alert($('module_info'))">确定</button>
     </div>
 </div>
 
@@ -64,7 +64,6 @@
     leibie_xifen.push(leibie_xifen_lidaoli);
    
     var newdiv = new leibie(1, leibie_name[0], leibie_xifen[0]);
-	//newdiv.style.backgroundColor="pink";
     document.getElementById('leibie').appendChild(newdiv);
     document.getElementById('xifen').appendChild(newdiv.xifen_div);
    
@@ -83,17 +82,12 @@
     function Leo_mouseclick(t) {
         document.getElementById('xifen').removeChild(document.getElementById('xifen').childNodes[0]);
         document.getElementById('xifen').appendChild(t.xifen_div);
-		/*var length=document.getElementById('leibie').childNodes.length;
-		for(var i=0;i<length;i++){
-			document.getElementById('leibie').childNodes[i].style.backgroundColor="white";
-		}*/
-		//t.style.backgroundColor="pink";
     }
     function Leo_selectAll() {
         var length=document.getElementById('leibie').childNodes.length;
         for (var i = 0; i < length; i++) {
             for (var j = 0; j < document.getElementById('leibie').childNodes[i].xifen_div.childNodes.length; j++) {
-                document.getElementById('leibie').childNodes[i].xifen_div.childNodes[j].childNodes[0].checked = true;
+                document.getElementById('leibie').childNodes[i].xifen_div.childNodes[j].childNodes[0].checked = true;   
             }     
         }
     }
@@ -105,4 +99,30 @@
             }
         }
     }
+    function getmodule(){
+        var mudule_array = new array();
+        var k = 0;
+        for (var i = 0; i < document.getElementById('leibie').childNodes.length; i++) {
+            for (var j = 0; j < document.getElementById('leibie').childNodes[i].xifen_div.childNodes.length; j++) {
+                if(document.getElementById('leibie').childNodes[i].xifen_div.childNodes[j].childNodes[0].checked == true){
+                    //module_array[k++] = document.getElementById('leibie').childNodes[i].xifen_div.childNodes[j].value;
+                    module_array.push(j);
+                }
+            }
+        }
+    }
+
+
+
+
+//    $(document).ready(function() {
+//         $("#submit").click(function(){
+//                var module_info = getmodule();
+//                 alert($("module_info"));
+// //                $.post('/pm/selectmodule', module_info,callbk);
+//         }); 
+// //        function callbk(){
+// //                window.location.href = "/pm/index";
+// //        }
+//     });
 </script>

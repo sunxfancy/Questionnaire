@@ -64,11 +64,21 @@
                 {name:'name',index:'name', sortable:true, width:110,sorttype:"string", editable:true,align:'center'},
                 {name:'sex',index:'sex',width:60, sortable:false, sorttype:"string", editable:false,align:'center'},
                 {name:'is_exam_com',index:'is_exam_com',width:135, sortable:false, sorttype:"string", editable:false,align:'center'},
-                {name:'data',index:'data', sortable:false,width:120, editable: false,edittype:'text',unformat:pickDate,align:'center'},
+                {name:'data',index:'data', sortable:false, width:120, resize:false,align:'center',
+                    formatter:function(){
+                        var temp = "<a href='/pm/data' >查看</a>";
+                        return temp;
+                    }
+                },
                 {name:'last_login',index:'last_login', sortable:true,width:200, editable: false,unformat:pickDate,align:'center'},
                 {name:'password',index:'password', sortable:false,width:80, editable: true,align:'center'},
                 {name:'is_ques_com',index:'is_ques_com', sorttype:"int",width:160, sortable:false, editable: false,align:'center'},
-                {name:'result',index:'result', sortable:false, width:130,sorttype:"string", editable:false,align:'center'}
+                {name:'result',index:'result', sortable:false, width:130, resize:false,align:'center',
+                    formatter:function(){
+                        var temp = "<a href='/pm/result' >查看</a>";
+                        return temp;
+                    }
+                }
             ], 
             
             viewrecords : true, 
