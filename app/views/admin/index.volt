@@ -46,7 +46,7 @@
 			shrinkToFit:true,
 			forceFit:true,
 			autowidth: true,
-			colNames:[' ', '项目编号','项目名称','项目经理', '经理账号', '开始时间','结束时间','参与人数'],
+			colNames:[' ', ' ', '项目编号','项目名称','项目经理', '经理账号', '开始时间','结束时间','参与人数'],
 			colModel:[
 				{name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
 					formatter:'actions', 
@@ -56,13 +56,19 @@
 						delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
 					}
 				},
+				{name:'detail',index:'detail', sortable:false, width:40, resize:false,align:'center',
+                    formatter:function(cellvalue, options, rowObject){
+                        var temp = "<div class='ui-pg-div ui-inline-edit' data-original-title='查看详细信息''><a href='/admin/detail/"+rowObject.id+"' ><i class='fa fa-th-list'></i></a></div>";
+                        return temp;
+                    }
+                },
 				{name:'id',index:'id', sorttype:"int",width:70, editable: false,align:'center'},
-				{name:'name',index:'name', sortable:true, width:230,sorttype:"string", editable:true,align:'center'},
+				{name:'name',index:'name', sortable:true, width:160,sorttype:"string", editable:true,align:'center'},
 				{name:'manager_name',index:'manager_name',width:80, sortable:false, sorttype:"string", editable:true,align:'center'},
 				{name:'manager_username',index:'manager_username',width:80, sortable:false, sorttype:"string", editable:true,align:'center'},
 				{name:'begintime',index:'begintime', sortable:true,width:160, editable: true,edittype:'text',unformat:pickDate,align:'center'},
 				{name:'endtime',index:'endtime', sortable:true,width:160, editable: true,unformat:pickDate,align:'center'},
-				{name:'user_count',index:'user_count', sortable:true,width:70, editable: false,align:'center'}
+				{name:'user_count',index:'user_count', sortable:true,width:90, editable: false,align:'center'}
 			], 
 	
 			viewrecords : true, 

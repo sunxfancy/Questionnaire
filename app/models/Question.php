@@ -27,6 +27,13 @@ class Question extends \Phalcon\Mvc\Model
      *
      */
     public $grade;
-
-
+    
+    public function initialize()
+    {
+        $this->hasMany("id", "QuestionAns", "question_id");
+        $this->hasManyToMany(
+            "id", "Fqrel", "question_id", 
+            "factor_id", "Factor", "id"
+        );
+    }
 }
