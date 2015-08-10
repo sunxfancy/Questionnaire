@@ -22,5 +22,8 @@ class Paper extends \Phalcon\Mvc\Model
      */
     public $name;
 
-
+    public function initialize()
+    {
+        $this->hasMany("id", "Factor", "paper_id");
+    }
 }
