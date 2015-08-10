@@ -2,7 +2,7 @@
     <div style="width:100%;height:400px;">
         <div style="width:50%;height:400px;background-color:    #C4E1FF;float:left;">
 			<div id="leibie" style="width:90%;height:90%;margin-top:5%;font-size:26px;text-align:right;margin-right:10%;float:left;">
-                <div style="width:100%;height:50px;cursor:pointer;" id='lingdaoli'>领导力模块<span style=></span></div>
+                <div style="width:100%;height:50px;cursor:pointer;" id='lingdaoli'>领导力模块<span style='color:red'>-></span></div>
                 <div style="width:100%;height:50px;cursor:pointer;" id='zonghe'>综合素质模块</div>
             </div>
 		</div>
@@ -40,10 +40,14 @@
         
 
         $("#lingdaoli").click(function(){
+            $("#lingdaoli").html("领导力模块<span style='color:red'>-></span>");
+            $("#zonghe").html("综合素质模块");
             $("#zonghe_sel").css('display','none');
             $("#lingdaoli_sel").css('display','');
         });
         $("#zonghe").click(function(){
+            $("#lingdaoli").html("领导力模块");
+            $("#zonghe").html("综合素质模块<span style='color:red'>-></span>");
             $("#lingdaoli_sel").css('display','none');
             $("#zonghe_sel").css('display','');
         });
