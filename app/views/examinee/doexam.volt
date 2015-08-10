@@ -1,4 +1,4 @@
-
+<link rel="stylesheet" type="text/css" href="/css/css/Leo_questions.css" />
 <div class="Leo_question_v2" id="Leo_question_v2">
         <div style="overflow:hidden;width:600px;height:440px;">
         <div style="width:95%;height:410px;margin:0 auto;display:none;font-size:25px;font-family:'微软雅黑'" id='announce_panel'><p></p></div>
