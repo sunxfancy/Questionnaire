@@ -12,7 +12,7 @@
 class TestController extends Base
 {
 	
-	public function indexAction($project_id)
+	public function indexAction()
 	{
 		$this->response->setHeader("Content-Type", "text/plain; charset=utf-8");
 		$factor_file = __DIR__ . "/../../app/config/factor.json";
@@ -22,11 +22,7 @@ class TestController extends Base
 		print_r($factor_json);
 		print_r($index_json);
 
-		$this->calans($project_id);
-		foreach ($this->factors as $factor) {
-			$factor_config = $factor_json[$factor->name];
-			$this->calitem()
-		}
+		
 	}
 
 
@@ -36,12 +32,14 @@ class TestController extends Base
 		$json_string = preg_replace('/[\r\n]/', '', $json_string);
 		$json = json_decode($json_string, $toarray);
 		if ($json == null) {
-			echo json_last_error_msg();
-			throw new Exception(json_last_error_msg());
+			// echo json_last_error_msg();
+			// throw new Exception(json_last_error_msg());
 		} 
 		return $json;
 	}
 
+
+	/*
 	public function calans($project_id)
 	{
 		$questions = getQuestions($project_id);
@@ -62,9 +60,7 @@ class TestController extends Base
 		}
 	}
 
-	/**
-	 * 返回question的列表,同时在类对象中缓存模块、因子、指标等对象组
-	 */
+
 	public function getQuestions($project_id)
 	{
 		$project = Project::findFirst($project_id);
@@ -196,4 +192,6 @@ class TestController extends Base
 			'bind' => array(1=>$project_id)));
 		return $this->examinees;
 	}
+
+	*/
 }
