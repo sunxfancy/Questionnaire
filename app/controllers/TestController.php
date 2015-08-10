@@ -11,7 +11,7 @@
 */
 class TestController extends Base
 {
-	
+/*	
 	public function indexAction($project_id)
 	{
 		$this->response->setHeader("Content-Type", "text/plain; charset=utf-8");
@@ -42,7 +42,7 @@ class TestController extends Base
 		return $json;
 	}
 
-/*
+
 	public function calans($project_id)
 	{
 		$questions = getQuestions($project_id);
@@ -63,13 +63,17 @@ class TestController extends Base
 		}
 	}
 
-	
+*/	
+	public function indexAction(){
+		$questions = $this->getQuestions(1);
+	}
+
 	// 返回question的列表,同时在类对象中缓存模块、因子、指标等对象组
 	public function getQuestions($project_id)
 	{
-		$project = Project::findFirst($project_id);
-		$modules = $project->getModules();
-		$modules_id_array = $this->getIds($modules);
+		$project = Pmrel::find("project_id = '$project_id'");
+		$modules_id_array = $this->getModules($project);
+		//return $modules_id_array;
 		$indexs = Index::find(array(
 			'module_id IN ({module_id:array})',
 			'bind' => array('module_id' => $modules_id_array)
@@ -103,6 +107,15 @@ class TestController extends Base
 		return $id_array;
 	}
 
+	public function getModules($project)
+	{
+		$id_array = array();
+		foreach ($project as $projects) {
+			$id_array[]  = $projects->module_id;
+		}
+		return $id_array;
+	}
+/*
 	public function calitem($item, $config, $main_config, $name = 'Factor')
 	{
 		if ($config['isdone']) return;
