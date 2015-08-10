@@ -9,16 +9,20 @@
 /**
 * 
 */
+
 class TestController extends Base
 {
 	
-	public function indexAction($project_id)
+	public function indexAction()
 	{
 		$this->response->setHeader("Content-Type", "text/plain; charset=utf-8");
 		$factor_file = __DIR__ . "/../../app/config/factor.json";
 		$index_file = __DIR__ . "/../../app/config/index.json";
 		$factor_json = $this->loadJson($factor_file);
 		$index_json = $this->loadJson($index_file);
+		$factor = $index_json['ldnl']['index'];
+		print_r($factor);
+		$this->insertFactor($aaa);
 		print_r($factor_json);
 		print_r($index_json);
 
@@ -36,10 +40,39 @@ class TestController extends Base
 		$json_string = preg_replace('/[\r\n]/', '', $json_string);
 		$json = json_decode($json_string, $toarray);
 		if ($json == null) {
-			echo json_last_error_msg();
-			throw new Exception(json_last_error_msg());
+			// echo json_last_error_msg();
+			// throw new Exception(json_last_error_msg());
 		} 
 		return $json;
+	}
+
+	public function insertFactor($data)
+	{
+		//todo
+		$factor = new Factor();
+		$data1 = Array(
+		 	foo => foo111,
+    		bar => foo222,
+    	);
+		foreach ($data1 as $key => $value) {
+			print_r($key); echo "  ";print_r($value);echo "\n";
+		}
+		$factor->id = 3;
+		$factor->name = 11;
+		$factor->factor = 11;
+		//father_id 为外键   与factor表中的id 对应
+		$factor->father_factor = 1;
+		//paper_id 为外键  与paper表中的id对应
+		$factor->paper_id = 1;
+		if ($factor->save() == false) {
+		    echo "NO \n";
+		    foreach ($factor->getMessages() as $message) {
+		    	echo $message;
+		    }
+		} else {
+		    echo "true \n";
+		}
+
 	}
 
 /*
