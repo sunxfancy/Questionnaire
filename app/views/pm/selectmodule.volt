@@ -27,10 +27,12 @@
 		</div>
     </div>
 
-    <div style="width:100%;height:40px;text-align:center;margin:26px;">             
+    <div style="width:100%;height:40px;text-align:center;margin:26px;">  
+         
         <button class="btn btn-primary" id='sel_all' >全选</button>        
         <button class="btn btn-primary" id='unsel_all'>全不选</button>
-        <button class="btn btn-primary" type="submit">确定</button>
+        <button class="btn btn-primary" id="submit">确定</button>
+          
     </div>
 </div>
 
@@ -56,9 +58,19 @@
 
         $('#unsel_all').click(function(){ $(":checkbox").prop('checked',false);});
 
-
-       
-
+        $("#submit").click(function(){
+            var checks=$(":checkbox");
+            var spans=checks.parent('div').children('span');
+            var checkeds=new Array();
+            for(var i=0;i<10;i++){
+                if(checks[i].checked){
+                    checkeds.push(spans[i].innerText);
+                }
+            }
+             $.post('/pm/writeselectedmodule',{'checkeds':checkeds}, function(data, textStatus, xhr) {
+                 /*optional stuff to do after success */
+             });
+        })
     })
 </script>
 
