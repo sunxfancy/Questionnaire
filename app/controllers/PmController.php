@@ -67,7 +67,7 @@ class PmController extends Base
                 "project_id=?1",
                 "bind"=>array(1=>$manager->project_id)
                 ));
-            $ans='123';
+            $ans='';
             for ($i=0; $i < sizeof($pmrels); $i++) { 
                 $module=Module::findFirst($pmrels[$i]->module_id);
                 $ans.=$module->name.'|';
@@ -287,8 +287,9 @@ class PmController extends Base
                             $pmrel->module_id=$module->id;
                             $pmrel->save();
                         }
-                    // $this->dataBack(array('url' =>'/pm/index'));
+                     
                     }
+                $this->dataBack(array('url' =>'/pm/index'));
                 $this->db->commit();
             }catch(Exception $e){
                 $this->db->rollback();
