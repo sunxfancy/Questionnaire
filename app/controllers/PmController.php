@@ -240,6 +240,26 @@ class PmController extends Base
         }
     }
 
+    public function writeselectedmoduleAction(){
+
+
+        $checks=$_POST[':checkbox'];
+        
+
+        // $checkeds=$this->request->getpost('checkeds');
+        // for($i=0;$i<sizeof($checkeds);$i++){
+        //     $manager=$this->session->get('Manager');
+        //     $module=Module::findFirst(array(
+        //         "name= ?1",
+        //         "bind" => array( 1=> "$checkeds[i]")));
+
+        //     $pmrel=new Pmrel();
+        //     $pmrel->project_id=$manager->project_id;
+        //     $pmrel->module_id=$module->id;
+        //     echo $pmrel->save();
+             $this->view->disable();
+        // }
+    }
 /*  function leftRender()
     {
         $manager = $this->session->get('Manager');

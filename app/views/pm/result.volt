@@ -19,7 +19,9 @@
 		            </div>
 		        </form>
 		    </div>
-		</li></ul></div>
+		</li>
+	</ul>
+</div>
 
 <div style="width:100%;height:40px;background-color:pink;margin:0 auto;text-align:center;margin-top:30px; font-size:30px">胜任力模型</div>
 
@@ -60,4 +62,6 @@
 		            </div>
 		        </form>
 		    </div>
-		</li></ul></div>
+		</li>
+	</ul>
+</div>
