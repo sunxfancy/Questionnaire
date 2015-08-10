@@ -242,23 +242,23 @@ class PmController extends Base
 
     public function writeselectedmoduleAction(){
 
+        $manager=$this->session->get('Manager');
+        $checkeds=$this->request->getpost('checkeds');
+        $values=$this->request->getpost('values');
+        for($i=0;$i<sizeof($checkeds);$i++){
+            if($checkeds[$i]=='true'){
+                $module=Module::findFirst(array(
+                "name= ?1",
+                "bind" => array( 1=> $values[$i])));
 
-        $checks=$_POST[':checkbox'];
-        
-
-        // $checkeds=$this->request->getpost('checkeds');
-        // for($i=0;$i<sizeof($checkeds);$i++){
-        //     $manager=$this->session->get('Manager');
-        //     $module=Module::findFirst(array(
-        //         "name= ?1",
-        //         "bind" => array( 1=> "$checkeds[i]")));
-
-        //     $pmrel=new Pmrel();
-        //     $pmrel->project_id=$manager->project_id;
-        //     $pmrel->module_id=$module->id;
-        //     echo $pmrel->save();
-             $this->view->disable();
-        // }
+                $pmrel=new Pmrel();
+                $pmrel->project_id=$manager->project_id;
+                $pmrel->module_id=$module->id;
+                $pmrel->save();
+            }
+            
+        }
+        $this->view->disable();
     }
 /*  function leftRender()
     {
