@@ -177,15 +177,17 @@ function Leo_timer_start(){
     }
 
 }
-//     $(document).ready(function() {
-//     var newDate = new Date();
-//     setInterval( function() {
-//     },1000);
-// }
-        
-    
+changepage();
+function changepage(){
+    var s={
+        "ss":"ss"
+    }
+    $.post('/test/index', function(data){
+        /*optional stuff to do after success */
+        alert(data.eee);
+    });
+}
 
-   
 </script>
 
 </html>
