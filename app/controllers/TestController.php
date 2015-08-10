@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-07 19:21:18
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-09 14:39:24
+ * @Last Modified time: 2015-08-10 10:11:24
  */
 
 /**
@@ -22,11 +22,11 @@ class TestController extends Base
 		print_r($factor_json);
 		print_r($index_json);
 
-		$this->calans($project_id);
-		foreach ($this->factors as $factor) {
-			$factor_config = $factor_json[$factor->name];
-			$this->calitem()
-		}
+		// $this->calans($project_id);
+		// foreach ($this->factors as $factor) {
+		// 	$factor_config = $factor_json[$factor->name];
+		// 	$this->calitem();
+		// }
 	}
 
 
@@ -42,6 +42,7 @@ class TestController extends Base
 		return $json;
 	}
 
+/*
 	public function calans($project_id)
 	{
 		$questions = getQuestions($project_id);
@@ -62,9 +63,8 @@ class TestController extends Base
 		}
 	}
 
-	/**
-	 * 返回question的列表,同时在类对象中缓存模块、因子、指标等对象组
-	 */
+	
+	// 返回question的列表,同时在类对象中缓存模块、因子、指标等对象组
 	public function getQuestions($project_id)
 	{
 		$project = Project::findFirst($project_id);
@@ -196,4 +196,5 @@ class TestController extends Base
 			'bind' => array(1=>$project_id)));
 		return $this->examinees;
 	}
+	*/
 }
