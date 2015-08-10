@@ -48,7 +48,12 @@ class Factor extends \Phalcon\Mvc\Model
             "id", "Fqrel", "factor_id", 
             "question_id", "Question", "id"
         );
+        $this->hasManyToMany(
+            "id", "Firel", "factor_id", 
+            "index_id", "Index", "id"
+        );
         $this->hasMany("id", "FactorAns", "factor_id");
+        $this->hasMany("id", "Index", "father_factor");
     }
 
 }

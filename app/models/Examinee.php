@@ -106,6 +106,9 @@ class Examinee extends \Phalcon\Mvc\Model
     public $last_login;
 
 
+    public $is_exam_com;
+
+
     public function initialize()
     {
         $this->belongsTo('project_id', 'Project', 'id');

@@ -16,5 +16,8 @@ class Module extends \Phalcon\Mvc\Model
      */
     public $name;
 
-
+    public function initialize()
+    {
+        $this->hasMany("id", "Index", "module_id");
+    }
 }

@@ -30,13 +30,13 @@ class Index extends \Phalcon\Mvc\Model
 
     public function initialize()
     {
-        $this->belongsTo('index_id', 'Index', 'id');
-        $this->belongsTo('paper_id', 'Paper', 'id');
+        $this->belongsTo('module_id', 'Module', 'id');
         $this->hasManyToMany(
-            "id", "Fqrel", "factor_id", 
-            "question_id", "Question", "id"
+            "id", "Firel", "index_id", 
+            "factor_id", "Factor", "id"
         );
-        $this->hasMany("id", "FactorAns", "factor_id");
+        $this->hasMany("id", "IndexAns", "index_id");
+        $this->hasMany("id", "Index", "father_index");
     }
 
 }
