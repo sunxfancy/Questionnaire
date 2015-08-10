@@ -40,7 +40,10 @@
 <script type="text/javascript">
     
     jQuery(function(){
-        
+        $.post('/pm/disp_module',  function(data) {
+            /*optional stuff to do after success */
+            alert(data.select);
+        });
 
         $("#lingdaoli").click(function(){
             $("#lingdaoli").html("领导力模块<span style='color:red'>-></span>");
@@ -67,11 +70,15 @@
                 checkeds[i]=checks[i].checked;
                 values[i]=checks[i].value;
             }
-           
-            
-             $.post('/pm/writeselectedmodule',{'checkeds':checkeds,'values':values}, function(data, textStatus, xhr) {
+            $.post('/pm/writeselectedmodule',{'checkeds':checkeds,'values':values}, function(data) {
                  /*optional stuff to do after success */
-             });
+                 if(data.error){
+                    alert(data.error);
+                    return;
+                 }else{
+                    // window.location.href=data.url;
+                 }
+            });
         })
     })
 </script>
