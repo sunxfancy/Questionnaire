@@ -186,20 +186,28 @@ function Leo_timer_start(){
     time_play();
     var flag=true;
     function time_play(){
-
         setTimeout(function(){
-            total_time++;
-            seconds=total_time%60;
-            minutes=(total_time-seconds)/60%60;
-            hour=(total_time-seconds-minutes*60)/60/60;
-            $("#sec").html(( seconds < 10 ? "0" : "" ) + seconds);
-            $("#min").html(( minutes < 10 ? "0" : "" ) + minutes);
-            $("#hours").html(( hour < 10 ? "0" : "" ) + hour);
+            if(flag){
+                total_time++;
+                seconds=total_time%60;
+                minutes=(total_time-seconds)/60%60;
+                hour=(total_time-seconds-minutes*60)/60/60;
+                $("#sec").html(( seconds < 10 ? "0" : "" ) + seconds);
+                $("#min").html(( minutes < 10 ? "0" : "" ) + minutes);
+                $("#hours").html(( hour < 10 ? "0" : "" ) + hour);
+            }
             time_play();
         },1000)
     }
 
+    $("#Leo_pause").click(function(){
+        flag=false;
+    });
 
+    $("#Leo_hiden_ctrl").click(function() {
+        /* Act on the event */
+        flag=true;
+    });
 
 }
 changepage(1);
