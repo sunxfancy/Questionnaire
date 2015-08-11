@@ -108,12 +108,13 @@ class ExamineeController extends Base
         $questions = $this->getQuestions($project_id,$paper_id);
 
         $this->response->setHeader("Content-Type", "text/json; charset=utf-8");
-        $ret={
-            'questions':$questions;
-            'description': Paper::findFirst($paper_id)->description;
-        }
-        echo $ret;
-        $this->view->disable();
+        $this->dataReturn(array("question"=>$questions,"description"=>Paper::findFirst($paper_id)->description));
+        // $ret={
+        //     'questions':$questions,
+        //     'description': Paper::findFirst($paper_id)->description
+        // };
+        // echo $ret;
+        // $this->view->disable();
 
     }
 
@@ -197,19 +198,19 @@ class ExamineeController extends Base
                 }
             }
         }
+        
         return explode(",",implode(",",array_unique($questions_id)));
     }
 
     public function getExam($questions){
-        $data = new array();
+        $data = array();
         for ($i=0; $i < sizeof($questions); $i++) { 
 
-            $questions = Question::findFirst($questions[$i]);
-            $data[$i]={
-                'index':$i,
-                'title':$questions->topics,
-                'options':$questions->options
-            }
+            $question = Question::findFirst($questions[$i]);
+            $data[$i]=json_encode(array(
+                'index'=>$i,
+                'title'=>$question->topic,
+                'options'=>$question->options));
         }
         return $data;
     }

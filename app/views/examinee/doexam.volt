@@ -69,14 +69,16 @@
 
 <script type="text/javascript">
 
+var Leo_index_now=0;
+var done_index=0;
+
+var data=new Array();
+
+
 $(function(){
 
     /*定义重要的全局变量*/
-    var Leo_index_now=0;
-    var done_index=0;
-
-    var data=new Array();
-
+   
     $.post('/Examinee/getpaper', {'paper_id':1}, function(data) {
         /*optional stuff to do after success */
         alert(data.questions[0].index);
