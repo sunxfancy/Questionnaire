@@ -64,7 +64,6 @@ $(document).ready(function() {
 
 
     function callbk(data){
-        console.log(data);
         
         if(data.url){
             window.location.href = data.url;
