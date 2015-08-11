@@ -3,34 +3,28 @@
  * @Author: sxf
  * @Date:   2015-08-11 09:18:33
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-11 10:44:42
+ * @Last Modified time: 2015-08-11 16:30:01
  */
 
 /**
-* 
+* Json同步类库
 */
 class Json
 {
-
-	public $factor_json;
-	public $index_json;
-
 	public function __construct($db) {
 		$this->db = $db;
 	}
 
 	public function Load()
 	{
-		$factor_file = __DIR__ . "/../../app/config/factor.json";
-		$index_file = __DIR__ . "/../../app/config/index.json";
-		$this->factor_json = $this->loadJson($factor_file);
-		$this->index_json = $this->loadJson($index_file);
-		print_r($this->factor_json);
-		print_r($this->index_json);
+		$work_names = array('module', 'index', 'factor');
 		$this->db->begin();
 		try {
-			$this->updateSQL($this->factor_json, 'Factor');
-			$this->updateSQL($this->index_json, 'Index');
+			foreach ($work_names as $work_name) {
+				$filename = __DIR__ . "/../../app/config/$work_name.json";
+				$json = $this->loadJson($filename);
+				$this->updateSQL($json, $work_name);
+			}
 		} catch (Exception $ex) {
 			echo $ex->getMessage() ."\n";
 			$this->db->rollback();
@@ -38,6 +32,7 @@ class Json
 		$this->db->commit();
 	}
 
+	// 加载一个json文件，可选传入是否转换为数组
 	private function loadJson($filename, $toarray = true)
 	{
 		$json_string = file_get_contents($filename);
@@ -50,13 +45,16 @@ class Json
 		return $json;
 	}
 
+	// 更新数据库
 	function updateSQL($json_array, $class_name)
 	{
 		foreach ($json_array as $key => $value) {
-			$obj = $this->getObj($key, $class_name);
-			$this->jsonToObject($obj, $key, $value);
+			$obj = $this->getObj($key, ucfirst($class_name));
+			$this->jsonToObject($obj, $class_name, $key, $value);
 			if (!$obj->save())
 				foreach ($obj->getMessages() as $msg) {
+					print_r($obj);
+					echo $msg."\n";
 					throw new Exception($msg);
 				}
 		}
@@ -73,12 +71,27 @@ class Json
 		return $obj;
 	}
 
-	function jsonToObject($obj, $name, $array)
+	function jsonToObject($obj, $class_name, $name, $array)
 	{
 		$obj->name = $name;
-		// foreach ($array as $key => $value) {
-		// 	$obj->$key = $value;
-		// }
+		foreach ($array as $key => $value) {
+			if ($key == 'question' || $key == 'factor' || $key == 'index') {
+				$obj->children = $value;
+				$b = $key == $class_name ? 0 : 1;
+				$obj->children_type = $this->makeArray($value, $b);
+			}
+			if ($key == 'action' || $key == 'ans' || $key == 'children' || $key == 'belong_module') {
+				$obj->$key = $value;
+			}
+		}
 	}
 
+	// 根据array字段，生成新的children_type
+	function makeArray($array, $data)
+	{
+		$children_len = count(explode(',',$array));
+		$children_type = array();
+		array_pad($children_type, $children_len, $data);
+		return implode(',', $children_type);
+	}
 }

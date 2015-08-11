@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="/css/css/Leo_normal_css.css" />
     <script type='text/javascript' src='/js/jquery.js'></script>
     <script type='text/javascript' src='/lib/bootstrap-datetimepicker.js'></script>
+    <script type='text/javascript' src='/lib/jquery.cookie.js'></script>
 </head>
 
 <body style="background-image:url(/image/fcbg_blur.png);">
