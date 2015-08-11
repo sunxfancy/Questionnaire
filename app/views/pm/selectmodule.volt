@@ -42,7 +42,17 @@
     jQuery(function(){
         $.post('/pm/disp_module',  function(data) {
             /*optional stuff to do after success */
-            alert(data.select);
+            if(data.error){
+                alert(data.error);
+                return;
+            }else{
+                var ans=data.select.split("|");
+                for (var i = 0; i <ans.length-1; i++) {
+                    $("[value="+ans[i]+"]").prop("checked","checked");
+                };
+            }
+
+
         });
 
         $("#lingdaoli").click(function(){
@@ -76,7 +86,8 @@
                     alert(data.error);
                     return;
                  }else{
-                    // window.location.href=data.url;
+                    alert("提交成功!")
+                    window.location.href=data.url;
                  }
             });
         })

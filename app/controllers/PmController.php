@@ -67,10 +67,10 @@ class PmController extends Base
                 "project_id=?1",
                 "bind"=>array(1=>$manager->project_id)
                 ));
-            $ans='123';
+            $ans='';
             for ($i=0; $i < sizeof($pmrels); $i++) { 
                 $module=Module::findFirst($pmrels[$i]->module_id);
-                $ans.=$module->name.'|';
+                $ans.=$module->chs_name.'|';
             }
 
             $this->dataBack(array("select"=>$ans));
@@ -280,15 +280,16 @@ class PmController extends Base
                     for($i=0;$i<sizeof($checkeds);$i++){
                         if($checkeds[$i]=='true'){
                             $module=Module::findFirst(array(
-                            "name= ?1",
+                            "chs_name= ?1",
                             "bind" => array( 1=> $values[$i])));
                             $pmrel=new Pmrel();
                             $pmrel->project_id=$manager->project_id;
                             $pmrel->module_id=$module->id;
                             $pmrel->save();
                         }
-                    // $this->dataBack(array('url' =>'/pm/index'));
+                     
                     }
+                $this->dataBack(array('url' =>'/pm/index'));
                 $this->db->commit();
             }catch(Exception $e){
                 $this->db->rollback();
