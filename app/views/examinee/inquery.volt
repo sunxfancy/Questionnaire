@@ -1,5 +1,5 @@
 <script type='text/javascript' src='/js/demand.js'></script>
-<script type='text/javascript' src='/lib/jquery.cookie.js'></script>
+
   <div class="Leo_question_v2" id="Leo_question_v2">
         <div class="Leo_question_l" id="Leo_question_panel" style="margin-top:30px;"><div></div></div>
         <div id="Leo_control" style="width:600px;height:60px;text-align:center;">
@@ -34,43 +34,12 @@
                }
             questionlength=data.ques_length;
             Leo_initPanel(questionlength);
-            initCookie(questionlength);
+            initCookie(questionlength,'ans_cookie'+{{number}});
         }); 
     }
-    function initCookie(q_length){
-        var ans_cookie=$.cookie('ans_cookie'+'{{ number }}');
-        if(!ans_cookie){
-            var ans_array=new Array(q_length);
-            for(var i=0;i<q_length;i++){
-                ans_array[i]='0';
-            }
-            $.cookie('ans_cookie'+'{{ number }}',ans_array.join("|"),{experies:7});
-        }else{
-            var ans_array=ans_cookie.split("|");
-            var flag=true;
-            for(var i=0;i<ans_array.length;i++){
-                if(ans_array[i]=='0'){
-                    if(flag){
-                        changepage(i,false);
-                        flag=false;
-                    }
-                }else{
-                     $("#newdiv_" + i).css('background-color',"green");
-                }
-            }
-            if(flag){
-                changepage(ans_array.length-1,false);
-            }
-        }
-    }
+   
     //将cookie中储存的第index个答案更新为new_ans, index 从0开始
-    function refreshCookie(index,new_ans){
-         var ans_cookie=$.cookie('ans_cookie'+'{{ number }}');
-         var ans_array=ans_cookie.split('|');
-         ans_array[index]=new_ans;
-         ans_str=ans_array.join("|");
-         $.cookie('ans_cookie'+'{{ number }}',ans_str,{expires:7});
-    }
+   
     //显示题目
     function initTitle(data){
         var ans=data.options.split('|');
@@ -143,8 +112,25 @@ function get_ans_str(index){
         }
         return ans_str;
 }
+function initCookie_title(ans_cookie){
+        var ans_array=ans_cookie.split("|");
+            var flag=true;
+            for(var i=0;i<ans_array.length;i++){
+                if(ans_array[i]=='0'){
+                    if(flag){
+                        changepage(i,false);
+                        flag=false;
+                    }
+                }else{
+                     $("#newdiv_" + i).css('background-color',"green");
+                }
+            }
+            if(flag){
+                changepage(ans_array.length-1,false);
+            }
+    }
 function get_ans_array_from_cookie(index){
-    var ans_cookie=$.cookie('ans_cookie'+'{{ number }}');
+    var ans_cookie=$.cookie('ans_cookie'+{{ number }});
     var ans_array=ans_cookie.split("|");
     var ans_ori=ans_array[index].split("");
     var ans_ori_array=new Array();
@@ -166,7 +152,7 @@ function changepage(newpage,isCookie) {
        }
        if(isCookie){
             var now_ans=get_ans_str(Leo_now_index);
-            refreshCookie(Leo_now_index,now_ans);
+            refreshCookie(Leo_now_index,now_ans,'ans_cookie'+{{number}});
         }
         Leo_now_index = newpage;
         initTitle(data);
