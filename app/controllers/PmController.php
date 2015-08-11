@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-01 16:18:46
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-06 16:33:09
+ * @Last Modified time: 2015-08-07 17:02:19
  */
 
 /**
@@ -103,8 +103,10 @@ class PmController extends Base
 
 	public function listexamineeAction()
 	{
+        $project_id = $this->getProjectId();
         $builder = $this->modelsManager->createBuilder()                            
-                                       ->from('Examinee');
+                                       ->from('Examinee')
+                                       ->where("project_id = '$project_id'");
         $sidx = $this->request->getQuery('sidx','string');
         $sord = $this->request->getQuery('sord','string');
         if ($sidx != null)
@@ -145,10 +147,11 @@ class PmController extends Base
 
     public function listinterviewerAction()
     {
+        $project_id = $this->getProjectId();
         $builder = $this->modelsManager->createBuilder()
                                        ->from('Manager')
                                        //->join('Project','Project.project_id=Manager.project_id')
-                                       ->where('Manager.role = "I"');
+                                       ->where("Manager.role = 'I' AND Manager.project_id = '$project_id'");
         $sidx = $this->request->getQuery('sidx','string');
         $sord = $this->request->getQuery('sord','string');
         if ($sidx != null)
@@ -159,6 +162,11 @@ class PmController extends Base
             $sort = $sort.' '.$sord;
         $builder = $builder->orderBy($sort);
         $this->datareturn($builder);
+    }
+
+    function getProjectId() {
+        $manager = $this->session->get('Manager');
+        return $manager->project_id;
     }
 
     public function updateinterviewerAction()
@@ -189,10 +197,11 @@ class PmController extends Base
 
     public function listleaderAction()
     {
+        $project_id = $this->getProjectId();
         $builder = $this->modelsManager->createBuilder()
                                        ->from('Manager')
                                        //->join('Project','Project.project_id=Manager.project_id')
-                                       ->where('Manager.role = "L"');
+                                       ->where("Manager.role = 'L' AND Manager.project_id = '$project_id'");
         $sidx = $this->request->getQuery('sidx','string');
         $sord = $this->request->getQuery('sord','string');
         if ($sidx != null)
@@ -231,6 +240,26 @@ class PmController extends Base
         }
     }
 
+    public function writeselectedmoduleAction(){
+
+
+        $checks=$_POST[':checkbox'];
+        
+
+        // $checkeds=$this->request->getpost('checkeds');
+        // for($i=0;$i<sizeof($checkeds);$i++){
+        //     $manager=$this->session->get('Manager');
+        //     $module=Module::findFirst(array(
+        //         "name= ?1",
+        //         "bind" => array( 1=> "$checkeds[i]")));
+
+        //     $pmrel=new Pmrel();
+        //     $pmrel->project_id=$manager->project_id;
+        //     $pmrel->module_id=$module->id;
+        //     echo $pmrel->save();
+             $this->view->disable();
+        // }
+    }
 /*  function leftRender()
     {
         $manager = $this->session->get('Manager');

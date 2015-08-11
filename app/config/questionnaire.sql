@@ -48,7 +48,7 @@ CREATE TABLE `examinee` (
   UNIQUE KEY `username_UNIQUE` (`number`),
   KEY `index3` (`project_id`),
   CONSTRAINT `fk_examinee_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -57,7 +57,7 @@ CREATE TABLE `examinee` (
 
 LOCK TABLES `examinee` WRITE;
 /*!40000 ALTER TABLE `examinee` DISABLE KEYS */;
-INSERT INTO `examinee` VALUES (3,'01','123','s1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,0),(4,'151','mymf5j','孙西风','{\"education\":[],\"work\":[]}',0,'河北','大本','群众',NULL,NULL,'','',NULL,'',1,'0000-00-00',NULL,0),(5,'15010000','0ygjy3','孙西风','{\"education\":[],\"work\":[]}',0,'河北','大本','群众',NULL,NULL,'','',NULL,'',1,'0000-00-00',NULL,0);
+INSERT INTO `examinee` VALUES (12,'15010001','efxonl','孙西风','{\"education\":[],\"work\":[]}',1,'河北','大本','群众',NULL,NULL,'','',NULL,'',1,'1993-11-12',NULL,0),(13,'15010002','2oumzy','孙西风','{\"education\":[],\"work\":[]}',1,'河北','大本','群众',NULL,NULL,'','',NULL,'',1,'1993-11-12',NULL,0),(14,'15010003','0mzg2o','孙西风','{\"education\":[],\"work\":[]}',1,'河北','大本','群众',NULL,NULL,'','',NULL,'',1,'1993-11-12',NULL,0),(15,'15010004','zkxvjb','孙西风','{\"education\":[],\"work\":[]}',1,'河北','大本','群众',NULL,NULL,'','',NULL,'',1,'1993-11-12',NULL,0);
 /*!40000 ALTER TABLE `examinee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -74,6 +74,12 @@ CREATE TABLE `factor` (
   `factor` double DEFAULT NULL COMMENT '因子系数，并未使用，暂时保留',
   `father_factor` int(11) DEFAULT NULL COMMENT '父因子id，在不存在时为空',
   `paper_id` int(11) NOT NULL COMMENT '所属试卷id',
+  `children` varchar(2000) DEFAULT NULL COMMENT '下级内容\n',
+  `children_type` varchar(45) DEFAULT NULL COMMENT '下级内容的类型，是factor还是question',
+  `action` varchar(1000) DEFAULT NULL COMMENT '动作函数',
+  `ans_do` varchar(1000) DEFAULT NULL COMMENT '结尾动作函数',
+  `chabiao` varchar(1000) DEFAULT NULL COMMENT '查询常模转换表',
+  `chs_name` varchar(45) DEFAULT NULL COMMENT '中文名字，导出报告时使用',
   PRIMARY KEY (`id`),
   KEY `index2` (`father_factor`),
   KEY `index4` (`paper_id`),
@@ -99,14 +105,12 @@ DROP TABLE IF EXISTS `factor_ans`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `factor_ans` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
   `score` int(11) DEFAULT NULL COMMENT '因子得分',
   `std_score` int(11) DEFAULT NULL COMMENT '因子标准分',
   `examinee_id` int(11) NOT NULL COMMENT '被试人员id，并非编号',
   `factor_id` int(11) NOT NULL COMMENT '所属因子id',
   `ans_score` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_factor_ans_1_idx` (`examinee_id`),
+  PRIMARY KEY (`examinee_id`,`factor_id`),
   KEY `fk_factor_ans_2_idx` (`factor_id`),
   CONSTRAINT `fk_factor_ans_1` FOREIGN KEY (`examinee_id`) REFERENCES `examinee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_factor_ans_2` FOREIGN KEY (`factor_id`) REFERENCES `factor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -186,6 +190,11 @@ CREATE TABLE `index` (
   `name` varchar(45) DEFAULT NULL COMMENT '指标名',
   `father_index` int(11) DEFAULT NULL COMMENT '父指标id，计算时会使用',
   `module_id` int(11) NOT NULL COMMENT '模块id',
+  `children` varchar(2000) DEFAULT NULL COMMENT '下级内容，用逗号分隔',
+  `children_type` varchar(45) DEFAULT NULL COMMENT '下级内容的类型，是index还是factor',
+  `chs_name` varchar(45) DEFAULT NULL COMMENT '中文名字，导出报告时使用',
+  `ans_do` varchar(1000) DEFAULT NULL COMMENT '结尾动作函数',
+  `action` varchar(1000) DEFAULT NULL COMMENT '动作函数名',
   PRIMARY KEY (`id`),
   KEY `index2` (`father_index`),
   KEY `index3` (`module_id`),
@@ -211,11 +220,10 @@ DROP TABLE IF EXISTS `index_ans`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `index_ans` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
   `score` int(11) DEFAULT NULL COMMENT '指标最终得分\n',
   `index_id` int(11) NOT NULL COMMENT '指标id',
   `examinee_id` int(11) NOT NULL COMMENT '被试人员id，并非编号',
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`index_id`,`examinee_id`),
   KEY `fk_index_ans_1_idx` (`examinee_id`),
   KEY `fk_index_ans_2_idx` (`index_id`),
   CONSTRAINT `fk_index_ans_1` FOREIGN KEY (`examinee_id`) REFERENCES `examinee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -230,6 +238,113 @@ CREATE TABLE `index_ans` (
 LOCK TABLES `index_ans` WRITE;
 /*!40000 ALTER TABLE `index_ans` DISABLE KEYS */;
 /*!40000 ALTER TABLE `index_ans` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `inquery`
+--
+
+DROP TABLE IF EXISTS `inquery`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `inquery` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) DEFAULT NULL COMMENT '所属项目id',
+  `description` text COMMENT '指导语',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `project_id_UNIQUE` (`project_id`),
+  CONSTRAINT `fk_inquery_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `inquery`
+--
+
+LOCK TABLES `inquery` WRITE;
+/*!40000 ALTER TABLE `inquery` DISABLE KEYS */;
+/*!40000 ALTER TABLE `inquery` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `inquery_ans`
+--
+
+DROP TABLE IF EXISTS `inquery_ans`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `inquery_ans` (
+  `inquery_id` int(11) NOT NULL,
+  `examinee_id` int(11) NOT NULL,
+  `option` text,
+  PRIMARY KEY (`inquery_id`,`examinee_id`),
+  KEY `fk_inquery_ans_2_idx` (`examinee_id`),
+  CONSTRAINT `fk_inquery_ans_1` FOREIGN KEY (`inquery_id`) REFERENCES `inquery` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_inquery_ans_2` FOREIGN KEY (`examinee_id`) REFERENCES `examinee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `inquery_ans`
+--
+
+LOCK TABLES `inquery_ans` WRITE;
+/*!40000 ALTER TABLE `inquery_ans` DISABLE KEYS */;
+/*!40000 ALTER TABLE `inquery_ans` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `inquery_question`
+--
+
+DROP TABLE IF EXISTS `inquery_question`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `inquery_question` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `topic` text COMMENT '题目描述',
+  `options` text,
+  `is_radio` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `inquery_question`
+--
+
+LOCK TABLES `inquery_question` WRITE;
+/*!40000 ALTER TABLE `inquery_question` DISABLE KEYS */;
+/*!40000 ALTER TABLE `inquery_question` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `interview`
+--
+
+DROP TABLE IF EXISTS `interview`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `interview` (
+  `advantage` text COMMENT '5条优势',
+  `disadvantage` text COMMENT '3条劣势',
+  `remark` text COMMENT '评语',
+  `manager_id` int(11) NOT NULL,
+  `examinee_id` int(11) NOT NULL,
+  PRIMARY KEY (`manager_id`,`examinee_id`),
+  KEY `fk_interview_2_idx` (`examinee_id`),
+  CONSTRAINT `fk_interview_1` FOREIGN KEY (`manager_id`) REFERENCES `manager` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_interview_2` FOREIGN KEY (`examinee_id`) REFERENCES `examinee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `interview`
+--
+
+LOCK TABLES `interview` WRITE;
+/*!40000 ALTER TABLE `interview` DISABLE KEYS */;
+/*!40000 ALTER TABLE `interview` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -251,7 +366,7 @@ CREATE TABLE `manager` (
   UNIQUE KEY `index3` (`username`),
   KEY `index2` (`project_id`),
   CONSTRAINT `fk_manager_project` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -260,7 +375,7 @@ CREATE TABLE `manager` (
 
 LOCK TABLES `manager` WRITE;
 /*!40000 ALTER TABLE `manager` DISABLE KEYS */;
-INSERT INTO `manager` VALUES (1,'sa','123456','M',NULL,'gly',NULL),(2,'pm','123456','P',1,'经理',NULL),(8,'hh','123456',NULL,NULL,'哈哈',NULL),(11,'hw','123456',NULL,NULL,'汉王',NULL);
+INSERT INTO `manager` VALUES (1,'sa','123456','M',NULL,'gly','2015-08-09 14:40:35'),(2,'pm','123456','P',1,'经理','2015-08-10 11:26:10'),(8,'hh','123456',NULL,NULL,'哈哈',NULL),(11,'hw','123456',NULL,NULL,'汉王',NULL),(60,'pm2','123456','P',2,'pm2.5','2015-08-07 16:52:20'),(81,'107779','380188','L',1,'领导1',NULL),(82,'478933','923609','L',1,'领导2',NULL),(83,'699855','114125','L',1,'领导3',NULL),(84,'664102','614373','L',1,'领导4',NULL),(85,'528774','233122','L',1,'领导5',NULL),(86,'416103','544602','L',1,'领导6',NULL),(87,'953904','088360','L',1,'领导7',NULL),(88,'155695','344652','L',1,'领导8',NULL),(89,'760173','910870','L',1,'领导9',NULL),(90,'189825','525131','L',1,'领导10',NULL),(91,'691693','565973','I',1,'专家1',NULL),(92,'037667','956424','I',1,'专家2',NULL),(93,'288094','410167','I',1,'专家3',NULL),(94,'149848','241186','I',1,'专家4',NULL),(95,'441307','827849','I',1,'专家5',NULL),(96,'337145','838631','I',1,'专家6',NULL),(97,'811966','935330','I',1,'专家7',NULL),(98,'538858','700752','I',1,'专家8',NULL),(99,'732481','682496','I',1,'专家9',NULL),(100,'092720','602570','I',1,'专家10',NULL);
 /*!40000 ALTER TABLE `manager` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -275,6 +390,7 @@ CREATE TABLE `module` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL COMMENT '模块名',
   `belong_module` varchar(45) DEFAULT NULL,
+  `chs_name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -356,7 +472,7 @@ CREATE TABLE `project` (
   PRIMARY KEY (`id`),
   KEY `fk_project_1_idx` (`manager_id`),
   CONSTRAINT `fk_project_1` FOREIGN KEY (`manager_id`) REFERENCES `manager` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -365,7 +481,7 @@ CREATE TABLE `project` (
 
 LOCK TABLES `project` WRITE;
 /*!40000 ALTER TABLE `project` DISABLE KEYS */;
-INSERT INTO `project` VALUES (1,'2015-07-01 15:42:00','2015-08-03 15:43:00','小测验','这是周五的小测验',2,1);
+INSERT INTO `project` VALUES (1,'2015-07-01 15:42:00','2015-08-03 15:43:00','小测验','这是周五的小测验',2,5),(2,'2015-08-04 19:30:00','2015-08-21 23:55:00','lalala','更详细的信息描述...',60,1);
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -380,8 +496,12 @@ CREATE TABLE `question` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `topic` text COMMENT '题目描述',
   `options` text COMMENT '题目选项，不同选项用竖线隔开',
-  `grade` text COMMENT '得分表，各个选项的得分数字依次用竖线隔开，总个数和options对应',
-  PRIMARY KEY (`id`)
+  `grade` text COMMENT '得分表，各个选项的得分数字依次用竖线隔开，总个数和options对应 （目前暂时不再使用）',
+  `number` int(11) NOT NULL COMMENT '题目在试卷中的编号',
+  `paper_id` int(11) DEFAULT NULL COMMENT '所属试卷id',
+  PRIMARY KEY (`id`),
+  KEY `fk_question_1_idx` (`paper_id`),
+  CONSTRAINT `fk_question_1` FOREIGN KEY (`paper_id`) REFERENCES `paper` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -402,16 +522,15 @@ DROP TABLE IF EXISTS `question_ans`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `question_ans` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `option` int(11) DEFAULT NULL COMMENT '题目原始选项，目前是单选，如果要考虑多选时，最后将这里改成字符串存储',
-  `score` int(11) DEFAULT NULL COMMENT '原始选项得分',
-  `question_id` int(11) NOT NULL COMMENT '对应题目的id',
+  `option` text COMMENT '题目原始选项，目前是单选，如果要考虑多选时，最后将这里改成字符串存储',
+  `score` text COMMENT '原始选项得分',
+  `paper_id` int(11) NOT NULL COMMENT '对应题目的id',
   `examinee_id` int(11) NOT NULL COMMENT '被试id',
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`paper_id`,`examinee_id`),
   KEY `fk_question_ans_1_idx` (`examinee_id`),
-  KEY `fk_question_ans_2_idx` (`question_id`),
+  KEY `fk_question_ans_2_idx` (`paper_id`),
   CONSTRAINT `fk_question_ans_1` FOREIGN KEY (`examinee_id`) REFERENCES `examinee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_question_ans_2` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_question_ans_2` FOREIGN KEY (`paper_id`) REFERENCES `paper` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -433,4 +552,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-08-06 10:04:23
+-- Dump completed on 2015-08-10 15:11:14

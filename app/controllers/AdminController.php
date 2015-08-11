@@ -24,7 +24,8 @@ class AdminController extends Base
             'name' => 'pm_name',
             'username' => 'pm_username',
             'password' => 'pm_password'));
-
+        $manager->role = 'P';
+        
         $project = new Project();
         $this->getData($project, array(
             'name' => 'project_name', 
@@ -52,6 +53,13 @@ class AdminController extends Base
         $this->response->redirect('admin');
     }
 
+
+    public function detailAction($project_id)
+    {
+        $this->leftRender('项 目 详 情');
+        $project = Project::findFirst($project_id);
+        $this->view->setVar('project_name',$project->name);
+    }
 
 
     public function listAction()
