@@ -1,3 +1,4 @@
+<h2>Paper导入<a href="/upload/uploadPaper">点击我</a></h2>
 
 <h2>SCL表导入</h2>
 <form action="/upload/uploadSCL" method="post" enctype="multipart/form-data">
