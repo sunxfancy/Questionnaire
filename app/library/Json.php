@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 09:18:33
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-11 15:57:12
+ * @Last Modified time: 2015-08-11 16:19:04
  */
 
 /**
@@ -53,6 +53,8 @@ class Json
 			$this->jsonToObject($obj, $class_name, $key, $value);
 			if (!$obj->save())
 				foreach ($obj->getMessages() as $msg) {
+					print_r($obj);
+					echo $msg."\n";
 					throw new Exception($msg);
 				}
 		}
@@ -87,9 +89,9 @@ class Json
 	// 根据array字段，生成新的children_type
 	function makeArray($array, $data)
 	{
-		$children_len = count(explode($array));
-		$chilren_type = array();
+		$children_len = count(explode(',',$array));
+		$children_type = array();
 		array_pad($children_type, $children_len, $data);
-		return $children_type;
+		return implode(',', $children_type);
 	}
 }
