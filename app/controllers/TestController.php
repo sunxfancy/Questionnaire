@@ -22,7 +22,7 @@ class TestController extends Base
 		$index_json = $this->loadJson($index_file);
 		$factor = $index_json['ldnl']['index'];
 		print_r($factor);
-		$this->insertFactor($aaa);
+		$this->insertFactor($index_json);
 		print_r($factor_json);
 		print_r($index_json);
 
@@ -50,28 +50,55 @@ class TestController extends Base
 	{
 		//todo
 		$factor = new Factor();
-		$data1 = Array(
-		 	foo => foo111,
-    		bar => foo222,
-    	);
-		foreach ($data1 as $key => $value) {
-			print_r($key); echo "  ";print_r($value);echo "\n";
+		foreach ($data as $key1 => $value1) {
+			$factor->name = $key;echo $key1."\n";
+			foreach ($value1 as $key2 => $value2) {
+				$length = count($value2);
+				$str = "";
+				if($key2 == question)
+				{
+					$sum = 0;
+					for ($i=0; $i < $length - 1; $i++) { 
+						$str = $str.$value2[$i].",";
+						$sum++;
+					}
+					$str = $str.$value2[$sum];
+					print_r($str);
+					factor->childen = $str;
+				}
+				elseif ($key2 == factor) {
+					foreach ($value2 as $key3 => $value3) {
+						$factor = Factor::query()
+									->where("factor = :factor:")
+									->bind(array("factor"=>$value3));
+						if (empty($factor)) {
+							//写插入数据库的操作
+							
+						}
+						else{
+							//写更新数据库的操作
+							
+						}
+					}
+				}
+
+			}
 		}
-		$factor->id = 3;
-		$factor->name = 11;
-		$factor->factor = 11;
-		//father_id 为外键   与factor表中的id 对应
-		$factor->father_factor = 1;
-		//paper_id 为外键  与paper表中的id对应
-		$factor->paper_id = 1;
-		if ($factor->save() == false) {
-		    echo "NO \n";
-		    foreach ($factor->getMessages() as $message) {
-		    	echo $message;
-		    }
-		} else {
-		    echo "true \n";
-		}
+		// $factor->id = 3;
+		// $factor->name = 11;
+		// $factor->factor = 11;
+		// //father_id 为外键   与factor表中的id 对应
+		// $factor->father_factor = 1;
+		// //paper_id 为外键  与paper表中的id对应
+		// $factor->paper_id = 1;
+		// if ($factor->save() == false) {
+		//     echo "NO \n";
+		//     foreach ($factor->getMessages() as $message) {
+		//     	echo $message;
+		//     }
+		// } else {
+		//     echo "true \n";
+		// }
 
 	}
 
