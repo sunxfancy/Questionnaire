@@ -76,18 +76,20 @@ $(function(){
     var done_index=0;
 
     var data=new Array();
-    data[0]={'text':"本测验包括许多问题和选择，任何答案选择都无所谓对错，对它们所描述的特征，你可能喜欢，也可能不喜欢，其方式你可能曾感觉到，也可能没有感觉到，请你从中选出最能表现或接近你当前特征或感觉的那一个，并将你的选择标记于相应的位置处。如果答案中都没有正确描述你的情况，那你应当选择你认为能比较正确反映你的情况的那一个。总之，对于每道题的选项你必须有所选择。"};
-    data[1]={
+    
+    data[0]={
         'index':0,
         'title':'',
         'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'
     };
-    data[2]={
+    data[1]={
         'index':1,
         'title':"本测验包括许多问题和选择，任何答案选择都无所谓对错，222",
         'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'
     };
-    initTitle(2);
+    data[2]={'text':"本测验包括许多问题和选择，任何答案选择都无所谓对错，对它们所描述的特征，你可能喜欢，也可能不喜欢，其方式你可能曾感觉到，也可能没有感觉到，请你从中选出最能表现或接近你当前特征或感觉的那一个，并将你的选择标记于相应的位置处。如果答案中都没有正确描述你的情况，那你应当选择你认为能比较正确反映你的情况的那一个。总之，对于每道题的选项你必须有所选择。"};
+
+    initTitle(1);
     
         
     $("#ans_div").css('width','100%');
@@ -110,7 +112,7 @@ $(function(){
 
      
 
-    function initTitle(index){
+function initTitle(index){
     var option_disp="<div>";
     var  option1="<div class='Leo_ans_div'><div class='Leo_ans_checkdiv'><input name='ans_sel' type='radio' id='123' style='cursor:pointer;'/></div><div class='Leo_ans_checktext'>";
     var option2="</div></div>";
@@ -143,6 +145,7 @@ Leo_initPanel(data.length-1);
                         newdiv.style.width = "40px";
                         newdiv.style.height = "40px";
                         newdiv.id = "newdiv_" + (5 * k + i);
+                        newdiv.name="ques_panel";
                         newdiv.style.textAlign = "center";
                         newdiv.style.cursor = "pointer";
                         newdiv.style.backgroundColor = "gray";
@@ -150,7 +153,9 @@ Leo_initPanel(data.length-1);
                         newdiv.style.fontSize = "21px";
                         newdiv.tabIndex = "0";
                         cell_now.appendChild(newdiv);
-                        //newdiv.onclick = new Function("changepage(parseInt(this.innerText)-1,true)");
+                        newdiv.click(function() {
+                            changepage(parseInt(this.innerText)-1);
+                        });
                     }
                     //newdiv.onclick =new Function( "changepage(parseInt(this.innerText)-1)");
                 } else {
@@ -162,6 +167,7 @@ Leo_initPanel(data.length-1);
                         newdiv.style.width = "40px";
                         newdiv.style.height = "40px";
                         newdiv.id = "newdiv_" + ( 5 * k + i);
+                        newdiv.name="ques_panel";
                         newdiv.style.textAlign = "center";
                         newdiv.style.cursor = "pointer";
                         newdiv.style.backgroundColor = "gray";
@@ -169,7 +175,9 @@ Leo_initPanel(data.length-1);
                         newdiv.style.fontSize = "21px";
                         newdiv.tabIndex = "0";
                         cell_now.appendChild(newdiv);
-                        //newdiv.onclick = new Function("changepage(parseInt(this.innerText)-1,true)");
+                        newdiv.click(function() {
+                            changepage(parseInt(this.innerText)-1);
+                        });
                     }
                     for (var i = questionlength - (rows_count - 1) * 5; i < 5; i++) {
                         var cell_now = row_now.insertCell(i);
@@ -210,8 +218,12 @@ function Leo_timer_start(){
     });
 
 }
-changepage(1);
+
 function changepage(newpage){
+    alert(newpage);
+    if(newpage>done_index){
+        return;
+    }
    Leo_index_now=newpage;
    initTitle(newpage);
    if(newpage==0){
@@ -222,11 +234,6 @@ function changepage(newpage){
         $('#Leo_pageup').prop('display', '');
         $('#Leo_pagedown').prop('display', '');
    }
-
-
-
-
-   
 }
 
 });
