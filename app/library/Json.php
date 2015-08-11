@@ -3,11 +3,11 @@
  * @Author: sxf
  * @Date:   2015-08-11 09:18:33
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-11 16:19:04
+ * @Last Modified time: 2015-08-11 16:30:01
  */
 
 /**
-* 
+* Json同步类库
 */
 class Json
 {
