@@ -76,6 +76,13 @@ $(function(){
     var done_index=0;
 
     var data=new Array();
+
+    $.post('/Examinee/getpaper', {'paper_id':1}, function(data) {
+        /*optional stuff to do after success */
+        alert(data.questions[0].index);
+        alert(data.description);
+
+    });
     
     data[0]={
         'index':0,
@@ -112,27 +119,16 @@ $(function(){
 
      
 
-function initTitle(index){
-    var option_disp="<div>";
-    var  option1="<div class='Leo_ans_div'><div class='Leo_ans_checkdiv'><input name='ans_sel' type='radio' id='123' style='cursor:pointer;'/></div><div class='Leo_ans_checktext'>";
-    var option2="</div></div>";
 
-    var options=data[index].options.split("|");
-    for (var i = 0; i <options.length; i++) {
-        option_disp+=option1+options[i]+option2;
-    }
-    option_disp+="</div>";
-    $('#title_div').children('span').replaceWith('<span>'+(data[index].index+1)+data[index].title+'</span>');
-    $('#ans_div').children('div').replaceWith(option_disp);
-    $('.Leo_ans_checktext').click(function(){
-        var temp=$(this).parent().children('div').children(':radio')[0];
-        temp.checked=!temp.checked;
-        $('#newdiv_'+index).css('background-color', '#48fffb');
-    });
-}
 
 Leo_initPanel(data.length-1);
- function Leo_initPanel(questionlength) {
+ 
+Leo_timer_start();
+
+});
+
+
+function Leo_initPanel(questionlength) {
         var rows_count = Math.ceil(questionlength/ 5);
             for (var k = 0; k < rows_count; k++) {
                 var row_now = document.getElementById("Leo_question_table").insertRow(k);
@@ -153,9 +149,9 @@ Leo_initPanel(data.length-1);
                         newdiv.style.fontSize = "21px";
                         newdiv.tabIndex = "0";
                         cell_now.appendChild(newdiv);
-                        newdiv.click(function() {
-                            changepage(parseInt(this.innerText)-1);
-                        });
+                        newdiv.onclick=new Function("changepage(parseInt(this.innerText)-1);");
+                            
+                       
                     }
                     //newdiv.onclick =new Function( "changepage(parseInt(this.innerText)-1)");
                 } else {
@@ -175,9 +171,7 @@ Leo_initPanel(data.length-1);
                         newdiv.style.fontSize = "21px";
                         newdiv.tabIndex = "0";
                         cell_now.appendChild(newdiv);
-                        newdiv.click(function() {
-                            changepage(parseInt(this.innerText)-1);
-                        });
+                         newdiv.onclick=new Function("changepage(parseInt(this.innerText)-1);");
                     }
                     for (var i = questionlength - (rows_count - 1) * 5; i < 5; i++) {
                         var cell_now = row_now.insertCell(i);
@@ -186,8 +180,6 @@ Leo_initPanel(data.length-1);
                 }
             }
     }
-
-Leo_timer_start();
 
 function Leo_timer_start(){
     var total_time=0;
@@ -219,6 +211,25 @@ function Leo_timer_start(){
 
 }
 
+function initTitle(index){
+    var option_disp="<div>";
+    var  option1="<div class='Leo_ans_div'><div class='Leo_ans_checkdiv'><input name='ans_sel' type='radio' id='123' style='cursor:pointer;'/></div><div class='Leo_ans_checktext'>";
+    var option2="</div></div>";
+
+    var options=data[index].options.split("|");
+    for (var i = 0; i <options.length; i++) {
+        option_disp+=option1+options[i]+option2;
+    }
+    option_disp+="</div>";
+    $('#title_div').children('span').replaceWith('<span>'+(data[index].index+1)+data[index].title+'</span>');
+    $('#ans_div').children('div').replaceWith(option_disp);
+    $('.Leo_ans_checktext').click(function(){
+        var temp=$(this).parent().children('div').children(':radio')[0];
+        temp.checked=!temp.checked;
+        $('#newdiv_'+index).css('background-color', '#48fffb');
+    });
+}
+
 function changepage(newpage){
     alert(newpage);
     if(newpage>done_index){
@@ -235,9 +246,6 @@ function changepage(newpage){
         $('#Leo_pagedown').prop('display', '');
    }
 }
-
-});
-
 
 
 
