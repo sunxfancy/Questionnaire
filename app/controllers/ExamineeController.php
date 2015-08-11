@@ -67,7 +67,7 @@ class ExamineeController extends Base
 	{
         $this->leftRender("个 人 信 息 填 写");
 
-        /*$examinee = $this->session->get('Examinee');
+        $examinee = $this->session->get('Examinee');
         $name = $examinee->name;
         $sex = $examinee->sex;
         $education = $examinee->education;
@@ -79,9 +79,9 @@ class ExamineeController extends Base
         $employer = $examinee->employer;
         $unit = $examinee->unit;
         $duty = $examinee->duty;
-        $json = json_decode($examinee->other);
-        $json['education'][0]['school']
-
+        $team = $examinee->team;
+        // $json = json_decode($examinee->other);
+        // $json['education'][0]['school']
         
         $this->view->setVar('name',$name);
         $this->view->setVar('sex',$sex);
@@ -93,7 +93,8 @@ class ExamineeController extends Base
         $this->view->setVar('professional',$professional);
         $this->view->setVar('employer',$employer);
         $this->view->setVar('unit',$unit);
-        $this->view->setVar('duty',$duty);*/
+        $this->view->setVar('duty',$duty);
+        $this->view->setVar('team',$team);
 	}
 
 	public function doexamAction()
@@ -126,11 +127,7 @@ class ExamineeController extends Base
             ));
         $modules_id_array = $this->getModules($project);
         
-        $indexs = Index::find(array(
-            'module_id IN ({module_id:array})',
-            'bind' => array('module_id' => $modules_id_array)
-        ));
-        $indexs_id_array = $this->getIds($indexs);
+        $indexs_id_array = $this->getIndex($modules_id_array);
 
         $factor_id_array = $this->getFactor($indexs_id_array);
 
@@ -139,6 +136,19 @@ class ExamineeController extends Base
         $exams = $this->getExam($question_id_array);
 
         return $exams;
+    }
+
+    public function getIndex($modules){
+        $index_id = array();
+        for ($i=0; $i < sizeof($modules); $i++) { 
+            $module = Module::findFirst($modules[$i]);
+            $children = $module->children;
+            $children = explode(",", $children);
+            for ($j=0; $j < sizeof($children); $j++) { 
+                $index_id[] = $children[$j];
+            }
+        }
+        return explode(",",implode(",",array_unique($index_id)));
     }
 
     public function getFactor($indexs){

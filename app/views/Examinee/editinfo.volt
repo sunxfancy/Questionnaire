@@ -1,4 +1,4 @@
-<!-- <script type="text/javascript" src="/jqGrid/js/jquery.jqGrid.min.js"></script>
+<script type="text/javascript" src="/jqGrid/js/jquery.jqGrid.min.js"></script>
 <script type="text/javascript" src="/jqGrid/js/i18n/grid.locale-cn.js"></script>
 <script type="text/javascript" src="/js/bootstrap.js"></script>
 
@@ -186,6 +186,10 @@
                     <td style=" width:120px;line-height:33px;">岗位/职务</td>
                     <td colspan="3" style="width: 180px; font-size: 16px;" onclick="Leo_toEdit(this)">{{ duty }}</td>
                 </tr>
+                <tr>
+                    <td style=" width:120px;line-height:33px;">班子/系统成员</td>
+                    <td colspan="3" style="width: 180px; font-size: 16px;" onclick="Leo_toEdit(this)">{{ team }}</td>
+                </tr>
             </table>
             <div style="height:40px;text-align:center;font-size:28px;">教育经历</div>
             <table id="myTable1" style="margin: 0 auto;text-align:center; font-family:'微软雅黑'" border="1" cellspacing="0" cellpadding="1" >
@@ -283,49 +287,4 @@ function Leo_exitEdit(t) {
         checkEdtime(s, s.innerText);
     }
 }
-
-</script> -->
-
- <link rel="stylesheet" type="text/css"  href="css/ui-lightness/jquery-ui-1.8.2.custom.css" />
-<link rel="stylesheet" type="text/css"  href="css/ui.jqgrid.css" />
-    <link rel="stylesheet" type="text/css" href="/pagecss/admin.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap-datetimepicker.css" />
-    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
-<script src="js/i18n/grid.locale-en.js" type="text/javascript"></script>
-<script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
-<script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
-
- 
-<script type="text/javascript">
-$(function () {
-    $("#list").jqGrid({
-        url: "/Examinee/editinfo",
-        datatype: "json",
-        mtype: "GET",
-        colNames: ["Inv No", "Date", "Amount", "Tax", "Total", "Notes"],
-        colModel: [
-            { name: "invid", width: 55 },
-            { name: "invdate", width: 90 },
-            { name: "amount", width: 80, align: "right" },
-            { name: "tax", width: 80, align: "right" },
-            { name: "total", width: 80, align: "right" },
-            { name: "note", width: 150, sortable: false }
-        ],
-        pager: "#pager",
-        rowNum: 10,
-        rowList: [10, 20, 30],
-        sortname: "invid",
-        sortorder: "desc",
-        viewrecords: true,
-        gridview: true,
-        autoencode: true,
-        caption: "My first grid"
-    }); 
-}); 
-</script>
- 
-
-<div class="Leo_question">
-    <table id="list"></table> 
-    <div id="pager"></div> 
-</div>
+</script> 
