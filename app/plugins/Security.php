@@ -23,57 +23,43 @@
                 $acl->setDefaultAction(Phalcon\Acl::DENY);
                 //Register roles
                 $roles = array(
-                    'admin'       => new Phalcon\Acl\Role("Admin"),
-                    'leader'      => new Phalcon\Acl\Role("Leader"),
-                    'pm'          => new Phalcon\Acl\Role('PM'),
-                    'examinee'    => new Phalcon\Acl\Role("Examinee"),
-                    'interviewer' => new Phalcon\Acl\Role("Interviewer");
-                    'guests'      => new Phalcon\Acl\Role('Guests'));
+                    'admin'       => new Phalcon\Acl\Role("M"),
+                    'leader'      => new Phalcon\Acl\Role("L"),
+                    'pm'          => new Phalcon\Acl\Role('P'),
+                    'examinee'    => new Phalcon\Acl\Role("E"),
+                    'interviewer' => new Phalcon\Acl\Role("I"),
+                    'guests'      => new Phalcon\Acl\Role('G'));
                 
                 foreach ($roles as $role)
                 {
                     $acl->addRole($role);
                 }
-
-                //admin area resources
-                $adminResources = array(
-                    'admin' => array('index'),
-                    'import' => array('index')
-                );
-                
+ 
                 //manager area resources
-                $managerResources = array('index' => array('index'));
-                
-                //student area resources
-                $studentResources = array('student' => array('index'));
+                $privateResources = array(
+                    'admin'       => array('index'),
+                    'examinee'    => array('index'),
+                    'interviewer' => array('index'),
+                    'leader'      => array('index'),
+                    'pm'          => array('index'),
+                    'test'        => array('index')
+                );
                 
                 //Public area resources
                 $publicResources = array(
                      'managerlogin' => array('index',
-                                      'checkuser',
-                                      'check',
-                                      'signin',
-                                      'signup',
-                                      'findpass',
-                                      'resetpassword',
-                                      'newpassword',
+                                      'login',
                                       'logout'),
-                     'stulogin' => array('index',
-                                         'check'),
-                     'index' => array('index')
+                     'examinee' => array('login'),
+                     'index'    => array('index'),
+                     'test'     => array('index')
                 );
-                foreach ($adminResources as $resource => $actions)
+
+                foreach ($privateResources as $resource => $actions)
                 {
                     $acl->addResource(new Phalcon\Acl\Resource($resource), $actions);
                 }
-                foreach ($managerResources as $resource => $actions)
-                {
-                    $acl->addResource(new Phalcon\Acl\Resource($resource), $actions);
-                }
-                foreach ($studentResources as $resource => $actions)
-                {
-                    $acl->addResource(new Phalcon\Acl\Resource($resource), $actions);
-                }
+
                 foreach ($publicResources as $resource => $actions)
                 {
                     $acl->addResource(new Phalcon\Acl\Resource($resource), $actions);
@@ -87,10 +73,11 @@
                     }
                 }
 
-                $acl->allow('Student', 'student', '*');
-                $acl->allow('Admin', 'admin', '*');
-                $acl->allow('Admin', 'import', '*');
-                $acl->allow('Manager', 'index', '*');
+                $acl->allow('M', 'admin', '*');
+                $acl->allow('E', 'examinee', '*');
+                $acl->allow('P', 'pm', '*');
+                $acl->allow('L', 'leader', '*');
+                $acl->allow('I', 'interviewer', '*');
 
                 //The acl is stored in session, APC would be useful here too
                 $this->persistent->acl = $acl;
@@ -101,10 +88,13 @@
 
         public function beforeDispatch(Event $event, Dispatcher $dispatcher)
         {
-            $type = $this->session->get("type");
-            if ($type == null )
-            {
-                $type = "Guests";
+            $manager = $this->session->get("Manager");
+            $type = 'G';
+            if ($manager) {
+                $type = $manager->role;
+            } else {
+                $examinee = $this->session->get("Examinee");
+                $type = 'E';
             }
             $controller = $dispatcher->getControllerName();
             $action = $dispatcher->getActionName();
@@ -113,7 +103,7 @@
             if ($allowed != Acl::ALLOW)
             {
                 $this->flash->error("对不起，您没有访问权限");
-                $dispatcher->forward(array('controller' => 'managerlogin',
+                $dispatcher->forward(array('controller' => 'index',
                                            'action' => 'index'));
                 return false;
             }

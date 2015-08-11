@@ -1,26 +1,32 @@
 <?php
 
 
-class QuestionAns extends \Phalcon\Mvc\Model 
+class Interview extends \Phalcon\Mvc\Model 
 {
 
     /**
      * @var string
      *
      */
-    public $option;
+    public $advantage;
 
     /**
      * @var string
      *
      */
-    public $score;
+    public $disadvantage;
+
+    /**
+     * @var string
+     *
+     */
+    public $remark;
 
     /**
      * @var integer
      *
      */
-    public $paper_id;
+    public $manager_id;
 
     /**
      * @var integer

@@ -32,13 +32,43 @@ class Factor extends \Phalcon\Mvc\Model
      * @var integer
      *
      */
-    public $index_id;
+    public $paper_id;
 
     /**
-     * @var integer
+     * @var string
      *
      */
-    public $paper_id;
+    public $children;
+
+    /**
+     * @var string
+     *
+     */
+    public $children_type;
+
+    /**
+     * @var string
+     *
+     */
+    public $action;
+
+    /**
+     * @var string
+     *
+     */
+    public $ans_do;
+
+    /**
+     * @var string
+     *
+     */
+    public $chabiao;
+
+    /**
+     * @var string
+     *
+     */
+    public $chs_name;
 
 
     public function initialize()
@@ -55,5 +85,4 @@ class Factor extends \Phalcon\Mvc\Model
         $this->hasMany("id", "FactorAns", "factor_id");
         $this->hasMany("id", "Index", "father_factor");
     }
-
 }

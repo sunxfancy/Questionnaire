@@ -8,12 +8,6 @@ class FactorAns extends \Phalcon\Mvc\Model
      * @var integer
      *
      */
-    public $id;
-
-    /**
-     * @var integer
-     *
-     */
     public $score;
 
     /**
@@ -33,6 +27,12 @@ class FactorAns extends \Phalcon\Mvc\Model
      *
      */
     public $factor_id;
+
+    /**
+     * @var integer
+     *
+     */
+    public $ans_score;
 
 
 }

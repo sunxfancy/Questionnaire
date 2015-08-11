@@ -8,12 +8,6 @@ class IndexAns extends \Phalcon\Mvc\Model
      * @var integer
      *
      */
-    public $id;
-
-    /**
-     * @var integer
-     *
-     */
     public $score;
 
     /**

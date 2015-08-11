@@ -47,6 +47,7 @@ class Project extends \Phalcon\Mvc\Model
     public $last_examinee_id;
 
 
+
     public function initialize()
     {
         $this->belongsTo('manager_id', 'Manager', 'id');
@@ -55,5 +56,4 @@ class Project extends \Phalcon\Mvc\Model
             "module_id", "Module", "id"
         );
     }
-
 }
