@@ -69,25 +69,36 @@
 
 <script type="text/javascript">
 
+var Leo_index_now=0;
+var done_index=0;
+
+var data=new Array();
+
+
 $(function(){
 
     /*定义重要的全局变量*/
-    var Leo_index_now=0;
-    var done_index=0;
+   
+    $.post('/Examinee/getpaper', {'paper_id':1}, function(data) {
+        /*optional stuff to do after success */
+        alert(data.questions[0].index);
+        alert(data.description);
 
-    var data=new Array();
-    data[0]={'text':"本测验包括许多问题和选择，任何答案选择都无所谓对错，对它们所描述的特征，你可能喜欢，也可能不喜欢，其方式你可能曾感觉到，也可能没有感觉到，请你从中选出最能表现或接近你当前特征或感觉的那一个，并将你的选择标记于相应的位置处。如果答案中都没有正确描述你的情况，那你应当选择你认为能比较正确反映你的情况的那一个。总之，对于每道题的选项你必须有所选择。"};
-    data[1]={
+    });
+    
+    data[0]={
         'index':0,
         'title':'',
         'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'
     };
-    data[2]={
+    data[1]={
         'index':1,
         'title':"本测验包括许多问题和选择，任何答案选择都无所谓对错，222",
         'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'
     };
-    initTitle(2);
+    data[2]={'text':"本测验包括许多问题和选择，任何答案选择都无所谓对错，对它们所描述的特征，你可能喜欢，也可能不喜欢，其方式你可能曾感觉到，也可能没有感觉到，请你从中选出最能表现或接近你当前特征或感觉的那一个，并将你的选择标记于相应的位置处。如果答案中都没有正确描述你的情况，那你应当选择你认为能比较正确反映你的情况的那一个。总之，对于每道题的选项你必须有所选择。"};
+
+    initTitle(1);
     
         
     $("#ans_div").css('width','100%');
@@ -110,7 +121,99 @@ $(function(){
 
      
 
-    function initTitle(index){
+
+
+Leo_initPanel(data.length-1);
+ 
+Leo_timer_start();
+
+});
+
+
+function Leo_initPanel(questionlength) {
+        var rows_count = Math.ceil(questionlength/ 5);
+            for (var k = 0; k < rows_count; k++) {
+                var row_now = document.getElementById("Leo_question_table").insertRow(k);
+                if (k < rows_count - 1) {
+                    for (var i = 0; i < 5; i++) {
+                        var cell_now = row_now.insertCell(i);
+                        var newdiv = document.createElement("div");
+                        newdiv.style.float = "left";
+                        newdiv.style.margin = "5px";
+                        newdiv.style.width = "40px";
+                        newdiv.style.height = "40px";
+                        newdiv.id = "newdiv_" + (5 * k + i);
+                        newdiv.name="ques_panel";
+                        newdiv.style.textAlign = "center";
+                        newdiv.style.cursor = "pointer";
+                        newdiv.style.backgroundColor = "gray";
+                        newdiv.innerText = ( 5 * k + i) + 1 + "";
+                        newdiv.style.fontSize = "21px";
+                        newdiv.tabIndex = "0";
+                        cell_now.appendChild(newdiv);
+                        newdiv.onclick=new Function("changepage(parseInt(this.innerText)-1);");
+                            
+                       
+                    }
+                    //newdiv.onclick =new Function( "changepage(parseInt(this.innerText)-1)");
+                } else {
+                    for (var i = 0; i < questionlength- (rows_count - 1) * 5 ; i++) {
+                        var cell_now = row_now.insertCell(i);
+                        var newdiv = document.createElement("div");
+                        newdiv.style.float = "left";
+                        newdiv.style.margin = "5px";
+                        newdiv.style.width = "40px";
+                        newdiv.style.height = "40px";
+                        newdiv.id = "newdiv_" + ( 5 * k + i);
+                        newdiv.name="ques_panel";
+                        newdiv.style.textAlign = "center";
+                        newdiv.style.cursor = "pointer";
+                        newdiv.style.backgroundColor = "gray";
+                        newdiv.innerText = ( 5 * k + i) + 1 + "";
+                        newdiv.style.fontSize = "21px";
+                        newdiv.tabIndex = "0";
+                        cell_now.appendChild(newdiv);
+                         newdiv.onclick=new Function("changepage(parseInt(this.innerText)-1);");
+                    }
+                    for (var i = questionlength - (rows_count - 1) * 5; i < 5; i++) {
+                        var cell_now = row_now.insertCell(i);
+                    }
+                    //newdiv.onclick =new Function( "changepage(parseInt(this.innerText)-1)");
+                }
+            }
+    }
+
+function Leo_timer_start(){
+    var total_time=0;
+    time_play();
+    var flag=true;
+    function time_play(){
+        setTimeout(function(){
+            if(flag){
+                total_time++;
+                seconds=total_time%60;
+                minutes=(total_time-seconds)/60%60;
+                hour=(total_time-seconds-minutes*60)/60/60;
+                $("#sec").html(( seconds < 10 ? "0" : "" ) + seconds);
+                $("#min").html(( minutes < 10 ? "0" : "" ) + minutes);
+                $("#hours").html(( hour < 10 ? "0" : "" ) + hour);
+            }
+            time_play();
+        },1000)
+    }
+
+    $("#Leo_pause").click(function(){
+        flag=false;
+    });
+
+    $("#Leo_hiden_ctrl").click(function() {
+        /* Act on the event */
+        flag=true;
+    });
+
+}
+
+function initTitle(index){
     var option_disp="<div>";
     var  option1="<div class='Leo_ans_div'><div class='Leo_ans_checkdiv'><input name='ans_sel' type='radio' id='123' style='cursor:pointer;'/></div><div class='Leo_ans_checktext'>";
     var option2="</div></div>";
@@ -129,81 +232,11 @@ $(function(){
     });
 }
 
-Leo_initPanel(data.length-1);
- function Leo_initPanel(questionlength) {
-        var rows_count = Math.ceil(questionlength/ 5);
-            for (var k = 0; k < rows_count; k++) {
-                var row_now = document.getElementById("Leo_question_table").insertRow(k);
-                if (k < rows_count - 1) {
-                    for (var i = 0; i < 5; i++) {
-                        var cell_now = row_now.insertCell(i);
-                        var newdiv = document.createElement("div");
-                        newdiv.style.float = "left";
-                        newdiv.style.margin = "5px";
-                        newdiv.style.width = "40px";
-                        newdiv.style.height = "40px";
-                        newdiv.id = "newdiv_" + (5 * k + i);
-                        newdiv.style.textAlign = "center";
-                        newdiv.style.cursor = "pointer";
-                        newdiv.style.backgroundColor = "gray";
-                        newdiv.innerText = ( 5 * k + i) + 1 + "";
-                        newdiv.style.fontSize = "21px";
-                        newdiv.tabIndex = "0";
-                        cell_now.appendChild(newdiv);
-                        //newdiv.onclick = new Function("changepage(parseInt(this.innerText)-1,true)");
-                    }
-                    //newdiv.onclick =new Function( "changepage(parseInt(this.innerText)-1)");
-                } else {
-                    for (var i = 0; i < questionlength- (rows_count - 1) * 5 ; i++) {
-                        var cell_now = row_now.insertCell(i);
-                        var newdiv = document.createElement("div");
-                        newdiv.style.float = "left";
-                        newdiv.style.margin = "5px";
-                        newdiv.style.width = "40px";
-                        newdiv.style.height = "40px";
-                        newdiv.id = "newdiv_" + ( 5 * k + i);
-                        newdiv.style.textAlign = "center";
-                        newdiv.style.cursor = "pointer";
-                        newdiv.style.backgroundColor = "gray";
-                        newdiv.innerText = ( 5 * k + i) + 1 + "";
-                        newdiv.style.fontSize = "21px";
-                        newdiv.tabIndex = "0";
-                        cell_now.appendChild(newdiv);
-                        //newdiv.onclick = new Function("changepage(parseInt(this.innerText)-1,true)");
-                    }
-                    for (var i = questionlength - (rows_count - 1) * 5; i < 5; i++) {
-                        var cell_now = row_now.insertCell(i);
-                    }
-                    //newdiv.onclick =new Function( "changepage(parseInt(this.innerText)-1)");
-                }
-            }
-    }
-
-Leo_timer_start();
-
-function Leo_timer_start(){
-    var total_time=0;
-    time_play();
-    var flag=true;
-    function time_play(){
-
-        setTimeout(function(){
-            total_time++;
-            seconds=total_time%60;
-            minutes=(total_time-seconds)/60%60;
-            hour=(total_time-seconds-minutes*60)/60/60;
-            $("#sec").html(( seconds < 10 ? "0" : "" ) + seconds);
-            $("#min").html(( minutes < 10 ? "0" : "" ) + minutes);
-            $("#hours").html(( hour < 10 ? "0" : "" ) + hour);
-            time_play();
-        },1000)
-    }
-
-
-
-}
-changepage(1);
 function changepage(newpage){
+    alert(newpage);
+    if(newpage>done_index){
+        return;
+    }
    Leo_index_now=newpage;
    initTitle(newpage);
    if(newpage==0){
@@ -214,15 +247,7 @@ function changepage(newpage){
         $('#Leo_pageup').prop('display', '');
         $('#Leo_pagedown').prop('display', '');
    }
-
-
-
-
-   
 }
-
-});
-
 
 
 
