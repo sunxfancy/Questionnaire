@@ -104,8 +104,17 @@ class ExamineeController extends Base
     public function getpaperAction(){
         $examinee = $this->session->get('Examinee');
         $project_id = $examinee->project_id;
-        $paper_id = $this->request->getPost("paper_id","string");
+        $paper_id = $this->request->getPost("paper_id","int");
         $questions = $this->getQuestions($project_id,$paper_id);
+
+        $this->response->setHeader("Content-Type", "text/json; charset=utf-8");
+        $ret={
+            'questions':$questions;
+            'description': Paper::findFirst($paper_id)->description;
+        }
+        echo $ret;
+        $this->view->disable();
+
     }
 
     public function getQuestions($project_id,$paper_id)
