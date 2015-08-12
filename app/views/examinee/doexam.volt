@@ -233,7 +233,10 @@ function initTitle(index){
         }
         if(Leo_index_now==questions.length-1){
             $("#Leo_checkup").css('display','');
+            $("#Leo_checkup").unbind("click");
             $("#Leo_checkup").click(function(){
+
+                changepage(questions.length-1,true);
                 if(confirm("您确定要提交吗?")){
                     $.post('/Examinee/getExamAnswer',{"answer":$.cookie("exam_ans"+{{number}}),"paper_id":null}, function(data) {
                         /*optional stuff to do after success */
@@ -292,6 +295,7 @@ function changepage(newpage,isCookie){
         refreshCookie(Leo_index_now,ans_str,"exam_ans"+{{number}});
     }
    Leo_index_now=newpage;
+
    initTitle(newpage);
    var inputs=$("input");
    var new_ans=get_ans_array_from_cookie(newpage,"exam_ans"+{{number}});
@@ -329,6 +333,17 @@ function initCookie_title(ans_cookie){
             if(flag){
                 done_index=ans_array.length-1;
                 $("#Leo_checkup").css('display', '');
+                $("#Leo_checkup").unbind("click");
+                $("#Leo_checkup").click(function(){
+                    changepage(questions.length-1,true);
+                    if(confirm("您确定要提交吗?")){
+                        $.post('/Examinee/getExamAnswer',{"answer":$.cookie("exam_ans"+{{number}}),"paper_id":null}, function(data) {
+                            /*optional stuff to do after success */
+                            alert(data.answer);
+                        });
+                    }
+                })
+
                 changepage(ans_array.length-1,false);
             }
     }
