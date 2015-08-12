@@ -71,8 +71,6 @@
 	    	}
 	    }
 
-
-
 	    public function getIndexs($module_id){
 
 	    }
