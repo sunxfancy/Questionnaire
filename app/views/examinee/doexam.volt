@@ -46,7 +46,7 @@
     <div style="width:100%;height:30px;background-color:#eeed6a;"></div>
 
     <div class="clock">
-    <ul><li style="font-size:25px;">已用时</li></ul>
+    <ul><li style="font-size:25px;" id="used">已用时</li></ul>
     <ul>
     <li id="hours">00</li>
         <li id="point">:</li>
@@ -81,12 +81,7 @@ $(function(){
 
     /*定义重要的全局变量*/
    
-    // $.post('/Examinee/getpaper', {'paper_id':1}, function(data) {
-    //     optional stuff to do after success 
-    //     alert(data.questions[0].index);
-    //     alert(data.description);
-
-    // });
+    
     
     questions[0]={
         'index':0,
@@ -101,10 +96,9 @@ $(function(){
     questions[2]={'index':2,
         'title':"本测验包括许多问题和选择，任何答案选择都无所谓对错，222",
         'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'};
-
+    //getpaper();
     Leo_initPanel(questions.length);
     Leo_timer_start();
-    refreshCookie(2,'a',"exam_ans"+{{number}});
     initCookie(questions.length,"exam_ans"+{{number}});
     
     
@@ -127,6 +121,8 @@ $(function(){
      $("#Leo_pageup").click(function(){
          changepage(Leo_index_now-1,true);
      });
+
+
 
 });
 
@@ -204,11 +200,13 @@ function Leo_timer_start(){
     }
 
     $("#Leo_pause").click(function(){
+        $("#used").html("暂停");
         flag=false;
     });
 
     $("#Leo_hiden_ctrl").click(function() {
         /* Act on the event */
+         $("#used").html("已用时");
         flag=true;
     });
 
@@ -228,12 +226,22 @@ function initTitle(index){
     $('#ans_div').children('div').replaceWith(option_disp);
     $('.Leo_ans_checktext').click(function(){
         var temp=$(this).parent().children('div').children(':radio')[0];
-        temp.checked=!temp.checked;
+        temp.checked=true;
         $('#newdiv_'+index).css('background-color', '#48fffb');
         if(Leo_index_now==done_index&&Leo_index_now!=questions.length-1){
             done_index=Leo_index_now+1;
         }
-        if(Leo_index_now==questions.length-1) $("#Leo_checkup").css('display','');
+        if(Leo_index_now==questions.length-1){
+            $("#Leo_checkup").css('display','');
+            $("#Leo_checkup").click(function(){
+                if(confirm("您确定要提交吗?")){
+                    $.post('/Examinee/getExamAnswer',{"answer":$.cookie("exam_ans"+{{number}}),"paper_id":null}, function(data) {
+                        /*optional stuff to do after success */
+                        alert(data.answer);
+                    });
+                }
+            })
+        } 
         changepage(Leo_index_now+1,true);
     });
 
@@ -251,15 +259,27 @@ function initTitle(index){
 }
 
 function get_ans_str(index){
-    var ans_array=$("#123");
-    var ans="";
+    var ans_array=$("input");
+    var ans="0";
     for(var i=0;i<ans_array.length;i++){
         if(ans_array[i].checked){
             ans=String.fromCharCode(i+97);
             break;
         }
+
     }
     return ans;
+}
+
+function get_ans_array_from_cookie(index,user){
+    var ans_cookie=$.cookie(user);
+    ans_cookie=ans_cookie.split("|");
+    var ret=-1;
+   
+    if(ans_cookie[index]!="0"){
+        ret=ans_cookie[index].charCodeAt()-97;
+    }
+    return ret;
 }
 
 function changepage(newpage,isCookie){
@@ -271,9 +291,14 @@ function changepage(newpage,isCookie){
         var ans_str=get_ans_str(Leo_index_now);
         refreshCookie(Leo_index_now,ans_str,"exam_ans"+{{number}});
     }
-    
    Leo_index_now=newpage;
    initTitle(newpage);
+   var inputs=$("input");
+   var new_ans=get_ans_array_from_cookie(newpage,"exam_ans"+{{number}});
+   if(new_ans!=-1){
+        inputs[new_ans].checked=true;
+   }
+
    if(newpage==0){
         $('#Leo_pageup').css('display', 'none');
    }else{
@@ -303,8 +328,16 @@ function initCookie_title(ans_cookie){
             }
             if(flag){
                 done_index=ans_array.length-1;
+                $("#Leo_checkup").css('display', '');
                 changepage(ans_array.length-1,false);
             }
+    }
+
+function getpaper(paper_index){
+         $.post('/Examinee/getpaper', {'paper_id':paper_index}, function(data) {
+         questions=data.questions;
+         description=data.description;
+     });
     }
 
 
