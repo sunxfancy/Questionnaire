@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 09:18:33
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-12 15:49:38
+ * @Last Modified time: 2015-08-12 15:51:57
  */
 
 /**
@@ -75,7 +75,8 @@ class Json
 	{
 		$obj->name = $name;
 		foreach ($array as $key => $value) {
-			if ($key == 'question' || $key == 'factor' || $key == 'index') {
+			$child_array = array('question','factor','index');
+			if (in_array($key, $child_array)) {
 				$obj->children = $value;
 				$b = $key == $class_name ? 0 : 1;
 				$obj->children_type = $this->makeArray($value, $b);
