@@ -36,7 +36,7 @@ class Json
 	private function loadJson($filename, $toarray = true)
 	{
 		$json_string = file_get_contents($filename);
-		$json_string = preg_replace('/[\r\n]/', '', $json_string);
+		$json_string = preg_replace('/[\r\n\t]/', '', $json_string);
 		$json = json_decode($json_string, $toarray);
 		if ($json == null) {
 			echo json_last_error_msg();
