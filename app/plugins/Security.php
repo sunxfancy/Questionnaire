@@ -27,7 +27,7 @@
                     'leader'      => new Phalcon\Acl\Role("Leader"),
                     'pm'          => new Phalcon\Acl\Role('PM'),
                     'examinee'    => new Phalcon\Acl\Role("Examinee"),
-                    'interviewer' => new Phalcon\Acl\Role("Interviewer");
+                    'interviewer' => new Phalcon\Acl\Role("Interviewer"),
                     'guests'      => new Phalcon\Acl\Role('Guests'));
                 
                 foreach ($roles as $role)
