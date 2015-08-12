@@ -308,23 +308,14 @@ class ExamineeController extends Base
     public function datareturn($other)
     {
         $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
+        $this->view->disable();
 
-        $this->edu_name = array('school','profession','degree','date');
-        $this->work_name = array('employer','unit','duty','date');
         $education = array();
         $work = array();
-        $this->readother_examinee($education,$this->edu_name);
-        $this->readother_examinee($work,$this->work_name);
-        $examinee->other = json_encode(array('education' => $education, 'work' => $work));
-        $this->view->disable();
-    }
-
-    function readother_examinee($other_array, $name_array)
-    {
-        for ($j = 0; $j < 4; $j++) {
-            for ($k = 0; $k < 4; $k++) { 
-                $other_array[$j][$name_array[$k]] = self::filter($sheet->getCell($other_col.$i)->getValue());
-            }
+        $other = json_encode($examinee->other);
+        for ($i=0; $i < sizeof($other); $i++) { 
+                $education = $other[$i].education;
+                $work = $other[$i].work;
         }
     }
 
