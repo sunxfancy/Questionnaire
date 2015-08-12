@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 09:18:33
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-12 15:51:57
+ * @Last Modified time: 2015-08-12 16:11:55
  */
 
 /**
@@ -82,7 +82,7 @@ class Json
 				$obj->children_type = $this->makeArray($value, $b);
 			}
 			$default_array = array(
-				'action','ans','children','belong_module','chs_name');
+				'action','ans_do','children','belong_module','chs_name');
 			if (in_array($key, $default_array)) {
 				$obj->$key = $value;
 			}
