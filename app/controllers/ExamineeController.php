@@ -202,9 +202,10 @@ class ExamineeController extends Base
         return $id_array;
     }
 
-    public function getExamAnswer($answer,$paper_id){
+    public function getExamAnswerAction(){
         $answer = $this->request->getPost("answer", "string");
         $paper_id = $this->request->getPost("paper_id", "int");
+        $this->dataReturn(array("answer"=>$answer));
     }
 
     public function addAction()
@@ -257,75 +258,75 @@ class ExamineeController extends Base
         $this->view->setVar('team',$team);
     }
 
-    public function listAction()
-    {
-        $school = 
-        $professional = 
-        $degree = 
-        $begin_end_time = 
+    // public function listAction()
+    // {
+    //     $school = 
+    //     $professional = 
+    //     $degree = 
+    //     $begin_end_time = 
 
-        $sidx = $this->request->getQuery('sidx','string');
-        $sord = $this->request->getQuery('sord','string');
-        if ($sidx != null)
-            $sort = $sidx;
-        else
-            $sort = 'id';
-        if ($sord != null)
-            $sort = $sort.' '.$sord;
-        $builder = $builder->orderBy($sort);
-        $this->datareturn($builder);
-    }
+    //     $sidx = $this->request->getQuery('sidx','string');
+    //     $sord = $this->request->getQuery('sord','string');
+    //     if ($sidx != null)
+    //         $sort = $sidx;
+    //     else
+    //         $sort = 'id';
+    //     if ($sord != null)
+    //         $sort = $sort.' '.$sord;
+    //     $builder = $builder->orderBy($sort);
+    //     $this->datareturn($builder);
+    // }
 
 
-    public function updateAction()
-    {
-        $oper = $this->request->getPost('oper', 'string');
-        if ($oper == 'edit') {
-            $id = $this->request->getPost('id', 'int');
-            $project = Project::findFirst($id);
-            $project->username    = $this->request->getPost('begintime', 'string');
-            $project->password    = $this->request->getPost('endtime', 'string');
-            $project->name        = $this->request->getPost('name', 'string');
-            $project->description = $this->request->getPost('description', 'string');
-            if (!$project->save()) {
-                foreach ($project->getMessages() as $message) {
-                    echo $message;
-                }
-            }
-        }
-        if ($oper == 'del') {
-            $id = $this->request->getPost('id', 'int');
-            $manager = Project::findFirst($id);
-            if (!$manager->delete()) {
-                foreach ($manager->getMessages() as $message) {
-                    echo $message;
-                }
-            }
-        }
-    }
+    // public function updateAction()
+    // {
+    //     $oper = $this->request->getPost('oper', 'string');
+    //     if ($oper == 'edit') {
+    //         $id = $this->request->getPost('id', 'int');
+    //         $project = Project::findFirst($id);
+    //         $project->username    = $this->request->getPost('begintime', 'string');
+    //         $project->password    = $this->request->getPost('endtime', 'string');
+    //         $project->name        = $this->request->getPost('name', 'string');
+    //         $project->description = $this->request->getPost('description', 'string');
+    //         if (!$project->save()) {
+    //             foreach ($project->getMessages() as $message) {
+    //                 echo $message;
+    //             }
+    //         }
+    //     }
+    //     if ($oper == 'del') {
+    //         $id = $this->request->getPost('id', 'int');
+    //         $manager = Project::findFirst($id);
+    //         if (!$manager->delete()) {
+    //             foreach ($manager->getMessages() as $message) {
+    //                 echo $message;
+    //             }
+    //         }
+    //     }
+    // }
 
-    public function datareturn($other)
-    {
-        $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
-        // $limit = $this->request->getQuery('rows', 'int');
-        // $page = $this->request->getQuery('page', 'int');
-        // if (is_null($limit)) $limit = 10;
-        // if (is_null($page)) $page = 1;
-        // $paginator = new Phalcon\Paginator\Adapter\QueryBuilder(array("builder" => $builder,
-        //                                                               "limit" => $limit,
-        //                                                               "page" => $page));
-        // $page = $paginator->getPaginate();
-        $other = array();
-        // $ans['total'] = $page->total_pages;
-        // $ans['page'] = $page->current;
-        $other['records'] = $other->total_items;
-        foreach ($page->items as $key => $item)
-        {
-            $ans['rows'][$key] = $item;
-        }
-        echo json_encode($ans);
-        $this->view->disable();
-    }
+    // public function datareturn($other)
+    // {
+    //     $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
+    //     // $limit = $this->request->getQuery('rows', 'int');
+    //     // $page = $this->request->getQuery('page', 'int');
+    //     // if (is_null($limit)) $limit = 10;
+    //     // if (is_null($page)) $page = 1;
+    //     // $paginator = new Phalcon\Paginator\Adapter\QueryBuilder(array("builder" => $builder,
+    //     //                                                               "limit" => $limit,
+    //     //                                                               "page" => $page));
+    //     // $page = $paginator->getPaginate();
+    //     $other = array();
+    //     // $ans['total'] = $page->total_pages;
+    //     // $ans['page'] = $page->current;
+    //     $other['records'] = $other->total_items;
+    //     foreach ($page->items as $key => $item)
+    //     {
+    //         $ans['rows'][$key] = $item;
+    //     }
+    //     echo json_encode($ans);
+    //     $this->view->disable();
+    // }
 
     public function leftRender($title)
     {
