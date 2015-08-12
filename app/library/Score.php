@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 11:08:59
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-12 14:13:10
+ * @Last Modified time: 2015-08-12 15:21:15
  */
 
 /**
@@ -31,10 +31,14 @@ class Score
 	{
 		$child_list = explode($factor->children);
 		$child_type = explode($factor->children_type);
-		foreach ($child_list as $key => $child) {
-			$ctype = $child_type[$key];
-			
+
+		foreach ($examinees as $examinee) {
+			foreach ($child_list as $key => $child) {
+				$ctype = $child_type[$key];
+				
+			}
 		}
+		
 	}
 
 	// 传入一个answer对象数组, 计算所有人的得分
@@ -42,6 +46,8 @@ class Score
 	{
 
 	}
+
+	
 
 	/**
 	 * @brief 查询一个对象,若不存在则新建
