@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-07 19:21:18
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-10 10:11:24
+ * @Last Modified time: 2015-08-09 14:39:24
  */
 
 /**
@@ -11,8 +11,8 @@
 */
 class TestController extends Base
 {
-/*	
-	public function indexAction($project_id)
+	
+	public function indexAction()
 	{
 		$this->response->setHeader("Content-Type", "text/plain; charset=utf-8");
 		$factor_file = __DIR__ . "/../../app/config/factor.json";
@@ -22,12 +22,9 @@ class TestController extends Base
 		print_r($factor_json);
 		print_r($index_json);
 
-		// $this->calans($project_id);
-		// foreach ($this->factors as $factor) {
-		// 	$factor_config = $factor_json[$factor->name];
-		// 	$this->calitem();
-		// }
+		
 	}
+
 
 	public function loadJson($filename, $toarray = true)
 	{
@@ -35,12 +32,14 @@ class TestController extends Base
 		$json_string = preg_replace('/[\r\n]/', '', $json_string);
 		$json = json_decode($json_string, $toarray);
 		if ($json == null) {
-			echo json_last_error_msg();
-			throw new Exception(json_last_error_msg());
+			// echo json_last_error_msg();
+			// throw new Exception(json_last_error_msg());
 		} 
 		return $json;
 	}
 
+
+	/*
 	public function calans($project_id)
 	{
 		$questions = getQuestions($project_id);
@@ -61,109 +60,34 @@ class TestController extends Base
 		}
 	}
 
-*/	
-	public function indexAction(){
-		$paper_id = $this->request->getPost("paper_id","string");
-		$questions = $this->getQuestions(1,$paper_id);
-		$this->response->setHeader("Content-Type", "text/plain; charset=utf-8");
-	}
 
-	// 返回question的列表,同时在类对象中缓存模块、因子、指标等对象组
-	public function getQuestions($project_id,$paper_id)
+	public function getQuestions($project_id)
 	{
-		$project = Pmrel::find(array(
-			"project_id = ?1",
-			"bind"=>array(1=>$project_id)
-			));
-		$modules_id_array = $this->getModules($project);
-		
+		$project = Project::findFirst($project_id);
+		$modules = $project->getModules();
+		$modules_id_array = $this->getIds($modules);
 		$indexs = Index::find(array(
 			'module_id IN ({module_id:array})',
 			'bind' => array('module_id' => $modules_id_array)
 		));
 		$indexs_id_array = $this->getIds($indexs);
+		$index_factor_sql = 'SELECT Factor.* FROM Index JOIN Firel ON Index.id = Firel.index_id 
+							 JOIN Factor ON Firel.factor_id = Factor.id WHERE Index.id IN ({indexs_id:array})';
 
-		$factor_id_array = $this->getFactor($indexs_id_array);
+		$query = $this->modelsManager->createQuery($index_factor_sql);
+		$factors = $query->execute(array('indexs_id' => $indexs_id_array));
+		$factors_id_array = $this->getIds($factors);
 
-		$question_id_array = $this->getQlist($factor_id_array,$paper_id);
+		$factor_question_sql = 'SELECT Question.* FROM Factor JOIN Fqrel ON Factor.id = Firel.factor_id 
+							 JOIN Question ON Fqrel.question_id = Question.id WHERE Factor.id IN ({factors_id:array})';
+		$query = $this->modelsManager->createQuery($factor_question_sql);
+		$questions = $query->execute(array('factors_id' => $factors_id_array));
 
-		return $question_id_array;
-	}
-
-	public function getFactor($indexs){
-		//$this->view->disable();
-		$factor_id = array();
-		for ($i=0; $i <sizeof($indexs) ; $i++) { 
-			$index = Index::findFirst($indexs[$i]);
-			$children = $index->children;
-			$childrentype = $index->children_type;
-			$children = explode(",",$children );
-			$childrentype = explode(",", $childrentype);
-			for ($j=0; $j < sizeof($childrentype); $j++) { 
-				//0代表index，1代表factor
-				if ($childrentype[$j] == "0") {
-					$index1 = Index::findFirst(intval($children[$j]));
-					$children1 = $index1->children;
-					$children1 = explode(",",$children1);
-					for ($k=0; $k <sizeof($children1) ; $k++) { 
-						$children1[$k] = intval($children1[$k]);
-						$factor_id[] = $children1[$k];
-					}
-				}
-				else{	
-						$children[$j] = intval($children[$j]);
-						$factor_id[] = $children[$j];
-				}				
-			}
-		}
-		return explode(",",implode(",",array_unique($factor_id)));
-	}
-
-	public function getQlist($factors,$paper_id){
-		$this->view->disable();
-		$questions_id = array();
-		for ($i=0; $i <sizeof($factors) ; $i++) { 			
-			$factor = Factor::findFirst($factors[$i]);
-			if ($factor->paper_id == $paper_id) {
-				$children = $factor->children;
-				$childrentype = $factor->children_type;
-				$children = explode(",",$children );
-				$childrentype = explode(",", $childrentype);
-				for ($j=0; $j < sizeof($childrentype); $j++) { 
-					//0代表factor，1代表question
-					if ($childrentype[$j] == "0") {
-						$factor1 = Factor::findFirst($children[$j]);
-						$children1 = $factor1->children;
-						$children1 = explode(",",$children1);
-						for ($k=0; $k <sizeof($children1) ; $k++) { 
-							$children1[$k] = intval($children1[$k]);
-							$questions_id[] = $children1[$k];						
-						}
-					}
-					else{	
-							$children[$j] = intval($children[$j]);
-							$questions_id[] = $children[$j];
-					}				
-				}
-			}
-		}
-		return explode(",",implode(",",array_unique($questions_id)));
-	}
-
-	public function getExam($questions){
-		$data = new array();
-		for ($i=0; $i < sizeof($questions); $i++) { 
-
-			$questions = Question::findFirst($questions[$i]);
-			$data[$i]={
-				'index':$i,
-				'title':$questions->topics,
-				'options':$questions->options
-			}
-		}
-
-		
-
+		$this->modules = $modules;
+		$this->indexs = $indexs;
+		$this->factors = $factors;
+		$this->questions = $questions;
+		return $questions;
 	}
 
 	public function getIds($models)
@@ -175,15 +99,6 @@ class TestController extends Base
 		return $id_array;
 	}
 
-	public function getModules($project)
-	{
-		$id_array = array();
-		foreach ($project as $projects) {
-			$id_array[]  = $projects->module_id;
-		}
-		return $id_array;
-	}
-/*
 	public function calitem($item, $config, $main_config, $name = 'Factor')
 	{
 		if ($config['isdone']) return;
@@ -277,5 +192,6 @@ class TestController extends Base
 			'bind' => array(1=>$project_id)));
 		return $this->examinees;
 	}
+
 	*/
 }
