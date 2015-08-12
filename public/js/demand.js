@@ -226,8 +226,8 @@ function initCookie(q_length,user){
                 ans_array[i]='0';
             }
             $.cookie(user,ans_array.join("|"),{experies:7});
+            changepage(0,false);
         }else{
-
             initCookie_title(ans_cookie);
         }
     }
