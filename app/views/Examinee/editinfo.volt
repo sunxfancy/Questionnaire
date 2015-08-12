@@ -136,11 +136,11 @@
                 </tr>
             </table>
 
-            <div style="width:600px;height:100px;margin:0 auto;overflow:hidden;">
+            <div style="width:600px;height:200px;margin:0 auto;overflow:hidden;">
                 <table id="grid-table1"></table>
             </div>
 
-            <div style="width:600px;height:100px;margin:0 auto;overflow:hidden;">
+            <div style="width:600px;height:200px;margin:0 auto;overflow:hidden;">
                 <table id="grid-table2"></table>
             </div>
 
@@ -201,7 +201,7 @@ jQuery(function($) {
 
         jQuery(grid_selector).jqGrid({
             subGrid : false,
-            url: "/examinee/aaa",
+            url: "/examinee/list",
             datatype: "json",
             height: '300px',
             shrinkToFit:true,
@@ -244,7 +244,7 @@ jQuery(function($) {
                 }, 0);
             },
     
-            editurl: "/examinee/aaa",//nothing is saved
+            editurl: "/examinee/update",//nothing is saved
             caption: "教育经历"
     
             ,autowidth: true
@@ -453,7 +453,7 @@ jQuery(function($) {
 
         jQuery(grid_selector).jqGrid({
             subGrid : false,
-            url: "/examinee/aaa",
+            url: "/examinee/list",
             datatype: "json",
             height: '300px',
             shrinkToFit:true,
@@ -496,7 +496,7 @@ jQuery(function($) {
                 }, 0);
             },
     
-            editurl: "/examinee/aaa",//nothing is saved
+            editurl: "/examinee/update",//nothing is saved
             caption: "教育经历"
     
             ,autowidth: true

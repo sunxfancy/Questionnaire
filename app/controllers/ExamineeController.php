@@ -76,13 +76,6 @@ class ExamineeController extends Base
 
         $this->response->setHeader("Content-Type", "text/json; charset=utf-8");
         $this->dataReturn(array("question"=>$questions,"description"=>Paper::findFirst($paper_id)->description));
-        // $ret={
-        //     'questions':$questions,
-        //     'description': Paper::findFirst($paper_id)->description
-        // };
-        // echo $ret;
-        // $this->view->disable();
-
     }
 
     public function getQuestions($project_id,$paper_id)
@@ -209,6 +202,11 @@ class ExamineeController extends Base
         return $id_array;
     }
 
+    public function getExamAnswer($answer,$paper_id){
+        $answer = $this->request->getPost("answer", "string");
+        $paper_id = $this->request->getPost("paper_id", "int");
+    }
+
     public function addAction()
     {
         // $paper = new Paper("select * from paper"); 
@@ -225,9 +223,6 @@ class ExamineeController extends Base
         $this->view->disable();
     }
 
-     public function aaaAction(){
-        $this->view->disable();
-    }
     public function editinfoAction()
     {
         $this->leftRender("个 人 信 息 填 写");
@@ -262,19 +257,12 @@ class ExamineeController extends Base
         $this->view->setVar('team',$team);
     }
 
-    /* public function listAction()
+    public function listAction()
     {
-        $builder = $this->modelsManager->createBuilder()
-                                       ->columns(array(
-                                        'Project.id as id', 'Project.begintime as begintime',
-                                        'Project.endtime as endtime', 'Project.description as description',
-                                        'Project.name as name', 'Manager.name as manager_name', 
-                                        'Manager.username as manager_username', 'COUNT(Examinee.id) as user_count' ))
-                                       ->from('Project')
-                                       ->join('Manager', 'Project.manager_id = Manager.id')
-                                       ->leftJoin('Examinee', 'Project.id = Examinee.project_id')
-                                       ->groupBy('Examinee.id')
-                                       ;
+        $school = 
+        $professional = 
+        $degree = 
+        $begin_end_time = 
 
         $sidx = $this->request->getQuery('sidx','string');
         $sord = $this->request->getQuery('sord','string');
@@ -316,28 +304,28 @@ class ExamineeController extends Base
         }
     }
 
-    public function datareturn($builder)
+    public function datareturn($other)
     {
         $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
-        $limit = $this->request->getQuery('rows', 'int');
-        $page = $this->request->getQuery('page', 'int');
-        if (is_null($limit)) $limit = 10;
-        if (is_null($page)) $page = 1;
-        $paginator = new Phalcon\Paginator\Adapter\QueryBuilder(array("builder" => $builder,
-                                                                      "limit" => $limit,
-                                                                      "page" => $page));
-        $page = $paginator->getPaginate();
-        $ans = array();
-        $ans['total'] = $page->total_pages;
-        $ans['page'] = $page->current;
-        $ans['records'] = $page->total_items;
+        // $limit = $this->request->getQuery('rows', 'int');
+        // $page = $this->request->getQuery('page', 'int');
+        // if (is_null($limit)) $limit = 10;
+        // if (is_null($page)) $page = 1;
+        // $paginator = new Phalcon\Paginator\Adapter\QueryBuilder(array("builder" => $builder,
+        //                                                               "limit" => $limit,
+        //                                                               "page" => $page));
+        // $page = $paginator->getPaginate();
+        $other = array();
+        // $ans['total'] = $page->total_pages;
+        // $ans['page'] = $page->current;
+        $other['records'] = $other->total_items;
         foreach ($page->items as $key => $item)
         {
             $ans['rows'][$key] = $item;
         }
         echo json_encode($ans);
         $this->view->disable();
-    }*/
+    }
 
     public function leftRender($title)
     {
