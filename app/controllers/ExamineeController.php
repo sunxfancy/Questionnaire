@@ -262,7 +262,7 @@ class ExamineeController extends Base
         $this->view->setVar('team',$team);
     }
 
-     public function listAction()
+    /* public function listAction()
     {
         $builder = $this->modelsManager->createBuilder()
                                        ->columns(array(
@@ -337,7 +337,7 @@ class ExamineeController extends Base
         }
         echo json_encode($ans);
         $this->view->disable();
-    }
+    }*/
 
     public function leftRender($title)
     {
