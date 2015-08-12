@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 09:18:33
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-11 16:30:01
+ * @Last Modified time: 2015-08-12 16:11:55
  */
 
 /**
@@ -36,7 +36,7 @@ class Json
 	private function loadJson($filename, $toarray = true)
 	{
 		$json_string = file_get_contents($filename);
-		$json_string = preg_replace('/[\r\n]/', '', $json_string);
+		$json_string = preg_replace('/[\r\n\t]/', '', $json_string);
 		$json = json_decode($json_string, $toarray);
 		if ($json == null) {
 			echo json_last_error_msg();
@@ -75,12 +75,15 @@ class Json
 	{
 		$obj->name = $name;
 		foreach ($array as $key => $value) {
-			if ($key == 'question' || $key == 'factor' || $key == 'index') {
+			$child_array = array('question','factor','index');
+			if (in_array($key, $child_array)) {
 				$obj->children = $value;
 				$b = $key == $class_name ? 0 : 1;
 				$obj->children_type = $this->makeArray($value, $b);
 			}
-			if ($key == 'action' || $key == 'ans' || $key == 'children' || $key == 'belong_module') {
+			$default_array = array(
+				'action','ans_do','children','belong_module','chs_name');
+			if (in_array($key, $default_array)) {
 				$obj->$key = $value;
 			}
 		}
