@@ -1,63 +1,7 @@
-<!-- <script type="text/javascript" src="/jqGrid/js/jquery.jqGrid.min.js"></script>
+<script type="text/javascript" src="/jqGrid/js/jquery.jqGrid.min.js"></script>
+<script type="text/javascript" src="/lib/bootstrap-datetimepicker.js"></script>
 <script type="text/javascript" src="/jqGrid/js/i18n/grid.locale-cn.js"></script>
 <script type="text/javascript" src="/js/bootstrap.js"></script>
-
-<script language="javascript">
-        var count1=1;
-        var count2=2;
-        function insertRow1(){
-            count1++;
-            var x=document.getElementById('myTable1').insertRow(count1+1);
-            var a=x.insertCell(0);
-            var b=x.insertCell(1);
-            var c=x.insertCell(2);
-            var d=x.insertCell(3);
-            var e = x.insertCell(4);
-
-            a.style.width = "150px";
-            b.style.width = "150px";
-            c.style.width = "150px";
-            d.style.width = "150px";
-            e.style.width = "35px";
-
-            a.innerHTML='<input name="text" type="name" class="inputtxt" style="border:0px;height:33px;font-family:"微软雅黑";">';
-            b.innerHTML='<input name="text" type="name" class="inputtxt" style="border:0px;height:33px;font-family:"微软雅黑";">';
-            c.innerHTML='<input name="text" type="name" class="inputtxt" style="border:0px;height:33px;font-family:"微软雅黑";">';
-            d.innerHTML='<input name="text" type="name" class="inputtxt" style="border:0px;height:33px;font-family:"微软雅黑";">';
-            e.innerHTML='<img src="../images/del.jpg" value="删除" onclick="deleteRow1(this)">';
-        }
-        function deleteRow1(r){
-           count1--;
-           var i=r.parentNode.parentNode.rowIndex;
-           document.getElementById('myTable1').deleteRow(i);
-        }
-        function insertRow2(){
-            count2++;
-            var x=document.getElementById('myTable2').insertRow(count2+1);
-            var a=x.insertCell(0);
-            var b=x.insertCell(1);
-            var c=x.insertCell(2);
-            var d=x.insertCell(3);
-            var e = x.insertCell(4);
-
-            a.style.width = "150px";
-            b.style.width = "150px";
-            c.style.width = "150px";
-            d.style.width = "150px";
-            e.style.width = "35px";
-
-            a.innerHTML='<input name="text" type="name" class="inputtxt" style="border:0px;height:33px;font-family:"微软雅黑";">';
-            b.innerHTML='<input name="text" type="name" class="inputtxt" style="border:0px;height:33px;font-family:"微软雅黑";">';
-            c.innerHTML='<input name="text" type="name" class="inputtxt" style="border:0px;height:33px;font-family:"微软雅黑";">';
-            d.innerHTML='<input name="text" type="name" class="inputtxt" style="border:0px;height:33px;font-family:"微软雅黑";">';
-            e.innerHTML='<img src="../images/del.jpg" value="删除" onclick="deleteRow2(this)">';
-        }
-        function deleteRow2(r){
-           count2--;
-           var i=r.parentNode.parentNode.rowIndex;
-           document.getElementById('myTable2').deleteRow(i);
-        }
-</script>
 
 <div class="Leo_question">
     <div class="baseinfo" style="width:100%;height:100%;">
@@ -186,64 +130,22 @@
                     <td style=" width:120px;line-height:33px;">岗位/职务</td>
                     <td colspan="3" style="width: 180px; font-size: 16px;" onclick="Leo_toEdit(this)">{{ duty }}</td>
                 </tr>
-            </table>
-            <div style="height:40px;text-align:center;font-size:28px;">教育经历</div>
-            <table id="myTable1" style="margin: 0 auto;text-align:center; font-family:'微软雅黑'" border="1" cellspacing="0" cellpadding="1" >
                 <tr>
-                    <td style=" width:150px;line-height:33px;">毕业院校</td>
-                    <td style=" width:150px;line-height:33px;">专业</td>
-                    <td style=" width:150px;line-height:33px;">所获学位</td>
-                    <td style=" width:150px;line-height:33px;">时间</td>
-                </tr>
-                <tr style="font-size:16px;text-align:center;line-height:33px;font-family:'微软雅黑'">
-                    <td style="width:150px;" onclick="Leo_toEdit(this)"></td>
-                    <td style="width:150px;" onclick="Leo_toEdit(this)"></td>
-                    <td style="width:150px;" onclick="Leo_toEdit(this)"></td>
-                    <td style="width:150px;" onclick="Leo_toEdit(this)"></td>
-                </tr>
-                <tr style="font-size:16px;text-align:center;line-height:33px;font-family:'微软雅黑'">
-                    <td style="width:150px;" onclick="Leo_toEdit(this)"></td>
-                    <td style="width:150px;" onclick="Leo_toEdit(this)"></td>
-                    <td style="width:150px;" onclick="Leo_toEdit(this)"></td>
-                    <td style="width:150px;" onclick="Leo_toEdit(this)"></td>
-                </tr>
-            </table>
-			<div id="Leo_add" style="width:86.5%;height:50px;margin:0 auto;;text-align:center;">
-                <input type='button' value='增加一行' onclick="insertRow1()" >
-            </div>
-            <div style="height:40px;text-align:center;font-size:28px;">工作经历</div>
-            <table id="myTable2" border="1"cellspacing="0" cellpadding="0" style="margin: 0 auto;text-align:center;font-family:'微软雅黑' ">
-                <tr>
-                    <td style=" width:150px;line-height:32px;">就职单位</td>
-                    <td style=" width:150px;line-height:32px;">部门</td>
-                    <td style=" width:150px;line-height:32px;">岗位/职务</td>
-                    <td style=" width:150px;line-height:32px;">起止时间</td>
-                </tr>
-                <tr style="font-size:16px;text-align:center;line-height:33px;font-family:'微软雅黑'">
-                    <td style="width:150px;" onclick="Leo_toEdit(this)"></td>
-                    <td style="width:150px;" onclick="Leo_toEdit(this)"></td>
-                    <td style="width:150px;" onclick="Leo_toEdit(this)"></td>
-                    <td style="width:150px;" onclick="Leo_toEdit(this)"></td>
-                </tr>
-                <tr style="font-size:16px;text-align:center;line-height:33px;font-family:'微软雅黑'">
-                    <td style="width:150px;" onclick="Leo_toEdit(this)"></td>
-                    <td style="width:150px;" onclick="Leo_toEdit(this)"></td>
-                    <td style="width:150px;" onclick="Leo_toEdit(this)"></td>
-                    <td style="width:150px;" onclick="Leo_toEdit(this)"></td>
-                </tr>
-                <tr style="font-size:16px;text-align:center;line-height:33px;font-family:'微软雅黑'">
-                    <td style="width:150px;" onclick="Leo_toEdit(this)"></td>
-                    <td style="width:150px;" onclick="Leo_toEdit(this)"></td>
-                    <td style="width:150px;" onclick="Leo_toEdit(this)"></td>
-                    <td style="width:150px;" onclick="Leo_toEdit(this)"></td>
+                    <td style=" width:120px;line-height:33px;">班子/系统成员</td>
+                    <td colspan="3" style="width: 180px; font-size: 16px;" onclick="Leo_toEdit(this)">{{ team }}</td>
                 </tr>
             </table>
 
-			<div id="Leo_add" style="width:86.5%;height:50px;margin:0 auto;;text-align:center;">
-                <input type='button' value='增加一行' onclick="insertRow2()" >
+            <div style="width:600px;height:200px;margin:0 auto;overflow:hidden;">
+                <table id="grid-table1"></table>
             </div>
-            <div class="submit" style="display:block;text-align:center;margin-top:15px;">
-                <img src="../images/submit.jpg" type="submit" onclick="window.location.href='Leo_examination.html'" />
+
+            <div style="width:600px;height:200px;margin:0 auto;overflow:hidden;">
+                <table id="grid-table2"></table>
+            </div>
+
+            <div style="width:600px;height:40px;text-align:center;margin:26px;">                  
+                <button class="btn btn-primary" id="submit">确定</button>
             </div>
         </div>
     </div>
@@ -256,76 +158,487 @@
         todayBtn: true,
         pickerPosition: "bottom-left"
     });
-
-window.onload = add;
-
-function Leo_toEdit(t) {
-    t.onclick = null;
-    var content = t.innerText;
-    t.innerText = "";
-    var edit = document.createElement("input");
-    edit.style.width = "90%";
-    edit.type = "text";
-    edit.value = content;
-    edit.style.textAlign = "center";
-    edit.onblur = new Function("Leo_exitEdit(this)");
-    t.appendChild(edit);
-    edit.focus();
-    edit.select();
-}
-function Leo_exitEdit(t) {
-    var content = t.value;
-    var s = t.parentNode;
-    s.removeChild(t);
-    s.innerText = content;
-    s.onclick = new Function("Leo_toEdit(this)");
-    if (s.name == "td2") {
-        checkEdtime(s, s.innerText);
+    function Leo_toEdit(t) {
+        t.onclick = null;
+        var content = t.innerText;
+        t.innerText = "";
+        var edit = document.createElement("input");
+        edit.style.width = "90%";
+        edit.type = "text";
+        edit.value = content;
+        edit.style.textAlign = "center";
+        edit.onblur = new Function("Leo_exitEdit(this)");
+        t.appendChild(edit);
+        edit.focus();
+        edit.select();
     }
-}
+    function Leo_exitEdit(t) {
+        var content = t.value;
+        var s = t.parentNode;
+        s.removeChild(t);
+        s.innerText = content;
+        s.onclick = new Function("Leo_toEdit(this)");
+        if (s.name == "td2") {
+            checkEdtime(s, s.innerText);
+        }
+    }
 
-</script> -->
+jQuery(function($) {
+        var grid_selector = "#grid-table1";
+        var pager_selector = "#grid-pager";
+        
+        //resize to fit page size
+        $(window).on('resize.jqGrid', function () {
+            $(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
+        });
+        //resize on sidebar collapse/expand
+        var parent_column = $(grid_selector).closest('[class*="col-"]');
+        $(document).on('settings.ace.jqGrid' , function(ev, event_name, collapsed) {
+            if( event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed' ) {
+                $(grid_selector).jqGrid( 'setGridWidth', parent_column.width() );
+            }
+        })
 
- <link rel="stylesheet" type="text/css"  href="css/ui-lightness/jquery-ui-1.8.2.custom.css" />
-<link rel="stylesheet" type="text/css"  href="css/ui.jqgrid.css" />
-    <link rel="stylesheet" type="text/css" href="/pagecss/admin.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap-datetimepicker.css" />
-    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
-<script src="js/i18n/grid.locale-en.js" type="text/javascript"></script>
-<script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
-<script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
+        jQuery(grid_selector).jqGrid({
+            subGrid : false,
+            url: "/examinee/list",
+            datatype: "json",
+            height: '300px',
+            shrinkToFit:true,
+            forceFit:true,
+            autowidth: true,
+            colNames:[' ','毕业院校','专业','所获学位','起止时间'],
+            colModel:[
+                {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
+                    formatter:'actions', 
+                    formatoptions:{ 
+                        keys:true,
+                        
+                        delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
+                    }
+                },
+                {name:'school', index:'school', width:150, editable: true, sortable:false, align:'center'},
+                {name:'professional', index:'professional', sortable:false, width:150, editable:true, align:'center'},
+                {name:'degree', index:'degree', width:80, sortable:false, editable:true, align:'center'},
+                {name:'begin_end_time', index:'begin_end_time', sortable:true, width:120, editable: true,edittype:'text',align:'center'}
+                ],
+            viewrecords : true, 
+            rowNum:10,
+            rowList:[10,20,30],
+            pager : pager_selector,
+            altRows: true,
+            toppager: false,
+            
+            multiselect: true,
+            //multikey: "ctrlKey",
+            multiboxonly: true,
+    
+            loadComplete : function() {
+                var table = this;
+                setTimeout(function(){
+                    styleCheckbox(table);
+                    
+                    updateActionIcons(table);
+                    updatePagerIcons(table);
+                    enableTooltips(table);
+                }, 0);
+            },
+    
+            editurl: "/examinee/update",//nothing is saved
+            caption: "教育经历"
+    
+            ,autowidth: true
+    
+        });
+        $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
+    
+        //switch element when editing inline
+        function aceSwitch( cellvalue, options, cell ) {
+            setTimeout(function(){
+                $(cell) .find('input[type=checkbox]')
+                    .addClass('ace ace-switch ace-switch-5')
+                    .after('<span class="lbl"></span>');
+            }, 0);
+        }
+    
+        //navButtons
+        jQuery(grid_selector).jqGrid('navGrid',pager_selector,
+            {   //navbar options
+                edit: true,
+                editicon : 'ace-icon fa fa-pencil blue',
+                add: true,
+                addicon : 'ace-icon fa fa-plus-circle purple',
+                del: true,
+                delicon : 'ace-icon fa fa-trash-o red',
+                search: true,
+                searchicon : 'ace-icon fa fa-search orange',
+                refresh: true,
+                refreshicon : 'ace-icon fa fa-refresh green',
+                view: true,
+                viewicon : 'ace-icon fa fa-search-plus grey',
+            },
+            {
+                //edit record form
+                //closeAfterEdit: true,
+                //width: 700,
+                recreateForm: true,
+                beforeShowForm : function(e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+                    style_edit_form(form);
+                }
+            },
+            {
+                //new record form
+                //width: 700,
+                closeAfterAdd: true,
+                recreateForm: true,
+                viewPagerButtons: false,
+                beforeShowForm : function(e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
+                    .wrapInner('<div class="widget-header" />')
+                    style_edit_form(form);
+                }
+            },
+            {
+                //delete record form
+                recreateForm: true,
+                beforeShowForm : function(e) {
+                    var form = $(e[0]);
+                    if(form.data('styled')) return false;
+                    
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+                    style_delete_form(form);
+                    
+                    form.data('styled', true);
+                },
+                onClick : function(e) {
+                    alert(1);
+                }
+            },
+            {
+                //search form
+                recreateForm: true,
+                afterShowSearch: function(e){
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
+                    style_search_form(form);
+                },
+                afterRedraw: function(){
+                    style_search_filters($(this));
+                }
+                ,
+                multipleSearch: true,
+            },
+            {
+                //view record form
+                recreateForm: true,
+                beforeShowForm: function(e){
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
+                }
+            }
+        )
 
+        function style_edit_form(form) {
+            //enable datepicker on "sdate" field and switches for "stock" field
+            form.find('input[name=sdate]').datepicker({format:'yyyy-mm-dd' , autoclose:true})
+                .end().find('input[name=stock]')
+                    .addClass('ace ace-switch ace-switch-5').after('<span class="lbl"></span>');
+                       //don't wrap inside a label element, the checkbox value won't be submitted (POST'ed)
+                      //.addClass('ace ace-switch ace-switch-5').wrap('<label class="inline" />').after('<span class="lbl"></span>');
+    
+            //update buttons classes
+            var buttons = form.next().find('.EditButton .fm-button');
+            buttons.addClass('btn btn-sm').find('[class*="-icon"]').hide();//ui-icon, s-icon
+            buttons.eq(0).addClass('btn-primary').prepend('<i class="ace-icon fa fa-check"></i>');
+            buttons.eq(1).prepend('<i class="ace-icon fa fa-times"></i>')
+            
+            buttons = form.next().find('.navButton a');
+            buttons.find('.ui-icon').hide();
+            buttons.eq(0).append('<i class="ace-icon fa fa-chevron-left"></i>');
+            buttons.eq(1).append('<i class="ace-icon fa fa-chevron-right"></i>');       
+        }
+    
+        function style_delete_form(form) {
+            var buttons = form.next().find('.EditButton .fm-button');
+            buttons.addClass('btn btn-sm btn-white btn-round').find('[class*="-icon"]').hide();//ui-icon, s-icon
+            buttons.eq(0).addClass('btn-danger').prepend('<i class="ace-icon fa fa-trash-o"></i>');
+            buttons.eq(1).addClass('btn-default').prepend('<i class="ace-icon fa fa-times"></i>')
+        }
+        
+        function style_search_filters(form) {
+            form.find('.delete-rule').val('X');
+            form.find('.add-rule').addClass('btn btn-xs btn-primary');
+            form.find('.add-group').addClass('btn btn-xs btn-success');
+            form.find('.delete-group').addClass('btn btn-xs btn-danger');
+        }
+        function style_search_form(form) {
+            var dialog = form.closest('.ui-jqdialog');
+            var buttons = dialog.find('.EditTable')
+            buttons.find('.EditButton a[id*="_reset"]').addClass('btn btn-sm btn-info').find('.ui-icon').attr('class', 'ace-icon fa fa-retweet');
+            buttons.find('.EditButton a[id*="_query"]').addClass('btn btn-sm btn-inverse').find('.ui-icon').attr('class', 'ace-icon fa fa-comment-o');
+            buttons.find('.EditButton a[id*="_search"]').addClass('btn btn-sm btn-purple').find('.ui-icon').attr('class', 'ace-icon fa fa-search');
+        }
+        
+        function beforeDeleteCallback(e) {
+            var form = $(e[0]);
+            if(form.data('styled')) return false;
+            
+            form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+            style_delete_form(form);
+            
+            form.data('styled', true);
+        }
+        
+        function beforeEditCallback(e) {
+            var form = $(e[0]);
+            form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+            style_edit_form(form);
+        }
+    
+        function styleCheckbox(table) {
+
+        }
+        
+        function updateActionIcons(table) {
+
+        }
+        function pickDate( cellvalue, options, cell ) {
+            setTimeout(function(){
+                $(cell) .find('input[type=text]')
+                        .datetimepicker({format:'yyyy-mm-dd hh:ii' , autoclose:true}); 
+            }, 0);
+        }
+        //replace icons with FontAwesome icons like above
+        function updatePagerIcons(table) {
+            var replacement = 
+            {
+                'ui-icon-seek-first' : 'ace-icon fa fa-angle-double-left bigger-140',
+                'ui-icon-seek-prev' : 'ace-icon fa fa-angle-left bigger-140',
+                'ui-icon-seek-next' : 'ace-icon fa fa-angle-right bigger-140',
+                'ui-icon-seek-end' : 'ace-icon fa fa-angle-double-right bigger-140'
+            };
+            $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
+                var icon = $(this);
+                var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
+                
+                if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
+            })
+        }
+    
+        function enableTooltips(table) {
+            $('.navtable .ui-pg-button').tooltip({container:'body'});
+            $(table).find('.ui-pg-div').tooltip({container:'body'});
+        }
+
+    });
+
+jQuery(function($) {
+        var grid_selector = "#grid-table2";
+        var pager_selector = "#grid-pager";
+        
+        //resize to fit page size
+        $(window).on('resize.jqGrid', function () {
+            $(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
+        });
+        //resize on sidebar collapse/expand
+        var parent_column = $(grid_selector).closest('[class*="col-"]');
+        $(document).on('settings.ace.jqGrid' , function(ev, event_name, collapsed) {
+            if( event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed' ) {
+                $(grid_selector).jqGrid( 'setGridWidth', parent_column.width() );
+            }
+        })
+
+        jQuery(grid_selector).jqGrid({
+            subGrid : false,
+            url: "/examinee/list",
+            datatype: "json",
+            height: '300px',
+            shrinkToFit:true,
+            forceFit:true,
+            autowidth: true,
+            colNames:[' ','就职单位','部门','岗位/职务','起止时间'],
+            colModel:[
+                {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
+                    formatter:'actions', 
+                    formatoptions:{ 
+                        keys:true,
+                        
+                        delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
+                    }
+                },
+                {name:'school', index:'school', width:190, editable:true, sortable:false, align:'center'},
+                {name:'professional',index:'professional', sortable:false, width:80, editable:true,align:'center'},
+                {name:'degree', index:'degree', width:80, sortable:false, editable:true, align:'center'},
+                {name:'begin_end_time',index:'begin_end_time', sortable:true,width:150, editable: true,edittype:'text',align:'center'}
+                ], 
+            viewrecords : true, 
+            rowNum:10,
+            rowList:[10,20,30],
+            pager : pager_selector,
+            altRows: true,
+            toppager: false,
+            
+            multiselect: true,
+            //multikey: "ctrlKey",
+            multiboxonly: true,
+    
+            loadComplete : function() {
+                var table = this;
+                setTimeout(function(){
+                    styleCheckbox(table);
+                    
+                    updateActionIcons(table);
+                    updatePagerIcons(table);
+                    enableTooltips(table);
+                }, 0);
+            },
+    
+            editurl: "/examinee/update",//nothing is saved
+            caption: "教育经历"
+    
+            ,autowidth: true
+    
+        });
+        $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
+    
+        //switch element when editing inline
+        function aceSwitch( cellvalue, options, cell ) {
+            setTimeout(function(){
+                $(cell) .find('input[type=checkbox]')
+                    .addClass('ace ace-switch ace-switch-5')
+                    .after('<span class="lbl"></span>');
+            }, 0);
+        }
+    
+        //navButtons
+        jQuery(grid_selector).jqGrid('navGrid',pager_selector,
+            {   //navbar options
+                edit: true,
+                editicon : 'ace-icon fa fa-pencil blue',
+                add: true,
+                addicon : 'ace-icon fa fa-plus-circle purple',
+                del: true,
+                delicon : 'ace-icon fa fa-trash-o red',
+                search: true,
+                searchicon : 'ace-icon fa fa-search orange',
+                refresh: true,
+                refreshicon : 'ace-icon fa fa-refresh green',
+                view: true,
+                viewicon : 'ace-icon fa fa-search-plus grey',
+            },
+            {
+                //edit record form
+                //closeAfterEdit: true,
+                //width: 700,
+                recreateForm: true,
+                beforeShowForm : function(e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+                    style_edit_form(form);
+                }
+            },
+            {
+                //new record form
+                //width: 700,
+                closeAfterAdd: true,
+                recreateForm: true,
+                viewPagerButtons: false,
+                beforeShowForm : function(e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
+                    .wrapInner('<div class="widget-header" />')
+                    style_edit_form(form);
+                }
+            },
+            {
+                //delete record form
+                recreateForm: true,
+                beforeShowForm : function(e) {
+                    var form = $(e[0]);
+                    if(form.data('styled')) return false;
+                    
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+                    style_delete_form(form);
+                    
+                    form.data('styled', true);
+                },
+                onClick : function(e) {
+                    alert(1);
+                }
+            },
+            {
+                //search form
+                recreateForm: true,
+                afterShowSearch: function(e){
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
+                    style_search_form(form);
+                },
+                afterRedraw: function(){
+                    style_search_filters($(this));
+                }
+                ,
+                multipleSearch: true,
+            },
+            {
+                //view record form
+                recreateForm: true,
+                beforeShowForm: function(e){
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
+                }
+            }
+        )
+
+        function style_edit_form(form) {
+            //enable datepicker on "sdate" field and switches for "stock" field
+            form.find('input[name=sdate]').datepicker({format:'yyyy-mm-dd' , autoclose:true})
+                .end().find('input[name=stock]')
+                    .addClass('ace ace-switch ace-switch-5').after('<span class="lbl"></span>');
  
-<script type="text/javascript">
-$(function () {
-    $("#list").jqGrid({
-        url: "/Examinee/editinfo",
-        datatype: "json",
-        mtype: "GET",
-        colNames: ["Inv No", "Date", "Amount", "Tax", "Total", "Notes"],
-        colModel: [
-            { name: "invid", width: 55 },
-            { name: "invdate", width: 90 },
-            { name: "amount", width: 80, align: "right" },
-            { name: "tax", width: 80, align: "right" },
-            { name: "total", width: 80, align: "right" },
-            { name: "note", width: 150, sortable: false }
-        ],
-        pager: "#pager",
-        rowNum: 10,
-        rowList: [10, 20, 30],
-        sortname: "invid",
-        sortorder: "desc",
-        viewrecords: true,
-        gridview: true,
-        autoencode: true,
-        caption: "My first grid"
-    }); 
-}); 
-</script>
- 
+            var buttons = form.next().find('.EditButton .fm-button');
+            buttons.addClass('btn btn-sm').find('[class*="-icon"]').hide();//ui-icon, s-icon
+            buttons.eq(0).addClass('btn-primary').prepend('<i class="ace-icon fa fa-check"></i>');
+            buttons.eq(1).prepend('<i class="ace-icon fa fa-times"></i>')
+            
+            buttons = form.next().find('.navButton a');
+            buttons.find('.ui-icon').hide();
+            buttons.eq(0).append('<i class="ace-icon fa fa-chevron-left"></i>');
+            buttons.eq(1).append('<i class="ace-icon fa fa-chevron-right"></i>');       
+        }
+    
+        function style_delete_form(form) {
+            var buttons = form.next().find('.EditButton .fm-button');
+            buttons.addClass('btn btn-sm btn-white btn-round').find('[class*="-icon"]').hide();//ui-icon, s-icon
+            buttons.eq(0).addClass('btn-danger').prepend('<i class="ace-icon fa fa-trash-o"></i>');
+            buttons.eq(1).addClass('btn-default').prepend('<i class="ace-icon fa fa-times"></i>')
+        }
+                
+        function beforeDeleteCallback(e) {
+            var form = $(e[0]);
+            if(form.data('styled')) return false;
+            
+            form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+            style_delete_form(form);
+            
+            form.data('styled', true);
+        }
+        
+        function beforeEditCallback(e) {
+            var form = $(e[0]);
+            form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+            style_edit_form(form);
+        }
+    
+        function styleCheckbox(table) {
 
-<div class="Leo_question">
-    <table id="list"></table> 
-    <div id="pager"></div> 
-</div>
+        }
+        
+        function updateActionIcons(table) {
+
+        }
+    });
+</script> 

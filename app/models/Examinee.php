@@ -101,11 +101,21 @@ class Examinee extends \Phalcon\Mvc\Model
     public $project_id;
 
     /**
-     * @var datetime
+     * @var string
+     *
+     */
+    public $birthday;
+
+    /**
+     * @var string
+     *
      */
     public $last_login;
 
-
+    /**
+     * @var integer
+     *
+     */
     public $is_exam_com;
 
 
@@ -133,17 +143,4 @@ class Examinee extends \Phalcon\Mvc\Model
             return 0;
         }
     }
-    /*
-    public static function lastNum($project_id)
-    {
-        $examinee = Examinee::findFirst(array(
-            'project_id = :project_id:',
-            'bind' => array('project_id' => $project_id),
-            'order' => 'number desc'
-        ));
-        $ans = substr($examinee->number, 4, 4);
-        return $ans;
-    }
-    */
 }
-

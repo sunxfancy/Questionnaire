@@ -27,7 +27,20 @@ class Question extends \Phalcon\Mvc\Model
      *
      */
     public $grade;
-    
+
+    /**
+     * @var integer
+     *
+     */
+    public $number;
+
+    /**
+     * @var integer
+     *
+     */
+    public $paper_id;
+
+
     public function initialize()
     {
         $this->hasMany("id", "QuestionAns", "question_id");

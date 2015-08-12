@@ -1,6 +1,6 @@
 {
 	"ldnl" : {
-		"index" : ["pdyjcnl", "zznl", "cxnl", "ybnl", "dlgznl"],
+		"index" : "pdyjcnl,zznl,cxnl,ybnl,dlgznl",
 		"action" : "(2*(pdyjcnl + zznl) + cxnl + ybnl + dlgznl)/7"
 	}
 }
