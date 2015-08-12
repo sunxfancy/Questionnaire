@@ -50,7 +50,6 @@ function Leo_question(index_i, que, kind, ans) {
             var newRadio = document.createElement("input");
             newRadio.type = "radio";
             newRadio.name = index_i + "";
-
             var newspan = document.createElement("span");
             answersdiv.style.width = "100%";
             newspan.style.fontSize = "22px";
@@ -218,6 +217,28 @@ function Leo_checkcomplete() {
 
 
 /*cookie操作*/
+//初始化cookie
+function initCookie(q_length,user){
+        var ans_cookie=$.cookie(user);
+        if(!ans_cookie){
+            var ans_array=new Array(q_length);
+            for(var i=0;i<q_length;i++){
+                ans_array[i]='0';
+            }
+            $.cookie(user,ans_array.join("|"),{experies:7});
+            changepage(0,false);
+        }else{
+            initCookie_title(ans_cookie);
+        }
+    }
 
+ function refreshCookie(index,new_ans,user){
+         var ans_cookie=$.cookie(user);
+         var ans_array=ans_cookie.split('|');
+         ans_array[index]=new_ans;
+         ans_str=ans_array.join("|");
+         $.cookie(user,ans_str,{expires:7});
+    }
 
+    
 

@@ -9,6 +9,74 @@ class UploadController extends \Phalcon\Mvc\Controller {
 		
 		
 	}
+	#导入6套试题的指导语，名称
+	public function uploadPaperAction(){
+		$paperData = array();
+		$paperData[] = array(
+				'description' =>"本问卷共有88个问题，请根据自己的实际情况作“是”或“不是”的回答，请在“是”的题号前画“Ｏ”。这些问题要求你按自己的实际情况回答，不要去猜测怎样才是正确的回答。因为这里不存在正确或错误的回答，也没有捉弄人的问题，将问题的意思看懂了就快点回答，不要花很多时间去想。每个问题都要问答。问卷无时间限制，但不要拖延太长，也不要未看懂问题便回答。",
+				'name'=>"EPQA"
+		);
+		$paperData[] = array(
+				'description' =>"卡特尔十六种人格因素测验包括一些有关个人兴趣与态度的问题。每个人都有自己的看法，对问题的回答自然不同。无所谓正确或错误。请来试者尽量表达自己的意见。<br />本测验共有187道题， 每道题有三种选择，请将你的选择用“Ｘ”号标记在答卷纸上相应的空格内。作答时，请注意下列四点：<br />１．请不要费时斟酌。应当顺其自然地依你个人的反应选答。一般地说来，问题都略嫌简短而不能包含所有有关的因素或条件。通常每分钟可作五六题，全部问题应在半小时内完成。<br />２．除非在万不得已的情形下，尽量避免如“介乎Ａ与Ｃ之间”或“不甚确定”这样的中性答案。<br />３．请不要遗漏，务必对每一个问题作答。 有些问题似乎不符合于你，有些问题又似乎涉及隐私，但本测验的目的，在于研究比较青年或成人的兴趣和态度，希望来试者真实作答。<br />４．作答时，请坦白表达自己的兴趣与态度，不必顾虑到主试者或其他人的意见与立场。",
+				'name' =>"16PF"
+		);
+		$paperData[] = array(
+				'description'=>"本测验含有一系列观点的陈述，请仔细阅读每一条，看看自己对它的感觉如何，如果你同意某个观点或该陈述真实地反映了你的情况，就作“是”的回答，在该题号上划“√”，否则作“否”的回答。",
+				'name' => "CPI"
+		);
+		$paperData[] = array(
+				'description' =>"本测验包括许多成对的语句，任何选择都无所谓对错，对它们所描述的特征，你可能喜欢，也可能不喜欢，其方式你可能曾感觉到，也可能没有感觉到，请你从中选出最能表现或接近你当前特征或感觉的那一个，并将你的选择用“√”标记于答卷纸相应的位置处。如果两句话都没有正确描述你的情况，那你应当选择你认为能比较正确反映你的情况的那一个。<br /> 总之，对于每道题的A、B两种选择你必须而且只能选择其一。",
+				'name'=>"EPPS"
+		);
+		$paperData[] = array(
+				'description' => "以下列出了有些人可能会有的问题，请仔细地阅读每一条，然后根据最近一星期以内下述情况影响您的实际感觉，在每个问题后标明该题的程度得分。其中，“没有”选1，“很轻”选2，“中等”选3， “偏重”选4，“严重”选5。",
+				'name'=>"SCL"
+		);
+		$paperData[] = array(
+				'description' =>"下面要做的是一个有趣的测试，完成它时要认真看、认真想， 前面的题认真了，会对做后面的题目有好处；<br />本测试共有60道题，每道测试题都有一张主题图，在主题图中，图案是缺了一部分的，主题图下有6－8张小图片，其中有一张小图片可以使主题图整个图案合理与完整。请确定哪一张小图片补充在主题图缺少的空白处最合适。<br />本测验无时间限制，请认真去做，一般完成它需用40分钟的时间。请记住，每个题目只有一个正确答案。",
+				'name' => "SPM"
+		);
+		$flag = false;
+		foreach($paperData as $data){
+		/*
+		 * 避免重复导入
+		 * 
+		 * */
+			$name = $data['name'];
+			$rt = Paper::findfirst("name='$name'");
+			if(isset($rt->name)||!empty($rt->name)){
+				echo "试卷-".$data['name']."-的指导语已经导入<br />";
+				$flag = true;
+			}else{
+				$paper = new Paper();
+				$paper->description = $data['description'];
+				$paper->name = $data['name'];
+				$paper->save();
+			}
+		}
+		if ($flag){
+			echo "查看以上提示";
+		}else{
+			echo "6张试卷的指导语添加完毕";
+		}
+	}
+	#获取试题的编号，如果试题存在，返回id，否则，返回值为-1;
+	public function getPaperIdByName($name){
+		$name = strtoupper($name);
+		$rt = Paper::findfirst("name='$name'");
+		if(isset($rt->id)){
+			return $rt->id;
+		}else{
+			return -1;
+		}
+		
+		
+	}
+	public function testAction(){
+		$data = self::getPaperIdByName('SCL3');
+		print_r($data);
+		exit();
+	}
 	#上传SCL题库
 	public function uploadSCLAction() {
 		$fileName = null;
@@ -29,6 +97,10 @@ class UploadController extends \Phalcon\Mvc\Controller {
 			if(!empty($SCLContent)){
 				#数据入库操作
 				$paper_id = null;
+				$paper_id = self::getPaperIdByName("SCL");
+				if ($paper_id == -1 || empty($paper_id)){
+					die("No SCL paper found!");
+				}
 				$options = "没有|很轻|中等|偏重|严重";
 				foreach($SCLContent as $rowContent ){
 					$question = new Question();
@@ -63,6 +135,10 @@ class UploadController extends \Phalcon\Mvc\Controller {
 			if (!empty($EPPSContent)){
 				#数据入库操作
 				$paper_id = null;
+				$paper_id = self::getPaperIdByName("EPPS");
+				if ($paper_id == -1 || empty($paper_id)){
+					die("No EPPS paper found!");
+				}
 				$topic = null;
 				$options = null;
 				foreach($EPPSContent as $rowContent ){
@@ -99,6 +175,10 @@ class UploadController extends \Phalcon\Mvc\Controller {
 			if (!empty($EPQAContent)){
 				#数据入库操作
 				$paper_id = null;
+				$paper_id = self::getPaperIdByName("EPQA");
+				if ($paper_id == -1 || empty($paper_id)){
+					die("No EPQA paper found!");
+				}
 				$topic = null;
 				$options = "是|不是";
 				foreach($EPQAContent as $rowContent ){
@@ -133,6 +213,10 @@ class UploadController extends \Phalcon\Mvc\Controller {
 			if (!empty($CPIContent)){
 				#数据入库操作
 				$paper_id = null;
+				$paper_id = self::getPaperIdByName("CPI");
+				if ($paper_id == -1 || empty($paper_id)){
+					die("No CPI paper found!");
+				}
 				$topic = null;
 				$options = "是|否";
 				foreach($CPIContent as $rowContent ){
@@ -167,8 +251,15 @@ class UploadController extends \Phalcon\Mvc\Controller {
 			if (!empty($KSContent)){
 				#数据入库操作
 				$paper_id = null;
+				$paper_id = self::getPaperIdByName("16PF");
+				if ($paper_id == -1 || empty($paper_id)){
+					die("No 16PF paper found!");
+				}
 				$options = null;
 				foreach($KSContent as $rowContent ){
+					$rowContent[2] = substr($rowContent[2], 5, strlen($rowContent[2])-6);
+					$rowContent[3] = substr($rowContent[3], 5, strlen($rowContent[3])-6);
+					$rowContent[4] = substr($rowContent[4], 5, strlen($rowContent[4])-6);
 					$options = $rowContent[2].'|'.$rowContent[3].'|'.$rowContent[4];
 					$question = new Question();
 					$question->topic = $rowContent[1];
@@ -181,5 +272,9 @@ class UploadController extends \Phalcon\Mvc\Controller {
 			}
 		}
 	}
+	
+	
+	
+	
 	
 }
