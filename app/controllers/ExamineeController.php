@@ -258,75 +258,75 @@ class ExamineeController extends Base
         $this->view->setVar('team',$team);
     }
 
-    // public function listAction()
-    // {
-    //     $school = 
-    //     $professional = 
-    //     $degree = 
-    //     $begin_end_time = 
+    public function listAction()
+    {
+        $school = 
+        $profession = 
+        $degree = 
+        $date = 
 
-    //     $sidx = $this->request->getQuery('sidx','string');
-    //     $sord = $this->request->getQuery('sord','string');
-    //     if ($sidx != null)
-    //         $sort = $sidx;
-    //     else
-    //         $sort = 'id';
-    //     if ($sord != null)
-    //         $sort = $sort.' '.$sord;
-    //     $builder = $builder->orderBy($sort);
-    //     $this->datareturn($builder);
-    // }
+        $sidx = $this->request->getQuery('sidx','string');
+        $sord = $this->request->getQuery('sord','string');
+        if ($sidx != null)
+            $sort = $sidx;
+        else
+            $sort = 'id';
+        if ($sord != null)
+            $sort = $sort.' '.$sord;
+        $builder = $builder->orderBy($sort);
+        $this->datareturn($builder);
+    }
 
 
-    // public function updateAction()
-    // {
-    //     $oper = $this->request->getPost('oper', 'string');
-    //     if ($oper == 'edit') {
-    //         $id = $this->request->getPost('id', 'int');
-    //         $project = Project::findFirst($id);
-    //         $project->username    = $this->request->getPost('begintime', 'string');
-    //         $project->password    = $this->request->getPost('endtime', 'string');
-    //         $project->name        = $this->request->getPost('name', 'string');
-    //         $project->description = $this->request->getPost('description', 'string');
-    //         if (!$project->save()) {
-    //             foreach ($project->getMessages() as $message) {
-    //                 echo $message;
-    //             }
-    //         }
-    //     }
-    //     if ($oper == 'del') {
-    //         $id = $this->request->getPost('id', 'int');
-    //         $manager = Project::findFirst($id);
-    //         if (!$manager->delete()) {
-    //             foreach ($manager->getMessages() as $message) {
-    //                 echo $message;
-    //             }
-    //         }
-    //     }
-    // }
+    public function updateAction()
+    {
+        $oper = $this->request->getPost('oper', 'string');
+        if ($oper == 'edit') {
+            $id = $this->request->getPost('id', 'int');
+            $project = Project::findFirst($id);
+            $project->username    = $this->request->getPost('begintime', 'string');
+            $project->password    = $this->request->getPost('endtime', 'string');
+            $project->name        = $this->request->getPost('name', 'string');
+            $project->description = $this->request->getPost('description', 'string');
+            if (!$project->save()) {
+                foreach ($project->getMessages() as $message) {
+                    echo $message;
+                }
+            }
+        }
+        if ($oper == 'del') {
+            $id = $this->request->getPost('id', 'int');
+            $manager = Project::findFirst($id);
+            if (!$manager->delete()) {
+                foreach ($manager->getMessages() as $message) {
+                    echo $message;
+                }
+            }
+        }
+    }
 
-    // public function datareturn($other)
-    // {
-    //     $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
-    //     // $limit = $this->request->getQuery('rows', 'int');
-    //     // $page = $this->request->getQuery('page', 'int');
-    //     // if (is_null($limit)) $limit = 10;
-    //     // if (is_null($page)) $page = 1;
-    //     // $paginator = new Phalcon\Paginator\Adapter\QueryBuilder(array("builder" => $builder,
-    //     //                                                               "limit" => $limit,
-    //     //                                                               "page" => $page));
-    //     // $page = $paginator->getPaginate();
-    //     $other = array();
-    //     // $ans['total'] = $page->total_pages;
-    //     // $ans['page'] = $page->current;
-    //     $other['records'] = $other->total_items;
-    //     foreach ($page->items as $key => $item)
-    //     {
-    //         $ans['rows'][$key] = $item;
-    //     }
-    //     echo json_encode($ans);
-    //     $this->view->disable();
-    // }
+    public function datareturn($other)
+    {
+        $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
+
+        $this->edu_name = array('school','profession','degree','date');
+        $this->work_name = array('employer','unit','duty','date');
+        $education = array();
+        $work = array();
+        $this->readother_examinee($education,$this->edu_name);
+        $this->readother_examinee($work,$this->work_name);
+        $examinee->other = json_encode(array('education' => $education, 'work' => $work));
+        $this->view->disable();
+    }
+
+    function readother_examinee($other_array, $name_array)
+    {
+        for ($j = 0; $j < 4; $j++) {
+            for ($k = 0; $k < 4; $k++) { 
+                $other_array[$j][$name_array[$k]] = self::filter($sheet->getCell($other_col.$i)->getValue());
+            }
+        }
+    }
 
     public function leftRender($title)
     {

@@ -218,9 +218,9 @@ jQuery(function($) {
                     }
                 },
                 {name:'school', index:'school', width:150, editable: true, sortable:false, align:'center'},
-                {name:'professional', index:'professional', sortable:false, width:150, editable:true, align:'center'},
+                {name:'profession', index:'profession', sortable:false, width:150, editable:true, align:'center'},
                 {name:'degree', index:'degree', width:80, sortable:false, editable:true, align:'center'},
-                {name:'begin_end_time', index:'begin_end_time', sortable:true, width:120, editable: true,edittype:'text',align:'center'}
+                {name:'date', index:'date', sortable:true, width:120, editable: true,edittype:'text',align:'center'}
                 ],
             viewrecords : true, 
             rowNum:10,
@@ -469,10 +469,10 @@ jQuery(function($) {
                         delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
                     }
                 },
-                {name:'school', index:'school', width:190, editable:true, sortable:false, align:'center'},
-                {name:'professional',index:'professional', sortable:false, width:80, editable:true,align:'center'},
-                {name:'degree', index:'degree', width:80, sortable:false, editable:true, align:'center'},
-                {name:'begin_end_time',index:'begin_end_time', sortable:true,width:150, editable: true,edittype:'text',align:'center'}
+                {name:'employer', index:'employer', width:190, editable:true, sortable:false, align:'center'},
+                {name:'unit',index:'unit', sortable:false, width:80, editable:true,align:'center'},
+                {name:'duty', index:'duty', width:80, sortable:false, editable:true, align:'center'},
+                {name:'date',index:'date', sortable:true,width:150, editable: true,edittype:'text',align:'center'}
                 ], 
             viewrecords : true, 
             rowNum:10,
