@@ -12,19 +12,15 @@
 class ExamineeController extends Base
 {
 
-	public function initialize()
-    {
+	public function initialize(){
         $this->view->setTemplateAfter('base3');
-
     }
 
-	public function indexAction()
-	{
+	public function indexAction(){
         
 	}
 
-    public function loginAction()
-    {
+    public function loginAction(){
         $username = $this->request->getPost("username", "string");
         $password = $this->request->getPost("password", "string");
         $examinee = Examinee::checkLogin($username, $password);
@@ -45,14 +41,12 @@ class ExamineeController extends Base
         }
     }
 
-	public function inqueryAction()
-	{
+	public function inqueryAction(){
 		$this->leftRender("需求量表");
         //获得被试者的登陆信息
         
 	}
-    public function getquesAction()
-    {
+    public function getquesAction(){
     	$index=$this->request->getPost('index','int');
         //需要按照index在数据库中搜索量化考评题目       
         $question = array('ques_length'=>(int)20,
@@ -78,8 +72,7 @@ class ExamineeController extends Base
         $this->dataReturn(array("question"=>$questions,"description"=>Paper::findFirst($paper_id)->description));
     }
 
-    public function getQuestions($project_id,$paper_id)
-    {
+    public function getQuestions($project_id,$paper_id){
         $project = Pmrel::find(array(
             "project_id = ?1",
             "bind"=>array(1=>$project_id)
@@ -184,8 +177,7 @@ class ExamineeController extends Base
         return $data;
     }
 
-    public function getIds($models)
-    {
+    public function getIds($models){
         $id_array = array();
         foreach ($models as $model) {
             $id_array[]  = $model->id;
@@ -193,8 +185,7 @@ class ExamineeController extends Base
         return $id_array;
     }
 
-    public function getModules($project)
-    {
+    public function getModules($project){
         $id_array = array();
         foreach ($project as $projects) {
             $id_array[]  = $projects->module_id;
@@ -208,24 +199,20 @@ class ExamineeController extends Base
         $this->dataReturn(array("answer"=>$answer));
     }
 
-    public function addAction()
-    {
+    public function addAction(){
         // $paper = new Paper("select * from paper"); 
         $sql = "select * from Paper";
         $paper = $this->modelsManager->executeQuery($sql);
         $this->view->setVar("paper",$paper);
-
     }
 
-    public function dataReturn($ans)
-    {
+    public function dataReturn($ans){
         $this->response->setHeader("Content-Type", "text/json; charset=utf-8");
         echo json_encode($ans);
         $this->view->disable();
     }
 
-    public function editinfoAction()
-    {
+    public function editinfoAction(){
         $this->leftRender("个 人 信 息 填 写");
 
         $examinee = $this->session->get('Examinee');
@@ -241,8 +228,6 @@ class ExamineeController extends Base
         $unit = $examinee->unit;
         $duty = $examinee->duty;
         $team = $examinee->team;
-        // $json = json_decode($examinee->other);
-        // $json['education'][0]['school']
         
         $this->view->setVar('name',$name);
         $this->view->setVar('sex',$sex);
@@ -258,69 +243,58 @@ class ExamineeController extends Base
         $this->view->setVar('team',$team);
     }
 
-    public function listAction()
-    {
-        $school = 
-        $profession = 
-        $degree = 
-        $date = 
+    public function listAction(){
+        $this->view->disable();
+        $examinee = $this->session->get('Examinee');
+        $json = json_decode($examinee->other,true);
+        $array = array();
+        $array['records'] = count($json['education']);
+        foreach ($array['records'] as $record)
+        {
+            $array['rows'][$record] = $json['education'][$record];
+        }
+        echo count($json['education']);
+        echo json_encode($array);
+        // $array = array();
+        // $ans['records'] = count($json['education']);
+        // $array['rows'] = $json['education'];
+        // echo json_encode($array);
+        /*
+        for ($i=0; $i < 1; $i++) { 
+            $school     = $json['education'][$i]['school'][0];
+            $profession = $json['education'][$i]['profession'][0];
+            $degree     = $json['education'][$i]['degree'][0];
+            $date       = $json['education'][$i]['date'][0];
+            $record     = $i;
+        }*/
 
-        $sidx = $this->request->getQuery('sidx','string');
-        $sord = $this->request->getQuery('sord','string');
-        if ($sidx != null)
-            $sort = $sidx;
-        else
-            $sort = 'id';
-        if ($sord != null)
-            $sort = $sort.' '.$sord;
-        $builder = $builder->orderBy($sort);
-        $this->datareturn($builder);
     }
 
-
-    public function updateAction()
-    {
+    public function updateAction(){
         $oper = $this->request->getPost('oper', 'string');
         if ($oper == 'edit') {
-            $id = $this->request->getPost('id', 'int');
-            $project = Project::findFirst($id);
-            $project->username    = $this->request->getPost('begintime', 'string');
-            $project->password    = $this->request->getPost('endtime', 'string');
-            $project->name        = $this->request->getPost('name', 'string');
-            $project->description = $this->request->getPost('description', 'string');
-            if (!$project->save()) {
-                foreach ($project->getMessages() as $message) {
-                    echo $message;
-                }
+            $record = $this->request->getPost('record', 'int');
+            $json['education'][$record]['school'][0]     = $this->request->getPost('school', 'string');
+            $json['education'][$record]['profession'][0] = $this->request->getPost('profession', 'string');
+            $json['education'][$record]['degree'][0]     = $this->request->getPost('degree', 'string');
+            $json['education'][$record]['date'][0]       = $this->request->getPost('date', 'string');
+        }
+        if (!$json['education'][$record]->save()) {
+            foreach ($json['education'][$record]->getMessages() as $message) {
+                echo $message;
             }
         }
         if ($oper == 'del') {
-            $id = $this->request->getPost('id', 'int');
-            $manager = Project::findFirst($id);
-            if (!$manager->delete()) {
-                foreach ($manager->getMessages() as $message) {
+            $record = $this->request->getPost('record', 'int');
+            if (!$json['education'][$record]->delete()) {
+                foreach ($json['education'][$record]->getMessages() as $message) {
                     echo $message;
                 }
             }
         }
     }
 
-    public function datareturn($other)
-    {
-        $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
-        $this->view->disable();
-
-        $education = array();
-        $work = array();
-        $other = json_encode($examinee->other);
-        for ($i=0; $i < sizeof($other); $i++) { 
-                $education = $other[$i].education;
-                $work = $other[$i].work;
-        }
-    }
-
-    public function leftRender($title)
-    {
+    public function leftRender($title){
         /****************这一段可以抽象成一个通用的方法**********************/
         $examinee = $this->session->get('Examinee');
         $name = $examinee->name;
