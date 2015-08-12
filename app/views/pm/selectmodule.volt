@@ -2,15 +2,15 @@
     <div style="width:100%;height:400px;">
         <div style="width:50%;height:400px;background-color:    #C4E1FF;float:left;">
 			<div id="leibie" style="width:90%;height:90%;margin-top:5%;font-size:26px;text-align:right;margin-right:10%;float:left;">
-                <div style="width:100%;height:50px;cursor:pointer;" id='lingdaoli'>领导力模块<span style='color:red'>-></span></div>
-                <div style="width:100%;height:50px;cursor:pointer;" id='zonghe'>综合素质模块</div>
+                <div style="width:100%;height:50px;cursor:pointer;" id='lingdaoli'>胜任力模块<span style='color:red'>-></span></div>
+                <div style="width:100%;height:50px;cursor:pointer;" id='zonghe'>素质测评模块</div>
             </div>
 		</div>
 
         <div style="width:50%;height:400px;background-color:pink;float:left;">
 			<div id="xifen" style="width:95%;height:90%;margin-top:5%;margin-left:5%;font-size:20px;float:left;">
                 <div id='lingdaoli_sel'>
-                    <div style="width:100%;height:50px;"><input value="领导能力" type="checkbox" style="width:6%;height:40%" /><span onclick="this.parentNode.childNodes[0].checked=!this.parentNode.childNodes[0].checked;" style="cursor:pointer;" >领导能力</span></div>
+                    <div style="width:100%;height:50px;"><input value="领导力" type="checkbox" style="width:6%;height:40%" /><span onclick="this.parentNode.childNodes[0].checked=!this.parentNode.childNodes[0].checked;" style="cursor:pointer;" >领导力</span></div>
                     <div style="width:100%;height:50px;"><input value="职业素质" type="checkbox" style="width:6%;height:40%" /><span onclick="this.parentNode.childNodes[0].checked=!this.parentNode.childNodes[0].checked;" style="cursor:pointer;" >职业素质</span></div>
                     <div style="width:100%;height:50px;"><input value="思维能力" type="checkbox" style="width:6%;height:40%" /><span onclick="this.parentNode.childNodes[0].checked=!this.parentNode.childNodes[0].checked;" style="cursor:pointer;" >思维能力</span></div>
                     <div style="width:100%;height:50px;"><input value="态度品质" type="checkbox" style="width:6%;height:40%" /><span onclick="this.parentNode.childNodes[0].checked=!this.parentNode.childNodes[0].checked;" style="cursor:pointer;" >态度品质</span></div>
@@ -56,14 +56,14 @@
         });
 
         $("#lingdaoli").click(function(){
-            $("#lingdaoli").html("领导力模块<span style='color:red'>-></span>");
-            $("#zonghe").html("综合素质模块");
+            $("#lingdaoli").html("胜任力模块<span style='color:red'>-></span>");
+            $("#zonghe").html("素质测评模块");
             $("#zonghe_sel").css('display','none');
             $("#lingdaoli_sel").css('display','');
         });
         $("#zonghe").click(function(){
-            $("#lingdaoli").html("领导力模块");
-            $("#zonghe").html("综合素质模块<span style='color:red'>-></span>");
+            $("#lingdaoli").html("胜任力模块");
+            $("#zonghe").html("素质测评模块<span style='color:red'>-></span>");
             $("#lingdaoli_sel").css('display','none');
             $("#zonghe_sel").css('display','');
         });

@@ -58,7 +58,7 @@
 	    	if($project_id){
 	    		$module_ids=$this->getModules_id($project_id);
 	    		$modules=array();
-	    		for($module_ids as $module_id){
+	    		foreach($module_ids as $module_id){
 	    			$modules[]=Module::findFirst($module_id);
 	    		}
 		        return $modules;

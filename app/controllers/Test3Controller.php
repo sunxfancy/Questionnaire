@@ -8,8 +8,8 @@
 		public function indexAction(){
 			$this->view->disable();
 			 $ss=new SearchSource(1);
-			 $project=$ss->getProject();
-			 print_r($project->id);
+			 $project=$ss->getModules_id();
+			 print_r($project);
 		}
 	}
 ?>
