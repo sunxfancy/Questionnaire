@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 11:08:59
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-13 15:23:54
+ * @Last Modified time: 2015-08-13 16:04:26
  */
 
 /**
@@ -40,28 +40,39 @@ class Score
 		$child_type = explode($factor->children_type);
 
 		$paper_name = $factor->getPaperName();
-		
 		foreach ($child_list as $key => $child) {
 			$ctype = $child_type[$key];
 			if ($ctype == 1) {
 				foreach ($examinees as $examinee) {
-					$items = array();
-					$items[] = $answers[$paper_name][$child][$examinee->id];
+					$items[$examinee->id] += $answers[$examinee->id][$paper_name][$child];
 				}
 			} else {
-				foreach ($examinees as $examinee) {
-					$items = array();
-					$items[] = $answers[$paper_name][$child][$examinee->id];
-				}
+				
 			}
 		}
+
+		$ans = array();
+		foreach ($examinees as $examinee) {
+			$factor_ans = Utils::findFirstAndNew(
+				'FactorAns', array(
+					'examinee_id = ?0 AND factor_id = ?1',
+					'bind' => array($examinee->id, $factor->id)
+			));
+			
+			$ans[$examinee->id] = $factor_ans;
+		}
+
 		$this->factor_done[$factor->name] = true;
+
+		return;
 	}
 
 	function findFactor($factor_name)
 	{
-		if ($this->factor_done[$factor_name]) 
-		$question_anss 
+		if (!$this->factor_done[$factor_name]) 
+		{
+			
+		}
 	}
 
 	// 传入一个answer对象数组, 计算所有人的得分
