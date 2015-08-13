@@ -45,5 +45,8 @@ class  ExcelUpload {
 	 * TH（题号） NR（内容）
 	 * EPQA : 修改的表中处理方法同SCL
 	 * */
+	/*
+	 * 处理CPI， 16PF 方式同上ＳＣＬ
+	 * */
 
 }
