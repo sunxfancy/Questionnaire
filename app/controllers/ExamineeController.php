@@ -243,53 +243,98 @@ class ExamineeController extends Base
         $this->view->setVar('team',$team);
     }
 
-    public function listAction(){
+    public function listeduAction(){
+        $this->response->setHeader("Content-Type", "text/json; charset=utf-8");
         $this->view->disable();
-        $examinee = $this->session->get('Examinee');
+        $id = $this->session->get('Examinee')->id;
+        $examinee = Examinee::findFirst($id);
         $json = json_decode($examinee->other,true);
         $array = array();
         $array['records'] = count($json['education']);
-        foreach ($array['records'] as $record)
-        {
-            $array['rows'][$record] = $json['education'][$record];
+        for($i = 0;$i<$array['records'];$i++){
+            $json['education'][$i]['id'] = $i;
         }
-        echo count($json['education']);
-        echo json_encode($array);
-        // $array = array();
-        // $ans['records'] = count($json['education']);
-        // $array['rows'] = $json['education'];
-        // echo json_encode($array);
-        /*
-        for ($i=0; $i < 1; $i++) { 
-            $school     = $json['education'][$i]['school'][0];
-            $profession = $json['education'][$i]['profession'][0];
-            $degree     = $json['education'][$i]['degree'][0];
-            $date       = $json['education'][$i]['date'][0];
-            $record     = $i;
-        }*/
-
+        $array['rows'] = $json['education'];
+        echo json_encode($array,JSON_UNESCAPED_UNICODE);
     }
 
-    public function updateAction(){
+    public function updateeduAction(){
+        $this->view->disable();
         $oper = $this->request->getPost('oper', 'string');
+        $id = $this->session->get('Examinee')->id;
+        $examinee = Examinee::findFirst($id);
+        // print_r($examinee);
+        $json = json_decode($examinee->other,true);
+        $array = array();
+        $array['rows'] = $json['education'];
         if ($oper == 'edit') {
-            $record = $this->request->getPost('record', 'int');
-            $json['education'][$record]['school'][0]     = $this->request->getPost('school', 'string');
-            $json['education'][$record]['profession'][0] = $this->request->getPost('profession', 'string');
-            $json['education'][$record]['degree'][0]     = $this->request->getPost('degree', 'string');
-            $json['education'][$record]['date'][0]       = $this->request->getPost('date', 'string');
+            $id = $this->request->getPost('id', 'int');
+            $json['education'][$id]['school']     = $this->request->getPost('school', 'string');
+            $json['education'][$id]['profession'] = $this->request->getPost('profession', 'string');
+            $json['education'][$id]['degree']     = $this->request->getPost('degree', 'string');
+            $json['education'][$id]['date']       = $this->request->getPost('date', 'string');
+            $array ['rows'][$id] = $json['education'][$id];
+            $json['education'] = $array['rows'];
+        } 
+        if ($oper == 'del') {
+            $id = $this->request->getPost('id', 'int');
+            array_splice($array['rows'],$id,1);
+            $json['education'] = $array['rows'];
         }
-        if (!$json['education'][$record]->save()) {
-            foreach ($json['education'][$record]->getMessages() as $message) {
-                echo $message;
+        print_r($json);
+        $json = json_encode($json,JSON_UNESCAPED_UNICODE);
+        $examinee->other = $json;
+        if (!$examinee->save()) {
+            foreach ($examinee->getMessages() as $msg) {
+                echo $msg."\n";
             }
         }
+    }
+    
+    public function listworkAction(){
+        $this->response->setHeader("Content-Type", "text/json; charset=utf-8");
+        $this->view->disable();
+        $id = $this->session->get('Examinee')->id;
+        $examinee = Examinee::findFirst($id);
+        $json = json_decode($examinee->other,true);
+        $array = array();
+        $array['records'] = count($json['work']);
+        for($i = 0;$i<$array['records'];$i++){
+            $json['work'][$i]['id'] = $i;
+        }
+        $array['rows'] = $json['work'];
+        echo json_encode($array,JSON_UNESCAPED_UNICODE);
+    }
+
+       public function updateworkAction(){
+        $this->view->disable();
+        $oper = $this->request->getPost('oper', 'string');
+        $id = $this->session->get('Examinee')->id;
+        $examinee = Examinee::findFirst($id);
+        // print_r($examinee);
+        $json = json_decode($examinee->other,true);
+        $array = array();
+        $array['rows'] = $json['work'];
+        if ($oper == 'edit') {
+            $id = $this->request->getPost('id', 'int');
+            $json['work'][$id]['employer']     = $this->request->getPost('employer', 'string');
+            $json['work'][$id]['unit'] = $this->request->getPost('unit', 'string');
+            $json['work'][$id]['duty']     = $this->request->getPost('duty', 'string');
+            $json['work'][$id]['date']       = $this->request->getPost('date', 'string');
+            $array ['rows'][$id] = $json['work'][$id];
+            $json['work'] = $array['rows'];
+        } 
         if ($oper == 'del') {
-            $record = $this->request->getPost('record', 'int');
-            if (!$json['education'][$record]->delete()) {
-                foreach ($json['education'][$record]->getMessages() as $message) {
-                    echo $message;
-                }
+            $id = $this->request->getPost('id', 'int');
+            array_splice($array['rows'],$id,1);
+            $json['work'] = $array['rows'];
+        }
+        print_r($json);
+        $json = json_encode($json,JSON_UNESCAPED_UNICODE);
+        $examinee->other = $json;
+        if (!$examinee->save()) {
+            foreach ($examinee->getMessages() as $msg) {
+                echo $msg."\n";
             }
         }
     }
