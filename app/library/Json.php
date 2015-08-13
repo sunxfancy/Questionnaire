@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 09:18:33
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-13 14:30:15
+ * @Last Modified time: 2015-08-13 14:38:05
  */
 
 /**
@@ -32,7 +32,7 @@ class Json
 		$this->db->commit();
 	}
 
-	// 更新数据库
+	// 更新数据库, 处理了json的最外父级
 	function updateSQL($json_array, $class_name)
 	{
 		if ($class_name == 'index') {

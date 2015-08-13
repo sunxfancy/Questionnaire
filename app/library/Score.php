@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 11:08:59
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-13 11:06:12
+ * @Last Modified time: 2015-08-13 15:23:54
  */
 
 /**
@@ -35,17 +35,33 @@ class Score
 	 */
 	function calFactor($factor, $examinees, $answers)
 	{
+		if ($this->factor_done[$factor->name]) return;
 		$child_list = explode($factor->children);
 		$child_type = explode($factor->children_type);
 
-		$factor
-		foreach ($examinees as $examinee) {
-			foreach ($child_list as $key => $child) {
-				$ctype = $child_type[$key];
-				$answers[]
+		$paper_name = $factor->getPaperName();
+		
+		foreach ($child_list as $key => $child) {
+			$ctype = $child_type[$key];
+			if ($ctype == 1) {
+				foreach ($examinees as $examinee) {
+					$items = array();
+					$items[] = $answers[$paper_name][$child][$examinee->id];
+				}
+			} else {
+				foreach ($examinees as $examinee) {
+					$items = array();
+					$items[] = $answers[$paper_name][$child][$examinee->id];
+				}
 			}
 		}
-		
+		$this->factor_done[$factor->name] = true;
+	}
+
+	function findFactor($factor_name)
+	{
+		if ($this->factor_done[$factor_name]) 
+		$question_anss 
 	}
 
 	// 传入一个answer对象数组, 计算所有人的得分
