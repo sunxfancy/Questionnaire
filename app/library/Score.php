@@ -3,11 +3,11 @@
  * @Author: sxf
  * @Date:   2015-08-11 11:08:59
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-13 09:42:37
+ * @Last Modified time: 2015-08-13 10:37:56
  */
 
 /**
-* 
+* 得分计算类库
 */
 class Score
 {
@@ -18,8 +18,14 @@ class Score
 
 	public function Calculate($project_id)
 	{
-		$papers = array('ks','scl','spm');
+		$this->papers_name = array('ks','scl','spm');
+		$this->papers = Paper::findByNames($papers_name);
+		$this->paper_ids = $this->getIds($this->papers);
 
+		$examinees = Examinee::getAll($project_id);
+		$examinee_ids = $this->getIds($examinees);
+		$anss = QuestionAns::getAns($this->paper_ids, $examinee_ids);
+		
 	}
 
 	/**
@@ -41,10 +47,24 @@ class Score
 		
 	}
 
+
+
 	// 传入一个answer对象数组, 计算所有人的得分
 	function calAns($answers, $examinees)
 	{
 
+	}
+
+	/**
+	 * 对模型数组求id列表, 可以选第二参数为模型的字段名
+	 */
+	public function getIds($models, $name = 'id')
+	{
+		$id_array = array();
+		foreach ($models as $model) {
+			$id_array[]  = $model->$name;
+		}
+		return $id_array;
 	}
 
 	/**
