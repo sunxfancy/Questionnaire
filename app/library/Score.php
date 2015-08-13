@@ -61,7 +61,7 @@ class Score
 	function findFactor($factor_name)
 	{
 		if ($this->factor_done[$factor_name]) 
-		$question_anss 
+		$question_anss
 	}
 
 	// 传入一个answer对象数组, 计算所有人的得分
