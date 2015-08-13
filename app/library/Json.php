@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 09:18:33
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-12 16:11:55
+ * @Last Modified time: 2015-08-13 14:38:05
  */
 
 /**
@@ -22,7 +22,7 @@ class Json
 		try {
 			foreach ($work_names as $work_name) {
 				$filename = __DIR__ . "/../../app/config/$work_name.json";
-				$json = $this->loadJson($filename);
+				$json = Utils::loadJson($filename);
 				$this->updateSQL($json, $work_name);
 			}
 		} catch (Exception $ex) {
@@ -32,25 +32,30 @@ class Json
 		$this->db->commit();
 	}
 
-	// 加载一个json文件，可选传入是否转换为数组
-	private function loadJson($filename, $toarray = true)
+	// 更新数据库, 处理了json的最外父级
+	function updateSQL($json_array, $class_name)
 	{
-		$json_string = file_get_contents($filename);
-		$json_string = preg_replace('/[\r\n\t]/', '', $json_string);
-		$json = json_decode($json_string, $toarray);
-		if ($json == null) {
-			echo json_last_error_msg();
-			throw new Exception(json_last_error_msg());
-		} 
-		return $json;
+		if ($class_name == 'index') {
+			$this->worklist($json_array, $class_name);
+		} else {
+			foreach ($json_array as $key => $value) {
+				if ($class_name == 'module') {
+					$this->worklist($value, $class_name, 'belong_module', $key);
+				} 
+				if ($class_name == 'factor') {
+					$paper_id = Paper::findId($key);
+					$this->worklist($value, $class_name, 'paper_id', $paper_id);
+				}
+			}
+		}
 	}
 
-	// 更新数据库
-	function updateSQL($json_array, $class_name)
+	function worklist($json_array, $class_name, $fathername = null, $father = null)
 	{
 		foreach ($json_array as $key => $value) {
 			$obj = $this->getObj($key, ucfirst($class_name));
 			$this->jsonToObject($obj, $class_name, $key, $value);
+			if ($fathername != null) $obj->$fathername = $father;
 			if (!$obj->save())
 				foreach ($obj->getMessages() as $msg) {
 					print_r($obj);
@@ -62,12 +67,10 @@ class Json
 
 	function getObj($name, $classname)
 	{
-		$obj = $classname::findFirst(array(
-			'name = :name:',
-			'bind' => array('name' => $name)));
-		if (!$obj) {
-			$obj = new $classname();
-		}
+		$obj = Utils::findFirstAndNew($classname, array(
+			'name = ?0',
+			'bind' => array($name)
+		));
 		return $obj;
 	}
 
@@ -82,7 +85,7 @@ class Json
 				$obj->children_type = $this->makeArray($value, $b);
 			}
 			$default_array = array(
-				'action','ans_do','children','belong_module','chs_name');
+				'action','ans_do','belong_module','chs_name','children','children_type');
 			if (in_array($key, $default_array)) {
 				$obj->$key = $value;
 			}
@@ -93,8 +96,7 @@ class Json
 	function makeArray($array, $data)
 	{
 		$children_len = count(explode(',',$array));
-		$children_type = array();
-		array_pad($children_type, $children_len, $data);
+		$children_type = array_fill(0, $children_len, $data);
 		return implode(',', $children_type);
 	}
 }
