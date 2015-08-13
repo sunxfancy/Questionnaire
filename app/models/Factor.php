@@ -85,4 +85,14 @@ class Factor extends \Phalcon\Mvc\Model
         $this->hasMany("id", "FactorAns", "factor_id");
         $this->hasMany("id", "Index", "father_factor");
     }
+
+    private $paper_name = null;
+    public function getPaperName()
+    {
+        if ($this->paper_name == null) {
+            $paper = $this->getPaper();
+            $this->paper_name = $paper->name;
+        }
+        return $this->paper_name;
+    }
 }

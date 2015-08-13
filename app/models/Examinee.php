@@ -143,4 +143,11 @@ class Examinee extends \Phalcon\Mvc\Model
             return 0;
         }
     }
+
+    public static function getAll($project_id) {
+        $ans = self::find(array(
+            'project_id = ?0',
+            'bind' => array($project_id)));
+        return $ans;
+    }
 }
