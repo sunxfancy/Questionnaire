@@ -42,12 +42,16 @@ class Paper extends \Phalcon\Mvc\Model
             'name = ?0',
             'bind' => array($name)
         ));
-        return $paper->id;
+        if ($paper)
+            return $paper->id;
+        else return null;
     }
 
     public static function findName($id)
     {
         $paper = self::find($id);
-        return $paper->name;
+        if ($paper)
+            return $paper->name;
+        else return null;
     }
 }
