@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 11:08:59
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-12 15:21:15
+ * @Last Modified time: 2015-08-13 09:42:37
  */
 
 /**
@@ -46,8 +46,6 @@ class Score
 	{
 
 	}
-
-	
 
 	/**
 	 * @brief 查询一个对象,若不存在则新建
