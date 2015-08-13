@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 11:08:59
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-13 10:49:26
+ * @Last Modified time: 2015-08-13 11:06:12
  */
 
 /**
@@ -33,15 +33,16 @@ class Score
 	 * @factor 要计算的因子对象
 	 * @examinees 被试人员的对象列表
 	 */
-	function calFactor($factor, $examinees)
+	function calFactor($factor, $examinees, $answers)
 	{
 		$child_list = explode($factor->children);
 		$child_type = explode($factor->children_type);
 
+		$factor
 		foreach ($examinees as $examinee) {
 			foreach ($child_list as $key => $child) {
 				$ctype = $child_type[$key];
-				
+				$answers[]
 			}
 		}
 		

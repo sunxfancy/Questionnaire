@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 09:18:33
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-13 10:48:28
+ * @Last Modified time: 2015-08-13 14:30:15
  */
 
 /**
@@ -35,9 +35,27 @@ class Json
 	// 更新数据库
 	function updateSQL($json_array, $class_name)
 	{
+		if ($class_name == 'index') {
+			$this->worklist($json_array, $class_name);
+		} else {
+			foreach ($json_array as $key => $value) {
+				if ($class_name == 'module') {
+					$this->worklist($value, $class_name, 'belong_module', $key);
+				} 
+				if ($class_name == 'factor') {
+					$paper_id = Paper::findId($key);
+					$this->worklist($value, $class_name, 'paper_id', $paper_id);
+				}
+			}
+		}
+	}
+
+	function worklist($json_array, $class_name, $fathername = null, $father = null)
+	{
 		foreach ($json_array as $key => $value) {
 			$obj = $this->getObj($key, ucfirst($class_name));
 			$this->jsonToObject($obj, $class_name, $key, $value);
+			if ($fathername != null) $obj->$fathername = $father;
 			if (!$obj->save())
 				foreach ($obj->getMessages() as $msg) {
 					print_r($obj);

@@ -1,53 +1,57 @@
 {
-	"mk_ldl": {
-		"children" : "zb_ldnl,zb_pdyjcnl,zb_zzglnl,zb_kfxnl",
-		"belong_module" : "胜任力",
-		"chs_name": "领导力"
+	"胜任力" : {
+		"mk_ldl": {
+			"children" : "zb_ldnl,zb_pdyjcnl,zb_zzglnl,zb_kfxnl",
+			"belong_module" : "胜任力",
+			"chs_name": "领导力"
+		},
+		"mk_zysz": {
+			"children" : "zb_dlgznl,zb_cxnl,zb_tdjs,zb_gztd,zb_gzzf",
+			"belong_module" : "胜任力",
+			"chs_name": "职业素质"
+		},
+		"mk_swnl": {
+			"children" : "zb_jlx,zb_fxnl,zb_gnnl",
+			"belong_module" : "胜任力",
+			"chs_name" : "思维能力"
+		},
+		"mk_tdpz": {
+			"children" : "zb_zrx,zb_cxd,zb_grjzqx,zb_rnx",
+			"belong_module" : "胜任力",
+			"chs_name" : "态度品质"
+		},
+		"mk_zynl": {
+			"children" : "zb_bxx,zb_ybnl,zb_jgx,zb_rjgxtjsp,zb_chx",
+			"belong_module" : "胜任力",
+			"chs_name" : "专业能力"
+		},
+		"mk_grtz": {
+			"children" : "zb_tzjl,zb_xg,zb_qxkzsp,zb_syhjsp,zb_sjnl,zb_zz,zb_xljksp",
+			"belong_module" : "胜任力",
+			"chs_name" : "个人特质"
+		}
 	},
-	"mk_zysz": {
-		"children" : "zb_dlgznl,zb_cxnl,zb_tdjs,zb_gztd,zb_gzzf",
-		"belong_module" : "胜任力",
-		"chs_name": "职业素质"
-	},
-	"mk_swnl": {
-		"children" : "zb_jlx,zb_fxnl,zb_gnnl",
-		"belong_module" : "胜任力",
-		"chs_name" : "思维能力"
-	},
-	"mk_tdpz": {
-		"children" : "zb_zrx,zb_cxd,zb_grjzqx,zb_rnx",
-		"belong_module" : "胜任力",
-		"chs_name" : "态度品质"
-	},
-	"mk_zynl": {
-		"children" : "zb_bxx,zb_ybnl,zb_jgx,zb_rjgxtjsp,zb_chx",
-		"belong_module" : "胜任力",
-		"chs_name" : "专业能力"
-	},
-	"mk_grtz": {
-		"children" : "zb_tzjl,zb_xg,zb_qxkzsp,zb_syhjsp,zb_sjnl,zb_zz,zb_xljksp",
-		"belong_module" : "胜任力",
-		"chs_name" : "个人特质"
-	},
-	"mk_xljk": {
-		"children" : "zb_xljksp,zb_qxkzsp,zb_syhjsp,zb_rjgxtjsp,zb_xg,zb_zz,zb_fxx",
-		"belong_module" : "素质测评模块",
-		"chs_name" : "心理健康"
-	},
-	"mk_szjg": {
-		"children" : "zb_zrx,zb_cxd,zb_grjzqx,zb_tdjs,zb_gztd,zb_gzzf,zb_bxx,zb_rnx",
-		"belong_module" : "素质测评模块",
-		"chs_name" : "素质结构"
-	},
-	"mk_ztjg": {
-		"children" : "zb_chx,zb_jgx,zb_jlx,zb_tzjl,zb_fxnl,zb_gnnl",
-		"belong_module" : "素质测评模块",
-		"chs_name" : "智体结构"
-	},
-	"mk_nljg": {
-		"children" : "zb_dlgznl,zb_cxnl,zb_ybnl,zb_pdyjcnl,zb_zzglnl,zb_sjnl,zb_ldnl",
-		"belong_module" : "素质测评模块",
-		"chs_name" : "能力结构"
+	"素质测评模块" : {
+		"mk_xljk": {
+			"children" : "zb_xljksp,zb_qxkzsp,zb_syhjsp,zb_rjgxtjsp,zb_xg,zb_zz,zb_fxx",
+			"belong_module" : "素质测评模块",
+			"chs_name" : "心理健康"
+		},
+		"mk_szjg": {
+			"children" : "zb_zrx,zb_cxd,zb_grjzqx,zb_tdjs,zb_gztd,zb_gzzf,zb_bxx,zb_rnx",
+			"belong_module" : "素质测评模块",
+			"chs_name" : "素质结构"
+		},
+		"mk_ztjg": {
+			"children" : "zb_chx,zb_jgx,zb_jlx,zb_tzjl,zb_fxnl,zb_gnnl",
+			"belong_module" : "素质测评模块",
+			"chs_name" : "智体结构"
+		},
+		"mk_nljg": {
+			"children" : "zb_dlgznl,zb_cxnl,zb_ybnl,zb_pdyjcnl,zb_zzglnl,zb_sjnl,zb_ldnl",
+			"belong_module" : "素质测评模块",
+			"chs_name" : "能力结构"
+		}
 	}
 }
 
