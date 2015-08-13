@@ -51,5 +51,96 @@ class Score
 		}
 		return $obj;
 	}
-
+	
+	/**
+	 * 解析题号(|)字符串与选项(|)字符串，return array(题号=>选项)
+	 * 题号 数值型
+	 * 选项 字符型
+	 */
+	public static function strDivideToArray($str1, $str2){
+		$str1_array = explode('|', $str1);
+		$str2_array = explode('|', $str2);
+		if( count($str1_array) != count($str2_array)){
+			throw new Exception("The two strings \"$str1\" and \"$str2\" are not appropriate (count)");
+		}else {
+			$count = count($str1_array);
+			if(is_numeric($str1_array[0])){
+			   for($i = 0; $i <$count; $i++ ){
+			   		if(is_numeric($str1_array[$i]) && preg_match ("/^[A-Z]$/", $str2_array[$i])){
+			   			#ok
+			   		}else{
+			   			throw new Exception("The two strings \"$str1\" and \"$str2\" are not appropriate (type)");
+			   		}
+			   }
+			   $rtn = self::arrayMergeKeyToValue($str1_array, $str2_array);
+			   return $rtn;
+					
+			}else if (preg_match ("/^[A-Z]$/", $str1_array[0]) ){
+				for($i = 0; $i <$count; $i++ ){
+					if(is_numeric($str2_array[$i]) && preg_match ("/^[A-Z]$/", $str1_array[$i])){
+						#ok
+					}else{
+						throw new Exception("The two strings \"$str1\" and \"$str2\" are not appropriate (type)");
+					}
+				}
+				$rtn = self::arrayMergeKeyToValue($str2_array, $str1_array);
+				return $rtn;
+			}else {
+				throw new Exception("The two strings \"$str1\" and \"$str2\" are not appropriate (type)");
+			}
+		}
+	}
+	/**
+	 * 两个数组合并
+	 * @param unknown $str1_array
+	 * @param unknown $str2_array
+	 * @return multitype:multitype:unknown
+	 */
+	public static function arrayMergeKeyToValue($str1_array, $str2_array){
+		$array_count = count($str1_array);
+		$array_return = array();
+		for($i = 0; $i < $array_count; $i++ ){
+			$array_set = array();
+			$array_set['number'] = $str1_array[$i];
+			$array_set['option'] = $str2_array[$i];
+			$array_return[] = $array_set;
+			$array_set = null;
+		}
+		return $array_return;
+	}
+	/**
+	 * 比较一个一位数组是否在一个二维数组中 use for SPM
+	 * parents   
+	 * 
+	 */
+	public static function multidimensinal_search($parents, $needle) {
+		foreach ( $parents as $key => $value ){
+			$flag = 1;
+			foreach( $needle as $skey => $svalue ){
+				if($value[$skey] != $svalue){
+					if($flag == 1) {
+						break;
+					}else{
+						return false;
+					}
+				}else{
+					if($flag == 1){
+						$flag = 2;
+					}else{
+						return true;
+					}
+				}
+			}
+		}
+	}
+	/**
+	 * 在二维数组中按照第二层的键值来查找对应的数组项后返回 use for 16PF
+	 */
+	public static function findInTwodemensianalArray($parents, $key, $value){
+		foreach ($parents as  $skey => $svalue ){
+			if ( $svalue[$key] == $value ){
+				return $svalue;
+			}
+		}
+	}
 }
