@@ -120,7 +120,7 @@
                 </tr>
                 <tr>
                     <td style=" width:120px;line-height:33px;">工作单位</td>
-                    <td colspan="3" style=" width:180px;font-size:16px;" onclick="Leo_toEdit(this)">{{ employer }}</td>
+                    <td colspan="3" style=" width:180px;font-size:16px;" onclick="Leo_toEdit(this)"  name="{{employer}}">{{ employer }}</td>
                 </tr>
                 <tr>
                     <td style=" width:120px;line-height:33px;">部门</td>
@@ -145,7 +145,7 @@
             </div>
 
             <div style="width:600px;height:40px;text-align:center;margin:26px;">                  
-                <button class="btn btn-primary" id="submit">确定</button>
+                <button class="btn btn-primary" id="submit">提交</button>
             </div>
         </div>
     </div>
@@ -182,6 +182,25 @@
             checkEdtime(s, s.innerText);
         }
     }
+    $(document).ready(function() {
+        $("#submit").click(function(){
+                var base_info ={
+                    "name"          :$("#name").val(),
+                    "sex"           :$("#sex").val(),
+                    "education"     :$("#education").val(),
+                    "degree"        :$("#degree").val(),
+                    "birthday"      :$("#birthday").val(),
+                    "native"        :$("#native").val(),
+                    "politics"      :$("#politics").val(),
+                    "professional"  :$("#professional").val(),
+                    "employer"      :$("#employer").attr("name"),
+                    "unit"          :$("#unit").val(),
+                    "duty"          :$("#duty").val(),
+                    "team"          :$("#team").val()
+                }
+                $.post('/examinee/submit', base_info);
+        });
+    });
 
 jQuery(function($) {
         var grid_selector = "#grid-table1";
