@@ -1,6 +1,6 @@
 {
 	"mk_ldl": {
-		"children" : "zb_ldnl,zb_pdyjcnl,zb_zzglnl,zb_kfxnl",
+		"children" : "zb_ldnl,zb_pdyjcnl,zb_zzglnl,zb_fxx",
 		"belong_module" : "胜任力",
 		"chs_name": "领导力"
 	},
