@@ -8,7 +8,7 @@
         <tr><td id="Leo_hiden_td2"><div id="Leo_hiden_ctrl" style="cursor:pointer;margin-left:45%;width:0;height:0;border-top: 30px solid transparent;border-bottom:30px solid transparent;border-left:50px solid green;" onclick="$('#Leo_hiden').slideUp('fast', function() {});"></div><br /></td></tr></table></div>
 
         <div style="overflow:hidden;width:600px;height:440px;">
-        <div style="width:95%;height:410px;margin:0 auto;display:none;font-size:20px;font-family:'微软雅黑';overflow:auto;" id='announce_panel'><p></p></div>
+        <div style="width:95%;height:410px;margin:0 auto;display:none;font-size:25px;font-family:'微软雅黑'" id='announce_panel'><p></p></div>
         <div id='do_announce' style="width:100%;height:30px;background-color:#eeed6a;cursor:pointer;"></div>
         <div class="Leo_question_l" style="height:400px;" id="Leo_question_panel">
         <div style='width:95%;height:400px;margin:0 auto;'>
@@ -74,7 +74,7 @@ var Leo_index_now=0;
 var done_index=0;
 
 var questions=new Array();
-var description="<p style='text-indent:2em;'>卡特尔十六种人格因素测验包括一些有关个人兴趣与态度的问题。每个人都有自己的看法，对问题的回答自然不同。无所谓正确或错误。请来试者尽量表达自己的意见。</p><p>本测验共有187道题， 每道题有三种选择，请将你的选择用“Ｘ”号标记在答卷纸上相应的空格内。作答时，请注意下列四点：</p>１．请不要费时斟酌。应当顺其自然地依你个人的反应选答。一般地说来，问题都略嫌简短而不能包含所有有关的因素或条件。通常每分钟可作五六题，全部问题应在半小时内完成。<br />２．除非在万不得已的情形下，尽量避免如“介乎Ａ与Ｃ之间”或“不甚确定”这样的中性答案。<br />３．请不要遗漏，务必对每一个问题作答。 有些问题似乎不符合于你，有些问题又似乎涉及隐私，但本测验的目的，在于研究比较青年或成人的兴趣和态度，希望来试者真实作答。<br />４．作答时，请坦白表达自己的兴趣与态度，不必顾虑到主试者或其他人的意见与立场。";
+var description="123";
 
 
 $(function(){
