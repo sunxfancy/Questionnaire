@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 11:08:59
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-13 10:37:56
+ * @Last Modified time: 2015-08-13 10:49:26
  */
 
 /**
@@ -20,11 +20,11 @@ class Score
 	{
 		$this->papers_name = array('ks','scl','spm');
 		$this->papers = Paper::findByNames($papers_name);
-		$this->paper_ids = $this->getIds($this->papers);
+		$this->paper_ids = Utils::getIds($this->papers);
 
-		$examinees = Examinee::getAll($project_id);
-		$examinee_ids = $this->getIds($examinees);
-		$anss = QuestionAns::getAns($this->paper_ids, $examinee_ids);
+		$this->examinees = Examinee::getAll($project_id);
+		$this->examinee_ids = Utils::getIds($this->examinees);
+		$anss = QuestionAns::getAns($this->paper_ids, $this->examinee_ids);
 		
 	}
 
@@ -47,37 +47,10 @@ class Score
 		
 	}
 
-
-
 	// 传入一个answer对象数组, 计算所有人的得分
 	function calAns($answers, $examinees)
 	{
 
-	}
-
-	/**
-	 * 对模型数组求id列表, 可以选第二参数为模型的字段名
-	 */
-	public function getIds($models, $name = 'id')
-	{
-		$id_array = array();
-		foreach ($models as $model) {
-			$id_array[]  = $model->$name;
-		}
-		return $id_array;
-	}
-
-	/**
-	 * @brief 查询一个对象,若不存在则新建
-	 * @return 所查找的对象
-	 */
-	function findFirstAndNew($classname, $array)
-	{
-		$obj = $classname::findFirst($array);
-		if ($obj == false) {
-			$obj = new $classname();
-		}
-		return $obj;
 	}
 
 }
