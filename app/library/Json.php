@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 09:18:33
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-12 16:11:55
+ * @Last Modified time: 2015-08-13 09:39:11
  */
 
 /**
@@ -82,7 +82,7 @@ class Json
 				$obj->children_type = $this->makeArray($value, $b);
 			}
 			$default_array = array(
-				'action','ans_do','children','belong_module','chs_name');
+				'action','ans_do','belong_module','chs_name','children','children_type');
 			if (in_array($key, $default_array)) {
 				$obj->$key = $value;
 			}
@@ -93,8 +93,7 @@ class Json
 	function makeArray($array, $data)
 	{
 		$children_len = count(explode(',',$array));
-		$children_type = array();
-		array_pad($children_type, $children_len, $data);
+		$children_type = array_fill(0, $children_len, $data);
 		return implode(',', $children_type);
 	}
 }
