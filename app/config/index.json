@@ -1,6 +1,10 @@
 {
-	"ldnl" : {
-		"index" : "pdyjcnl,zznl,cxnl,ybnl,dlgznl",
-		"action" : "(2*(pdyjcnl + zznl) + cxnl + ybnl + dlgznl)/7"
+	"zb_ldnl" : {
+		"index" : "zb_pdyjcnl,zb_zzglnl,zb_cxnl,zb_ybnl,zb_dlgznl",
+		"action" : "(2*(zb_pdyjcnl + zb_zzglnl) + zb_cxnl + zb_ybnl + zb_dlgznl)/7"
+	},
+	"zb_pdyjcnl" : {
+		"factor" : "X4,H,chg,Y3,ord,end,aut,X3",
+		"action" : "(1.5*(X4 + H) + chg + Y3 + ord + end + aut + X3)/7"
 	}
 }
