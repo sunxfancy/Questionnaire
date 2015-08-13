@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 09:18:33
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-13 09:39:11
+ * @Last Modified time: 2015-08-13 14:30:15
  */
 
 /**
@@ -22,7 +22,7 @@ class Json
 		try {
 			foreach ($work_names as $work_name) {
 				$filename = __DIR__ . "/../../app/config/$work_name.json";
-				$json = $this->loadJson($filename);
+				$json = Utils::loadJson($filename);
 				$this->updateSQL($json, $work_name);
 			}
 		} catch (Exception $ex) {
@@ -32,25 +32,30 @@ class Json
 		$this->db->commit();
 	}
 
-	// 加载一个json文件，可选传入是否转换为数组
-	private function loadJson($filename, $toarray = true)
-	{
-		$json_string = file_get_contents($filename);
-		$json_string = preg_replace('/[\r\n\t]/', '', $json_string);
-		$json = json_decode($json_string, $toarray);
-		if ($json == null) {
-			echo json_last_error_msg();
-			throw new Exception(json_last_error_msg());
-		} 
-		return $json;
-	}
-
 	// 更新数据库
 	function updateSQL($json_array, $class_name)
+	{
+		if ($class_name == 'index') {
+			$this->worklist($json_array, $class_name);
+		} else {
+			foreach ($json_array as $key => $value) {
+				if ($class_name == 'module') {
+					$this->worklist($value, $class_name, 'belong_module', $key);
+				} 
+				if ($class_name == 'factor') {
+					$paper_id = Paper::findId($key);
+					$this->worklist($value, $class_name, 'paper_id', $paper_id);
+				}
+			}
+		}
+	}
+
+	function worklist($json_array, $class_name, $fathername = null, $father = null)
 	{
 		foreach ($json_array as $key => $value) {
 			$obj = $this->getObj($key, ucfirst($class_name));
 			$this->jsonToObject($obj, $class_name, $key, $value);
+			if ($fathername != null) $obj->$fathername = $father;
 			if (!$obj->save())
 				foreach ($obj->getMessages() as $msg) {
 					print_r($obj);
@@ -62,12 +67,10 @@ class Json
 
 	function getObj($name, $classname)
 	{
-		$obj = $classname::findFirst(array(
-			'name = :name:',
-			'bind' => array('name' => $name)));
-		if (!$obj) {
-			$obj = new $classname();
-		}
+		$obj = Utils::findFirstAndNew($classname, array(
+			'name = ?0',
+			'bind' => array($name)
+		));
 		return $obj;
 	}
 

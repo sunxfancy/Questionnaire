@@ -38,13 +38,24 @@ class QuestionAns extends \Phalcon\Mvc\Model
 
     /**
      * 根据paper_id和用户id的集合来查找所有符合条件的答案
+     * 两个参数可以是单独的id,也可以是数组集合
      */
-    public function getQuestionAns($paper_id, $examinee_ids)
+    public static function getAns($paper_id, $examinee_id)
     {
-        $anss = QuestionAns::find(array(
-            'paper_id = :paper_id: AND examinee_id IN ({examinees:array})',
-            'bind' => array('paper_id' => $paper_id, 'examinees' => $examinee_ids)
+        $cond = '';
+        if (is_array($paper_id))
+             $cond .= 'paper_id IN ({paper_id:array})';
+        else $cond .= 'paper_id = :paper_id:';
+
+        $cond .= ' AND ';
+        if (is_array($examinee_id)) 
+             $cond .= 'examinee_id IN ({examinee_id:array})';
+        else $cond .= 'examinee_id = :examinee_id:';
+
+        $anss = QuestionAns::find(array( $cond,
+            'bind' => array('paper_id' => $paper_id, 'examinee_id' => $examinee_id)
         ));
         return $anss;
     }
+
 }
