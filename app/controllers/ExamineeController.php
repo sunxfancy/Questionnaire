@@ -80,6 +80,7 @@ class ExamineeController extends Base
 
     public function getQuestions($project_id,$paper_id)
     {
+        //这里需要改动， paper_id不能由前台来发，应该前台发name，后台找id
         $project = Pmrel::find(array(
             "project_id = ?1",
             "bind"=>array(1=>$project_id)
@@ -88,7 +89,7 @@ class ExamineeController extends Base
         
         $indexs_id_array = $this->getIndex($modules_id_array);
 
-        $factor_id_array = $this->getFactor($indexs_id_array);
+        $factor_id_array = $this->getFactor($indexs_id_array,$paper_id);
 
         $question_id_array = $this->getQlist($factor_id_array,$paper_id);
 
@@ -110,11 +111,15 @@ class ExamineeController extends Base
         return explode(",",implode(",",array_unique($index_id)));
     }
 
-    public function getFactor($indexs){
+    public function getFactor($indexs,$paper_id){
         //$this->view->disable();
         $factor_id = array();
         for ($i=0; $i <sizeof($indexs) ; $i++) { 
-            $index = Index::findFirst($indexs[$i]);
+            //$index = Index::findFirst($indexs[$i]);
+            $index = Index::findFirst(array(
+                "name=?1",
+                "bind"=>array(1=>$indexs[$i])
+                ));
             $children = $index->children;
             $childrentype = $index->children_type;
             $children = explode(",",$children );
@@ -122,7 +127,11 @@ class ExamineeController extends Base
             for ($j=0; $j < sizeof($childrentype); $j++) { 
                 //0代表index，1代表factor
                 if ($childrentype[$j] == "0") {
-                    $index1 = Index::findFirst(intval($children[$j]));
+                    // $index1 = Index::findFirst(intval($children[$j]));
+                    $index1 = Index::findFirst(array(
+                        "number=?0 and paper_id=?1",
+                        "bind"=>array(0=>intval($children[$j]),1=>$paper_id);
+                        ));
                     $children1 = $index1->children;
                     $children1 = explode(",",$children1);
                     for ($k=0; $k <sizeof($children1) ; $k++) { 
