@@ -20,8 +20,6 @@
 			$this->project_id=$project_id;
 		}
 
-
-
 		public function getProject($project_id=null){
 			if($project_id){
 				$project_l = Project::findFirst($project_id);
@@ -34,6 +32,7 @@
 				}
 				}
 		}
+
 		public function getModules_id($project_id=null)
 	    {	
 	    	if($project_id){
@@ -54,6 +53,7 @@
 	    		}
 	    	}
 	    }
+
 	    public function getModules($project_id=null){
 	    	if($project_id){
 	    		$module_ids=$this->getModules_id($project_id);
@@ -71,8 +71,12 @@
 	    	}
 	    }
 
-	    public function getIndexs($module_id){
+	    public function getIndexs($module_id = null){
+	    	if ($module_id) {
 
+	    	} else {
+
+	    	}
 	    }
 	}
 ?>
