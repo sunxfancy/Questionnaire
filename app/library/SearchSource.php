@@ -58,12 +58,11 @@ class SearchSource
 	}
 
 	public function getModules($project_id = null){
-		echo "Module\n";
 		if ($project_id){
 			$module_ids = $this->getModulesId($project_id);
 			$modules = array();
-			foreach($module_ids as $module_id){
-				$mod = Module::findFirst($module_id);
+			$mods = Module::findByIds($module_ids);
+			foreach ($mods as $mod) {
 				$modules[$mod->name] = $mod; 
 			}
 			return $modules;
@@ -80,14 +79,12 @@ class SearchSource
 		} else {
 			if ($this->indexs_name == null) 
 				$this->indexs_name = $this->getIndexsName($this->getModules());
-			echo "IndexName:\n";
 			return $this->indexs_name;
 		}
 	}
 
 	public function getIndexs($modules = null)
 	{
-		echo "Index\n";
 		if ($modules) {
 			return $this->getObjsByName('Index', $this->getIndexsName($modules));
 		} else {
@@ -103,14 +100,12 @@ class SearchSource
 		} else {
 			if ($this->factors_name == null) 
 				$this->factors_name = $this->getFactorsName($this->getIndexs());
-			echo "FactorName:\n";
 			return $this->factors_name;
 		}
 	}
 
 	public function getFactors($indexs = null)
 	{
-		echo "Factor\n";
 		if ($indexs) {
 			return $this->getObjsByName('Factor', $this->getFactorsName($indexs));
 		} else {
@@ -122,12 +117,31 @@ class SearchSource
 
 	public function getQuestionsMartix($factors = null)
 	{
-		echo "QuestionMartix\n";
 		if ($factors) {
 			return $this->baseFindChildren($factors, $factors, 'Factor');
 		} else {
 			if ($this->questions_martix == null) 
 				$this->questions_martix = $this->getQuestionsMartix($this->getFactors());
+			return $this->questions_martix;
+		}
+	}
+
+	public function getQuestions($factors = null)
+	{
+		if ($factors) {
+			$ans = array();
+			$mat = $this->getQuestionsMartix($factors);
+			foreach ($mat as $key => $qlist) {
+				$ans[$key] = array();
+				$qs = Question::findByPapernameAndNums($key, array_values($qlist));
+				foreach ($qs as $q) {
+					$ans[$key][$q->number] = $q;
+				}
+			}
+			return $ans;
+		} else {
+			if ($this->questions == null) 
+				$this->questions = $this->getQuestions($this->getFactors());
 			return $this->questions_martix;
 		}
 	}
@@ -141,8 +155,7 @@ class SearchSource
 	 */
 	function baseFindChildren($obj_array, $all_list, $class_name)
 	{
-		$ans = array();
-		$next = array();
+		$ans = array();	$next = array();
 		foreach ($obj_array as $obj) {
 			$child_list = explode(',', $obj->children);
 			$child_type = null;
@@ -154,8 +167,7 @@ class SearchSource
 					if ($ctype == 1) {
 						if ($class_name == 'Factor')
 							$ans[$obj->getPaperName()][$value] = $value;
-						else
-							$ans[$value] = $value;
+						else $ans[$value] = $value;
 					}
 					if ($ctype == 0) $next[$value] = $value;
 				} else $ans[$value] = $value;
@@ -172,8 +184,8 @@ class SearchSource
 	{
 		$other_ans = $this->baseFindChildren($objs, $all_list, $class_name);
 		if ($class_name == 'Factor') {
-			foreach ($other_ans as $oa) {
-				$ans[$oa] = $oa;
+			foreach ($other_ans as $key => $value) {
+				$ans[$key] = $value;
 			}
 		} else {
 			foreach ($other_ans as $key => $qlist) {
