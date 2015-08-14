@@ -10,14 +10,14 @@
             <table border="1" cellspacing="0" cellpadding="0" style="margin:0 auto;font-size:16px; font-family:'微软雅黑'">
                 <tr>
                     <td style="width:120px;line-height:33px;">姓名</td>
-                    <td style="width:180px;" onclick="Leo_toEdit(this)">{{ name }}</td>
+                    <td style="width:180px;"><input id="name" type="text" value="{{ name }}" style="width:178px;font-size:16px;"></td>
                     <td style="width:120px;line-height:33px;">性别</td>
-                    <td style="width: 180px;" onclick="Leo_toEdit(this)">{{ sex }}</td>
+                    <td style="width: 180px;"><input id="sex" type="text" value="{{ sex }}" style="width:178px;font-size:16px;"></td>
                 </tr>
                 <tr>
                     <td style="width:120px;line-height:33px;">学历</td>
                     <td style="width:180px;">
-                        <select style="width:178px;font-size:16px;line-height:28px;font-family:'微软雅黑'">
+                        <select id="education" type="text" value="{{ education }}" style="width:178px;font-size:16px;line-height:28px;font-family:'微软雅黑'">
                             <option value="">{{ education }}</option>
                             <option value="函授大专">函授大专</option>
                             <option value="在职大专">在职大专</option>
@@ -32,8 +32,8 @@
                         </select>
                     </td>
                     <td style=" width:120px;line-height:33px;">学位</td>
-                    <td id="degree" style="width:180px;">
-                        <select style="width:178px;font-size:16px;line-height:28px; font-family:'微软雅黑'">
+                    <td style="width:180px;">
+                        <select id="degree" type="text" value="{{ degree }}" style="width:178px;font-size:16px;line-height:28px; font-family:'微软雅黑'">
                             <option value="">{{ degree }}</option>
                             <option value="工科学士学位">工科学士学位</option>
                             <option value="理科学士学位">理科学士学位</option>
@@ -49,14 +49,14 @@
                     <td style=" width:120px;line-height:33px;">出生年月</td>
                     <td style="width:180px;">
                         <div class="input-append date form_datetime">
-                            <input id="birthday" type="text" value="" readonly style="width:178px;height:31px;">
+                            <input id="birthday" type="text" value="{{birthday}}" readonly style="width:178px;height:31px;">
                             <span class="add-on"><i class="icon-th"></i></span>
                         </div>
                     </td>
                     <td style=" width:120px;line-height:33px;">籍贯</td>
                     <td style="width:180px;">
-                        <select style="width:178px;font-size:16px;line-height:28px; font-family:'微软雅黑'">
-                            <option value="">{{ native }}</option>
+                        <select id="native" type="text" value="{{ native }}" style="width:178px;font-size:16px;line-height:28px; font-family:'微软雅黑'">
+                            <option value="">{{ native }}</option> 
                             <option value="北京市">北京市</option>
                             <option value="安徽省">安徽省</option>
                             <option value="重庆市">重庆市</option>
@@ -97,7 +97,7 @@
                 <tr>
                     <td style=" width:120px;line-height:33px;">政治面貌</td>
                     <td style="width:180px;">
-                        <select style="width:178px;font-size:16px;line-height:28px;font-family:'微软雅黑'">
+                        <select id="politics" type="text" value="{{ politics }}" style="width:178px;font-size:16px;line-height:28px;font-family:'微软雅黑'">
                             <option value="">{{ politics }}</option>
                             <option value="无">无党派</option>
                             <option value="团员">团员</option>
@@ -108,7 +108,7 @@
                     </td>
                     <td style=" width:120px;line-height:33px;">职称</td>
                     <td style="width:180px;">
-                        <select style="width:178px;font-size:16px;line-height:28px;font-family:'微软雅黑'">
+                        <select id="professional" type="text" value="{{ professional }}" style="width:178px;font-size:16px;line-height:28px;font-family:'微软雅黑'">
                             <option value="空">{{ professional }}</option>
                             <option value="无职称">无职称</option>
                             <option value="初级">初级</option>
@@ -120,32 +120,35 @@
                 </tr>
                 <tr>
                     <td style=" width:120px;line-height:33px;">工作单位</td>
-                    <td colspan="3" style=" width:180px;font-size:16px;" onclick="Leo_toEdit(this)">{{ employer }}</td>
+                    <td colspan="3" style="font-size:16px;"><input id="employer" type="text" value="{{ employer }}" style="width:478px;font-size:16px;"></td>
                 </tr>
                 <tr>
                     <td style=" width:120px;line-height:33px;">部门</td>
-                    <td colspan="3" style="width: 180px; font-size: 16px;" onclick="Leo_toEdit(this)">{{ unit }}</td>
+                    <td colspan="3" style="font-size: 16px;"><input id="unit" type="text" value="{{ unit }}" style="width:478px;font-size:16px;"></td>
                 </tr>
                 <tr>
                     <td style=" width:120px;line-height:33px;">岗位/职务</td>
-                    <td colspan="3" style="width: 180px; font-size: 16px;" onclick="Leo_toEdit(this)">{{ duty }}</td>
+                    <td colspan="3" style="font-size: 16px;"><input id="duty" type="text" value="{{ duty }}" style="width:478px;font-size:16px;"></td>
                 </tr>
                 <tr>
                     <td style=" width:120px;line-height:33px;">班子/系统成员</td>
-                    <td colspan="3" style="width: 180px; font-size: 16px;" onclick="Leo_toEdit(this)">{{ team }}</td>
+                    <td colspan="3" style="font-size: 16px;"><input id="team" type="text" value="{{ team }}" style="width:478px;font-size:16px;"></td>
                 </tr>
             </table>
 
-            <div style="width:600px;height:300px;margin:0 auto;overflow:hidden;">
+            <div style="height:10px;"></div>
+            <div style="width:600px;margin:0 auto;overflow:hidden;">
                 <table id="grid-table1"></table>
             </div>
-
-            <div style="width:600px;height:300px;margin:0 auto;overflow:hidden;">
+            <div style="height:10px;"></div>
+            <div style="width:600px;margin:0 auto;overflow:hidden;">
                 <table id="grid-table2"></table>
             </div>
-
-            <div style="width:600px;height:40px;text-align:center;margin:26px;">                  
-                <button class="btn btn-primary" id="submit">确定</button>
+            
+            <div style="width:600px;height:40px;margin:0 auto;margin-top:10px;">  
+                <table style="width:600px; text-align:center;">                
+                <tr><td><button class="btn btn-primary" id="submit">保存</button></td></tr>
+                </table>
             </div>
         </div>
     </div>
@@ -153,35 +156,31 @@
 
 <script type="text/javascript" language="javascript">
     $(".form_datetime").datetimepicker({
-        format: 'yyyy-mm-dd hh:ii',
+        format: 'yyyy-mm-dd',
         autoclose: true,
         todayBtn: true,
         pickerPosition: "bottom-left"
     });
-    function Leo_toEdit(t) {
-        t.onclick = null;
-        var content = t.innerText;
-        t.innerText = "";
-        var edit = document.createElement("input");
-        edit.style.width = "90%";
-        edit.type = "text";
-        edit.value = content;
-        edit.style.textAlign = "center";
-        edit.onblur = new Function("Leo_exitEdit(this)");
-        t.appendChild(edit);
-        edit.focus();
-        edit.select();
-    }
-    function Leo_exitEdit(t) {
-        var content = t.value;
-        var s = t.parentNode;
-        s.removeChild(t);
-        s.innerText = content;
-        s.onclick = new Function("Leo_toEdit(this)");
-        if (s.name == "td2") {
-            checkEdtime(s, s.innerText);
-        }
-    }
+
+    $(document).ready(function() {
+        $("#submit").click(function(){
+                var base_info ={
+                    "name"          :$("#name").val(),
+                    "sex"           :$("#sex").val(),
+                    "education"     :$("#education").val(),
+                    "degree"        :$("#degree").val(),
+                    "birthday"      :$("#birthday").val(),
+                    "native"        :$("#native").val(),
+                    "politics"      :$("#politics").val(),
+                    "professional"  :$("#professional").val(),
+                    "employer"      :$("#employer").val(),
+                    "unit"          :$("#unit").val(),
+                    "duty"          :$("#duty").val(),
+                    "team"          :$("#team").val()
+                }
+                $.post('/examinee/submit', base_info);
+        });
+    });
 
 jQuery(function($) {
         var grid_selector = "#grid-table1";
@@ -203,11 +202,11 @@ jQuery(function($) {
             subGrid : false,
             url: "/examinee/listedu",
             datatype: "json",
-            height: '300px',
+            height: 'auto',
             shrinkToFit:true,
             forceFit:true,
             autowidth: true,
-            colNames:[' ','毕业院校','专业','所获学位','起止时间','序号'],
+            colNames:[' ','毕业院校','专业','所获学位','起止时间'],
             colModel:[
                 {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
                     formatter:'actions', 
@@ -216,11 +215,10 @@ jQuery(function($) {
                         delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
                     }
                 },               
-                {name:'school', index:'school', width:150, editable: true, sortable:false, align:'center'},
-                {name:'profession', index:'profession', sortable:false, width:150, editable:true, align:'center'},
+                {name:'school', index:'school', width:140, editable: true, sortable:false, align:'center'},
+                {name:'profession', index:'profession', sortable:false, width:140, editable:true, align:'center'},
                 {name:'degree', index:'degree', width:80, sortable:false, editable:true, align:'center'},
-                {name:'date', index:'date', sortable:true, width:120, editable: true,edittype:'text',align:'center'},
-                {name:'id', index:'id', width:1, editable: false, sortable:false, align:'center',}
+                {name:'date', index:'date', sortable:true, width:110, editable: true,edittype:'text',align:'center'}
                 ],
             viewrecords : true, 
             rowNum:10,
@@ -251,6 +249,7 @@ jQuery(function($) {
     
         });
         jQuery("#grid-table1").setGridParam().hideCol("id").trigger("reloadGrid");
+
         $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
     
         //switch element when editing inline
@@ -455,7 +454,7 @@ jQuery(function($) {
             subGrid : false,
             url: "/examinee/listwork",
             datatype: "json",
-            height: '300px',
+            height: 'auto',
             shrinkToFit:true,
             forceFit:true,
             autowidth: true,
@@ -472,7 +471,7 @@ jQuery(function($) {
                 {name:'employer', index:'employer', width:190, editable:true, sortable:false, align:'center'},
                 {name:'unit',index:'unit', sortable:false, width:80, editable:true,align:'center'},
                 {name:'duty', index:'duty', width:80, sortable:false, editable:true, align:'center'},
-                {name:'date',index:'date', sortable:true,width:150, editable: true,edittype:'text',align:'center'}
+                {name:'date',index:'date', sortable:true,width:140, editable: true,edittype:'text',align:'center'}
                 ], 
             viewrecords : true, 
             rowNum:10,
