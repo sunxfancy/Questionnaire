@@ -71,7 +71,7 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 		 * 在SPM中答案表中存 标准答案的序号 1 2 3 4 5 6 7 8
 		 * 需要从字符到数字转换
 		 */
-		$sql = "select * from spmdf";
+		$sql = "select * from Spmdf";
 		$spmdf_list_object = $this->modelsManager->executeQuery($sql);
 		$spmdf_list = array();
 		foreach($spmdf_list_object as $spmdf_record){
@@ -106,7 +106,7 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 		 * 在16PF(KS)中答案表中存 标准答案的序号 A B　C
 		 * 
 		 */
-		$sql = "select * from ksdf";
+		$sql = "select * from Ksdf";
 		$ksdf_list_object = $this->modelsManager->executeQuery($sql);
 		$ksdf_list = array();
 		foreach($ksdf_list_object as $ksdf_record){
@@ -139,7 +139,7 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 		 * 在SCL中答案表中存 标准答案的序号 A B　C D E
 		 *
 		*/
-		$sql = "select * from scldf";
+		$sql = "select * from Scldf";
 		$scldf_list_object = $this->modelsManager->executeQuery($sql);
 		$scldf_list = array();
 		foreach($scldf_list_object as $scldf_record){
