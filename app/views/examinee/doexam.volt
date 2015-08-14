@@ -85,24 +85,23 @@ var paper_id_now=0;
 
 
 $(function(){
-    questions[0]={
-        'index':0,
-        'title':'',
-        'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'
-    };
-    questions[1]={
-        'index':1,
-        'title':"本测验包括许多问题和选择，任何答案选择都无所谓对错，222",
-        'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'
-    };
-    questions[2]={'index':2,
-        'title':"本测验包括许多问题和选择，任何答案选择都无所谓对错，222",
-        'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'};
-    Leo_initPanel(questions.length);
-    //getpaper(paper_id_now);
-    Leo_initPaperId();
-    Leo_timer_start();
-    initCookie(questions.length,"exam_ans"+{{number}});
+    // questions[0]={
+    //     'index':0,
+    //     'title':'',
+    //     'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'
+    // };
+    // questions[1]={
+    //     'index':1,
+    //     'title':"本测验包括许多问题和选择，任何答案选择都无所谓对错，222",
+    //     'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'
+    // };
+    // questions[2]={'index':2,
+    //     'title':"本测验包括许多问题和选择，任何答案选择都无所谓对错，222",
+    //     'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'};
+   
+    getpaper(paper_id_now);
+   
+    
     
     $('#announce_panel').children('p').replaceWith("<p>"+description+"</p>");
      $('#do_announce').click(function(){
@@ -361,8 +360,12 @@ function initCookie_title(ans_cookie){
 
 function getpaper(paper_index){
          $.post('/Examinee/getpaper', {'paper_name':paper_id_name[paper_index]}, function(data) {
-         questions=data.questions;
+         questions=data.question;
          description=data.description;
+         Leo_initPanel(questions.length);
+        Leo_initPaperId();
+        Leo_timer_start();
+        initCookie(questions.length,"exam_ans"+{{number}});
      });
     }
 
@@ -374,9 +377,9 @@ function Leo_check(){
                                 paper_id_now++;
                                 $.cookie("paper_id"+{{number}},paper_id_now,{experies:7});
                                 getpaper(paper_id_now);
-                                Leo_initPanel(questions.length);
+                                
                                 $.cookie("exam_ans"+{{number}},{expires:-1});
-                                initCookie(questions.length,"exam_ans"+{{number}});
+                                
                             }else{
 
                             }
