@@ -128,7 +128,7 @@ function initCookie_title(ans_cookie){
             if(flag){
                 changepage(ans_array.length-1,false);
             }
-    }
+}
 function get_ans_array_from_cookie(index){
     var ans_cookie=$.cookie('ans_cookie'+{{ number }});
     var ans_array=ans_cookie.split("|");

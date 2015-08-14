@@ -214,33 +214,46 @@ class ExamineeController extends Base
 
     public function editinfoAction(){
         $this->leftRender("个 人 信 息 填 写");
-
-        $examinee = $this->session->get('Examinee');
-        $name = $examinee->name;
-        $sex = $examinee->sex;
-        $education = $examinee->education;
-        $degree = $examinee->degree;
-        $birthday = $examinee->birthday;
-        $native = $examinee->native; 
-        $politics = $examinee->politics;
-        $professional = $examinee->professional;
-        $employer = $examinee->employer;
-        $unit = $examinee->unit;
-        $duty = $examinee->duty;
-        $team = $examinee->team;
-        
-        $this->view->setVar('name',$name);
+        $id = $this->session->get('Examinee')->id;
+        $examinee = Examinee::findFirst($id);
+        $this->view->setVar('name',$examinee->name);
+        $sex = ($examinee->sex == "1") ? "男" : "女";
         $this->view->setVar('sex',$sex);
-        $this->view->setVar('education',$education);
-        $this->view->setVar('degree',$degree);
-        $this->view->setVar('birthday',$birthday);
-        $this->view->setVar('native',$native);
-        $this->view->setVar('politics',$politics);
-        $this->view->setVar('professional',$professional);
-        $this->view->setVar('employer',$employer);
-        $this->view->setVar('unit',$unit);
-        $this->view->setVar('duty',$duty);
-        $this->view->setVar('team',$team);
+        $this->view->setVar('education',$examinee->education);
+        $this->view->setVar('degree',$examinee->degree);
+        $this->view->setVar('birthday',$examinee->birthday);
+        $this->view->setVar('native',$examinee->native);
+        $this->view->setVar('politics',$examinee->politics);
+        $this->view->setVar('professional',$examinee->professional);
+        $this->view->setVar('employer',$examinee->employer);
+        $this->view->setVar('unit',$examinee->unit);
+        $this->view->setVar('duty',$examinee->duty);
+        $this->view->setVar('team',$examinee->team);
+    }
+
+    public function submitAction(){
+        $this->view->disable();
+        $id = $this->session->get('Examinee')->id;
+        $examinee = Examinee::findFirst($id);
+        $examinee->name         = $this->request->getPost("name", "string");
+        $sex = $this->request->getPost("sex", "string");
+        $examinee->sex          = ($sex =="男") ? 1 : 0;
+        $examinee->education    = $this->request->getPost("education", "string");
+        $examinee->degree       = $this->request->getPost("degree", "string");
+        $examinee->birthday     = $this->request->getPost("birthday", "string");
+        $examinee->native       = $this->request->getPost("native", "string");
+        $examinee->politics     = $this->request->getPost("politics", "string");
+        $examinee->professional = $this->request->getPost("professional", "string");
+        echo $examinee->professional;
+        $examinee->employer     = $this->request->getPost("employer", "string");
+        $examinee->unit         = $this->request->getPost("unit", "string");
+        $examinee->duty         = $this->request->getPost("duty", "string");
+        $examinee->team         = $this->request->getPost("team", "string");
+        if (!$examinee->save()) {
+            foreach ($examinee->getMessages() as $msg) {
+                echo $msg."\n";
+            }
+        }
     }
 
     public function listeduAction(){
@@ -251,7 +264,7 @@ class ExamineeController extends Base
         $json = json_decode($examinee->other,true);
         $array = array();
         $array['records'] = count($json['education']);
-        for($i = 0;$i<$array['records'];$i++){
+        for($i = 0;$i<$array['records'] + 1;$i++){
             $json['education'][$i]['id'] = $i;
         }
         $array['rows'] = $json['education'];
@@ -281,7 +294,15 @@ class ExamineeController extends Base
             array_splice($array['rows'],$id,1);
             $json['education'] = $array['rows'];
         }
-        print_r($json);
+        if ($oper == 'add') {
+            $id = count($json['education']) + 1;
+            $json['education'][$id]['school']     = $this->request->getPost('school', 'string');
+            $json['education'][$id]['profession'] = $this->request->getPost('profession', 'string');
+            $json['education'][$id]['degree']     = $this->request->getPost('degree', 'string');
+            $json['education'][$id]['date']       = $this->request->getPost('date', 'string');
+            $array ['rows'][$id] = $json['education'][$id];
+            $json['education'] = $array['rows'];
+        }
         $json = json_encode($json,JSON_UNESCAPED_UNICODE);
         $examinee->other = $json;
         if (!$examinee->save()) {
@@ -299,14 +320,14 @@ class ExamineeController extends Base
         $json = json_decode($examinee->other,true);
         $array = array();
         $array['records'] = count($json['work']);
-        for($i = 0;$i<$array['records'];$i++){
+        for($i = 0;$i<$array['records'] + 1;$i++){
             $json['work'][$i]['id'] = $i;
         }
         $array['rows'] = $json['work'];
         echo json_encode($array,JSON_UNESCAPED_UNICODE);
     }
 
-       public function updateworkAction(){
+    public function updateworkAction(){
         $this->view->disable();
         $oper = $this->request->getPost('oper', 'string');
         $id = $this->session->get('Examinee')->id;
