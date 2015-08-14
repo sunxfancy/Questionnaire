@@ -36,7 +36,7 @@ class ExamineeController extends Base
         if ($examinee)
         {
             $this->session->set('Examinee', $examinee);
-            $this->dataReturn(array('url' =>'/examinee/editinfo'));
+            $this->dataReturn(array('url' =>'/examinee/doexam'));
             return;
         }
     }
@@ -69,7 +69,7 @@ class ExamineeController extends Base
         $questions = $this->getQuestions($project_id,$paper_id);
 
         $this->response->setHeader("Content-Type", "text/json; charset=utf-8");
-        $this->dataReturn(array("question"=>$questions['exams'],"description"=>Paper::findFirst($paper_id)->description,"order"=>$question['question_number_array']));
+        $this->dataReturn(array("question"=>$questions['exams'],"description"=>Paper::findFirst($paper_id)->description,"order"=>$questions['question_number_array']));
     }
 
     public function getQuestions($project_id,$paper_id){
@@ -83,7 +83,7 @@ class ExamineeController extends Base
 
         $factor_name_array = $this->getFactor($indexs_name_array);
 
-        $question_number_array = $this->getNumber($factor_name_array);
+        $question_number_array = $this->getNumber($factor_name_array,$paper_id);
 
         $exams = $this->getExam($question_number_array,$paper_id);
 
@@ -96,7 +96,9 @@ class ExamineeController extends Base
 
     public function getPaperid(){
         $paper_name = $this->request->getPost("paper_name","string");
-        $paper = Paper::findFirst(array('name'=>$paper_name));
+        $paper = Paper::findFirst(array(
+            'name=?0',
+            'bind'=>array($paper_name)));
         $paper_id = $paper->id;
         return $paper_id;
     }
@@ -126,7 +128,10 @@ class ExamineeController extends Base
         //$this->view->disable();
         $factor_name = array();
         for ($i=0; $i <sizeof($indexs) ; $i++) { 
-            $index = Index::findFirst(array('name'=>$indexs[$i]));
+            echo $indexs[$i];
+            $index = Index::findFirst(array(
+                'name=?1',
+                'bind'=>array(1=>$indexs[$i])));
             $children = $index->children;
             $childrentype = $index->children_type;
             $children = explode(",",$children );
@@ -134,7 +139,9 @@ class ExamineeController extends Base
             for ($j=0; $j < sizeof($childrentype); $j++) { 
                 //0代表index，1代表factor
                 if ($childrentype[$j] == "0") {
-                    $index1 = Index::findFirst(array('name'=>$children[$j]));
+                    $index1 = Index::findFirst(array(
+                        'name=?1',
+                        'bind'=>array(1=>$children[$i])));
                     $children1 = $index1->children;
                     $children1 = explode(",",$children1);
                     for ($k=0; $k <sizeof($children1) ; $k++) { 
@@ -152,8 +159,13 @@ class ExamineeController extends Base
     public function getNumber($factors,$paper_id){
         $this->view->disable();
         $questions_number = array();
-        for ($i=0; $i <sizeof($factors) ; $i++) {           
-            $factor = Factor::findFirst(array('paper_id'=>$paper_id,'name'=>$factors[$i]));
+        for ($i=0; $i <sizeof($factors) ; $i++) {         
+            $factor = Factor::findFirst(array(
+                'paper_id=?0 and name=?1',
+                'bind'=>array(0=>$paper_id,1=>$factors[$i])));
+            if(!$factor){
+                break;
+            }
             $children = $factor->children;
             $childrentype = $factor->children_type;
             $children = explode(",",$children );
@@ -161,7 +173,9 @@ class ExamineeController extends Base
             for ($j=0; $j < sizeof($childrentype); $j++) { 
                 //0代表factor，1代表question
                 if ($childrentype[$j] == "0") {
-                    $factor1 = Factor::findFirst(array('paper_id'=>$paper_id,'name'=>$factors[$i]));
+                    $factor1 = Factor::findFirst(array(
+                        'paper_id=?0 and name=?1',
+                        'bind'=>array(0 => $paper_id,1 => $children[$j])));
                     $children1 = $factor1->children;
                     $children1 = explode(",",$children1);
                     for ($k=0; $k <sizeof($children1) ; $k++) { 
@@ -180,11 +194,13 @@ class ExamineeController extends Base
     public function getExam($numbers,$paper_id){
         $data = array();
         for ($i=0; $i < sizeof($numbers); $i++) { 
-            $question = Question::findFirst(array('paper_id'=>$paper_id,'number'=>$numbers[$i]));
-            $data[$i]=json_encode(array(
+            $question = Question::findFirst(array(
+                'paper_id=?0 and number=?1',
+                'bind'=>array(0=>$paper_id,1=>$numbers[$i])));
+            $data[$i]=array(
                 'index'=>$i,
                 'title'=>$question->topic,
-                'options'=>$question->options));
+                'options'=>$question->options);
         }
         return $data;
     }
