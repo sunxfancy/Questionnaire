@@ -214,9 +214,11 @@ class ExamineeController extends Base
 
     public function editinfoAction(){
         $this->leftRender("个 人 信 息 填 写");
-        $examinee = $this->session->get('Examinee');
+        $id = $this->session->get('Examinee')->id;
+        $examinee = Examinee::findFirst($id);
         $this->view->setVar('name',$examinee->name);
-        $this->view->setVar('sex',$examinee->sex);
+        $sex = ($examinee->sex == "1") ? "男" : "女";
+        $this->view->setVar('sex',$sex);
         $this->view->setVar('education',$examinee->education);
         $this->view->setVar('degree',$examinee->degree);
         $this->view->setVar('birthday',$examinee->birthday);
@@ -234,13 +236,15 @@ class ExamineeController extends Base
         $id = $this->session->get('Examinee')->id;
         $examinee = Examinee::findFirst($id);
         $examinee->name         = $this->request->getPost("name", "string");
-        $examinee->sex          = $this->request->getPost("sex", "string");
+        $sex = $this->request->getPost("sex", "string");
+        $examinee->sex          = ($sex =="男") ? 1 : 0;
         $examinee->education    = $this->request->getPost("education", "string");
         $examinee->degree       = $this->request->getPost("degree", "string");
         $examinee->birthday     = $this->request->getPost("birthday", "string");
         $examinee->native       = $this->request->getPost("native", "string");
         $examinee->politics     = $this->request->getPost("politics", "string");
         $examinee->professional = $this->request->getPost("professional", "string");
+        echo $examinee->professional;
         $examinee->employer     = $this->request->getPost("employer", "string");
         $examinee->unit         = $this->request->getPost("unit", "string");
         $examinee->duty         = $this->request->getPost("duty", "string");
@@ -260,7 +264,7 @@ class ExamineeController extends Base
         $json = json_decode($examinee->other,true);
         $array = array();
         $array['records'] = count($json['education']);
-        for($i = 0;$i<$array['records'];$i++){
+        for($i = 0;$i<$array['records'] + 1;$i++){
             $json['education'][$i]['id'] = $i;
         }
         $array['rows'] = $json['education'];
@@ -316,7 +320,7 @@ class ExamineeController extends Base
         $json = json_decode($examinee->other,true);
         $array = array();
         $array['records'] = count($json['work']);
-        for($i = 0;$i<$array['records'];$i++){
+        for($i = 0;$i<$array['records'] + 1;$i++){
             $json['work'][$i]['id'] = $i;
         }
         $array['rows'] = $json['work'];
