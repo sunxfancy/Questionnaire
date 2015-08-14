@@ -75,13 +75,12 @@ var done_index=0;
 
 var questions=new Array();
 var description="123";
+var paper_id_now=0;
 
 
 $(function(){
 
     /*定义重要的全局变量*/
-   
-    
     
     questions[0]={
         'index':0,
@@ -121,6 +120,8 @@ $(function(){
      $("#Leo_pageup").click(function(){
          changepage(Leo_index_now-1,true);
      });
+
+
 
 
 
@@ -337,10 +338,9 @@ function initCookie_title(ans_cookie){
                 $("#Leo_checkup").click(function(){
                     changepage(questions.length-1,true);
                     if(confirm("您确定要提交吗?")){
-                        $.post('/Examinee/getExamAnswer',{"answer":$.cookie("exam_ans"+{{number}}),"paper_id":null}, function(data) {
-                            /*optional stuff to do after success */
-                            alert(data.answer);
-                        });
+
+                        Leo_check();
+                        
                     }
                 })
 
@@ -349,11 +349,18 @@ function initCookie_title(ans_cookie){
     }
 
 function getpaper(paper_index){
-         $.post('/Examinee/getpaper', {'paper_id':paper_index}, function(data) {
+         $.post('/Examinee/getpaper', {'paper_id':paper_id_now}, function(data) {
          questions=data.questions;
          description=data.description;
      });
     }
+
+function Leo_check(){
+    $.post('/Examinee/getExamAnswer',{"answer":$.cookie("exam_ans"+{{number}}),"paper_id":paper_id_now}, function(data) {
+                            /*optional stuff to do after success */
+                            alert(data.answer);
+                        });
+}
 
 
 </script>
