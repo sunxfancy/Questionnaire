@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 11:08:59
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-13 17:01:05
+ * @Last Modified time: 2015-08-13 17:46:24
  */
 
 /**
@@ -44,18 +44,36 @@ class Score
 		$items = $this->factorRes($child_list, $child_type, $examinees, $answers);
 		$ans = array();
 		foreach ($examinees as $examinee) {
+			$eid = $examinee->id;
 			$factor_ans = Utils::findFirstAndNew(
 				'FactorAns', array(
 					'examinee_id = ?0 AND factor_id = ?1',
-					'bind' => array($examinee->id, $factor->id)
+					'bind' => array($eid, $factor->id)
 			));
-			
-			$ans[$examinee->id] = $factor_ans;
+			$factor_ans->score = $this->doAction($factor->action, $items[$eid]);
+			$ans[$eid] = $factor_ans;
 		}
 
 		$this->factor_done[$factor->name] = $ans;
 
 		return $ans;
+	}
+
+	function doAction($action, $array)
+	{
+		if (in_array($action, CalFunc::func_reg)) {
+			return CalFunc::$action($array);
+		} else {
+			if ($this->action_function[$action] == null) {
+				$this->action_function[$action] = $this->complie_action($action);
+			}
+		}
+	}
+
+	function complie_action($child_list, $action)
+	{
+		// 这里需要正则加$符号
+		return create_function($child_list, $action);
 	}
 
 	function factorRes($child_list, $child_type, $examinees, $answers)
