@@ -46,6 +46,55 @@ class BasicScoreOne {
 // 	 	echo chr($mt);
 // 	 }
 	/**
+	 * 针对EPQA 88道题 AB
+	 */
+	// for($i = 1; $i<=88; $i++ ){
+	// 	if($i!=1)
+	// 		echo '|';
+	// 	echo $i;
+	// }
+	// echo "<br />";
+	// for($i = 1; $i<=88; $i++){
+	// 	if($i!=1)
+	// 		echo '|';
+	// 	$mt = rand(65,66);
+	// 	echo chr($mt);
+	// }
+	// exit();
+	/**
+	 * 针对CPI 230道题 AB
+	 */
+// 	for($i = 1; $i<=230; $i++ ){
+// 		if($i!=1)
+// 			echo '|';
+// 		echo $i;
+// 	}
+// 	echo "<br />";
+// 	for($i = 1; $i<=230; $i++){
+// 		if($i!=1)
+// 			echo '|';
+// 		$mt = rand(65,66);
+// 		echo chr($mt);
+// 	}
+// 	exit();
+	/**
+	 * 针对EPPS  225道题 AB
+	 */
+// for($i = 1; $i<=225; $i++ ){
+// 	if($i!=1)
+// 		echo '|';
+// 	echo $i;
+// }
+// echo "<br />";
+// for($i = 1; $i<=225; $i++){
+// 	if($i!=1)
+// 		echo '|';
+// 	$mt = rand(65,66);
+// 	echo chr($mt);
+// }
+// exit();
+
+	/**
 	 * : 根据被试人员id查取试卷记录
 	 * 抛出Exception 1 ： 被试人员没有答题，quesion_ans 中记录为空，获取不到相应信息
 	 * 			    2:数据库中的选项-题号 两个字段记录不一致
@@ -73,9 +122,9 @@ class BasicScoreOne {
 		 		case "16PF" : $papers_array[$i-1]['score']  = self::handle16PF($paper_array); break;
 		 		case "SPM"  : $papers_array[$i-1]['score']  = self::handleSPM($paper_array); break;
 		 		case "SCL"  : $papers_array[$i-1]['score']  = self::handleSCL($paper_array); break;
-		 		//case "EPQA" : $papers_array[$i-1]['score']  = self::handleEPQA($paper_array); break;
-		 		//case "EPPS" : $papers_array[$i-1]['score']  = self::handleEPPS($paper_array); break;
-		 		//case "CPI"  : $papers_array[$i-1]['score']  = self::handleCPI($paper_array); break;
+		 		case "EPQA" : $papers_array[$i-1]['score']  = self::handleEPQA($paper_array); break;
+		 		case "EPPS" : $papers_array[$i-1]['score']  = self::handleEPPS($paper_array); break;
+		 		case "CPI"  : $papers_array[$i-1]['score']  = self::handleCPI($paper_array); break;
 		 		//default : throw(new Exception("No this type paper"));
 		 	}
 		 }		 $i = null;
@@ -97,8 +146,7 @@ class BasicScoreOne {
         }
         return $papers_array;  
 	}
-	
-	
+
 	#处理SPM得分
 	public function handleSPM($array){
 		$list = Score::strDivideToArray($array['option'],$array['question_number_list']);
@@ -211,15 +259,99 @@ class BasicScoreOne {
 	}
 	#处理EPQA得分
 	public function handleEPQA($array){
-		
+		/**
+		 * EPQA A B 两个选项 88道题
+		 */
+		$list = Score::strDivideToArray($array['option'],$array['question_number_list']);
+		$epqa_list_object = Epqadf::find();
+		$epqa_list = array();
+		foreach($epqa_list_object as $epqa_record){
+			$record = array();
+			$record['TH'] = $epqa_record->TH;
+			$record['XZ'] = $epqa_record->XZ;
+			$record['E'] = $epqa_record->E;
+			$record['N'] = $epqa_record->N;
+			$record['P'] = $epqa_record->P;
+			$record['L'] = $epqa_record->L;
+			$epqa_list[] = $record;
+		}
+		$record_list = array();
+		foreach( $list as $record ){
+			$tmp_record = array();
+			$tmp_record['TH'] = $record['number'];
+			$tmp_record['XZ'] = ord($record['option'])-64;
+			$rt_array = Score::multidimensinal_search_v2($epqa_list, $tmp_record);
+			$rt_str = Score::readScoreFromArray($rt_array);
+			$record_list[] = $rt_str;			
+		}
+		return implode('|', $record_list);
 	}
 	#处理CPI得分
 	public function handleCPI($array){
-		
+		/**
+		 * CPI A B 选项  230道题
+		 */
+		$list = Score::strDivideToArray($array['option'],$array['question_number_list']);
+		$cpi_list_object = Cpidf::find();
+		$cpi_list = array();
+		foreach($cpi_list_object as $cpi_record){
+			$record = array();
+			$record['TH'] = $cpi_record->TH;
+			$record['XZ'] = $cpi_record->XZ;
+			$record['DO'] = $cpi_record->DO;
+			$record['CS'] = $cpi_record->CS;
+			$record['SY'] = $cpi_record->SY;
+			$record['SP'] = $cpi_record->SP;
+			$record['SA'] = $cpi_record->SA;
+			$record['WB'] = $cpi_record->WB;
+			$record['RE'] = $cpi_record->RE;
+			$record['SO'] = $cpi_record->SO;
+			$record['SC'] = $cpi_record->SC;
+			$record['PO'] = $cpi_record->PO;
+			$record['GI'] = $cpi_record->GI;
+			$record['CM'] = $cpi_record->CM;
+			$record['AC'] = $cpi_record->AC;
+			$record['AI'] = $cpi_record->AI;
+			$record['IE'] = $cpi_record->IE;
+			$record['PY'] = $cpi_record->PY;
+			$record['FX'] = $cpi_record->FX;
+			$record['FE'] = $cpi_record->FE;
+			$cpi_list[] = $record;
+		}
+		$record_list = array();
+		foreach( $list as $record ){
+			$tmp_record = array();
+			$tmp_record['TH'] = $record['number'];
+			$tmp_record['XZ'] = ord($record['option'])-64;
+			$rt_array = Score::multidimensinal_search_v2($cpi_list, $tmp_record);			
+			$rt_str = Score::readScoreFromArray($rt_array);
+			$record_list[] = $rt_str;
+		}
+
+		return implode('|', $record_list);
 	}
 	#处理EPPS得分
 	public function handleEPPS($array){
-		
+		/**
+		 * EPPS AB 225道题
+		 */
+		$list = Score::strDivideToArray($array['option'],$array['question_number_list']);
+		$epps_list_object = Eppsdf::find();
+		$epps_list = array();
+		foreach($epps_list_object as $epps_record){
+			$record = array();
+			$record['TH'] = $epps_record->TH;
+			$record['X'] = $epps_record->X;
+			$record['Y'] = $epps_record->Y;
+			$epps_list[] = $record;
+		}
+		$record_list =array();
+		foreach ($list as $record){
+			$rtn_array = Score::findInTwodemensianalArray($epps_list, 'TH', $record['number']);
+			$choice_ab = ord($record['option'])-64;
+			$record_list[] = Score::readScoreFromArray_v2($rtn_array, $choice_ab);	
+		}
+		return implode('|', $record_list);
 	}
 	
 }

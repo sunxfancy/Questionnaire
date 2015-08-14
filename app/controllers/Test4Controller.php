@@ -1,6 +1,7 @@
 <?php
 class Test4Controller extends \Phalcon\Mvc\Controller{
 	public function indexAction(){
+
 		$examinee_id = 12;
 		$basic_score = new BasicScoreOne();
 		try{
