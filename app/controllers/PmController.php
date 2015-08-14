@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-01 16:18:46
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-07 17:02:19
+ * @Last Modified time: 2015-08-14 17:37:25
  */
 
 /**
@@ -261,46 +261,43 @@ class PmController extends Base
     }
 
     public function writeselectedmoduleAction(){
-
+        $this->view->disable();
         $manager=$this->session->get('Manager');
         if($manager){
             $checkeds=$this->request->getpost('checkeds');
             $values=$this->request->getpost('values');
             $this->db->begin();
             try{
-                    $pmrel_ori=Pmrel::find(array(
-                            "project_id=?1",
-                            "bind"=>array(1=>$manager->project_id)
-                        ));
-                    for ($i=0; $i <sizeof($pmrel_ori) ; $i++) { 
-                        $pmrel_ori[$i]->delete();
-                    }
+                $pmrel_ori=Pmrel::find(array(
+                        "project_id=?1",
+                        "bind"=>array(1=>$manager->project_id)
+                    ));
+                for ($i=0; $i <sizeof($pmrel_ori) ; $i++) { 
+                    $pmrel_ori[$i]->delete();
+                }
 
 
-                    for($i=0;$i<sizeof($checkeds);$i++){
-                        if($checkeds[$i]=='true'){
-                            $module=Module::findFirst(array(
-                            "chs_name= ?1",
-                            "bind" => array( 1=> $values[$i])));
-                            $pmrel=new Pmrel();
-                            $pmrel->project_id=$manager->project_id;
-                            $pmrel->module_id=$module->id;
-                            $pmrel->save();
-                        }
-                     
+                for($i=0;$i<sizeof($checkeds);$i++){
+                    if($checkeds[$i]=='true'){
+                        $module=Module::findFirst(array(
+                        "chs_name= ?1",
+                        "bind" => array( 1=> $values[$i])));
+                        $pmrel=new Pmrel();
+                        $pmrel->project_id=$manager->project_id;
+                        $pmrel->module_id=$module->id;
+                        $pmrel->save();
                     }
+                 
+                }
                 $this->dataBack(array('url' =>'/pm/index'));
                 $this->db->commit();
             }catch(Exception $e){
                 $this->db->rollback();
                 $this->dataBack(array('error' =>"保存错误,请重新操作!"));
-            }finally{
-                $this->view->disable();
             }
         }else{
             $this->dataBack(array('error' => "您的身份验证出错!请重新登录!"));
         }
-        
     }
 
     function dataBack($ans){

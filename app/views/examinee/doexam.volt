@@ -1,20 +1,24 @@
 <link rel="stylesheet" type="text/css" href="/css/css/Leo_questions.css" />
 <script type="text/javascript" src="/js/demand.js"></script>
 <div class="Leo_question_v2" id="Leo_question_v2">
-
+        <!--这一部分是暂停时的下拉框-->
         <div id="Leo_hiden" class="Leo_hiden" style="top:-500px;" >
         <table style="height:100%;width:100%;text-align:center;vertical-align:middle;">
         <tr><td id="Leo_hiden_td" style="font-size:18px;text-align:left;"></td></tr>
         <tr><td id="Leo_hiden_td2"><div id="Leo_hiden_ctrl" style="cursor:pointer;margin-left:45%;width:0;height:0;border-top: 30px solid transparent;border-bottom:30px solid transparent;border-left:50px solid green;" onclick="$('#Leo_hiden').slideUp('fast', function() {});"></div><br /></td></tr></table></div>
 
+        <!--这一部分是指导语部分-->
         <div style="overflow:hidden;width:600px;height:440px;">
-        <div style="width:95%;height:410px;margin:0 auto;display:none;font-size:25px;font-family:'微软雅黑'" id='announce_panel'><p></p></div>
-        <div id='do_announce' style="width:100%;height:30px;background-color:#eeed6a;cursor:pointer;"></div>
+        <div style="width:95%;height:410px;margin:0 auto;display:none;font-size:22px;font-family:'微软雅黑';overflow:auto;" id='announce_panel'><p></p></div>
+        <div id='do_announce' style="width:100%;height:30px;background-color:#eeed6a;cursor:pointer;">
+            <span>16PF</span><img src="/images/down.png" style="height:90%;" />
+        </div>
+
         <div class="Leo_question_l" style="height:400px;" id="Leo_question_panel">
         <div style='width:95%;height:400px;margin:0 auto;'>
-        <div id="title_div" class="Leo_title_text" =''><span></span></div>
 
-            <!--只需在代码中，对这一部分进行解析，替换，实现题目切换-->
+        <!--只需在代码中，对这一部分进行解析，替换，实现题目切换-->
+        <div id="title_div" class="Leo_title_text" =''><span></span></div>
         <div id='ans_div' style="overflow:auto;font-family:'微软雅黑';">
         <div> </div>
         </div>
@@ -43,7 +47,7 @@
         
     </div>
     <div class="Leo_Timer_v2">
-    <div style="width:100%;height:30px;background-color:#eeed6a;"></div>
+    <div id="time_panel" style="width:100%;height:30px;background-color:#eeed6a;text-align:center;"></div>
 
     <div class="clock">
     <ul><li style="font-size:25px;" id="used">已用时</li></ul>
@@ -69,40 +73,35 @@
 </body>
 
 <script type="text/javascript">
-
+ /*定义重要的全局变量*/
 var Leo_index_now=0;
 var done_index=0;
 
 var questions=new Array();
-var description="123";
+var description="";
+var paper_id_name=new Array("16PF","EPPS","SCL","EPQA","CPI","SPM");
+var paper_id_now=0;
+
 
 
 $(function(){
-
-    /*定义重要的全局变量*/
+    // questions[0]={
+    //     'index':0,
+    //     'title':'',
+    //     'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'
+    // };
+    // questions[1]={
+    //     'index':1,
+    //     'title':"本测验包括许多问题和选择，任何答案选择都无所谓对错，222",
+    //     'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'
+    // };
+    // questions[2]={'index':2,
+    //     'title':"本测验包括许多问题和选择，任何答案选择都无所谓对错，222",
+    //     'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'};
+   
+    getpaper(paper_id_now);
    
     
-    
-    questions[0]={
-        'index':0,
-        'title':'',
-        'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'
-    };
-    questions[1]={
-        'index':1,
-        'title':"本测验包括许多问题和选择，任何答案选择都无所谓对错，222",
-        'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'
-    };
-    questions[2]={'index':2,
-        'title':"本测验包括许多问题和选择，任何答案选择都无所谓对错，222",
-        'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'};
-    //getpaper();
-    Leo_initPanel(questions.length);
-    Leo_timer_start();
-    initCookie(questions.length,"exam_ans"+{{number}});
-    
-    
-        
     
     $('#announce_panel').children('p').replaceWith("<p>"+description+"</p>");
      $('#do_announce').click(function(){
@@ -124,10 +123,25 @@ $(function(){
 
 
 
+
+
 });
+
+function Leo_initPaperId(){
+    var paper_cookie=$.cookie("paper_id"+{{number}});
+    if(!paper_cookie){
+        $.cookie("paper_id"+{{number}},0,{expeires:7});
+    }else{
+        paper_id_now=paper_cookie;
+    }
+}
 
 
 function Leo_initPanel(questionlength) {
+        $("#time_panel").html(paper_id_name[paper_id_now]);
+
+        $("#Leo_question_table").replaceWith("<table style='width:92%;text-align:center;vertical-align:middle;table-layout:fixed;margin:0 auto;' id='Leo_question_table' cellspacing='0'></table>");
+
         var rows_count = Math.ceil(questionlength/ 5);
             for (var k = 0; k < rows_count; k++) {
                 var row_now = document.getElementById("Leo_question_table").insertRow(k);
@@ -238,10 +252,7 @@ function initTitle(index){
 
                 changepage(questions.length-1,true);
                 if(confirm("您确定要提交吗?")){
-                    $.post('/Examinee/getExamAnswer',{"answer":$.cookie("exam_ans"+{{number}}),"paper_id":null}, function(data) {
-                        /*optional stuff to do after success */
-                        alert(data.answer);
-                    });
+                   Leo_check();
                 }
             })
         } 
@@ -337,10 +348,9 @@ function initCookie_title(ans_cookie){
                 $("#Leo_checkup").click(function(){
                     changepage(questions.length-1,true);
                     if(confirm("您确定要提交吗?")){
-                        $.post('/Examinee/getExamAnswer',{"answer":$.cookie("exam_ans"+{{number}}),"paper_id":null}, function(data) {
-                            /*optional stuff to do after success */
-                            alert(data.answer);
-                        });
+
+                        Leo_check();
+                        
                     }
                 })
 
@@ -349,11 +359,32 @@ function initCookie_title(ans_cookie){
     }
 
 function getpaper(paper_index){
-         $.post('/Examinee/getpaper', {'paper_id':paper_index}, function(data) {
-         questions=data.questions;
+         $.post('/Examinee/getpaper', {'paper_name':paper_id_name[paper_index]}, function(data) {
+         questions=data.question;
          description=data.description;
+         Leo_initPanel(questions.length);
+        Leo_initPaperId();
+        Leo_timer_start();
+        initCookie(questions.length,"exam_ans"+{{number}});
      });
     }
+
+function Leo_check(){
+    $.post('/Examinee/getExamAnswer',{"answer":$.cookie("exam_ans"+{{number}}),"paper_name":paper_id_name[paper_id_now]}, function(data) {
+
+                            if(paper_id_now<5){
+                                alert("提交成功！点击确定进入"+paper_id_name[paper_id_now+1]+"答题");
+                                paper_id_now++;
+                                $.cookie("paper_id"+{{number}},paper_id_now,{experies:7});
+                                getpaper(paper_id_now);
+                                
+                                $.cookie("exam_ans"+{{number}},{expires:-1});
+                                
+                            }else{
+
+                            }
+                        });
+}
 
 
 </script>
