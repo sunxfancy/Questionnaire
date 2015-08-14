@@ -136,11 +136,11 @@
                 </tr>
             </table>
 
-            <div style="width:600px;height:200px;margin:0 auto;overflow:hidden;">
+            <div style="width:600px;height:300px;margin:0 auto;overflow:hidden;">
                 <table id="grid-table1"></table>
             </div>
 
-            <div style="width:600px;height:200px;margin:0 auto;overflow:hidden;">
+            <div style="width:600px;height:300px;margin:0 auto;overflow:hidden;">
                 <table id="grid-table2"></table>
             </div>
 
@@ -199,28 +199,28 @@ jQuery(function($) {
             }
         })
 
-        jQuery(grid_selector).jqGrid({
+       jQuery(grid_selector).jqGrid({
             subGrid : false,
-            url: "/examinee/list",
+            url: "/examinee/listedu",
             datatype: "json",
             height: '300px',
             shrinkToFit:true,
             forceFit:true,
             autowidth: true,
-            colNames:[' ','毕业院校','专业','所获学位','起止时间'],
+            colNames:[' ','毕业院校','专业','所获学位','起止时间','序号'],
             colModel:[
                 {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
                     formatter:'actions', 
                     formatoptions:{ 
-                        keys:true,
-                        
+                        keys:true,                       
                         delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
                     }
-                },
+                },               
                 {name:'school', index:'school', width:150, editable: true, sortable:false, align:'center'},
-                {name:'professional', index:'professional', sortable:false, width:150, editable:true, align:'center'},
+                {name:'profession', index:'profession', sortable:false, width:150, editable:true, align:'center'},
                 {name:'degree', index:'degree', width:80, sortable:false, editable:true, align:'center'},
-                {name:'begin_end_time', index:'begin_end_time', sortable:true, width:120, editable: true,edittype:'text',align:'center'}
+                {name:'date', index:'date', sortable:true, width:120, editable: true,edittype:'text',align:'center'},
+                {name:'id', index:'id', width:1, editable: false, sortable:false, align:'center',}
                 ],
             viewrecords : true, 
             rowNum:10,
@@ -244,12 +244,13 @@ jQuery(function($) {
                 }, 0);
             },
     
-            editurl: "/examinee/update",//nothing is saved
+            editurl: "/examinee/updateedu",//nothing is saved
             caption: "教育经历"
     
             ,autowidth: true
     
         });
+        jQuery("#grid-table1").setGridParam().hideCol("id").trigger("reloadGrid");
         $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
     
         //switch element when editing inline
@@ -432,7 +433,6 @@ jQuery(function($) {
             $('.navtable .ui-pg-button').tooltip({container:'body'});
             $(table).find('.ui-pg-div').tooltip({container:'body'});
         }
-
     });
 
 jQuery(function($) {
@@ -453,7 +453,7 @@ jQuery(function($) {
 
         jQuery(grid_selector).jqGrid({
             subGrid : false,
-            url: "/examinee/list",
+            url: "/examinee/listwork",
             datatype: "json",
             height: '300px',
             shrinkToFit:true,
@@ -469,10 +469,10 @@ jQuery(function($) {
                         delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
                     }
                 },
-                {name:'school', index:'school', width:190, editable:true, sortable:false, align:'center'},
-                {name:'professional',index:'professional', sortable:false, width:80, editable:true,align:'center'},
-                {name:'degree', index:'degree', width:80, sortable:false, editable:true, align:'center'},
-                {name:'begin_end_time',index:'begin_end_time', sortable:true,width:150, editable: true,edittype:'text',align:'center'}
+                {name:'employer', index:'employer', width:190, editable:true, sortable:false, align:'center'},
+                {name:'unit',index:'unit', sortable:false, width:80, editable:true,align:'center'},
+                {name:'duty', index:'duty', width:80, sortable:false, editable:true, align:'center'},
+                {name:'date',index:'date', sortable:true,width:150, editable: true,edittype:'text',align:'center'}
                 ], 
             viewrecords : true, 
             rowNum:10,
@@ -496,8 +496,8 @@ jQuery(function($) {
                 }, 0);
             },
     
-            editurl: "/examinee/update",//nothing is saved
-            caption: "教育经历"
+            editurl: "/examinee/updatework",//nothing is saved
+            caption: "工作经历"
     
             ,autowidth: true
     
