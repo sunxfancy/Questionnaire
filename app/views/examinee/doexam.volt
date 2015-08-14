@@ -357,5 +357,3 @@ function getpaper(paper_index){
 
 
 </script>
-
-</html>
