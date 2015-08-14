@@ -38,18 +38,19 @@ class Paper extends \Phalcon\Mvc\Model
 
     public static function findId($name)
     {
-        $paper = self::find(array(
+        $paper = self::findFirst(array(
             'name = ?0',
             'bind' => array($name)
         ));
-        if ($paper)
+        if ($paper) {
             return $paper->id;
+        }
         else return null;
     }
 
     public static function findName($id)
     {
-        $paper = self::find($id);
+        $paper = self::findFirst($id);
         if ($paper)
             return $paper->name;
         else return null;
