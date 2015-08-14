@@ -136,10 +136,7 @@ class ExamineeController extends Base
             $children = $index->children;
             $childrentype = $index->children_type;
             $children = explode(",",$children );
-             echo $index->name;
-             echo " ";
-             echo sizeof($children);
-             echo "  ";
+            
             $childrentype = explode(",", $childrentype);
             for ($j=0; $j < sizeof($childrentype); $j++) { 
                 //0代表index，1代表factor
@@ -161,20 +158,23 @@ class ExamineeController extends Base
                 }               
             }
         }
-       print_r(array_unique($factor_name));
+
+      
         return explode(",",implode(",",array_unique($factor_name)));
     }
 
     public function getNumber($factors,$paper_id){
-        $this->view->disable();
+        // $this->view->disable();
         $questions_number = array();
+        
         for ($i=0; $i <sizeof($factors) ; $i++) {         
             $factor = Factor::findFirst(array(
                 'paper_id=?0 and name=?1',
                 'bind'=>array(0=>$paper_id,1=>$factors[$i])));
             if(!$factor){
-                break;
+                continue;
             }
+            
             $children = $factor->children;
             $childrentype = $factor->children_type;
             $children = explode(",",$children );
