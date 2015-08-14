@@ -77,6 +77,7 @@ class ExamineeController extends Base
             "project_id = ?1",
             "bind"=>array(1=>$project_id)
             ));
+
         $modules_id_array = $this->getModules($project);
         
         $indexs_name_array = $this->getIndex($modules_id_array);
@@ -127,25 +128,32 @@ class ExamineeController extends Base
     public function getFactor($indexs){
         //$this->view->disable();
         $factor_name = array();
-        for ($i=0; $i <sizeof($indexs) ; $i++) { 
-            echo $indexs[$i];
+        for ($i=0; $i <sizeof($indexs) ; $i++) {
+
             $index = Index::findFirst(array(
                 'name=?1',
                 'bind'=>array(1=>$indexs[$i])));
             $children = $index->children;
             $childrentype = $index->children_type;
             $children = explode(",",$children );
+             echo $index->name;
+             echo " ";
+             echo sizeof($children);
+             echo "  ";
             $childrentype = explode(",", $childrentype);
             for ($j=0; $j < sizeof($childrentype); $j++) { 
                 //0代表index，1代表factor
                 if ($childrentype[$j] == "0") {
                     $index1 = Index::findFirst(array(
                         'name=?1',
-                        'bind'=>array(1=>$children[$i])));
+                        'bind'=>array(1=>$children[$j])));
                     $children1 = $index1->children;
                     $children1 = explode(",",$children1);
-                    for ($k=0; $k <sizeof($children1) ; $k++) { 
+
+                    for ($k=0; $k <sizeof($children1) ; $k++) {
+
                         $factor_name[] = $children1[$k];
+
                     }
                 }
                 else{   
@@ -153,6 +161,7 @@ class ExamineeController extends Base
                 }               
             }
         }
+       print_r(array_unique($factor_name));
         return explode(",",implode(",",array_unique($factor_name)));
     }
 
