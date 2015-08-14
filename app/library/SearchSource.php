@@ -18,48 +18,53 @@ class SearchSource
 	private $modules_id;
 	private $indexs_name;
 	private $factors_name;
-	private $questions_id;
+	private $questions_martix;
 	
 	function __construct($project_id)
 	{
 		$this->project_id = $project_id;
 	}
 
+	public function getProjectId() {
+		return $this->project_id;
+	}
+
 	public function getProject($project_id = null){
 		if ($project_id)
 			return Project::findFirst($project_id);
 		else
+			if ($this->project == null) 
+				$this->project = $this->getProject($this->project_id);
 			return $this->project;
 	}
 
-	public function getModules_id($project_id = null)
-    {	
-    	if ($project_id) {
-    		$pmrels = Pmrel::find(array(
-	            "project_id = ?0",
-	            "bind" => array($project_id)
-            ));
-	    	$modules_id = array();
-	        foreach ($pmrels as $pmrel) {
-	            $modules_id[] = $pmrel->module_id;
-	        }
-	        return $modules_id;
-    	} else {
-    		if ($this->modules_id) {
-    			return $this->modules_id;
-    		} else {
-    			$this->modules_id = $this->getModules_id($this->project_id);
-    			return $this->modules_id;
-    		}
-    	}
-    }
+	public function getModulesId($project_id = null)
+	{	
+		if ($project_id) {
+			$pmrels = Pmrel::find(array(
+				"project_id = ?0",
+				"bind" => array($project_id)
+			));
+			$modules_id = array();
+			foreach ($pmrels as $pmrel) {
+				$modules_id[] = $pmrel->module_id;
+			}
+			return $modules_id;
+		} else {
+			if ($this->modules_id == null) 
+				$this->modules_id = $this->getModulesId($this->project_id);
+			return $this->modules_id;
+		}
+	}
 
 	public function getModules($project_id = null){
+		echo "Module\n";
 		if ($project_id){
-			$module_ids = $this->getModules_id($project_id);
+			$module_ids = $this->getModulesId($project_id);
 			$modules = array();
 			foreach($module_ids as $module_id){
-				$modules[] = Module::findFirst($module_id);
+				$mod = Module::findFirst($module_id);
+				$modules[$mod->name] = $mod; 
 			}
 			return $modules;
 		} else {
@@ -69,20 +74,22 @@ class SearchSource
 		}
 	}
 
-	public function getIndexs_name($modules = null){
+	public function getIndexsName($modules = null){
 		if ($modules) {
 			return $this->baseFindChildren($modules, $modules, 'Module');
 		} else {
 			if ($this->indexs_name == null) 
-				$this->indexs_name = $this->getIndexs_name($this->getModules());
+				$this->indexs_name = $this->getIndexsName($this->getModules());
+			echo "IndexName:\n";
 			return $this->indexs_name;
 		}
 	}
 
 	public function getIndexs($modules = null)
 	{
+		echo "Index\n";
 		if ($modules) {
-			return $this->getObjsByName($this->getIndexs_name($modules));
+			return $this->getObjsByName('Index', $this->getIndexsName($modules));
 		} else {
 			if ($this->indexs == null) 
 				$this->indexs = $this->getIndexs($this->getModules());
@@ -90,67 +97,103 @@ class SearchSource
 		}
 	}
 
-	public function getFactors($indexs = null)
-	{
-		if ($indexs)
-			return $this->baseFindChildren($indexs, $indexs, );
-	}
-
-	public function getFactors_name($indexs = null){
+	public function getFactorsName($indexs = null){
 		if ($indexs) {
 			return $this->baseFindChildren($indexs, $indexs, 'Index');
 		} else {
 			if ($this->factors_name == null) 
-				$this->factors_name = $this->getFactors_name($this->getModules());
+				$this->factors_name = $this->getFactorsName($this->getIndexs());
+			echo "FactorName:\n";
 			return $this->factors_name;
 		}
 	}
 
+	public function getFactors($indexs = null)
+	{
+		echo "Factor\n";
+		if ($indexs) {
+			return $this->getObjsByName('Factor', $this->getFactorsName($indexs));
+		} else {
+			if ($this->factors == null) 
+				$this->factors = $this->getFactors($this->getIndexs());
+			return $this->factors;
+		}
+	}
 
+	public function getQuestionsMartix($factors = null)
+	{
+		echo "QuestionMartix\n";
+		if ($factors) {
+			return $this->baseFindChildren($factors, $factors, 'Factor');
+		} else {
+			if ($this->questions_martix == null) 
+				$this->questions_martix = $this->getQuestionsMartix($this->getFactors());
+			return $this->questions_martix;
+		}
+	}
 
-    /**
-     * 批量寻找一组该资源的子元素
-     * @obj_array 要寻找的资源的集合
-     * @all_list 该资源的整体集合
-     * @class_name 该层的
-     * @return [description]
-     */
+	/**
+	 * 批量寻找一组该资源的子元素
+	 * @obj_array 要寻找的资源的集合
+	 * @all_list 该资源的整体集合
+	 * @class_name 该层的名称
+	 * @return 资源子元素名的集合
+	 */
 	function baseFindChildren($obj_array, $all_list, $class_name)
 	{
 		$ans = array();
 		$next = array();
 		foreach ($obj_array as $obj) {
-			$child_list = explode($obj->children);
+			$child_list = explode(',', $obj->children);
 			$child_type = null;
-			if ($obj->children_type)
-				$child_type = explode($obj->children_type);
+			if (isset($obj->children_type))
+				$child_type = explode(',', $obj->children_type);
 			foreach ($child_list as $key => $value) {
-				$ctype = null;
-				if ($child_type) $ctype = $child_type[$key];
-				if ($ctype === 0) $ans[$value] = $value;
-				if ($ctype === 1) $next[$value] = $value;
+				if ($child_type) {
+					$ctype = $child_type[$key];
+					if ($ctype == 1) {
+						if ($class_name == 'Factor')
+							$ans[$obj->getPaperName()][$value] = $value;
+						else
+							$ans[$value] = $value;
+					}
+					if ($ctype == 0) $next[$value] = $value;
+				} else $ans[$value] = $value;
 			}
 		}
-		if ($class_name != 'Module')
-		$objs = $this->getList($all_list, $next, $class_name);
-		foreach ($objs as $obj) {
-			$other_ans = $this->baseFindChildren($objs, $all_list, $class_name);
+		if ($class_name != 'Module' && count($next) != 0) {
+			$objs = $this->getList($all_list, $next, $class_name);
+			$this->combineAns($objs, $ans, $all_list, $class_name);
+		} 
+		return $ans;
+	}
+
+	function combineAns($objs, $ans, $all_list, $class_name)
+	{
+		$other_ans = $this->baseFindChildren($objs, $all_list, $class_name);
+		if ($class_name == 'Factor') {
 			foreach ($other_ans as $oa) {
 				$ans[$oa] = $oa;
 			}
+		} else {
+			foreach ($other_ans as $key => $qlist) {
+				foreach ($qlist as $value) {
+					$ans[$key][$value] = $value;
+				}
+			}
 		}
-		return $ans;
-    }
+	}
 
-    /**
-     * 在一个列表中查找需要的资源，如果找不到，就从数据库中取
-     * 并且会自动缓存到列表array中，只支持Module、Index和Factor的查找
-     * @array 资源对象列表
-     * @find_list 要找的对象的名字或number集合
-     * @class_name 资源类名
-     */
-    function getList($array, $find_list, $class_name)
-    {
+	/**
+	 * 在一个列表中查找需要的资源，如果找不到，就从数据库中取
+	 * 并且会自动缓存到列表array中，只支持Module、Index和Factor的查找
+	 * @array 资源对象列表
+	 * @find_list 要找的对象的名字或number集合
+	 * @class_name 资源类名
+	 * @return 返回全部找到的资源的集合
+	 */
+	function getList($array, $find_list, $class_name)
+	{
 		$ans = array();
 		$temp = array(); // 不在array中的资源名集合
 		foreach ($find_list as $value) {
@@ -171,11 +214,18 @@ class SearchSource
 
 	function getObjsByName($class_name, $namelist)
 	{
-		$objs = $class_name::find(array(
-			'name IN ({names:array})',
-			'bind' => array('names' => $namelist)
-		));
-		return $objs;
+		if ($namelist && count($namelist) != 0) {
+			$objs = $class_name::find(array(
+				'name IN ({names:array})',
+				'bind' => array('names' => array_values($namelist))
+			));
+			$ans = array();
+			foreach ($objs as $obj) {
+				$ans[$obj->name] = $obj;
+			}
+			return $ans;
+		} else {
+			throw new Exception("Name list is null");
+		}
 	}
 }
-?>
