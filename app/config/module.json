@@ -1,7 +1,7 @@
 {
 	"胜任力" : {
 		"mk_ldl": {
-			"children" : "zb_ldnl,zb_pdyjcnl,zb_zzglnl,zb_kfxnl",
+			"children" : "zb_ldnl,zb_pdyjcnl,zb_zzglnl,zb_fxx",
 			"chs_name": "领导力"
 		},
 		"mk_zysz": {
@@ -17,7 +17,7 @@
 			"chs_name" : "态度品质"
 		},
 		"mk_zynl": {
-			"children" : "zb_bxx,zb_ybnl,zb_jgx,zb_rjgxtjsp,zb_chx",
+			"children" : "zb_bxx,zb_ybnl,zb_jmng,zb_rjgxtjsp,zb_chd",
 			"chs_name" : "专业能力"
 		},
 		"mk_grtz": {
@@ -35,7 +35,7 @@
 			"chs_name" : "素质结构"
 		},
 		"mk_ztjg": {
-			"children" : "zb_chx,zb_jgx,zb_jlx,zb_tzjl,zb_fxnl,zb_gnnl",
+			"children" : "zb_chd,zb_jmng,zb_jlx,zb_tzjl,zb_fxnl,zb_gnnl",
 			"chs_name" : "智体结构"
 		},
 		"mk_nljg": {
