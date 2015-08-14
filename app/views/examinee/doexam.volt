@@ -362,6 +362,9 @@ function getpaper(paper_index){
          $.post('/Examinee/getpaper', {'paper_name':paper_id_name[paper_index]}, function(data) {
          questions=data.question;
          description=data.description;
+         var sss=data.order;
+         sss=sss.split(",");
+         alert(sss.sort);
          Leo_initPanel(questions.length);
         Leo_initPaperId();
         Leo_timer_start();
