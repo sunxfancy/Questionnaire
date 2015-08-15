@@ -253,9 +253,7 @@
 		        "ans_do": "$ans=($ans-1)/2.8"
 		    },
 		    "con": {
-		        "factor": "",
-		        "chs_name": "稳定系数",
-		        "ans_do": ""
+		        "chs_name": "稳定系数"
 		    }
     },
 
