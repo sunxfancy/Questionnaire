@@ -200,10 +200,16 @@
     height:auto;
     margin-top:15px;
     overflow: hidden;
-
-
 }
 
+.Leo_ans_div_spm{
+    cursor:pointer;
+    width:49%;
+    height:75px;
+    margin-top:15px;
+    overflow: hidden;
+    float:left;
+}
 
 
 .Leo_ans_checkdiv{

@@ -27,16 +27,19 @@
         </div>
         
         <div id="Leo_control" style="width:600px;height:60px;text-align:center;">
-            <table style="width:30%;height:60px;margin:0 auto;"><tr style="width:100%;height:100%;"><td style="width:25%;">
+            <table style="width:30%;height:60px;margin:0 auto;"><tr style="width:100%;height:100%;"><td style="width:20%;">
                            <img style="height:40px;display:none;" src="../images/left.png" id="Leo_pageup"/>
 
-                </td><td style="width:25%;">
+                </td><td style="width:20%;">
                             <img style="height:40px" src="../images/pause.png" id="Leo_pause" onclick="$('#Leo_hiden').slideDown('fast', function() {});" />
-                </td><td style="width:25%;">
+                </td><td style="width:20%;">
                             <img style="height: 40px;" id="Leo_pagedown" src="../images/right.png" />
 
-                </td><td style="width:25%;">
+                </td><td style="width:20%;">
                             <img style="height: 40px; display: none;" id="Leo_checkup" src="../images/signin.png"  />
+
+                </td><td style="width:20%;">
+                            <button style="height: 40px;;" id="Leo_All" value="全选A" />
 
                 </td></tr>
             
@@ -74,7 +77,7 @@
 
 <script type="text/javascript">
  /*定义重要的全局变量*/
- var ans=new Array();
+var ans=new Array();
 for(var i=0;i<184;i++){
     ans[i]="a";
 }
@@ -97,6 +100,15 @@ var ques_order=new Array();
 
 
 $(function(){
+
+    $("#Leo_All").click(function(){
+        var ans=new Array();
+        for(var i=0;i<questions.length;i++){
+            ans[i]="a";
+        }
+        $.cookie("exam_ans"+{{number}},ans.join("|"),{experies:7});
+        initCookie(questions.length,"exam_ans"+{{number}});
+    });
     Leo_timer_start();
     Leo_initPaperId();
     getpaper(paper_id_now);
@@ -228,10 +240,16 @@ function Leo_timer_start(){
 }
 
 function initTitle(index){
+
     var option_disp="<div>";
     var  option1="<div class='Leo_ans_div'><div class='Leo_ans_checkdiv'><input name='ans_sel' type='radio' id='123' style='cursor:pointer;'/></div><div class='Leo_ans_checktext'>";
     var option2="</div></div>";
 
+    if(paper_id_name[paper_id_now]=="SPM"){
+        option_disp="<div>";
+        option1="<div class='Leo_ans_div'><div class='Leo_ans_checkdiv'><input name='ans_sel' type='radio' id='123' style='cursor:pointer;'/></div><div class='Leo_ans_checktext'>";
+        option2="</div></div>";
+    }
     var options=questions[index].options.split("|");
     for (var i = 0; i <options.length; i++) {
         option_disp+=option1+options[i]+option2;
@@ -316,6 +334,7 @@ function changepage(newpage,isCookie){
         var ans_str=get_ans_str(Leo_index_now);
         refreshCookie(Leo_index_now,ans_str,"exam_ans"+{{number}});
     }
+
    Leo_index_now=newpage;
    document.getElementById("newdiv_"+newpage).focus();
    initTitle(newpage);
@@ -375,8 +394,6 @@ function getpaper(paper_index){
          description=data.description;
          ques_order=data.order;
          Leo_initPanel(questions.length);
-            
-            
         initCookie(questions.length,"exam_ans"+{{number}});
         $('#announce_panel').children('p').replaceWith("<p>"+description+"</p>");
      });
@@ -387,37 +404,30 @@ function Leo_check(){
 
 
     $.post('/Examinee/getExamAnswer',{"answer":$.cookie("exam_ans"+{{number}}),"paper_name":paper_id_name[paper_id_now],"order":ques_order}, function(data) {
-                            
-                            if(paper_id_now<5){
-                                
-                                alert("提交成功！点击确定进入"+paper_id_name[paper_id_now+1]+"答题");
-                                paper_id_now++;
-                                done_index=0;
-                                $("#Leo_checkup").css("display","none");
-                                $.cookie("paper_id"+{{number}},paper_id_now,{experies:7});
-                                $.cookie("exam_ans"+{{number}},"",{expires:-1});
-                                getpaper(paper_id_now);
-                            }else{
-
-                            }
+                            if(data.flag){
+                                if(paper_id_now<5){
+                                    
+                                    alert("提交成功！点击确定进入"+paper_id_name[paper_id_now+1]+"答题");
+                                    paper_id_now++;
+                                    done_index=0;
+                                    $("#Leo_checkup").css("display","none");
+                                    $.cookie("paper_id"+{{number}},paper_id_now,{experies:7});
+                                    $.cookie("exam_ans"+{{number}},"",{expires:-1});
+                                    getpaper(paper_id_now);
+                                }else{
+                                    alert("提交成功!您已完成全部题目的作答，谢谢您的配合。\n点击‘确定’退出系统。");
+                                    window.location.href="/";
+                                }
+                              }else{
+                                    alert("提交出错，请联系管理员！");
+                              }
                         });
+
 }
 
 
 
-// questions[0]={
-    //     'index':0,
-    //     'title':'',
-    //     'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'
-    // };
-    // questions[1]={
-    //     'index':1,
-    //     'title':"本测验包括许多问题和选择，任何答案选择都无所谓对错，222",
-    //     'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'
-    // };
-    // questions[2]={'index':2,
-    //     'title':"本测验包括许多问题和选择，任何答案选择都无所谓对错，222",
-    //     'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'};
+
   
 
 </script>
