@@ -273,6 +273,75 @@ class UploadController extends \Phalcon\Mvc\Controller {
 		}
 	}
 	
+	/**
+	 * 上传SPM题库
+	 * SPM 60道图片题 图片上传至/public/spmimages/
+	 */
+	public function uploadSPMAction(){
+		$spmarray = self::getSPMListArray();
+		$paper_id = self::getPaperIdByName("SPM");
+		foreach($spmarray as $value ){
+// 			echo "<pre>";
+// 			print_r($value);
+// 			echo "</pre>";
+			for($i = 0; $i<=33; $i+=3){
+				$question = new Question();
+				$question->topic = $value[$i+1];
+				$question->number = $value[$i+2];
+				$question->options = $value[$i];
+				$question->paper_id = $paper_id;
+				$question->save();
+			}
+		}
+		echo "SPM导入成功";
+		
+	}
+	public function getSPMListArray(){
+		$rtn_array = array();
+		for($xuanhuan1 = 1; $xuanhuan1 <= 5; $xuanhuan1 ++ ){
+			//A B C D E
+			$tmp = array();
+			if ($xuanhuan1 <= 2 ){
+				//A B
+				
+				for($tihao = 1; $tihao<=12; $tihao++){
+					//1 ~ 12
+					$str = null;
+					for( $xuanxiang = 1; $xuanxiang <=6; $xuanxiang++ ){
+						//1~6
+						if($xuanxiang!=1){
+							$str .= '|';
+						}
+						$str .= chr($xuanhuan1+64).$tihao.'A'.$xuanxiang;
+					}
+					$tmp[] = $str;
+					$tmp[] = chr($xuanhuan1+64).$tihao.'M';
+					$tmp[] = ($xuanhuan1-1)*12+$tihao;
+		
+				}
+		
+			}else{
+				//C D E
+				for($tihao =1; $tihao<=12; $tihao++){
+					//1 ~ 12
+					$str =null;
+					for($xuanxiang = 1; $xuanxiang <=8 ; $xuanxiang++ ){
+						if($xuanxiang!=1){
+							$str.= '|';
+						}
+						$str .= chr($xuanhuan1+64).$tihao.'A'.$xuanxiang;
+					}
+					$tmp[] = $str;
+					$tmp[] = chr($xuanhuan1+64).$tihao.'M';
+					$tmp[] = ($xuanhuan1-1)*12+$tihao;
+		
+		
+				}
+			}
+			$rtn_array[] = $tmp;
+		}
+		return $rtn_array;
+	}
 	
 	
 	
