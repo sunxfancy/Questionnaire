@@ -83,7 +83,7 @@ var done_index=0;
 
 var questions=new Array();
 var description="";
-var paper_id_name=new Array("16PF","SCL","EPQA","CPI","SPM","EPPS");
+var paper_id_name=new Array("16PF","EPPS","SCL","EPQA","CPI","SPM");
 var paper_name=new Array("卡特尔十六种人格因素测验","爱德华个人偏好测试","SCL90测试","爱克森个性问卷成人","青年性格问卷测试","瑞文标准推理测验");
 var paper_id_now=0;
 var ques_order=new Array();
@@ -234,17 +234,17 @@ function initTitle(index){
         option_disp="<div>";
         option1="<div class='Leo_ans_div_spm'><div class='Leo_ans_checkdiv'><input name='ans_sel' type='radio' id='123' style='cursor:pointer;'/></div><div class='Leo_ans_checktext' style='width:140px;height:85px;text-align:center;'><img style='height:80px;margin-top:2px;' src='/spmimages/";
         option2=".jpg' /></div></div>";
-        //title=(questions[index].index+1)+"."+"<img style='height:145px;' src='/spmimages/"+questions[index].title+".jpg' />";
+        title=(questions[index].index+1)+"."+"<img style='height:145px;' src='/spmimages/"+questions[index].title+".jpg' />";
 
-        title=(questions[index].index+1)+"."+"<img style='height:145px;' src='/spmimages/A1M.jpg' />";
+        //title=(questions[index].index+1)+"."+"<img style='height:145px;' src='/spmimages/A1M.jpg' />";
 
     } 
 
     var options=questions[index].options.split("|");
 
     for (var i = 0; i <options.length; i++) {
-        // option_disp+=option1+options[i]+option2;
-        option_disp+=option1+"A1A1"+option2;
+        option_disp+=option1+options[i]+option2;
+        //option_disp+=option1+"A1A1"+option2;
     }
     option_disp+="</div>";
     
@@ -407,6 +407,8 @@ function Leo_check(){
                                     getpaper(paper_id_now);
                                 }else{
                                     alert("提交成功!您已完成全部题目的作答，谢谢您的配合。\n点击‘确定’退出系统。");
+                                    $.cookie("paper_id"+{{number}},"",{experies:-1});
+                                    $.cookie("exam_ans"+{{number}},"",{expires:-1});
                                     window.location.href="/";
                                 }
                               }else{
