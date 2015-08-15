@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 11:08:59
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-15 15:46:10
+ * @Last Modified time: 2015-08-15 16:06:41
  */
 
 /**
@@ -169,7 +169,7 @@ class Score
 			$count = count($str1_array);
 			if(is_numeric($str1_array[0])){
 			   for($i = 0; $i <$count; $i++ ){
-			   		if(is_numeric($str1_array[$i]) && preg_match ("/^[A-Z]$/", $str2_array[$i])){
+			   		if(is_numeric($str1_array[$i]) && preg_match ("/^[a-z]$/", $str2_array[$i])){
 			   			#ok
 			   		}else{
 			   			throw new Exception("The two strings \"$str1\" and \"$str2\" are not appropriate (type)");
@@ -178,9 +178,9 @@ class Score
 			   $rtn = self::arrayMergeKeyToValue($str1_array, $str2_array);
 			   return $rtn;
 					
-			}else if (preg_match ("/^[A-Z]$/", $str1_array[0]) ){
+			}else if (preg_match ("/^[a-z]$/", $str1_array[0]) ){
 				for($i = 0; $i <$count; $i++ ){
-					if(is_numeric($str2_array[$i]) && preg_match ("/^[A-Z]$/", $str1_array[$i])){
+					if(is_numeric($str2_array[$i]) && preg_match ("/^[a-z]$/", $str1_array[$i])){
 						#ok
 					}else{
 						throw new Exception("The two strings \"$str1\" and \"$str2\" are not appropriate (type)");
