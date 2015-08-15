@@ -263,4 +263,195 @@ class Score
 			return $array['Y'];
 		}
 	}
+	
+	/**
+	 * 标准命名替换 针对name2.xls表
+	 */
+	public static function reEPQAList($epqa_result_array){
+		$rt_array = array(); 
+		foreach($epqa_result_array as $value){
+		 	switch($value){
+		 		case 'E': $rt_array[] = 'epqae';break;
+		 		case 'P': $rt_array[] = 'epqap';break;
+		 		case 'N': $rt_array[] = 'epqan';break;
+		 		case 'L': $rt_array[] = 'epqal';break;
+		 		default : $rt_array[]=null;
+		 	}
+		 }
+		 return $rt_array;
+		 
+	}
+	public static function reEPPSList($epps_result_array){
+		$rt_array = array();
+		foreach($epps_result_array as $value){
+			switch($value){
+			case 1: $rt_array[] = 'ach'; break;
+			case 2: $rt_array[] = 'def'; break;
+			case 3: $rt_array[] = 'ord'; break;
+			case 4: $rt_array[] = 'exh'; break;
+			case 5: $rt_array[] = 'aut'; break;
+			case 6: $rt_array[] = 'aff'; break;
+			case 7: $rt_array[] = 'int'; break;
+			case 8: $rt_array[] = 'suc'; break;
+			case 9: $rt_array[] = 'dom'; break;
+			case 10: $rt_array[] = 'aba'; break;
+			case 11: $rt_array[] = 'nur'; break;
+			case 12: $rt_array[] = 'chg'; break;
+			case 13: $rt_array[] = 'end'; break;
+			case 14: $rt_array[] = 'het'; break;
+			case 15: $rt_array[] = 'agg'; break;
+			}
+		}
+		return $rt_array;
+	} /**
+		 * Array
+(
+    [0] => Array
+        (
+            [0] => 13
+            [1] => end
+        )
+
+    [1] => Array
+        (
+            [0] => 7
+            [1] => int
+        )
+
+    [2] => Array
+        (
+            [0] => 3
+            [1] => ord
+        )
+
+    [3] => Array
+        (
+            [0] => 1
+            [1] => ach
+        )
+
+    [4] => Array
+        (
+            [0] => 12
+            [1] => chg
+        )
+
+    [5] => Array
+        (
+            [0] => 10
+            [1] => aba
+        )
+
+    [6] => Array
+        (
+            [0] => 9
+            [1] => dom
+        )
+
+    [7] => Array
+        (
+            [0] => 6
+            [1] => aff
+        )
+
+    [8] => Array
+        (
+            [0] => 2
+            [1] => def
+        )
+
+    [9] => Array
+        (
+            [0] => 15
+            [1] => agg
+        )
+
+    [10] => Array
+        (
+            [0] => 8
+            [1] => suc
+        )
+
+    [11] => Array
+        (
+            [0] => 4
+            [1] => exh
+        )
+
+    [12] => Array
+        (
+            [0] => 5
+            [1] => aut
+        )
+
+    [13] => Array
+        (
+            [0] => 14
+            [1] => het
+        )
+
+    [14] => Array
+        (
+            [0] => 11
+            [1] => nur
+        )
+
+)
+
+
+		 */
+	
+	public static function useforEPPSNumToName(){
+		/**
+		 * 来自指标-因子-试题-简称.xls
+		 */
+		$str = "持久需要	13
+		省察需要	7
+		秩序需要	3
+		成就需要	1
+		变异需要	12
+		谦卑需要	10
+		支配需要	9
+		亲和需要	6
+		顺从需要	2
+		攻击需要	15
+		求助需要	8
+		表现需要	4
+		自主需要	5
+		异性恋需要	14
+		慈善需要	11";
+		/**
+		 *  来自name2.xls
+		 */
+		$str2 = "持久需要	end
+省察需要	int
+秩序需要	ord
+成就需要	ach
+变异需要	chg
+谦卑需要	aba
+支配需要	dom
+亲和需要	aff
+顺从需要	def
+攻击需要	agg
+求助需要	suc
+表现需要	exh
+自主需要	aut
+异性恋需要	het
+慈善需要	nur";
+		$str_array = explode("\n", $str);
+		$str2_array = explode("\n", $str2);
+		$count = count($str_array);
+		$result_array =array();
+		for($i = 0; $i < $count ; $i ++ ){
+			$tmp = array();
+			$tmp_num = array();
+			$tmp_val = array();
+			preg_match('/[0-9]+/',$str_array[$i], $tmp_num);
+			preg_match('/[a-z]+/', $str2_array[$i], $tmp_val);
+			$tmp[] = $tmp_num[0];
+			$tmp[] = $tmp_val[0];
+			$result_array[]= $tmp;
+		}
+		return $result_array;
+	}	
 }
