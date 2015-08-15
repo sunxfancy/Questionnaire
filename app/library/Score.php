@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 11:08:59
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-13 17:46:24
+ * @Last Modified time: 2015-08-15 08:59:44
  */
 
 /**
@@ -11,12 +11,15 @@
 */
 class Score
 {
-	
-	public function __construct()
+	private $ss; // search_source
+
+	public function __construct($project_id)
 	{
+		$ss = new SearchSource($project_id);
+
 	}
 
-	public function Calculate($project_id)
+	public function Calculate()
 	{
 		$this->papers_name = array('ks','scl','spm');
 		$this->papers = Paper::findByNames($papers_name);
