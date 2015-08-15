@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 11:08:59
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-15 14:19:02
+ * @Last Modified time: 2015-08-15 15:04:09
  */
 
 /**
@@ -15,20 +15,30 @@ class Score
 
 	public function __construct($project_id)
 	{
-		$ss = new SearchSource($project_id);
-
+		$this->ss = new SearchSource($project_id);
 	}
 
 	public function Calculate()
 	{
-		
-		$this->calFactor($factor, $examinees, $answers);
+		$answers = $this->workAnswers();
+		print_r($answers);
+		$factor_ans = $this->workFactors($answers);
 	}
+
+
+	public function workFactors($answers)
+	{
+		foreach ($this->ss->getFactors() as $factor) {
+			$this->calFactor($factor, $this->ss->getExaminees(), $answers);
+		}
+	}
+
 
 	/**
 	 * 计算因子得分
 	 * @factor 要计算的因子对象
 	 * @examinees 被试人员的对象列表
+	 * @return 返回一个人员id为索引的factor_ans表
 	 */
 	function calFactor($factor, $examinees, $answers)
 	{
@@ -107,9 +117,33 @@ class Score
 	}
 
 	// 传入一个answer对象数组, 计算所有人的得分
-	function calAns($answers, $examinees)
+	function workAnswers()
 	{
+		$basic_score = new BasicScoreOne();
+		$ans = array();
+		foreach ($this->ss->getExaminees() as $examinee) {
+			try{
+				$answers_df = $basic_score->getPapersByExamineeId($examinee->id);
+				$ans[$examinee->id] = $this->changeAns($answers_df);
+			}catch(Exception $e){
+				echo $e;
+			}
+		}
+		return $ans;
+	}
 
+	function changeAns($ans_df)
+	{
+		$ret = array();
+		foreach ($ans_df as $ans) {
+			$qlist = explode(',', $ans['question_number_list']);
+			$slist = explode(',', $ans['score']);
+			foreach ($qlist as $key => $qnum) {
+				$score = $slist[$key];
+				$ret[$ans->paper_name][$qnum] = $score;
+			}
+		}
+		return $ret;
 	}
 	
 	/**
