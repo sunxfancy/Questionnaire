@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 11:08:59
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-15 10:05:37
+ * @Last Modified time: 2015-08-15 14:19:02
  */
 
 /**
@@ -300,8 +300,9 @@ class Score
 			}
 		}
 		return $rt_array;
-	} /**
-		 * Array
+	} 
+/*
+Array
 (
     [0] => Array
         (

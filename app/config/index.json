@@ -93,7 +93,7 @@
 
 	"zb_gzzf":{
 		"children":"X4,zb_rjgxtjsp,chg,Y3,Q3,spmabc,aff",
-		"childred_type":"1,0,1,1,1,1,1",
+		"children_type":"1,0,1,1,1,1,1",
 		"action":"(1.5*(X4 + zb_rjgxtjsp) + chg + Y3 + Q3 + spmabc + aff)/8",
 		"chs_name": "工作作风"
 	},
