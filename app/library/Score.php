@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 11:08:59
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-15 17:14:43
+ * @Last Modified time: 2015-08-15 17:46:52
  */
 
 /**
@@ -16,21 +16,23 @@ class Score
 	public function __construct($project_id)
 	{
 		$this->ss = new SearchSource($project_id);
+		$this->factor_done = array();
 	}
 
 	public function Calculate()
 	{
 		$answers = $this->workAnswers();
-		print_r($answers);
 		$factor_ans = $this->workFactors($answers);
 	}
 
 
 	public function workFactors($answers)
 	{
+		$ans = array();
 		foreach ($this->ss->getFactors() as $factor) {
 			$this->calFactor($factor, $this->ss->getExaminees(), $answers);
 		}
+		return $ans;
 	}
 
 
@@ -46,7 +48,7 @@ class Score
 			return $this->factor_done[$factor->name];
 		$child_list = explode(',', $factor->children);
 		$child_type = explode(',', $factor->children_type);
-
+		if (count($child_list) == 0) return null;
 		$paper_name = $factor->getPaperName();
 		$items = $this->factorRes($child_list, $child_type, $examinees, $answers);
 		$ans = array();
@@ -57,7 +59,14 @@ class Score
 					'examinee_id = ?0 AND factor_id = ?1',
 					'bind' => array($eid, $factor->id)
 			));
-			$factor_ans->score = $this->doAction($factor->action, $items[$eid]);
+			$factor_ans->examinee_id = $eid;
+			$factor_ans->factor_id = $factor->id;
+			$factor_ans->score = $this->doAction($factor->children, $factor->action, $items[$eid]);
+			if (!$factor_ans->save()) {
+				foreach ($factor_ans->getMessages() as $msg) {
+					throw new Exception($msg);
+				}
+			}
 			$ans[$eid] = $factor_ans;
 		}
 
@@ -66,22 +75,24 @@ class Score
 		return $ans;
 	}
 
-	function doAction($action, $array)
+	function doAction($children, $action, $array)
 	{
 		if (in_array($action, CalFunc::$func_reg)) {
 			return CalFunc::$action($array);
 		} else {
 			if ($this->action_function[$action] == null) {
-				$this->action_function[$action] = $this->complie_action($action);
+				$this->action_function[$action] = $this->complie_action($children, $action);
 			}
+			call_user_func_array($this->action_function[$action], $array);
 		}
 	}
 
 	function complie_action($child_list, $action)
 	{
 		// 这里需要正则加$符号
-
-
+		$child_list = preg_replace('/[a-zA-Z][a-zA-Z0-9]*/', '\$$0', $child_list);
+		$action     = preg_replace('/[a-zA-Z][a-zA-Z0-9]*/', '\$$0', $action);
+		$action = "return $action;";
 		return create_function($child_list, $action);
 	}
 
@@ -89,6 +100,10 @@ class Score
 	{
 		$items = $this->makeItemArray($examinees);
 		foreach ($child_list as $key => $child) {
+			if ($child == null) {
+				print_r($child_list);
+				throw new Exception("child is null");
+			}
 			$ctype = $child_type[$key];
 			if ($ctype == 1) {
 				foreach ($examinees as $examinee) {
@@ -119,11 +134,7 @@ class Score
 		$ans = $factor_map[$factor_name];
 		if ($ans) return $ans;
 		else {
-			$msg = '';
-			foreach ($factor_map as $key => $value) {
-				$msg .= $key."\n";
-			}
-			throw new Exception("can not find factor [$factor_name] in resource\n$msg");
+			throw new Exception("can not find factor [$factor_name] in resource\n");
 		}
 	}
 
