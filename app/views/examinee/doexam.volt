@@ -94,11 +94,6 @@ var paper_id_name=new Array("16PF","SCL","EPQA","CPI","SPM","EPPS");
 var paper_id_now=0;
 var ques_order=new Array();
 
-
-
-
-
-
 $(function(){
 
     $("#Leo_All").click(function(){
@@ -112,10 +107,7 @@ $(function(){
     Leo_timer_start();
     Leo_initPaperId();
     getpaper(paper_id_now);
-   
-    
-    
-    
+
      $('#do_announce').click(function(){
         if($("#announce_panel").css('display')=='none'){
             $('#announce_panel').slideDown('fast', function() {});
@@ -132,11 +124,6 @@ $(function(){
      $("#Leo_pageup").click(function(){
          changepage(Leo_index_now-1,true);
      });
-
-
-
-
-
 });
 
 function Leo_initPaperId(){
@@ -245,19 +232,25 @@ function initTitle(index){
     var  option1="<div class='Leo_ans_div'><div class='Leo_ans_checkdiv'><input name='ans_sel' type='radio' id='123' style='cursor:pointer;'/></div><div class='Leo_ans_checktext'>";
     var option2="</div></div>";
 
+    var title='<span>'+(questions[index].index+1)+"."+questions[index].title+'</span>';
+    
+
     if(paper_id_name[paper_id_now]=="SPM"){
         option_disp="<div>";
-        option1="<div class='Leo_ans_div'><div class='Leo_ans_checkdiv'><input name='ans_sel' type='radio' id='123' style='cursor:pointer;'/></div><div class='Leo_ans_checktext'>";
-        option2="</div></div>";
-    }
+        option1="<div class='Leo_ans_div_spm'><div class='Leo_ans_checkdiv'><input name='ans_sel' type='radio' id='123' style='cursor:pointer;'/></div><div class='Leo_ans_checktext'><img style='height:69px;' src='/spmimages/";
+        option2=".jpg/ ></div></div>";
+        var title=(questions[index].index+1)+"."+"<img style='height:145px;' src='/spmimages/"+questions[index].title+".jpg' />";
+    } 
+
     var options=questions[index].options.split("|");
+
     for (var i = 0; i <options.length; i++) {
         option_disp+=option1+options[i]+option2;
     }
     option_disp+="</div>";
-    $('#title_div').children('span').replaceWith('<span>'+(questions[index].index+1)+"."+questions[index].title+'</span>');
+    
     $('#ans_div').children('div').replaceWith(option_disp);
-
+    $('#title_div').children('span').replaceWith('<span>'+(questions[index].index+1)+"."+questions[index].title+'</span>');
 
 
     $('.Leo_ans_checktext').click(function(){
