@@ -10,8 +10,8 @@
         <!--这一部分是指导语部分-->
         <div style="overflow:hidden;width:600px;height:440px;">
         <div style="width:95%;height:410px;margin:0 auto;display:none;font-size:22px;font-family:'微软雅黑';overflow:auto;" id='announce_panel'><p></p></div>
-        <div id='do_announce' style="width:100%;height:30px;background-color:#eeed6a;cursor:pointer;text-align:right;">
-            <span></span><img src="/images/down.png" style="height:90%;" />
+        <div id='do_announce' style="width:100%;height:30px;background-color:#eeed6a;cursor:pointer;text-align:center;font-size:22px;">
+            <div style="margin:0 auto;"><!--<img src="/images/down.png" style="height:27px;" />--></div>
         </div>
 
         <div class="Leo_question_l" style="height:400px;" id="Leo_question_panel">
@@ -83,8 +83,8 @@ var done_index=0;
 
 var questions=new Array();
 var description="";
-var paper_id_name=new Array("CPI","16PF","SPM","SCL","EPQA","EPPS");
-var paper_name=new Array("卡特尔十六种人格因素测验","爱德华个人偏好测试","SCL90测试","爱克森个性问卷成人","","");
+var paper_id_name=new Array("16PF","SCL","EPQA","CPI","SPM","EPPS");
+var paper_name=new Array("卡特尔十六种人格因素测验","爱德华个人偏好测试","SCL90测试","爱克森个性问卷成人","青年性格问卷测试","瑞文标准推理测验");
 var paper_id_now=0;
 var ques_order=new Array();
 
@@ -133,6 +133,7 @@ function Leo_initPaperId(){
 
 function Leo_initPanel(questionlength) {
         $("#time_panel").html(paper_id_name[paper_id_now]);
+         $("#do_announce").children("div").html(paper_name[paper_id_now]);
 
         $("#Leo_question_table").replaceWith("<table style='width:92%;text-align:center;vertical-align:middle;table-layout:fixed;margin:0 auto;' id='Leo_question_table' cellspacing='0'></table>");
 
@@ -397,13 +398,13 @@ function Leo_check(){
                             if(data.flag){
                                 if(paper_id_now<5){
                                     
-                                    alert("提交成功！点击确定进入"+paper_id_name[paper_id_now+1]+"答题");
+                                    alert("提交成功！点击确定进入"+paper_name[paper_id_now+1]+"答题");
                                     paper_id_now++;
                                     done_index=0;
                                     $("#Leo_checkup").css("display","none");
                                     $.cookie("paper_id"+{{number}},paper_id_now,{experies:7});
                                     $.cookie("exam_ans"+{{number}},"",{expires:-1});
-                                    getpaper(0);
+                                    getpaper(paper_id_now);
                                 }else{
                                     alert("提交成功!您已完成全部题目的作答，谢谢您的配合。\n点击‘确定’退出系统。");
                                     window.location.href="/";

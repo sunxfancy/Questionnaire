@@ -196,9 +196,10 @@ class ExamineeController extends Base
                 }               
             }
         }
-        $number = array();
         $number = explode(",",implode(",",array_unique($questions_number)));
-        for ($i=0; $i < sizeof($number); $i++) { 
+        $length = sizeof($number);
+        for($i=0;$i<$length;$i++)
+        {
             $number[$i] = intval($number[$i]);
         }
         sort($number);
