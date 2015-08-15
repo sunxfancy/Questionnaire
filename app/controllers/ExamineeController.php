@@ -186,14 +186,15 @@ class ExamineeController extends Base
                     $children1 = $factor1->children;
                     $children1 = explode(",",$children1);
                     for ($k=0; $k <sizeof($children1) ; $k++) { 
-                        $questions_number[] = $children1[$k];                       
+                        $questions_number[] = trim($children1[$k],' ');                       
                     }
                 }
                 else{   
-                        $questions_number[] = $children[$j];
+                        $questions_number[] = trim($children[$j],' ');
                 }               
             }
         }
+        print_r($questions_number);
         return explode(",",implode(",",array_unique($questions_number)));
     }
 
