@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 11:08:59
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-15 16:06:41
+ * @Last Modified time: 2015-08-15 17:03:10
  */
 
 /**
@@ -80,6 +80,8 @@ class Score
 	function complie_action($child_list, $action)
 	{
 		// 这里需要正则加$符号
+
+
 		return create_function($child_list, $action);
 	}
 
@@ -133,6 +135,7 @@ class Score
 		foreach ($this->ss->getExaminees() as $examinee) {
 			try{
 				$answers_df = $basic_score->getPapersByExamineeId($examinee->id);
+				print_r($answers_df);
 				$ans[$examinee->id] = $this->changeAns($answers_df);
 			}catch(Exception $e){
 				echo $e;
@@ -145,8 +148,8 @@ class Score
 	{
 		$ret = array();
 		foreach ($ans_df as $ans) {
-			$qlist = explode(',', $ans['question_number_list']);
-			$slist = explode(',', $ans['score']);
+			$qlist = explode('|', $ans['question_number_list']);
+			$slist = explode('|', $ans['score']);
 			foreach ($qlist as $key => $qnum) {
 				$score = $slist[$key];
 				$ret[$ans->paper_name][$qnum] = $score;
@@ -268,6 +271,8 @@ class Score
 				}
 			}
 		}
+		throw new Exception("can not find the answer".print_r($needle, true));
+		
 	}
 	
 	
@@ -278,6 +283,9 @@ class Score
 	 * 字符串格式为 name-score
 	 */
 	public static function readScoreFromArray($array){
+		if (!is_array($array)) {
+			throw new Exception('$array is not an array');
+		}
 		 $rtn_array = array();
 		 foreach ($array as $key => $value){
 		 	if($key =='TH' || $key == 'XZ'){

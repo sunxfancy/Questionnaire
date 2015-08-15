@@ -290,14 +290,12 @@ class SearchSource
 	function combineAns($objs, $ans, $all_list, $class_name)
 	{
 		$other_ans = $this->baseFindChildren($objs, $all_list, $class_name);
-		if ($class_name == 'Factor') {
+		if ($class_name != 'Factor') {
 			foreach ($other_ans as $key => $value) {
 				$ans[$key] = $value;
 			}
 		} else {
 			foreach ($other_ans as $key => $qlist) {
-				if ($qlist == null || sizeof($qlist) == 0) 
-					throw new Exception("combineAns error: $qlist is empty");
 				foreach ($qlist as $value) {
 					$ans[$key][$value] = $value;
 				}
@@ -325,8 +323,10 @@ class SearchSource
 			}
 		}
 		// 这里需要验证
+		$objs = array();
 		try {
-			$objs = $this->getObjsByName($class_name, $temp);
+			if (count($temp) != 0)
+				$objs = $this->getObjsByName($class_name, $temp);
 		} catch (Exception $e) {
 			echo $e;
 			$msg = "Find_list: ".print_r($find_list, true);
