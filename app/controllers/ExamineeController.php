@@ -196,8 +196,14 @@ class ExamineeController extends Base
                 }               
             }
         }
-        
-        return explode(",",implode(",",array_unique($questions_number)));
+        $number = explode(",",implode(",",array_unique($questions_number)));
+        $length = sizeof($number);
+        for($i=0;$i<$length;$i++)
+        {
+            $number[$i] = intval($number[$i]);
+        }
+        sort($number);
+        return $number;
     }
 
     public function getExam($numbers,$paper_id){
