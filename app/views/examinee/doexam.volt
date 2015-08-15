@@ -83,7 +83,7 @@ var done_index=0;
 
 var questions=new Array();
 var description="";
-var paper_id_name=new Array("16PF","EPPS","SCL","EPQA","CPI","SPM");
+var paper_id_name=new Array("EPPS","16PF","SCL","EPQA","CPI","SPM");
 var paper_name=new Array("卡特尔十六种人格因素测验","爱德华个人偏好测试","SCL90测试","爱克森个性问卷成人","青年性格问卷测试","瑞文标准推理测验");
 var paper_id_now=0;
 var ques_order=new Array();

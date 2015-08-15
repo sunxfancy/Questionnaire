@@ -196,8 +196,9 @@ class ExamineeController extends Base
                 }               
             }
         }
+        
         $number = explode(",",implode(",",array_unique($questions_number)));
-        $length = sizeof($number);
+         $length = sizeof($number);
         for($i=0;$i<$length;$i++)
         {
             $number[$i] = intval($number[$i]);
@@ -212,11 +213,16 @@ class ExamineeController extends Base
             $question = Question::findFirst(array(
                 'paper_id=?0 and number=?1',
                 'bind'=>array(0=>$paper_id,1=>$numbers[$i])));
+                $title="";
+            if (isset($question->topic)&&!empty($question->topic)) {
+                $title = $question->topic;
+            }
             $data[$i]=array(
-                'index'=>$i,
-                'title'=>$question->topic,
+                'index'=>$numbers[$i],
+                'title'=>$title,
                 'options'=>$question->options);
         }
+
         return $data;
     }
 
