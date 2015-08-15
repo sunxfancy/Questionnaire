@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 11:08:59
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-15 15:04:09
+ * @Last Modified time: 2015-08-15 15:46:10
  */
 
 /**
@@ -44,8 +44,8 @@ class Score
 	{
 		if ($this->factor_done[$factor->name]) 
 			return $this->factor_done[$factor->name];
-		$child_list = explode($factor->children);
-		$child_type = explode($factor->children_type);
+		$child_list = explode(',', $factor->children);
+		$child_type = explode(',', $factor->children_type);
 
 		$paper_name = $factor->getPaperName();
 		$items = $this->factorRes($child_list, $child_type, $examinees, $answers);
@@ -68,7 +68,7 @@ class Score
 
 	function doAction($action, $array)
 	{
-		if (in_array($action, CalFunc::func_reg)) {
+		if (in_array($action, CalFunc::$func_reg)) {
 			return CalFunc::$action($array);
 		} else {
 			if ($this->action_function[$action] == null) {
@@ -93,7 +93,7 @@ class Score
 					$items[$examinee->id][] = $answers[$examinee->id][$paper_name][$child];
 				}
 			} else {
-				$factor_ans = $this->calFactor(findFactor($child));
+				$factor_ans = $this->calFactor($this->findFactor($child), $examinees, $answers);
 				foreach ($examinees as $examinee) {
 					$items[$examinee->id][] = $factor_ans[$examinee->id]->ans_score;
 				}
@@ -113,7 +113,16 @@ class Score
 
 	function findFactor($factor_name)
 	{
-		return $this->factors[$factor_name];
+		$factor_map = $this->ss->getFactors();
+		$ans = $factor_map[$factor_name];
+		if ($ans) return $ans;
+		else {
+			$msg = '';
+			foreach ($factor_map as $key => $value) {
+				$msg .= $key."\n";
+			}
+			throw new Exception("can not find factor [$factor_name] in resource\n$msg");
+		}
 	}
 
 	// 传入一个answer对象数组, 计算所有人的得分
