@@ -87,7 +87,7 @@ var done_index=0;
 
 var questions=new Array();
 var description="";
-var paper_id_name=new Array("16PF","EPPS","SCL","EPQA","CPI","SPM");
+var paper_id_name=new Array("16PF","SCL","EPQA","CPI","SPM","EPPS");
 var paper_id_now=0;
 var ques_order=new Array();
 
@@ -97,7 +97,7 @@ var ques_order=new Array();
 
 
 $(function(){
-
+    Leo_timer_start();
     Leo_initPaperId();
     getpaper(paper_id_now);
    
@@ -237,7 +237,7 @@ function initTitle(index){
         option_disp+=option1+options[i]+option2;
     }
     option_disp+="</div>";
-    $('#title_div').children('span').replaceWith('<span>'+(questions[index].index+1)+questions[index].title+'</span>');
+    $('#title_div').children('span').replaceWith('<span>'+(questions[index].index+1)+"."+questions[index].title+'</span>');
     $('#ans_div').children('div').replaceWith(option_disp);
 
 
@@ -376,7 +376,7 @@ function getpaper(paper_index){
          ques_order=data.order;
          Leo_initPanel(questions.length);
             
-            Leo_timer_start();
+            
         initCookie(questions.length,"exam_ans"+{{number}});
         $('#announce_panel').children('p').replaceWith("<p>"+description+"</p>");
      });
@@ -392,12 +392,11 @@ function Leo_check(){
                                 
                                 alert("提交成功！点击确定进入"+paper_id_name[paper_id_now+1]+"答题");
                                 paper_id_now++;
+                                done_index=0;
+                                $("#Leo_checkup").css("display","none");
                                 $.cookie("paper_id"+{{number}},paper_id_now,{experies:7});
                                 $.cookie("exam_ans"+{{number}},"",{expires:-1});
                                 getpaper(paper_id_now);
-                                
-                                
-                                
                             }else{
 
                             }
