@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 11:08:59
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-15 10:05:37
+ * @Last Modified time: 2015-08-15 16:06:41
  */
 
 /**
@@ -15,27 +15,37 @@ class Score
 
 	public function __construct($project_id)
 	{
-		$ss = new SearchSource($project_id);
-
+		$this->ss = new SearchSource($project_id);
 	}
 
 	public function Calculate()
 	{
-		
-		$this->calFactor($factor, $examinees, $answers);
+		$answers = $this->workAnswers();
+		print_r($answers);
+		$factor_ans = $this->workFactors($answers);
 	}
+
+
+	public function workFactors($answers)
+	{
+		foreach ($this->ss->getFactors() as $factor) {
+			$this->calFactor($factor, $this->ss->getExaminees(), $answers);
+		}
+	}
+
 
 	/**
 	 * 计算因子得分
 	 * @factor 要计算的因子对象
 	 * @examinees 被试人员的对象列表
+	 * @return 返回一个人员id为索引的factor_ans表
 	 */
 	function calFactor($factor, $examinees, $answers)
 	{
 		if ($this->factor_done[$factor->name]) 
 			return $this->factor_done[$factor->name];
-		$child_list = explode($factor->children);
-		$child_type = explode($factor->children_type);
+		$child_list = explode(',', $factor->children);
+		$child_type = explode(',', $factor->children_type);
 
 		$paper_name = $factor->getPaperName();
 		$items = $this->factorRes($child_list, $child_type, $examinees, $answers);
@@ -58,7 +68,7 @@ class Score
 
 	function doAction($action, $array)
 	{
-		if (in_array($action, CalFunc::func_reg)) {
+		if (in_array($action, CalFunc::$func_reg)) {
 			return CalFunc::$action($array);
 		} else {
 			if ($this->action_function[$action] == null) {
@@ -83,7 +93,7 @@ class Score
 					$items[$examinee->id][] = $answers[$examinee->id][$paper_name][$child];
 				}
 			} else {
-				$factor_ans = $this->calFactor(findFactor($child));
+				$factor_ans = $this->calFactor($this->findFactor($child), $examinees, $answers);
 				foreach ($examinees as $examinee) {
 					$items[$examinee->id][] = $factor_ans[$examinee->id]->ans_score;
 				}
@@ -103,13 +113,46 @@ class Score
 
 	function findFactor($factor_name)
 	{
-		return $this->factors[$factor_name];
+		$factor_map = $this->ss->getFactors();
+		$ans = $factor_map[$factor_name];
+		if ($ans) return $ans;
+		else {
+			$msg = '';
+			foreach ($factor_map as $key => $value) {
+				$msg .= $key."\n";
+			}
+			throw new Exception("can not find factor [$factor_name] in resource\n$msg");
+		}
 	}
 
 	// 传入一个answer对象数组, 计算所有人的得分
-	function calAns($answers, $examinees)
+	function workAnswers()
 	{
+		$basic_score = new BasicScoreOne();
+		$ans = array();
+		foreach ($this->ss->getExaminees() as $examinee) {
+			try{
+				$answers_df = $basic_score->getPapersByExamineeId($examinee->id);
+				$ans[$examinee->id] = $this->changeAns($answers_df);
+			}catch(Exception $e){
+				echo $e;
+			}
+		}
+		return $ans;
+	}
 
+	function changeAns($ans_df)
+	{
+		$ret = array();
+		foreach ($ans_df as $ans) {
+			$qlist = explode(',', $ans['question_number_list']);
+			$slist = explode(',', $ans['score']);
+			foreach ($qlist as $key => $qnum) {
+				$score = $slist[$key];
+				$ret[$ans->paper_name][$qnum] = $score;
+			}
+		}
+		return $ret;
 	}
 	
 	/**
@@ -126,7 +169,7 @@ class Score
 			$count = count($str1_array);
 			if(is_numeric($str1_array[0])){
 			   for($i = 0; $i <$count; $i++ ){
-			   		if(is_numeric($str1_array[$i]) && preg_match ("/^[A-Z]$/", $str2_array[$i])){
+			   		if(is_numeric($str1_array[$i]) && preg_match ("/^[a-z]$/", $str2_array[$i])){
 			   			#ok
 			   		}else{
 			   			throw new Exception("The two strings \"$str1\" and \"$str2\" are not appropriate (type)");
@@ -135,9 +178,9 @@ class Score
 			   $rtn = self::arrayMergeKeyToValue($str1_array, $str2_array);
 			   return $rtn;
 					
-			}else if (preg_match ("/^[A-Z]$/", $str1_array[0]) ){
+			}else if (preg_match ("/^[a-z]$/", $str1_array[0]) ){
 				for($i = 0; $i <$count; $i++ ){
-					if(is_numeric($str2_array[$i]) && preg_match ("/^[A-Z]$/", $str1_array[$i])){
+					if(is_numeric($str2_array[$i]) && preg_match ("/^[a-z]$/", $str1_array[$i])){
 						#ok
 					}else{
 						throw new Exception("The two strings \"$str1\" and \"$str2\" are not appropriate (type)");
@@ -300,8 +343,9 @@ class Score
 			}
 		}
 		return $rt_array;
-	} /**
-		 * Array
+	} 
+/*
+Array
 (
     [0] => Array
         (

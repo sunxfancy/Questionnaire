@@ -296,6 +296,8 @@ class SearchSource
 			}
 		} else {
 			foreach ($other_ans as $key => $qlist) {
+				if ($qlist == null || sizeof($qlist) == 0) 
+					throw new Exception("combineAns error: $qlist is empty");
 				foreach ($qlist as $value) {
 					$ans[$key][$value] = $value;
 				}
