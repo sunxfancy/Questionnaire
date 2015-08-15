@@ -572,13 +572,11 @@
 		        "factor": "spma,spmb,spmc,spmd,spme",
 		        "action": "sum",
 		        "chs_name": "SPM"
-		       
 		    },
 		    "spmabc": {
-		        "question": "spma,spmb,spmc",
+		        "factor": "spma,spmb,spmc",
 		        "action": "sum",
 		        "chs_name": "SPM(A、B、C)"
-		        
 		    }
     }
 }

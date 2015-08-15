@@ -77,31 +77,39 @@ class SearchSource
 		return $this->papers_name;
 	}
 
-	public function getAnswers($project_id == null)
+	public function getAnswers($project_id = null)
 	{
 		if ($project_id) {
 			$eids = $this->getExamineesId($project_id);
 			$pids = Utils::getIds($this->getPapers());
 			$qans = QuestionAns::getAns($pids, $eids);
-			
+			return $this->makeAns($qans);
 		} else {
-
+			if ($this->answers == null) 
+				$this->answers = $this->getAnswers($this->project_id);
+			return $this->answers;
 		}
 	}
 
 	function makeAns($qans)
 	{
-		$ans = array();
+		$answers = array();
 		foreach ($qans as $ans) {
 			$qlist = explode('|', $ans->question_number_list);
 			$slist = explode('|', $ans->score);
+			if (count($qlist) != count($slist)) {
+				$msg = "Paper ID: $ans->paper_id\n".
+					   "Number: $ans->number\n";
+				throw new Exception("question_number_list and score length is not equal\n$msg");
+			}
 			$pname = $this->getPapers()[$ans->paper_id]->name;
 			$examinee_id = $ans->examinee_id;
 			foreach ($qlist as $key => $num) {
 				$score = $slist[$key];
-				$ans[$examinee_id][$pname][$num] = $score;
+				$answers[$examinee_id][$pname][$num] = $score;
 			}
 		}
+		return $answers;
 	}
 
 	public function getProjectId() {
@@ -295,7 +303,14 @@ class SearchSource
 			}
 		}
 		// 这里需要验证
-		$objs = $this->getObjsByName($class_name, $temp);
+		try {
+			$objs = $this->getObjsByName($class_name, $temp);
+		} catch (Exception $e) {
+			echo $e;
+			$msg = "Find_list: ".print_r($find_list, true);
+			throw new Exception("getList error\n$msg");
+		}
+
 		foreach ($objs as $obj) {
 			$array[$obj->name] = $obj; // 缓存到array中
 			$ans[$obj->name] = $obj;
@@ -313,6 +328,17 @@ class SearchSource
 			$ans = array();
 			foreach ($objs as $obj) {
 				$ans[$obj->name] = $obj;
+			}
+			if (count($namelist) != count($ans)) {
+				$msg =  "Class: $class_name\n".
+						"names: ".print_r($namelist, true);
+				$msg .= "Array(\n";
+				foreach ($ans as $key => $value) {
+					$msg .= '  ';
+					$msg .= $key."\n";
+				}
+				$msg .= ")\n";
+				throw new Exception("getObjsByName can not find all resource.\n$msg", 1);
 			}
 			return $ans;
 		} else {
