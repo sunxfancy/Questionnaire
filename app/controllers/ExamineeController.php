@@ -196,15 +196,12 @@ class ExamineeController extends Base
                 }               
             }
         }
-        //return explode(",",implode(",",array_unique($questions_number)));
         $number = array();
         $number = explode(",",implode(",",array_unique($questions_number)));
         for ($i=0; $i < sizeof($number); $i++) { 
             $number[$i] = intval($number[$i]);
         }
         sort($number);
-        print_r(gettype($number[2]));
-        print_r($number);
         return $number;
     }
 
