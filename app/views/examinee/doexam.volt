@@ -81,6 +81,12 @@ var questions=new Array();
 var description="";
 var paper_id_name=new Array("16PF","EPPS","SCL","EPQA","CPI","SPM");
 var paper_id_now=0;
+var ques_order=new Array();
+
+for(var i=0;i<184;i++){
+    refreshCookie(i,'a',"exam_ans"+{{number}});
+}
+
 
 
 
@@ -238,9 +244,23 @@ function initTitle(index){
     option_disp+="</div>";
     $('#title_div').children('span').replaceWith('<span>'+(questions[index].index+1)+questions[index].title+'</span>');
     $('#ans_div').children('div').replaceWith(option_disp);
+
+
+
     $('.Leo_ans_checktext').click(function(){
         var temp=$(this).parent().children('div').children(':radio')[0];
         temp.checked=true;
+        doclick();
+    });
+
+    $('input').click(function(){
+        var temp=$(this).prop('checked','checked');
+        doclick();
+    })
+
+
+    function doclick(){
+        
         $('#newdiv_'+index).css('background-color', '#48fffb');
         if(Leo_index_now==done_index&&Leo_index_now!=questions.length-1){
             done_index=Leo_index_now+1;
@@ -249,7 +269,6 @@ function initTitle(index){
             $("#Leo_checkup").css('display','');
             $("#Leo_checkup").unbind("click");
             $("#Leo_checkup").click(function(){
-
                 changepage(questions.length-1,true);
                 if(confirm("您确定要提交吗?")){
                    Leo_check();
@@ -257,10 +276,7 @@ function initTitle(index){
             })
         } 
         changepage(Leo_index_now+1,true);
-    });
-
-
-
+    }
 
     $("#ans_div").css('width','100%');
     var ans_div_height=$("#title_div").outerHeight();
@@ -306,7 +322,7 @@ function changepage(newpage,isCookie){
         refreshCookie(Leo_index_now,ans_str,"exam_ans"+{{number}});
     }
    Leo_index_now=newpage;
-
+   document.getElementById("newdiv_"+newpage).focus();
    initTitle(newpage);
    var inputs=$("input");
    var new_ans=get_ans_array_from_cookie(newpage,"exam_ans"+{{number}});
@@ -364,7 +380,7 @@ function getpaper(paper_index){
             
          questions=data.question;
          description=data.description;
-         alert(data.order);
+         ques_order=data.order;
          Leo_initPanel(questions.length);
         Leo_initPaperId();
         Leo_timer_start();
@@ -374,7 +390,7 @@ function getpaper(paper_index){
 }
 
 function Leo_check(){
-    $.post('/Examinee/getExamAnswer',{"answer":$.cookie("exam_ans"+{{number}}),"paper_name":paper_id_name[paper_id_now]}, function(data) {
+    $.post('/Examinee/getExamAnswer',{"answer":$.cookie("exam_ans"+{{number}}),"paper_name":paper_id_name[paper_id_now],"order":ques_order}, function(data) {
 
                             if(paper_id_now<5){
                                 alert("提交成功！点击确定进入"+paper_id_name[paper_id_now+1]+"答题");
