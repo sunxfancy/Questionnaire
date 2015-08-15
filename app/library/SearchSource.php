@@ -244,6 +244,7 @@ class SearchSource
 	{
 		$ans = array();	$next = array();
 		foreach ($obj_array as $obj) {
+			if ($obj->children == null) continue;
 			$child_list = explode(',', $obj->children);
 			$child_type = null;
 			if (isset($obj->children_type)) {
