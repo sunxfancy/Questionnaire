@@ -246,8 +246,16 @@ class SearchSource
 		foreach ($obj_array as $obj) {
 			$child_list = explode(',', $obj->children);
 			$child_type = null;
-			if (isset($obj->children_type))
+			if (isset($obj->children_type)) {
 				$child_type = explode(',', $obj->children_type);
+				if (count($child_list) != count($child_type)) {
+					$msg = "ClassName: $class_name\n".
+							"Name: $obj->name\n".
+							"Children: $obj->children\n".
+							"Children_type: $obj->children_type\n";
+					throw new Exception("child_list and child_type length is not equal\n$msg");
+				}
+			}
 			foreach ($child_list as $key => $value) {
 				if ($child_type) {
 					$ctype = $child_type[$key];
@@ -256,7 +264,18 @@ class SearchSource
 							$ans[$obj->getPaperName()][$value] = $value;
 						else $ans[$value] = $value;
 					}
-					if ($ctype == 0) $next[$value] = $value;
+					if ($ctype == 0) {
+						$next[$value] = $value;
+						echo $value." ";
+						if (is_numeric($value)) {
+							$msg = "ClassName: $class_name\n".
+									"Name: $obj->name\n".
+									"ctype: $ctype\n".
+									"Children: $obj->children\n".
+									"Children_type: $obj->children_type\n";
+							throw new Exception("value is not integer\n$msg");
+						}
+					}
 				} else $ans[$value] = $value;
 			}
 		}

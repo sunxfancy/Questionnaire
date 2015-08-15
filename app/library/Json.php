@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 09:18:33
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-15 10:57:12
+ * @Last Modified time: 2015-08-15 11:37:36
  */
 
 /**
@@ -99,7 +99,7 @@ class Json
 	// 根据array字段，生成新的children_type
 	function makeArray($array, $data)
 	{
-		$children_len = count(explode(',',$array));
+		$children_len = sizeof(explode(',',$array));
 		$children_type = array_fill(0, $children_len, $data);
 		return implode(',', $children_type);
 	}
