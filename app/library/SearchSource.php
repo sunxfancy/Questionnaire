@@ -2,8 +2,8 @@
 
 /**
  * 资源获取类
- * 负责托管
- * 所有方法，如果不传入参数，则**默认启用缓存**
+ * 负责托管资源在内存中
+ * 所有get方法，如果不传入参数，则**默认启用缓存**
  * 传入参数，则直接查询数据库，返回相应结果
  */
 class SearchSource
@@ -20,9 +20,96 @@ class SearchSource
 	private $factors_name;
 	private $questions_martix;
 	
-	function __construct($project_id)
+	private $examinees;
+	private $examinees_id;
+	private $papers;
+	private $papers_name;
+	private $answers; // 注意，这里是一个三维的表[被试id][试卷名][题号]
+
+	public function __construct($project_id)
 	{
 		$this->project_id = $project_id;
+	}
+
+	public function getExaminees($project_id = null)
+	{
+		if ($project_id) {
+			$exams = Examinee::getAll($project_id);
+			$ans = array();
+			foreach ($exams as $exam) {
+				$ans[$exam->id] = $exam;
+			}
+			return $ans;
+		} else {
+			if ($this->examinees == null) 
+				$this->examinees = $this->getExaminees($this->project_id);
+			return $this->examinees;
+		}
+	}
+
+	public function getExamineesId($project_id = null)
+	{
+		if ($project_id) {
+			return Utils::getIds($this->getExaminees($project_id));
+		} else {
+			if ($this->examinees_id == null) 
+				$this->examinees_id = $this->getExamineesId($this->project_id);
+			return $this->examinees_id;
+		}
+	}
+
+	public function getPapers()
+	{
+		if ($this->papers == null) {
+			$temp = Paper::find();
+			$this->papers = array();
+			foreach ($temp as $paper) {
+				$this->papers[$paper->id] = $paper;
+			}
+		}
+		return $this->papers;
+	}
+
+	public function getPapersName()
+	{
+		if ($this->papers_name == null) 
+			$this->papers_name = Utils::getIds($this->getPapers(), 'name');
+		return $this->papers_name;
+	}
+
+	public function getAnswers($project_id = null)
+	{
+		if ($project_id) {
+			$eids = $this->getExamineesId($project_id);
+			$pids = Utils::getIds($this->getPapers());
+			$qans = QuestionAns::getAns($pids, $eids);
+			return $this->makeAns($qans);
+		} else {
+			if ($this->answers == null) 
+				$this->answers = $this->getAnswers($this->project_id);
+			return $this->answers;
+		}
+	}
+
+	function makeAns($qans)
+	{
+		$answers = array();
+		foreach ($qans as $ans) {
+			$qlist = explode('|', $ans->question_number_list);
+			$slist = explode('|', $ans->score);
+			if (count($qlist) != count($slist)) {
+				$msg = "Paper ID: $ans->paper_id\n".
+					   "Number: $ans->number\n";
+				throw new Exception("question_number_list and score length is not equal\n$msg");
+			}
+			$pname = $this->getPapers()[$ans->paper_id]->name;
+			$examinee_id = $ans->examinee_id;
+			foreach ($qlist as $key => $num) {
+				$score = $slist[$key];
+				$answers[$examinee_id][$pname][$num] = $score;
+			}
+		}
+		return $answers;
 	}
 
 	public function getProjectId() {
@@ -157,10 +244,19 @@ class SearchSource
 	{
 		$ans = array();	$next = array();
 		foreach ($obj_array as $obj) {
+			if ($obj->children == null) continue;
 			$child_list = explode(',', $obj->children);
 			$child_type = null;
-			if (isset($obj->children_type))
+			if (isset($obj->children_type)) {
 				$child_type = explode(',', $obj->children_type);
+				if (count($child_list) != count($child_type)) {
+					$msg = "ClassName: $class_name\n".
+							"Name: $obj->name\n".
+							"Children: $obj->children\n".
+							"Children_type: $obj->children_type\n";
+					throw new Exception("child_list and child_type length is not equal\n$msg");
+				}
+			}
 			foreach ($child_list as $key => $value) {
 				if ($child_type) {
 					$ctype = $child_type[$key];
@@ -169,7 +265,18 @@ class SearchSource
 							$ans[$obj->getPaperName()][$value] = $value;
 						else $ans[$value] = $value;
 					}
-					if ($ctype == 0) $next[$value] = $value;
+					if ($ctype == 0) {
+						$next[$value] = $value;
+						echo $value." ";
+						if (is_numeric($value)) {
+							$msg = "ClassName: $class_name\n".
+									"Name: $obj->name\n".
+									"ctype: $ctype\n".
+									"Children: $obj->children\n".
+									"Children_type: $obj->children_type\n";
+							throw new Exception("value is not integer\n$msg");
+						}
+					}
 				} else $ans[$value] = $value;
 			}
 		}
@@ -189,6 +296,8 @@ class SearchSource
 			}
 		} else {
 			foreach ($other_ans as $key => $qlist) {
+				if ($qlist == null || sizeof($qlist) == 0) 
+					throw new Exception("combineAns error: $qlist is empty");
 				foreach ($qlist as $value) {
 					$ans[$key][$value] = $value;
 				}
@@ -216,7 +325,14 @@ class SearchSource
 			}
 		}
 		// 这里需要验证
-		$objs = $this->getObjsByName($class_name, $temp);
+		try {
+			$objs = $this->getObjsByName($class_name, $temp);
+		} catch (Exception $e) {
+			echo $e;
+			$msg = "Find_list: ".print_r($find_list, true);
+			throw new Exception("getList error\n$msg");
+		}
+
 		foreach ($objs as $obj) {
 			$array[$obj->name] = $obj; // 缓存到array中
 			$ans[$obj->name] = $obj;
@@ -234,6 +350,17 @@ class SearchSource
 			$ans = array();
 			foreach ($objs as $obj) {
 				$ans[$obj->name] = $obj;
+			}
+			if (count($namelist) != count($ans)) {
+				$msg =  "Class: $class_name\n".
+						"names: ".print_r($namelist, true);
+				$msg .= "Array(\n";
+				foreach ($ans as $key => $value) {
+					$msg .= '  ';
+					$msg .= $key."\n";
+				}
+				$msg .= ")\n";
+				throw new Exception("getObjsByName can not find all resource.\n$msg", 1);
 			}
 			return $ans;
 		} else {

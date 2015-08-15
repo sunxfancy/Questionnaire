@@ -200,25 +200,33 @@
     height:auto;
     margin-top:15px;
     overflow: hidden;
-
-
 }
 
+.Leo_ans_div_spm{
+    cursor:pointer;
+    width:32%;
+    height:90px;
+    margin-top:15px;
+    overflow: hidden;
+    float:left;
+}
 
 
 .Leo_ans_checkdiv{
     float:left;
-    width:5%;
+    width:10%;
     text-align:center;
     cursor:pointer;
 }
 
 .Leo_ans_checktext{
-    width:95%;
+    width:90%;
     float:left;
     font-size:19px;
     
 }
+
+
 .Leo_ans_checktext:hover{
     background-color: #aaeff9;
 }
