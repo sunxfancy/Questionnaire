@@ -82,10 +82,12 @@ var description="";
 var paper_id_name=new Array("16PF","EPPS","SCL","EPQA","CPI","SPM");
 var paper_id_now=0;
 var ques_order=new Array();
-
+var ans=new Array();
 for(var i=0;i<184;i++){
-    refreshCookie(i,'a',"exam_ans"+{{number}});
+    ans[i]="a";
 }
+
+$.cookie("exam_ans"+{{number}},ans.join("|"),{experies:7});
 
 
 
