@@ -10,8 +10,8 @@
         <!--这一部分是指导语部分-->
         <div style="overflow:hidden;width:600px;height:440px;">
         <div style="width:95%;height:410px;margin:0 auto;display:none;font-size:22px;font-family:'微软雅黑';overflow:auto;" id='announce_panel'><p></p></div>
-        <div id='do_announce' style="width:100%;height:30px;background-color:#eeed6a;cursor:pointer;">
-            <span>16PF</span><img src="/images/down.png" style="height:90%;" />
+        <div id='do_announce' style="width:100%;height:30px;background-color:#eeed6a;cursor:pointer;text-align:right;">
+            <span></span><img src="/images/down.png" style="height:90%;" />
         </div>
 
         <div class="Leo_question_l" style="height:400px;" id="Leo_question_panel">
@@ -50,7 +50,7 @@
         
     </div>
     <div class="Leo_Timer_v2">
-    <div id="time_panel" style="width:100%;height:30px;background-color:#eeed6a;text-align:center;"></div>
+    <div id="time_panel" style="width:100%;height:30px;background-color:#eeed6a;text-align:center;font-size:25px;"></div>
 
     <div class="clock">
     <ul><li style="font-size:25px;" id="used">已用时</li></ul>
@@ -77,20 +77,14 @@
 
 <script type="text/javascript">
  /*定义重要的全局变量*/
-var ans=new Array();
-for(var i=0;i<184;i++){
-    ans[i]="a";
-}
-$.cookie("exam_ans"+{{number}},ans.join("|"),{experies:7});
-$.cookie("paper_id"+{{number}},"",{experies:-1});
-
 
 var Leo_index_now=0;
 var done_index=0;
 
 var questions=new Array();
 var description="";
-var paper_id_name=new Array("16PF","SCL","EPQA","CPI","SPM","EPPS");
+var paper_id_name=new Array("CPI","16PF","SPM","SCL","EPQA","EPPS");
+var paper_name=new Array("卡特尔十六种人格因素测验","爱德华个人偏好测试","SCL90测试","爱克森个性问卷成人","","");
 var paper_id_now=0;
 var ques_order=new Array();
 
@@ -237,21 +231,24 @@ function initTitle(index){
 
     if(paper_id_name[paper_id_now]=="SPM"){
         option_disp="<div>";
-        option1="<div class='Leo_ans_div_spm'><div class='Leo_ans_checkdiv'><input name='ans_sel' type='radio' id='123' style='cursor:pointer;'/></div><div class='Leo_ans_checktext'><img style='height:69px;' src='/spmimages/";
-        option2=".jpg/ ></div></div>";
-        var title=(questions[index].index+1)+"."+"<img style='height:145px;' src='/spmimages/"+questions[index].title+".jpg' />";
+        option1="<div class='Leo_ans_div_spm'><div class='Leo_ans_checkdiv'><input name='ans_sel' type='radio' id='123' style='cursor:pointer;'/></div><div class='Leo_ans_checktext' style='width:140px;height:85px;text-align:center;'><img style='height:80px;margin-top:2px;' src='/spmimages/";
+        option2=".jpg' /></div></div>";
+        //title=(questions[index].index+1)+"."+"<img style='height:145px;' src='/spmimages/"+questions[index].title+".jpg' />";
+
+        title=(questions[index].index+1)+"."+"<img style='height:145px;' src='/spmimages/A1M.jpg' />";
+
     } 
 
     var options=questions[index].options.split("|");
 
     for (var i = 0; i <options.length; i++) {
-        option_disp+=option1+options[i]+option2;
+        // option_disp+=option1+options[i]+option2;
+        option_disp+=option1+"A1A1"+option2;
     }
     option_disp+="</div>";
     
     $('#ans_div').children('div').replaceWith(option_disp);
-    $('#title_div').children('span').replaceWith('<span>'+(questions[index].index+1)+"."+questions[index].title+'</span>');
-
+    $('#title_div').html(title);
 
     $('.Leo_ans_checktext').click(function(){
         var temp=$(this).parent().children('div').children(':radio')[0];
@@ -406,7 +403,7 @@ function Leo_check(){
                                     $("#Leo_checkup").css("display","none");
                                     $.cookie("paper_id"+{{number}},paper_id_now,{experies:7});
                                     $.cookie("exam_ans"+{{number}},"",{expires:-1});
-                                    getpaper(paper_id_now);
+                                    getpaper(0);
                                 }else{
                                     alert("提交成功!您已完成全部题目的作答，谢谢您的配合。\n点击‘确定’退出系统。");
                                     window.location.href="/";
