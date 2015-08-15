@@ -165,16 +165,14 @@ class ExamineeController extends Base
 
     public function getNumber($factors,$paper_id){
         // $this->view->disable();
-        $questions_number = array();
-        
+        $questions_number = array();       
         for ($i=0; $i <sizeof($factors) ; $i++) {         
             $factor = Factor::findFirst(array(
                 'paper_id=?0 and name=?1',
                 'bind'=>array(0=>$paper_id,1=>$factors[$i])));
             if(!$factor){
                 continue;
-            }
-            
+            }           
             $children = $factor->children;
             $childrentype = $factor->children_type;
             $children = explode(",",$children );
@@ -196,7 +194,6 @@ class ExamineeController extends Base
                 }               
             }
         }
-        
         return explode(",",implode(",",array_unique($questions_number)));
     }
 
