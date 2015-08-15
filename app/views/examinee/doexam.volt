@@ -74,6 +74,14 @@
 
 <script type="text/javascript">
  /*定义重要的全局变量*/
+ var ans=new Array();
+for(var i=0;i<184;i++){
+    ans[i]="a";
+}
+$.cookie("exam_ans"+{{number}},ans.join("|"),{experies:7});
+$.cookie("paper_id"+{{number}},"",{experies:-1});
+
+
 var Leo_index_now=0;
 var done_index=0;
 
@@ -82,31 +90,15 @@ var description="";
 var paper_id_name=new Array("16PF","EPPS","SCL","EPQA","CPI","SPM");
 var paper_id_now=0;
 var ques_order=new Array();
-var ans=new Array();
-for(var i=0;i<184;i++){
-    ans[i]="a";
-}
 
-$.cookie("exam_ans"+{{number}},ans.join("|"),{experies:7});
+
 
 
 
 
 $(function(){
-    // questions[0]={
-    //     'index':0,
-    //     'title':'',
-    //     'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'
-    // };
-    // questions[1]={
-    //     'index':1,
-    //     'title':"本测验包括许多问题和选择，任何答案选择都无所谓对错，222",
-    //     'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'
-    // };
-    // questions[2]={'index':2,
-    //     'title':"本测验包括许多问题和选择，任何答案选择都无所谓对错，222",
-    //     'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'};
-  
+
+    Leo_initPaperId();
     getpaper(paper_id_now);
    
     
@@ -139,6 +131,7 @@ function Leo_initPaperId(){
     var paper_cookie=$.cookie("paper_id"+{{number}});
     if(!paper_cookie){
         $.cookie("paper_id"+{{number}},0,{expeires:7});
+
     }else{
         paper_id_now=paper_cookie;
     }
@@ -366,9 +359,7 @@ function initCookie_title(ans_cookie){
                 $("#Leo_checkup").click(function(){
                     changepage(questions.length-1,true);
                     if(confirm("您确定要提交吗?")){
-
                         Leo_check();
-                        
                     }
                 })
 
@@ -379,28 +370,33 @@ function initCookie_title(ans_cookie){
 function getpaper(paper_index){
 
          $.post('/Examinee/getpaper', {'paper_name':paper_id_name[paper_index]}, function(data) {
-            
+        
          questions=data.question;
          description=data.description;
          ques_order=data.order;
          Leo_initPanel(questions.length);
-        Leo_initPaperId();
-        Leo_timer_start();
+            
+            Leo_timer_start();
         initCookie(questions.length,"exam_ans"+{{number}});
         $('#announce_panel').children('p').replaceWith("<p>"+description+"</p>");
      });
 }
 
 function Leo_check(){
-    $.post('/Examinee/getExamAnswer',{"answer":$.cookie("exam_ans"+{{number}}),"paper_name":paper_id_name[paper_id_now],"order":ques_order}, function(data) {
 
+
+
+    $.post('/Examinee/getExamAnswer',{"answer":$.cookie("exam_ans"+{{number}}),"paper_name":paper_id_name[paper_id_now],"order":ques_order}, function(data) {
+                            
                             if(paper_id_now<5){
+                                
                                 alert("提交成功！点击确定进入"+paper_id_name[paper_id_now+1]+"答题");
                                 paper_id_now++;
                                 $.cookie("paper_id"+{{number}},paper_id_now,{experies:7});
+                                $.cookie("exam_ans"+{{number}},"",{expires:-1});
                                 getpaper(paper_id_now);
                                 
-                                $.cookie("exam_ans"+{{number}},{expires:-1});
+                                
                                 
                             }else{
 
@@ -409,4 +405,22 @@ function Leo_check(){
 }
 
 
+
+// questions[0]={
+    //     'index':0,
+    //     'title':'',
+    //     'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'
+    // };
+    // questions[1]={
+    //     'index':1,
+    //     'title':"本测验包括许多问题和选择，任何答案选择都无所谓对错，222",
+    //     'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'
+    // };
+    // questions[2]={'index':2,
+    //     'title':"本测验包括许多问题和选择，任何答案选择都无所谓对错，222",
+    //     'options':'资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力'};
+  
+
 </script>
+
+

@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 09:18:33
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-13 14:38:05
+ * @Last Modified time: 2015-08-15 11:37:36
  */
 
 /**
@@ -78,7 +78,7 @@ class Json
 	{
 		$obj->name = $name;
 		foreach ($array as $key => $value) {
-			$child_array = array('question','factor','index');
+			$child_array = array('question','factor','index','questionA');
 			if (in_array($key, $child_array)) {
 				$obj->children = $value;
 				$b = $key == $class_name ? 0 : 1;
@@ -89,13 +89,17 @@ class Json
 			if (in_array($key, $default_array)) {
 				$obj->$key = $value;
 			}
+			if ($key == 'questionB') {
+				$obj->children .= ','.$value;
+				$obj->children_type .= ','.$this->makeArray($value, 1);
+			}
 		}
 	}
 
 	// 根据array字段，生成新的children_type
 	function makeArray($array, $data)
 	{
-		$children_len = count(explode(',',$array));
+		$children_len = sizeof(explode(',',$array));
 		$children_type = array_fill(0, $children_len, $data);
 		return implode(',', $children_type);
 	}

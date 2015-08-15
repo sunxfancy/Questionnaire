@@ -165,14 +165,16 @@ class ExamineeController extends Base
 
     public function getNumber($factors,$paper_id){
         // $this->view->disable();
-        $questions_number = array();       
+        $questions_number = array();
+        
         for ($i=0; $i <sizeof($factors) ; $i++) {         
             $factor = Factor::findFirst(array(
                 'paper_id=?0 and name=?1',
                 'bind'=>array(0=>$paper_id,1=>$factors[$i])));
             if(!$factor){
                 continue;
-            }           
+            }
+            
             $children = $factor->children;
             $childrentype = $factor->children_type;
             $children = explode(",",$children );
@@ -186,15 +188,15 @@ class ExamineeController extends Base
                     $children1 = $factor1->children;
                     $children1 = explode(",",$children1);
                     for ($k=0; $k <sizeof($children1) ; $k++) { 
-                        $questions_number[] = trim($children1[$k],' ');                       
+                        $questions_number[] = trim($children1[$k],' ');
                     }
                 }
                 else{   
-                        $questions_number[] = trim($children[$j],' ');
+                        $questions_number[] =trim( $children[$j],' ');
                 }               
             }
         }
-        print_r($questions_number);
+        
         return explode(",",implode(",",array_unique($questions_number)));
     }
 
@@ -213,9 +215,17 @@ class ExamineeController extends Base
     }
 
     public function getExamAnswerAction(){
-        $answer = $this->request->getPost("answer", "string");
-        $paper_id = $this->request->getPost("paper_id", "int");
-        $this->dataReturn(array("answer"=>$answer));
+        $question_ans = new QuestionAns();
+        $question_ans->option = $this->request->getPost("answer", "string");
+        $question_ans->paper_id = $this->getPaperid();
+        $question_ans->examinee_id = $this->session->get('Examinee')->id;
+        $question_ans->question_number_list =implode("|",$this->request->getPost("order"));
+        if($question_ans->save()){
+            $this->dataReturn(array("flag"=>true));
+        }
+        else{
+            $this->dataReturn(array("flag"=>false));
+        }
     }
 
     public function addAction(){
