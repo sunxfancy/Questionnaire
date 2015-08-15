@@ -284,6 +284,7 @@ class BasicScoreOne {
 			$rt_str = Score::readScoreFromArray($rt_array);
 			$record_list[] = $rt_str;			
 		}
+		$record_list = Score::reEPQAList($record_list);
 		return implode('|', $record_list);
 	}
 	#处理CPI得分
@@ -325,7 +326,8 @@ class BasicScoreOne {
 			$tmp_record['XZ'] = ord($record['option'])-64;
 			$rt_array = Score::multidimensinal_search_v2($cpi_list, $tmp_record);			
 			$rt_str = Score::readScoreFromArray($rt_array);
-			$record_list[] = $rt_str;
+			#添加标准转换
+			$record_list[] = strtolower($rt_str);
 		}
 
 		return implode('|', $record_list);
@@ -351,6 +353,7 @@ class BasicScoreOne {
 			$choice_ab = ord($record['option'])-64;
 			$record_list[] = Score::readScoreFromArray_v2($rtn_array, $choice_ab);	
 		}
+		$record_list = Score::reEPPSList($record_list);
 		return implode('|', $record_list);
 	}
 	
