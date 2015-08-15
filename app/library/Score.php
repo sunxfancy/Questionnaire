@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 11:08:59
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-15 17:03:10
+ * @Last Modified time: 2015-08-15 17:14:43
  */
 
 /**
@@ -135,7 +135,6 @@ class Score
 		foreach ($this->ss->getExaminees() as $examinee) {
 			try{
 				$answers_df = $basic_score->getPapersByExamineeId($examinee->id);
-				print_r($answers_df);
 				$ans[$examinee->id] = $this->changeAns($answers_df);
 			}catch(Exception $e){
 				echo $e;
@@ -152,7 +151,7 @@ class Score
 			$slist = explode('|', $ans['score']);
 			foreach ($qlist as $key => $qnum) {
 				$score = $slist[$key];
-				$ret[$ans->paper_name][$qnum] = $score;
+				$ret[$ans['paper_name']][$qnum] = $score;
 			}
 		}
 		return $ret;
