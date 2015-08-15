@@ -32,4 +32,12 @@ class Module extends \Phalcon\Mvc\Model
     {
         $this->hasMany("id", "Index", "module_id");
     }
+
+    public static function findByIds($ids)
+    {
+        return self::find(array(
+            'id IN ({ids:array})',
+            'bind' => array('ids'=>$ids)
+        ));
+    }
 }

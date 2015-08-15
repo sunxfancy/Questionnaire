@@ -49,4 +49,12 @@ class Question extends \Phalcon\Mvc\Model
             "factor_id", "Factor", "id"
         );
     }
+
+    public static function findByPapernameAndNums($paper_name, $numbers)
+    {
+        $paper_id = Paper::findId($paper_name);
+        return Question::findFirst(array(
+            'paper_id = :pid: AND number IN ({numbers:array})',
+            'bind' => array('pid' => $paper_id, 'numbers' => $numbers)));
+    }
 }

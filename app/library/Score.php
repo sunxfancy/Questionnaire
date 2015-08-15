@@ -197,13 +197,70 @@ class Score
 		}
 	}
 	/**
-	 * 在二维数组中按照第二层的键值来查找对应的数组项后返回 use for 16PF
+	 * 在二维数组中按照第二层的键值来查找对应的数组项后返回 use for 16PF, SCL, EPPS
 	 */
 	public static function findInTwodemensianalArray($parents, $key, $value){
 		foreach ($parents as  $skey => $svalue ){
 			if ( $svalue[$key] == $value ){
 				return $svalue;
 			}
+		}
+	}
+	
+	/**
+	 * EPQA使用联合主键 TH-XZ
+	 * 通过这两个来查找相应的数组项返回 use for EPQA, CPI
+	 */
+	public static function multidimensinal_search_v2($parents, $needle) {
+		foreach ( $parents as $key => $value ){
+			$flag = 1;
+			foreach( $needle as $skey => $svalue ){
+				if($value[$skey] != $svalue){
+					if($flag == 1) {
+						break;
+					}
+				}else{
+					if($flag == 1){
+						$flag = 2;
+					}else{
+						return $value;
+					}
+				}
+			}
+		}
+	}
+	
+	
+	
+	
+	/**
+	 * use for EPQA, CPI 返回值数组的读取,并转为字符串
+	 * 字符串格式为 name-score
+	 */
+	public static function readScoreFromArray($array){
+		 $rtn_array = array();
+		 foreach ($array as $key => $value){
+		 	if($key =='TH' || $key == 'XZ'){
+		 		continue;
+		 	}
+		 	if( !empty($value)&&$value !=0 ){
+		 		$rtn_array[] = $key;
+		 	}
+		 }
+		 $rtn_str = implode('-',$rtn_array);
+		 return $rtn_str;	 
+	}
+	/**
+	 * use for epps 
+	 * 根据 A B 选项为不同的因子算分
+	 * 
+	 */
+	public static function readScoreFromArray_v2($array,$choice){
+		if($choice == 1){
+			return $array['X'];
+		}else if ($choice == 2 )
+		{
+			return $array['Y'];
 		}
 	}
 }
