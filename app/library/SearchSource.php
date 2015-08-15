@@ -91,7 +91,7 @@ class SearchSource
 		}
 	}
 
-	function makeAns($qans)
+	function makeAns(&$qans)
 	{
 		$answers = array();
 		foreach ($qans as $ans) {
@@ -160,7 +160,7 @@ class SearchSource
 		}
 	}
 
-	public function getIndexsName($modules = null){
+	public function getIndexsName(&$modules = null){
 		if ($modules) {
 			return $this->baseFindChildren($modules, $modules, 'Module');
 		} else {
@@ -170,7 +170,7 @@ class SearchSource
 		}
 	}
 
-	public function getIndexs($modules = null)
+	public function getIndexs(&$modules = null)
 	{
 		if ($modules) {
 			return $this->getObjsByName('Index', $this->getIndexsName($modules));
@@ -181,7 +181,7 @@ class SearchSource
 		}
 	}
 
-	public function getFactorsName($indexs = null){
+	public function getFactorsName(&$indexs = null){
 		if ($indexs) {
 			return $this->baseFindChildren($indexs, $indexs, 'Index');
 		} else {
@@ -191,7 +191,7 @@ class SearchSource
 		}
 	}
 
-	public function getFactors($indexs = null)
+	public function getFactors(&$indexs = null)
 	{
 		if ($indexs) {
 			return $this->getObjsByName('Factor', $this->getFactorsName($indexs));
@@ -202,7 +202,7 @@ class SearchSource
 		}
 	}
 
-	public function getQuestionsMartix($factors = null)
+	public function getQuestionsMartix(&$factors = null)
 	{
 		if ($factors) {
 			return $this->baseFindChildren($factors, $factors, 'Factor');
@@ -213,7 +213,7 @@ class SearchSource
 		}
 	}
 
-	public function getQuestions($factors = null)
+	public function getQuestions(&$factors = null)
 	{
 		if ($factors) {
 			$ans = array();
@@ -240,7 +240,7 @@ class SearchSource
 	 * @class_name 该层的名称
 	 * @return 资源子元素名的集合
 	 */
-	function baseFindChildren($obj_array, $all_list, $class_name)
+	function baseFindChildren(&$obj_array, &$all_list, $class_name)
 	{
 		$ans = array();	$next = array();
 		foreach ($obj_array as $obj) {
@@ -250,13 +250,10 @@ class SearchSource
 			if (isset($obj->children_type)) {
 				$child_type = explode(',', $obj->children_type);
 				if (count($child_list) != count($child_type)) {
-					$msg = "ClassName: $class_name\n".
-							"Name: $obj->name\n".
-							"Children: $obj->children\n".
-							"Children_type: $obj->children_type\n";
-					throw new Exception("child_list and child_type length is not equal\n$msg");
+					throw new Exception("child_list and child_type length is not equal\n");
 				}
 			}
+			
 			foreach ($child_list as $key => $value) {
 				if ($child_type) {
 					$ctype = $child_type[$key];
@@ -269,25 +266,33 @@ class SearchSource
 						$next[$value] = $value;
 						echo $value." ";
 						if (is_numeric($value)) {
-							$msg = "ClassName: $class_name\n".
-									"Name: $obj->name\n".
-									"ctype: $ctype\n".
-									"Children: $obj->children\n".
-									"Children_type: $obj->children_type\n";
-							throw new Exception("value is not integer\n$msg");
+							throw new Exception("value is not integer\n");
 						}
 					}
 				} else $ans[$value] = $value;
 			}
+			if ($obj->name == 'spm') {
+				print_r($obj->children);
+				print_r($next);
+			}
 		}
+		echo "Before\n";
+		foreach ($all_list as $key => $value) {
+			echo "  $key\n";
+		}
+
 		if ($class_name != 'Module' && count($next) != 0) {
 			$objs = $this->getList($all_list, $next, $class_name);
+			echo "After\n";
+			foreach ($all_list as $key => $value) {
+				echo "  $key\n";
+			}
 			$this->combineAns($objs, $ans, $all_list, $class_name);
 		} 
 		return $ans;
 	}
 
-	function combineAns($objs, $ans, $all_list, $class_name)
+	function combineAns(&$objs, &$ans, &$all_list, $class_name)
 	{
 		$other_ans = $this->baseFindChildren($objs, $all_list, $class_name);
 		if ($class_name != 'Factor') {
@@ -311,7 +316,7 @@ class SearchSource
 	 * @class_name 资源类名
 	 * @return 返回全部找到的资源的集合
 	 */
-	function getList($array, $find_list, $class_name)
+	function getList(&$array, &$find_list, $class_name)
 	{
 		$ans = array();
 		$temp = array(); // 不在array中的资源名集合
@@ -334,13 +339,14 @@ class SearchSource
 		}
 
 		foreach ($objs as $obj) {
+			if ($obj->name == 'spma') print_r($temp);
 			$array[$obj->name] = $obj; // 缓存到array中
 			$ans[$obj->name] = $obj;
 		}
 		return $ans;
 	}
 
-	function getObjsByName($class_name, $namelist)
+	function getObjsByName($class_name, &$namelist)
 	{
 		if ($namelist && count($namelist) != 0) {
 			$objs = $class_name::find(array(
@@ -367,4 +373,27 @@ class SearchSource
 			throw new Exception("Name list is null");
 		}
 	}
+
+	function printArray($array_name, $fried = 'name')
+	{
+		$array = $this->$array_name();
+		echo $array_name."\n";
+		$i = 1;
+		foreach ($array as $key => $obj) {
+			$out = $obj->$fried;
+			echo "  $i.$key => $out\n";
+			$i++;
+		}	
+	}
+
+	public function printAll()
+	{
+		$this->printArray('getExaminees','number');
+		$this->printArray('getModules','children');
+		$this->printArray('getIndexs','children');
+		$this->printArray('getFactors','children');
+		$this->printArray('getQuestions','number');
+	}
 }
+
+

@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 11:08:59
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-15 17:46:52
+ * @Last Modified time: 2015-08-15 22:13:51
  */
 
 /**
@@ -16,8 +16,12 @@ class Score
 	public function __construct($project_id)
 	{
 		$this->ss = new SearchSource($project_id);
+		$this->ss->printAll();
+
 		$this->factor_done = array();
 	}
+
+
 
 	public function Calculate()
 	{
@@ -134,6 +138,10 @@ class Score
 		$ans = $factor_map[$factor_name];
 		if ($ans) return $ans;
 		else {
+			echo '$factor_map'."\n";
+			foreach ($factor_map as $name => $obj) {
+				echo "$name\t";
+			}
 			throw new Exception("can not find factor [$factor_name] in resource\n");
 		}
 	}
