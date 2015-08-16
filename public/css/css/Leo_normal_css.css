@@ -227,7 +227,11 @@
 }
 
 
-.Leo_ans_checktext:hover{
+.Leo_ans_div .Leo_ans_checktext:hover{
     background-color: #aaeff9;
 }
 
+
+.Leo_ans_div_spm .Leo_ans_checktext:hover{
+    border:solid 2px #aaeff9;
+}
