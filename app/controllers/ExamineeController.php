@@ -69,9 +69,9 @@ class ExamineeController extends Base
         $questions = $this->getQuestions($project_id,$paper_id);
 
         $this->response->setHeader("Content-Type", "text/json; charset=utf-8");
-        if (!$question) {
+        if (empty($questions)) {
             $no_ques = "none";
-            $this->dataReturn(array("question"=>$questions['exams'],"description"=>Paper::findFirst($paper_id)->description,"order"=>$questions['question_number_array'],"no_ques"=>$no_ques));
+            $this->dataReturn(array("no_ques"=>$no_ques));
         }
         else{
             $this->dataReturn(array("question"=>$questions['exams'],"description"=>Paper::findFirst($paper_id)->description,"order"=>$questions['question_number_array']));
@@ -94,10 +94,12 @@ class ExamineeController extends Base
 
         $exams = $this->getExam($question_number_array,$paper_id);
 
-        $question = array();
-        $question['question_number_array'] = $question_number_array;
-        $question['exams'] = $exams;
 
+        $question = array();
+        if(!empty($exams)){
+            $question['question_number_array'] = $question_number_array;
+            $question['exams'] = $exams;
+        }
         return $question;
     }
 
@@ -202,7 +204,9 @@ class ExamineeController extends Base
                 }               
             }
         }
-        
+        if(empty($questions_number)){
+            return $questions_number;
+        }
         $number = explode(",",implode(",",array_unique($questions_number)));
          $length = sizeof($number);
         for($i=0;$i<$length;$i++)
@@ -215,6 +219,9 @@ class ExamineeController extends Base
 
     public function getExam($numbers,$paper_id){
         $data = array();
+        if(empty($numbers)){
+            return $data;
+        }
         for ($i=0; $i < sizeof($numbers); $i++) { 
             $question = Question::findFirst(array(
                 'paper_id=?0 and number=?1',
