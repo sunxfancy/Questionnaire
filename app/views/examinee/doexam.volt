@@ -380,7 +380,6 @@ function initCookie_title(ans_cookie){
 function getpaper(paper_index){
 
          $.post('/Examinee/getpaper', {'paper_name':paper_id_name[paper_index]}, function(data) {
-        
          questions=data.question;
          description=data.description;
          ques_order=data.order;
