@@ -218,7 +218,7 @@ class ExamineeController extends Base
                 $title = $question->topic;
             }
             $data[$i]=array(
-                'index'=>$numbers[$i],
+                'index'=>$i,
                 'title'=>$title,
                 'options'=>$question->options);
         }
