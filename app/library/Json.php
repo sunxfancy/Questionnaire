@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 09:18:33
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-16 10:55:50
+ * @Last Modified time: 2015-08-16 16:02:02
  */
 
 /**
@@ -98,7 +98,10 @@ class Json
 
 	function fliter($str)
 	{
-		return implode(',', $this->trim_array( explode(',', $str) ) );
+		$array = array();
+		if ($str != null)
+			$array = explode(',', $str);
+		return implode(',', $this->trim_array(  ) );
 	}
 
 	function trim_array(&$array)
