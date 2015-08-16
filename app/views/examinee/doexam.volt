@@ -102,7 +102,6 @@ $(function(){
 
     Leo_timer_start();
     Leo_initPaperId();
-    alert(paper_id_now);
     getpaper(paper_id_now);
 
      $('#do_announce').click(function(){
@@ -400,7 +399,8 @@ function Leo_check(){
     $.post('/Examinee/getExamAnswer',{"answer":$.cookie("exam_ans"+{{number}}),"paper_name":paper_id_name[paper_id_now],"order":ques_order}, function(data) {
                             if(data.flag){
                                 if(paper_id_now<5){
-                                    
+                                    alert(paper_id_now);
+                                    alert(paper_name[paper_id_now+1]);
                                     alert("提交成功！点击确定进入"+paper_name[paper_id_now+1]+"答题");
                                     paper_id_now++;
                                     done_index=0;
