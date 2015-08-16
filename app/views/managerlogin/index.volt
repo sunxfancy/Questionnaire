@@ -57,13 +57,12 @@ $(document).ready(function() {
                 "username" :$("#username").val(),
                 "password" :$("#password").val()
             }
-
             $.post('/managerlogin/login', login_info, callbk);
-
     });
+});
 
 
-    function callbk(data){
+function callbk(data){
         if(data.url){
             window.location.href = data.url;
         }else{
@@ -71,7 +70,18 @@ $(document).ready(function() {
         }
     }
 
-   
+$("body").keypress(function(event) {
+      /* Act on the event */
+      
+      if(event.which==13){
+               var login_info ={
+                  "username" :$("#username").val(),
+                  "password" :$("#password").val()
+                }
+
+               $.post('/managerlogin/login', login_info, callbk);
+             }
+
 });
 //-->
 </script>

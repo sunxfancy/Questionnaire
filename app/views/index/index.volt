@@ -50,18 +50,37 @@
 
 <script type='text/javascript'>
 <!--
+
+$("body").keypress(function(event) {
+      /* Act on the event */
+      
+      if(event.which==13){
+              checkup_login();
+      }
+
+    });
+
 $(document).ready(function() {
 
     $("#submit").click(function(){
-            var login_info ={
+            checkup_login();
+
+    });
+
+    
+
+
+   
+});
+
+function checkup_login(){
+  var login_info ={
                 "username" :$("#username").val(),
                 "password" :$("#password").val()
             }
 
             $.post('/Examinee/login', login_info, callbk);
-
-    });
-
+}
 
     function callbk(data){
         
@@ -71,8 +90,6 @@ $(document).ready(function() {
             alert(data.error);
         }
     }
-
-   
-});
 //-->
+
 </script>

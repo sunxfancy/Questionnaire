@@ -12,32 +12,5 @@
 <body style="background-image:url(/image/fcbg.png);" >
 	{{ content()}}
 
-<script type="text/javascript">
-	$(function(){
-		$("body").keypress(function(event) {
-			/* Act on the event */
-			
-			if(event.which==13){
-           		 var login_info ={
-	                "username" :$("#username").val(),
-	                "password" :$("#password").val()
-          		  }
-
-          	 	 $.post('/managerlogin/login', login_info, callbk);
-
-    			}
-		});
-
-		function callbk(data){
-        if(data.url){
-            window.location.href = data.url;
-        }else{
-            alert(data.error);
-        }
-}
-	})
-
-
-</script>
 </body>
 </html>

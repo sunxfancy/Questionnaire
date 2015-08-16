@@ -98,8 +98,11 @@ $(function(){
         $.cookie("exam_ans"+{{number}},ans.join("|"),{experies:7});
         initCookie(questions.length,"exam_ans"+{{number}});
     });
+
+
     Leo_timer_start();
     Leo_initPaperId();
+    alert(paper_id_now);
     getpaper(paper_id_now);
 
      $('#do_announce').click(function(){
