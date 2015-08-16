@@ -69,7 +69,13 @@ class ExamineeController extends Base
         $questions = $this->getQuestions($project_id,$paper_id);
 
         $this->response->setHeader("Content-Type", "text/json; charset=utf-8");
-        $this->dataReturn(array("question"=>$questions['exams'],"description"=>Paper::findFirst($paper_id)->description,"order"=>$questions['question_number_array']));
+        if (!$question) {
+            $no_ques = "none";
+            $this->dataReturn(array("question"=>$questions['exams'],"description"=>Paper::findFirst($paper_id)->description,"order"=>$questions['question_number_array'],"no_ques"=>$no_ques));
+        }
+        else{
+            $this->dataReturn(array("question"=>$questions['exams'],"description"=>Paper::findFirst($paper_id)->description,"order"=>$questions['question_number_array']));
+        }
     }
 
     public function getQuestions($project_id,$paper_id){

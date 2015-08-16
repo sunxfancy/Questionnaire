@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 09:18:33
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-16 16:02:02
+ * @Last Modified time: 2015-08-16 16:09:02
  */
 
 /**
@@ -101,7 +101,7 @@ class Json
 		$array = array();
 		if ($str != null)
 			$array = explode(',', $str);
-		return implode(',', $this->trim_array(  ) );
+		return implode(',', $this->trim_array( $array ) );
 	}
 
 	function trim_array(&$array)
