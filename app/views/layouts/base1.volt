@@ -11,4 +11,6 @@
 
 <body style="background-image:url(/image/fcbg.png);" >
 	{{ content()}}
+
 </body>
+</html>
