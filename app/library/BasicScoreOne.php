@@ -173,7 +173,7 @@ class BasicScoreOne {
 		foreach ($list as $record){
 			$tmp_record = array();
 			$tmp_record['XH'] = $record['number'];
-			$tmp_record['BZ'] = ord($record['option'])-64;
+			$tmp_record['BZ'] = ord($record['option'])-ord('a')+1;
 			/**
 			 * SPM 只有标准答案算1分，其余为0分，
 			 * 
@@ -279,7 +279,7 @@ class BasicScoreOne {
 		foreach( $list as $record ){
 			$tmp_record = array();
 			$tmp_record['TH'] = $record['number'];
-			$tmp_record['XZ'] = ord($record['option'])-64;
+			$tmp_record['XZ'] = ord($record['option'])-ord('a')+1;
 			$rt_array = Score::multidimensinal_search_v2($epqa_list, $tmp_record);
 			$rt_str = Score::readScoreFromArray($rt_array);
 			$record_list[] = $rt_str;			
@@ -323,7 +323,7 @@ class BasicScoreOne {
 		foreach( $list as $record ){
 			$tmp_record = array();
 			$tmp_record['TH'] = $record['number'];
-			$tmp_record['XZ'] = ord($record['option'])-64;
+			$tmp_record['XZ'] = ord($record['option'])-ord('a')+1;
 			$rt_array = Score::multidimensinal_search_v2($cpi_list, $tmp_record);			
 			$rt_str = Score::readScoreFromArray($rt_array);
 			#添加标准转换
@@ -348,9 +348,11 @@ class BasicScoreOne {
 			$epps_list[] = $record;
 		}
 		$record_list =array();
+		print_r($list);
 		foreach ($list as $record){
+			print_r($record);
 			$rtn_array = Score::findInTwodemensianalArray($epps_list, 'TH', $record['number']);
-			$choice_ab = ord($record['option'])-64;
+			$choice_ab = ord($record['option'])-ord('a')+1;
 			$record_list[] = Score::readScoreFromArray_v2($rtn_array, $choice_ab);	
 		}
 		$record_list = Score::reEPPSList($record_list);

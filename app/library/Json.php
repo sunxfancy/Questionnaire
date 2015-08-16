@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 09:18:33
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-15 11:37:36
+ * @Last Modified time: 2015-08-16 16:02:02
  */
 
 /**
@@ -80,7 +80,7 @@ class Json
 		foreach ($array as $key => $value) {
 			$child_array = array('question','factor','index','questionA');
 			if (in_array($key, $child_array)) {
-				$obj->children = $value;
+				$obj->children = $this->fliter($value);
 				$b = $key == $class_name ? 0 : 1;
 				$obj->children_type = $this->makeArray($value, $b);
 			}
@@ -94,6 +94,23 @@ class Json
 				$obj->children_type .= ','.$this->makeArray($value, 1);
 			}
 		}
+	}
+
+	function fliter($str)
+	{
+		$array = array();
+		if ($str != null)
+			$array = explode(',', $str);
+		return implode(',', $this->trim_array(  ) );
+	}
+
+	function trim_array(&$array)
+	{
+		$ans = array();
+		foreach ($array as $value) {
+			$ans[] = trim($value);
+		}
+		return $ans;
 	}
 
 	// 根据array字段，生成新的children_type

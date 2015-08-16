@@ -53,8 +53,11 @@ class Question extends \Phalcon\Mvc\Model
     public static function findByPapernameAndNums($paper_name, $numbers)
     {
         $paper_id = Paper::findId($paper_name);
-        return Question::findFirst(array(
+        $qlist = Question::find(array(
             'paper_id = :pid: AND number IN ({numbers:array})',
-            'bind' => array('pid' => $paper_id, 'numbers' => $numbers)));
+            'bind' => array('pid' => $paper_id, 'numbers' => array_values($numbers))
+        ));
+        if (count($qlist) == 0) throw new Exception("Can not find any questions.");
+        return $qlist;
     }
 }
