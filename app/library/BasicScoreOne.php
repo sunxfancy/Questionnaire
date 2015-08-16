@@ -215,6 +215,7 @@ class BasicScoreOne {
 			 */
 			$rtn_array = Score::findInTwodemensianalArray($ksdf_list, 'TH', $record['number']);
 			$rtn_score = $rtn_array[$record['option']];
+			print_r($rtn_array);
 			$record_list[] = $rtn_score;
 			
 		}

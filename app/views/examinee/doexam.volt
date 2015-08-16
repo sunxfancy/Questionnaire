@@ -98,6 +98,8 @@ $(function(){
         $.cookie("exam_ans"+{{number}},ans.join("|"),{experies:7});
         initCookie(questions.length,"exam_ans"+{{number}});
     });
+
+
     Leo_timer_start();
     Leo_initPaperId();
     getpaper(paper_id_now);
@@ -124,9 +126,10 @@ function Leo_initPaperId(){
     var paper_cookie=$.cookie("paper_id"+{{number}});
     if(!paper_cookie){
         $.cookie("paper_id"+{{number}},0,{expeires:7});
+        paper_id_now=0;
 
     }else{
-        paper_id_now=paper_cookie;
+        paper_id_now=parseInt(paper_cookie);
     }
 }
 
@@ -232,7 +235,7 @@ function initTitle(index){
 
     if(paper_id_name[paper_id_now]=="SPM"){
         option_disp="<div>";
-        option1="<div class='Leo_ans_div_spm'><div class='Leo_ans_checkdiv'><input name='ans_sel' type='radio' id='123' style='cursor:pointer;'/></div><div class='Leo_ans_checktext' style='width:140px;height:85px;text-align:center;'><img style='height:80px;margin-top:2px;' src='/spmimages/";
+        option1="<div class='Leo_ans_div_spm'><div class='Leo_ans_checkdiv'><input name='ans_sel' type='radio' id='123' style='cursor:pointer;'/></div><div class='Leo_ans_checktext' style='width:140px;height:85px;text-align:center;'><img style='height:50px;margin-top:17px;' src='/spmimages/";
         option2=".jpg' /></div></div>";
         title=(questions[index].index+1)+"."+"<img style='height:145px;' src='/spmimages/"+questions[index].title+".jpg' />";
 
@@ -380,7 +383,17 @@ function initCookie_title(ans_cookie){
 function getpaper(paper_index){
 
          $.post('/Examinee/getpaper', {'paper_name':paper_id_name[paper_index]}, function(data) {
-        
+            if(data.no_ques){
+                if(paper_id_now<5){
+                    paper_id_now++;
+                    $.cookie("paper_id"+{{number}},paper_id_now,{experies:7});
+                    getpaper(paper_id_now);
+                    return;
+                }else{
+                   ans_complete();
+                   return;
+                }
+            }
          questions=data.question;
          description=data.description;
          ques_order=data.order;
@@ -397,7 +410,6 @@ function Leo_check(){
     $.post('/Examinee/getExamAnswer',{"answer":$.cookie("exam_ans"+{{number}}),"paper_name":paper_id_name[paper_id_now],"order":ques_order}, function(data) {
                             if(data.flag){
                                 if(paper_id_now<5){
-                                    
                                     alert("提交成功！点击确定进入"+paper_name[paper_id_now+1]+"答题");
                                     paper_id_now++;
                                     done_index=0;
@@ -406,16 +418,21 @@ function Leo_check(){
                                     $.cookie("exam_ans"+{{number}},"",{expires:-1});
                                     getpaper(paper_id_now);
                                 }else{
-                                    alert("提交成功!您已完成全部题目的作答，谢谢您的配合。\n点击‘确定’退出系统。");
-                                    $.cookie("paper_id"+{{number}},"",{experies:-1});
-                                    $.cookie("exam_ans"+{{number}},"",{expires:-1});
-                                    window.location.href="/";
+                                    ans_complete();
+                                    return;
                                 }
                               }else{
                                     alert("提交出错，请联系管理员！");
                               }
                         });
 
+}
+
+function ans_complete(){
+    alert("提交成功!您已完成全部题目的作答，谢谢您的配合。\n点击‘确定’退出系统。");
+    $.cookie("paper_id"+{{number}},"",{experies:-1});
+    $.cookie("exam_ans"+{{number}},"",{expires:-1});
+    window.location.href="/"
 }
 
 

@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 11:08:59
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-15 17:14:43
+ * @Last Modified time: 2015-08-16 16:55:33
  */
 
 /**
@@ -16,21 +16,33 @@ class Score
 	public function __construct($project_id)
 	{
 		$this->ss = new SearchSource($project_id);
+		$this->factor_done = array();
 	}
 
+	/**
+	 * 核心计算调用接口
+	 */
 	public function Calculate()
 	{
-		$answers = $this->workAnswers();
-		print_r($answers);
-		$factor_ans = $this->workFactors($answers);
+		$answers = $this->workAnswers();  // 第一层， 由答案转换得分
+		$factor_ans = $this->workFactors($answers); // 第二层， 计算因子得分
+		// TODO: 第三层， 计算指标得分
 	}
 
 
+	/**
+	 * 依次计算列表中的每一个因子
+	 */
 	public function workFactors($answers)
 	{
+		$ans = array();
 		foreach ($this->ss->getFactors() as $factor) {
-			$this->calFactor($factor, $this->ss->getExaminees(), $answers);
+			$temp = $this->calFactor($factor, $this->ss->getExaminees(), $answers);
+			foreach ($temp as $obj) {
+				echo "$obj->factor_id => $obj->score\n";
+			}
 		}
+		return $ans;
 	}
 
 
@@ -46,7 +58,7 @@ class Score
 			return $this->factor_done[$factor->name];
 		$child_list = explode(',', $factor->children);
 		$child_type = explode(',', $factor->children_type);
-
+		if (count($child_list) == 0) return null;
 		$paper_name = $factor->getPaperName();
 		$items = $this->factorRes($child_list, $child_type, $examinees, $answers);
 		$ans = array();
@@ -57,7 +69,14 @@ class Score
 					'examinee_id = ?0 AND factor_id = ?1',
 					'bind' => array($eid, $factor->id)
 			));
-			$factor_ans->score = $this->doAction($factor->action, $items[$eid]);
+			$factor_ans->examinee_id = $eid;
+			$factor_ans->factor_id = $factor->id;
+			$factor_ans->score = $this->doAction($factor->children, $factor->action, $items[$eid]);
+			if (!$factor_ans->save()) {
+				foreach ($factor_ans->getMessages() as $msg) {
+					throw new Exception($msg);
+				}
+			}
 			$ans[$eid] = $factor_ans;
 		}
 
@@ -66,22 +85,25 @@ class Score
 		return $ans;
 	}
 
-	function doAction($action, $array)
+	function doAction($children, $action, $array)
 	{
 		if (in_array($action, CalFunc::$func_reg)) {
-			return CalFunc::$action($array);
+			$ans = call_user_func(array('CalFunc',$action), $array);
+			return $ans;
 		} else {
 			if ($this->action_function[$action] == null) {
-				$this->action_function[$action] = $this->complie_action($action);
+				$this->action_function[$action] = $this->complie_action($children, $action);
 			}
+			return call_user_func_array($this->action_function[$action], $array);
 		}
 	}
 
 	function complie_action($child_list, $action)
 	{
 		// 这里需要正则加$符号
-
-
+		$child_list = preg_replace('/[a-zA-Z][a-zA-Z0-9]*/', '\$$0', $child_list);
+		$action     = preg_replace('/[a-zA-Z][a-zA-Z0-9]*/', '\$$0', $action);
+		$action = "return $action;";
 		return create_function($child_list, $action);
 	}
 
@@ -89,6 +111,9 @@ class Score
 	{
 		$items = $this->makeItemArray($examinees);
 		foreach ($child_list as $key => $child) {
+			if ($child == null) {
+				throw new Exception("child is null");
+			}
 			$ctype = $child_type[$key];
 			if ($ctype == 1) {
 				foreach ($examinees as $examinee) {
@@ -119,11 +144,11 @@ class Score
 		$ans = $factor_map[$factor_name];
 		if ($ans) return $ans;
 		else {
-			$msg = '';
-			foreach ($factor_map as $key => $value) {
-				$msg .= $key."\n";
+			echo '$factor_map'."\n";
+			foreach ($factor_map as $name => $obj) {
+				echo "$name\t";
 			}
-			throw new Exception("can not find factor [$factor_name] in resource\n$msg");
+			throw new Exception("can not find factor [$factor_name] in resource\n");
 		}
 	}
 
@@ -247,6 +272,7 @@ class Score
 				return $svalue;
 			}
 		}
+		throw new Exception("can not find the answer In Two demensianal\n key:$key value:$value");
 	}
 	
 	/**
