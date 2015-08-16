@@ -98,8 +98,11 @@ $(function(){
         $.cookie("exam_ans"+{{number}},ans.join("|"),{experies:7});
         initCookie(questions.length,"exam_ans"+{{number}});
     });
+
+
     Leo_timer_start();
     Leo_initPaperId();
+    alert(paper_id_now);
     getpaper(paper_id_now);
 
      $('#do_announce').click(function(){
@@ -124,6 +127,7 @@ function Leo_initPaperId(){
     var paper_cookie=$.cookie("paper_id"+{{number}});
     if(!paper_cookie){
         $.cookie("paper_id"+{{number}},0,{expeires:7});
+        paper_id_now=0;
 
     }else{
         paper_id_now=paper_cookie;
@@ -380,7 +384,6 @@ function initCookie_title(ans_cookie){
 function getpaper(paper_index){
 
          $.post('/Examinee/getpaper', {'paper_name':paper_id_name[paper_index]}, function(data) {
-        
          questions=data.question;
          description=data.description;
          ques_order=data.order;
