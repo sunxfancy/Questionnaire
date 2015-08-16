@@ -124,6 +124,7 @@ function Leo_initPaperId(){
     var paper_cookie=$.cookie("paper_id"+{{number}});
     if(!paper_cookie){
         $.cookie("paper_id"+{{number}},0,{expeires:7});
+        paper_id_now=0;
 
     }else{
         paper_id_now=paper_cookie;
