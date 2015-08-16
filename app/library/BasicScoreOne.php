@@ -348,7 +348,9 @@ class BasicScoreOne {
 			$epps_list[] = $record;
 		}
 		$record_list =array();
+		print_r($list);
 		foreach ($list as $record){
+			print_r($record);
 			$rtn_array = Score::findInTwodemensianalArray($epps_list, 'TH', $record['number']);
 			$choice_ab = ord($record['option'])-ord('a')+1;
 			$record_list[] = Score::readScoreFromArray_v2($rtn_array, $choice_ab);	

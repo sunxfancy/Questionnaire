@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 11:08:59
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-15 22:13:51
+ * @Last Modified time: 2015-08-16 11:45:29
  */
 
 /**
@@ -16,8 +16,6 @@ class Score
 	public function __construct($project_id)
 	{
 		$this->ss = new SearchSource($project_id);
-		$this->ss->printAll();
-
 		$this->factor_done = array();
 	}
 
@@ -34,7 +32,10 @@ class Score
 	{
 		$ans = array();
 		foreach ($this->ss->getFactors() as $factor) {
-			$this->calFactor($factor, $this->ss->getExaminees(), $answers);
+			$temp = $this->calFactor($factor, $this->ss->getExaminees(), $answers);
+			foreach ($temp as $obj) {
+				echo "$obj->factor_id => $obj->score\n";
+			}
 		}
 		return $ans;
 	}
@@ -82,12 +83,13 @@ class Score
 	function doAction($children, $action, $array)
 	{
 		if (in_array($action, CalFunc::$func_reg)) {
-			return CalFunc::$action($array);
+			$ans = call_user_func(array('CalFunc',$action), $array);
+			return $ans;
 		} else {
 			if ($this->action_function[$action] == null) {
 				$this->action_function[$action] = $this->complie_action($children, $action);
 			}
-			call_user_func_array($this->action_function[$action], $array);
+			return call_user_func_array($this->action_function[$action], $array);
 		}
 	}
 
@@ -102,6 +104,7 @@ class Score
 
 	function factorRes($child_list, $child_type, $examinees, $answers)
 	{
+		print_r($answers);
 		$items = $this->makeItemArray($examinees);
 		foreach ($child_list as $key => $child) {
 			if ($child == null) {
@@ -266,6 +269,7 @@ class Score
 				return $svalue;
 			}
 		}
+		throw new Exception("can not find the answer In Two demensianal\n key:$key value:$value");
 	}
 	
 	/**
