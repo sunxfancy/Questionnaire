@@ -3,7 +3,7 @@
  * @Author: sxf
  * @Date:   2015-08-11 11:08:59
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-16 11:45:29
+ * @Last Modified time: 2015-08-16 16:55:33
  */
 
 /**
@@ -19,15 +19,20 @@ class Score
 		$this->factor_done = array();
 	}
 
-
-
+	/**
+	 * 核心计算调用接口
+	 */
 	public function Calculate()
 	{
-		$answers = $this->workAnswers();
-		$factor_ans = $this->workFactors($answers);
+		$answers = $this->workAnswers();  // 第一层， 由答案转换得分
+		$factor_ans = $this->workFactors($answers); // 第二层， 计算因子得分
+		// TODO: 第三层， 计算指标得分
 	}
 
 
+	/**
+	 * 依次计算列表中的每一个因子
+	 */
 	public function workFactors($answers)
 	{
 		$ans = array();
@@ -104,11 +109,9 @@ class Score
 
 	function factorRes($child_list, $child_type, $examinees, $answers)
 	{
-		print_r($answers);
 		$items = $this->makeItemArray($examinees);
 		foreach ($child_list as $key => $child) {
 			if ($child == null) {
-				print_r($child_list);
 				throw new Exception("child is null");
 			}
 			$ctype = $child_type[$key];

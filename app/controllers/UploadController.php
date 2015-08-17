@@ -1,16 +1,22 @@
 <?php
+/**
+ * use for developer handle the DB[insert|update]: Paper, Question, **df[Cpi|Epps|Epqa|Ks|Scl|Som];
+ * @author Wangyaohui
+ */
+
 class UploadController extends \Phalcon\Mvc\Controller {
 	
-	public function initialize() {
-        $this->response->setHeader("Content-Type", "text/html; charset=utf-8");
-    }
-	#上传页
-	public function indexAction() {
-		
-		
+	public function initialize(){
+		$this->response->setHeader("Content-Type", "text/html; charset=utf-8");
+	}
+	
+	public function indexAction() {	
+		#进入上传页面	
 	}
 	#导入6套试题的指导语，名称
 	public function uploadPaperAction(){
+		echo "hel";
+		exit();
 		$paperData = array();
 		$paperData[] = array(
 				'description' =>"请根据自己的实际情况作“是”或“不是”的回答。这些问题要求你按自己的实际情况回答，不要去猜测怎样才是正确的回答。因为这里不存在正确或错误的回答，也没有捉弄人的问题，将问题的意思看懂了就快点回答，不要花很多时间去想。每个问题都要问答。问卷无时间限制，但不要拖延太长，也不要未看懂问题便回答。",
@@ -61,6 +67,16 @@ class UploadController extends \Phalcon\Mvc\Controller {
 		}
 	}
 	#获取试题的编号，如果试题存在，返回id，否则，返回值为-1;
+	public function checkPaperAction(){
+		$paper_data = DBScanner::getPaperInfo();
+		echo "<pre>";
+		print_r($paper_data);
+		echo "</pre>";
+	}
+	public function updatePaperAction(){
+		
+	}
+	
 	public function getPaperIdByName($name){
 		$name = strtoupper($name);
 		$rt = Paper::findfirst("name='$name'");

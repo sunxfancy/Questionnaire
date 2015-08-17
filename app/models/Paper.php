@@ -21,11 +21,44 @@ class Paper extends \Phalcon\Mvc\Model
      *
      */
     public $name;
-
-    public function initialize()
-    {
+	
+	/**
+	 * Paper 关系 question
+	 * 
+	 */
+    public function initialize(){
         $this->hasMany("id", "Factor", "paper_id");
+        $this->hasMany("id", "Question", "paper_id");
     }
+    /**
+     *  添加 model method
+     * @param unknown $data
+     */
+    public static function insertData($data){
+    	
+    }
+    public static function updateData($data){
+    	
+    }
+    public static function getListByName($name = null){
+    	if( empty($name) ){
+    		self::find();
+    	}
+    }
+    public static function getListByNamesArray($names_array){
+    	
+    }
+    public static function getListById($id){
+    	
+    }
+    public static function getListByIdsArray($ids_array){
+    	
+    }
+    public static function dataFormatCheck($data){
+    	
+    }
+    
+    
 
     public static function findByNames($names)
     {

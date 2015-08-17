@@ -3,11 +3,13 @@
  * @Author: sxf
  * @Date:   2015-08-11 09:18:33
  * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-16 16:09:02
+ * @Last Modified time: 2015-08-16 16:51:33
  */
 
 /**
 * Json同步类库
+* 每次调用时，都会寻找config目录下的3个json文件
+* 并同步到数据库中
 */
 class Json
 {
@@ -15,6 +17,15 @@ class Json
 		$this->db = $db;
 	}
 
+	public static function Sync($db) {
+		$json = new Json($db);
+		$json->Load();
+	}
+
+	/**
+	 * 核心同步方法，调用一下即可同步Json
+	 * 失败时会回滚数据库
+	 */
 	public function Load()
 	{
 		$work_names = array('module', 'index', 'factor');
@@ -26,7 +37,7 @@ class Json
 				$this->updateSQL($json, $work_name);
 			}
 		} catch (Exception $ex) {
-			echo $ex->getMessage() ."\n";
+			echo $ex;
 			$this->db->rollback();
 		}
 		$this->db->commit();
@@ -50,6 +61,9 @@ class Json
 		}
 	}
 
+	/**
+	 * 对一个json的元素组进行处理
+	 */
 	function worklist($json_array, $class_name, $fathername = null, $father = null)
 	{
 		foreach ($json_array as $key => $value) {
@@ -74,6 +88,9 @@ class Json
 		return $obj;
 	}
 
+	/**
+	 * 最核心的Json转换Object的方法，负责处理每个json中key和value的转换
+	 */
 	function jsonToObject($obj, $class_name, $name, $array)
 	{
 		$obj->name = $name;
