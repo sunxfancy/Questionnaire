@@ -55,13 +55,13 @@
                 {name:'is_exam_com',index:'is_exam_com',width:135, sortable:false, sorttype:"string", editable:false,align:'center'},                
                 {name:'result',index:'result', sortable:false, width:130, resize:false,align:'center',
                     formatter:function(){
-                        var temp = "<a href='/pm/result' >查看</a>";
+                        var temp = "<a href='/interviewer/result' >查看</a>";
                         return temp;
                     }
                 },
                 {name:'point',index:'point', sortable:false,width:200, editable: false,align:'center',
             		formatter:function(){
-                        var temp = "<a href='/pm/point' >进入编辑</a>";
+                        var temp = "<a href='/interviewer/point' >进入编辑</a>";
                         return temp;
                     }
             	}
