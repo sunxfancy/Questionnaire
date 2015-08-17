@@ -21,7 +21,7 @@ class InterviewerController extends Base
     public function pointAction()
     {
     	$this->view->setTemplateAfter('base2');
-        $this->leftRender('人 才 测 评 系 统');
+        $this->leftRender('填写面巡意见');
     }
 
 }
