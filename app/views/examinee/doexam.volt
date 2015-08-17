@@ -1,3 +1,6 @@
+
+
+
 <link rel="stylesheet" type="text/css" href="/css/css/Leo_questions.css" />
 <script type="text/javascript" src="/js/demand.js"></script>
 <div class="Leo_question_v2" id="Leo_question_v2">
@@ -140,6 +143,8 @@ function Leo_initPanel(questionlength) {
 
         $("#Leo_question_table").replaceWith("<table style='width:92%;text-align:center;vertical-align:middle;table-layout:fixed;margin:0 auto;' id='Leo_question_table' cellspacing='0'></table>");
 
+        // $("#Leo_question_table").html("");
+
         var rows_count = Math.ceil(questionlength/ 5);
             for (var k = 0; k < rows_count; k++) {
                 var row_now = document.getElementById("Leo_question_table").insertRow(k);
@@ -156,7 +161,9 @@ function Leo_initPanel(questionlength) {
                         newdiv.style.textAlign = "center";
                         newdiv.style.cursor = "pointer";
                         newdiv.style.backgroundColor = "gray";
-                        newdiv.innerText = ( 5 * k + i) + 1 + "";
+                        newdiv.textContent= ( 5 * k + i) + 1 + "";
+                        newdiv.innerText= ( 5 * k + i) + 1 + "";
+                       
                         newdiv.style.fontSize = "21px";
                         newdiv.tabIndex = "0";
                         cell_now.appendChild(newdiv);
@@ -178,7 +185,9 @@ function Leo_initPanel(questionlength) {
                         newdiv.style.textAlign = "center";
                         newdiv.style.cursor = "pointer";
                         newdiv.style.backgroundColor = "gray";
-                        newdiv.innerText = ( 5 * k + i) + 1 + "";
+                        newdiv.textContent= ( 5 * k + i) + 1 + "";
+                         newdiv.innerText= ( 5 * k + i) + 1 + "";
+
                         newdiv.style.fontSize = "21px";
                         newdiv.tabIndex = "0";
                         cell_now.appendChild(newdiv);
@@ -190,6 +199,7 @@ function Leo_initPanel(questionlength) {
                     //newdiv.onclick =new Function( "changepage(parseInt(this.innerText)-1)");
                 }
             }
+
     }
 
 function Leo_timer_start(){
@@ -441,5 +451,6 @@ function ans_complete(){
   
 
 </script>
+
 
 
