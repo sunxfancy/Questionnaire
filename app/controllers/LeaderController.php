@@ -27,4 +27,23 @@ class LeaderController extends Base
     	
     }
 
+    public function infoAction($examinee_id){
+        $this->view->setTemplateAfter('base2');
+        $this->leftRender('个人信息查看');
+        $examinee = Examinee::findFirst($examinee_id);
+        $this->view->setVar('name',$examinee->name);
+        $sex = ($examinee->sex == "1") ? "男" : "女";
+        $this->view->setVar('sex',$sex);
+        $this->view->setVar('education',$examinee->education);
+        $this->view->setVar('degree',$examinee->degree);
+        $this->view->setVar('birthday',$examinee->birthday);
+        $this->view->setVar('native',$examinee->native);
+        $this->view->setVar('politics',$examinee->politics);
+        $this->view->setVar('professional',$examinee->professional);
+        $this->view->setVar('employer',$examinee->employer);
+        $this->view->setVar('unit',$examinee->unit);
+        $this->view->setVar('duty',$examinee->duty);
+        $this->view->setVar('team',$examinee->team);
+    }
+
 }

@@ -1,10 +1,13 @@
+
+
+
 <link rel="stylesheet" type="text/css" href="/css/css/Leo_questions.css" />
 <script type="text/javascript" src="/js/demand.js"></script>
 <div class="Leo_question_v2" id="Leo_question_v2">
         <!--这一部分是暂停时的下拉框-->
         <div id="Leo_hiden" class="Leo_hiden" style="top:-500px;" >
         <table style="height:100%;width:100%;text-align:center;vertical-align:middle;">
-        <tr><td id="Leo_hiden_td" style="font-size:18px;text-align:left;"></td></tr>
+        <tr><td id="Leo_hiden_td" style="font-size:18px;text-align:center;"></td></tr>
         <tr><td id="Leo_hiden_td2"><div id="Leo_hiden_ctrl" style="cursor:pointer;margin-left:45%;width:0;height:0;border-top: 30px solid transparent;border-bottom:30px solid transparent;border-left:50px solid green;" onclick="$('#Leo_hiden').slideUp('fast', function() {});"></div><br /></td></tr></table></div>
 
         <!--这一部分是指导语部分-->
@@ -140,49 +143,19 @@ function Leo_initPanel(questionlength) {
 
         $("#Leo_question_table").replaceWith("<table style='width:92%;text-align:center;vertical-align:middle;table-layout:fixed;margin:0 auto;' id='Leo_question_table' cellspacing='0'></table>");
 
+        // $("#Leo_question_table").html("");
+
         var rows_count = Math.ceil(questionlength/ 5);
             for (var k = 0; k < rows_count; k++) {
                 var row_now = document.getElementById("Leo_question_table").insertRow(k);
                 if (k < rows_count - 1) {
                     for (var i = 0; i < 5; i++) {
-                        var cell_now = row_now.insertCell(i);
-                        var newdiv = document.createElement("div");
-                        newdiv.style.float = "left";
-                        newdiv.style.margin = "5px";
-                        newdiv.style.width = "40px";
-                        newdiv.style.height = "40px";
-                        newdiv.id = "newdiv_" + (5 * k + i);
-                        newdiv.name="ques_panel";
-                        newdiv.style.textAlign = "center";
-                        newdiv.style.cursor = "pointer";
-                        newdiv.style.backgroundColor = "gray";
-                        newdiv.innerText = ( 5 * k + i) + 1 + "";
-                        newdiv.style.fontSize = "21px";
-                        newdiv.tabIndex = "0";
-                        cell_now.appendChild(newdiv);
-                        newdiv.onclick=new Function("changepage(parseInt(this.innerText)-1,true);");
-                            
-                       
+                       set_td(i,k,row_now);
                     }
                     //newdiv.onclick =new Function( "changepage(parseInt(this.innerText)-1)");
                 } else {
                     for (var i = 0; i < questionlength- (rows_count - 1) * 5 ; i++) {
-                        var cell_now = row_now.insertCell(i);
-                        var newdiv = document.createElement("div");
-                        newdiv.style.float = "left";
-                        newdiv.style.margin = "5px";
-                        newdiv.style.width = "40px";
-                        newdiv.style.height = "40px";
-                        newdiv.id = "newdiv_" + ( 5 * k + i);
-                        newdiv.name="ques_panel";
-                        newdiv.style.textAlign = "center";
-                        newdiv.style.cursor = "pointer";
-                        newdiv.style.backgroundColor = "gray";
-                        newdiv.innerText = ( 5 * k + i) + 1 + "";
-                        newdiv.style.fontSize = "21px";
-                        newdiv.tabIndex = "0";
-                        cell_now.appendChild(newdiv);
-                         newdiv.onclick=new Function("changepage(parseInt(this.innerText)-1,true);");
+                        set_td(i,k,row_now);
                     }
                     for (var i = questionlength - (rows_count - 1) * 5; i < 5; i++) {
                         var cell_now = row_now.insertCell(i);
@@ -190,6 +163,27 @@ function Leo_initPanel(questionlength) {
                     //newdiv.onclick =new Function( "changepage(parseInt(this.innerText)-1)");
                 }
             }
+        function set_td(i,k,row_now){
+            var cell_now = row_now.insertCell(i);
+            var newdiv = document.createElement("div");
+            newdiv.style.float = "left";
+            newdiv.style.margin = "5px";
+            newdiv.style.width = "40px";
+            newdiv.style.height = "40px";
+            newdiv.id = "newdiv_" + ( 5 * k + i);
+            newdiv.name="ques_panel";
+            newdiv.style.textAlign = "center";
+            newdiv.style.cursor = "pointer";
+            newdiv.style.backgroundColor = "gray";
+            newdiv.textContent= ( 5 * k + i) + 1 + "";
+            newdiv.innerText= ( 5 * k + i) + 1 + "";
+            newdiv.style.fontSize = "21px";
+            newdiv.tabIndex = "0";
+            cell_now.appendChild(newdiv);
+            newdiv.onclick=new Function("changepage(parseInt(this.innerText)-1,true);");
+        }
+
+
     }
 
 function Leo_timer_start(){
@@ -394,6 +388,8 @@ function getpaper(paper_index){
                    return;
                 }
             }
+         $("#Leo_hiden_td").html("点击进行"+paper_name[paper_id_now]+"的答题");
+         $('#Leo_hiden').slideDown('fast', function() {});    //默认设定是题目间的跳转不暂停计时，这个过程被认为是正常的答题过程！！！
          questions=data.question;
          description=data.description;
          ques_order=data.order;
@@ -404,13 +400,10 @@ function getpaper(paper_index){
 }
 
 function Leo_check(){
-
-
-
     $.post('/Examinee/getExamAnswer',{"answer":$.cookie("exam_ans"+{{number}}),"paper_name":paper_id_name[paper_id_now],"order":ques_order}, function(data) {
                             if(data.flag){
                                 if(paper_id_now<5){
-                                    alert("提交成功！点击确定进入"+paper_name[paper_id_now+1]+"答题");
+                                    alert("提交成功！");
                                     paper_id_now++;
                                     done_index=0;
                                     $("#Leo_checkup").css("display","none");
@@ -441,5 +434,6 @@ function ans_complete(){
   
 
 </script>
+
 
 

@@ -7,7 +7,7 @@
 <script type="text/javascript" src="/jqGrid/js/i18n/grid.locale-cn.js"></script>
 <script type="text/javascript" src="/js/bootstrap.js"></script>
 <div class="Leo_question">
-	<div style="width:100%;height:450px;overflow:hidden;">
+	<div style="width:100%;height:500px;overflow:hidden;">
 		<table id="grid-table"></table>
 		<div id="grid-pager"></div>
 	</div>
@@ -35,20 +35,12 @@
 
 			url: "/pm/listexaminee",
 			datatype: "json",
-			height: '300px',
+			height: '360px',
 			shrinkToFit:true,
 			forceFit:true,
 			autowidth: true,
-			colNames:[' ', '用户编号','姓名','性别', '最后登录时间','是否测试完毕','查看测试数据','增加面巡意见'],
+			colNames:['被试编号','姓名','性别', '最后登录时间','是否测试完毕','查看测试数据','增加面巡意见'],
             colModel:[
-                {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
-                    formatter:'actions', 
-                    formatoptions:{ 
-                        keys:true,
-                        
-                        delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
-                    }
-                },
                 {name:'number',index:'number', sorttype:"int",width:100, editable: false,align:'center'},
                 {name:'name',index:'name', sortable:true, width:110,sorttype:"string", editable:true,align:'center'},
                 {name:'sex',index:'sex',width:60, sortable:false, editable:false,align:'center',
@@ -83,8 +75,8 @@
                     }
                 },
                 {name:'point',index:'point', sortable:false,width:200, editable: false,align:'center',
-            		formatter:function(cellvalue,options,rowObject){
-                        var temp = "<a href='/interviewer/point/"+rowObject.id+"' >进入编辑</a>";
+            		formatter:function(){
+                        var temp = "<a href='/interviewer/point' >进入编辑</a>";
                         return temp;
                     }
             	}
@@ -116,7 +108,7 @@
 			},
 	
 			editurl: "/pm/update",//nothing is saved
-			caption: "用户账户管理"
+			caption: "被试人员列表"
 	
 			,autowidth: true
 	

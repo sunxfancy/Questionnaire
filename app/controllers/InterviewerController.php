@@ -18,31 +18,10 @@ class InterviewerController extends Base
         $this->leftRender('人 员 面 询');
     }
 
-    public function pointAction($examinee_id)
+    public function pointAction()
     {
-        $this->view->setVar('examinee_id',$examinee_id);
     	$this->view->setTemplateAfter('base2');
         $this->leftRender('填写面巡意见');
-    }
-
-
-    public function interviewAction($examinee_id){
-        $returnMessage = array();
-        $manager = $this->session->get('Manager');
-        $array = array(
-            'advantage' => $this->request->getPost('advantage'),
-            'disadvantage' => $this->request->getPost('disadvantage'),
-            'remark' => $this->request->getPost('remark'),
-            'manager_id' => $manager->id,
-            'examinee_id' => $examinee_id
-        );
-        if(Interview::commentSave($array) === true){
-            $returnMessage['status'] = "success";
-        }else{
-            $returnMessage['status'] = "failed";
-        }
-        $returnMessage = json_encode($returnMessage);
-        echo $returnMessage;
     }
 
 }
