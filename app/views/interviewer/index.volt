@@ -75,8 +75,8 @@
                     }
                 },
                 {name:'point',index:'point', sortable:false,width:200, editable: false,align:'center',
-            		formatter:function(){
-                        var temp = "<a href='/interviewer/point' >进入编辑</a>";
+            		formatter:function(cellvalue,options,rowObject){
+                        var temp = "<a href='/interviewer/point/"+rowObject.id+"' >进入编辑</a>";
                         return temp;
                     }
             	}
