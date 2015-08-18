@@ -57,7 +57,7 @@
 
         function callbk(data){
             if(data.status == 'success'){
-                alert("评论提交成功!!!");
+                alert("评论提交成功!!!!!!!");
             }
         }
 </script>
