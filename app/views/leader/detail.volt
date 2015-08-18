@@ -62,7 +62,7 @@
                 },
                 {name:'info',index:'info', sortable:false, width:40, resize:false,align:'center',
                     formatter:function(cellvalue, options, rowObject){
-                        var temp = "<div class='ui-pg-div ui-inline-edit' data-original-title='查看详细信息''><a href='/leader/info/"+rowObject.id+"' ><i class='fa fa-th-list'></i></a></div>";
+                        var temp = "<div class='ui-pg-div ui-inline-edit' data-original-title='查看个人详细信息''><a href='/leader/info/"+rowObject.id+"' ><i class='fa fa-th-list'></i></a></div>";
                         return temp;
                     }
                 },
@@ -80,7 +80,18 @@
                         return temp;
                     }
                 },
-                {name:'is_exam_com',index:'is_exam_com',width:135, sortable:false, sorttype:"string", editable:false,align:'center'},
+                {name:'is_exam_com',index:'is_exam_com',width:135, sortable:false, editable:false,align:'center',
+                    formatter:function(cellvalue){
+                        var temp = "";
+                        if(cellvalue == 1){
+                            temp = "是" ;
+                        } 
+                        else { 
+                            temp = "否";
+                        }
+                        return temp;
+                    }
+                },
                 {name:'last_login',index:'last_login', sortable:false,width:200, editable: false,unformat:pickDate,align:'center'},
                 {name:'result',index:'result', sortable:false, width:130, resize:false,align:'center',
                     formatter:function(){

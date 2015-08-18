@@ -39,7 +39,7 @@
 			shrinkToFit:true,
 			forceFit:true,
 			autowidth: true,
-			colNames:[' ', '用户编号','姓名','性别', '是否测试完毕','查看报表','增加面巡意见'],
+			colNames:[' ', '用户编号','姓名','性别', '最后登录时间','是否测试完毕','查看测试数据','增加面巡意见'],
             colModel:[
                 {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
                     formatter:'actions', 
@@ -51,8 +51,31 @@
                 },
                 {name:'number',index:'number', sorttype:"int",width:100, editable: false,align:'center'},
                 {name:'name',index:'name', sortable:true, width:110,sorttype:"string", editable:true,align:'center'},
-                {name:'sex',index:'sex',width:60, sortable:false, sorttype:"string", editable:false,align:'center'},
-                {name:'is_exam_com',index:'is_exam_com',width:135, sortable:false, sorttype:"string", editable:false,align:'center'},                
+                {name:'sex',index:'sex',width:60, sortable:false, editable:false,align:'center',
+                	formatter:function(cellvalue){
+                        var temp = "";
+                        if(cellvalue == 1){
+                            temp = "男" ;
+                        } 
+                        else { 
+                            temp = "女";
+                        }
+                        return temp;
+                    }
+            	},
+            	{name:'last_login',index:'last_login', sortable:true,width:200, editable: false,unformat:pickDate,align:'center'},
+                {name:'is_exam_com',index:'is_exam_com',width:135, sortable:false, editable:false,align:'center',
+                	formatter:function(cellvalue){
+                        var temp = "";
+                        if(cellvalue == 1){
+                            temp = "是" ;
+                        } 
+                        else { 
+                            temp = "否";
+                        }
+                        return temp;
+                    }
+            	},                
                 {name:'result',index:'result', sortable:false, width:130, resize:false,align:'center',
                     formatter:function(){
                         var temp = "<a href='/interviewer/result' >查看</a>";
