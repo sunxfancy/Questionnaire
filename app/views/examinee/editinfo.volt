@@ -18,7 +18,7 @@
                     <td style="width:120px;line-height:33px;">学历</td>
                     <td style="width:180px;">
                         <select id="education" type="text" value="{{ education }}" style="width:178px;font-size:16px;line-height:28px;font-family:'微软雅黑'">
-                            <option value="">{{ education }}</option>
+                            <option value="{{ education }}">{{ education }}</option>
                             <option value="函授大专">函授大专</option>
                             <option value="在职大专">在职大专</option>
                             <option value="全日制大专">全日制大专</option>
@@ -34,7 +34,7 @@
                     <td style=" width:120px;line-height:33px;">学位</td>
                     <td style="width:180px;">
                         <select id="degree" type="text" value="{{ degree }}" style="width:178px;font-size:16px;line-height:28px; font-family:'微软雅黑'">
-                            <option value="">{{ degree }}</option>
+                            <option value="{{ degree }}">{{ degree }}</option>
                             <option value="工科学士学位">工科学士学位</option>
                             <option value="理科学士学位">理科学士学位</option>
                             <option value="文科学士学位">文科学士学位</option>
@@ -56,7 +56,7 @@
                     <td style=" width:120px;line-height:33px;">籍贯</td>
                     <td style="width:180px;">
                         <select id="native" type="text" value="{{ native }}" style="width:178px;font-size:16px;line-height:28px; font-family:'微软雅黑'">
-                            <option value="">{{ native }}</option> 
+                            <option value="{{ native }}">{{ native }}</option> 
                             <option value="北京市">北京市</option>
                             <option value="安徽省">安徽省</option>
                             <option value="重庆市">重庆市</option>
@@ -98,7 +98,7 @@
                     <td style=" width:120px;line-height:33px;">政治面貌</td>
                     <td style="width:180px;">
                         <select id="politics" type="text" value="{{ politics }}" style="width:178px;font-size:16px;line-height:28px;font-family:'微软雅黑'">
-                            <option value="">{{ politics }}</option>
+                            <option value="{{ politics }}">{{ politics }}</option>
                             <option value="无">无党派</option>
                             <option value="团员">团员</option>
                             <option value="党员">党员</option>
@@ -109,7 +109,7 @@
                     <td style=" width:120px;line-height:33px;">职称</td>
                     <td style="width:180px;">
                         <select id="professional" type="text" value="{{ professional }}" style="width:178px;font-size:16px;line-height:28px;font-family:'微软雅黑'">
-                            <option value="空">{{ professional }}</option>
+                            <option value="{{ professional }}">{{ professional }}</option>
                             <option value="无职称">无职称</option>
                             <option value="初级">初级</option>
                             <option value="中级">中级</option>
@@ -178,9 +178,12 @@
                     "duty"          :$("#duty").val(),
                     "team"          :$("#team").val()
                 }
-                $.post('/examinee/submit', base_info);
+                $.post('/examinee/submit', base_info, callbk);
         });
     });
+    function callbk(){
+            window.location.href = '/examinee/doexam';
+    }
 
 jQuery(function($) {
         var grid_selector = "#grid-table1";
