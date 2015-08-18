@@ -64,7 +64,7 @@
                 {name:'username',index:'username', sorttype:"int",width:100, editable: false,align:'center'},
                 {name:'name',index:'name', sortable:true, width:100,sorttype:"string", editable:true,align:'center'},
                 {name:'password',index:'password',width:100, sortable:false, sorttype:"string", editable:true,align:'center'}, 
-                {name:'last_login',index:'last_login',width:250, sortable:false, editable:false,align:'center'},              
+                {name:'last_login',index:'last_login',width:150, sortable:false, editable:false,align:'center'},              
             ], 
             
             viewrecords : true, 
