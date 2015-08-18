@@ -243,10 +243,19 @@ class ExamineeController extends Base
         $question_ans = new QuestionAns();
         $question_ans->option = $this->request->getPost("answer", "string");
         $question_ans->paper_id = $this->getPaperid();
-        $question_ans->examinee_id = $this->session->get('Examinee')->id;
+        $id = $this->session->get('Examinee')->id;
+        $question_ans->examinee_id = $id;
+
         $question_ans->question_number_list =implode("|",$this->request->getPost("order"));
         if($question_ans->save()){
             $this->dataReturn(array("flag"=>true));
+            $examinee = Examinee::findFirst($id);
+            $examinee->is_exam_com = 1;
+            if (!$examinee->save()) {
+            foreach ($examinee->getMessages() as $msg) {
+                echo $msg."\n";
+            }
+        }
         }
         else{
             $this->dataReturn(array("flag"=>false));
@@ -298,7 +307,6 @@ class ExamineeController extends Base
         $examinee->native       = $this->request->getPost("native", "string");
         $examinee->politics     = $this->request->getPost("politics", "string");
         $examinee->professional = $this->request->getPost("professional", "string");
-        echo $examinee->professional;
         $examinee->employer     = $this->request->getPost("employer", "string");
         $examinee->unit         = $this->request->getPost("unit", "string");
         $examinee->duty         = $this->request->getPost("duty", "string");

@@ -51,7 +51,7 @@
             shrinkToFit:true,
             forceFit:true,
             autowidth: true,
-            colNames:[' ', '专家编号','姓名', '最后登录时间', '密码', '面询完成情况', '配置面巡人员'],
+            colNames:[' ', '专家编号','姓名', '密码', '最后登录时间', '面询完成情况', '配置面巡人员'],
             colModel:[
                 {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
                     formatter:'actions', 
@@ -63,8 +63,8 @@
                 },
                 {name:'username',index:'username', sorttype:"int",width:100, editable: false,align:'center'},
                 {name:'name',index:'name', sortable:true, width:100,sorttype:"string", editable:true,align:'center'},
-                {name:'last_login',index:'last_login',width:140, sortable:true, sorttype:"string", editable:false,align:'center'},
                 {name:'password',index:'password',width:130, sortable:false, sorttype:"string", editable:true,align:'center'},
+                {name:'last_login',index:'last_login',width:140, sortable:true, sorttype:"string", editable:false,align:'center'},
                 {name:'degree_of_complete',index:'degree_of_complete', sortable:false,width:120, editable: false,align:'center'},
                 {name:'user_divide',index:'user_divide', width:100, sortable:false, resize:false,align:'center',
                     formatter:function(){
