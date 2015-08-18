@@ -147,7 +147,6 @@ class PmController extends Base
             $examinee = Examinee::findFirst($id);
             $examinee->name       = $this->request->getPost('name', 'string');
             $examinee->password   = $this->request->getPost('password', 'string');
-            $examinee->project_id = $this->request->getPost('project_id', 'int');
             if (!$examinee->save()) {
                 foreach ($examinee->getMessages() as $message) {
                     echo $message;
@@ -197,7 +196,6 @@ class PmController extends Base
             $manager = Manager::findFirst($id);
             $manager->name       = $this->request->getPost('name', 'string');
             $manager->password       = $this->request->getPost('password', 'string');
-            $manager->project_id = $this->request->getPost('project_id', 'int');
             if (!$manager->save()) {
                 foreach ($manager->getMessages() as $message) {
                     echo $message;
@@ -242,7 +240,6 @@ class PmController extends Base
             $manager = Manager::findFirst($id);
             $manager->name       = $this->request->getPost('name', 'string');
             $manager->password       = $this->request->getPost('password', 'string');
-            $manager->project_id = $this->request->getPost('project_id', 'int');
             if (!$manager->save()) {
                 foreach ($manager->getMessages() as $message) {
                     echo $message;
