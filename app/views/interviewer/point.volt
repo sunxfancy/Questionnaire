@@ -4,29 +4,29 @@
         <table border="1" cellspacing="0" cellpadding="0" style="margin: 0 auto;">
             <tr>
                 <td rowspan="5" style="width:100px;">优势</td>
-                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="1."></td>
+                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="1." id="advantage1"></td>
             </tr>
             <tr>
-                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="2."></td>
+                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="2." id="advantage2"></td>
             </tr>
             <tr>
-                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="3."></td>
+                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="3." id="advantage3"></td>
             </tr>
             <tr>
-                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="4."></td>
+                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="4." id="advantage4"></td>
             </tr>
             <tr>
-                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="5."></td>
+                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="5." id="advantage5"></td>
             </tr>
             <tr>
                 <td rowspan="3" style="width:100px;">改进</td>
-                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="1."></td>
+                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="1." id="disadvantage1"></td>
             </tr>
             <tr>
-                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="2."></td>
+                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="2." id="disadvantage2"></td>
             </tr>
             <tr>
-                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="3."></td>
+                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="3." id="disadvantage3"></td>
             </tr>
             <tr>
                 <td style="width:100px;">潜质</td>
@@ -37,11 +37,27 @@
             </tr>
             <tr>
                 <td style="width:100px;">评价</td>
-                <td style="width:550px;" colspan="4"><textarea name="text" type="name" class="inputtxt" style="border:0px;height:60px;width:550px;font-size:18px;"></textarea></td>
+                <td style="width:550px;" colspan="4"><textarea name="text" type="name" class="inputtxt" style="border:0px;height:60px;width:550px;font-size:18px;" id="remark"></textarea></td>
             </tr>
         </table>
     </div>
     <div style="text-align:center;margin-top:15px;" >
-        <img src="../images/submit.jpg" style="height:30px;" class="add_point" type="submit" onclick="alert('确认提交！');self.close()"/>
+        <img src="../images/submit.jpg" style="height:30px;" class="add_point" type="submit" id="submit"/>
     </div>
 </div>
+<script type="text/javascript">
+        $("#submit").click(function(){
+            var comment = {
+                "advantage" : $("#advantage1").val()+"|"+$("#advantage2").val()+"|"+$("#advantage3").val()+"|"+$("#advantage4").val()+"|"+$("#advantage5").val(),
+                "disadvantage" : $("#disanvatage1").val()+"|"+$("#disadvantage2").val()+"|"+$("#disadvantage3").val(),
+                "remark" : $("#remark").val()
+            };
+            $.post('/interviewer/comment',comment,callbk);
+        });
+
+        function callbk(data){
+            if(data.status == 'success'){
+                alert("评论提交成功!!!");
+            }
+        }
+</script>
