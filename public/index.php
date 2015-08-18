@@ -18,6 +18,10 @@ try {
 
     //Create a DI
     $di = new Phalcon\DI\FactoryDefault();
+ 
+    //php.ini setting
+
+    ini_set("memory_limit", "128M");
 
 	//Setup the database service
     $di->set('db', function() use ($config) {

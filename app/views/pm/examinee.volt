@@ -50,7 +50,7 @@
             shrinkToFit:true,
             forceFit:true,
             autowidth: true,
-            colNames:[' ', '用户编号','姓名','性别', '是否答题完毕', '查看结果','最后登录时间','密码','是否测试结束','查看报告'],
+                colNames:[' ', ' ','用户编号','姓名','性别','是否答题完毕', '查看结果','最后登录时间','密码','是否测试结束','查看报告'],
             colModel:[
                 {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
                     formatter:'actions', 
@@ -60,9 +60,26 @@
                         delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
                     }
                 },
+                {name:'info',index:'info', sortable:false, width:40, resize:false,align:'center',
+                    formatter:function(cellvalue, options, rowObject){
+                        var temp = "<div class='ui-pg-div ui-inline-edit' data-original-title='查看详细信息''><a href='/pm/info/"+rowObject.id+"' ><i class='fa fa-th-list'></i></a></div>";
+                        return temp;
+                    }
+                },
                 {name:'number',index:'number', sorttype:"int",width:100, editable: false,align:'center'},
                 {name:'name',index:'name', sortable:true, width:110,sorttype:"string", editable:true,align:'center'},
-                {name:'sex',index:'sex',width:60, sortable:false, sorttype:"string", editable:false,align:'center'},
+                {name:'sex',index:'sex',width:60, sortable:false, editable:false,align:'center',
+                    formatter:function(cellvalue){
+                        var temp = "";
+                        if(cellvalue == 1){
+                            temp = "男" ;
+                        } 
+                        else { 
+                            temp = "女";
+                        }
+                        return temp;
+                    }
+                },
                 {name:'is_exam_com',index:'is_exam_com',width:135, sortable:false, sorttype:"string", editable:false,align:'center'},
                 {name:'data',index:'data', sortable:false, width:120, resize:false,align:'center',
                     formatter:function(){
