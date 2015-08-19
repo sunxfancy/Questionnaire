@@ -87,16 +87,164 @@ class MemoryManagement {
     			}	
 		}
 	}
+	/**
+	 * EPPSDF:
+	 * public $TH;
+	 * public $A;
+	 * public $B;
+	 * 
+	 */
 	private static function startMysqlEppsdfMemory(){
+		#先检测内存中是否存在epppsdf_memory
+		$eppsdf_first = EppsdfMemory::findFirst();
+		if(isset($eppsdf_first->TH)){
+			echo 'already';
+			return true;
+		}else{
+			try {
+				$manager     = new TxManager();
+				$transaction = $manager->get();
+				$eppsdf_data = Eppsdf::find();
+				foreach($eppsdf_data as $eppsdf_record ){
+					$eppsdf_memory = new EppsdfMemory();
+					$eppsdf_memory->TH = $eppsdf_record->TH;
+					$eppsdf_memory->A  = $eppsdf_record->A;
+					$eppsdf_memory->B  = $eppsdf_record->B;
+					if( $eppsdf_memory->create() == false) {
+						unset($eppsdf_data);
+						$transaction->rollback("EPPSDF DATA INSERT INTO MEMORY TABLE ERROR!");
+					}
+				}
+				$transaction->commit();
+				echo 'inserted';
+				return true;
+			}catch (TxFailed $e) {
+				throw new Exception("Failed, reason: ".$e->getMessage());
+			}
+		}
 		
 	}
+	/**
+	 * public $TH;
+
+	public $XZ;
+
+	public $E;
+
+	public $N;
+
+	public $P;
+
+	public $L;
+	 */
 	private static function startMysqlEpqadfMemory(){
+		#先检测内存中是否存在epqadf_memory
+		$epqadf_first = EpqadfMemory::findFirst();
+		if(isset($epqadf_first->TH)){
+			echo 'already';
+			return true;
+		}else{
+			try {
+				$manager     = new TxManager();
+				$transaction = $manager->get();
+				$epqadf_data = Epqadf::find();
+				foreach($epqadf_data as $epqadf_record ){
+					$epqadf_memory = new EpqadfMemory();
+					$epqadf_memory->TH = $epqadf_record->TH;
+					$epqadf_memory->XZ = $epqadf_record->XZ;
+					$epqadf_memory->E = $epqadf_record->E;
+					$epqadf_memory->N = $epqadf_record->N;
+					$epqadf_memory->P = $epqadf_record->P;
+					$epqadf_memory->L = $epqadf_record->L;
+					if( $epqadf_memory->create() == false) {
+						unset($epqadf_data);
+						$transaction->rollback("EPQADF DATA INSERT INTO MEMORY TABLE ERROR!");
+					}
+				}
+				$transaction->commit();
+				echo 'inserted';
+				return true;
+			}catch (TxFailed $e) {
+				throw new Exception("Failed, reason: ".$e->getMessage());
+			}
+		}
 		
 	}
+	/**
+	 * public $TH;
+
+	public $A;
+	
+	public $B;
+	
+	public $C;
+	 */
 	private static function startMysqlKsdfMemory(){
-		
+		#先检测内存中是否存在ksdf_memory
+		$ksdf_first = KsdfMemory::findFirst();
+		if(isset($ksdf_first->TH)){
+			echo 'already';
+			return true;
+		}else{
+			try {
+				$manager     = new TxManager();
+				$transaction = $manager->get();
+				$ksdf_data = Ksdf::find();
+				foreach($ksdf_data as $ksdf_record ){
+					$ksdf_memory = new KsdfMemory();
+					$ksdf_memory->TH = $ksdf_record->TH;
+					$ksdf_memory->A  = $ksdf_record->A;
+					$ksdf_memory->B  = $ksdf_record->B;
+					$ksdf_memory->C  = $ksdf_record->C;
+					if( $ksdf_memory->create() == false) {
+						unset($ksdf_data);
+						$transaction->rollback("KSDF DATA INSERT INTO MEMORY TABLE ERROR!");
+					}
+				}
+				if(isset($ksdf_data)){
+					unset($ksdf_data);
+				}
+				$transaction->commit();
+				echo 'inserted';
+				return true;
+			}catch (TxFailed $e) {
+				throw new Exception("Failed, reason: ".$e->getMessage());
+			}
+		}
 	}
+	/**
+	 * 	public $BZ;
+		public $XH;
+	 */
 	private static function startMysqlSpmdfMemory(){
-		
+		#先检测内存中是否存在spmdf_memory
+		$spmdf_first = SpmdfMemory::findFirst();
+		if(isset($spmdf_first->XH)){
+			echo 'already';
+			return true;
+		}else{
+			try {
+				$manager     = new TxManager();
+				$transaction = $manager->get();
+				$spmdf_data = Spmdf::find();
+				foreach($spmdf_data as $spmdf_record ){
+					$spmdf_memory = new SpmdfMemory();
+					$spmdf_memory->XH = $spmdf_record->XH;
+					$spmdf_memory->BZ = $spmdf_record->BZ;
+					if( $spmdf_memory->create() == false) {
+						unset($spmdf_data);
+						$transaction->rollback("SPMDF DATA INSERT INTO MEMORY TABLE ERROR!");
+					}
+				}
+				if(isset($ksdf_data)){
+					unset($ksdf_data);
+				}
+				$transaction->commit();
+				echo 'inserted';
+				return true;
+			}catch (TxFailed $e) {
+				throw new Exception("Failed, reason: ".$e->getMessage());
+			}
+		}
 	}
 }
