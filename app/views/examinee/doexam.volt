@@ -427,13 +427,4 @@ function ans_complete(){
     $.cookie("exam_ans"+{{number}},"",{expires:-1});
     window.location.href="/"
 }
-
-
-
-
-  
-
 </script>
-
-
-
