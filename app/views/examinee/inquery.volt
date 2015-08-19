@@ -1,65 +1,82 @@
 <script type='text/javascript' src='/js/demand.js'></script>
-
   <div class="Leo_question_v2" id="Leo_question_v2">
-        <div class="Leo_question_l" id="Leo_question_panel" style="margin-top:30px;"><div></div></div>
-        <div id="Leo_control" style="width:600px;height:60px;text-align:center;">
-            <table style="width:30%;height:60px;margin:0 auto;">
-                <tr style="width:100%;height:100%;">
-                    <td style="width:30%;">
-                        <img style="height:40px;display:none;" id="Leo_pageup" src="../images/left.png" onclick="Leo_pageup_f()" />
-                    </td>
-                    <td style="width:30%;">
-                        <img style="height: 40px;" id="Leo_pagedown" src="../images/right.png" onclick="Leo_pagedown_f()" />
-                    </td>
-                    <td style="width:30%;">
-                        <img style="height: 40px;" id="Leo_signin" src="../images/signin.png" onclick="Leo_checkcomplete()" />
-                    </td>
-                </tr>
-            </table>
+        
+        <div class="Leo_question_l" style="height:400px;" id="Leo_question_panel">
+        <div style='width:95%;height:400px;margin:0 auto;'>
+        <!--只需在代码中，对这一部分进行解析，替换，实现题目切换-->
+        <div id="title_div" class="Leo_title_text" =''><span></span></div>
+        <div id='ans_div' style="overflow:auto;font-family:'微软雅黑';">
+        <div></div>
         </div>
-    </div>
-    <div class="Leo_question_t_v2" style="height:500px;">
+        </div>
+        </div>
+        
+        <div id="Leo_control" style="width:600px;height:60px;text-align:center;">
+            <table style="width:30%;height:60px;margin:0 auto;"><tr style="width:100%;height:100%;"><td style="width:20%;">
+                           <img style="height:40px;display:none;" src="../images/left.png" id="Leo_pageup"/>
+
+                </td><td style="width:20%;">
+                            <img style="height: 40px;" id="Leo_pagedown" src="../images/right.png" />
+
+                </td><td style="width:20%;">
+                            <img style="height: 40px;" id="Leo_checkup" src="../images/signin.png"  />
+
+                </td><td style="width:20%;">
+                            <button style="height: 40px;;" id="Leo_All" value="全选A" />
+
+                </td></tr>
+            
+            </table>
+
+        </div>
+
+    </div>  
+    
+    
+<div class="Leo_question_t_v2" style="height:500px;margin-top:0px;">
+    <div style="overflow:auto;height:500px;">
         <table style="width:92%;text-align:center;vertical-align:middle;table-layout:fixed;margin:0 auto;" id="Leo_question_table" cellspacing="0"></table>
     </div>
+</div>
+
 <script type="text/javascript">
-    var questionlength=0;
-    var Leo_now_index = 0;
-    var question=new Array();
-    init();
-    function init(){
-        $.post('/Examinee/getques', {'index': 0}, function(data) {
-            /*optional stuff to do after success */
-             if(!data.title){
-                 alert("服务器不理我们了 0_0!");
-                 return;
-               }
-            questionlength=data.ques_length;
-            Leo_initPanel(questionlength);
-            initCookie(questionlength,'ans_cookie'+{{number}});
-        }); 
-    }
-   
-    //将cookie中储存的第index个答案更新为new_ans, index 从0开始
-   
-    //显示题目
-    function initTitle(data){
-        var ans=data.options.split('|');
-        var q = new Leo_question(data.index, data.title, data.is_multi, ans);
-        document.getElementById("Leo_question_panel").removeChild(document.getElementById("Leo_question_panel").childNodes[0]);
-        document.getElementById("Leo_question_panel").appendChild(q);
-        if(questionlength!=data.ques_length){
-            questionlength=data.ques_length;
-            Leo_initPanel(questionlength);
+    var questions=new Array();
+    var url="/Examinee/getques";
+    var Leo_now_index=0;
+$(function(){
+
+    $("#Leo_All").click(function(){
+        var ans=new Array();
+        for(var i=0;i<questions.length;i++){
+            ans[i]="a";
         }
-    }
+        $.cookie("ans_cookie"+{{number}},ans.join("|"),{experies:7});
+        initCookie(questions.length,"ans_cookie"+{{number}});
+    });
+
+    getpaper(url); //先从服务器取得全部的需求量表的题目
 
 
-function initTitle(index,is_multi){
+
+     $("#Leo_pagedown").click(function(){
+        changepage(Leo_now_index+1,true);
+     });
+
+     $("#Leo_pageup").click(function(){
+         changepage(Leo_now_index-1,true);
+     });
+
+     $("#Leo_checkup").click(function(){
+                changepage(questions.length-1,true);
+                Leo_checkcomplete();
+            });
+
+});
+function initTitle(index){
 
     var option_disp="<div>";
     var op_type='radio';
-
-    if(is_multi){
+    if(questions[index].is_multi){
         op_type="checkbox";
     }
 
@@ -80,34 +97,46 @@ function initTitle(index,is_multi){
     $('#title_div').html(title);
 
     $('.Leo_ans_checktext').click(function(){
-        var temp=$(this).parent().children('div').children(':radio')[0];
-        temp.checked=true;
-        doclick();
+
+        var temp=$(this).parent().children('div').children(':checkbox')[0];
+        if(temp){
+
+            //这里处理是否可以选择，以及让input响应选择
+            if(temp.checked||checkOver3()){
+                temp.checked=!temp.checked;
+                doclick();
+            }else{
+                $(this).prop('checked', '');
+                alert("您的选择已经超过三项，请确认你的选择。");
+                
+            }
+        }else{
+            temp=$(this).parent().children('div').children(':radio')[0];
+            temp.checked=true;
+            $("#newdiv_"+Leo_now_index).css('background-color', '#48fffb');
+            changepage(Leo_now_index+1,true);
+        }
+        
     });
 
     $('input').click(function(){
-        var temp=$(this).prop('checked','checked');
-        doclick();
-    })
-
-
-    function doclick(){
-        
-        $('#newdiv_'+index).css('background-color', '#48fffb');
-        if(Leo_index_now==done_index&&Leo_index_now!=questions.length-1){
-            done_index=Leo_index_now+1;
+       if($(this).attr('type')=="checkbox"){
+            if($(this).attr('checked')=="checked"||checkOver3()){
+                doclick();
+            }else{
+                $(this).prop('checked', '');
+                alert("您的选择已经超过三项，请确认你的选择。");
+            }
+       }else{
+            $(this).prop('checked', 'checked');
+            $("#newdiv_"+Leo_now_index).css('background-color', '#48fffb');
+            changepage(Leo_now_index+1,true);
         }
-        if(Leo_index_now==questions.length-1){
-            $("#Leo_checkup").css('display','');
-            $("#Leo_checkup").unbind("click");
-            $("#Leo_checkup").click(function(){
-                changepage(questions.length-1,true);
-                if(confirm("您确定要提交吗?")){
-                   Leo_check();
-                }
-            })
-        } 
-        changepage(Leo_index_now+1,true);
+    });
+    function doclick(){
+        checkcheckbox();
+        var now_ans=get_ans_str();
+        refreshCookie(Leo_now_index,now_ans,'ans_cookie'+{{number}});
     }
 
     $("#ans_div").css('width','100%');
@@ -120,18 +149,18 @@ function initTitle(index,is_multi){
     }
 }
 
-function checkcheckbox(name) {
+function checkcheckbox() {
     var b = false;
-    var e = document.getElementsByName(name);
+    var e = $(":checkbox");
     for (var i = 0; i < e.length; i++) {
         if (e[i].checked) {
             b = true;
         }
     }
     if (!b) {
-        $("#newdiv_" + name).css('background-color',"gray");
+        $("#newdiv_" + Leo_now_index).css('background-color',"gray");
     } else {
-        $("#newdiv_" + name).css('background-color',"green");
+        $("#newdiv_" + Leo_now_index).css('background-color',"#48fffb");
     }
 }
 
@@ -180,8 +209,9 @@ function Leo_initPanel(questionlength) {
 
 
     }
-function get_ans_str(index){
-    var ans_ori=document.getElementsByName(index);
+/*本方法读取学前页面上的checkbox,返回取选择出的选项所对应的罗马字母*/
+function get_ans_str(){
+    var ans_ori=document.getElementsByTagName("input");
         var ans_str="";
         for(var i=0;i<ans_ori.length;i++){
             if(ans_ori[i].checked){
@@ -193,23 +223,8 @@ function get_ans_str(index){
         }
         return ans_str;
 }
-function initCookie_title(ans_cookie){
-        var ans_array=ans_cookie.split("|");
-            var flag=true;
-            for(var i=0;i<ans_array.length;i++){
-                if(ans_array[i]=='0'){
-                    if(flag){
-                        changepage(i,false);
-                        flag=false;
-                    }
-                }else{
-                     $("#newdiv_" + i).css('background-color',"green");
-                }
-            }
-            if(flag){
-                changepage(ans_array.length-1,false);
-            }
-}
+/*the End of function*/
+/*本方法从cookie中读取记录，返回一个数组，是被选中的选项的索引，从0开始*/
 function get_ans_array_from_cookie(index){
     var ans_cookie=$.cookie('ans_cookie'+{{ number }});
     var ans_array=ans_cookie.split("|");
@@ -221,24 +236,37 @@ function get_ans_array_from_cookie(index){
         }
     }
     return ans_ori_array;
-}  
+} 
+function initCookie_title(ans_cookie){
+        var ans_array=ans_cookie.split("|");
+            var flag=true;
+            for(var i=0;i<ans_array.length;i++){
+                if(ans_array[i]=='0'){
+                    if(flag){
+                        changepage(i,false);
+                        flag=false;
+                    }
+                }else{
+                     $("#newdiv_" + i).css('background-color',"#48fffb");
+                }
+            }
+            if(flag){
+                changepage(ans_array.length-1,false);
+            }
+}
+ 
 function changepage(newpage,isCookie) {
     //newpage为从0开始的计数方式
 
-    var newpagejson={'index':newpage};
-    $.post('/Examinee/getques',newpagejson,function(data) {
-        /*optional stuff to do after success */
-       if(!data.title){
-        alert("服务器不理我们了 0_0!");
-       }
+    //这里可以改变为每进行一次点击就更新一次cookie
        if(isCookie){
-            var now_ans=get_ans_str(Leo_now_index);
+            var now_ans=get_ans_str();
             refreshCookie(Leo_now_index,now_ans,'ans_cookie'+{{number}});
         }
         Leo_now_index = newpage;
-        initTitle(data);
+        initTitle(newpage);
         var ans=get_ans_array_from_cookie(newpage);
-        var ans_ori=document.getElementsByName(newpage);
+        var ans_ori=$("input");
         for(var i=0;i<ans.length;i++){
              ans_ori[ans[i]].checked=true;
         }
@@ -247,38 +275,54 @@ function changepage(newpage,isCookie) {
         } else {
             $("#Leo_pageup").css('display',"");
         }
-        if (newpage == questionlength - 1) {
+        if (newpage == questions.length - 1) {
             $("#Leo_pagedown").css('display',"none");
         } else {
             $("#Leo_pagedown").css('display',"");
         }
         $("#newdiv_" + newpage).focus();
-    });
+    
+}
+function Leo_checkcomplete() {
+        var now_ans=get_ans_str(Leo_now_index);
+        refreshCookie(Leo_now_index,now_ans,"ans_cookie"+{{number}});
+        var badques = new Array();
+        for (var i = 0; i < questions.length; i++) {
+            if (document.getElementById("newdiv_" + i).style.backgroundColor=='gray') {
+                badques.push((i + 1));
+            }
+        }
+        if (badques.length != 0) {
+            alert("您的答题是不完整的，其中第" + badques + "题缺少必要的答案！请继续答题！");
+            changepage(badques[0] - 1,true);
+        } else {
+            var t = confirm("您确定要提交吗？");
+            if (t) {
+                 Leo_check();
+            }
+        }
+    }
+
+
+function getpaper(url){
+         $.post(url, {'paper_name':"inquery"}, function(data) {
+            questions=data.question;
+            Leo_initPanel(questions.length);
+            initCookie(questions.length,"ans_cookie"+{{number}});
+        });
 }
 
-
-function getpaper(paper_index,url){
-
-         $.post(url, {'paper_name':paper_id_name[paper_index]}, function(data) {
-            if(data.no_ques){
-                if(paper_id_now<5){
-                    paper_id_now++;
-                    $.cookie("paper_id"+{{number}},paper_id_now,{experies:7});
-                    getpaper(paper_id_now);
-                    return;
-                }else{
-                   ans_complete();
-                   return;
-                }
-            }
-         // $("#Leo_hiden_td").html("点击进行"+paper_name[paper_id_now]+"的答题");
-         // $('#Leo_hiden').slideDown('fast', function() {});    //默认设定是题目间的跳转不暂停计时，这个过程被认为是正常的答题过程！！！
-         questions=data.question;
-         // description=data.description;
-         // ques_order=data.order;
-         Leo_initPanel(questions.length);
-        initCookie(questions.length,"exam_ans"+{{number}});
-        $('#announce_panel').children('p').replaceWith("<p>"+description+"</p>");
-     });
+function Leo_check(){
+    $.post('/Examinee/getQuesAns',{"answer":$.cookie("ans_cookie"+{{number}})}, function(data) {
+                            if(data.flag){
+                                    alert(data.answer);
+                                    alert("提交成功！点击确定跳转到用户信息填写页面！");
+                                    $.cookie("ans_cookie"+{{number}},"",{expires:-1});
+                                    window.location.href="/Examinee/editinfo"
+                                    return;
+                              }else{
+                                    alert("提交出错，请联系管理员！");
+                              }
+                        });
 }
 </script>

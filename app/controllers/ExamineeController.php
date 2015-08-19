@@ -46,15 +46,36 @@ class ExamineeController extends Base
         //获得被试者的登陆信息      
 	}
 
+    //下面这个方法是获取需求量表的方法
     public function getquesAction(){
-    	$index=$this->request->getPost('index','int');
-        //需要按照index在数据库中搜索量化考评题目       
-        $question = array('ques_length'=>(int)20,
-                            'index'=>(int)$index,
-                            'title'=>"test您认为公司发展",
-                            'options'=>"资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力",
-                            'is_multi'=>true);
-        $this->dataReturn($question);
+    	//$index=$this->request->getPost('index','int');
+        //需要按照index在数据库中搜索量化考评题目  
+
+        $question=array();
+        for ($i=0; $i <20 ; $i++) { 
+            $s=true;
+            if($i==13){
+                $s=false;
+            }
+            $question[]=array(
+                    'index'=>(int)$i,
+                    'title'=>"test您认为公司发展",
+                    'options'=>"资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力",
+                    'is_multi'=>$s
+                );
+        }
+
+        // $question = array('ques_length'=>(int)20,
+        //                     'index'=>(int)$index,
+        //                     'title'=>"test您认为公司发展",
+        //                     'options'=>"资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力",
+        //                     'is_multi'=>true);
+        $this->dataReturn(array("question"=>$question));
+    }
+    //这个方法是提交需求量表的方法
+    public function getQuesAnsAction(){
+        $ans=$this->request->getPost('answer','string');
+        $this->dataReturn(array('answer'=>$ans,'flag'=>true));
     }
 
 	public function doexamAction()
