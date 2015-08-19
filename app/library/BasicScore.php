@@ -21,49 +21,53 @@ class BasicScore {
 	}
 	
 	public static function handlePapers($examinee_id){
-		$papers_data = null;
+		$papers_ans_data = null;
 		try{
-			$papers_data = self::getPapersByExamineeId($examinee_id);
+			$papers_ans_data = self::getPapersByExamineeId($examinee_id);
 		}catch(Exception $e){
 				echo $e->getMessage();
 				return false;
 		}
-		if(!$papers_data){
+		if(!$papers_ans_data){
 				echo '<br />Failed';
 				return false;
 		}else{
 			#获取到被试的所有答题记录
 			$papers_info = Paper::getListByName(); 
-			print_r($papers_info);
-			 foreach($papers_data as $paper_data ){
+			 foreach($papers_ans_data as $paper_ans_data ){
 			 	#判断被试的答题是否已经被写入分数，若未写入，则进行处理，否则，不处理
-			 	if( !empty( $paper_data->score ) ){
-			 		$paper_info = Paper::getListById(intval($paper_data->paper_id));
-			 		if(isset($paper_info->name)){
+			 	if( empty( $paper_ans_data->score ) ){
+			 		$paper_name = Paper::getNameFromPapersArrayById($papers_info, $paper_ans_data->paper_id);
+			 		if($paper_name){
 // 			 			echo $paper_data->paper_id;
 // 			 			echo $paper_data->examinee_id;
 // 			 			echo $paper_data->option;
 // 			 			echo $paper_data->question_number_list;
 // 			 			echo $paper_data->score;
 			 			$score_line = null;
-			 			switch(strtoupper($paper_info->name)){
-			 				case 'EPQA' :
-			 				case 'EPQA' :
-			 				case 'CPI' :
-			 				case 'EPPS' :
-			 				case 'SCL' :
-			 				case 'SPM' :
-			 				default :throw new Exception('ERROR data from paper');
+			 			switch(strtoupper($paper_name)){
+			 				case 'EPQA' : break;
+			 				case 'EPPS' : break;
+			 				case 'CPI' : break;
+			 				case '16PF' : break;
+			 				case 'SCL' : break;
+			 				case 'SPM' : break;
+			 				default : if(isset($papers_info)){ unset($papers_info); } throw new Exception('ERROR data from paper');
 			 			}
-			 			#清空$paper_info;
 			 			
 			 		}else{
+			 			if(isset($papers_info)){
+			 				unset($papers_info);
+			 			}
 			 			throw new Exception('no this type paper, the question_ans wrong!');
 			 		}	
 			 	}else{
 			 		#已经写入ok
 			 	}
 			}	
+			if(isset($papers_info)){
+				unset($papers_info);
+			}
 		}
 	}
 
