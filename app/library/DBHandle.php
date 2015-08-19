@@ -361,6 +361,9 @@ class DBHandle {
     				$manager     = new TxManager();
     				$transaction = $manager->get();
     				foreach($data as $record){
+    					$record[2] = substr($record[2], 3, strlen($record[2])-4);
+    					$record[3] = substr($record[3], 3, strlen($record[3])-4);
+    					$record[4] = substr($record[4], 3, strlen($record[4])-4);
     					$options = $record[2].'|'.$record[3].'|'.$record[4];
     					$ks_question = new Question();
     					$ks_question->topic = $record[1];

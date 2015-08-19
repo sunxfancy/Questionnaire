@@ -370,6 +370,7 @@ function initCookie_title(ans_cookie){
 function getpaper(paper_index){
 
          $.post('/Examinee/getpaper', {'paper_name':paper_id_name[paper_index]}, function(data) {
+            console.log(data);
             if(data.no_ques){
                 if(paper_id_now<5){
                     paper_id_now++;

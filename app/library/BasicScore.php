@@ -1,11 +1,74 @@
 <?php
-class BasicScoreOne {
+class BasicScore {
 	/**
-	 * : 根据被试人员id查取试卷记录
-	 * 抛出Exception 1 ： 被试人员没有答题，quesion_ans 中记录为空，获取不到相应信息
-	 * 			    2:数据库中的选项-题号 两个字段记录不一致
+	 * 返回一个人的所回答的全部试卷的答案数组
+	 * @param integer $examinee_id
+	 * @throws Exception
+	 * @return array , false
 	 */
-	public function getPapersByExamineeId($examinee_id){
+	public static function getPapersByExamineeId($examinee_id){
+		try{
+		$papers_list = QuestionAns::getListByExamineeId($examinee_id);
+		}catch(Exception $e){
+			echo $e->getMessage();
+			return false;
+		}
+		if(count($papers_list) != 0){
+			return $papers_list;
+		}else{
+			throw new Exception("The papers' question_ans for $examinee_id is null");
+		}
+	}
+	
+	public static function handlePapers($examinee_id){
+		$papers_data = null;
+		try{
+			$papers_data = self::getPapersByExamineeId($examinee_id);
+		}catch(Exception $e){
+				echo $e->getMessage();
+				return false;
+		}
+		if(!$papers_data){
+				echo '<br />Failed';
+				return false;
+		}else{
+			#获取到被试的所有答题记录
+			$papers_info = Paper::getListByName(); 
+			print_r($papers_info);
+			 foreach($papers_data as $paper_data ){
+			 	#判断被试的答题是否已经被写入分数，若未写入，则进行处理，否则，不处理
+			 	if( !empty( $paper_data->score ) ){
+			 		$paper_info = Paper::getListById(intval($paper_data->paper_id));
+			 		if(isset($paper_info->name)){
+// 			 			echo $paper_data->paper_id;
+// 			 			echo $paper_data->examinee_id;
+// 			 			echo $paper_data->option;
+// 			 			echo $paper_data->question_number_list;
+// 			 			echo $paper_data->score;
+			 			$score_line = null;
+			 			switch(strtoupper($paper_info->name)){
+			 				case 'EPQA' :
+			 				case 'EPQA' :
+			 				case 'CPI' :
+			 				case 'EPPS' :
+			 				case 'SCL' :
+			 				case 'SPM' :
+			 				default :throw new Exception('ERROR data from paper');
+			 			}
+			 			#清空$paper_info;
+			 			
+			 		}else{
+			 			throw new Exception('no this type paper, the question_ans wrong!');
+			 		}	
+			 	}else{
+			 		#已经写入ok
+			 	}
+			}	
+		}
+	}
+
+	
+	public function g3etPapersByExamineeId ($examinee_id) {
 		 $papers = QuestionAns::find(array(
 		 	"examinee_id = :examinee_id:",
 		 	'bind'=>array('examinee_id' => $examinee_id)
