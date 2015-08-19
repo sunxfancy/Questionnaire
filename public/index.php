@@ -1,5 +1,10 @@
 <?php
 
+    //setting default time_zone
+    ini_set('error_reporting', E_ALL);
+    date_default_timezone_set('PRC');
+   
+
 try {
 
     // $config = new Phalcon\Config\Adapter\Ini('../app/config/config.ini');
@@ -19,10 +24,6 @@ try {
     //Create a DI
     $di = new Phalcon\DI\FactoryDefault();
  
-    //php.ini setting
-
-    ini_set("memory_limit", "128M");
-
 	//Setup the database service
     $di->set('db', function() use ($config) {
         return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
