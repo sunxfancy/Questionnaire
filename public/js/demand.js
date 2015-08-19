@@ -145,20 +145,7 @@ function changeColor(t) {
    
 }
 
-function checkcheckbox() {
-    var b = false;
-    var e = document.getElementsByTagName("input");
-    for (var i = 0; i < e.length; i++) {
-        if (e[i].checked) {
-            b = true;
-        }
-    }
-    if (!b) {
-        $("#newdiv_" + Leo_now_index).css('background-color', 'gray');
-    } else {
-        $("#newdiv_" + Leo_now_index).css('background-color', '#48fffb');
-    }
-}
+
 
 function checkOver3() {
     var b = 0;
@@ -191,26 +178,6 @@ function clickCheckBox(t) {
 
 }
 
-function Leo_checkcomplete() {
-
-        var now_ans=get_ans_str(Leo_now_index);
-        refreshCookie(Leo_now_index,now_ans);
-        var badques = new Array();
-        for (var i = 0; i < questionlength; i++) {
-            if (document.getElementById("newdiv_" + i).style.backgroundColor=='gray') {
-                badques.push((i + 1));
-            }
-        }
-        if (badques.length != 0) {
-            alert("您的答题是不完整的，其中第" + badques + "题缺少必要的答案！请继续答题！");
-            changepage(badques[0] - 1,true);
-        } else {
-            var t = confirm("您确定要提交吗？");
-            if (t) {
-                 Leo_check();
-            }
-        }
-    }
 
 
 /*cookie操作*/

@@ -16,12 +16,10 @@
                            <img style="height:40px;display:none;" src="../images/left.png" id="Leo_pageup"/>
 
                 </td><td style="width:20%;">
-                            <img style="height:40px" src="../images/pause.png" id="Leo_pause" onclick="$('#Leo_hiden').slideDown('fast', function() {});" />
-                </td><td style="width:20%;">
                             <img style="height: 40px;" id="Leo_pagedown" src="../images/right.png" />
 
                 </td><td style="width:20%;">
-                            <img style="height: 40px; display: none;" id="Leo_checkup" src="../images/signin.png"  />
+                            <img style="height: 40px;" id="Leo_checkup" src="../images/signin.png"  />
 
                 </td><td style="width:20%;">
                             <button style="height: 40px;;" id="Leo_All" value="全选A" />
@@ -46,14 +44,26 @@
     var url="/Examinee/getques";
     var Leo_now_index=0;
 $(function(){
+
+    $("#Leo_All").click(function(){
+        var ans=new Array();
+        for(var i=0;i<questions.length;i++){
+            ans[i]="a";
+        }
+        $.cookie("ans_cookie"+{{number}},ans.join("|"),{experies:7});
+        initCookie(questions.length,"ans_cookie"+{{number}});
+    });
+
     getpaper(url); //先从服务器取得全部的需求量表的题目
 
+
+
      $("#Leo_pagedown").click(function(){
-        changepage(Leo_index_now+1,true);
+        changepage(Leo_now_index+1,true);
      });
 
      $("#Leo_pageup").click(function(){
-         changepage(Leo_index_now-1,true);
+         changepage(Leo_now_index-1,true);
      });
 
      $("#Leo_checkup").click(function(){
@@ -66,7 +76,6 @@ function initTitle(index){
 
     var option_disp="<div>";
     var op_type='radio';
-
     if(questions[index].is_multi){
         op_type="checkbox";
     }
@@ -93,15 +102,16 @@ function initTitle(index){
         if(temp){
 
             //这里处理是否可以选择，以及让input响应选择
-            if(temp.checked){
-                temp.checked=false;
-            }else if(checkOver3){
-                temp.checked=true;
-            }else{
-                alert("您的选择已经超过三项，请确认你的选择。");
+            if(temp.checked||checkOver3()){
+                temp.checked=!temp.checked;
                 doclick();
+            }else{
+                $(this).prop('checked', '');
+                alert("您的选择已经超过三项，请确认你的选择。");
+                
             }
         }else{
+            temp=$(this).parent().children('div').children(':radio')[0];
             temp.checked=true;
             $("#newdiv_"+Leo_now_index).css('background-color', '#48fffb');
             changepage(Leo_now_index+1,true);
@@ -111,7 +121,7 @@ function initTitle(index){
 
     $('input').click(function(){
        if($(this).attr('type')=="checkbox"){
-            if($(this).attr('checked')=="checked"||checkOver3){
+            if($(this).attr('checked')=="checked"||checkOver3()){
                 doclick();
             }else{
                 $(this).prop('checked', '');
@@ -139,18 +149,18 @@ function initTitle(index){
     }
 }
 
-function checkcheckbox(name) {
+function checkcheckbox() {
     var b = false;
-    var e = document.getElementsByName(name);
+    var e = $(":checkbox");
     for (var i = 0; i < e.length; i++) {
         if (e[i].checked) {
             b = true;
         }
     }
     if (!b) {
-        $("#newdiv_" + name).css('background-color',"gray");
+        $("#newdiv_" + Leo_now_index).css('background-color',"gray");
     } else {
-        $("#newdiv_" + name).css('background-color',"green");
+        $("#newdiv_" + Leo_now_index).css('background-color',"#48fffb");
     }
 }
 
@@ -254,7 +264,7 @@ function changepage(newpage,isCookie) {
             refreshCookie(Leo_now_index,now_ans,'ans_cookie'+{{number}});
         }
         Leo_now_index = newpage;
-        initTitle();
+        initTitle(newpage);
         var ans=get_ans_array_from_cookie(newpage);
         var ans_ori=$("input");
         for(var i=0;i<ans.length;i++){
@@ -265,7 +275,7 @@ function changepage(newpage,isCookie) {
         } else {
             $("#Leo_pageup").css('display',"");
         }
-        if (newpage == questionlength - 1) {
+        if (newpage == questions.length - 1) {
             $("#Leo_pagedown").css('display',"none");
         } else {
             $("#Leo_pagedown").css('display',"");
@@ -273,6 +283,25 @@ function changepage(newpage,isCookie) {
         $("#newdiv_" + newpage).focus();
     
 }
+function Leo_checkcomplete() {
+        var now_ans=get_ans_str(Leo_now_index);
+        refreshCookie(Leo_now_index,now_ans,"ans_cookie"+{{number}});
+        var badques = new Array();
+        for (var i = 0; i < questions.length; i++) {
+            if (document.getElementById("newdiv_" + i).style.backgroundColor=='gray') {
+                badques.push((i + 1));
+            }
+        }
+        if (badques.length != 0) {
+            alert("您的答题是不完整的，其中第" + badques + "题缺少必要的答案！请继续答题！");
+            changepage(badques[0] - 1,true);
+        } else {
+            var t = confirm("您确定要提交吗？");
+            if (t) {
+                 Leo_check();
+            }
+        }
+    }
 
 
 function getpaper(url){
@@ -286,6 +315,7 @@ function getpaper(url){
 function Leo_check(){
     $.post('/Examinee/getQuesAns',{"answer":$.cookie("ans_cookie"+{{number}})}, function(data) {
                             if(data.flag){
+                                    alert(data.answer);
                                     alert("提交成功！点击确定跳转到用户信息填写页面！");
                                     $.cookie("ans_cookie"+{{number}},"",{expires:-1});
                                     window.location.href="/Examinee/editinfo"
