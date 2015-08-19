@@ -1,4 +1,4 @@
-﻿// JavaScript source code
+// JavaScript source code
 function Leo_question(index_i, que, kind, ans) {
     this.index = index_i;
     this.ques = que;
@@ -145,24 +145,24 @@ function changeColor(t) {
    
 }
 
-function checkcheckbox(name) {
+function checkcheckbox() {
     var b = false;
-    var e = document.getElementsByName(name);
+    var e = document.getElementsByTagName("input");
     for (var i = 0; i < e.length; i++) {
         if (e[i].checked) {
             b = true;
         }
     }
     if (!b) {
-        $("#newdiv_" + name).css('background-color',"gray");
+        $("#newdiv_" + Leo_now_index).css('background-color', 'gray');
     } else {
-        $("#newdiv_" + name).css('background-color',"green");
+        $("#newdiv_" + Leo_now_index).css('background-color', '#48fffb');
     }
 }
 
-function checkOver3(name) {
+function checkOver3() {
     var b = 0;
-    var e = document.getElementsByName(name);
+    var e = document.getElementsByTagName("input");
     for (var i = 0; i < e.length; i++) {
         if (e[i].checked) {
             b ++;
