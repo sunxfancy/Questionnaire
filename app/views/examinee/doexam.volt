@@ -267,7 +267,7 @@ function initTitle(index){
                 if(confirm("您确定要提交吗?")){
                    Leo_check();
                 }
-            })
+            });
         } 
         changepage(Leo_index_now+1,true);
     }

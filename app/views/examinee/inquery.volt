@@ -10,7 +10,6 @@
         </div>
         </div>
         </div>
-        </div>
         
         <div id="Leo_control" style="width:600px;height:60px;text-align:center;">
             <table style="width:30%;height:60px;margin:0 auto;"><tr style="width:100%;height:100%;"><td style="width:20%;">
@@ -33,36 +32,34 @@
 
         </div>
 
-        
+    </div>  
+    
+    
+<div class="Leo_question_t_v2" style="height:500px;margin-top:0px;">
+    <div style="overflow:auto;height:500px;">
+        <table style="width:92%;text-align:center;vertical-align:middle;table-layout:fixed;margin:0 auto;" id="Leo_question_table" cellspacing="0"></table>
     </div>
-    <div class="Leo_Timer_v2">
-    <div id="time_panel" style="width:100%;height:30px;background-color:#eeed6a;text-align:center;font-size:25px;"></div>
+</div>
 
-    <div class="clock">
-    <ul><li style="font-size:25px;" id="used">已用时</li></ul>
-    <ul>
-    <li id="hours">00</li>
-        <li id="point">:</li>
-        <li id="min">00</li>
-        <li id="point">:</li>
-        <li id="sec">00</li>
-    </ul>
-    </div>
-    
-    </div>
-    <div class="Leo_question_t_v2">
-        
-        <div style="overflow:auto;height:340px;">
-            <table style="width:92%;text-align:center;vertical-align:middle;table-layout:fixed;margin:0 auto;" id="Leo_question_table" cellspacing="0"></table>
-        </div>
-    </div>
-    
 <script type="text/javascript">
     var questions=new Array();
     var url="/Examinee/getques";
     var Leo_now_index=0;
 $(function(){
     getpaper(url); //先从服务器取得全部的需求量表的题目
+
+     $("#Leo_pagedown").click(function(){
+        changepage(Leo_index_now+1,true);
+     });
+
+     $("#Leo_pageup").click(function(){
+         changepage(Leo_index_now-1,true);
+     });
+
+     $("#Leo_checkup").click(function(){
+                changepage(questions.length-1,true);
+                Leo_checkcomplete();
+            });
 
 });
 function initTitle(index){
@@ -284,5 +281,18 @@ function getpaper(url){
             Leo_initPanel(questions.length);
             initCookie(questions.length,"ans_cookie"+{{number}});
         });
+}
+
+function Leo_check(){
+    $.post('/Examinee/getQuesAns',{"answer":$.cookie("ans_cookie"+{{number}})}, function(data) {
+                            if(data.flag){
+                                    alert("提交成功！点击确定跳转到用户信息填写页面！");
+                                    $.cookie("ans_cookie"+{{number}},"",{expires:-1});
+                                    window.location.href="/Examinee/editinfo"
+                                    return;
+                              }else{
+                                    alert("提交出错，请联系管理员！");
+                              }
+                        });
 }
 </script>

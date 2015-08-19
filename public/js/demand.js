@@ -207,10 +207,7 @@ function Leo_checkcomplete() {
         } else {
             var t = confirm("您确定要提交吗？");
             if (t) {
-                
-                alert("感谢您的配合，我们将在答案提交完毕后，进入问卷调查");
-                //跳转代码
-                //window.location.href = "testinfo.html";
+                 Leo_check();
             }
         }
     }
