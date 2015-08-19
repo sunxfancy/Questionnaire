@@ -2,7 +2,15 @@
 class Eppsdf extends \Phalcon\Mvc\Model{
 	
 	public $TH;
-	public $X;
-	public $Y;
+	/**
+	 * 修改X为A
+	 * @var unknown
+	 */
+	public $A;
+	/**
+	 * 修改Y为B
+	 * @var unknown
+	 */
+	public $B;
 
 }

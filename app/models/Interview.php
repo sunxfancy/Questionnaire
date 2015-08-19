@@ -49,6 +49,5 @@ class Interview extends \Phalcon\Mvc\Model
     	return false;
     
     }
-    
 
 }
