@@ -135,7 +135,7 @@
             },
     
             editurl: "/pm/updateexaminee",//nothing is saved
-            caption: "用户账户管理"
+            caption: "被试人员账号管理"
     
             ,autowidth: true
     

@@ -97,7 +97,7 @@
 			},
 	
 			editurl: "/admin/update",//nothing is saved
-			caption: "用户账户管理"
+			caption: "项目管理"
 	
 			,autowidth: true
 	

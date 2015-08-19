@@ -93,7 +93,7 @@
             },
     
             editurl: "/pm/updateleader",//nothing is saved
-            caption: "用户账户管理"
+            caption: "领导账号管理"
     
             ,autowidth: true
     
