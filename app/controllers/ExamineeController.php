@@ -239,6 +239,17 @@ class ExamineeController extends Base
     }
 
     public function getExamAnswerAction(){
+        $total_time=$this->request->getPost("total_time","int");
+        if($total_time){
+            /**********************************************************************/
+            /*最后一次提交的处理在这里，$total_time是用户答题使用的总时间，以秒计*/
+            $this->dataReturn(array("total_time"=>$total_time));
+
+
+            /*end of code chunk*/
+            /**********************************************************************/
+            return;
+        }
         $question_ans = new QuestionAns();
         $question_ans->option = $this->request->getPost("answer", "string");
         $question_ans->paper_id = $this->getPaperid();
