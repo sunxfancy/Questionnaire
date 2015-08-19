@@ -1,99 +1,5 @@
 <?php
 class BasicScoreOne {
-	public function __construct(){
-	
-	}
-		/**
-		 * 针对16PF数据 187道题
-		 */
-// 		$str = str_split("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-// 		$str_length =  count($str);
-// 		$str = implode('|',$str);
-// 		echo $str;
-// 		echo "<br />";
-// 		for($i = 1; $i <= $str_length; $i++ ){
-// 			if($i!=1)
-// 			echo '|';
-// 			echo $i;
-// 		}
-	/**
-	 * 针对SPM数据  60道题
-	 */
-// 		for($i = 1; $i<=60; $i++){
-// 			if($i!=1)
-// 				echo '|';
-// 			echo $i;
-// 		}
-// 		echo "<br />";
-// 		for($i = 1; $i<=60; $i++){
-// 			if($i!=1)
-// 				echo '|';
-// 			echo 'B';
-// 		}
-	/**
-	 * 针对ＳＣＬ数据９０道题
-	 */	
-// 	 for($i = 1; $i<=90; $i++ ){
-// 	 	if($i!=1)
-// 	 		echo '|';
-// 	 	echo $i;
-// 	 }
-// 	 echo "<br />";
-// 	 for($i=1; $i<=90; $i++ ){
-// 	 	if($i!=1)
-// 	 		echo '|';
-// 	 	$mt = rand(65, 69);
-// 	 	echo chr($mt);
-// 	 }
-	/**
-	 * 针对EPQA 88道题 AB
-	 */
-	// for($i = 1; $i<=88; $i++ ){
-	// 	if($i!=1)
-	// 		echo '|';
-	// 	echo $i;
-	// }
-	// echo "<br />";
-	// for($i = 1; $i<=88; $i++){
-	// 	if($i!=1)
-	// 		echo '|';
-	// 	$mt = rand(65,66);
-	// 	echo chr($mt);
-	// }
-	// exit();
-	/**
-	 * 针对CPI 230道题 AB
-	 */
-// 	for($i = 1; $i<=230; $i++ ){
-// 		if($i!=1)
-// 			echo '|';
-// 		echo $i;
-// 	}
-// 	echo "<br />";
-// 	for($i = 1; $i<=230; $i++){
-// 		if($i!=1)
-// 			echo '|';
-// 		$mt = rand(65,66);
-// 		echo chr($mt);
-// 	}
-// 	exit();
-	/**
-	 * 针对EPPS  225道题 AB
-	 */
-// for($i = 1; $i<=225; $i++ ){
-// 	if($i!=1)
-// 		echo '|';
-// 	echo $i;
-// }
-// echo "<br />";
-// for($i = 1; $i<=225; $i++){
-// 	if($i!=1)
-// 		echo '|';
-// 	$mt = rand(65,66);
-// 	echo chr($mt);
-// }
-// exit();
-
 	/**
 	 * : 根据被试人员id查取试卷记录
 	 * 抛出Exception 1 ： 被试人员没有答题，quesion_ans 中记录为空，获取不到相应信息
@@ -214,8 +120,8 @@ class BasicScoreOne {
 			 * 
 			 */
 			$rtn_array = Score::findInTwodemensianalArray($ksdf_list, 'TH', $record['number']);
-			$rtn_score = $rtn_array[$record['option']];
-			print_r($rtn_array);
+			$rtn_score = $rtn_array[strtoupper($record['option'])];
+			//print_r($rtn_array);
 			$record_list[] = $rtn_score;
 			
 		}
@@ -251,7 +157,7 @@ class BasicScoreOne {
 			 *
 			 */
 			$rtn_array = Score::findInTwodemensianalArray($scldf_list, 'TH', $record['number']);
-			$rtn_score = $rtn_array[$record['option']];
+			$rtn_score = $rtn_array[strtoupper($record['option'])];
 			$record_list[] = $rtn_score;
 				
 		}

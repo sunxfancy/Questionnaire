@@ -4,23 +4,9 @@
 <script type="text/javascript" src="/lib/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="/lib/bootstrap-datetimepicker.js"></script>
 
-<div style="width:100%;height:460px;overflow:hidden;">
+<div style="width:100%;height:500px;overflow:hidden;">
     <table id="grid-table"></table>
     <div id="grid-pager"></div>   
-
-    <div style="width:100%;height:40px;text-align:center;margin: 5px 10px;">
-        <form class="form-inline" method="POST" action="/pm/uploadexaminee" enctype="multipart/form-data">
-            <div class="form-group">
-                <input type="file" name="file" input maxlength="100" style="height:30px;cursor:pointer;">
-            </div>
-            <div class="form-group">
-                <button class="btn btn-success" type="submit" >导入</button>
-            </div>
-            <div class="form-group">
-                <a class="btn btn-primary" href="#">导出</a>
-            </div>
-        </form>
-    </div>
 </div>
 
 
@@ -46,25 +32,45 @@
 
             url: "/pm/listexaminee",
             datatype: "json",
-            height: '270px',
+            height: '310px',
             shrinkToFit:true,
             forceFit:true,
             autowidth: true,
-            colNames:[' ', '用户编号','姓名','性别', '是否测试完毕','最后登录时间','查看报告'],
+            colNames:[ ' ','被试编号','姓名','性别', '是否测试完毕','最后登录时间','查看报告'],
             colModel:[
-                {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
-                    formatter:'actions', 
-                    formatoptions:{ 
-                        keys:true,
-                        
-                        delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
+                {name:'info',index:'info', sortable:false, width:40, resize:false,align:'center',
+                    formatter:function(cellvalue, options, rowObject){
+                        var temp = "<div class='ui-pg-div ui-inline-edit' data-original-title='查看个人详细信息''><a href='/leader/info/"+rowObject.id+"' ><i class='fa fa-th-list'></i></a></div>";
+                        return temp;
                     }
                 },
                 {name:'number',index:'number', sorttype:"int",width:100, editable: false,align:'center'},
                 {name:'name',index:'name', sortable:true, width:110,sorttype:"string", editable:true,align:'center'},
-                {name:'sex',index:'sex',width:60, sortable:false, sorttype:"string", editable:false,align:'center'},
-                {name:'is_exam_com',index:'is_exam_com',width:135, sortable:false, sorttype:"string", editable:false,align:'center'},
-                {name:'last_login',index:'last_login', sortable:true,width:200, editable: false,unformat:pickDate,align:'center'},
+                {name:'sex',index:'sex',width:60, sortable:false, editable:false,align:'center',
+                    formatter:function(cellvalue){
+                        var temp = "";
+                        if(cellvalue == 1){
+                            temp = "男" ;
+                        } 
+                        else { 
+                            temp = "女";
+                        }
+                        return temp;
+                    }
+                },
+                {name:'is_exam_com',index:'is_exam_com',width:135, sortable:false, editable:false,align:'center',
+                    formatter:function(cellvalue){
+                        var temp = "";
+                        if(cellvalue == 1){
+                            temp = "是" ;
+                        } 
+                        else { 
+                            temp = "否";
+                        }
+                        return temp;
+                    }
+                },
+                {name:'last_login',index:'last_login', sortable:false,width:200, editable: false,unformat:pickDate,align:'center'},
                 {name:'result',index:'result', sortable:false, width:130, resize:false,align:'center',
                     formatter:function(){
                         var temp = "<a href='/pm/result' >查看</a>";
@@ -99,7 +105,7 @@
             },
     
             editurl: "/pm/updateexaminee",//nothing is saved
-            caption: "用户账户管理"
+            caption: "被试人员列表"
     
             ,autowidth: true
     

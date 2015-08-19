@@ -176,7 +176,8 @@ class SearchSource
 			return $this->baseFindChildren($modules, 'Index');
 		} else {
 			if ($this->indexs == null) 
-				$this->indexs = $this->getIndexs($this->getModules());
+				$module = $this->getModules();
+				$this->indexs = $this->getIndexs($module);
 			return $this->indexs;
 		}
 	}
@@ -197,7 +198,8 @@ class SearchSource
 			return $this->baseFindChildren($indexs, 'Factor');
 		} else {
 			if ($this->factors == null) 
-				$this->factors = $this->getFactors($this->getIndexs());
+				$index = $this->getIndexs();
+				$this->factors = $this->getFactors($index);
 			return $this->factors;
 		}
 	}
@@ -302,6 +304,7 @@ class SearchSource
 		$temp = array();
 		foreach ($other_ans as $name) {
 			if ($all_list[$name] == null) {
+				echo $name;
 				$temp[$name] = $name;
 			}
 		}

@@ -52,7 +52,7 @@
             shrinkToFit:true,
             forceFit:true,
             autowidth: true,
-            colNames:[' ', '领导编号','姓名', '最后登录时间', '密码'],
+            colNames:[' ', '领导编号','姓名', '密码', '最后登录时间'],
             colModel:[
                 {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
                     formatter:'actions', 
@@ -63,9 +63,8 @@
                 },
                 {name:'username',index:'username', sorttype:"int",width:100, editable: false,align:'center'},
                 {name:'name',index:'name', sortable:true, width:100,sorttype:"string", editable:true,align:'center'},
-                {name:'last_login',index:'last_login',width:250, sortable:false, sorttype:"string", editable:true,align:'center'},
-                {name:'password',index:'password',width:100, sortable:false, sorttype:"string", editable:true,align:'center'},
-                
+                {name:'password',index:'password',width:100, sortable:false, sorttype:"string", editable:true,align:'center'}, 
+                {name:'last_login',index:'last_login',width:150, sortable:false, editable:false,align:'center'},              
             ], 
             
             viewrecords : true, 
@@ -94,7 +93,7 @@
             },
     
             editurl: "/pm/updateleader",//nothing is saved
-            caption: "用户账户管理"
+            caption: "领导账号管理"
     
             ,autowidth: true
     

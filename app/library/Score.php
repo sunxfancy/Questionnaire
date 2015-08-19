@@ -118,6 +118,7 @@ class Score
 			if ($ctype == 1) {
 				foreach ($examinees as $examinee) {
 					$items[$examinee->id][] = $answers[$examinee->id][$paper_name][$child];
+					echo $paper_name;
 				}
 			} else {
 				$factor_ans = $this->calFactor($this->findFactor($child), $examinees, $answers);

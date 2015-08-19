@@ -147,7 +147,6 @@ class PmController extends Base
             $examinee = Examinee::findFirst($id);
             $examinee->name       = $this->request->getPost('name', 'string');
             $examinee->password   = $this->request->getPost('password', 'string');
-            $examinee->project_id = $this->request->getPost('project_id', 'int');
             if (!$examinee->save()) {
                 foreach ($examinee->getMessages() as $message) {
                     echo $message;
@@ -197,7 +196,6 @@ class PmController extends Base
             $manager = Manager::findFirst($id);
             $manager->name       = $this->request->getPost('name', 'string');
             $manager->password       = $this->request->getPost('password', 'string');
-            $manager->project_id = $this->request->getPost('project_id', 'int');
             if (!$manager->save()) {
                 foreach ($manager->getMessages() as $message) {
                     echo $message;
@@ -242,7 +240,6 @@ class PmController extends Base
             $manager = Manager::findFirst($id);
             $manager->name       = $this->request->getPost('name', 'string');
             $manager->password       = $this->request->getPost('password', 'string');
-            $manager->project_id = $this->request->getPost('project_id', 'int');
             if (!$manager->save()) {
                 foreach ($manager->getMessages() as $message) {
                     echo $message;
@@ -305,13 +302,23 @@ class PmController extends Base
         echo json_encode($ans);
         $this->view->disable();
     }
-/*  function leftRender()
-    {
-        $manager = $this->session->get('Manager');
-        $this->view->setVar('page_title','北京政法系统人才测评项目管理平台');
-        $this->view->setVar('user_name',$manager->name);
-        $this->view->setVar('user_id',  $manager->username);
-        $this->view->setVar('user_role',"项目经理");
-   }
-*/
+
+    public function infoAction($examinee_id){
+        $this->view->setTemplateAfter('base2');
+        $this->leftRender('个人信息查看');
+        $examinee = Examinee::findFirst($examinee_id);
+        $this->view->setVar('name',$examinee->name);
+        $sex = ($examinee->sex == "1") ? "男" : "女";
+        $this->view->setVar('sex',$sex);
+        $this->view->setVar('education',$examinee->education);
+        $this->view->setVar('degree',$examinee->degree);
+        $this->view->setVar('birthday',$examinee->birthday);
+        $this->view->setVar('native',$examinee->native);
+        $this->view->setVar('politics',$examinee->politics);
+        $this->view->setVar('professional',$examinee->professional);
+        $this->view->setVar('employer',$examinee->employer);
+        $this->view->setVar('unit',$examinee->unit);
+        $this->view->setVar('duty',$examinee->duty);
+        $this->view->setVar('team',$examinee->team);
+    }
 }
