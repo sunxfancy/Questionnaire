@@ -1,6 +1,3 @@
-
-
-
 <link rel="stylesheet" type="text/css" href="/css/css/Leo_questions.css" />
 <script type="text/javascript" src="/js/demand.js"></script>
 <div class="Leo_question_v2" id="Leo_question_v2">
@@ -74,10 +71,6 @@
         </div>
     </div>
     
-   
-    
-</body>
-
 <script type="text/javascript">
  /*定义重要的全局变量*/
 
@@ -255,7 +248,7 @@ function initTitle(index){
     });
 
     $('input').click(function(){
-        var temp=$(this).prop('checked','checked');
+        //var temp=$(this).prop('checked','checked');
         doclick();
     })
 
@@ -274,7 +267,7 @@ function initTitle(index){
                 if(confirm("您确定要提交吗?")){
                    Leo_check();
                 }
-            })
+            });
         } 
         changepage(Leo_index_now+1,true);
     }
