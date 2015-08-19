@@ -23,7 +23,6 @@
     </div>
 </div>
 
-
 <script type="text/javascript">
     jQuery(function($) {
         var grid_selector = "#grid-table";

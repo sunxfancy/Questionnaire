@@ -180,10 +180,11 @@
                 }
                 $.post('/examinee/submit', base_info, callbk);
         });
-    });
-    function callbk(){
+        function callbk(){
+            alert("保存成功！");
             window.location.href = '/examinee/doexam';
-    }
+        }
+    });
 
 jQuery(function($) {
         var grid_selector = "#grid-table1";

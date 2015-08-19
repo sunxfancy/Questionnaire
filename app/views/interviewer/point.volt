@@ -4,29 +4,29 @@
         <table border="1" cellspacing="0" cellpadding="0" style="margin: 0 auto;" name='{{examinee_id}}'>
             <tr>
                 <td rowspan="5" style="width:100px;">优势</td>
-                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="1." id="advantage1"></td>
+                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:24px;width:550px;font-size:18px;" value="1." id="advantage1"></td>
             </tr>
             <tr>
-                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="2." id="advantage2"></td>
+                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:24px;width:550px;font-size:18px;" value="2." id="advantage2"></td>
             </tr>
             <tr>
-                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="3." id="advantage3"></td>
+                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:24px;width:550px;font-size:18px;" value="3." id="advantage3"></td>
             </tr>
             <tr>
-                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="4." id="advantage4"></td>
+                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:24px;width:550px;font-size:18px;" value="4." id="advantage4"></td>
             </tr>
             <tr>
-                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="5." id="advantage5"></td>
+                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:24px;width:550px;font-size:18px;" value="5." id="advantage5"></td>
             </tr>
             <tr>
                 <td rowspan="3" style="width:100px;">改进</td>
-                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="1." id="disadvantage1"></td>
+                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:24px;width:550px;font-size:18px;" value="1." id="disadvantage1"></td>
             </tr>
             <tr>
-                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="2." id="disadvantage2"></td>
+                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:24px;width:550px;font-size:18px;" value="2." id="disadvantage2"></td>
             </tr>
             <tr>
-                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:20px;width:550px;font-size:18px;" value="3." id="disadvantage3"></td>
+                <td colspan="4" style="width:550px;"><input name="text" type="name" class="inputtxt" style="border:0px;height:24px;width:550px;font-size:18px;" value="3." id="disadvantage3"></td>
             </tr>
             <tr>
                 <td style="width:100px;">潜质</td>
@@ -41,9 +41,13 @@
             </tr>
         </table>
     </div>
-    <div style="text-align:center;margin-top:15px;" >
-        <img src="../../../images/submit.jpg" style="height:30px;" class="add_point" type="submit" id="submit"/>
+
+    <div style="width:100%;height:40px;text-align:center;margin: 5px 10px;">
+        <div class="form-group">
+            <a id="submit" class="btn btn-primary">保存</a>
+        </div>
     </div>
+
 </div>
 <script type="text/javascript">
         $(document).ready(function(){
