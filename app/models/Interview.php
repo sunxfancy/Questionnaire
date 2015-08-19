@@ -49,23 +49,5 @@ class Interview extends \Phalcon\Mvc\Model
     	return false;
     
     }
-    
-
-
-    public function commentSave($arr){
-        $interview = new Interview();
-        $interview->advantage = $arr['advantage'];
-        $interview->disadvantage = $arr['disadvantage'];
-        $interview->remark = $arr['remark'];
-        $interview->examinee_id = $arr['examinee_id'];
-        $interview->manager_id = $arr['manager_id'];
-
-        if($interview->save()){
-            return true;
-        }
-        return false;
-
-    }
-
 
 }
