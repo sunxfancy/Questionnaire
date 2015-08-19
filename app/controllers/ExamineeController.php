@@ -89,7 +89,7 @@ class ExamineeController extends Base
         $indexs_name_array = $this->getIndex($modules_id_array);
 
         $factor_name_array = $this->getFactor($indexs_name_array);
-
+        print_r($factor_name_array);
         $question_number_array = $this->getNumber($factor_name_array,$paper_id);
 
         $exams = $this->getExam($question_number_array,$paper_id);
