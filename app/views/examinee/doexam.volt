@@ -83,6 +83,7 @@ var paper_id_name=new Array("16PF","EPPS","SCL","EPQA","CPI","SPM");
 var paper_name=new Array("卡特尔十六种人格因素测验","爱德华个人偏好测试","SCL90测试","爱克森个性问卷成人","青年性格问卷测试","瑞文标准推理测验");
 var paper_id_now=0;
 var ques_order=new Array();
+var flag=true;//全局的时间是否进行的标识
 
 $(function(){
 
@@ -182,7 +183,6 @@ function Leo_initPanel(questionlength) {
 function Leo_timer_start(){
     var total_time=0;
     time_play();
-    var flag=true;
     function time_play(){
         setTimeout(function(){
             if(flag){
