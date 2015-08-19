@@ -100,7 +100,7 @@
             },
     
             editurl: "/pm/updateinterviewer",//nothing is saved
-            caption: "用户账户管理"
+            caption: "面询专家账号管理"
     
             ,autowidth: true
     
