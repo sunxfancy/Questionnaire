@@ -97,10 +97,10 @@ $(function(){
         initCookie(questions.length,"exam_ans"+{{number}});
     });
 
-    Leo_timer_start();
-    Leo_initPaperId();
+   
+    Leo_initPaperId(); 
     getpaper(paper_id_now);
-
+    Leo_timer_start();
      $('#do_announce').click(function(){
         if($("#announce_panel").css('display')=='none'){
             $('#announce_panel').slideDown('fast', function() {});
@@ -393,7 +393,9 @@ function getpaper(paper_index){
                 }
             }
          $("#Leo_hiden_td").html("点击进行"+paper_name[paper_id_now]+"的答题");
-         $('#Leo_hiden').slideDown('fast', function() {});    //默认设定是题目间的跳转不暂停计时，这个过程被认为是正常的答题过程！！！
+         $('#Leo_hiden').slideDown('fast', function() {});    
+         flag=false;
+         //默认设定是题目间的跳转不暂停计时，这个过程被认为是正常的答题过程！！！
          questions=data.question;
          description=data.description;
          ques_order=data.order;
