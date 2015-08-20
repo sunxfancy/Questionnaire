@@ -12,13 +12,15 @@ class MemoryManagement {
 		if(!in_array($table_name, self::$mysql_memory_list, true)){
 			throw new Exception ('There is no memory table for this table!');
 		}
+		$state = false;
 		switch ($table_name){
-			case 'cpidf' : self::startMysqlCpidfMemory();  break;
-			case 'eppsdf' : self::startMysqlEppsdfMemory();  break;
-			case 'epqadf' : self::startMysqlEpqadfMemory(); break;
-			case 'ksdf' : self::startMysqlKsdfMemory(); break;
-			case 'spmdf' : self::startMysqlSpmdfMemory(); break;
+			case 'cpidf' : $state = self::startMysqlCpidfMemory();  break;
+			case 'eppsdf' : $state = self::startMysqlEppsdfMemory();  break;
+			case 'epqadf' :$state = self::startMysqlEpqadfMemory(); break;
+			case 'ksdf' : $state = self::startMysqlKsdfMemory(); break;
+			case 'spmdf' : $state = self::startMysqlSpmdfMemory(); break;
 		}
+		return $state;
 		
 	}
 	/**
@@ -43,11 +45,15 @@ class MemoryManagement {
 	public $FX;
 	public $FE;
 	 */
+	/**
+	 * true 表示内存表ok了
+	 * @throws Exception
+	 * @return boolean
+	 */
 	private static function startMysqlCpidfMemory(){
 		#先检测内存中是否存在cpidf_memory
 		$cpidf_first = CpidfMemory::findFirst();
 		if(isset($cpidf_first->TH)){
-			echo 'already';
 			return true;
 		}else{
 		     try {
@@ -80,7 +86,6 @@ class MemoryManagement {
 					}
 				}
 				$transaction->commit();
-				echo 'inserted';
 				return true;
 		   		}catch (TxFailed $e) {
     				throw new Exception("Failed, reason: ".$e->getMessage());
@@ -94,11 +99,15 @@ class MemoryManagement {
 	 * public $B;
 	 * 
 	 */
+	/**
+	 * true
+	 * @throws Exception
+	 * @return boolean
+	 */
 	private static function startMysqlEppsdfMemory(){
 		#先检测内存中是否存在epppsdf_memory
 		$eppsdf_first = EppsdfMemory::findFirst();
 		if(isset($eppsdf_first->TH)){
-			echo 'already';
 			return true;
 		}else{
 			try {
@@ -116,7 +125,6 @@ class MemoryManagement {
 					}
 				}
 				$transaction->commit();
-				echo 'inserted';
 				return true;
 			}catch (TxFailed $e) {
 				throw new Exception("Failed, reason: ".$e->getMessage());
@@ -137,11 +145,15 @@ class MemoryManagement {
 
 	public $L;
 	 */
+	/**
+	 * 
+	 * @throws Exception
+	 * @return boolean
+	 */
 	private static function startMysqlEpqadfMemory(){
 		#先检测内存中是否存在epqadf_memory
 		$epqadf_first = EpqadfMemory::findFirst();
 		if(isset($epqadf_first->TH)){
-			echo 'already';
 			return true;
 		}else{
 			try {
@@ -162,7 +174,6 @@ class MemoryManagement {
 					}
 				}
 				$transaction->commit();
-				echo 'inserted';
 				return true;
 			}catch (TxFailed $e) {
 				throw new Exception("Failed, reason: ".$e->getMessage());
@@ -179,11 +190,15 @@ class MemoryManagement {
 	
 	public $C;
 	 */
+	/**
+	 * true
+	 * @throws Exception
+	 * @return boolean
+	 */
 	private static function startMysqlKsdfMemory(){
 		#先检测内存中是否存在ksdf_memory
 		$ksdf_first = KsdfMemory::findFirst();
 		if(isset($ksdf_first->TH)){
-			echo 'already';
 			return true;
 		}else{
 			try {
@@ -205,7 +220,6 @@ class MemoryManagement {
 					unset($ksdf_data);
 				}
 				$transaction->commit();
-				echo 'inserted';
 				return true;
 			}catch (TxFailed $e) {
 				throw new Exception("Failed, reason: ".$e->getMessage());
@@ -216,11 +230,15 @@ class MemoryManagement {
 	 * 	public $BZ;
 		public $XH;
 	 */
+	/**
+	 * 
+	 * @throws Exception
+	 * @return boolean
+	 */
 	private static function startMysqlSpmdfMemory(){
 		#先检测内存中是否存在spmdf_memory
 		$spmdf_first = SpmdfMemory::findFirst();
 		if(isset($spmdf_first->XH)){
-			echo 'already';
 			return true;
 		}else{
 			try {
@@ -240,7 +258,6 @@ class MemoryManagement {
 					unset($ksdf_data);
 				}
 				$transaction->commit();
-				echo 'inserted';
 				return true;
 			}catch (TxFailed $e) {
 				throw new Exception("Failed, reason: ".$e->getMessage());

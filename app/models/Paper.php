@@ -172,6 +172,7 @@ class Paper extends \Phalcon\Mvc\Model
     }
     
     /**
+     * 该方法已经抛弃，使用phalcon的外键关系来实现
      * 当获取到papers的信息数组后，如何获取其中的相关信息，从而减少查表的重复性
      * @param $papers_array $id -> $name
      * @return unknown

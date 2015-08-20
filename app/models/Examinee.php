@@ -130,20 +130,20 @@ class Examinee extends \Phalcon\Mvc\Model
      * @return boolean
      */
     public static function checkIsExamedByExamineeId($examinee_id){
-    	$examinee_info = Examinee::findFirst(
+    	$examinee_info = self::findFirst(
 		array(
 			"id = :examinee_id:",
-			'bind' => array( 'examine_id' => intval($examinee_id))
+			'bind' => array( 'examinee_id' => intval($examinee_id))
 		)
     	);
     	if (isset($examinee_info->is_exam_com)){
-    		if( intval($examinee_id->is_exam_com) == 1 ){
+    		if( intval($examinee_info->is_exam_com) == 1 ){
     			return true;
     		}else{
     			return false;
     		}	
     	}else{
-    		throw new Exception('no this examinee id!');
+    		throw new Exception('no this examinee_id!');
     	}
     }
     

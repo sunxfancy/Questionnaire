@@ -43,7 +43,7 @@ class Question extends \Phalcon\Mvc\Model
 
     public function initialize()
     {
-        $this->hasMany("id", "QuestionAns", "question_id");
+    	$this->belongsTo('paper_id', 'Paper', 'id');
         $this->hasManyToMany(
             "id", "Fqrel", "question_id", 
             "factor_id", "Factor", "id"
