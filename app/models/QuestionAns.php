@@ -35,7 +35,11 @@ class QuestionAns extends \Phalcon\Mvc\Model
      */
     public $examinee_id;
 
-
+	public function initialize(){
+		$this->belongsTo('paper_id', 'Paper', 'id');
+		$this->belongsTo('examinee_id', 'Examinee' , 'id');
+	}
+	
     /**
      * 根据paper_id和用户id的集合来查找所有符合条件的答案
      * 两个参数可以是单独的id,也可以是数组集合
@@ -56,6 +60,22 @@ class QuestionAns extends \Phalcon\Mvc\Model
             'bind' => array('paper_id' => $paper_id, 'examinee_id' => $examinee_id)
         ));
         return $anss;
+    }
+    /**
+     * 根据examinee_id 选择出该被试的相关试卷的答案
+     * 一个人最多有6条记录
+     */
+    public static function getListByExamineeId($examinee_id){
+    	if (DBHandle::dataFormatCheck($examinee_id)!=2){
+    		throw new Exception('input type is not available');
+    	}
+    	$list_data = self::find(
+        	array(
+    		"examinee_id = :examinee_id:",
+        	'bind' => array( 'examinee_id' => intval($examinee_id))
+    	)
+    	);
+    	return $list_data;
     }
 
 }

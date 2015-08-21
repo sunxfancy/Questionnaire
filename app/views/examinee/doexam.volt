@@ -83,7 +83,8 @@ var paper_id_name=new Array("16PF","EPPS","SCL","EPQA","CPI","SPM");
 var paper_name=new Array("卡特尔十六种人格因素测验","爱德华个人偏好测试","SCL90测试","爱克森个性问卷成人","青年性格问卷测试","瑞文标准推理测验");
 var paper_id_now=0;
 var ques_order=new Array();
-var flag=true;//全局的时间是否进行的标识
+var flag=false;//全局的时间是否进行的标识
+var total_time=0;//全局时间
 
 $(function(){
 
@@ -96,11 +97,10 @@ $(function(){
         initCookie(questions.length,"exam_ans"+{{number}});
     });
 
-
-    Leo_timer_start();
-    Leo_initPaperId();
+   
+    Leo_initPaperId(); 
     getpaper(paper_id_now);
-
+    Leo_timer_start();
      $('#do_announce').click(function(){
         if($("#announce_panel").css('display')=='none'){
             $('#announce_panel').slideDown('fast', function() {});
@@ -181,7 +181,13 @@ function Leo_initPanel(questionlength) {
     }
 
 function Leo_timer_start(){
-    var total_time=0;
+    
+    if($.cookie("total_time")){
+        total_time=parseInt($.cookie("total_time"));
+    }else{
+        $.cookie("total_time","",{experies:7});
+    }
+    
     time_play();
     function time_play(){
         setTimeout(function(){
@@ -193,6 +199,11 @@ function Leo_timer_start(){
                 $("#sec").html(( seconds < 10 ? "0" : "" ) + seconds);
                 $("#min").html(( minutes < 10 ? "0" : "" ) + minutes);
                 $("#hours").html(( hour < 10 ? "0" : "" ) + hour);
+
+                //这里每秒进行一次时间储存，不知道会不会开销大，如果出现卡顿的情况，则取消对下面if的注释
+                //if(seconds==10){
+                   $.cookie("total_time",total_time,{experies:7});
+                //}
             }
             time_play();
         },1000)
@@ -370,6 +381,7 @@ function initCookie_title(ans_cookie){
 function getpaper(paper_index){
 
          $.post('/Examinee/getpaper', {'paper_name':paper_id_name[paper_index]}, function(data) {
+            console.log(data);
             if(data.no_ques){
                 if(paper_id_now<5){
                     paper_id_now++;
@@ -382,7 +394,9 @@ function getpaper(paper_index){
                 }
             }
          $("#Leo_hiden_td").html("点击进行"+paper_name[paper_id_now]+"的答题");
-         $('#Leo_hiden').slideDown('fast', function() {});    //默认设定是题目间的跳转不暂停计时，这个过程被认为是正常的答题过程！！！
+         $('#Leo_hiden').slideDown('fast', function() {});    
+         flag=false;
+         //默认设定是题目间的跳转不暂停计时，这个过程被认为是正常的答题过程！！！
          questions=data.question;
          description=data.description;
          ques_order=data.order;
@@ -415,9 +429,14 @@ function Leo_check(){
 }
 
 function ans_complete(){
-    alert("提交成功!您已完成全部题目的作答，谢谢您的配合。\n点击‘确定’退出系统。");
-    $.cookie("paper_id"+{{number}},"",{experies:-1});
-    $.cookie("exam_ans"+{{number}},"",{expires:-1});
-    window.location.href="/"
+    $.post('/Examinee/getExamAnswer',{'total_time':total_time},function(data){
+        alert(data.total_time);
+        alert("提交成功!您已完成全部题目的作答，谢谢您的配合。\n点击‘确定’退出系统。");
+        $.cookie("paper_id"+{{number}},"",{experies:-1});
+        $.cookie("exam_ans"+{{number}},"",{expires:-1});
+        $.cookie("total_time","",{experies:-1});
+        window.location.href="/"
+    });
+    
 }
 </script>

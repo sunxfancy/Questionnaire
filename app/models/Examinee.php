@@ -123,7 +123,29 @@ class Examinee extends \Phalcon\Mvc\Model
     {
         $this->belongsTo('project_id', 'Project', 'id');
     }
-    
+    /**
+     * 判断被试人员是否已经答完题
+     * @param unknown $examinee_id
+     * @throws Exception
+     * @return boolean
+     */
+    public static function checkIsExamedByExamineeId($examinee_id){
+    	$examinee_info = self::findFirst(
+		array(
+			"id = :examinee_id:",
+			'bind' => array( 'examinee_id' => intval($examinee_id))
+		)
+    	);
+    	if (isset($examinee_info->is_exam_com)){
+    		if( intval($examinee_info->is_exam_com) == 1 ){
+    			return true;
+    		}else{
+    			return false;
+    		}	
+    	}else{
+    		throw new Exception('no this examinee_id!');
+    	}
+    }
     
     // 被试人员登陆验证
     public static function checkLogin($username,$password)
