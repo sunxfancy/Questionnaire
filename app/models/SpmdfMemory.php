@@ -14,4 +14,21 @@ class SpmdfMemory extends  \Phalcon\Mvc\Model {
 	 */
 
 	public $XH;
+	
+	public static function getRecord($th, $xz){
+		$record = self::findFirst(
+				array(
+						"XH = :th: AND BZ = :bz:",
+						'bind' => array('th'=>$th, 'bz'=>$xz)
+				)
+		);
+		$rtn_array = array();
+		if(isset($record->BZ)){
+			$rtn_array[] = 1;
+		}else{
+			$rtn_array[] = 0;
+		}
+		$rtn_str = implode('-',$rtn_array);
+		return $rtn_str;
+	}
 }

@@ -425,7 +425,7 @@ class UploadController extends \Phalcon\Mvc\Controller {
 			}
 		}
 	public function deleteKSAction(){
-		die("not allowed");		
+		//die("not allowed");		
 			try{
 				$delete_state = DBHandle::deleteTKByName('16PF');
 				if($delete_state){
