@@ -45,37 +45,37 @@ class Test5Controller extends Base
 	}
 
 	public function cal_cpi_Std_score($dm,$factor_id,$score){
-		$cpimode = Cpimode::findFirst(array(
+		$cpimd = Cpimd::findFirst(array(
             'DM=?0 and YZ=?1',
             'bind'=>array(0=>$dm,1=>$factor_name)));
-		$m = $cpimode->M;
-		$sd = $cpimode->SD;
+		$m = $cpimd->M;
+		$sd = $cpimd->SD;
 		$std_score = 50 + (10 * ($score - $m)) / $sd;
 		return $std_score;
 	}
 
 	public function cal_epqa_Std_score($dm,$dage,$factor_id,$score){
 		$factor_name = CalAge::getFactorName($factor_id);
-		$epqamode = Epqamode::query()
+		$epqamd = Epqamd::query()
 				  ->where('DSEX =?0')
 				  ->andWhere("DAGEL <= '$age' AND DAGEH >= '$age'")
 				  ->bind(array(0 => $dm));
 		switch ($factor_name) {
 			case 'epqae':
-				$m = $epqamode->EM;
-				$sd = $epqamode->ESD;
+				$m = $epqamd->EM;
+				$sd = $epqamd->ESD;
 				break;
 			case 'epqan':
-				$m = $epqamode->NM;
-				$sd = $epqamode->NSD;
+				$m = $epqamd->NM;
+				$sd = $epqamd->NSD;
 				break;
 			case 'epqap':
-				$m = $epqamode->PM;
-				$sd = $epqamode->PSD;
+				$m = $epqamd->PM;
+				$sd = $epqamd->PSD;
 				break;
 			case 'epqal':
-				$m = $epqamode->LM;
-				$sd = $epqamode->LSD;
+				$m = $epqamd->LM;
+				$sd = $epqamd->LSD;
 				break;
 			
 			default:
@@ -88,28 +88,28 @@ class Test5Controller extends Base
 
 	public function cal_ks_Std_score($dm,$factor_id,$score){
 		$factor_name = CalAge::getFactorName($factor_id);
-		$ksmode = Ksmode::query()
+		$ksmd = Ksmd::query()
 				->where("DM =?0 AND YZ =?1")
 				->andWhere("QSF <= '$age' AND ZZF >='$age'")
 				->bind(array(0=>$dm,1=>$factor_name));
-		$std_score = $ksmode->BZF;
+		$std_score = $ksmd->BZF;
 		return $std_score;
 	}
 
 	public function cal_spm_Std_score($age,$factor_id,$score){
 		if ($this->getFactorName($factor_anses->factor_id) == "spm"){
-			$spmmode = Spmmode::query()
+			$spmmd = Spmmd::query()
 					 ->where("NLL <= '$age' AND NLH >= '$age'");
-			if ($score >= $spmmode->B95) {
+			if ($score >= $spmmd->B95) {
 				$std_score = 1;
 			}
-			else if ($score >= $spmmode->B75) {
+			else if ($score >= $spmmd->B75) {
 				$std_score =2;
 			}
-			else if ($score >= $spmmode->B25) {
+			else if ($score >= $spmmd->B25) {
 				$std_score = 3;
 			}
-			else if ($score >= $spmmode->B5) {
+			else if ($score >= $spmmd->B5) {
 				$std_score = 4;
 			}
 			else{
@@ -145,8 +145,25 @@ class Test5Controller extends Base
 			'bind'=>array(0=>$examinee_id)));
 		foreach ($index_ans as $index_anses) {
 			$index = Index::findFirst($index_anses->index_id);
-			$children = explode(",",$index->children);
-			$childrentype = explode(",",$index->children_type);
+			$action = $index->action;
+
 		}
+	}
+
+	function doAction($children, $action, $array)
+	{
+		if ($this->action_function[$action] == null) {
+			$this->action_function[$action] = $this->complie_action($children, $action);
+		}
+		return call_user_func_array($this->action_function[$action], $array);
+	}
+
+	function complie_action($child_list, $action)
+	{
+		// 这里需要正则加$符号
+		$child_list = preg_replace('/[a-zA-Z][a-zA-Z0-9]*/', '\$$0', $child_list);
+		$action     = preg_replace('/[a-zA-Z][a-zA-Z0-9]*/', '\$$0', $action);
+		$action = "return $action;";
+		return create_function($child_list, $action);
 	}
 }
