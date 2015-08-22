@@ -7,9 +7,7 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 	
 	public function test5Action(){
 		$examinee_id = 12;
-		if(BasicScore::handlePapers($examinee_id)){
-			echo $examinee_id.'处理完毕';
-		}
+		FactorScore::handleFactors($examinee_id);
 		
 	}
 	public function indexAction(){
@@ -17,6 +15,10 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 		if($memory_state){
 			echo "加载完成";
 		}
+	}
+	public function t1Action(){
+		$rt = Factor::queryCache(134);
+		print_r($rt);
 	}
 
 }
