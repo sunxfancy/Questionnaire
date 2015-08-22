@@ -23,8 +23,8 @@ class FactorScore {
 		if(self::ifStartCalFactor($examinee_id)){
 			$question_ans_list = QuestionAns::getListByExamineeId($examinee_id);
 			$ans_array  = self::getAnswers($question_ans_list);
-			print_r($ans_array);
-			echo "<hr />";
+// 			print_r($ans_array);
+// 			echo "<hr />";
 			unset($question_ans_list);
 			$rtn_array = array();
 			foreach($ans_array[$examinee_id] as $key => $ans_record){
@@ -34,7 +34,7 @@ class FactorScore {
 					case 'EPQA': $rtn_array_paper = self::calEPQA($ans_record);break;
 					case 'EPPS': $rtn_array_paper = self::calEPQA($ans_record);break;
 					case 'CPI' : $rtn_array_paper = self::calEPQA($ans_record);break;
-					
+					case 'SCL' : $rtn_array_paper = self::calSCL($ans_record); break;
 				}
 				if(!empty($rtn_array_paper)) {
 					foreach($rtn_array_paper as $key =>$value ){
@@ -87,6 +87,25 @@ class FactorScore {
 		 unset($rt['']);
 		 return $rt;
 	}
+	
+	public static function calSCL(&$array){
+		$paper_id = Paper::getListByName('SCL')->id;
+		$factor = Factor::queryCache($paper_id);
+		foreach($factor as $factor_record){
+			echo $factor_record->name;echo "<br />";
+			echo $factor_record->children;echo "<br />";
+			echo $factor_record->children_type;echo "<br />";
+			echo $factor_record->action;echo "<br />";
+		}
+		echo $paper_id;
+		print_r($array);
+		
+	}
+	
+	
+	
+	
+	
 	
 	
 	
