@@ -37,8 +37,4 @@ class FactorAns extends \Phalcon\Mvc\Model
     public function initialize(){
     	$this->belongsTo('factor_id','Factor','id');
     }
-
-    public function initialize(){
-        $this->belongsTo('factor_id','Factor','id');
-    }
 }
