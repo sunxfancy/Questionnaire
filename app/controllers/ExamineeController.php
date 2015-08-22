@@ -36,7 +36,7 @@ class ExamineeController extends Base
         if ($examinee)
         {
             $this->session->set('Examinee', $examinee);
-            $this->dataReturn(array('url' =>'/examinee/editinfo'));
+            $this->dataReturn(array('url' =>'/examinee/inquery'));
             return;
         }
     }
