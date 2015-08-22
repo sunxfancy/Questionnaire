@@ -80,6 +80,9 @@ class MemoryManagement {
 					$cpidf_memory->SP = $cpidf_record->SP;
 					$cpidf_memory->SY = $cpidf_record->SY;
 					$cpidf_memory->WB = $cpidf_record->WB;
+					#2015-8-22 发现未添加项
+					$cpidf_memory->SC = $cpidf_record->SC;
+					$cpidf_memory->FX = $cpidf_record->FX;
 					if( $cpidf_memory->create() == false) {
 						unset($cpidf_data);
 						$transaction->rollback("CPIDF DATA INSERT INTO MEMORY TABLE ERROR!");
