@@ -1,5 +1,10 @@
 <?php
 
+    //setting default time_zone
+    ini_set('error_reporting', E_ALL);
+    date_default_timezone_set('PRC');
+   
+
 try {
 
     // $config = new Phalcon\Config\Adapter\Ini('../app/config/config.ini');
@@ -19,7 +24,6 @@ try {
     //Create a DI
     $di = new Phalcon\DI\FactoryDefault();
  
-
 	//Setup the database service
     $di->set('db', function() use ($config) {
         return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
@@ -128,24 +132,6 @@ try {
         } else {
             return new \Phalcon\Mvc\Model\Metadata\Memory();
         }
-    });
-    
-    
-    /**
-     * setting model caching service 
-     */
-    $di->set('modelsCache' , function() use ($config) {
-    	//frontend   a day
-    	$frontCache = new \Phalcon\Cache\Frontend\Data(
-    			array(
-    			'lifetime'=>86400
-    	));
-    	$cache = new \Phalcon\Cache\Backend\File(
-    			$frontCache,
-    			array(
-    				"cacheDir" => $config->cache->modelCacheDir
-    	));
-    	return $cache;
     });
 
     //Handle the request
