@@ -217,4 +217,15 @@ class Paper extends \Phalcon\Mvc\Model
             return $paper->name;
         else return null;
     }
+    
+    public static function queryPaperInfo($id){
+    	return self::findFirst(
+        	array(
+    		"id = :paper_id:",
+        	'bind' => array( 'paper_id'=>$id),
+        	'hydration' => \Phalcon\Mvc\Model\Resultset\Simple::HYDRATE_ARRAYS,
+        	'cache' => array('key'=> "paper_name_from_id_".$id)
+    	)
+    	);
+    }
 }
