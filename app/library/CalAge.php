@@ -4,17 +4,15 @@
 class CalAge
 {
 	public static function calAge1($birthdays,$todays){
-		// $today_temp = array();
-		// $birthday = $examinee->birthday;
-		// $today_temp = explode(' ',$examinee->last_login);
-		// $today = $today_temp[0];
-		// $startdate=strtotime("$birthday");
-		// $enddate=strtotime("$today");
-		// echo $enddate-$startdate;
-		// $days=round(($enddate-$startdate)/3600/24) ;
-		// echo "<br />";
-		// echo $days; //days为得到的天数; 
-		// echo "<br />";
+		$today_temp = array();
+		$birthday = $birthdays;
+		$today_temp = explode(' ',$todays);
+		$today = $today_temp[0];
+		$startdate=strtotime("$birthday");
+		$enddate=strtotime("$today");
+		$days=round(($enddate-$startdate)/3600/24) ;
+		$age = sprintf("%.2f",$days/365);
+		return $age;
 	}
 	public static function getExaminee($examinee_id){
 		$examinee = Examinee::findFirst(array(
