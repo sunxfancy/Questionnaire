@@ -7,10 +7,10 @@ class Test5Controller extends Base
 	}
 
 	public function indexAction(){
-		$this->cal_ansdo(12);
+		$this->calStd(12);
 	}
 
-	public function calStdAction($examinee_id){
+	public function calStd($examinee_id){
 		$std_score = array();
 		$examinee = CalAge::getExaminee($examinee_id);
 		$age = CalAge::calAge1($examinee->birthday,$examinee->last_login);
