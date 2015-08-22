@@ -85,7 +85,7 @@ class CpidfMemory extends \Phalcon\Mvc\Model{
 			$rtn_array[] = 'fe';
 		}
 		
-		$rtn_str = implode('-',$rtn_array);
+		$rtn_str = implode('|',$rtn_array);
 		return $rtn_str;
 	}
 }

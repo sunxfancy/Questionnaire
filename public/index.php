@@ -19,9 +19,6 @@ try {
     //Create a DI
     $di = new Phalcon\DI\FactoryDefault();
  
-    //php.ini setting
-
-    ini_set("memory_limit", "128M");
 
 	//Setup the database service
     $di->set('db', function() use ($config) {
@@ -131,6 +128,24 @@ try {
         } else {
             return new \Phalcon\Mvc\Model\Metadata\Memory();
         }
+    });
+    
+    
+    /**
+     * setting model caching service 
+     */
+    $di->set('modelsCache' , function() use ($config) {
+    	//frontend   a day
+    	$frontCache = new \Phalcon\Cache\Frontend\Data(
+    			array(
+    			'lifetime'=>86400
+    	));
+    	$cache = new \Phalcon\Cache\Backend\File(
+    			$frontCache,
+    			array(
+    				"cacheDir" => $config->cache->modelCacheDir
+    	));
+    	return $cache;
     });
 
     //Handle the request
