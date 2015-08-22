@@ -268,7 +268,7 @@
 
 		    "soma": {
 		        "question": "1,4,12,27,40,42,48,49,52,53,56,58",
-		        "action": "sum",
+		        "action": "avg",
 		        "chs_name": "躯体化",
 		        "ans_do":""
 		    },
