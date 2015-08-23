@@ -92,11 +92,11 @@ class ExamineeController extends Base
         $modules_id_array = $this->getModules($project);
         
         $indexs_name_array = $this->getIndex($modules_id_array);
-        $index_id = $this->getIndexName($indexs_name_array);
+        $index_id = $this->getIndexId($indexs_name_array);
         $this->writeselectIndex($examinee->id,$index_id);
 
         $factor_name_array = $this->getFactor($indexs_name_array);
-        $factor_id = $this->getFactorName($factor_name_array);
+        $factor_id = $this->getFactorId($factor_name_array);
         $this->writeselectFactor($examinee->id,$factor_id);
         
         $question_number_array = $this->getNumber($factor_name_array,$paper_id);
@@ -112,7 +112,7 @@ class ExamineeController extends Base
         return $question;
     }
 
-    public function getIndexName($index_name){
+    public function getIndexId($index_name){
         $index_id = array();
         for ($i=0; $i < sizeof($index_name); $i++) { 
             $index = Index::findFirst(array(
@@ -123,7 +123,7 @@ class ExamineeController extends Base
         return $index_id;
     }
 
-    public function getFactorName($factor_name){
+    public function getFactorId($factor_name){
         $factor_id = array();
         for ($i=0; $i < sizeof($factor_name); $i++) { 
             $factor = Factor::findFirst(array(
@@ -483,14 +483,12 @@ class ExamineeController extends Base
             $transaction = $manager->get();
 
             for($i=0;$i<sizeof($index_id);$i++){
-                if($index_id[$i]=='true'){
-                    $indexans=new IndexAns();
-                    $indexans->examinee_id=$examinee_id;
-                    $indexans->index_id=$index_id[$i];
-                    if( $indexans->create() == false ){
-                        $transaction->rollback("Cannot insert IndexAns data");
-                    }
-                }            
+                $indexans=new IndexAns();
+                $indexans->examinee_id = $examinee_id;
+                $indexans->index_id = $index_id[$i];
+                if( $indexans->create() == false ){
+                    $transaction->rollback("Cannot insert IndexAns data");
+                }           
             }
             $transaction->commit();
             return true;
@@ -506,15 +504,13 @@ class ExamineeController extends Base
             $transaction = $manager->get();
 
             for($i=0;$i<sizeof($factor_id);$i++){
-                if($factor_id[$i]=='true'){
-                    $factorans=new FactorAns();
-                    $factorans->examinee_id=$examinee_id;
-                    $factorans->factor_id=$factor_id[$i];
-                    if( $factorans->create() == false ){
-                        $transaction->rollback("Cannot insert FactorAns data");
-                    }
+                $factorans=new FactorAns();
+                $factorans->examinee_id=$examinee_id;
+                $factorans->factor_id=$factor_id[$i];
+                if( $factorans->create() == false ){
+                    $transaction->rollback("Cannot insert FactorAns data");
                 }
-            }
+        }
             $transaction->commit();
             return true;    
         } catch (TxFailed $e) {
