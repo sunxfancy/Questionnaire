@@ -7,14 +7,15 @@ class Test5Controller extends Base
 	}
 
 	public function indexAction(){
-		$std_score = $this->calStd(12);
-		$ans_score = $this->aclAns(12);
+		$std_score = $this->calStd(13);
+		print_r($std_score);
+		//$ans_score = $this->aclAns(12);
 	}
 
 	public function insertScore(){
-		$factor_ans = FactorAns::find(
+		$factor_ans = FactorAns::find(array(
 			'examinee_id=?0',
-			'bind'=>array(0=>$examinee_id));
+			'bind'=>array(0=>$examinee_id)));
 		for ($i=0;$i<sizeof($factor_ans);$i++){
 			$factor_ans->std_score = $std_score[$i];
 			$factor_ans->ans_score = $ans_score[$i];
@@ -28,32 +29,33 @@ class Test5Controller extends Base
 		$factor_ans = FactorAns::find(array(
 			'examinee_id=?0',
 			'bind'=>array(0=>$examinee_id)));
-		foreach ($factor_ans as $factor_anses) {
-			$paper_name = CalAge::getPaperName($factor_anses->Factor->paper_id);
+		$std_score = array();
+		foreach ($factor_ans as $value) {
+			$paper_name = CalAge::getPaperName($value->Factor->paper_id);
 			switch ($paper_name) {
 				case 'CPI':
 					$dm = ($examinee->sex ==0) ? 2 : 1;
-					$std_score[$examinee_id][$factor_anses->factor_id][] = $this->cal_cpi_Std_score($dm,$factor_anses->factor_id,$factor_anses->score);
+					$std_score[$examinee_id][$value->factor_id][] = $this->cal_cpi_Std_score($dm,$value->factor_id,$value->score);
 					break;
 				case 'EPQA':
 					$dm = ($examinee->sex ==0) ? 2 : 1;
 					$dage = floor($age);
-					$std_score[$examinee_id][$factor_anses->factor_id][] = $this->cal_epqa_Std_score($dm,$dage,$factor_anses->factor_id,$factor_anses->score);
+					$std_score[$examinee_id][$value->factor_id][] = $this->cal_epqa_Std_score($dm,$dage,$value->factor_id,$value->score);
 					break;
 				case '16PF':
 					$dage = floor($age);
 					$dm = ($examinee->sex ==0) ? 9 : 8;
-					$std_score[$examinee_id][$factor_anses->factor_id][] = $this->cal_ks_Std_score($dm,$dage,$factor_anses->factor_id,$factor_anses->score);
+					$std_score[$examinee_id][$value->factor_id][] = $this->cal_ks_Std_score($dm,$dage,$value->factor_id,$value->score);
 					break;
 				case 'SPM': 
-					$std_score[$examinee_id][$factor_anses->factor_id][] = $this->cal_cpi_Std_score($age,$factor_anses->factor_id,$factor_anses->score);
+					$std_score[$examinee_id][$value->factor_id][] = $this->cal_cpi_Std_score($age,$value->factor_id,$value->score);
 					break;
 				default:
-					$std_score[$examinee_id][$factor_anses->factor_id][] = $factor_anses->sore;
+					$std_score[$examinee_id][$value->factor_id][] = $value->sore;
 					break;
 			}
-			return $std_score;
 		}
+		return $std_score;
 	}
 
 	public function cal_cpi_Std_score($dm,$factor_id,$score){
@@ -101,6 +103,7 @@ class Test5Controller extends Base
 		$ksmd = Ksmd::find(array(
 			'DM=?0 AND YZ=?1',
 			'bind'=>array(0=>$dm,1=>$factor_name)));
+		$std_score = null;
 		foreach ($ksmd as $ksmds) {
 			if ($score <= $ksmds->ZZF && $score >= $ksmds->QSF) {
 				$std_score = $ksmds->BZF;
