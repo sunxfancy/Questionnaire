@@ -1,4 +1,7 @@
 <?php
+
+use Phalcon\Mvc\Model\Transaction\Failed as TxFailed;
+use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
 	/**
 	 * 用于因子分数计算，
 	 * @param int $examinee_id;
@@ -43,10 +46,34 @@ class FactorScore {
 				unset($rtn_array_paper);
 				
 			}
-			echo "<pre>";
-			print_r($rtn_array);
-			echo "</pre>";
-			exit();
+			#写入到factor_ans,先从factor_ans 中读取$examinee_id 选中的因子
+			$examinee_factors = FactorAns::find(
+				array(
+					"examinee_id = :examinee_id:",
+					'bind' => array( 'examinee_id' => $examinee_id)
+				)
+			);
+			try{
+				$manager     = new TxManager();
+				$transaction = $manager->get();
+			foreach ($examinee_factors as $examinee_factor_record ){
+// 				echo $examinee_factor_record->examinee_id;
+// 				echo $examinee_factor_record->factor_id;
+// 				echo $examinee_factor_record->Factor->name;
+				if ( isset($rtn_array[$examinee_factor_record->Factor->name]) ){
+					$examinee_factor_record->score = $rtn_array[$examinee_factor_record->Factor->name];
+				}else{
+					$examinee_factor_record->score = 0;
+				}
+				if($examinee_factor_record->save() == false){
+						$transaction->rollback("Cannot update table FactorAns' score");
+				}
+				}
+				$transaction->commit();
+				return true;
+			}catch (TxFailed $e) {
+						throw new Exception("Failed, reason: ".$e->getMessage());
+			}
 		}else{
 			throw new Exception('question scores are not finished');
 		}

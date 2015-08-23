@@ -218,6 +218,10 @@ class Paper extends \Phalcon\Mvc\Model
         else return null;
     }
     
+    /**
+     * 
+     * @param integer $id
+     */
     public static function queryPaperInfo($id){
     	return self::findFirst(
         	array(
