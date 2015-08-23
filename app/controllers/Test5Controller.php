@@ -7,10 +7,21 @@ class Test5Controller extends Base
 	}
 
 	public function indexAction(){
-		$this->cal_ansdo(12);
+		$std_score = $this->calStd(12);
+		$ans_score = $this->aclAns(12);
 	}
 
-	public function calStdAction($examinee_id){
+	public function insertScore(){
+		$factor_ans = FactorAns::find(
+			'examinee_id=?0',
+			'bind'=>array(0=>$examinee_id));
+		for ($i=0;$i<sizeof($factor_ans);$i++){
+			$factor_ans->std_score = $std_score[$i];
+			$factor_ans->ans_score = $ans_score[$i];
+		}
+	}
+
+	public function calStd($examinee_id){
 		$std_score = array();
 		$examinee = CalAge::getExaminee($examinee_id);
 		$age = CalAge::calAge1($examinee->birthday,$examinee->last_login);
@@ -22,22 +33,23 @@ class Test5Controller extends Base
 			switch ($paper_name) {
 				case 'CPI':
 					$dm = ($examinee->sex ==0) ? 2 : 1;
-					$std_score[$examinee_id][$factor_id][] = $this->cal_cpi_Std_score($dm,$factor_anses->factor_id,$factor_anses->score);
+					$std_score[$examinee_id][$factor_anses->factor_id][] = $this->cal_cpi_Std_score($dm,$factor_anses->factor_id,$factor_anses->score);
 					break;
 				case 'EPQA':
 					$dm = ($examinee->sex ==0) ? 2 : 1;
 					$dage = floor($age);
-					$std_score[$examinee_id][$factor_id][] = $this->cal_epqa_Std_score($dm,$dage,$factor_anses->factor_id,$factor_anses->score);
+					$std_score[$examinee_id][$factor_anses->factor_id][] = $this->cal_epqa_Std_score($dm,$dage,$factor_anses->factor_id,$factor_anses->score);
 					break;
 				case '16PF':
+					$dage = floor($age);
 					$dm = ($examinee->sex ==0) ? 9 : 8;
-					$std_score[$examinee_id][$factor_id][] = $this->cal_ks_Std_score($dm,$factor_anses->factor_id,$factor_anses->score);
+					$std_score[$examinee_id][$factor_anses->factor_id][] = $this->cal_ks_Std_score($dm,$dage,$factor_anses->factor_id,$factor_anses->score);
 					break;
 				case 'SPM': 
-					$std_score[$examinee_id][$factor_id][] = $this->cal_cpi_Std_score($age,$factor_anses->factor_id,$factor_anses->score);
+					$std_score[$examinee_id][$factor_anses->factor_id][] = $this->cal_cpi_Std_score($age,$factor_anses->factor_id,$factor_anses->score);
 					break;
 				default:
-					$std_score[$examinee_id][$factor_id][] = $factor_anses->sore;
+					$std_score[$examinee_id][$factor_anses->factor_id][] = $factor_anses->sore;
 					break;
 			}
 			return $std_score;
@@ -56,10 +68,9 @@ class Test5Controller extends Base
 
 	public function cal_epqa_Std_score($dm,$dage,$factor_id,$score){
 		$factor_name = CalAge::getFactorName($factor_id);
-		$epqamd = Epqamd::query()
-				  ->where('DSEX =?0')
-				  ->andWhere("DAGEL <= '$age' AND DAGEH >= '$age'")
-				  ->bind(array(0 => $dm));
+		$epqamd = Epqamd::find(array(
+			'DAGEL <= :age: AND DAGEH >= :age: AND DSEX = :sex:',
+			'bind'=>array('age'=>$age,'sex'=>$sex)));
 		switch ($factor_name) {
 			case 'epqae':
 				$m = $epqamd->EM;
@@ -76,8 +87,7 @@ class Test5Controller extends Base
 			case 'epqal':
 				$m = $epqamd->LM;
 				$sd = $epqamd->LSD;
-				break;
-			
+				break;		
 			default:
 				throw new Exception("No record find!");
 				break;
@@ -86,43 +96,49 @@ class Test5Controller extends Base
 		return $std_score;
 	}
 
-	public function cal_ks_Std_score($dm,$factor_id,$score){
+	public function cal_ks_Std_score($dm,$dage,$factor_id,$score){
 		$factor_name = CalAge::getFactorName($factor_id);
-		$ksmd = Ksmd::query()
-				->where("DM =?0 AND YZ =?1")
-				->andWhere("QSF <= '$age' AND ZZF >='$age'")
-				->bind(array(0=>$dm,1=>$factor_name));
-		$std_score = $ksmd->BZF;
+		$ksmd = Ksmd::find(array(
+			'DM=?0 AND YZ=?1',
+			'bind'=>array(0=>$dm,1=>$factor_name)));
+		foreach ($ksmd as $ksmds) {
+			if ($score <= $ksmds->ZZF && $score >= $ksmds->QSF) {
+				$std_score = $ksmds->BZF;
+			}
+		}
 		return $std_score;
 	}
 
 	public function cal_spm_Std_score($age,$factor_id,$score){
 		if ($this->getFactorName($factor_anses->factor_id) == "spm"){
-			$spmmd = Spmmd::query()
-					 ->where("NLL <= '$age' AND NLH >= '$age'");
-			if ($score >= $spmmd->B95) {
-				$std_score = 1;
-			}
-			else if ($score >= $spmmd->B75) {
-				$std_score =2;
-			}
-			else if ($score >= $spmmd->B25) {
-				$std_score = 3;
-			}
-			else if ($score >= $spmmd->B5) {
-				$std_score = 4;
-			}
-			else{
-				$std_score = 5;
+			$spmmd = Spmmd::find(array(
+				'NLH >= :age: AND NLL <= :age:',
+				'bind'=>array('age'=>$age)));
+			foreach ($spmmd as $spmmds) {
+				if ($score >= $spmmd->B95) {
+					$std_score = 1;
+				}
+				else if ($score >= $spmmd->B75) {
+					$std_score =2;
+				}
+				else if ($score >= $spmmd->B25) {
+					$std_score = 3;
+				}
+				else if ($score >= $spmmd->B5) {
+					$std_score = 4;
+				}
+				else{
+					$std_score = 5;
+				}			
 			}
 		}
 		else{
-			$std_score = $score;
-		}
+				$std_score = $score;
+			}
 		return $std_score;
 	}
 
-	public function cal_ansdo($examinee_id){
+	public function calAns($examinee_id){
 		$ans_score = array();
 		$factor_ans = FactorAns::find(array(
 			'examinee_id=?0',
@@ -144,9 +160,38 @@ class Test5Controller extends Base
 			'examinee_id=?0',
 			'bind'=>array(0=>$examinee_id)));
 		foreach ($index_ans as $index_anses) {
+			$factor_score = array();
 			$index = Index::findFirst($index_anses->index_id);
-			$action = $index->action;
-
+            $children = explode(",",$index->children );          
+            $childrentype = explode(",", $index->childrentype);
+            $action = $index->action;
+            for ($j=0; $j < sizeof($childrentype); $j++) { 
+                //0代表index，1代表factor
+                if ($childrentype[$j] == "0") {
+                    $index1 = Index::findFirst(array(
+                        'name=?1',
+                        'bind'=>array(1=>$children[$j])));
+                    $children1 = $index1->children;
+                    $children1 = explode(",",$children1);
+                    $action = $index1->action;
+                    for ($k=0; $k <sizeof($children1) ; $k++) {
+                    	$factor_id = CalAge::getFactorId($children1[$k]);
+                    	$factor_ans = FactorAns::findFirst(array(
+                    		'factor_id=?0',
+                    		'bind'=>array(0=>$factor_id)));
+                    	$factor_score[] = $factor_ans->ans_score;
+                    }
+                    $score = $this->doAction($children,$action,$factor_score);
+                }
+                else{   
+                    	$factor_id = CalAge::getFactorId($children[$j]);
+                    	$factor_ans = FactorAns::findFirst(array(
+                    		'factor_id=?0',
+                    		'bind'=>array(0=>$factor_id)));
+                    	$factor_score[] = $factor_ans->ans_score;
+                }   
+                $score = $this->doAction($children,$action,$factor_score);            
+            }
 		}
 	}
 
@@ -166,4 +211,5 @@ class Test5Controller extends Base
 		$action = "return $action;";
 		return create_function($child_list, $action);
 	}
+	
 }

@@ -15,21 +15,21 @@ class CalAge
 		return $age;
 	}
 	public static function getExaminee($examinee_id){
-		$examinee = Examinee::findFirst(array(
-            'id=?0',
-            'bind'=>array($examinee_id)));
-		return $examinee;
+		return Examinee::findFirst($examinee_id);
 	}
 	public static function getFactorName($factor_id){
-		$factor = Factor::findFirst(array(
-            'id=?0',
-            'bind'=>array($factor_id)));
-		$factor_name = $factor->name;
-		return $factor_name;
+		return Factor::findFirst($factor_id)->name; 
 	}
 
 	public static function getPaperName($paper_id){
 		return Paper::findFirst($paper_id)->name;
+	}
+
+	public static function getFactorId($factor_name){
+		$factor = Factor::findFirst(array(
+			'name=?0',
+			'bind'=>array(0=>$factor_name)));
+		return $factor->id;
 	}
  
 }
