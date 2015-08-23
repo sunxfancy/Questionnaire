@@ -12,9 +12,9 @@ class Test5Controller extends Base
 	}
 
 	public function insertScore(){
-		$factor_ans = FactorAns::find(
+		$factor_ans = FactorAns::find(array(
 			'examinee_id=?0',
-			'bind'=>array(0=>$examinee_id));
+			'bind'=>array(0=>$examinee_id)));
 		for ($i=0;$i<sizeof($factor_ans);$i++){
 			$factor_ans->std_score = $std_score[$i];
 			$factor_ans->ans_score = $ans_score[$i];
