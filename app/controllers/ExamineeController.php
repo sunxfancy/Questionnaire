@@ -98,7 +98,6 @@ class ExamineeController extends Base
         $factor_name_array = $this->getFactor($indexs_name_array);
         $factor_id = $this->getFactorId($factor_name_array);
         $this->writeselectFactor($examinee->id,$factor_id);
-        print_r($factor_name_array);
         
         $question_number_array = $this->getNumber($factor_name_array,$paper_id);
 
