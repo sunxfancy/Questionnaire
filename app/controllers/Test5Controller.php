@@ -15,6 +15,7 @@ a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|
 ";
 $a1 = explode('|',$str);
 echo count($a1);
+	
 
 		// $examinee_id = 15;
 		// $std_score = $this->calStd($examinee_id);
