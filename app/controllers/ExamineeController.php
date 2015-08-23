@@ -486,7 +486,7 @@ class ExamineeController extends Base
                 $indexans=new IndexAns();
                 $indexans->examinee_id = $examinee_id;
                 $indexans->index_id = $index_id[$i];
-                if( $indexans->create() == false ){
+                if( $indexans->save() == false ){
                     $transaction->rollback("Cannot insert IndexAns data");
                 }           
             }
@@ -507,7 +507,7 @@ class ExamineeController extends Base
                 $factorans=new FactorAns();
                 $factorans->examinee_id=$examinee_id;
                 $factorans->factor_id=$factor_id[$i];
-                if( $factorans->create() == false ){
+                if( $factorans->save() == false ){
                     $transaction->rollback("Cannot insert FactorAns data");
                 }
         }
