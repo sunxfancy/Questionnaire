@@ -6,8 +6,16 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 	}
 	
 	public function test5Action(){
-		$examinee_id = 15;
-		FactorScore::handleFactors($examinee_id);
+		$examinee_id = 12;
+		try{
+		$factor_state = FactorScore::handleFactors($examinee_id);
+		if($factor_state){
+			echo "id = $examinee_id  factor finished";
+		}
+		}catch(Exception $e){
+			echo $e->getMessage();
+			return false;
+		}
 		
 	}
 	public function indexAction(){

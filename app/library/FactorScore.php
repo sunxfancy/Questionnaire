@@ -6,6 +6,7 @@ use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
 	 * 用于因子分数计算，
 	 * @param int $examinee_id;
 	 * @author Wangyaohui
+	 * @Date: 2015-8-23
 	 *
 	 */
 class FactorScore {
@@ -23,6 +24,9 @@ class FactorScore {
 		}
 	}
 	public static function handleFactors($examinee_id){
+		if(FactorAns::checkIfFinished($examinee_id)){
+			return true;
+		}
 		if(self::ifStartCalFactor($examinee_id)){
 			$question_ans_list = QuestionAns::getListByExamineeId($examinee_id);
 			$rtn_array = array();
@@ -30,13 +34,13 @@ class FactorScore {
 				//缓存到本地
 				$paper = Paper::queryPaperInfo($question_ans_record->paper_id);
 				switch (strtoupper($paper->name)){
-					case "EPQA" : $rtn_array_paper = self::calE($question_ans_record->score); break;
-					case 'EPPS' : $rtn_array_paper = self::calE($question_ans_record->score); break;
-					case 'CPI'  : $rtn_array_paper = self::calC($question_ans_record->score); break;
-					case 'SCL'  : $rtn_array_paper = self::calS($question_ans_record); break;
-					case '16PF' : $rtn_array_paper = self::calK($question_ans_record); break;
-					case 'SPM'  : $rtn_array_paper = self::calM($question_ans_record); break;
-					default : echo "OL";
+					case "EPQA" : $rtn_array_paper = self::calEPQA($question_ans_record->score); break;
+					case 'EPPS' : $rtn_array_paper = self::calEPPS($question_ans_record); break;
+					case 'CPI'  : $rtn_array_paper = self::calCPI($question_ans_record->score); break;
+					case 'SCL'  : $rtn_array_paper = self::calSCL($question_ans_record); break;
+					case '16PF' : $rtn_array_paper = self::calKS($question_ans_record); break;
+					case 'SPM'  : $rtn_array_paper = self::calSPM($question_ans_record); break;
+					default : throw new Exception ("no this type paper: $paper->name");
 				}
 				if(!empty($rtn_array_paper)) {
 					foreach($rtn_array_paper as $key =>$value ){
@@ -46,6 +50,7 @@ class FactorScore {
 				unset($rtn_array_paper);
 				
 			}
+			exit();
 			#写入到factor_ans,先从factor_ans 中读取$examinee_id 选中的因子
 			$examinee_factors = FactorAns::find(
 				array(
@@ -56,18 +61,15 @@ class FactorScore {
 			try{
 				$manager     = new TxManager();
 				$transaction = $manager->get();
-			foreach ($examinee_factors as $examinee_factor_record ){
-// 				echo $examinee_factor_record->examinee_id;
-// 				echo $examinee_factor_record->factor_id;
-// 				echo $examinee_factor_record->Factor->name;
-				if ( isset($rtn_array[$examinee_factor_record->Factor->name]) ){
-					$examinee_factor_record->score = $rtn_array[$examinee_factor_record->Factor->name];
-				}else{
-					$examinee_factor_record->score = 0;
-				}
-				if($examinee_factor_record->save() == false){
-						$transaction->rollback("Cannot update table FactorAns' score");
-				}
+				foreach ($examinee_factors as $examinee_factor_record ){
+					if ( isset($rtn_array[$examinee_factor_record->Factor->name]) ){
+						$examinee_factor_record->score = $rtn_array[$examinee_factor_record->Factor->name];
+					}else{
+						$examinee_factor_record->score = 0;
+					}
+					if($examinee_factor_record->save() == false){
+							$transaction->rollback("Cannot update table FactorAns' score");
+					}
 				}
 				$transaction->commit();
 				return true;
@@ -80,21 +82,33 @@ class FactorScore {
 	}
 	
 	/**
-	 * EPQA, EPPS,  匹配 sum
+	 * EPQA,  匹配 sum
 	 * @param unknown $string
 	 * @return multitype:
 	 */
-	public static function calE($string){
+	public static function calEPQA($string){
 		 $array = explode('|', $string);
 		 $rt = array_count_values ($array);
 		 unset($rt['']);
 		 return $rt;
 	}
 	/**
+	 * EPPS 匹配sum  添加稳定系数
+	 * @param unknown $array
+	 */
+	public static function calEPPS($array){
+		$array_15 = explode('|', $array->score);
+		$rt = array_count_values ($array_15);
+		unset($rt['']);
+		#计算稳定系数con
+		$rt['con'] = self::getEPPSCon($array);
+		return $rt;
+	}
+	/**
 	 * CPI 匹配 sum
 	 * @param unknown $string
 	 */
-	public static function calC($string){
+	public static function calCPI($string){
 		$string = str_replace('-', '|', $string);
 		$array = explode('|', $string);
 		$rt = array_count_values ($array);
@@ -106,7 +120,7 @@ class FactorScore {
 	 * SCL : svg
 	 * @param unknown $array
 	 */
-	public static function calS(&$array){
+	public static function calSCL(&$array){
 		$number_array = self::getAnswers($array);
 		$paper_id = Paper::getListByName('SCL')->id;
 		$factor = Factor::queryCache($paper_id);
@@ -132,7 +146,7 @@ class FactorScore {
 	/**
 	 * 16PF
 	 */
-	public static function calK(&$array){
+	public static function calKS(&$array){
 		$number_array = self::getAnswers($array);
 		$paper_id = Paper::getListByName('16PF')->id;
 		$factor = Factor::queryCache($paper_id);
@@ -165,7 +179,7 @@ class FactorScore {
 	/**
 	 * SPM
 	 */
-	public static function calM(&$array){
+	public static function calSPM(&$array){
 		$number_array = self::getAnswers($array);
 		$paper_id = Paper::getListByName('SPM')->id;
 		$factor = Factor::queryCache($paper_id);
@@ -210,6 +224,45 @@ class FactorScore {
 		}
 		return $rtn_array;
 	
+	}
+	
+	/**use for EPPS con
+	 * 返回一个$array[$question_number] = choice;
+	 */
+	public static function getEPPSCon(&$array){
+		$rtn_array = array();
+		$number_list = explode('|', $array->question_number_list);
+		$choice_list = explode('|', $array->option);
+		foreach($number_list as $key=>$number){
+			$option = $choice_list[$key];
+			$rtn_array[$number] = $option;
+		}
+		asort($rtn_array);
+		#计算EPPS con
+		$con_score = 0;
+		#3次比照
+		for($i = 1; $i<=25;$i+=6){
+			if(isset($rtn_array[$i]) && isset($rtn_array[$i+150])){
+				if($rtn_array[$i] != $rtn_array[$i+150]){
+					$con_score += 1;
+				}
+			}
+		}
+		for($i = 26; $i<=50; $i+=6){
+			if(isset($rtn_array[$i]) && isset($rtn_array[$i+75])){
+				if($rtn_array[$i] != $rtn_array[$i+75]){
+					$con_score += 1;
+				}
+			}
+		}
+		for($i = 51; $i<=75; $i+=6 ){
+			if(isset($rtn_array[$i]) && isset($rtn_array[$i+150])){
+				if($rtn_array[$i] != $rtn_array[$i+150]){
+					$con_score += 1;
+				}
+			}
+		}
+		return $con_score;
 	}
 	
 	
