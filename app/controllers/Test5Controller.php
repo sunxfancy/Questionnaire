@@ -10,11 +10,18 @@ class Test5Controller extends Base
 	}
 
 	public function indexAction(){
-		$std_score = $this->calStd(12);
-		$ans_score = $this->calAns(12);
-		$this->insertScore($std_score,$ans_score,12);
-		// $index_score = $this->calIndex(12);
-		// print_r($index_score);
+		$str="
+a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a
+";
+$a1 = explode('|',$str);
+echo count($a1);
+
+		// $examinee_id = 15;
+		// $std_score = $this->calStd($examinee_id);
+		// $ans_score = $this->calAns($examinee_id);
+		// $this->insertScore($std_score,$ans_score,$examinee_id);
+		//$index_score = $this->calIndex($examinee_id);
+		//print_r($index_score);
 	}
 
 	public function insertScore($std_score,$ans_score,$examinee_id){
@@ -27,9 +34,13 @@ class Test5Controller extends Base
 			foreach ($factor_ans as  $value){ 
 				if(isset($std_score[$examinee_id][$value->factor_id])){
 					$value->std_score = $std_score[$examinee_id][$value->factor_id];
-					$value->ans_score = $ans_score[$examinee_id][$value->factor_id];
 				}else{
 					$value->std_score = 0;
+				}
+				if(isset($ans_score[$examinee_id][$value->factor_id])){
+					$value->ans_score = $ans_score[$examinee_id][$value->factor_id];
+				}else{
+					$value->ans_score = 0;
 				}
 				if($value->save() == false){
 					$transaction->rollback("Cannot update table FactorAns' score");
@@ -206,9 +217,9 @@ class Test5Controller extends Base
 	}
 
 	public function calIndex($examinee_id){
-		$factor_ans = FactorAns::findFirst(array(
-    		'examinee_id=?1',
-    		'bind'=>array(1=>$examinee_id)));
+		$factor_ans = FactorAns::find(array(
+			'examinee_id=?0',
+			'bind'=>array(0=>$examinee_id)));
 		echo "<pre>";
 		print_r($factor_ans);
 		echo "</pre>";
@@ -216,6 +227,10 @@ class Test5Controller extends Base
 		$index_ans = IndexAns::find(array(
 			'examinee_id=?0',
 			'bind'=>array(0=>$examinee_id)));
+		// echo "<pre>";
+		// print_r($index_ans);
+		// echo "</pre>";
+		// exit();
 		foreach ($index_ans as $index_anses) {
 			$factor_score = array();
 			$index = Index::findFirst($index_anses->index_id);
