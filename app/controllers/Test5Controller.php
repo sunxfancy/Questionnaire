@@ -1,5 +1,8 @@
 <?php
 
+use Phalcon\Mvc\Model\Transaction\Failed as TxFailed;
+use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
+
 class Test5Controller extends Base
 {
 	public function initialize(){
@@ -8,16 +11,33 @@ class Test5Controller extends Base
 
 	public function indexAction(){
 		$std_score = $this->calStd(12);
-		$ans_score = $this->aclAns(12);
+		$ans_score = $this->calAns(12);
+		print_r($ans_score);
+		$this->insertScore($std_score,$ans_score,12);
 	}
 
-	public function insertScore(){
+	public function insertScore($std_score,$ans_score,$examinee_id){
 		$factor_ans = FactorAns::find(array(
 			'examinee_id=?0',
 			'bind'=>array(0=>$examinee_id)));
-		for ($i=0;$i<sizeof($factor_ans);$i++){
-			$factor_ans->std_score = $std_score[$i];
-			$factor_ans->ans_score = $ans_score[$i];
+		try{
+			$manager     = new TxManager();
+			$transaction = $manager->get();
+			foreach ($factor_ans as  $value){ 
+				if(isset($std_score[$examinee_id][$value->factor_id])){
+					$value->std_score = $std_score[$examinee_id][$value->factor_id];
+					$value->ans_score = $ans_score[$examinee_id][$value->factor_id];
+				}else{
+					$value->std_score = 0;
+				}
+				if($value->save() == false){
+					$transaction->rollback("Cannot update table FactorAns' score");
+				}
+			}
+			$transaction->commit();
+			return true;
+		}catch (TxFailed $e) {
+			throw new Exception("Failed, reason: ".$e->getMessage());
 		}
 	}
 
@@ -28,49 +48,59 @@ class Test5Controller extends Base
 		$factor_ans = FactorAns::find(array(
 			'examinee_id=?0',
 			'bind'=>array(0=>$examinee_id)));
-		foreach ($factor_ans as $factor_anses) {
-			$paper_name = CalAge::getPaperName($factor_anses->Factor->paper_id);
-			switch ($paper_name) {
+		$std_score = array();
+		foreach ($factor_ans as $value) {
+			$paper_name = CalAge::getPaperName($value->Factor->paper_id);
+			switch (strtoupper($paper_name)) {
 				case 'CPI':
 					$dm = ($examinee->sex ==0) ? 2 : 1;
-					$std_score[$examinee_id][$factor_anses->factor_id][] = $this->cal_cpi_Std_score($dm,$factor_anses->factor_id,$factor_anses->score);
+					$std_score[$examinee_id][$value->factor_id] = $this->cal_cpi_Std_score($dm,$value->factor_id,$value->score);
 					break;
 				case 'EPQA':
 					$dm = ($examinee->sex ==0) ? 2 : 1;
 					$dage = floor($age);
-					$std_score[$examinee_id][$factor_anses->factor_id][] = $this->cal_epqa_Std_score($dm,$dage,$factor_anses->factor_id,$factor_anses->score);
+					$std_score[$examinee_id][$value->factor_id] = $this->cal_epqa_Std_score($dm,$dage,$value->factor_id,$value->score);
 					break;
 				case '16PF':
 					$dage = floor($age);
 					$dm = ($examinee->sex ==0) ? 9 : 8;
-					$std_score[$examinee_id][$factor_anses->factor_id][] = $this->cal_ks_Std_score($dm,$dage,$factor_anses->factor_id,$factor_anses->score);
+					$std_score[$examinee_id][$value->factor_id] = $this->cal_ks_Std_score($dm,$dage,$value->factor_id,$value->score);
 					break;
 				case 'SPM': 
-					$std_score[$examinee_id][$factor_anses->factor_id][] = $this->cal_cpi_Std_score($age,$factor_anses->factor_id,$factor_anses->score);
+					$std_score[$examinee_id][$value->factor_id] = $this->cal_spm_Std_score($age,$value->factor_id,$value->score);
 					break;
 				default:
-					$std_score[$examinee_id][$factor_anses->factor_id][] = $factor_anses->sore;
+					$std_score[$examinee_id][$value->factor_id] = $value->score;
 					break;
 			}
+		}
+		return $std_score;
+	}
+
+	public function cal_cpi_Std_score($dm,$factor_id,$score){
+		$factor_name = CalAge::getFactorName($factor_id);
+		$cpimd = Cpimd::findFirst(array(
+            'DM=?0 and YZ=?1',
+            'bind'=>array(0=>$dm,1=>$factor_name)));
+		$m = 0;
+		$sd = 0;
+		if(isset($cpimd->M)){
+			$m =  $cpimd->M;
+		}
+		if(isset($cpimd->SD)){
+			$sd = $cpimd->SD;
+		}
+		if($m != 0 && $sd != 0){ 
+			$std_score = 50 + (10 * ($score - $m)) / $sd;
 			return $std_score;
 		}
 	}
 
-	public function cal_cpi_Std_score($dm,$factor_id,$score){
-		$cpimd = Cpimd::findFirst(array(
-            'DM=?0 and YZ=?1',
-            'bind'=>array(0=>$dm,1=>$factor_name)));
-		$m = $cpimd->M;
-		$sd = $cpimd->SD;
-		$std_score = 50 + (10 * ($score - $m)) / $sd;
-		return $std_score;
-	}
-
 	public function cal_epqa_Std_score($dm,$dage,$factor_id,$score){
 		$factor_name = CalAge::getFactorName($factor_id);
-		$epqamd = Epqamd::find(array(
+		$epqamd = Epqamd::findFirst(array(
 			'DAGEL <= :age: AND DAGEH >= :age: AND DSEX = :sex:',
-			'bind'=>array('age'=>$age,'sex'=>$sex)));
+			'bind'=>array('age'=>$dage,'sex'=>$dm)));
 		switch ($factor_name) {
 			case 'epqae':
 				$m = $epqamd->EM;
@@ -97,21 +127,40 @@ class Test5Controller extends Base
 	}
 
 	public function cal_ks_Std_score($dm,$dage,$factor_id,$score){
+		$std_score = null;
+		$factor_ignore = array(
+			'X1','X2','X3','X4','Y1','Y2','Y4'
+			);
 		$factor_name = CalAge::getFactorName($factor_id);
-		$ksmd = Ksmd::find(array(
-			'DM=?0 AND YZ=?1',
-			'bind'=>array(0=>$dm,1=>$factor_name)));
-		foreach ($ksmd as $ksmds) {
-			if ($score <= $ksmds->ZZF && $score >= $ksmds->QSF) {
-				$std_score = $ksmds->BZF;
+		if (in_array($factor_name, $factor_ignore)){
+			$std_score = $score;
+		}
+		else if($factor_name == 'Y3'){
+			$ksmd = Ksmd::find(array(
+				'YZ=?1',
+				'bind'=>array(1=>$factor_name))); 
+			foreach ($ksmd as $ksmds ) {
+				if ($score <= $ksmds->ZZF && $score >= $ksmds->QSF) {
+						$std_score = $ksmds->BZF;
+				}
+			}
+		}else{
+			$ksmd = Ksmd::find(array(
+				'DM=?0 AND YZ=?1',
+				'bind'=>array(0=>$dm,1=>$factor_name))); 
+			foreach ($ksmd as $ksmds ) {
+				if ($score <= $ksmds->ZZF && $score >= $ksmds->QSF) {
+						$std_score = $ksmds->BZF;
+				}
 			}
 		}
 		return $std_score;
 	}
 
-	public function cal_spm_Std_score($age,$factor_id,$score){
-		if ($this->getFactorName($factor_anses->factor_id) == "spm"){
-			$spmmd = Spmmd::find(array(
+	public function cal_spm_Std_score($age,$factor_id,$score){ 
+		$factor_name = CalAge::getFactorName($factor_id);
+		if ($factor_name == 'spm'){
+			$spmmd = Spmmd::findFirst(array(
 				'NLH >= :age: AND NLL <= :age:',
 				'bind'=>array('age'=>$age)));
 			foreach ($spmmd as $spmmds) {
@@ -150,7 +199,7 @@ class Test5Controller extends Base
 				'id=?0',
 				'bind'=>array(0=>$factor_id)));
 			eval($factor->ans_do.';');
-			$ans_score[$examinee_id][$factor_id][] = $ans;
+			$ans_score[$examinee_id][$factor_id] = sprintf("%.2f",$ans);
 		}
 		return $ans_score;
 	}

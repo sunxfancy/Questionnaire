@@ -73,8 +73,8 @@
 	},
 
 	"zb_grjzqx":{
-		"factor":"ach,Y2,cs,exh,dom,nur,aff,aba,def,gi,wb,Q3,sc,to",
-		"action":"(2*(ach + Y2 + cs) + exh + dom + nur + aff + aba + def + gi + wb + Q3 + sc +to)/17",
+		"factor":"ach,Y2,cs,exh,dom,nur,aff,aba,def,gi,wb,Q3,sc,po",
+		"action":"(2*(ach + Y2 + cs) + exh + dom + nur + aff + aba + def + gi + wb + Q3 + sc +po)/17",
 		"chs_name": "个人价值取向"
 	},
 
