@@ -237,7 +237,8 @@ class PmController extends Base
         if ($sord != null)
             $sort = $sort.' '.$sord;
         $builder = $builder->orderBy($sort);
-        $this->datareturn($builder);
+        // $this->datareturn($builder);
+        $this->interviewData($builder);
     }
 
     function getProjectId() {
@@ -511,6 +512,56 @@ class PmController extends Base
         } 
         sort($array);
         return $array;       
+    }
+
+    public function getInterviewResult($manager_id){
+        $condition = 'manager_id = :manager_id:';
+        $rows = Interview::find(
+            array(
+                $condition,
+                'bind' => array(
+                    'manager_id' => $manager_id
+                )
+            )
+        );
+        $total = count($rows);
+        $term = 'remark is not null AND advantage is not null AND disadvantage is not null AND manager_id=:manager_id:';
+        $col = Interview::find(
+            array(
+                $term,
+                'bind' => array(
+                    'manager_id' => $manager_id
+                )
+            )
+        );
+        $part_num = count($col);
+        $msg = $part_num.'/'.$total;
+        return $msg;
+    }
+
+    public function interviewData($builder){
+        $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
+        $limit = $this->request->getQuery('rows', 'int');
+        $page = $this->request->getQuery('page', 'int');
+        if (is_null($limit)) $limit = 10;
+        if (is_null($page)) $page = 1;
+        $paginator = new Phalcon\Paginator\Adapter\QueryBuilder(array("builder" => $builder,
+            "limit" => $limit,
+            "page" => $page));
+        $page = $paginator->getPaginate();
+        $ans = array();
+        $ans['total'] = $page->total_pages;
+        $ans['page'] = $page->current;
+        $ans['records'] = $page->total_items;
+        foreach ($page->items as $key => $item)
+        {
+            $item->degree_of_complete = $this->getInterviewResult($item->id);
+            $ans['rows'][$key] = $item;
+//            $res = $this->getInterviewResult($item->id);
+//            $ans['rows'][$key]['degree_of_complete'] = $res;
+        }
+        echo json_encode($ans);
+        $this->view->disable();
     }
 
 }
