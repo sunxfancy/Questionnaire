@@ -31,7 +31,8 @@ try {
             "username" => $config->database->username,
             "password" => $config->database->password,
             "dbname"   => $config->database->name,
-            'charset'  => 'UTF8'
+            'charset'  => 'UTF8',
+        	
         ));
     });
 
@@ -143,11 +144,13 @@ try {
 		array(
 			'lifetime'=>86400
  		));
-		$cache = new \Phalcon\Cache\Backend\File(
-			$frontCache,
-			array(
-				"cacheDir" => $config->cache->modelCacheDir
-		));
+		$cache = new \Phalcon\Cache\Backend\Memcache(
+				$frontCache,
+				array(
+						"host" => "localhost",
+						"port" => "11211"
+				)
+		);
 		return $cache;  
    });
     	
