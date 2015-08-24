@@ -34,25 +34,6 @@ class PmController extends Base
        $this->view->setTemplateAfter('base2');
        $this->leftRender('测试人员分配');
     }
-    /*
-     * 专家面询测试员列表
-    */
-    //    public function examineelistbymanagerAction($manager_id){
-    //        $condition = "manager_id = :manager_id:";
-    //        $manager = Interview::find(
-    //            array(
-    //                $condition,
-    //                "bind" => array(
-    //                    "manager_id" => $manager_id
-    //                )
-    //            )
-    //        );
-    //        $returnData = array();
-    //        for($i = 0;$i < count($manager);$i++)
-       //
-       //        );
-       //
-       //    }
     
     public function examineeofmanagerAction($manager_id){
        $condition = 'manager_id = :manager_id:';
@@ -360,7 +341,7 @@ class PmController extends Base
                 $project_detail->factor_names = $factor_names;
                 $project_detail->exam_json = $exam_json;
                 if( $project_detail->save() == false ){
-                    $transaction->rollback("Cannot insert IndexAns data");
+                    $transaction->rollback("Cannot insert ProjectDetail data");
                 }   
                 $this->dataBack(array('url' =>'/pm/index'));
                 $transaction->commit();
