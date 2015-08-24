@@ -20,6 +20,8 @@ class PmController extends Base
     {
         $this->view->setTemplateAfter('base2');
         $this->leftRender('北京政法系统人才测评项目管理平台');
+        $manager = $this->session->get('Manager');
+        $this->view->setVar('manager_id',$manager->id);
     }
 
 	public function detailAction()
@@ -320,5 +322,64 @@ class PmController extends Base
         $this->view->setVar('unit',$examinee->unit);
         $this->view->setVar('duty',$examinee->duty);
         $this->view->setVar('team',$examinee->team);
+    }
+    
+    public function userdivideAction($manager_id){
+    	$this->view->setVar('manager_id',$manager_id);
+    	$this->view->setTemplateAfter('base2');
+    	$this->leftRender('测试人员分配');
+    }
+    /*
+     * 专家面询测试员列表
+    */
+    //    public function examineelistbymanagerAction($manager_id){
+    //        $condition = "manager_id = :manager_id:";
+    //        $manager = Interview::find(
+    //            array(
+    //                $condition,
+    //                "bind" => array(
+    //                    "manager_id" => $manager_id
+    //                )
+    //            )
+    //        );
+    //        $returnData = array();
+    //        for($i = 0;$i < count($manager);$i++)
+    	//
+    	//        );
+    	//
+    	//    }
+    
+    public function examineeofmanagerAction($manager_id){
+    	$condition = 'manager_id = :manager_id:';
+    	$row = Interview::find(
+    			array(
+    					$condition,
+    					'bind' => array(
+    							'manager_id' => $manager_id
+    					)
+    			)
+    	);
+    	$term = '';
+    	foreach($row as $key => $item){
+    		$term .= ' id='.$item->examinee_id.' OR ';
+    	}
+    	if(empty($term)){
+    		$term = 0;
+    	}else{
+    		$term = substr($term,0,strlen($term)-3);
+    	}
+    	$builder = $this->modelsManager->createBuilder()
+    	->from('Examinee')
+    	->where($term);
+    	$sidx = $this->request->getQuery('sidx','string');
+    	$sord = $this->request->getQuery('sord','string');
+    	if ($sidx != null)
+    		$sort = $sidx;
+    	else
+    		$sort = 'number';
+    	if ($sord != null)
+    		$sort = $sort.' '.$sord;
+    	$builder = $builder->orderBy($sort);
+    	$this->datareturn($builder);  
     }
 }

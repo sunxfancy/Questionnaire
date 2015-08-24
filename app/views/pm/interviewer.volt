@@ -67,8 +67,8 @@
                 {name:'last_login',index:'last_login',width:100, sortable:true, sorttype:"string", editable:false,align:'center'},
                 {name:'degree_of_complete',index:'degree_of_complete', sortable:false,width:90, editable: false,align:'center'},
                 {name:'user_divide',index:'user_divide', width:90, sortable:false, resize:false,align:'center',
-                    formatter:function(){
-                        var temp = "<a href='/pm/userdivide' >配置</a>";
+                    formatter:function(cellvalue,options,rowObject){
+                        var temp = "<a href='/pm/userdivide/"+rowObject.id+"' >配置</a>";
                         return temp;
                     },
                 }
