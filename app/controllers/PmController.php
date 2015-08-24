@@ -58,16 +58,18 @@ class PmController extends Base
     public function disp_moduleAction(){
         $manager=$this->session->get('Manager');
         if($manager){
-            $project_detail = ProjectDetail::find(array(
+            $project_detail = ProjectDetail::findFirst(array(
                 "project_id=?1",
                 "bind"=>array(1=>$manager->project_id)
                 ));
-            $module_names = explode(',', $project_detail->module_names)
+            $module_name = array();
+            $module_names = $project_detail->module_names;
+            $module_name = explode(',', $module_names);
             $ans='';
-            for ($i=0; $i < sizeof($module_names); $i++) { 
+            for ($i=0; $i < sizeof($module_name); $i++) { 
                 $module=Module::findFirst(array(
                     'name=?1',
-                    'bind'=>array(1=>$module_names[$i])));
+                    'bind'=>array(1=>$module_name[$i])));
                 $ans.=$module->chs_name.'|';
             }
             $this->dataBack(array("select"=>$ans));

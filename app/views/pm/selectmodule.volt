@@ -87,7 +87,7 @@
                     return;
                  }else{
                     alert("提交成功!")
-                    //window.location.href=data.url;
+                    window.location.href=data.url;
                  }
             });
         })
