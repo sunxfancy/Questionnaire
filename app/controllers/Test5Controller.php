@@ -10,20 +10,122 @@ class Test5Controller extends Base
 	}
 
 	public function indexAction(){
-		$str="
-a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a
-";
-$a1 = explode('|',$str);
-echo count($a1);
-	
-
-		// $examinee_id = 15;
+		$examinee_id = 12;
 		// $std_score = $this->calStd($examinee_id);
 		// $ans_score = $this->calAns($examinee_id);
 		// $this->insertScore($std_score,$ans_score,$examinee_id);
-		//$index_score = $this->calIndex($examinee_id);
-		//print_r($index_score);
+		$index_score = $this->calIndexScore($examinee_id);
+		echo "<pre>";
+		print_r($index_score);
+		echo "</pre>";
+
+		$this->insertIndexScore($index_score,$examinee_id);
 	}
+
+	public function insertIndexScore($index_score,$examinee_id){
+		try{
+			$manager     = new TxManager();
+			$transaction = $manager->get();
+			
+			foreach ($index_score as  $key=>$value){ 
+				$index_ans = new IndexAns();
+	            $index_ans->examinee_id = $examinee_id;
+	            $index_ans->index_id = $key;
+	            $index_ans->score = $value;
+	            if( $index_ans->save() == false ){
+	                $transaction->rollback("Cannot insert IndexAns data");
+	            }  
+			}  
+
+			$transaction->commit();
+			return true;
+		}catch (TxFailed $e) {
+			throw new Exception("Failed, reason: ".$e->getMessage());
+		}
+	}
+
+	public function calIndexScore($examinee_id){
+		$examinee = Examinee::findFirst($examinee_id);
+		$project_id = $examinee->project_id;
+		$names = $this->getIndexAndFactorNames($project_id);
+		$factor_score = array();
+		foreach ($names['factor'] as $factor_name) {
+			$factor_id = $this->getFactorId($factor_name);
+			$factor_score[$factor_name] = $this->getFactorScore($examinee_id,$factor_id);
+		}
+		$index_ids = array();
+		foreach ($names['index'] as $index_name) {
+			if ($index_name == 'zb_ldnl'|| $index_name == 'zb_gzzf') {
+				continue;
+			}else{
+				$index_ids[] = $this->getIndexId($index_name);
+			}
+		}
+		foreach ($index_ids as $index_id) {
+			$indexs = Index::findFirst($index_id);
+			$index['children'] = explode(',',$indexs->children);
+			$index['childrentype'] = explode(',',$indexs->children_type);
+			$index['action'] = $indexs->action;
+			$index_score = 0;
+			$do_action = preg_replace('/[a-zA-Z][a-zA-Z0-9]*/', '\$factor_score[\'$0\']', $index['action']);
+			$do_action = "\$index_score = $do_action;";
+			$ceshi['123'] = 1;
+			$ceshi['12'] = 1;
+			eval($do_action);
+			$score[$indexs->name] = sprintf('%.2f',$index_score);
+		}
+		foreach ($names['index'] as $index_name) {
+			if ($index_name == 'zb_ldnl') {
+				$index_score = (2*($score['zb_pdyjcnl'] + $score['zb_zzglnl'])+ $score['zb_cxnl'] + $score['zb_ybnl']+ $score['zb_dlgznl'])/7;
+				$score[$index_name] = sprintf('%.2f',$index_score);
+			}
+			else if ($index_name == 'zb_gzzf'){
+				$index_score = (1.5*($factor_score['X4'] + $score['zb_rjgxtjsp']) + $factor_score['chg'] + $factor_score['Y3'] + $factor_score['Q3'] + $factor_score['spmabc'] + $factor_score['aff'])/8;
+				$score[$index_name] = sprintf('%.2f',$index_score);
+			}
+			else{
+				continue;
+			}
+		}
+		$index_score = array();
+		foreach ($score as $key => $value) {
+			$index_id = $this->getIndexId($key);
+			$index_score[$index_id] = $value;
+		}
+		return $index_score;
+	}
+
+	public function getFactorScore($examinee_id,$factor_id){
+		$factor_ans = FactorAns::findFirst(array(
+			'examinee_id=?0 and factor_id=?1',
+			'bind'=>array(0=>$examinee_id,1=>$factor_id)));
+		return $factor_ans->ans_score;
+	}
+
+	public function getIndexAndFactorNames($project_id){
+        $project_detail = ProjectDetail::findFirst(array(
+                "project_id=?1",
+                "bind"=>array(1=>$project_id)
+                ));
+        $names = array();
+        $names['index'] = explode(',', $project_detail->index_names);
+        $names['factor'] = explode(',', $project_detail->factor_names);
+        return $names;
+    }
+
+    public function getIndexId($index_name){
+    	$index = Index::findFirst(array(
+    		'name=?1',
+    		'bind'=>array(1=>$index_name)));
+    	return $index->id;
+    }
+
+    public function getFactorId($factor_name){
+    	$factor = Factor::findFirst(array(
+    		'name=?1',
+    		'bind'=>array(1=>$factor_name)));
+    	return $factor->id;
+    }
 
 	public function insertScore($std_score,$ans_score,$examinee_id){
 		$factor_ans = FactorAns::find(array(
@@ -217,60 +319,4 @@ echo count($a1);
 		return $ans_score;
 	}
 
-	public function calIndex($examinee_id){
-		$factor_ans = FactorAns::find(array(
-			'examinee_id=?0',
-			'bind'=>array(0=>$examinee_id)));
-		echo "<pre>";
-		print_r($factor_ans);
-		echo "</pre>";
-		exit();
-		$index_ans = IndexAns::find(array(
-			'examinee_id=?0',
-			'bind'=>array(0=>$examinee_id)));
-		// echo "<pre>";
-		// print_r($index_ans);
-		// echo "</pre>";
-		// exit();
-		foreach ($index_ans as $index_anses) {
-			$factor_score = array();
-			$index = Index::findFirst($index_anses->index_id);
-            $children = explode(",",$index->children );          
-            $childrentype = explode(",", $index->children_type);
-            $action = $index->action;
-            for ($j=0; $j < sizeof($childrentype); $j++) { 
-                //0代表index，1代表factor
-                if ($childrentype[$j] == "0") {
-                    $index1 = Index::findFirst(array(
-                        'name=?1',
-                        'bind'=>array(1=>$children[$j])));
-                    $children1 = $index1->children;
-                    $children1 = explode(",",$children1);
-                    $action = $index1->action;
-                    for ($k=0; $k <sizeof($children1) ; $k++) {
-                    	$factor_id = CalAge::getFactorId($children1[$k]);
-                    	if ($factor_ans->factor_id == $factor_id) {
-                    		$factor_score[$children1[$k]] = $factor_ans->ans_score;
-                    	}
-                    }
-                    $do_action = preg_replace('/[a-zA-Z][a-zA-Z0-9]*/', '\$factor_score[\'$0\']', $action);
-					$do_action =  "\$index_score = $do_action;";
-					eval($do_action);
-                    $score[$examinee_id][$index1->id] = sprintf('%.2f',$factor_score);
-                }
-                else{   
-                	$factor_id = CalAge::getFactorId($children[$j]);
-                	if ($factor_ans->factor_id == $factor_id) {
-                		$factor_score[$children1[$k]] = $factor_ans->ans_score;
-                	}
-                }   
-                $do_action = preg_replace('/[a-zA-Z][a-zA-Z0-9]*/', '\$factor_score[\'$0\']', $action);
-				$do_action =  "\$index_score = $do_action;";
-				eval($do_action);
-                $score[$examinee_id][$index->id] = sprintf('%.2f',$factor_score);            
-            }
-		}
-		return $score;
-	}
-	
 }
