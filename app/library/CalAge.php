@@ -31,5 +31,11 @@ class CalAge
 			'bind'=>array(0=>$factor_name)));
 		return $factor->id;
 	}
- 
+
+ 	public static function getIndexId($index_name){
+		$index = Index::findFirst(array(
+			'name=?0',
+			'bind'=>array(0=>$index_name)));
+		return $index->id;
+	}
 }
