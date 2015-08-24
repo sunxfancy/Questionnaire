@@ -525,5 +525,36 @@ class ExamineeController extends Base
             throw new Exception("Failed, reason: ".$e->getMessage());
         }
     }
+    
+    public function dividepeoAction($manager_id){
+    	$this->view->disable();
+    	$condition = 'manager_id = :manager_id:';
+    	$interview = Interview::find();
+    	$term = '(';
+    	foreach($interview as $key => $item){
+    		$term .= ' id<>'.$item->examinee_id.' AND ';
+    	}
+    	if($term == '('){
+    		$phql = 'SELECT * FROM Examinee';
+    		$row = $this->modelsManager->executeQuery($phql);
+    		$data = array();
+    		foreach($row as $key => $value){
+    			$data[$key] = $value;
+    		}
+    		$data = json_encode($data);
+    		echo $data;
+    	}else{
+    		$term = substr($term,0,strlen($term)-4);
+    		$term .= ')';
+    		$phql = 'SELECT * FROM Examinee WHERE '.$term;
+    		$row = $this->modelsManager->executeQuery($phql);
+    		$data = array();
+    		foreach($row as $key => $value){
+    			$data[$key] = $value;
+    		}
+    		$data = json_encode($data);
+    		echo $data;
+    	}
+    }
 
 }
