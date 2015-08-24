@@ -66,8 +66,8 @@
                     for(var i=0;i<count-1;i++){
                         var min_number = data[i*10].number;
                         //alert(min_number);
-                        min_number = min_number-min_number%10+1;
-                        var max_number = parseInt(min_number)+9;
+                        // min_number = min_number-min_number%10+1;
+                        var max_number = data[10*i+9].number;
                         var li_value = min_number+'~'+max_number;
                         var li_dom = $("<li><input type='checkbox' name='items' value="+li_value+"><span>"+li_value+"</span></li>");
                         //alert(li_dom);
