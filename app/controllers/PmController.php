@@ -9,6 +9,11 @@
 /**
 * 
 */
+
+use Phalcon\Mvc\Model\Transaction\Failed as TxFailed;
+use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
+
+
 class PmController extends Base
 {
     public function initialize(){
@@ -53,20 +58,28 @@ class PmController extends Base
     public function disp_moduleAction(){
         $manager=$this->session->get('Manager');
         if($manager){
-            $pmrels=Pmrel::find(array(
+            $project_detail = ProjectDetail::find(array(
                 "project_id=?1",
                 "bind"=>array(1=>$manager->project_id)
                 ));
+            $module_names = explode(',', $project_detail->module_names)
             $ans='';
-            for ($i=0; $i < sizeof($pmrels); $i++) { 
-                $module=Module::findFirst($pmrels[$i]->module_id);
+            for ($i=0; $i < sizeof($module_names); $i++) { 
+                $module=Module::findFirst(array(
+                    'name=?1',
+                    'bind'=>array(1=>$module_names[$i])));
                 $ans.=$module->chs_name.'|';
             }
-
             $this->dataBack(array("select"=>$ans));
         }else{
             $this->dataBack(array('error'=>"您的身份验证出错,请重新登录"));
         }
+    }
+
+    function dataBack($ans){
+        $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
+        echo json_encode($ans);
+        $this->view->disable();
     }
 
     public function uploadexamineeAction(){
@@ -237,52 +250,6 @@ class PmController extends Base
         }
     }
 
-    public function writeselectedmoduleAction(){
-        $this->view->disable();
-        $manager=$this->session->get('Manager');
-        if($manager){
-            $checkeds=$this->request->getpost('checkeds');
-            $values=$this->request->getpost('values');
-            $this->db->begin();
-            try{
-                $pmrel_ori=Pmrel::find(array(
-                        "project_id=?1",
-                        "bind"=>array(1=>$manager->project_id)
-                    ));
-                for ($i=0; $i <sizeof($pmrel_ori) ; $i++) { 
-                    $pmrel_ori[$i]->delete();
-                }
-
-
-                for($i=0;$i<sizeof($checkeds);$i++){
-                    if($checkeds[$i]=='true'){
-                        $module=Module::findFirst(array(
-                        "chs_name= ?1",
-                        "bind" => array( 1=> $values[$i])));
-                        $pmrel=new Pmrel();
-                        $pmrel->project_id=$manager->project_id;
-                        $pmrel->module_id=$module->id;
-                        $pmrel->save();
-                    }
-                 
-                }
-                $this->dataBack(array('url' =>'/pm/index'));
-                $this->db->commit();
-            }catch(Exception $e){
-                $this->db->rollback();
-                $this->dataBack(array('error' =>"保存错误,请重新操作!"));
-            }
-        }else{
-            $this->dataBack(array('error' => "您的身份验证出错!请重新登录!"));
-        }
-    }
-
-    function dataBack($ans){
-        $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
-        echo json_encode($ans);
-        $this->view->disable();
-    }
-
     public function infoAction($examinee_id){
         $this->view->setTemplateAfter('base2');
         $this->leftRender('个人信息查看');
@@ -303,25 +270,52 @@ class PmController extends Base
     }
 
     public function writeprojectdetailAction(){
-
-    }
-
-    /*
-    传入参数：
-    */
-    public function getModule(){
-        $module_name = array();
         $manager=$this->session->get('Manager');
         if($manager){
+            $project_id = $manager->project_id;
+            $module_names = array();
             $checkeds=$this->request->getpost('checkeds');
             $values=$this->request->getpost('values'); 
             for($i=0;$i<sizeof($checkeds);$i++){
                 if($checkeds[$i]=='true'){
-                    $module_name=$values[$i];
-                }         
+                    $module_names[]=$this->getModuleName($values[$i]);
+                }  
+            }
+            $index_names = $this->getIndex($module_names);
+            $factor_names = $this->getFactor($index_names);
+            $exam_json = $this->getNumber($factor_names);
+            $module_names = implode(',', $module_names);
+            $index_names = implode(',', $index_names);
+            $factor_names = implode(',', $factor_names);
+            try{
+                $manager     = new TxManager();
+                $transaction = $manager->get();
+
+                $project_detail = new ProjectDetail();
+                $project_detail->project_id = $project_id;
+                $project_detail->module_names = $module_names;
+                $project_detail->index_names = $index_names;
+                $project_detail->factor_names = $factor_names;
+                $project_detail->exam_json = $exam_json;
+                if( $project_detail->save() == false ){
+                    $transaction->rollback("Cannot insert IndexAns data");
+                }   
+
+                $transaction->commit();
+                return true;
+            }catch (TxFailed $e) {
+                throw new Exception("Failed, reason: ".$e->getMessage());
+            }
         }else{
-            $this->dataBack(array('error' => "您的身份验证出错!请重新登录!"));
+        $this->dataBack(array('error' => "您的身份验证出错!请重新登录!"));
         }
+    }
+
+    public function getModuleName($module_chs_name){
+        $module = Module::findFirst(array(
+            'chs_name=?1',
+            'bind'=>array(1=>$module_chs_name)));
+        $module_name = $module->name;
         return $module_name;
     }
 
@@ -386,13 +380,11 @@ class PmController extends Base
     返回参数：json格式的问卷name和题目number
     */
     public function getNumber($factor_name){
-        $questions_number = array();
-        $paper_id = array();      
+        $questions_number = array();      
         for ($i=0; $i <sizeof($factor_name) ; $i++) {         
             $factor = Factor::findFirst(array(
                 'name=?1',
-                'bind'=>array(1=>$factor_name[$i])));
-            $paper_id[] = $factor->paper_id;          
+                'bind'=>array(1=>$factor_name[$i])));         
             $children = $factor->children;
             $childrentype = $factor->children_type;
             $children = explode(",",$children );
@@ -403,31 +395,61 @@ class PmController extends Base
                     $factor1 = Factor::findFirst(array(
                         'name=?1',
                         'bind'=>array(1=>$children[$j])));
-                    $paper_id[] = $factor1->paper_id;
                     $children1 = $factor1->children;
                     $children1 = explode(",",$children1);
                     for ($k=0; $k <sizeof($children1) ; $k++) { 
-                        $questions_number[] = trim($children1[$k],' ');
+                        $paper_name = $this->getPaperName($factor1->paper_id);  
+                        $questions_number[$paper_name][] =trim( $children1[$k],' ');
                     }
                 }
-                else{   
-                    $questions_number[] =trim( $children[$j],' ');
+                else{ 
+                    $paper_name = $this->getPaperName($factor->paper_id);  
+                    $questions_number[$paper_name][] =trim( $children[$j],' ');
                 }               
             }
         }
-        if(empty($questions_number)){
-            return $questions_number;
+        if (isset($questions_number['16PF'])) {
+            $questions_number['16PF'] = $this->sort_and_unique($questions_number['16PF']);
         }
-        $number = explode(",",implode(",",array_unique($questions_number)));
-        $length = sizeof($number);
+        if (isset($questions_number['EPPS'])) {
+            $questions_number['EPPS'] = $this->sort_and_unique($questions_number['EPPS']);
+        }
+        if (isset($questions_number['EPQA'])) {
+             $questions_number['EPQA'] = $this->sort_and_unique($questions_number['EPQA']);
+        }
+        if (isset($questions_number['SCL'])) {
+             $questions_number['SCL'] = $this->sort_and_unique($questions_number['SCL']);
+        }
+        if (isset($questions_number['CPI'])) {
+            $questions_number['CPI'] = $this->sort_and_unique($questions_number['CPI']);
+        }
+        if (isset($questions_number['SPM'])) {
+            $questions_number['SPM'] = $this->sort_and_unique($questions_number['SPM']);
+        }
+        $json = json_encode($questions_number,JSON_UNESCAPED_UNICODE);
+        return $json;
+    }
+
+    public function getPaperName($paper_id){
+        return Paper::findFirst($paper_id)->name;
+    }
+
+    public function getPaperId($paper_name){
+        $paper = Paper::findFirst(array(
+            'name=?1',
+            'bind'=>array(1=>$paper_name)));
+        return $paper->id;
+    }
+
+    public function sort_and_unique($array){
+        $array = explode(",",implode(",",array_unique($array)));
+        $length = sizeof($array);
         for($i=0;$i<$length;$i++)
         {
-            $number[$i] = intval($number[$i]);
-        }
-        sort($number);
-        $paper_id = explode(",",implode(",",array_unique($paper_id)));
-
-        return $json;
+            $array[$i] = intval($array[$i]);
+        } 
+        sort($array);
+        return $array;       
     }
 
 }

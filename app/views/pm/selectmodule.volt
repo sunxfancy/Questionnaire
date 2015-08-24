@@ -80,14 +80,14 @@
                 checkeds[i]=checks[i].checked;
                 values[i]=checks[i].value;
             }
-            $.post('/pm/writeselectedmodule',{'checkeds':checkeds,'values':values}, function(data) {
+            $.post('/pm/writeprojectdetail',{'checkeds':checkeds,'values':values}, function(data) {
                  /*optional stuff to do after success */
                  if(data.error){
                     alert(data.error);
                     return;
                  }else{
                     alert("提交成功!")
-                    window.location.href=data.url;
+                    //window.location.href=data.url;
                  }
             });
         })
