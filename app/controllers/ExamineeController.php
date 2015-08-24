@@ -112,6 +112,14 @@ class ExamineeController extends Base
         return $question;
     }
 
+    public function getQuestions($project_id){
+        $project_detail = ProjectDetail::findFirst(array(
+                "project_id=?1",
+                "bind"=>array(1=>$manager->project_id)
+                ));
+        return $project_detail->exam_json;
+    }
+
     public function getIndexId($index_name){
         $index_id = array();
         for ($i=0; $i < sizeof($index_name); $i++) { 
@@ -247,7 +255,7 @@ class ExamineeController extends Base
         return $number;
     }
 
-    public function getExam($numbers,$paper_id){
+    public function getExam($exam_json){
         $data = array();
         if(empty($numbers)){
             return $data;

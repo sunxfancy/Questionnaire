@@ -302,7 +302,7 @@ class PmController extends Base
                 if( $project_detail->save() == false ){
                     $transaction->rollback("Cannot insert IndexAns data");
                 }   
-
+                $this->dataBack(array('url' =>'/pm/index'));
                 $transaction->commit();
                 return true;
             }catch (TxFailed $e) {
