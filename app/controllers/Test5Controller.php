@@ -10,10 +10,19 @@ class Test5Controller extends Base
 	}
 
 	public function indexAction(){
-		$std_score = $this->calStd(12);
-		$ans_score = $this->calAns(12);
-		print_r($ans_score);
-		$this->insertScore($std_score,$ans_score,12);
+		$str="
+a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a
+";
+$a1 = explode('|',$str);
+echo count($a1);
+	
+
+		// $examinee_id = 15;
+		// $std_score = $this->calStd($examinee_id);
+		// $ans_score = $this->calAns($examinee_id);
+		// $this->insertScore($std_score,$ans_score,$examinee_id);
+		//$index_score = $this->calIndex($examinee_id);
+		//print_r($index_score);
 	}
 
 	public function insertScore($std_score,$ans_score,$examinee_id){
@@ -26,9 +35,13 @@ class Test5Controller extends Base
 			foreach ($factor_ans as  $value){ 
 				if(isset($std_score[$examinee_id][$value->factor_id])){
 					$value->std_score = $std_score[$examinee_id][$value->factor_id];
-					$value->ans_score = $ans_score[$examinee_id][$value->factor_id];
 				}else{
 					$value->std_score = 0;
+				}
+				if(isset($ans_score[$examinee_id][$value->factor_id])){
+					$value->ans_score = $ans_score[$examinee_id][$value->factor_id];
+				}else{
+					$value->ans_score = 0;
 				}
 				if($value->save() == false){
 					$transaction->rollback("Cannot update table FactorAns' score");
@@ -204,15 +217,26 @@ class Test5Controller extends Base
 		return $ans_score;
 	}
 
-	public function cal_index($examinee_id){
+	public function calIndex($examinee_id){
+		$factor_ans = FactorAns::find(array(
+			'examinee_id=?0',
+			'bind'=>array(0=>$examinee_id)));
+		echo "<pre>";
+		print_r($factor_ans);
+		echo "</pre>";
+		exit();
 		$index_ans = IndexAns::find(array(
 			'examinee_id=?0',
 			'bind'=>array(0=>$examinee_id)));
+		// echo "<pre>";
+		// print_r($index_ans);
+		// echo "</pre>";
+		// exit();
 		foreach ($index_ans as $index_anses) {
 			$factor_score = array();
 			$index = Index::findFirst($index_anses->index_id);
             $children = explode(",",$index->children );          
-            $childrentype = explode(",", $index->childrentype);
+            $childrentype = explode(",", $index->children_type);
             $action = $index->action;
             for ($j=0; $j < sizeof($childrentype); $j++) { 
                 //0代表index，1代表factor
@@ -225,40 +249,28 @@ class Test5Controller extends Base
                     $action = $index1->action;
                     for ($k=0; $k <sizeof($children1) ; $k++) {
                     	$factor_id = CalAge::getFactorId($children1[$k]);
-                    	$factor_ans = FactorAns::findFirst(array(
-                    		'factor_id=?0',
-                    		'bind'=>array(0=>$factor_id)));
-                    	$factor_score[] = $factor_ans->ans_score;
+                    	if ($factor_ans->factor_id == $factor_id) {
+                    		$factor_score[$children1[$k]] = $factor_ans->ans_score;
+                    	}
                     }
-                    $score = $this->doAction($children,$action,$factor_score);
+                    $do_action = preg_replace('/[a-zA-Z][a-zA-Z0-9]*/', '\$factor_score[\'$0\']', $action);
+					$do_action =  "\$index_score = $do_action;";
+					eval($do_action);
+                    $score[$examinee_id][$index1->id] = sprintf('%.2f',$factor_score);
                 }
                 else{   
-                    	$factor_id = CalAge::getFactorId($children[$j]);
-                    	$factor_ans = FactorAns::findFirst(array(
-                    		'factor_id=?0',
-                    		'bind'=>array(0=>$factor_id)));
-                    	$factor_score[] = $factor_ans->ans_score;
+                	$factor_id = CalAge::getFactorId($children[$j]);
+                	if ($factor_ans->factor_id == $factor_id) {
+                		$factor_score[$children1[$k]] = $factor_ans->ans_score;
+                	}
                 }   
-                $score = $this->doAction($children,$action,$factor_score);            
+                $do_action = preg_replace('/[a-zA-Z][a-zA-Z0-9]*/', '\$factor_score[\'$0\']', $action);
+				$do_action =  "\$index_score = $do_action;";
+				eval($do_action);
+                $score[$examinee_id][$index->id] = sprintf('%.2f',$factor_score);            
             }
 		}
-	}
-
-	function doAction($children, $action, $array)
-	{
-		if ($this->action_function[$action] == null) {
-			$this->action_function[$action] = $this->complie_action($children, $action);
-		}
-		return call_user_func_array($this->action_function[$action], $array);
-	}
-
-	function complie_action($child_list, $action)
-	{
-		// 这里需要正则加$符号
-		$child_list = preg_replace('/[a-zA-Z][a-zA-Z0-9]*/', '\$$0', $child_list);
-		$action     = preg_replace('/[a-zA-Z][a-zA-Z0-9]*/', '\$$0', $action);
-		$action = "return $action;";
-		return create_function($child_list, $action);
+		return $score;
 	}
 	
 }
