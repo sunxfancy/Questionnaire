@@ -50,6 +50,9 @@ class FactorScore {
 				unset($rtn_array_paper);
 				
 			}
+			echo "<pre>";
+			print_r($rtn_array);
+			echo "</pre>";
 			exit();
 			#写入到factor_ans,先从factor_ans 中读取$examinee_id 选中的因子
 			$examinee_factors = FactorAns::find(
