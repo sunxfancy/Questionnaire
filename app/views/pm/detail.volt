@@ -17,7 +17,7 @@
         <tr style="width:100%;height:25px"><td style="width:20%;height:25px">起始时间</td><td style="width:20%;height:25px"></td><td style="width:20%;height:25px"></td><td style="width:20%;height:25px">当前</td><td style="width:20%;height:25px">截止时间</td></tr>       
     </table>
     <div  style="width:100%;height:40px;text-align:center;margin: 5px 10px;">
-        <form class="form-inline">
+        <form class="form-inline" method="POST" action="/pm/uploadInquery" enctype='multipart/form-data'  >
             <div class="form-group">
                 <input type="file" name="file" input enctype="multipart/form-data" maxlength="100" style="height:30px;cursor:pointer;">
             </div>

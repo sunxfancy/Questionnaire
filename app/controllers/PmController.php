@@ -85,6 +85,10 @@ class PmController extends Base
         $this->upload_base('LoadLeader');
     }
 
+    public function uploadInqueryAction(){
+        $this->upload_base('LoadInquery');
+    }
+
     public function upload_base($method){
         $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
         $this->view->disable();
@@ -94,18 +98,18 @@ class PmController extends Base
             $filename = "Import-".date("YmdHis");
             $excel = ExcelLoader::getInstance();
             $project_id = $this->session->get('Manager')->project_id;
-            echo $project_id ."\n";
+            // echo $project_id ."\n";
             $i = 1;
             foreach ($files as $file) {
                 $newname = "./upload/".$filename."-".$i.".xls";
-                echo $newname."\n";
+                // echo $newname."\n";
                 $file->moveTo($newname);
                 $ans = $excel->$method($newname, $project_id, $this->db);
-                echo $ans ."\n";
+                // echo $ans ."\n";
                 if ($ans != 0) { echo json_encode($ans); return; }
                 $i++;
             }
-            echo 0;
+            // echo 0;
         } else {
             echo json_encode(array('error' => '错误的接口访问'));
         }
