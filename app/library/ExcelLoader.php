@@ -123,7 +123,35 @@ class ExcelLoader
 
     public function readline_inquery($sheet, $project_id, $i)
     {
-    	# code...
+        $inquery_question = new InqueryQuestion();
+
+        $inquery_question->topic = self::filter($sheet->getCell('B'.$i)->getValue());
+        $is_radio = self::filter($sheet->getCell('C'.$i)->getValue());
+        if($is_radio == '是'){
+            $inquery_question->is_radio = 1;
+        }else{
+            $inquery_question->is_radio = 0;
+        }
+        $options = '';
+        $highest_column = PHPExcel_Cell::columnIndexFromString($sheet->getHighestColumn());
+        for($j = 3;$j<$highest_column;$j++){
+            $cell_value = $sheet->getCellByColumnAndRow($j,$i)->getValue();
+            $cell_value = trim($cell_value);
+            if($cell_value != ''){
+                $options .= $cell_value.'|';
+            }else{
+                break;
+            }
+        }
+        $options = substr($options,0,strlen($options)-1);
+        $inquery_question->options = $options;
+        if(!$inquery_question->save()){
+            foreach($inquery_question->getMessage() as $message){
+                throw new Exception($message);
+            }
+        }
+
+
     }
 
 	/**

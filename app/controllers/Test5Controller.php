@@ -96,6 +96,8 @@ class Test5Controller extends Base
 		$factor_ans = FactorAns::findFirst(array(
 			'examinee_id=?0 and factor_id=?1',
 			'bind'=>array(0=>$examinee_id,1=>$factor_id)));
+		echo($factor_ans->factor_id);
+		echo "<br/>";
 		return $factor_ans->ans_score;
 	}
 
