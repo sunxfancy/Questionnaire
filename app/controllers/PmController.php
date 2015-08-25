@@ -29,46 +29,6 @@ class PmController extends Base
 		
 	}
 
-    public function userdivideAction($manager_id){
-       $this->view->setVar('manager_id',$manager_id);
-       $this->view->setTemplateAfter('base2');
-       $this->leftRender('测试人员分配');
-    }
-    
-    public function examineeofmanagerAction($manager_id){
-       $condition = 'manager_id = :manager_id:';
-       $row = Interview::find(
-               array(
-                       $condition,
-                       'bind' => array(
-                               'manager_id' => $manager_id
-                       )
-               )
-       );
-       $term = '';
-       foreach($row as $key => $item){
-           $term .= ' id='.$item->examinee_id.' OR ';
-       }
-       if(empty($term)){
-           $term = 0;
-       }else{
-           $term = substr($term,0,strlen($term)-3);
-       }
-       $builder = $this->modelsManager->createBuilder()
-       ->from('Examinee')
-       ->where($term);
-       $sidx = $this->request->getQuery('sidx','string');
-       $sord = $this->request->getQuery('sord','string');
-       if ($sidx != null)
-           $sort = $sidx;
-       else
-           $sort = 'number';
-       if ($sord != null)
-           $sort = $sort.' '.$sord;
-       $builder = $builder->orderBy($sort);
-       $this->datareturn($builder);  
-    }
-
 	public function examineeAction(){
 		# code...
 	}
@@ -84,11 +44,6 @@ class PmController extends Base
 	public function resultAction(){
 		# code...
 	}
-
-    public function testAction(){
-        echo date('y');
-        $this->view->disable();
-    }
 
     public function selectmoduleAction(){
         $this->view->setTemplateAfter('base2');
@@ -116,12 +71,6 @@ class PmController extends Base
         }else{
             $this->dataBack(array('error'=>"您的身份验证出错,请重新登录"));
         }
-    }
-
-    function dataBack($ans){
-        $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
-        echo json_encode($ans);
-        $this->view->disable();
     }
 
     public function uploadexamineeAction(){
@@ -220,11 +169,6 @@ class PmController extends Base
         $builder = $builder->orderBy($sort);
         // $this->datareturn($builder);
         $this->interviewData($builder);
-    }
-
-    function getProjectId() {
-        $manager = $this->session->get('Manager');
-        return $manager->project_id;
     }
 
     public function updateinterviewerAction(){
@@ -451,23 +395,8 @@ class PmController extends Base
                 }               
             }
         }
-        if (isset($questions_number['16PF'])) {
-            $questions_number['16PF'] = $this->sort_and_unique($questions_number['16PF']);
-        }
-        if (isset($questions_number['EPPS'])) {
-            $questions_number['EPPS'] = $this->sort_and_unique($questions_number['EPPS']);
-        }
-        if (isset($questions_number['EPQA'])) {
-             $questions_number['EPQA'] = $this->sort_and_unique($questions_number['EPQA']);
-        }
-        if (isset($questions_number['SCL'])) {
-             $questions_number['SCL'] = $this->sort_and_unique($questions_number['SCL']);
-        }
-        if (isset($questions_number['CPI'])) {
-            $questions_number['CPI'] = $this->sort_and_unique($questions_number['CPI']);
-        }
-        if (isset($questions_number['SPM'])) {
-            $questions_number['SPM'] = $this->sort_and_unique($questions_number['SPM']);
+        foreach ($questions_number as $key => $value) {
+            $questions_number[$key] = $this->sort_and_unique($questions_number[$key]);
         }
         $json = json_encode($questions_number,JSON_UNESCAPED_UNICODE);
         return $json;
@@ -493,6 +422,46 @@ class PmController extends Base
         } 
         sort($array);
         return $array;       
+    }
+
+    public function userdivideAction($manager_id){
+       $this->view->setVar('manager_id',$manager_id);
+       $this->view->setTemplateAfter('base2');
+       $this->leftRender('测试人员分配');
+    }
+    
+    public function examineeofmanagerAction($manager_id){
+       $condition = 'manager_id = :manager_id:';
+       $row = Interview::find(
+               array(
+                       $condition,
+                       'bind' => array(
+                               'manager_id' => $manager_id
+                       )
+               )
+       );
+       $term = '';
+       foreach($row as $key => $item){
+           $term .= ' id='.$item->examinee_id.' OR ';
+       }
+       if(empty($term)){
+           $term = 0;
+       }else{
+           $term = substr($term,0,strlen($term)-3);
+       }
+       $builder = $this->modelsManager->createBuilder()
+       ->from('Examinee')
+       ->where($term);
+       $sidx = $this->request->getQuery('sidx','string');
+       $sord = $this->request->getQuery('sord','string');
+       if ($sidx != null)
+           $sort = $sidx;
+       else
+           $sort = 'number';
+       if ($sord != null)
+           $sort = $sort.' '.$sord;
+       $builder = $builder->orderBy($sort);
+       $this->datareturn($builder);  
     }
 
     public function getInterviewResult($manager_id){
@@ -534,13 +503,23 @@ class PmController extends Base
         $ans['total'] = $page->total_pages;
         $ans['page'] = $page->current;
         $ans['records'] = $page->total_items;
-        foreach ($page->items as $key => $item)
-        {
+        foreach ($page->items as $key => $item){
             $item->degree_of_complete = $this->getInterviewResult($item->id);
             $ans['rows'][$key] = $item;
-//            $res = $this->getInterviewResult($item->id);
-//            $ans['rows'][$key]['degree_of_complete'] = $res;
+            // $res = $this->getInterviewResult($item->id);
+            // $ans['rows'][$key]['degree_of_complete'] = $res;
         }
+        echo json_encode($ans);
+        $this->view->disable();
+    }
+
+    function getProjectId() {
+        $manager = $this->session->get('Manager');
+        return $manager->project_id;
+    }
+
+    function dataBack($ans){
+        $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
         echo json_encode($ans);
         $this->view->disable();
     }
