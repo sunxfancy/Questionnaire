@@ -245,6 +245,7 @@ class FactorScore {
 		foreach($rt as $key => $score){
 			$array_record = array();
 			$std_score = 0;
+			$std_score = $score;
 			$ans_score = 0;
 			if ($score == 1) $ans_score = 9; 
 			else if ($score < 1.1) $ans_score = 8; 
@@ -294,12 +295,12 @@ class FactorScore {
 		$factor_ignore = array(
 				'X1','X2','X3','X4','Y1','Y2','Y4'
 		);
-		$dm = ($examinee->sex ==0) ? 2 : 1;
+		$dm = ($examinee->sex ==0) ? 9 : 8;
 		$rt_array = array();
 		foreach($rt as $key => $score){
 			$array_record = array();
 			$std_score = 0;
-			$ans_score = 0;
+			$ans_score = 0;  
 			if (in_array($key, $factor_ignore)){
 				$std_score = $score;
 			}else if($key == 'Y3'){
@@ -322,13 +323,13 @@ class FactorScore {
 				}
 			}
 			if($key =='Q4' || $key == 'X1'){
-				$ans_score = 10-$score;
+				$ans_score = 10-$std_score;
 			}else if ($key == 'Y1' || $key == 'Y4' ){
-				$ans_score = $score/4;
+				$ans_score = $std_score/4;
 			}else if ($key == 'Y2'){
-				$ans_score = $score/7.5;
+				$ans_score = $std_score/7.5;
 			}else{
-				$ans_score = $score;
+				$ans_score = $std_score;
 			}
 			$array_record['score'] = $score;
 			$array_record['std_score'] = $std_score;
