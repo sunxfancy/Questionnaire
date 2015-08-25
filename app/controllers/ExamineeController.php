@@ -9,6 +9,10 @@
 /**
 * 
 */
+use Phalcon\Mvc\Model\Transaction\Failed as TxFailed;
+use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
+
+
 class ExamineeController extends Base
 {
 
@@ -57,232 +61,102 @@ class ExamineeController extends Base
         $this->dataReturn($question);
     }
 
-	public function doexamAction()
-	{
+	public function doexamAction(){
 		$this->leftRender("答题");
 	}
 
     public function getpaperAction(){
+        $paper_name = $this->request->getPost("paper_name","string");
         $examinee = $this->session->get('Examinee');
         $project_id = $examinee->project_id;
-        $paper_id = $this->getPaperid();
-        $questions = $this->getQuestions($project_id,$paper_id);
+        $paper_id = $this->getPaperId($paper_name);
+        $questions = $this->getQuestions($project_id,$paper_name);
+        $data = $this->getExamination($questions,$paper_id);
 
         $this->response->setHeader("Content-Type", "text/json; charset=utf-8");
-        if (empty($questions)) {
+        if (empty($data)) {
             $no_ques = "none";
             $this->dataReturn(array("no_ques"=>$no_ques));
         }
         else{
-            $this->dataReturn(array("question"=>$questions['exams'],"description"=>Paper::findFirst($paper_id)->description,"order"=>$questions['question_number_array']));
+            $this->dataReturn(array("question"=>$data,"description"=>Paper::findFirst($paper_id)->description,"order"=>$questions));
         }
     }
 
-    public function getQuestions($project_id,$paper_id){
-        $project = Pmrel::find(array(
-            "project_id = ?1",
-            "bind"=>array(1=>$project_id)
-            ));
-
-        $modules_id_array = $this->getModules($project);
-        
-        $indexs_name_array = $this->getIndex($modules_id_array);
-
-        $factor_name_array = $this->getFactor($indexs_name_array);
-        
-        $question_number_array = $this->getNumber($factor_name_array,$paper_id);
-
-        $exams = $this->getExam($question_number_array,$paper_id);
-
-
-        $question = array();
-        if(!empty($exams)){
-            $question['question_number_array'] = $question_number_array;
-            $question['exams'] = $exams;
-        }
-        return $question;
-    }
-
-    public function getPaperid(){
-        $paper_name = $this->request->getPost("paper_name","string");
-        $paper = Paper::findFirst(array(
-            'name=?0',
-            'bind'=>array($paper_name)));
-        $paper_id = $paper->id;
-        return $paper_id;
-    }
-
-    public function getModules($project){
-        $id_array = array();
-        foreach ($project as $projects) {
-            $id_array[]  = $projects->module_id;
-        }
-        return $id_array;
-    }
-
-    public function getIndex($modules){
-        $index_name = array();
-        for ($i=0; $i < sizeof($modules); $i++) { 
-            $module = Module::findFirst($modules[$i]);
-            $children = $module->children;
-            $children = explode(",", $children);
-            for ($j=0; $j < sizeof($children); $j++) { 
-                $index_name[] = $children[$j];
+    public function getQuestions($project_id,$paper_name){
+        $project_detail = ProjectDetail::findFirst(array(
+                "project_id=?1",
+                "bind"=>array(1=>$project_id)
+                ));
+        $question = json_decode($project_detail->exam_json,true);
+        $questions = array();
+        foreach ($question as $key => $value) {
+            if ($key == $paper_name) {
+                $questions = $value;
             }
-        }
-        return explode(",",implode(",",array_unique($index_name)));
-    }
-
-    public function getFactor($indexs){
-        //$this->view->disable();
-        $factor_name = array();
-        for ($i=0; $i <sizeof($indexs) ; $i++) {
-
-            $index = Index::findFirst(array(
-                'name=?1',
-                'bind'=>array(1=>$indexs[$i])));
-            $children = $index->children;
-            $childrentype = $index->children_type;
-            $children = explode(",",$children );
-            
-            $childrentype = explode(",", $childrentype);
-            for ($j=0; $j < sizeof($childrentype); $j++) { 
-                //0代表index，1代表factor
-                if ($childrentype[$j] == "0") {
-                    $index1 = Index::findFirst(array(
-                        'name=?1',
-                        'bind'=>array(1=>$children[$j])));
-                    $children1 = $index1->children;
-                    $children1 = explode(",",$children1);
-
-                    for ($k=0; $k <sizeof($children1) ; $k++) {
-
-                        $factor_name[] = $children1[$k];
-
-                    }
-                }
-                else{   
-                        $factor_name[] = $children[$j];
-                }               
-            }
-        }
-
-      
-        return explode(",",implode(",",array_unique($factor_name)));
-    }
-
-    public function getNumber($factors,$paper_id){
-        // $this->view->disable();
-        $questions_number = array();      
-        for ($i=0; $i <sizeof($factors) ; $i++) {         
-            $factor = Factor::findFirst(array(
-                'paper_id=?0 and name=?1',
-                'bind'=>array(0=>$paper_id,1=>$factors[$i])));
-            if(!$factor){
+            else
                 continue;
-            }
-            
-            $children = $factor->children;
-            $childrentype = $factor->children_type;
-            $children = explode(",",$children );
-            $childrentype = explode(",", $childrentype);
-            for ($j=0; $j < sizeof($childrentype); $j++) { 
-                //0代表factor，1代表question
-                if ($childrentype[$j] == "0") {
-                    $factor1 = Factor::findFirst(array(
-                        'paper_id=?0 and name=?1',
-                        'bind'=>array(0 => $paper_id,1 => $children[$j])));
-                    $children1 = $factor1->children;
-                    $children1 = explode(",",$children1);
-                    for ($k=0; $k <sizeof($children1) ; $k++) { 
-                        $questions_number[] = trim($children1[$k],' ');
-                    }
-                }
-                else{   
-                        $questions_number[] =trim( $children[$j],' ');
-                }               
-            }
         }
-        if(empty($questions_number)){
-            return $questions_number;
-        }
-        $number = explode(",",implode(",",array_unique($questions_number)));
-        $length = sizeof($number);
-        for($i=0;$i<$length;$i++)
-        {
-            $number[$i] = intval($number[$i]);
-        }
-        sort($number);
-        return $number;
+        return $questions;
     }
 
-    public function getExam($numbers,$paper_id){
+    public function getExamination($questions,$paper_id){
         $data = array();
-        if(empty($numbers)){
-            return $data;
-        }
-        for ($i=0; $i < sizeof($numbers); $i++) { 
-            $question = Question::findFirst(array(
+        for ($i=0;$i<sizeof($questions);$i++) {
+            $questionb = Question::findFirst(array(
                 'paper_id=?0 and number=?1',
-                'bind'=>array(0=>$paper_id,1=>$numbers[$i])));
-                $title="";
-            if (isset($question->topic)&&!empty($question->topic)) {
-                $title = $question->topic;
+                'bind'=>array(0=>$paper_id,1=>$questions[$i])));
+            $title = '';
+            if (isset($questionb->topic) && !empty($questionb->topic)) {
+                $title = $questionb->topic;
             }
             $data[$i]=array(
                 'index'=>$i,
                 'title'=>$title,
-                'options'=>$question->options);
+                'options'=>$questionb->options);
         }
-
         return $data;
     }
 
     public function getExamAnswerAction(){
+        $id = $this->session->get('Examinee')->id;
         $total_time=$this->request->getPost("total_time","int");
         if($total_time){
             /**********************************************************************/
             /*最后一次提交的处理在这里，$total_time是用户答题使用的总时间，以秒计*/
             $this->dataReturn(array("total_time"=>$total_time));
-
-
             /*end of code chunk*/
             /**********************************************************************/
+            $examinee = Examinee::findFirst($id);
+            $examinee->total_time = $total_time;
+            $examinee->is_exam_com = 1;
+            if (!$examinee->save()) {
+                foreach ($examinee->getMessages() as $msg) {
+                    echo $msg."\n";
+                }
+            }
             return;
         }
         $question_ans = new QuestionAns();
         $question_ans->option = $this->request->getPost("answer", "string");
-        $question_ans->paper_id = $this->getPaperid();
-        $id = $this->session->get('Examinee')->id;
+        $paper_name = $this->request->getPost("paper_name", "string");
+        $question_ans->paper_id = $this->getPaperId($paper_name);
         $question_ans->examinee_id = $id;
 
         $question_ans->question_number_list =implode("|",$this->request->getPost("order"));
         if($question_ans->save()){
             $this->dataReturn(array("flag"=>true));
-            $examinee = Examinee::findFirst($id);
-            $examinee->is_exam_com = 1;
-            if (!$examinee->save()) {
-            foreach ($examinee->getMessages() as $msg) {
-                echo $msg."\n";
-            }
-        }
+            // $examinee = Examinee::findFirst($id);
+            // $examinee->is_exam_com = 1;
+            // if (!$examinee->save()) {
+            //     foreach ($examinee->getMessages() as $msg) {
+            //         echo $msg."\n";
+            //     }
+            // }
         }
         else{
             $this->dataReturn(array("flag"=>false));
         }
-    }
-
-    public function addAction(){
-        // $paper = new Paper("select * from paper"); 
-        $sql = "select * from Paper";
-        $paper = $this->modelsManager->executeQuery($sql);
-        $this->view->setVar("paper",$paper);
-    }
-
-    public function dataReturn($ans){
-        $this->response->setHeader("Content-Type", "text/json; charset=utf-8");
-        echo json_encode($ans);
-        $this->view->disable();
     }
 
     public function editinfoAction(){
@@ -431,6 +305,50 @@ class ExamineeController extends Base
             }
         }
     }
+   
+    public function dividepeoAction($manager_id){
+    	$this->view->disable();
+    	$condition = 'manager_id = :manager_id:';
+    	$interview = Interview::find();
+    	$term = '(';
+    	foreach($interview as $key => $item){
+    		$term .= ' id<>'.$item->examinee_id.' AND ';
+    	}
+    	if($term == '('){
+    		$phql = 'SELECT * FROM Examinee';
+    		$row = $this->modelsManager->executeQuery($phql);
+    		$data = array();
+    		foreach($row as $key => $value){
+    			$data[$key] = $value;
+    		}
+    		$data = json_encode($data);
+    		echo $data;
+    	}else{
+    		$term = substr($term,0,strlen($term)-4);
+    		$term .= ')';
+    		$phql = 'SELECT * FROM Examinee WHERE '.$term;
+    		$row = $this->modelsManager->executeQuery($phql);
+    		$data = array();
+    		foreach($row as $key => $value){
+    			$data[$key] = $value;
+    		}
+    		$data = json_encode($data);
+    		echo $data;
+    	}
+    }
+
+    public function getPaperId($paper_name){
+        $paper = Paper::findFirst(array(
+            'name=?1',
+            'bind'=>array(1=>$paper_name)));
+        return $paper->id;
+    }
+
+    public function dataReturn($ans){
+        $this->response->setHeader("Content-Type", "text/json; charset=utf-8");
+        echo json_encode($ans);
+        $this->view->disable();
+    }
 
     public function leftRender($title){
         /****************这一段可以抽象成一个通用的方法**********************/
@@ -438,10 +356,11 @@ class ExamineeController extends Base
         $name = $examinee->name;
         $number = $examinee->number;
         
-		$this->view->setVar('page_title',$title);
-		$this->view->setVar('name',$name);
-		$this->view->setVar('number',$number);
-		$this->view->setVar('role','被试人员');
+        $this->view->setVar('page_title',$title);
+        $this->view->setVar('name',$name);
+        $this->view->setVar('number',$number);
+        $this->view->setVar('role','被试人员');
         /*******************************************************************/
     }
+
 }

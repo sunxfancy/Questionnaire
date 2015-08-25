@@ -1,6 +1,5 @@
 <?php
 
-
 class Factor extends \Phalcon\Mvc\Model 
 {
 
@@ -95,4 +94,22 @@ class Factor extends \Phalcon\Mvc\Model
         }
         return $this->paper_name;
     }
+    
+    /**
+     * 写入到本地缓存中
+     * @param unknown $paper_id
+     */
+    public static function queryCache($paper_id){
+    	return self::find(
+    			array(
+    				"paper_id = :paper_id:",
+    				'bind' => array('paper_id' => $paper_id),
+    				'order'=> 'children  asc',
+    				'hydration' => \Phalcon\Mvc\Model\Resultset\Simple::HYDRATE_ARRAYS,
+   					'cache' => array('key'=> "factor_paper_id_$paper_id")
+    			)
+    	);
+    }
+    
+    
 }

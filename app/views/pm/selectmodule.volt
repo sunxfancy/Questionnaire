@@ -80,7 +80,7 @@
                 checkeds[i]=checks[i].checked;
                 values[i]=checks[i].value;
             }
-            $.post('/pm/writeselectedmodule',{'checkeds':checkeds,'values':values}, function(data) {
+            $.post('/pm/writeprojectdetail',{'checkeds':checkeds,'values':values}, function(data) {
                  /*optional stuff to do after success */
                  if(data.error){
                     alert(data.error);

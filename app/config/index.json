@@ -43,8 +43,8 @@
 	},
 
 	"zb_jlx":{
-		"factor":"Q3,sc,sa,to,G,fx,so,int",
-		"action":"(1.5*(Q3 + sc) + sa + to + G + fx + so + int)/9",
+		"factor":"Q3,sc,sa,po,G,fx,so,int",
+		"action":"(1.5*(Q3 + sc) + sa + po + G + fx + so + int)/9",
 		"chs_name": "纪律性"
 	},
 
@@ -73,8 +73,8 @@
 	},
 
 	"zb_grjzqx":{
-		"factor":"ach,Y2,cs,exh,dom,nur,aff,aba,def,gi,wb,Q3,sc,to",
-		"action":"(2*(ach + Y2 + cs) + exh + dom + nur + aff + aba + def + gi + wb + Q3 + sc +to)/17",
+		"factor":"ach,Y2,cs,exh,dom,nur,aff,aba,def,gi,wb,Q3,sc,po",
+		"action":"(2*(ach + Y2 + cs) + exh + dom + nur + aff + aba + def + gi + wb + Q3 + sc +po)/17",
 		"chs_name": "个人价值取向"
 	},
 
@@ -99,8 +99,8 @@
 	},
 
 	"zb_rnx":{
-		"factor":"to,nur,aff,ac,aba,def,X1,A,L,E",
-		"action":"(1.5*(to + nur + aff) + ac + aba + def + X1 + A + L + E)/11.5",
+		"factor":"po,nur,aff,ac,aba,def,X1,A,L,E",
+		"action":"(1.5*(po + nur + aff) + ac + aba + def + X1 + A + L + E)/11.5",
 		"chs_name": "容纳性"
 	},
 
@@ -111,8 +111,8 @@
 	},
 
 	"zb_rjgxtjsp":{
-		"factor":"to,aff,nur,def,E,X3,N,inte,I,aba,suc,fx",
-		"action":"(1.5*(to + aff + nur) + def + E + X3 + N + inte + I + aba + suc +fx)/13.5",
+		"factor":"po,aff,nur,def,E,X3,N,inte,I,aba,suc,fx",
+		"action":"(1.5*(po + aff + nur) + def + E + X3 + N + inte + I + aba + suc +fx)/13.5",
 		"chs_name": "人际关系调节水平"
 	},
 
@@ -129,14 +129,14 @@
 	},
 
 	"zb_qxkzsp":{
-		"factor":"Y1,sc,C,G,Q3,F,I,to,N,epqan",
-		"action":"(1.5*(Y1 + sc + C) + G + Q3 + F + I + to + N + epqan)/11.5",
+		"factor":"Y1,sc,C,G,Q3,F,I,po,N,epqan",
+		"action":"(1.5*(Y1 + sc + C) + G + Q3 + F + I + po + N + epqan)/11.5",
 		"chs_name": "情绪控制水平"
 	},
 
 	"zb_syhjsp":{
-		"factor":"Y4,fx,sp,O,sc,to,Q4,X1",
-		"action":"(1.5*(Y4 + fx) + sp + O + sc + to + Q4 + X1)/9",
+		"factor":"Y4,fx,sp,O,sc,po,Q4,X1",
+		"action":"(1.5*(Y4 + fx) + sp + O + sc + po + Q4 + X1)/9",
 		"chs_name": "适应环境水平"
 	},
 
@@ -165,8 +165,8 @@
 	},
 
 	"zb_jmng":{
-		"factor":"ie,N,fx,sc,to,sa,Y4",
-		"action":"(1.5*(ie + N) + fx + sc + to + sa + Y4)/8",
+		"factor":"ie,N,fx,sc,po,sa,Y4",
+		"action":"(1.5*(ie + N) + fx + sc + po + sa + Y4)/8",
 		"chs_name": "精明能干"
 	}
 }

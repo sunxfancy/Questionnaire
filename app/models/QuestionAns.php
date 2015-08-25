@@ -62,7 +62,8 @@ class QuestionAns extends \Phalcon\Mvc\Model
         return $anss;
     }
     /**
-     * 根据examinee_id 选择出该被试的相关试卷的答案
+     * BasicScore根据examinee_id 选择出该被试的相关试卷的答案
+     * FactorScore根据examinee_id 选出答案及分数
      * 一个人最多有6条记录
      */
     public static function getListByExamineeId($examinee_id){
