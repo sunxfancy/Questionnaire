@@ -119,6 +119,7 @@ class ExamineeController extends Base
     }
 
     public function getExamAnswerAction(){
+        $id = $this->session->get('Examinee')->id;
         $total_time=$this->request->getPost("total_time","int");
         if($total_time){
             /**********************************************************************/
@@ -126,42 +127,36 @@ class ExamineeController extends Base
             $this->dataReturn(array("total_time"=>$total_time));
             /*end of code chunk*/
             /**********************************************************************/
+            $examinee = Examinee::findFirst($id);
+            $examinee->total_time = $total_time;
+            $examinee->is_exam_com = 1;
+            if (!$examinee->save()) {
+                foreach ($examinee->getMessages() as $msg) {
+                    echo $msg."\n";
+                }
+            }
             return;
         }
         $question_ans = new QuestionAns();
         $question_ans->option = $this->request->getPost("answer", "string");
         $paper_name = $this->request->getPost("paper_name", "string");
         $question_ans->paper_id = $this->getPaperId($paper_name);
-        $id = $this->session->get('Examinee')->id;
         $question_ans->examinee_id = $id;
 
         $question_ans->question_number_list =implode("|",$this->request->getPost("order"));
         if($question_ans->save()){
             $this->dataReturn(array("flag"=>true));
-            $examinee = Examinee::findFirst($id);
-            $examinee->is_exam_com = 1;
-            if (!$examinee->save()) {
-            foreach ($examinee->getMessages() as $msg) {
-                echo $msg."\n";
-            }
-        }
+            // $examinee = Examinee::findFirst($id);
+            // $examinee->is_exam_com = 1;
+            // if (!$examinee->save()) {
+            //     foreach ($examinee->getMessages() as $msg) {
+            //         echo $msg."\n";
+            //     }
+            // }
         }
         else{
             $this->dataReturn(array("flag"=>false));
         }
-    }
-
-    public function getPaperId($paper_name){
-        $paper = Paper::findFirst(array(
-            'name=?1',
-            'bind'=>array(1=>$paper_name)));
-        return $paper->id;
-    }
-
-    public function dataReturn($ans){
-        $this->response->setHeader("Content-Type", "text/json; charset=utf-8");
-        echo json_encode($ans);
-        $this->view->disable();
     }
 
     public function editinfoAction(){
@@ -310,20 +305,7 @@ class ExamineeController extends Base
             }
         }
     }
-
-    public function leftRender($title){
-        /****************这一段可以抽象成一个通用的方法**********************/
-        $examinee = $this->session->get('Examinee');
-        $name = $examinee->name;
-        $number = $examinee->number;
-        
-		$this->view->setVar('page_title',$title);
-		$this->view->setVar('name',$name);
-		$this->view->setVar('number',$number);
-		$this->view->setVar('role','被试人员');
-        /*******************************************************************/
-    }
-    
+   
     public function dividepeoAction($manager_id){
     	$this->view->disable();
     	$condition = 'manager_id = :manager_id:';
@@ -353,6 +335,32 @@ class ExamineeController extends Base
     		$data = json_encode($data);
     		echo $data;
     	}
+    }
+
+    public function getPaperId($paper_name){
+        $paper = Paper::findFirst(array(
+            'name=?1',
+            'bind'=>array(1=>$paper_name)));
+        return $paper->id;
+    }
+
+    public function dataReturn($ans){
+        $this->response->setHeader("Content-Type", "text/json; charset=utf-8");
+        echo json_encode($ans);
+        $this->view->disable();
+    }
+
+    public function leftRender($title){
+        /****************这一段可以抽象成一个通用的方法**********************/
+        $examinee = $this->session->get('Examinee');
+        $name = $examinee->name;
+        $number = $examinee->number;
+        
+        $this->view->setVar('page_title',$title);
+        $this->view->setVar('name',$name);
+        $this->view->setVar('number',$number);
+        $this->view->setVar('role','被试人员');
+        /*******************************************************************/
     }
 
 }
