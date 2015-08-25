@@ -94,10 +94,11 @@
                     }
                 },
                 {name:'data',index:'data', sortable:false, width:120, resize:false,align:'center',
-                    formatter:function(){
-                        var temp = "<a href='/pm/data' >查看</a>";
+                    formatter:function(cellvalue,options,rowObject){
+                        var temp = "<a href='/pm/check/"+rowObject.id+"' >导出</a>";
                         return temp;
                     }
+                    
                 },
                 {name:'is_ques_com',index:'is_ques_com', sorttype:"int",width:160, sortable:false, editable: false,align:'center'},
                 {name:'result',index:'result', sortable:false, width:130, resize:false,align:'center',
