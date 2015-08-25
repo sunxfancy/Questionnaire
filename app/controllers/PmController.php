@@ -395,23 +395,8 @@ class PmController extends Base
                 }               
             }
         }
-        if (isset($questions_number['16PF'])) {
-            $questions_number['16PF'] = $this->sort_and_unique($questions_number['16PF']);
-        }
-        if (isset($questions_number['EPPS'])) {
-            $questions_number['EPPS'] = $this->sort_and_unique($questions_number['EPPS']);
-        }
-        if (isset($questions_number['EPQA'])) {
-             $questions_number['EPQA'] = $this->sort_and_unique($questions_number['EPQA']);
-        }
-        if (isset($questions_number['SCL'])) {
-             $questions_number['SCL'] = $this->sort_and_unique($questions_number['SCL']);
-        }
-        if (isset($questions_number['CPI'])) {
-            $questions_number['CPI'] = $this->sort_and_unique($questions_number['CPI']);
-        }
-        if (isset($questions_number['SPM'])) {
-            $questions_number['SPM'] = $this->sort_and_unique($questions_number['SPM']);
+        foreach ($questions_number as $key => $value) {
+            $questions_number[$key] = $this->sort_and_unique($questions_number[$key]);
         }
         $json = json_encode($questions_number,JSON_UNESCAPED_UNICODE);
         return $json;
