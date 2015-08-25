@@ -53,27 +53,24 @@ class FactorScore {
 				
 			}
 			unset($question_ans_list);
-			echo "<pre>";
-			print_r($rtn_array);
-			echo "</pre>";
-			exit();
-			#写入到factor_ans,先从factor_ans 中读取$examinee_id 选中的因子
-			$examinee_factors = FactorAns::find(
-				array(
-					"examinee_id = :examinee_id:",
-					'bind' => array( 'examinee_id' => $examinee_id)
-				)
-			);
+// 			echo "<pre>";
+// 			print_r($rtn_array);
+// 			echo "</pre>";
+// 			exit();
+			#插入到因子表
 			try{
 				$manager     = new TxManager();
 				$transaction = $manager->get();
-				foreach ($examinee_factors as $examinee_factor_record ){
-					if ( isset($rtn_array[$examinee_factor_record->Factor->name]) ){
-						$examinee_factor_record->score = $rtn_array[$examinee_factor_record->Factor->name];
-					}else{
-						$examinee_factor_record->score = 0;
-					}
-					if($examinee_factor_record->save() == false){
+				foreach ( $rtn_array as $key => $value ) {
+					$factor_ans = new FactorAns();
+					$factor_id = Factor::findFirst( array("name = :factor_name:",'bind'=>array('factor_name'=>$key) ))->id;
+					$factor_ans->examinee_id = $examinee_id;
+					$factor_ans->factor_id = $factor_id;
+					$factor_ans->score = $value['score'];
+					$factor_ans->std_score = $value['std_score'];
+					$factor_ans->ans_score = $value['ans_score'];
+
+					if($factor_ans->save() == false){
 							$transaction->rollback("Cannot update table FactorAns' score");
 					}
 				}
