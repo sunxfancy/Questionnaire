@@ -103,28 +103,32 @@ class FactorScore {
 		 $sd = 0;
 		 $ans_score = 0;
 		 $epqamd = Epqamd::findFirst(array(
-		 		'DAGEL <= :age: AND DAGEH >= :age: AND DSEX = :sex:',
+		 		'DAGEL <= :age: AND DAGEH > :age: AND DSEX = :sex:',
 		 		'bind'=>array('age'=>$dage,'sex'=>$dm)));
 		 switch($key){
 		 	case 'epqae':
 		 		$m = $epqamd->EM;
 		 		$sd = $epqamd->ESD;
-		 		$ans_score = $score/10;
+		 		$std_score = sprintf("%.2f",50 + (10 * ($score - $m)) / $sd);
+		 		$ans_score = $std_score/10;
 		 		break;
 		 	case 'epqan':
 		 		$m = $epqamd->NM;
 		 		$sd = $epqamd->NSD;
-		 		$ans_score = 10 - $score/10;
+		 		$std_score = sprintf("%.2f",50 + (10 * ($score - $m)) / $sd);
+		 		$ans_score = 10 - $std_score/10;
 		 		break;
 		 	case 'epqap':
 		 		$m = $epqamd->PM;
 		 		$sd = $epqamd->PSD;
-		 		$ans_score = 10 - $score/10;
+		 		$std_score = sprintf("%.2f",50 + (10 * ($score - $m)) / $sd);
+		 		$ans_score = 10 - $std_score/10;
 		 		break;
 		 	case 'epqal':
 		 		$m = $epqamd->LM;
 		 		$sd = $epqamd->LSD;
-		 		$ans_score = 10 - $score/10;
+		 		$std_score = sprintf("%.2f",50 + (10 * ($score - $m)) / $sd);
+		 		$ans_score = 10 - $std_score/10;
 		 		break;
 		 	default:throw new Exception("not found");
 		 }
@@ -148,12 +152,15 @@ class FactorScore {
 		$rt['con'] = self::getEPPSCon($array);
 		$rt_array = array();
 		foreach($rt as $key => $score){
+			if($key !='con'){ 
+				$score -=1;
+			}
 			$array_record = array();
 			$std_score = 0;
 			$ans_score = 0;
 			if($key != 'con'){
 				$std_score = $score;
-				$ans_score = ($score-1)/2.8;
+				$ans_score = $score/2.8;
 			}else{
 				if ($score == 1) $ans_score = 9; 
 				else  if ($score == 2) $ans_score = 8; 
@@ -199,7 +206,7 @@ class FactorScore {
 				$std_score = 50 + (10 * ($score - $m)) / $sd;
 			}
 			if ($key != 'fx'){
-				$ans_score = $score/10;
+				$ans_score = $std_score/10;
 			}else{
 				if ($score == 100) $ans_score = 10; 
 				else if ($score > 80) $ans_score = 9; 
