@@ -228,7 +228,7 @@ class Paper extends \Phalcon\Mvc\Model
     		"id = :paper_id:",
         	'bind' => array( 'paper_id'=>$id),
         	'hydration' => \Phalcon\Mvc\Model\Resultset\Simple::HYDRATE_ARRAYS,
-        	'cache' => array('key'=> "paper_name_from_id_".$id)
+        	// 'cache' => array('key'=> "paper_name_from_id_".$id)
     	)
     	);
     }
