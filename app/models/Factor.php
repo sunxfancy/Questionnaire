@@ -106,7 +106,7 @@ class Factor extends \Phalcon\Mvc\Model
     				'bind' => array('paper_id' => $paper_id),
     				'order'=> 'children  asc',
     				'hydration' => \Phalcon\Mvc\Model\Resultset\Simple::HYDRATE_ARRAYS,
-//    					'cache' => array('key'=> "factor_paper_id_$paper_id")
+   					'cache' => array('key'=> "factor_paper_id_$paper_id")
     			)
     	);
     }
