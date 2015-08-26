@@ -6,7 +6,7 @@ doc/
 cache/backup/*.bak
 app/config/config.ini
 app/config/config.php
-public/upload/*.xls
+public/upload/*
 .idea/
 .phpintel/
 question.sublime-project
