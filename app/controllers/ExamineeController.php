@@ -127,14 +127,14 @@ class ExamineeController extends Base
             $this->dataReturn(array("total_time"=>$total_time));
             /*end of code chunk*/
             /**********************************************************************/
-            $examinee = Examinee::findFirst($id);
-            $examinee->total_time = $total_time;
-            $examinee->is_exam_com = 1;
-            if (!$examinee->save()) {
-                foreach ($examinee->getMessages() as $msg) {
-                    echo $msg."\n";
-                }
-            }
+            // $examinee = Examinee::findFirst($id);
+            // $examinee->total_time = $total_time;
+            // $examinee->is_exam_com = 1;
+            // if (!$examinee->save()) {
+            //     foreach ($examinee->getMessages() as $msg) {
+            //         echo $msg."\n";
+            //     }
+            // }
             return;
         }
         $question_ans = new QuestionAns();
@@ -142,17 +142,16 @@ class ExamineeController extends Base
         $paper_name = $this->request->getPost("paper_name", "string");
         $question_ans->paper_id = $this->getPaperId($paper_name);
         $question_ans->examinee_id = $id;
-
         $question_ans->question_number_list =implode("|",$this->request->getPost("order"));
         if($question_ans->save()){
             $this->dataReturn(array("flag"=>true));
-            // $examinee = Examinee::findFirst($id);
-            // $examinee->is_exam_com = 1;
-            // if (!$examinee->save()) {
-            //     foreach ($examinee->getMessages() as $msg) {
-            //         echo $msg."\n";
-            //     }
-            // }
+            $examinee = Examinee::findFirst($id);
+            $examinee->is_exam_com = 1;
+            if (!$examinee->save()) {
+                foreach ($examinee->getMessages() as $msg) {
+                    echo $msg."\n";
+                }
+            }
         }
         else{
             $this->dataReturn(array("flag"=>false));
