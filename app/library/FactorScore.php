@@ -103,28 +103,32 @@ class FactorScore {
 		 $sd = 0;
 		 $ans_score = 0;
 		 $epqamd = Epqamd::findFirst(array(
-		 		'DAGEL <= :age: AND DAGEH >= :age: AND DSEX = :sex:',
+		 		'DAGEL <= :age: AND DAGEH > :age: AND DSEX = :sex:',
 		 		'bind'=>array('age'=>$dage,'sex'=>$dm)));
 		 switch($key){
 		 	case 'epqae':
 		 		$m = $epqamd->EM;
 		 		$sd = $epqamd->ESD;
-		 		$ans_score = $score/10;
+		 		$std_score = sprintf("%.2f",50 + (10 * ($score - $m)) / $sd);
+		 		$ans_score = $std_score/10;
 		 		break;
 		 	case 'epqan':
 		 		$m = $epqamd->NM;
 		 		$sd = $epqamd->NSD;
-		 		$ans_score = 10 - $score/10;
+		 		$std_score = sprintf("%.2f",50 + (10 * ($score - $m)) / $sd);
+		 		$ans_score = 10 - $std_score/10;
 		 		break;
 		 	case 'epqap':
 		 		$m = $epqamd->PM;
 		 		$sd = $epqamd->PSD;
-		 		$ans_score = 10 - $score/10;
+		 		$std_score = sprintf("%.2f",50 + (10 * ($score - $m)) / $sd);
+		 		$ans_score = 10 - $std_score/10;
 		 		break;
 		 	case 'epqal':
 		 		$m = $epqamd->LM;
 		 		$sd = $epqamd->LSD;
-		 		$ans_score = 10 - $score/10;
+		 		$std_score = sprintf("%.2f",50 + (10 * ($score - $m)) / $sd);
+		 		$ans_score = 10 - $std_score/10;
 		 		break;
 		 	default:throw new Exception("not found");
 		 }
@@ -148,12 +152,15 @@ class FactorScore {
 		$rt['con'] = self::getEPPSCon($array);
 		$rt_array = array();
 		foreach($rt as $key => $score){
+			if($key !='con'){ 
+				$score -=1;
+			}
 			$array_record = array();
 			$std_score = 0;
 			$ans_score = 0;
 			if($key != 'con'){
 				$std_score = $score;
-				$ans_score = ($score-1)/2.8;
+				$ans_score = $score/2.8;
 			}else{
 				if ($score == 1) $ans_score = 9; 
 				else  if ($score == 2) $ans_score = 8; 
@@ -199,7 +206,7 @@ class FactorScore {
 				$std_score = 50 + (10 * ($score - $m)) / $sd;
 			}
 			if ($key != 'fx'){
-				$ans_score = $score/10;
+				$ans_score = $std_score/10;
 			}else{
 				if ($score == 100) $ans_score = 10; 
 				else if ($score > 80) $ans_score = 9; 
@@ -270,6 +277,7 @@ class FactorScore {
 		$paper_id = Paper::getListByName('16PF')->id;
 		$factor = Factor::queryCache($paper_id);
 		$rt = array();
+		#前16项因子原始分
 		foreach($factor as $factor_record) {
 			if($factor_record['action'] == 'sum'){
 				#循环16次
@@ -282,28 +290,58 @@ class FactorScore {
 				}
 				$rt[$factor_record['name']] = $factor_score;
 				#先遍历完简单因子的结果	
-			}else{
-				$factor_score = 0;
-				//$args = preg_replace('/[A-Z][0-9]?/', '\$rt[\'$0\']', $factor_record['children']);
-				$code = preg_replace('/[A-Z][0-9]?/', '\$rt[\'$0\']', $factor_record['action']);
-				$code =  "\$factor_score = $code;";
-				eval($code);
-				$rt[$factor_record['name']] = sprintf('%.2f',$factor_score);
 			}
 		}
-		
+		$dm = ($examinee->sex ==0) ? 9 : 8;
+		#前16项标准分 及最终得分
+		$rt_array = array();
+		foreach ($rt as $key => $score ){
+			$array_record = array();
+			$std_score = 0;
+			$ans_score = 0;
+			$ksmd = Ksmd::find(array(
+					'DM=?0 AND YZ=?1',
+					'bind'=>array(0=>$dm,1=>$key)));
+			foreach ($ksmd as $ksmds ) {
+				if ($score <= $ksmds->ZZF && $score >= $ksmds->QSF) {
+					$std_score = $ksmds->BZF;
+				}
+			}
+			if($key =='Q4'){
+				$ans_score = 10-$std_score;
+			}else{
+				$ans_score = $std_score;
+			}
+			$array_record['score'] = $score;
+			$array_record['std_score'] = $std_score;
+			$array_record['ans_score'] = $ans_score;
+			$rt_array[$key] = $array_record;
+			
+		}
+		unset($rt);
+		$rt = array();
+		#后8项原始得分
+		foreach($factor as $factor_record) {
+			if($factor_record['action'] != 'sum'){
+				$factor_score = 0;
+			//$args = preg_replace('/[A-Z][0-9]?/', '\$rt[\'$0\']', $factor_record['children']);
+			$code = preg_replace('/[A-Z][0-9]?/', '\$rt_array[\'$0\'][\'std_score\']', $factor_record['action']);
+			$code =  "\$factor_score = $code;";
+			eval($code);
+			$rt[$factor_record['name']] = sprintf('%.2f',$factor_score);
+			}
+		}
+		#后八项标准得分
 		$factor_ignore = array(
 				'X1','X2','X3','X4','Y1','Y2','Y4'
 		);
-		$dm = ($examinee->sex ==0) ? 9 : 8;
-		$rt_array = array();
-		foreach($rt as $key => $score){
+		foreach ($rt as $key => $score ){
 			$array_record = array();
 			$std_score = 0;
-			$ans_score = 0;  
+			$ans_score = 0;
 			if (in_array($key, $factor_ignore)){
 				$std_score = $score;
-			}else if($key == 'Y3'){
+			}else if ($key == 'Y3'){
 				$ksmd = Ksmd::find(array(
 						'YZ=?1',
 						'bind'=>array(1=>$key)));
@@ -313,16 +351,9 @@ class FactorScore {
 					}
 				}
 			}else{
-				$ksmd = Ksmd::find(array(
-						'DM=?0 AND YZ=?1',
-						'bind'=>array(0=>$dm,1=>$key)));
-				foreach ($ksmd as $ksmds ) {
-					if ($score <= $ksmds->ZZF && $score >= $ksmds->QSF) {
-						$std_score = $ksmds->BZF;
-					}
-				}
+				#no 
 			}
-			if($key =='Q4' || $key == 'X1'){
+			if($key == 'X1'){
 				$ans_score = 10-$std_score;
 			}else if ($key == 'Y1' || $key == 'Y4' ){
 				$ans_score = $std_score/4;
@@ -331,16 +362,15 @@ class FactorScore {
 			}else{
 				$ans_score = $std_score;
 			}
+			
 			$array_record['score'] = $score;
 			$array_record['std_score'] = $std_score;
 			$array_record['ans_score'] = $ans_score;
 			$rt_array[$key] = $array_record;
+				
 		}
 		return $rt_array;
-		
-	
-		
-		}
+	}
 	/**
 	 * SPM
 	 */

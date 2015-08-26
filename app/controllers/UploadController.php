@@ -62,7 +62,7 @@ class UploadController extends \Phalcon\Mvc\Controller {
 	 * 删除试卷将在系统中不被允许
 	 */
 	public function deletePaperAction(){
-		die("not allowed");
+		// die("not allowed");
 		try{
 		$delete_state = DBHandle::deletePaperData();
 		if($delete_state){
@@ -97,7 +97,7 @@ class UploadController extends \Phalcon\Mvc\Controller {
 		}
 	}
 	public function deleteSPMAction(){
-		die("not allowed!");
+		// die("not allowed!");
 		try{
 			$delete_state = DBHandle::deleteTKByName('SPM');
 			if($delete_state){
@@ -224,7 +224,7 @@ class UploadController extends \Phalcon\Mvc\Controller {
 		}
 	}
 	public function deleteSCLAction(){
-		die("not allowed");
+		// die("not allowed");
 		try{
 			$delete_state = DBHandle::deleteTKByName('SCL');
 			if($delete_state){
@@ -272,7 +272,7 @@ class UploadController extends \Phalcon\Mvc\Controller {
 		}	
 	}
 	public function deleteEPPSAction(){
-		die("not allowed");
+		// die("not allowed");
 		try{
 			$delete_state = DBHandle::deleteTKByName('EPPS');
 			if($delete_state){
@@ -329,7 +329,7 @@ class UploadController extends \Phalcon\Mvc\Controller {
 		}
 	}
 	public function deleteEPQAAction(){	
-		die("not allowed");
+		// die("not allowed");
 		try{
 			$delete_state = DBHandle::deleteTKByName('EPQA');
 			if($delete_state){
@@ -377,7 +377,7 @@ class UploadController extends \Phalcon\Mvc\Controller {
 		}
 	}
 	public function deleteCPIAction(){
-		die("not allowed");
+		// die("not allowed");
 		try{
 			$delete_state = DBHandle::deleteTKByName('CPI');
 			if($delete_state){
