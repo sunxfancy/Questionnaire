@@ -86,6 +86,14 @@ class PmController extends Base
     }
 
     public function uploadInqueryAction(){
+        $project_id = $this->session->get('Manager')->project_id;
+        $delete_data = InqueryQuestion::find(array(
+                'project_id = :project_id:',
+                'bind' => array(
+                        'project_id' => $project_id
+                    )
+            ));
+        $res = $delete_data->delete();
         $this->upload_base('LoadInquery');
     }
 

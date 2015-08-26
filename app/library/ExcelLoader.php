@@ -8,8 +8,6 @@
 
 include("../app/classes/PHPExcel.php");
 
-
-
 /**
 * 
 */
@@ -132,6 +130,7 @@ class ExcelLoader
         }else{
             $inquery_question->is_radio = 0;
         }
+        $inquery_question->project_id = $project_id;
         $options = '';
         $highest_column = PHPExcel_Cell::columnIndexFromString($sheet->getHighestColumn());
         for($j = 3;$j<$highest_column;$j++){
