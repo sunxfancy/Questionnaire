@@ -85,6 +85,18 @@ class PmController extends Base
         $this->upload_base('LoadLeader');
     }
 
+    public function uploadInqueryAction(){
+        $project_id = $this->session->get('Manager')->project_id;
+        $delete_data = InqueryQuestion::find(array(
+                'project_id = :project_id:',
+                'bind' => array(
+                        'project_id' => $project_id
+                    )
+            ));
+        $res = $delete_data->delete();
+        $this->upload_base('LoadInquery');
+    }
+
     public function upload_base($method){
         $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
         $this->view->disable();
@@ -94,18 +106,18 @@ class PmController extends Base
             $filename = "Import-".date("YmdHis");
             $excel = ExcelLoader::getInstance();
             $project_id = $this->session->get('Manager')->project_id;
-            echo $project_id ."\n";
+            // echo $project_id ."\n";
             $i = 1;
             foreach ($files as $file) {
                 $newname = "./upload/".$filename."-".$i.".xls";
-                echo $newname."\n";
+                // echo $newname."\n";
                 $file->moveTo($newname);
                 $ans = $excel->$method($newname, $project_id, $this->db);
-                echo $ans ."\n";
+                // echo $ans ."\n";
                 if ($ans != 0) { echo json_encode($ans); return; }
                 $i++;
             }
-            echo 0;
+            // echo 0;
         } else {
             echo json_encode(array('error' => '错误的接口访问'));
         }
@@ -316,7 +328,16 @@ class PmController extends Base
             $exam_json = $this->getNumber($factor_names);
             $module_names = implode(',', $module_names);
             $index_names = implode(',', $index_names);
-            $factor_names = implode(',', $factor_names);
+            $factors = array();
+            foreach ($factor_names as $factor_name) {
+                $factor = Factor::findFirst(array(
+                    'name=?1',
+                    'bind'=>array(1=>$factor_name)));
+                $paper_id = $factor->paper_id;
+                $paper_name = $this->getPaperName($paper_id);
+                $factors[$paper_name][] = $factor_name;
+            }
+            $factor_json = json_encode($factors,JSON_UNESCAPED_UNICODE);
             try{
                 $manager     = new TxManager();
                 $transaction = $manager->get();
@@ -325,7 +346,7 @@ class PmController extends Base
                 $project_detail->project_id = $project_id;
                 $project_detail->module_names = $module_names;
                 $project_detail->index_names = $index_names;
-                $project_detail->factor_names = $factor_names;
+                $project_detail->factor_names = $factor_json;
                 $project_detail->exam_json = $exam_json;
                 if( $project_detail->save() == false ){
                     $transaction->rollback("Cannot insert ProjectDetail data");
@@ -375,7 +396,7 @@ class PmController extends Base
     返回参数：因子name
     */
     public function getFactor($index_name){
-        $factor_name = array();
+        $factor_names = array();
         for ($i=0; $i <sizeof($index_name) ; $i++) {
             $index = Index::findFirst(array(
                 'name=?1',
@@ -393,15 +414,16 @@ class PmController extends Base
                     $children1 = $index1->children;
                     $children1 = explode(",",$children1);
                     for ($k=0; $k <sizeof($children1) ; $k++) {
-                        $factor_name[] = $children1[$k];
+                        $factor_names[] = $children1[$k];
                     }
                 }
                 else{   
-                        $factor_name[] = $children[$j];
+                        $factor_names[] = $children[$j];
                 }               
             }
         }     
-        return explode(",",implode(",",array_unique($factor_name)));
+        $factor_names = explode(",",implode(",",array_unique($factor_names)));
+        return $factor_names;
     }
 
     /*
@@ -410,7 +432,7 @@ class PmController extends Base
     返回参数：json格式的问卷name和题目number
     */
     public function getNumber($factor_name){
-        $questions_number = array();      
+        $questions_number = array();
         for ($i=0; $i <sizeof($factor_name) ; $i++) {         
             $factor = Factor::findFirst(array(
                 'name=?1',

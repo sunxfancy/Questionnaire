@@ -16,6 +16,7 @@ class Test5Controller extends Base
 		echo "<pre>";
 		print_r($index_score);
 		echo "</pre>";
+		echo count($index_score);
 		$this->insertIndexScore($index_score,$examinee_id);
 	}
 
@@ -44,14 +45,10 @@ class Test5Controller extends Base
 	public function calIndexScore($examinee_id){
 		$examinee = Examinee::findFirst($examinee_id);
 		$project_id = $examinee->project_id;
-		$names = $this->getIndexAndFactorNames($project_id);
-		$factor_score = array();
-		foreach ($names['factor'] as $factor_name) {
-			$factor_id = $this->getFactorId($factor_name);
-			$factor_score[$factor_name] = $this->getFactorScore($examinee_id,$factor_id);
-		}
+		$index_names = $this->getIndexNames($project_id);
+		$factor_score = $this->getFactorScore($examinee_id);
 		$index_ids = array();
-		foreach ($names['index'] as $index_name) {
+		foreach ($index_names as $index_name) {
 			if ($index_name == 'zb_ldnl'|| $index_name == 'zb_gzzf') {
 				continue;
 			}else{
@@ -71,7 +68,7 @@ class Test5Controller extends Base
 			eval($do_action);
 			$score[$indexs->name] = sprintf('%.2f',$index_score);
 		}
-		foreach ($names['index'] as $index_name) {
+		foreach ($index_names as $index_name) {
 			if ($index_name == 'zb_ldnl') {
 				$index_score = (2*($score['zb_pdyjcnl'] + $score['zb_zzglnl'])+ $score['zb_cxnl'] + $score['zb_ybnl']+ $score['zb_dlgznl'])/7;
 				$score[$index_name] = sprintf('%.2f',$index_score);
@@ -92,22 +89,26 @@ class Test5Controller extends Base
 		return $index_score;
 	}
 
-	public function getFactorScore($examinee_id,$factor_id){
-		$factor_ans = FactorAns::findFirst(array(
-			'examinee_id=?0 and factor_id=?1',
-			'bind'=>array(0=>$examinee_id,1=>$factor_id)));
-		return $factor_ans->ans_score;
+	public function getFactorScore($examinee_id){
+		$factor_ans = FactorAns::find(array(
+			'examinee_id=?1',
+			'bind'=>array(1=>$examinee_id)));
+		$factor_score = array();
+		foreach ($factor_ans as $factor) {
+			$factor_name = Factor::findFirst($factor->factor_id)->name;
+			$factor_score[$factor_name] = $factor->ans_score;
+		}
+		return $factor_score;
 	}
 
-	public function getIndexAndFactorNames($project_id){
+	public function getIndexNames($project_id){
         $project_detail = ProjectDetail::findFirst(array(
                 "project_id=?1",
                 "bind"=>array(1=>$project_id)
                 ));
-        $names = array();
-        $names['index'] = explode(',', $project_detail->index_names);
-        $names['factor'] = explode(',', $project_detail->factor_names);
-        return $names;
+        $index_names = array();
+        $index_names = explode(',', $project_detail->index_names);
+        return $index_names;
     }
 
     public function getIndexId($index_name){

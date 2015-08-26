@@ -3,7 +3,6 @@
 
 class CheckoutExcel extends \Phalcon\Mvc\Controller{
     //以excel形式，导出被试人员信息和测试结果
-    
 
     public static function checkoutExcel11($examinee){
         //导出个人信息表
@@ -14,8 +13,40 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
 
         $excel = new PHPExcel();
-        $excel->getActiveSheet()->setTitle('个人信息表');
-        //个人信息表
+        $excel->getActiveSheet()->setTitle('1.个人信息表');
+        
+        self::checkoutPerson($examinee,$excel);//个人信息
+
+        $msgWorkSheet = new PHPExcel_Worksheet($excel, '2.TQT人才测评系统'); //创建指标排序表
+        $excel->addSheet($msgWorkSheet); 
+        $excel->setActiveSheetIndex(1);
+        self::checkoutIndex($examinee,$excel); 
+
+        $pf16 = new PHPExcel_Worksheet($excel, '3.16pf'); //创建16pf表
+        $excel->addSheet($pf16); 
+        $excel->setActiveSheetIndex(2);
+        self::checkout16pf($examinee,$excel);
+
+        $epps = new PHPExcel_Worksheet($excel, '4.epps'); //创建16pf表
+        $excel->addSheet($epps); 
+        $excel->setActiveSheetIndex(3);
+        self::checkoutEpps($examinee,$excel);
+
+        $write = new PHPExcel_Writer_Excel5($excel);
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
+        header("Content-Type:application/force-download");
+        header("Content-Type:application/vnd.ms-execl");
+        header("Content-Type:application/octet-stream");
+        header("Content-Type:application/download");
+        header('Content-Disposition:attachment;filename="result.xls"');
+        header("Content-Transfer-Encoding:binary");
+        $write->save('php://output');
+    }
+
+    //导出个人信息
+    public static function checkoutPerson($examinee,$excel){
         $objActSheet = $excel->getActiveSheet();
         $objActSheet->getDefaultRowDimension()->setRowHeight(25);
         $objActSheet->getDefaultColumnDimension()->setWidth(20);
@@ -107,17 +138,57 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
             }
         }
 
-        $write = new PHPExcel_Writer_Excel5($excel);
-        header("Pragma: public");
-        header("Expires: 0");
-        header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
-        header("Content-Type:application/force-download");
-        header("Content-Type:application/vnd.ms-execl");
-        header("Content-Type:application/octet-stream");
-        header("Content-Type:application/download");
-        header('Content-Disposition:attachment;filename="result.xls"');
-        header("Content-Transfer-Encoding:binary");
-        $write->save('php://output');
+    }
+
+    //导出指标排序
+    public static function checkoutIndex($examinee,$excel){
+        $objActSheet = $excel->getActiveSheet();
+        $objActSheet->getDefaultRowDimension()->setRowHeight(25);
+        $objActSheet->getDefaultColumnDimension()->setWidth(20);
+
+        // $objActSheet->getRowDimension('A')->setRowHeight(50);
+        $objActSheet->getRowDimension(1)->setRowHeight(50);
+        $objActSheet->mergeCells('A1:E1');
+        $objActSheet->setCellValue('A1','TQT人才测评系统  28项指标排序');
+        $objActSheet->getStyle('A1')->getFont()->setSize(20);
+        $objActSheet->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objActSheet->setCellValue('A2','姓名');
+        $objActSheet->setCellValue('B2',$examinee->name);
+        $objActSheet->setCellValue('A3','编号');
+        $objActSheet->setCellValue('B3','指标');
+        $objActSheet->setCellValue('C3','得分');
+        /*
+        *通过$examinee->id在index_ans表中找到index_id 和 score
+        *通过index_id 在index表中找到指标名称（chs_name）
+        */
+        $id = $examinee->id;
+        $index_ans_info = IndexAns::find(
+            array(
+                 "examinee_id = :examinee_id:", 'bind' => array('examinee_id'=>$id),
+                 'order' => 'score desc'
+                 ));
+        $i=1;
+        foreach($index_ans_info as $value ){
+            $k = $i + 3;
+            $chs_name = (string)$value->Index->chs_name;
+            $objActSheet->getStyle("A$k")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objActSheet->getStyle("C$k")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objActSheet->getStyle("A$k")->getFont()->setBold(true);
+            $objActSheet->getStyle("C$k")->getFont()->setBold(true);
+            $objActSheet->setCellValue("A$k","$i");
+            $objActSheet->setCellValue("B$k","$chs_name");
+            $objActSheet->setCellValue("C$k","$value->score");
+            $i++;
+        }      
+
+    }
+
+    public static function checkout16pf($examinee,$excel){
+        //todo
+    }
+
+    public static function checkoutEpps($examinee,$excel){
+        //todo
     }
 
     public function testexcel(){
