@@ -3,7 +3,7 @@ use Phalcon\Mvc\Model\Transaction\Failed as TxFailed;
 use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
 	/**
 	 * @usage 首先调用beforeStart(),导入内存表,之后调用handlePapers($exmainee_id),写入个人基础成绩
-	 * @time_comsuming ALL-10s,EPQA-1.4s,16PF-2.0s,CPI-4.1s,EPPS-2.5s,SCL-0.43s,SPM-0.97s
+	 * @time_comsuming 
 	 * @notice 内存表的加载需首先完成
 	 * @author Wangyaohui
 	 * @date 2015-8-26
@@ -20,7 +20,7 @@ class BasicScore {
 	 */
 	protected static $papers_list = null;
 	/**
-	 * @usage 在计算基础得分之前，首先加载内存表，本地测试:全部加载20s左右OMG， 加载完成后的判断0.3s左右
+	 * @usage 在计算基础得分之前，首先加载内存表
 	 * @throws Exception
 	 * @return boolean
 	 */
@@ -93,7 +93,7 @@ class BasicScore {
 			 				case '16PF' : $score_line = self::handle16PF($paper_ans_data); break;
 			 				case 'SCL' : $score_line = self::handleSCL($paper_ans_data); break;
 			 				case 'SPM' : $score_line = self::handleSPM($paper_ans_data); break;
-// 			 				default :  throw new Exception('wrong paper_name from table paper');
+			 				default :  throw new Exception('wrong paper_name from table paper');
 			 		}
 			 		#获取到score_line 写入到数据库中
 			 		if(!empty($score_line)){
@@ -205,7 +205,7 @@ class BasicScore {
 		}
 		$rtn_array = array();
 		foreach($array_list as $array_record){
-			$rtn_array[] = CpidfMemory::getRecord(intval($array_record['number']), intval(ord($array_record['option'])-ord('a')+1));
+			$rtn_array[] = CpidfMemory::getRecord(intval($array_record['number']), ord($array_record['option'])-ord('a')+1);
 		}
 		return implode('|', $rtn_array);
 	}
