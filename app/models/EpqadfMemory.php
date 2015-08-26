@@ -24,16 +24,16 @@ class EpqadfMemory extends \Phalcon\Mvc\Model{
 		)
 		);
 		$rtn_array = array();
-		if(isset($record->E)&&!empty($record->E)&&$record->E!=0){
+		if(isset($record->E) && $record->E == 1 ){
 			$rtn_array[] = 'epqae';
 		}
-		if(isset($record->N)&&!empty($record->N)&&$record->N!=0){
+		if(isset($record->N) && $record->N == 1 ){
 			$rtn_array[] = 'epqan';
 		}
-		if(isset($record->P)&&!empty($record->P)&&$record->P!=0){
+		if(isset($record->P) && $record->P == 1 ){
 			$rtn_array[] = 'epqap';
 		}
-		if(isset($record->L)&&!empty($record->L)&&$record->L!=0){
+		if(isset($record->L) && $record->L == 1 ){
 			$rtn_array[] = 'epqal';
 		}
 		$rtn_str = implode('-',$rtn_array);

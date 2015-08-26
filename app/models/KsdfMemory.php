@@ -21,11 +21,10 @@ class KsdfMemory extends \Phalcon\Mvc\Model {
 			'bind' => array('th'=>$th)
 		)
 		);
-		$rtn_array = array();
+		$rtn_str = null;
 		if(isset($record->$xz)){
-			$rtn_array[] = $record->$xz;
+			$rtn_str = $record->$xz;
 		}
-		$rtn_str = implode('-',$rtn_array);
 		return $rtn_str;
 	}
 }

@@ -1,13 +1,32 @@
 <?php
-
 use Phalcon\Mvc\Model\Transaction\Failed as TxFailed;
 use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
-
-class MemoryManagement {
+	/**
+	 * @usage 题目基础得分计算需要对照的5张得分对照表加载为内存表
+	 * @author Wangyaohui
+	 * @date 2015-8-25
+	 */
+class MemoryTable {
 	private static $mysql_memory_list = array(
 		'cpidf' , 'eppsdf', 'epqadf', 'ksdf','spmdf'
 	);
-	public static function startMysqlMemoryTable($table_name){
+	/**
+	 * @usage 所有内存表的加载器
+	 * @throws Exception
+	 * @return boolean
+	 */
+	public static function loader(){
+		try{
+			foreach(self::$mysql_memory_list as $value){
+				self::startMysqlMemoryTable($value);
+			}
+			return true;
+		}catch(Exception $e){
+			throw new Exception($e->getMessage());
+		}
+	}
+	
+	private static function startMysqlMemoryTable($table_name){
 		$table_name = strtolower($table_name);
 		if(!in_array($table_name, self::$mysql_memory_list, true)){
 			throw new Exception ('There is no memory table for this table!');
@@ -20,38 +39,33 @@ class MemoryManagement {
 			case 'ksdf' : $state = self::startMysqlKsdfMemory(); break;
 			case 'spmdf' : $state = self::startMysqlSpmdfMemory(); break;
 		}
-		return $state;
-		
+		return $state;	
 	}
 	/**
-	public $TH;
-	public $XZ;
-	public $DO;
-	public $CS;
-	public $SY;
-	public $SP;
-	public $SA;
-	public $WB;
-	public $RE;
-	public $SO;
-	public $SC;
-	public $PO;
-	public $GI;
-	public $CM;
-	public $AC;
-	public $AI;
-	public $IE;
-	public $PY;
-	public $FX;
-	public $FE;
-	 */
-	/**
-	 * true 表示内存表ok了
+	 * public $TH;
+	 * public $XZ;
+	 * public $DO;
+	 * public $CS;
+	 * public $SY;
+	 * public $SP;
+	 * public $SA;
+	 * public $WB;
+	 * public $RE;
+	 * public $SO;
+	 * public $SC;
+	 * public $PO;
+	 * public $GI;
+	 * public $CM;
+	 * public $AC;
+	 * public $AI;
+	 * public $IE;
+	 * public $PY;
+	 * public $FX;
+	 * public $FE;
 	 * @throws Exception
 	 * @return boolean
 	 */
 	private static function startMysqlCpidfMemory(){
-		#先检测内存中是否存在cpidf_memory
 		$cpidf_first = CpidfMemory::findFirst();
 		if(isset($cpidf_first->TH)){
 			return true;
@@ -100,15 +114,10 @@ class MemoryManagement {
 	 * public $TH;
 	 * public $A;
 	 * public $B;
-	 * 
-	 */
-	/**
-	 * true
 	 * @throws Exception
 	 * @return boolean
 	 */
 	private static function startMysqlEppsdfMemory(){
-		#先检测内存中是否存在epppsdf_memory
 		$eppsdf_first = EppsdfMemory::findFirst();
 		if(isset($eppsdf_first->TH)){
 			return true;
@@ -132,29 +141,19 @@ class MemoryManagement {
 			}catch (TxFailed $e) {
 				throw new Exception("Failed, reason: ".$e->getMessage());
 			}
-		}
-		
+		}	
 	}
 	/**
 	 * public $TH;
-
-	public $XZ;
-
-	public $E;
-
-	public $N;
-
-	public $P;
-
-	public $L;
-	 */
-	/**
-	 * 
+	 * public $XZ;
+	 * public $E;
+	 * public $N;
+	 * public $P;
+	 * public $L;
 	 * @throws Exception
 	 * @return boolean
 	 */
 	private static function startMysqlEpqadfMemory(){
-		#先检测内存中是否存在epqadf_memory
 		$epqadf_first = EpqadfMemory::findFirst();
 		if(isset($epqadf_first->TH)){
 			return true;
@@ -181,25 +180,17 @@ class MemoryManagement {
 			}catch (TxFailed $e) {
 				throw new Exception("Failed, reason: ".$e->getMessage());
 			}
-		}
-		
+		}	
 	}
 	/**
 	 * public $TH;
-
-	public $A;
-	
-	public $B;
-	
-	public $C;
-	 */
-	/**
-	 * true
+	 * public $A;
+	 * public $B;
+	 * public $C;
 	 * @throws Exception
 	 * @return boolean
 	 */
 	private static function startMysqlKsdfMemory(){
-		#先检测内存中是否存在ksdf_memory
 		$ksdf_first = KsdfMemory::findFirst();
 		if(isset($ksdf_first->TH)){
 			return true;
@@ -239,7 +230,6 @@ class MemoryManagement {
 	 * @return boolean
 	 */
 	private static function startMysqlSpmdfMemory(){
-		#先检测内存中是否存在spmdf_memory
 		$spmdf_first = SpmdfMemory::findFirst();
 		if(isset($spmdf_first->XH)){
 			return true;
