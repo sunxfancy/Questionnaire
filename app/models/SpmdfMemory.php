@@ -22,13 +22,12 @@ class SpmdfMemory extends  \Phalcon\Mvc\Model {
 						'bind' => array('th'=>$th, 'bz'=>$xz)
 				)
 		);
-		$rtn_array = array();
+		$rtn_str = null;
 		if(isset($record->BZ)){
-			$rtn_array[] = 1;
+			$rtn_str = 1;
 		}else{
-			$rtn_array[] = 0;
+			$rtn_str = 0;
 		}
-		$rtn_str = implode('-',$rtn_array);
 		return $rtn_str;
 	}
 }
