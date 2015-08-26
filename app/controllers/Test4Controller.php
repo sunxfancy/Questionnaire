@@ -31,8 +31,7 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 // 		exit();
 		
 	}
-	public function microtime_float ()
-	{
+	public function microtime_float () {
 		list( $usec ,  $sec ) =  explode ( " " ,  microtime ());
 		return ((float) $usec  + (float) $sec );
 	}

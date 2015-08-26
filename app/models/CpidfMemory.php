@@ -31,60 +31,60 @@ class CpidfMemory extends \Phalcon\Mvc\Model{
 		)
 		);	
 		$rtn_array = array();	
-		if(isset($record->DO)&& $record->DO == 1 ){
-			$rtn_array[] = 'do';
-		}
-		if(isset($record->CS)&& $record->CS == 1 ){
-			$rtn_array[] = 'cs';
-		}
-		if(isset($record->SY)&& $record->SY == 1 ){
-			$rtn_array[] = 'sy';
-		}
-		if(isset($record->SP)&& $record->SP == 1 ){
-			$rtn_array[] = 'sp';
-		}
-		if(isset($record->SA)&& $record->SA == 1 ){
-			$rtn_array[] = 'sa';
-		}
-		if(isset($record->WB)&& $record->WB == 1 ){
-			$rtn_array[] = 'wb';
-		}
-		if(isset($record->RE)&& $record->RE == 1 ){
-			$rtn_array[] = 're';
-		}
-		if(isset($record->SO)&& $record->SO == 1 ){
-			$rtn_array[] = 'so';
-		}
-		if(isset($record->SC)&& $record->SC == 1 ){
-			$rtn_array[] = 'sc';
-		}
-		if(isset($record->PO)&& $record->PO == 1 ){
-			$rtn_array[] = 'po';
-		}
-		if(isset($record->GI)&& $record->GI == 1 ){
-			$rtn_array[] = 'gi';
-		}
-		if(isset($record->CM)&& $record->CM == 1 ){
-			$rtn_array[] = 'cm';
-		}
-		if(isset($record->AC)&& $record->AC == 1 ){
-			$rtn_array[] = 'ac';
-		}
-		if(isset($record->AI)&& $record->AI == 1 ){
-			$rtn_array[] = 'ai';
-		}
-		if(isset($record->IE)&& $record->IE == 1 ){
-			$rtn_array[] = 'ie';
-		}
-		if(isset($record->PY)&& $record->PY == 1 ){
-			$rtn_array[] = 'py';
-		}
-		if(isset($record->FX)&& $record->FX == 1 ){
-			$rtn_array[] = 'fx';
-		}
-		if(isset($record->FE)&& $record->FE == 1 ){
-			$rtn_array[] = 'fe';
-		}
+// 		if( $record->DO == 1 ){
+// 			$rtn_array[] = 'do';
+// 		}
+// 		if( $record->CS == 1 ){
+// 			$rtn_array[] = 'cs';
+// 		}
+// 		if( $record->SY == 1 ){
+// 			$rtn_array[] = 'sy';
+// 		}
+// 		if( $record->SP == 1 ){
+// 			$rtn_array[] = 'sp';
+// 		}
+// 		if( $record->SA == 1 ){
+// 			$rtn_array[] = 'sa';
+// 		}
+// 		if( $record->WB == 1 ){
+// 			$rtn_array[] = 'wb';
+// 		}
+// 		if( $record->RE == 1 ){
+// 			$rtn_array[] = 're';
+// 		}
+// 		if( $record->SO == 1 ){
+// 			$rtn_array[] = 'so';
+// 		}
+// 		if( $record->SC == 1 ){
+// 			$rtn_array[] = 'sc';
+// 		}
+// 		if( $record->PO == 1 ){
+// 			$rtn_array[] = 'po';
+// 		}
+// 		if( $record->GI == 1 ){
+// 			$rtn_array[] = 'gi';
+// 		}
+// 		if( $record->CM == 1 ){
+// 			$rtn_array[] = 'cm';
+// 		}
+// 		if( $record->AC == 1 ){
+// 			$rtn_array[] = 'ac';
+// 		}
+// 		if( $record->AI == 1 ){
+// 			$rtn_array[] = 'ai';
+// 		}
+// 		if( $record->IE == 1 ){
+// 			$rtn_array[] = 'ie';
+// 		}
+// 		if( $record->PY == 1 ){
+// 			$rtn_array[] = 'py';
+// 		}
+// 		if( $record->FX == 1 ){
+// 			$rtn_array[] = 'fx';
+// 		}
+// 		if( $record->FE == 1 ){
+// 			$rtn_array[] = 'fe';
+// 		}
 		
 		$rtn_str = implode('-',$rtn_array);
 		return $rtn_str;
