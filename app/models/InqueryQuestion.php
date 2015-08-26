@@ -27,6 +27,10 @@ class InqueryQuestion extends \Phalcon\Mvc\Model
      *
      */
     public $is_radio;
+    /**
+    *@var integer
+    */
+    public $project_id;
 
 
 }
