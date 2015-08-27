@@ -296,7 +296,7 @@
     }
 
     function getpaper(url){
-        $.post(url, {'paper_name':"inquery"}, function(data) {
+        $.post(url, function(data) {
             questions=data.question;
             Leo_initPanel(questions.length);
             initCookie(questions.length,"ans_cookie"+{{number}});

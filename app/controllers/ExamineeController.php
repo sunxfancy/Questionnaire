@@ -61,20 +61,19 @@ class ExamineeController extends Base
     }
 
     public function getInqueryAction(){
-        $paper_name = $this->request->getPost("paper_name","string");
         $project_id = $this->session->get('Examinee')->project_id;
         $inquery = InqueryQuestion::find(array(
             'project_id=?1',
             'bind'=>array(1=>$project_id)));
         $length = count($inquery);
         $question = array();
-        foreach ($inquery as $inquerys) {
+        for ($i=0; $i < $length; $i++) { 
             $question[] = array('ques_length' =>$length,
-                              'index'       =>$inquerys->id,
-                              'title'       =>$inquerys->topic,
-                              'options'     =>$inquerys->options,
-                              'is_multi'    =>$inquerys->is_radio
-                            );
+                                'index'       =>$i,
+                                'title'       =>$inquery[$i]->topic,
+                                'options'     =>$inquery[$i]->options,
+                                'is_multi'    =>$inquery[$i]->is_radio
+                                );
         }
         $this->dataReturn($question);
     }
