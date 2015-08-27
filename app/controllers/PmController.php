@@ -335,7 +335,8 @@ class PmController extends Base
                     'bind'=>array(1=>$factor_name)));
                 $paper_id = $factor->paper_id;
                 $paper_name = $this->getPaperName($paper_id);
-                $factors[$paper_name][] = $factor_name;
+                $factor_id = $factor->id;
+                $factors[$paper_name][$factor_id] = $factor_name;
             }
             $factor_json = json_encode($factors,JSON_UNESCAPED_UNICODE);
             try{

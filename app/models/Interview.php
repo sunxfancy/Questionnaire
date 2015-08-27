@@ -8,19 +8,19 @@ class Interview extends \Phalcon\Mvc\Model
      * @var string
      *
      */
-    public $advantage;
+    public $advantage = null;
 
     /**
      * @var string
      *
      */
-    public $disadvantage;
+    public $disadvantage = null;
 
     /**
      * @var string
      *
      */
-    public $remark;
+    public $remark = null;
 
     /**
      * @var integer
