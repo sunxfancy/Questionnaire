@@ -144,7 +144,7 @@ class FactorScore {
 				switch(strtoupper($paper_name)){
 					case "EPQA" : $rtn_array_paper = self::calEPQA($question_ans_record); break;
 					case 'EPPS' : $rtn_array_paper = self::calEPPS($question_ans_record); break;
-// 					case 'CPI'  : $rtn_array_paper = self::calCPI($question_ans_record->score); break;
+					case 'CPI'  : $rtn_array_paper = self::calCPI($question_ans_record); break;
 // 					case 'SCL'  : $rtn_array_paper = self::calSCL($question_ans_record); break;
 // 					case '16PF' : $rtn_array_paper = self::calKS($question_ans_record); break;
 // 					case 'SPM'  : $rtn_array_paper = self::calSPM($question_ans_record); break;
@@ -199,13 +199,14 @@ class FactorScore {
 		if(empty(self::$factors_list_finished)){
 			self::getFinishedFactors($resultsets->examinee_id);
 		}
-		if(in_array('epqan',self::$factors_list_finished) || in_array('epqap',self::$factors_list_finished) || in_array('epqae',self::$factors_list_finished) || in_array('epqal',self::$factors_list_finished) ) {
-			#false表示EPQA的因子已经写入完成
-			return false;
-		}
+		foreach(self::$factors_list_all['EPQA'] as $key => $value){
+			if (in_array($value, self::$factors_list_finished)){
+				#false表示EPQA的因子已经写入完成
+				return false;
+			}
+		} 
 		#计算全部因子的得分
-		$score_string = $resultsets->score;
-		$score_array  = explode('|', $score_string);
+		$score_array  = explode('|', $resultsets->score);
 		$score_array  = array_count_values($score_array);
 		unset($score_array['']);
 		#标准分及最终分计算
@@ -221,9 +222,12 @@ class FactorScore {
 		#根据$factors_list_all['epqa'];
 		$rt_array = array();
 		foreach(self::$factors_list_all['EPQA'] as $key=>$value){
-			$factor_id = MemoryCache::getFactorDetail($value) ->id;
 			$rt_array_record = array();
-			$score = $score_array[$value];
+			#判断要写入的因子是否存在于之前的结果集中，若不存在，则置为0
+			$score = 0;
+			if(isset($score_array[$value])){
+				$score = $score_array[$value];
+			}
 		 	$m  = 0;
 			$sd = 0;
 			$std_score = 0;
@@ -261,7 +265,7 @@ class FactorScore {
 		 $rt_array_record['score'] = floatval($score);
 		 $rt_array_record['std_score'] = floatval($std_score);
 		 $rt_array_record['ans_score'] = floatval($ans_score);
-		 $rt_array[$factor_id] = $rt_array_record;
+		 $rt_array[$key] = $rt_array_record;
 		}
 		return $rt_array;
 	}
@@ -270,34 +274,58 @@ class FactorScore {
 	 * @param unknown $array
 	 */
 	public static function calEPPS(&$resultsets){
-		$array_15 = explode('|', $resultsets->option);
-		$rt = array_count_values ($array_15);
-		unset($rt['']);
-		#计算稳定系数con
-		$rt['con'] = self::getEPPSCon($array);
+		#首先判断是否需要写入epps相关的因子分数
+		if(empty(self::$factors_list_all)){
+			self::getFactorsAll($resultsets->examinee_id);
+		}
+		if(!isset(self::$factors_list_all['EPPS'])){
+			#true 表示不用写入EPPS的相关因子
+			return true;
+		}
+		#其次判断epps相关的因子分数是否已经写入
+		if(empty(self::$factors_list_finished)){
+			self::getFinishedFactors($resultsets->examinee_id);
+		}
+		foreach(self::$factors_list_all['EPPS'] as $key=>$value){
+			if(in_array($value, self::$factors_list_finished)){
+				#false表示EPPS的因子已经写入完成
+				return false;
+			}
+		}
+		#计算全部因子的得分
+		$score_array = explode('|', $resultsets->score);
+		$score_array = array_count_values ($score_array);
+		unset($score_array['']);
+		$score_array['con'] = self::getEPPSCon($resultsets);
+		#根据$factors_list_all['epps'];
 		$rt_array = array();
-		foreach($rt as $key => $score){
-			if($key !='con'){ 
-				$score -=1;
+		foreach(self::$factors_list_all['EPPS'] as $key => $value){
+			$rt_array_record = array();
+			#判断要写入的因子是否存在于之前的结果集中，若不存在，则置为0
+			$score = 0;
+			if(isset($score_array[$value])){
+				if($value == 'con'){
+					$score = $score_array[$value];
+				}else{
+					$score = $score_array[$value]-1;
+				}
 			}
-			$array_record = array();
-			$std_score = 0;
+			$std_score = $score;
 			$ans_score = 0;
-			if($key != 'con'){
-				$std_score = $score;
-				$ans_score = $score/2.8;
-			}else{
-				if ($score == 1) $ans_score = 9; 
-				else  if ($score == 2) $ans_score = 8; 
-				else  if ($score == 3) $ans_score = 7; 
-				else  if ($score == 4) $ans_score = 5; 
-				else  if ($score ==6 ) $ans_score = 2; 
-				else $ans_score = 1;
-			}
-			$array_record['score'] = $score;
-			$array_record['std_score'] = $std_score;
-			$array_record['ans_score'] = $ans_score;
-			$rt_array[$key] = $array_record;
+		 	if($value != 'con'){
+		 		$ans_score = sprintf("%.2f",$std_score/2.8);
+		 	}else{
+		 		if ($std_score == 1) $ans_score = 9;
+		 		else  if ($std_score == 2) $ans_score = 8;
+		 		else  if ($std_score == 3) $ans_score = 7;
+		 		else  if ($std_score == 4) $ans_score = 5;
+		 		else  if ($std_score ==6 ) $ans_score = 2;
+		 		else $ans_score = 1;
+		 	}
+		 	$rt_array_record['score'] = floatval($score);
+		 	$rt_array_record['std_score'] = floatval($std_score);
+		 	$rt_array_record['ans_score'] = floatval($ans_score);
+		 	$rt_array[$key] = $rt_array_record;		 	
 		}
 		return $rt_array;
 	}
@@ -305,13 +333,51 @@ class FactorScore {
 	 * CPI 匹配 sum
 	 * @param unknown $string
 	 */
-	public static function calCPI($string, $examinee){
-		$string = str_replace('-', '|', $string);
-		$array = explode('|', $string);
-		$rt = array_count_values ($array);
-		unset($rt['']);
-		$dm = ($examinee->sex ==0) ? 2 : 1;
+	public static function calCPI(&$resultsets){
+		#首先判断是否需要写入cpi相关的因子分数
+		if(empty(self::$factors_list_all)){
+			self::getFactorsAll($resultsets->examinee_id);
+		}
+		if(!isset(self::$factors_list_all['CPI'])){
+			#true 表示不用写入CPI的相关因子
+			return true;
+		}
+		#其次判断cpi相关的因子分数是否已经写入
+		if(empty(self::$factors_list_finished)){
+			self::getFinishedFactors($resultsets->examinee_id);
+		}
+		foreach(self::$factors_list_all['CPI'] as $key=>$value){
+			if(in_array($value, self::$factors_list_finished)){
+			#false表示CPI的因子已经写入完成
+				return false;
+			}
+		}
+		$string = str_replace('-', '|', $resultsets->score);
+		$score_array = explode('|', $string);
+		$score_array = array_count_values ($score_array);
+		unset($score_array['']);
+		#确保加载内存表
+		if(!self::$memory_state){
+			self::beforeStart();
+		}
+		if(empty(self::$examinee_info)){
+			self::getExamineeInfo($resultsets->examinee_id);
+		}
+		$dm =  self::$examinee_info['sex'] == 1? 1 : 2;
 		$rt_array = array();
+		print_r($score_array);
+		exit();
+		foreach(self::$factors_list_all['CPI'] as $key => $value){
+			$rt_array_record = array();
+			#判断要写入的因子是否存在于之前的结果集中，若不存在，则置为0
+			$score = 0;
+			if(isset($score_array[$value])){
+				$score = $score_array[$value];
+			}
+			$std_score = 0;
+		 	$ans_score = 0;
+			
+		}
 		foreach($rt as $key => $score) {
 			$array_record = array();
 			$std_score = 0;
@@ -590,7 +656,7 @@ class FactorScore {
 	/**use for EPPS con
 	 * 返回一个$array[$question_number] = choice;
 	 */
-	public static function getEPPSCon(&$array){
+	private static function getEPPSCon(&$array){
 		$rtn_array = array();
 		$number_list = explode('|', $array->question_number_list);
 		$choice_list = explode('|', $array->option);
