@@ -27,10 +27,40 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $excel->setActiveSheetIndex(2);
         self::checkout16pf($examinee,$excel);
 
-        $epps = new PHPExcel_Worksheet($excel, '4.epps'); //创建16pf表
+        $epps = new PHPExcel_Worksheet($excel, '4.epps'); //创建epps表
         $excel->addSheet($epps); 
         $excel->setActiveSheetIndex(3);
         self::checkoutEpps($examinee,$excel);
+
+        $scl = new PHPExcel_Worksheet($excel, '5.epps'); //创建SCL表
+        $excel->addSheet($scl); 
+        $excel->setActiveSheetIndex(4);
+        self::checkoutScl($examinee,$excel);
+
+        $epqa = new PHPExcel_Worksheet($excel, '6.epqa'); //创建epqa表
+        $excel->addSheet($epqa); 
+        $excel->setActiveSheetIndex(5);
+        self::checkoutEpqa($examinee,$excel);
+
+        $cpi = new PHPExcel_Worksheet($excel, '7.cpi'); //创建cpi表
+        $excel->addSheet($cpi); 
+        $excel->setActiveSheetIndex(6);
+        self::checkoutCpi($examinee,$excel);
+
+        $spm = new PHPExcel_Worksheet($excel, '8.spm'); //创建spm表
+        $excel->addSheet($spm); 
+        $excel->setActiveSheetIndex(7);
+        self::checkoutSpm($examinee,$excel);
+
+        $indexarray = new PHPExcel_Worksheet($excel, '9.8+5'); //创建8+5表
+        $excel->addSheet($indexarray); 
+        $excel->setActiveSheetIndex(8);
+        self::checkoutIndexArray($examinee,$excel);
+
+        $struct = new PHPExcel_Worksheet($excel, '10.结构'); //创建结构表
+        $excel->addSheet($struct); 
+        $excel->setActiveSheetIndex(9);
+        self::checkoutStruct($examinee,$excel);
 
         $write = new PHPExcel_Writer_Excel5($excel);
         header("Pragma: public");
@@ -146,7 +176,6 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $objActSheet->getDefaultRowDimension()->setRowHeight(25);
         $objActSheet->getDefaultColumnDimension()->setWidth(20);
 
-        // $objActSheet->getRowDimension('A')->setRowHeight(50);
         $objActSheet->getRowDimension(1)->setRowHeight(50);
         $objActSheet->mergeCells('A1:E1');
         $objActSheet->setCellValue('A1','TQT人才测评系统  28项指标排序');
@@ -185,11 +214,132 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
 
     public static function checkout16pf($examinee,$excel){
         //todo
+        $objActSheet = $excel->getActiveSheet();
+        $objActSheet->getDefaultRowDimension()->setRowHeight(22);
+
+        $objActSheet->getColumnDimension('B')->setWidth(5);
+        $objActSheet->getColumnDimension('C')->setWidth(10);
+        $objActSheet->getColumnDimension('D')->setWidth(20);
+        $objActSheet->getColumnDimension('E')->setWidth(2.5);
+        $objActSheet->getColumnDimension('F')->setWidth(2.5);
+        $objActSheet->getColumnDimension('G')->setWidth(2.5);
+        $objActSheet->getColumnDimension('H')->setWidth(2.5);
+        $objActSheet->getColumnDimension('I')->setWidth(2.5);
+        $objActSheet->getColumnDimension('J')->setWidth(2.5);
+        $objActSheet->getColumnDimension('K')->setWidth(2.5);
+        $objActSheet->getColumnDimension('L')->setWidth(2.5);
+        $objActSheet->getColumnDimension('M')->setWidth(2.5);
+        $objActSheet->getColumnDimension('N')->setWidth(2.8);
+        $objActSheet->getColumnDimension('O')->setWidth(20);
+        
+
+        $styleArray = array(
+            'borders' => array(
+                'allborders' => array(
+                    // 'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,//细边框
+                    //'color' => array('argb' => 'FFFF0000'),
+                ),
+            ),
+        );
+        $styleArray1 = array(
+            'borders' => array(
+                'outline' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
+                ),
+            ),
+        );
+        $objActSheet->getStyle('A2:O4')->applyFromArray($styleArray1);
+
+        $objActSheet->getRowDimension(1)->setRowHeight(50);
+        $objActSheet->mergeCells('A1:Q1');
+        $objActSheet->setCellValue('A1','卡特尔十六种人格因素(16PF)测验结果');
+        $objActSheet->getStyle('A1')->getFont()->setSize(20);
+        $objActSheet->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+        $objActSheet->mergeCells('B2:C2');
+        $objActSheet->mergeCells('B3:C3');
+        $objActSheet->mergeCells('B4:C4');
+        $objActSheet->mergeCells('E2:J2');
+        $objActSheet->mergeCells('E3:J3');
+        $objActSheet->mergeCells('K2:N2');
+        $objActSheet->mergeCells('K3:N3');
+        $objActSheet->setCellValue('A2','分类号');
+        $objActSheet->setCellValue('D2','编号');
+        $objActSheet->setCellValue('K2','姓名');
+        $objActSheet->setCellValue('O2',$examinee->name);
+        $objActSheet->setCellValue('A3','性别');
+        $sex = ($examinee->sex == "1") ? "男" : "女";
+        $objActSheet->setCellValue('B3',$sex);
+        $objActSheet->setCellValue('D3','年龄');
+        $birthday = $examinee->birthday;
+        $bir = explode('-',$birthday);
+        $age = date("Y") - $bir[0];
+        if((date("m")-$bir[1])>0 || ( (date("m")==$bir[1])&&(date("d")>$bir[2]) ))
+            $age++;
+        $objActSheet->getStyle('E3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+        $objActSheet->setCellValue('E3',$age);
+        $objActSheet->setCellValue('K3','职业');
+        $objActSheet->setCellValue('O3',$examinee->duty);
+
+        $objActSheet->setCellValue('A4','日期');
+        $objActSheet->setCellValue('B4',date("Y-m-d"));
+
+        $objActSheet->getRowDimension(5)->setRowHeight(8);
+
+        $objActSheet->setCellValue('A6','因子名称');
+        $objActSheet->setCellValue('B6','代号');
+        $objActSheet->setCellValue('C6',' 标准分 ');
+        $objActSheet->setCellValue('D6','低分者特征');
+        $objActSheet->setCellValue('O6','高分者特征');
+
+        $letter = array('E','F','G','H','I','J','K','L','M','N');
+        for($i = 6;$i<16;$i++){
+            $j = $i -5;
+            $k = $j -1;
+            $objActSheet->getStyle("$letter[$k]6")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+            $objActSheet->setCellValue("$letter[$k]6","$j");
+        }
+
+        // $objActSheet->getRowDimension(7)->setRowHeight(60);
+        // // $objActSheet->getStyle('A7')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        // // $objActSheet->getStyle('A7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        // $objActSheet->getStyle('A7:F30')->getAlignment()->setWrapText(TRUE);
+        // $objActSheet->setCellValue('A7','教育经历（自高中毕业后起，含在职教育经历）');
+
+
+
+
     }
 
     public static function checkoutEpps($examinee,$excel){
         //todo
     }
+
+    public static function checkoutScl($examinee ,$excel){
+        //todo
+    }
+
+    public static function checkoutEpqa($examinee,$excel){
+        //todo
+    }
+
+    public static function checkoutCpi($examinee,$excel){
+        //todo
+    }
+
+    public static function checkoutSpm($examinee,$excel){
+        //todo
+    }
+
+    public static function checkoutIndexArray($examinee,$excel){
+        //todo
+    }
+
+    public static function checkoutStruct($examinee,$excel){
+        //todo
+    }
+
 
     public function testexcel(){
         require_once("../app/classes/PHPExcel.php");
