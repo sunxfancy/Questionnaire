@@ -2,150 +2,275 @@
 use Phalcon\Mvc\Model\Transaction\Failed as TxFailed;
 use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
 	/**
-	 * 用于因子分数计算，
+	 * @usage 使用条件在BasicScore完成handlePapers后,开始执行handleFactors($examinee_id);
 	 * @param int $examinee_id;
 	 * @author Wangyaohui
-	 * @Date: 2015-8-24
-	 *
+	 * @Date 2015-8-26
 	 */
 class FactorScore {
-	public static function ifStartCalFactor($examinee_id){
+	/**
+	 * @usage 添加静态变避免在一次请求中重复加载内存表
+	 * @var boolean
+	 */
+	protected static $memory_state = false;
+	/**
+	 * @usage 缓存本地的带有成绩的试卷信息
+	 * @var \Phalcon\Mvc\Model\Resultset\Simple
+	 */
+	private static $papers_list = null;
+	/**
+	 * @usage 缓存到本地已经写入过的因子
+	 * @var  array 
+	 */
+	private static $factors_list_finished = null;
+	/**
+	 * @usage 缓存到本地的用户信息  id sex 1男性 0女性  project_id
+	 * @var array 
+	 */
+	private static $examinee_info = null;
+	/**
+	 * @usage 缓存到本地的所有需要填写的因子,二维数组,试卷名-因子名
+	 * @var array
+	 */
+	private static $factors_list_all = null;
+	/**
+	 * @usage 在计算基础得分之前，首先加载内存表
+	 * @throws Exception
+	 * @return boolean
+	 */
+	public static function beforeStart(){
 		try{
-			$handle_state = BasicScore::handlePapers($examinee_id);
-			if($handle_state){
-				return true;
-			}else{
-				return false;
-			}
+			self::$memory_state =  MemoryTable::loader();
+			return self::$memory_state;
 		}catch(Exception $e){
-			echo "Failed: reason is ".$e->getMessage();
-			return false;
+			throw new Exception($e->getMessage());
 		}
 	}
-	public static function handleFactors($examinee_id){
-		if(FactorAns::checkIfFinished($examinee_id)){
-			return true;
+	/**
+	 * @usage 用于查验FactorAns表中已经写入的factor成绩,并将写过的因子名称传给$factor_list;
+	 * @param int $examinee_id
+	 */
+	protected static function getFinishedFactors($examinee_id){
+		$results_from_factor_ans =  FactorAns::find(
+			array(
+			"examinee_id = :examinee_id:",
+			'bind' => array ('examinee_id' =>$examinee_id)
+		)
+		);
+		$rt_array = array();
+		foreach ($results_from_factor_ans as $value){
+			$rt_array[]  = $value->Factor->name;
 		}
-		if(self::ifStartCalFactor($examinee_id)){
-			$question_ans_list = QuestionAns::getListByExamineeId($examinee_id);
-			$examinee = Examinee::findFirst($examinee_id);
-			$age = self::calAge($examinee->birthday,$examinee->last_login);
-			$examinee->age = $age;
-			$rtn_array = array();
-			foreach($question_ans_list as $question_ans_record){
-				//缓存到本地
-				$paper = Paper::queryPaperInfo($question_ans_record->paper_id);
-				switch (strtoupper($paper->name)){
-					case "EPQA" : $rtn_array_paper = self::calEPQA($question_ans_record->score,$examinee); break;
+		self::$factors_list_finished = $rt_array;
+		unset($results_from_factor_ans);
+	}
+	/**
+	 * @usage 获取被试的个人信息,主要是两个:性别/年龄
+	 * @param int $examinee_id
+	 */
+	protected static function getExamineeInfo($examinee_id){
+		$results_from_examinee = Examinee::findFirst(
+			array(
+			"id = :examinee_id:",
+			'bind' => array('examinee_id' =>$examinee_id)
+		)
+		);
+		$rt_array = array();
+		#examinee表中性别：1男性 0女性 
+		if(empty($results_from_examinee->sex)){
+			throw new Exception("The sex is null");
+		}
+		$rt_array['sex'] = $results_from_examinee->sex;
+		$rt_array['age'] = self::calAge($results_from_examinee->birthday, $results_from_examinee->last_login);
+		if($rt_array['age'] < 16 || $rt_array['age'] >= 150){
+			throw new Exception("The age is not appropriate!");
+		}
+		$rt_array['project_id'] = $results_from_examinee->Project->id;
+		self::$examinee_info = $rt_array;
+		unset($rt_array);
+		unset($results_from_examinee);
+	}
+	/**
+	 * @usage 年龄计算函数
+	 * @param time $birthday
+	 * @param time $today
+	 * @return string
+	 */
+	private static function calAge($birthday, $today){
+			$startdate=strtotime($birthday);
+			$enddate=strtotime($today);
+			$days=round(($enddate-$startdate)/3600/24) ;
+			$age = sprintf("%.2f",$days/365);
+			return $age;
+		}
+	
+	/**
+	 * @usage 返回被试的全部答卷的得分信息，并写入到类的静态变量$papers_list中
+	 * @param int $examinee_id
+	 */
+	protected static function getPapersByExamineeId($examinee_id){
+		self::$papers_list = QuestionAns::find(
+				array(
+						"examinee_id = :examinee_id:",
+						'bind' => array('examinee_id'=>$examinee_id)
+				)
+		);
+	}
+	/**
+	 * @usage 返回被试应该写入的所有因子得分
+	 * @param int $examinee_id
+	 */
+	protected static function getFactorsAll($examinee_id){
+		if(empty(self::$examinee_info)){
+			self::getExamineeInfo($examinee_id);
+		}
+		$project_info = MemoryCache::getProjectDetail(self::$examinee_info['project_id']);
+		self::$factors_list_all = json_decode($project_info->factor_names, true);
+	}
+	/**
+	 * @usage 计算因子得分并写入到库的关键，采取个人按试卷记录插入操作
+	 * @param int $examinee_id
+	 * @throws Exception
+	 * @return boolean
+	 */
+	public static function handleFactors($examinee_id){
+		try {
+			if(empty(self::$papers_list)){
+				self::getPapersByExamineeId($examinee_id);
+			}
+			foreach(self::$papers_list as $question_ans_record){
+				$paper_name= $question_ans_record->Paper->name;
+				$rtn_array_paper = null;
+				switch(strtoupper($paper_name)){
+					case "EPQA" : $rtn_array_paper = self::calEPQA($question_ans_record); break;
 					case 'EPPS' : $rtn_array_paper = self::calEPPS($question_ans_record); break;
-					case 'CPI'  : $rtn_array_paper = self::calCPI($question_ans_record->score,$examinee); break;
-					case 'SCL'  : $rtn_array_paper = self::calSCL($question_ans_record); break;
-					case '16PF' : $rtn_array_paper = self::calKS($question_ans_record,$examinee); break;
-					case 'SPM'  : $rtn_array_paper = self::calSPM($question_ans_record,$examinee); break;
-					default : throw new Exception ("no this type paper: $paper->name");
-				}
-				if(!empty($rtn_array_paper)) {
-					foreach($rtn_array_paper as $key =>$value ){
-						$rtn_array[$key] = $value;
-					}
-				}
-				unset($rtn_array_paper);
-				
+// 					case 'CPI'  : $rtn_array_paper = self::calCPI($question_ans_record->score); break;
+// 					case 'SCL'  : $rtn_array_paper = self::calSCL($question_ans_record); break;
+// 					case '16PF' : $rtn_array_paper = self::calKS($question_ans_record); break;
+// 					case 'SPM'  : $rtn_array_paper = self::calSPM($question_ans_record); break;
+// 					default : throw new Exception ("no this type paper:$paper_name");
+				}	
+				echo "<pre>";
+				var_dump($rtn_array_paper);
+				echo "</pre>";
+// 				if(is_bool($rtn_array_paper) || empty($rtn_array_paper)){
+// 						continue;
+// 				}
+// 				try{
+// 					$manager     = new TxManager();
+// 					$transaction = $manager->get();
+// 					foreach ( $rtn_array_paper as $key => $value ) {
+// 						$factor_ans = new FactorAns();
+// 						$factor_ans->examinee_id = $examinee_id;
+// 						$factor_ans->factor_id = $key;
+// 						$factor_ans->score = $value['score'];
+// 						$factor_ans->std_score = $value['std_score'];
+// 						$factor_ans->ans_score = $value['ans_score'];
+// 						if($factor_ans->save() == false){
+// 								$transaction->rollback("Cannot update table FactorAns' score");
+// 						}
+// 					}
+// 					$transaction->commit();
+// 				}catch (TxFailed $e) {
+// 					throw new Exception("Failed, reason: ".$e->getMessage());
+// 				}
 			}
-			unset($question_ans_list);
-// 			echo "<pre>";
-// 			print_r($rtn_array);
-// 			echo "</pre>";
-// 			exit();
-			#插入到因子表
-			try{
-				$manager     = new TxManager();
-				$transaction = $manager->get();
-				foreach ( $rtn_array as $key => $value ) {
-					$factor_ans = new FactorAns();
-					$factor_id = Factor::findFirst( array("name = :factor_name:",'bind'=>array('factor_name'=>$key) ))->id;
-					$factor_ans->examinee_id = $examinee_id;
-					$factor_ans->factor_id = $factor_id;
-					$factor_ans->score = $value['score'];
-					$factor_ans->std_score = $value['std_score'];
-					$factor_ans->ans_score = $value['ans_score'];
-
-					if($factor_ans->save() == false){
-							$transaction->rollback("Cannot update table FactorAns' score");
-					}
-				}
-				$transaction->commit();
-				return true;
-			}catch (TxFailed $e) {
-						throw new Exception("Failed, reason: ".$e->getMessage());
-			}
-		}else{
-			throw new Exception('question scores are not finished');
+		return true;
+		}catch(Exception $e){
+			throw new Exception($e->getMessage());
 		}
 	}
 	
 	/**
-	 * EPQA,  匹配 sum
+	 * @usage EPQA计算
 	 * @param unknown $string
 	 * @return multitype:
 	 */
-	public static function calEPQA($string,$examinee){
-		 $tmp_array = array(); 
-		 $array = explode('|', $string);
-		 $tmp_array = array_count_values ($array);
-		 unset($tmp_array['']);
-		 $dage = $examinee->age;
-		 $dm = ($examinee->sex ==0) ? 2 : 1;
-		 $rt_array = array();
-		 foreach($tmp_array as $key=>$score){
-		 $array_record = array();
-		 $m  = 0;
-		 $sd = 0;
-		 $ans_score = 0;
-		 $epqamd = Epqamd::findFirst(array(
+	protected static function calEPQA(&$resultsets){
+		#首先判断是否需要写入epqa相关的因子分数
+		if(empty(self::$factors_list_all)){
+			self::getFactorsAll($resultsets->examinee_id);
+		}
+		if(!isset(self::$factors_list_all['EPQA'])){
+			#true 表示不用写入EPQA的相关因子
+			return true;
+		}
+		#其次判断epqa相关的因子分数是否已经写入
+		if(empty(self::$factors_list_finished)){
+			self::getFinishedFactors($resultsets->examinee_id);
+		}
+		if(in_array('epqan',self::$factors_list_finished) || in_array('epqap',self::$factors_list_finished) || in_array('epqae',self::$factors_list_finished) || in_array('epqal',self::$factors_list_finished) ) {
+			#false表示EPQA的因子已经写入完成
+			return false;
+		}
+		#计算全部因子的得分
+		$score_string = $resultsets->score;
+		$score_array  = explode('|', $score_string);
+		$score_array  = array_count_values($score_array);
+		unset($score_array['']);
+		#标准分及最终分计算
+		#确保加载内存表
+		if(!self::$memory_state){
+			self::beforeStart();
+		}
+		if(empty(self::$examinee_info)){
+			self::getExamineeInfo($resultsets->examinee_id);
+		}
+		$dage =  self::$examinee_info['age'];
+		$dsex =  self::$examinee_info['sex'] == 1? 1 : 2;
+		#根据$factors_list_all['epqa'];
+		$rt_array = array();
+		foreach(self::$factors_list_all['EPQA'] as $key=>$value){
+			$factor_id = MemoryCache::getFactorDetail($value) ->id;
+			$rt_array_record = array();
+			$score = $score_array[$value];
+		 	$m  = 0;
+			$sd = 0;
+			$std_score = 0;
+		 	$ans_score = 0;
+		 	$epqamd = EpqamdMemory::findFirst(array(
 		 		'DAGEL <= :age: AND DAGEH > :age: AND DSEX = :sex:',
-		 		'bind'=>array('age'=>$dage,'sex'=>$dm)));
-		 switch($key){
-		 	case 'epqae':
-		 		$m = $epqamd->EM;
-		 		$sd = $epqamd->ESD;
-		 		$std_score = sprintf("%.2f",50 + (10 * ($score - $m)) / $sd);
-		 		$ans_score = $std_score/10;
-		 		break;
-		 	case 'epqan':
-		 		$m = $epqamd->NM;
-		 		$sd = $epqamd->NSD;
-		 		$std_score = sprintf("%.2f",50 + (10 * ($score - $m)) / $sd);
-		 		$ans_score = 10 - $std_score/10;
-		 		break;
-		 	case 'epqap':
-		 		$m = $epqamd->PM;
-		 		$sd = $epqamd->PSD;
-		 		$std_score = sprintf("%.2f",50 + (10 * ($score - $m)) / $sd);
-		 		$ans_score = 10 - $std_score/10;
-		 		break;
-		 	case 'epqal':
-		 		$m = $epqamd->LM;
-		 		$sd = $epqamd->LSD;
-		 		$std_score = sprintf("%.2f",50 + (10 * ($score - $m)) / $sd);
-		 		$ans_score = 10 - $std_score/10;
-		 		break;
-		 	default:throw new Exception("not found");
-		 }
-		 $std_score = sprintf("%.2f",50 + (10 * ($score - $m)) / $sd);
-		 $array_record['score'] = $score;
-		 $array_record['std_score'] = $std_score;
-		 $array_record['ans_score'] = $ans_score;
-		 $rt_array[$key] = $array_record;
-		 }
-		 return $rt_array;
+		 		'bind'=>array('age'=>$dage,'sex'=>$dsex)));
+			switch($value){
+		 		case 'epqae':
+		 			$m = $epqamd->EM;
+		 			$sd = $epqamd->ESD;
+		 			$std_score = sprintf("%.2f",50 + (10 * ($score - $m)) / $sd);
+		 			$ans_score = sprintf("%.2f",$std_score/10);
+		 		    break;
+		 		case 'epqan':
+		 			$m = $epqamd->NM;
+		 			$sd = $epqamd->NSD;
+		 			$std_score = sprintf("%.2f",50 + (10 * ($score - $m)) / $sd);
+		 			$ans_score = sprintf("%.2f",10 - $std_score/10);
+		 			break;
+		 		case 'epqap':
+		 			$m = $epqamd->PM;
+		 			$sd = $epqamd->PSD;
+		 			$std_score = sprintf("%.2f",50 + (10 * ($score - $m)) / $sd);
+		 			$ans_score = sprintf("%.2f",10 - $std_score/10);
+		 			break;
+		 		case 'epqal':
+		 			$m = $epqamd->LM;
+		 			$sd = $epqamd->LSD;
+		 			$std_score = sprintf("%.2f",50 + (10 * ($score - $m)) / $sd);
+		 			$ans_score = sprintf("%.2f",10 - $std_score/10);
+		 			break;
+		 		default:throw new Exception("not found");
+		 	}
+		 $rt_array_record['score'] = floatval($score);
+		 $rt_array_record['std_score'] = floatval($std_score);
+		 $rt_array_record['ans_score'] = floatval($ans_score);
+		 $rt_array[$factor_id] = $rt_array_record;
+		}
+		return $rt_array;
 	}
 	/**
-	 * EPPS 匹配sum  添加稳定系数
+	 * EPPS 匹配sum  
 	 * @param unknown $array
 	 */
-	public static function calEPPS($array){
-		$array_15 = explode('|', $array->score);
+	public static function calEPPS(&$resultsets){
+		$array_15 = explode('|', $resultsets->option);
 		$rt = array_count_values ($array_15);
 		unset($rt['']);
 		#计算稳定系数con
@@ -500,24 +625,5 @@ class FactorScore {
 		}
 		return $con_score;
 	}
-	
-	protected static function calAge($birthdays,$todays){
-		$today_temp = array();
-		$birthday = $birthdays;
-		$today_temp = explode(' ',$todays);
-		$today = $today_temp[0];
-		$startdate=strtotime("$birthday");
-		$enddate=strtotime("$today");
-		$days=round(($enddate-$startdate)/3600/24) ;
-		$age = sprintf("%.2f",$days/365);
-		return $age;
-	}
-	
-	
-	
-	
-	
-	
-	
 	
 }

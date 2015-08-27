@@ -3,7 +3,7 @@ use Phalcon\Mvc\Model\Transaction\Failed as TxFailed;
 use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
 	/**
 	 * @usage 首先调用beforeStart(),导入内存表,之后调用handlePapers($exmainee_id),写入个人基础成绩
-	 * @time_comsuming 
+	 * @time_comsuming
 	 * @notice 内存表的加载需首先完成
 	 * @author Wangyaohui
 	 * @date 2015-8-26
@@ -20,7 +20,7 @@ class BasicScore {
 	 */
 	protected static $papers_list = null;
 	/**
-	 * @usage 在计算基础得分之前，首先加载内存表
+	 * @usage 在计算因子得分之前，首先加载常模转换表
 	 * @throws Exception
 	 * @return boolean
 	 */
@@ -33,40 +33,17 @@ class BasicScore {
 		}
 	}
 	/**
-	 * @usage 查examinee表判断该被试是否已经答完题
-	 * @param int $examinee_id
-	 * @throws Exception
-	 * @return boolean
-	 */
-	protected static function ifExamineeFinished($examinee_id){
-		try{
-			$finished_state = Examinee::checkIsExamedByExamineeId($examinee_id);
-		if($finished_state){
-			return true;
-		}else{
-			return false;
-		}
-		}catch(Exception $e){
-			throw new Exception( $e->getMessage() );
-		}
-	}
-	/**
 	 * @usage 返回被试的全部答卷信息，并写入到类的静态变量$papers_list中
 	 * @param int $examinee_id
-	 * @throws Exception
 	 * @return boolean
 	 */
 	protected static function getPapersByExamineeId($examinee_id){
-		try{
-			if(!self::ifExamineeFinished($examinee_id)){
-				return false;
-			}else{
-				self::$papers_list = QuestionAns::getListByExamineeId($examinee_id);	
-				return true;
-			}
-		}catch(Exception $e){
-			throw new Exception($e->getMessage());
-		}
+		self::$papers_list = QuestionAns::find(
+				array(
+						"examinee_id = :examinee_id:",
+						'bind' => array('examinee_id'=>$examinee_id)
+				)
+		);
 	}
 	/**
 	 * @usage 计算得分并写入到库的关键，采取个人按记录插入操作
@@ -121,7 +98,7 @@ class BasicScore {
 			 		#说明已经写入过score
 			 	}
 			}
-			return true;	
+			return true;
 		}catch (Exception $e){
 			throw new Exception($e->getMessage());
 		}
