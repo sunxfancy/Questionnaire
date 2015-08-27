@@ -61,6 +61,7 @@ class ExamineeController extends Base
     }
 
     public function getInqueryAction(){
+        $paper_name = $this->request->getPost("paper_name","string");
         $project_id = $this->session->get('Examinee')->project_id;
         $inquery = InqueryQuestion::find(array(
             'project_id=?1',
