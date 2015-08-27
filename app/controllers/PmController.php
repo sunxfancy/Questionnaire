@@ -272,8 +272,9 @@ class PmController extends Base
     public function checkAction($examinee_id){
         
         $this->view->disable();
+        $project_id = $this->getProjectId();
         $examinee = Examinee::findFirst($examinee_id);
-        CheckoutExcel::checkoutExcel11($examinee);
+        CheckoutExcel::checkoutExcel11($examinee,$project_id);
         // $work = json_decode($examinee->other)->work;
         // echo "<pre>";
         // print_r($work);
