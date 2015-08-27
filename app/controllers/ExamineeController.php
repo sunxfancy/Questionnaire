@@ -49,23 +49,6 @@ class ExamineeController extends Base
         //获得被试者的登陆信息      
 	}
 
-    public function getquesAction(){
-        $question=array();
-        for ($i=0; $i <20 ; $i++) { 
-            $s=true;
-            if($i==13){
-                $s=false;
-            }
-            $question[]=array(
-                    'index'=>(int)$i,
-                    'title'=>"test您认为公司发展",
-                    'options'=>"资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力",
-                    'is_multi'=>$s
-                );
-        }
-        $this->dataReturn(array("question"=>$question));
-    }
-
     public function getInqueryAction(){
         $project_id = $this->session->get('Examinee')->project_id;
         $inquery = InqueryQuestion::find(array(
