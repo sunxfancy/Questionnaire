@@ -8,11 +8,14 @@
 
 include("../app/classes/PHPExcel.php");
 
+
+
 /**
 * 
 */
 class ExcelLoader
 {
+    private $options = '';
 	private function __construct() {
 		$this->excel_col = array( 'C' => 'name',     'E' => 'native',   'F' => 'education',
 								  'G' => 'birthday', 'H' => 'politics', 'I' => 'professional', 
@@ -38,8 +41,16 @@ class ExcelLoader
 	public function LoadExaminee ($filename, $project_id, $db)
     {
         PHPExcel_Settings::setCacheStorageMethod(PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip);
-        $project = Project::findFirst($project_id);
-        $last_number = 1;
+        $examinee = Examinee::find(array(
+            'project_id = :project_id:',
+            'bind' => array(
+                'project_id' => $project_id
+            )
+        ));
+        $project = new Project();
+        $data_num = count($examinee);
+        $last_number = $examinee[$data_num-1]->number+1;
+//        $last_number = 1;
         $db->begin(); 
         if (is_readable($filename))
         {
@@ -48,13 +59,14 @@ class ExcelLoader
 				$sheet = $objexcel->getSheet(0);
 				$higestrow = $sheet->getHighestRow();
 
-				$last_number = $project->last_examinee_id;
+//				$last_number = $project->last_examinee_id;
 				$i = 3;
 				while ($i <= $higestrow) {
 					$k = $sheet->getCell("C".$i)->getValue();
 					if (is_null($k) || $k == "") break;
 					$this->readline_examinee($sheet, $project_id, $last_number, $i);
-					$i++; $last_number++;
+					$i++;
+                    $last_number++;
 				}
             } catch (Exception $ex) {
 				$errors['Exception'] = $ex->getMessage();
@@ -63,6 +75,8 @@ class ExcelLoader
 				unlink($filename);
 				return $errors;
 			}
+
+
         }
         $project->last_examinee_id = $last_number;
         $project->save();
@@ -79,15 +93,49 @@ class ExcelLoader
 		foreach ($this->excel_col as $key => $value) {
 			$examinee->$value = self::filter($sheet->getCell($key.$i)->getValue());
 		}
-		$sex = self::filter($sheet->getCell($key.$i)->getValue());
+		$sex = self::filter($sheet->getCell('D'.$i)->getValue());
 		if ($sex == '男' || $sex == 1) $examinee->sex = 1;
-		else $examinee->sex = 1;
+		else $examinee->sex = 0;
 		$education = array();
 		$work = array();
+        $k = 0;
+        $n = 0;
+        $flag = 0;
 		$this->readother_examinee($sheet,$education,$this->edu_name, $i);
-		$this->readother_examinee($sheet,$work,     $this->work_name,$i);
-		$examinee->other = json_encode(array('education' => $education, 'work' => $work));
-		$examinee->number = date('y').sprintf("%02d", $project_id).sprintf("%04d", $number);
+		$this->readother_examinee($sheet,$work,$this->work_name,$i);
+        $highest_column = PHPExcel_Cell::columnIndexFromString($sheet->getHighestColumn());
+        for($j = 12;$j < $highest_column;$j = $j + 4){
+            //教育经历
+            if( self::filter($sheet->getCellByColumnAndRow($j,$i)->getValue()) == 'end'){
+                $flag = 1;
+            }
+            if($flag == 0){
+                $judge = self::filter($sheet->getCellByColumnAndRow($j,$i)->getValue());
+                if(!empty($judge)){
+                    $education[$k]['school'] = self::filter($sheet->getCellByColumnAndRow($j,$i)->getValue());
+                    $education[$k]['profession'] = self::filter($sheet->getCellByColumnAndRow($j+1,$i)->getValue());
+                    $education[$k]['degree'] = self::filter($sheet->getCellByColumnAndRow($j+2,$i)->getValue());
+                    $education[$k]['date'] = self::filter($sheet->getCellByColumnAndRow($j+3,$i)->getValue());
+                    $k++;
+                }
+            }
+            //工作经历
+            else{
+                $j++;
+                $judge = self::filter($sheet->getCellByColumnAndRow($j,$i)->getValue());
+                if(!empty($judge)){
+                    $work[$n]['employer'] = self::filter($sheet->getCellByColumnAndRow($j,$i)->getValue());
+                    $work[$n]['unit'] = self::filter($sheet->getCellByColumnAndRow($j+1,$i)->getValue());
+                    $work[$n]['duty'] = self::filter($sheet->getCellByColumnAndRow($j+2,$i)->getValue());
+                    $work[$n]['date'] = self::filter($sheet->getCellByColumnAndRow($j+3,$i)->getValue());
+                    $n++;
+                }else{
+                    break;
+                }
+            }
+        }
+		$examinee->other = json_encode(array('education' => $education, 'work' => $work),JSON_UNESCAPED_UNICODE);
+		$examinee->number = $number;
 		$examinee->password = $this->random_string();
 		$examinee->project_id = $project_id;
 
@@ -134,7 +182,7 @@ class ExcelLoader
         $options = '';
         $highest_column = PHPExcel_Cell::columnIndexFromString($sheet->getHighestColumn());
         for($j = 3;$j<$highest_column;$j++){
-            $cell_value = $sheet->getCellByColumnAndRow($j,$i)->getValue();
+            $cell_value = self::filter($sheet->getCellByColumnAndRow($j,$i)->getValue());
             $cell_value = trim($cell_value);
             if($cell_value != ''){
                 $options .= $cell_value.'|';
