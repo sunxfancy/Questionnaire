@@ -335,7 +335,7 @@ class PmController extends Base
                     'name=?1',
                     'bind'=>array(1=>$factor_name)));
                 $paper_id = $factor->paper_id;
-                $paper_name = $this->getPaperName($paper_id);
+                $paper_name = Paper::findFirst($paper_id)->name;
                 $factor_id = $factor->id;
                 $factors[$paper_name][$factor_id] = $factor_name;
             }
@@ -452,12 +452,12 @@ class PmController extends Base
                     $children1 = $factor1->children;
                     $children1 = explode(",",$children1);
                     for ($k=0; $k <sizeof($children1) ; $k++) { 
-                        $paper_name = $this->getPaperName($factor1->paper_id);  
+                        $paper_name = Paper::findFirst($factor1->paper_id)->name;  
                         $questions_number[$paper_name][] =trim( $children1[$k],' ');
                     }
                 }
                 else{ 
-                    $paper_name = $this->getPaperName($factor->paper_id);  
+                    $paper_name = Paper::findFirst($factor->paper_id)->name; 
                     $questions_number[$paper_name][] =trim( $children[$j],' ');
                 }               
             }
@@ -467,10 +467,6 @@ class PmController extends Base
         }
         $json = json_encode($questions_number,JSON_UNESCAPED_UNICODE);
         return $json;
-    }
-
-    public function getPaperName($paper_id){
-        return Paper::findFirst($paper_id)->name;
     }
 
     public function getPaperId($paper_name){
@@ -589,6 +585,62 @@ class PmController extends Base
         $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
         echo json_encode($ans);
         $this->view->disable();
+    }
+
+    /*
+     * 测试人员导出
+     */
+    public function examineeExportAction(){
+        $project_id = $this->session->get('Manager')->project_id;
+        $condition = 'project_id = :project_id:';
+        $examinee = Examinee::find(array(
+            $condition,
+            'bind' => array(
+                'project_id' => $project_id
+            )
+        ));
+        $result = array();
+        foreach($examinee as $key => $item){
+            $result[$key] = $item;
+        }
+        $excelExport = new ExcelExport();
+        $excelExport->ExamineeExport($result);
+    }
+
+    /*
+     * 面询人员导出
+     */
+    public function interviewerExportAction(){
+        $result = $this->interviewInfo('I');
+        $excelExport = new ExcelExport();
+        $excelExport->InterviewerExport($result);
+    }
+
+    /*
+     * 领导导出
+     */
+    public function leaderExportAction(){
+        $result = $this->interviewInfo('L');
+        $excelExport = new ExcelExport();
+        $excelExport->LeaderExport($result);
+    }
+
+    public function interviewInfo($role){
+        $project_id = $this->session->get('Manager')->project_id;
+        $condition = 'role = :role: AND project_id = :project_id:';
+        $interviewer = Manager::find(array(
+            $condition,
+            'bind' => array(
+                'role' => $role,
+                'project_id' => $project_id
+            )
+        ));
+        $result = array();
+        foreach($interviewer as $key => $item){
+            $result[$key] = $item;
+        }
+//        return json_decode($result,true);
+        return $result;
     }
 
 }

@@ -20,7 +20,7 @@
     <div style="margin-left:40px;font-size:26px;color:red;"> 项目时间计划</div>
 
     <div class="progress" style="width:90%; margin:0 auto;">
-        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" >
         </div>
     </div>
     <!-- <table style="width: 100%; font-size: 18px;text-align:center;">
@@ -55,72 +55,80 @@
 <script type="text/javascript" src="/lib/flotr2.min.js"></script>
 
 <script type="text/javascript">
-(function project_pie(container) {
-    var graph = Flotr.draw(container, [{
-        data: [[0,15]],
-        label: '已完成'
-    }, {
-        data: [[0,45]],
-        label: '未完成'
-    }], {
-        title: '项目完成度',
-        resolution: 1,
-        HtmlText: true,
-        grid: {
-            verticalLines: false,
-            horizontalLines: false
-        },
-        xaxis: {
-            showLabels: false
-        },
-        yaxis: {
-            showLabels: false
-        },
-        pie: {
-            show: true,
-            explode: 6
-        },
-        mouse: {
-            track: true
-        },
-        legend: {
-            position: 'se',
-            backgroundColor: '#D2E8FF' 
-        } 
-    });
-})(document.getElementById("project-completeness"));
 
-(function interviewer_pie(container) {
-    var graph = Flotr.draw(container, [{
-        data: [[0, 0]],
-        label: '已完成'
-    }, {
-        data: [[0,100]],
-        label: '未完成'
-    }], {
-        title: '面询完成度',
-        HtmlText: true,
-        grid: {
-            verticalLines: false,
-            horizontalLines: false
-        },
-        xaxis: {
-            showLabels: false
-        },
-        yaxis: {
-            showLabels: false
-        },
-        pie: {
-            show: true,
-            explode: 6
-        },
-        mouse: {
-            track: true
-        },
-        legend: {
-            position: 'se',
-            backgroundColor: '#D2E8FF'
-        }
-    });
-})(document.getElementById("interviewer-completeness"));
+    (function project_pie(container) {
+        var graph = Flotr.draw(container, [{
+            data: [[0,15]],
+            label: '已完成'
+        }, {
+            data: [[0,45]],
+            label: '未完成'
+        }], {
+            title: '项目完成度',
+            resolution: 1,
+            HtmlText: true,
+            grid: {
+                verticalLines: false,
+                horizontalLines: false
+            },
+            xaxis: {
+                showLabels: false
+            },
+            yaxis: {
+                showLabels: false
+            },
+            pie: {
+                show: true,
+                explode: 6
+            },
+            mouse: {
+                track: true
+            },
+            legend: {
+                position: 'se',
+                backgroundColor: '#D2E8FF' 
+            } 
+        });
+    })(document.getElementById("project-completeness"));
+
+    (function interviewer_pie(container) {
+        var graph = Flotr.draw(container, [{
+            data: [[0, 0]],
+            label: '已完成'
+        }, {
+            data: [[0,100]],
+            label: '未完成'
+        }], {
+            title: '面询完成度',
+            HtmlText: true,
+            grid: {
+                verticalLines: false,
+                horizontalLines: false
+            },
+            xaxis: {
+                showLabels: false
+            },
+            yaxis: {
+                showLabels: false
+            },
+            pie: {
+                show: true,
+                explode: 6
+            },
+            mouse: {
+                track: true
+            },
+            legend: {
+                position: 'se',
+                backgroundColor: '#D2E8FF'
+            }
+        });
+    })(document.getElementById("interviewer-completeness"));
+
+    var now =  date("Ymd");
+    var start = 2015-7-31;
+    var end = 5015-9-27;      
+    var p = round(now-start)/round(end-start);
+    $("div[class=progress-bar]").css("width",p+"%");
+
 </script>

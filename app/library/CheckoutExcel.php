@@ -4,7 +4,7 @@
 class CheckoutExcel extends \Phalcon\Mvc\Controller{
     //以excel形式，导出被试人员信息和测试结果
 
-    public static function checkoutExcel11($examinee,$project_id){
+    public static function checkoutExcel11($examinee){
         //导出个人信息表
         require_once("../app/classes/PHPExcel.php");
         PHPExcel_CachedObjectStorageFactory::cache_in_memory_serialized;
@@ -25,22 +25,22 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $pf16 = new PHPExcel_Worksheet($excel, '3.16pf'); //创建16pf表
         $excel->addSheet($pf16); 
         $excel->setActiveSheetIndex(2);
-        self::checkout16pf($examinee,$excel,$project_id);
+        self::checkout16pf($examinee,$excel);
 
         $epps = new PHPExcel_Worksheet($excel, '4.epps'); //创建epps表
         $excel->addSheet($epps); 
         $excel->setActiveSheetIndex(3);
-        self::checkoutEpps($examinee,$excel,$project_id);
+        self::checkoutEpps($examinee,$excel);
 
-        $scl = new PHPExcel_Worksheet($excel, '5.scl90'); //创建SCL表
+        $scl = new PHPExcel_Worksheet($excel, '5.epps'); //创建SCL表
         $excel->addSheet($scl); 
         $excel->setActiveSheetIndex(4);
-        self::checkoutScl($examinee,$excel,$project_id);
+        self::checkoutScl($examinee,$excel);
 
         $epqa = new PHPExcel_Worksheet($excel, '6.epqa'); //创建epqa表
         $excel->addSheet($epqa); 
         $excel->setActiveSheetIndex(5);
-        self::checkoutEpqa($examinee,$excel,$project_id);
+        self::checkoutEpqa($examinee,$excel);
 
         $cpi = new PHPExcel_Worksheet($excel, '7.cpi'); //创建cpi表
         $excel->addSheet($cpi); 
@@ -212,7 +212,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
 
     }
 
-    public static function checkout16pf($examinee,$excel,$project_id){
+    public static function checkout16pf($examinee,$excel){
         //todo
         $objActSheet = $excel->getActiveSheet();
         $objActSheet->getDefaultRowDimension()->setRowHeight(22);
@@ -301,312 +301,27 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
             $objActSheet->setCellValue("$letter[$k]6","$j");
         }
 
-        $factors = ProjectDetail::find(
-            array(
-                 "project_id = :project_id:", 'bind' => array('project_id'=>$project_id)
-                 )
-            );
-        $factor_name = json_decode($factors[0]->factor_names,true);
-        $factor_name = $factor_name['16PF'];
-        asort($factor_name);
-        $factor_name_one = array();
-        $factor_name_two = array();
-        foreach ($factor_name as $key=>$value) {
-            if ($value<='X') {
-                $factor_name_one[$key] = $value;
-            }
-            else {
-                $factor_name_two[$key] = $value;
-            }
-        }
-        $i = 7;
-        foreach ($factor_name_one as $key => $value) {
-            $factor = Factor::find(
-                                array(
-                                    "name = :name:",'bind'=>array('name'=>$value))
-                    );
-            $factor_chs_name = $factor[0]->chs_name;
-            $factorAns = FactorAns::find(
-                                array(
-                                    "factor_id = :id:",'bind'=>array('id'=> $factor[0]->id))
-                    );
-            $std_score = $factorAns[0]->std_score;
-            $objActSheet->setCellValue("A$i","$factor_chs_name");
-            $objActSheet->setCellValue("B$i","$value");
-            $objActSheet->setCellValue("C$i","$std_score");
-            $j = $std_score-1;
-            $objActSheet->setCellValue("$letter[$j]$i","*");
-            $i++;
-        }
-        $objActSheet->getRowDimension($i)->setRowHeight(8);
-        $i++;
-        $objActSheet->getRowDimension($i)->setRowHeight(30);
-        $objActSheet->mergeCells("A$i:O$i");
-        $objActSheet->setCellValue("A$i",'次级因素计算结果及其简要解释');
-        $objActSheet->getStyle("A$i")->getFont()->setSize(18);
-        $i++;
-        $objActSheet->mergeCells("A$i:C$i");
-        $objActSheet->setCellValue("A$i",'因素名称');
-        $objActSheet->setCellValue("D$i",'代号');
-        $objActSheet->mergeCells("E$i:I$i");
-        $objActSheet->setCellValue("E$i",'原始分');
-        $objActSheet->mergeCells("J$i:N$i");
-        $objActSheet->setCellValue("J$i",'标准分');
-        $objActSheet->setCellValue("O$i",'简要说明');
-        $i++;
-        foreach ($factor_name_two as $key => $value) {
-            $factor = Factor::find(
-                                array(
-                                    "name = :name:",'bind'=>array('name'=>$value))
-                    );
-            $factor_chs_name = $factor[0]->chs_name;
-            $factorAns = FactorAns::find(
-                                array(
-                                    "factor_id = :id:",'bind'=>array('id'=> $factor[0]->id))
-                    );
-            $std_score = round($factorAns[0]->std_score);
-            $score = round($factorAns[0]->score);
-            $objActSheet->mergeCells("A$i:C$i");
-            $objActSheet->setCellValue("A$i","$factor_chs_name");            
-            $objActSheet->setCellValue("D$i","$value");
-            $objActSheet->mergeCells("E$i:I$i");
-            $objActSheet->setCellValue("E$i","$score");
-            $objActSheet->mergeCells("J$i:N$i");
-            $objActSheet->setCellValue("J$i","$std_score");            
-            $i++;
-        }
+        // $objActSheet->getRowDimension(7)->setRowHeight(60);
         // // $objActSheet->getStyle('A7')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         // // $objActSheet->getStyle('A7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
         // $objActSheet->getStyle('A7:F30')->getAlignment()->setWrapText(TRUE);
         // $objActSheet->setCellValue('A7','教育经历（自高中毕业后起，含在职教育经历）');
+
+
+
+
     }
 
-    public static function checkoutEpps($examinee,$excel,$project_id){
-        $objActSheet = $excel->getActiveSheet();
-        $objActSheet->getDefaultRowDimension()->setRowHeight(22);
-        $objActSheet->getDefaultColumnDimension()->setWidth(15);
-
-        $objActSheet->getColumnDimension('B')->setWidth(20);
-        
-
-        $styleArray = array(
-            'borders' => array(
-                'allborders' => array(
-                    // 'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
-                    'style' => PHPExcel_Style_Border::BORDER_THIN,//细边框
-                    //'color' => array('argb' => 'FFFF0000'),
-                ),
-            ),
-        );
-        $styleArray1 = array(
-            'borders' => array(
-                'outline' => array(
-                    'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
-                ),
-            ),
-        );
-        $objActSheet->getStyle('A2:F4')->applyFromArray($styleArray1);
-
-        $objActSheet->getRowDimension(1)->setRowHeight(50);
-        $objActSheet->mergeCells('A1:F1');
-        $objActSheet->setCellValue('A1','爱德华个人偏好（EPPS）测试结果');
-        $objActSheet->getStyle('A1')->getFont()->setSize(20);
-        $objActSheet->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $objActSheet->setCellValue('A2','分类号');
-        $objActSheet->setCellValue('C2','编号');
-        $objActSheet->setCellValue('E2','姓名');
-        $objActSheet->setCellValue('F2',$examinee->name);
-        $objActSheet->setCellValue('A3','性别');
-        $sex = ($examinee->sex == "1") ? "男" : "女";
-        $objActSheet->setCellValue('B3',$sex);
-        $objActSheet->setCellValue('C3','年龄');
-        $birthday = $examinee->birthday;
-        $bir = explode('-',$birthday);
-        $age = date("Y") - $bir[0];
-        if((date("m")-$bir[1])>0 || ( (date("m")==$bir[1])&&(date("d")>$bir[2]) ))
-            $age++;
-        $objActSheet->getStyle('C3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-        $objActSheet->setCellValue('D3',$age);
-        $objActSheet->setCellValue('E3','职业');
-        $objActSheet->setCellValue('F3',$examinee->duty);
-
-        $objActSheet->setCellValue('A4','日期');
-        $objActSheet->setCellValue('B4',date("Y-m-d"));
-
-        $objActSheet->getRowDimension(5)->setRowHeight(8);
-
-        $objActSheet->setCellValue("A6","测试项目");
-        $objActSheet->setCellValue("B6","得分");
-        $objActSheet->setCellValue("C6","得分排序");
-        $objActSheet->setCellValue("D6","测试项目");
-        $objActSheet->setCellValue("E6","得分");
-        $objActSheet->setCellValue("F6","得分排序");
-
-        $factors = ProjectDetail::find(
-            array(
-                 "project_id = :project_id:", 'bind' => array('project_id'=>$project_id)
-                 )
-            );
-        // $factor_name = json_decode($factors[0]->factor_names,true);
-        // $factor_name = $factor_name['EPPS'];
-        // $factor = Factor::find(
-        //     array(
-        //          "name IN ({name:array})", 'bind' => array('name'=>$factor_name)
-        //          ));
-
-        // echo "<pre>";
-        // print_r($factor);
-        // print_r($factor_name);exit;
-        
+    public static function checkoutEpps($examinee,$excel){
+        //todo
     }
 
-    public static function checkoutScl($examinee ,$excel,$project_id){
-        $objActSheet = $excel->getActiveSheet();
-        $objActSheet->getDefaultRowDimension()->setRowHeight(22);
-        $objActSheet->getDefaultColumnDimension()->setWidth(20);
-
-        $objActSheet->getRowDimension(1)->setRowHeight(50);
-        $objActSheet->mergeCells('A1:E1');
-        $objActSheet->setCellValue('A1','SCL90 测试结果');
-        $objActSheet->getStyle('A1')->getFont()->setSize(20);
-        $objActSheet->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $objActSheet->setCellValue('A2','分类号');
-        $objActSheet->setCellValue('A3','编号');
-        $objActSheet->setCellValue('A4','姓名');
-        $objActSheet->setCellValue('B2',$examinee->name);
-        $objActSheet->setCellValue('A5','性别');
-        $sex = ($examinee->sex == "1") ? "男" : "女";
-        $objActSheet->setCellValue('B5',$sex);
-        $objActSheet->setCellValue('A6','年龄');
-        $birthday = $examinee->birthday;
-        $bir = explode('-',$birthday);
-        $age = date("Y") - $bir[0];
-        if((date("m")-$bir[1])>0 || ( (date("m")==$bir[1])&&(date("d")>$bir[2]) ))
-            $age++;
-        $objActSheet->getStyle('B6')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-        $objActSheet->setCellValue('B6',$age);
-        $objActSheet->setCellValue('A7','日期');
-        $objActSheet->setCellValue('B7',date("Y-m-d"));
-        $objActSheet->setCellValue('A8','总分');
-        $objActSheet->setCellValue('A9','总均分');
-        $objActSheet->setCellValue('A10','阴性项目数');
-        $objActSheet->setCellValue('A11','阳性项目数');
-        $objActSheet->setCellValue('A12','阳性症状均分');
-
-        $objActSheet->setCellValue('D2','因子名称');
-        $objActSheet->setCellValue('E2','因子分');
-        $factors = ProjectDetail::find(
-            array(
-                 "project_id = :project_id:", 'bind' => array('project_id'=>$project_id)
-                 )
-            );
-        $factor_name = json_decode($factors[0]->factor_names,true);
-        $factor_name = $factor_name['SCL'];
-        // print_r($factor_name);exit;
-        $i = 3;
-        foreach ($factor_name as $key => $value) {
-            $factor = Factor::find(
-                                array(
-                                    "name = :name:",'bind'=>array('name'=>$value))
-                    );
-            $factor_chs_name = $factor[0]->chs_name;
-            $factorAns = FactorAns::find(
-                                array(
-                                    "factor_id = :id:",'bind'=>array('id'=> $factor[0]->id))
-                    );
-            $std_score = $factorAns[0]->std_score;
-            $objActSheet->setCellValue("D$i","$factor_chs_name");
-            $objActSheet->getStyle("E$i")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $objActSheet->getStyle("E$i")->getFont()->setBold(true);
-            $objActSheet->setCellValue("E$i","$std_score");
-            $i++;
-        }
+    public static function checkoutScl($examinee ,$excel){
+        //todo
     }
 
-    public static function checkoutEpqa($examinee,$excel,$project_id){
-        $objActSheet = $excel->getActiveSheet();
-        $objActSheet->getDefaultRowDimension()->setRowHeight(22);
-        $objActSheet->getDefaultColumnDimension()->setWidth(15);
-
-        $objActSheet->getColumnDimension('B')->setWidth(20);        
-
-        $styleArray = array(
-            'borders' => array(
-                'allborders' => array(
-                    // 'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
-                    'style' => PHPExcel_Style_Border::BORDER_THIN,//细边框
-                    //'color' => array('argb' => 'FFFF0000'),
-                ),
-            ),
-        );
-        $styleArray1 = array(
-            'borders' => array(
-                'outline' => array(
-                    'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
-                ),
-            ),
-        );
-        $objActSheet->getStyle('A2:F4')->applyFromArray($styleArray1);
-
-        $objActSheet->getRowDimension(1)->setRowHeight(50);
-        $objActSheet->mergeCells('A1:F1');
-        $objActSheet->setCellValue('A1','爱克森个性问卷成人 (EPQA) 结果');
-        $objActSheet->getStyle('A1')->getFont()->setSize(20);
-        $objActSheet->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $objActSheet->setCellValue('A2','分类号');
-        $objActSheet->setCellValue('C2','编号');
-        $objActSheet->setCellValue('E2','姓名');
-        $objActSheet->setCellValue('F2',$examinee->name);
-        $objActSheet->setCellValue('A3','性别');
-        $sex = ($examinee->sex == "1") ? "男" : "女";
-        $objActSheet->setCellValue('B3',$sex);
-        $objActSheet->setCellValue('C3','年龄');
-        $birthday = $examinee->birthday;
-        $bir = explode('-',$birthday);
-        $age = date("Y") - $bir[0];
-        if((date("m")-$bir[1])>0 || ( (date("m")==$bir[1])&&(date("d")>$bir[2]) ))
-            $age++;
-        $objActSheet->getStyle('C3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-        $objActSheet->setCellValue('D3',$age);
-        $objActSheet->setCellValue('E3','职业');
-        $objActSheet->setCellValue('F3',$examinee->duty);
-
-        $objActSheet->setCellValue('A4','日期');
-        $objActSheet->setCellValue('B4',date("Y-m-d"));
-
-        $objActSheet->getRowDimension(5)->setRowHeight(8);
-
-        $objActSheet->setCellValue('B6','因子名称');
-        $objActSheet->setCellValue('C6','代号');
-        $objActSheet->setCellValue('D6','原始得分');
-        $objActSheet->setCellValue('E6','T分');
-        $factors = ProjectDetail::find(
-            array(
-                 "project_id = :project_id:", 'bind' => array('project_id'=>$project_id)
-                 )
-            );
-        $factor_name = json_decode($factors[0]->factor_names,true);
-        $factor_name = $factor_name['CPI'];
-        // print_r($factor_name);exit;
-        $i = 7;
-        foreach ($factor_name as $key => $value) {
-            $factor = Factor::find(
-                                array(
-                                    "name = :name:",'bind'=>array('name'=>$value))
-                    );
-            $factor_chs_name = $factor[0]->chs_name;
-            $factorAns = FactorAns::find(
-                                array(
-                                    "factor_id = :id:",'bind'=>array('id'=> $factor[0]->id))
-                    );
-            $std_score = $factorAns[0]->std_score;
-            $objActSheet->setCellValue("B$i","$factor_chs_name");
-            $objActSheet->setCellValue("C$i","$value");
-            $objActSheet->getStyle("D$i")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $objActSheet->getStyle("D$i")->getFont()->setBold(true);
-            $objActSheet->setCellValue("D$i","$std_score");
-            $i++;
-        }
+    public static function checkoutEpqa($examinee,$excel){
+        //todo
     }
 
     public static function checkoutCpi($examinee,$excel){

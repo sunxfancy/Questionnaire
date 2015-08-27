@@ -65,8 +65,10 @@ class ExamineeController extends Base
         $inquery = InqueryQuestion::find(array(
             'project_id=?1',
             'bind'=>array(1=>$project_id)));
+        $length = count($inquery);
+        $question = array();
         foreach ($inquery as $inquerys) {
-            $question = array('ques_length' =>(int)20,
+            $question[] = array('ques_length' =>$length,
                               'index'       =>$inquerys->id,
                               'title'       =>$inquerys->topic,
                               'options'     =>$inquerys->options,
@@ -74,6 +76,20 @@ class ExamineeController extends Base
                             );
         }
         $this->dataReturn($question);
+    }
+
+    public function getInqueryAnsAction(){
+        $examinee = $this->session->get('Examinee');
+        $inquery_ans = new InqueryAns();
+        $inquery_ans->project_id = $examinee->project_id;
+        $inquery_ans->examinee_id = $examinee->id;
+        $inquery_ans->option = $this->request->getPost("answer", "string");
+        if($inquery_ans->save()){
+            $this->dataReturn(array("flag"=>true));
+        }
+        else{
+            $this->dataReturn(array("flag"=>false));
+        }
     }
 
 	public function doexamAction(){

@@ -17,7 +17,7 @@
                 <button class="btn btn-success" type="submit" >导入</button>
             </div>
             <div class="form-group">
-                <a class="btn btn-primary" href="#">导出</a>
+                <a class="btn btn-primary" href="/pm/examineeExport">导出</a>
             </div>
         </form>
     </div>
