@@ -304,7 +304,7 @@
     }
 
     function Leo_check(){
-        $.post('/Examinee/getQuesAns',{"answer":$.cookie("ans_cookie"+{{number}})}, function(data) {
+        $.post('/Examinee/getInqueryAns',{"answer":$.cookie("ans_cookie"+{{number}})}, function(data) {
             if(data.flag){
                 alert(data.answer);
                 alert("提交成功！点击确定跳转到用户信息填写页面！");

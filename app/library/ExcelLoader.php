@@ -16,29 +16,30 @@ include("../app/classes/PHPExcel.php");
 class ExcelLoader
 {
     private $options = '';
-	private function __construct() {
-		$this->excel_col = array( 'C' => 'name',     'E' => 'native',   'F' => 'education',
-								  'G' => 'birthday', 'H' => 'politics', 'I' => 'professional', 
-								  'J' => 'employer', 'K' => 'unit',     'L' => 'duty');
-		$this->edu_name = array('school','profession','degree','date');
-		$this->work_name = array('employer','unit','duty','date');
-	}
+    private function __construct() {
+        $this->excel_col = array( 'C' => 'name',     'E' => 'native',   'F' => 'education',
+                                  'G' => 'degree', 'H' => 'birthday', 'I' => 'politics',
+                                  'J' => 'professional', 'K' => 'team',     'L' => 'employer',
+                                  'M' => 'unit','N' => 'duty');
+        $this->edu_name = array('school','profession','degree','date');
+        $this->work_name = array('employer','unit','duty','date');
+    }
 
-	private static $instance;  
-	public static function getInstance()
-	{
-		if (!(self::$instance instanceof self))  
-		{  
-		    self::$instance = new self();  
-		}  
-		return self::$instance;  
-	}
+    private static $instance;  
+    public static function getInstance()
+    {
+        if (!(self::$instance instanceof self))  
+        {  
+            self::$instance = new self();  
+        }  
+        return self::$instance;  
+    }
 
-	/**
-	 * 被试人员导入
-	 * TODO: 后面超过4条的部分
-	 */
-	public function LoadExaminee ($filename, $project_id, $db)
+    /**
+     * 被试人员导入
+     * TODO: 后面超过4条的部分
+     */
+    public function LoadExaminee ($filename, $project_id, $db)
     {
         PHPExcel_Settings::setCacheStorageMethod(PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip);
         $examinee = Examinee::find(array(
@@ -54,27 +55,27 @@ class ExcelLoader
         $db->begin(); 
         if (is_readable($filename))
         {
-        	try {
-				$objexcel = PHPExcel_IOFactory::load($filename);
-				$sheet = $objexcel->getSheet(0);
-				$higestrow = $sheet->getHighestRow();
+            try {
+                $objexcel = PHPExcel_IOFactory::load($filename);
+                $sheet = $objexcel->getSheet(0);
+                $higestrow = $sheet->getHighestRow();
 
-//				$last_number = $project->last_examinee_id;
-				$i = 3;
-				while ($i <= $higestrow) {
-					$k = $sheet->getCell("C".$i)->getValue();
-					if (is_null($k) || $k == "") break;
-					$this->readline_examinee($sheet, $project_id, $last_number, $i);
-					$i++;
+//              $last_number = $project->last_examinee_id;
+                $i = 3;
+                while ($i <= $higestrow) {
+                    $k = $sheet->getCell("C".$i)->getValue();
+                    if (is_null($k) || $k == "") break;
+                    $this->readline_examinee($sheet, $project_id, $last_number, $i);
+                    $i++;
                     $last_number++;
-				}
+                }
             } catch (Exception $ex) {
-				$errors['Exception'] = $ex->getMessage();
-				$db->rollback();
-				$objexcel->disconnectWorksheets();
-				unlink($filename);
-				return $errors;
-			}
+                $errors['Exception'] = $ex->getMessage();
+                $db->rollback();
+                $objexcel->disconnectWorksheets();
+                unlink($filename);
+                return $errors;
+            }
 
 
         }
@@ -89,22 +90,22 @@ class ExcelLoader
 
     public function readline_examinee($sheet, $project_id, $number, $i)
     {
-		$examinee = new Examinee();
-		foreach ($this->excel_col as $key => $value) {
-			$examinee->$value = self::filter($sheet->getCell($key.$i)->getValue());
-		}
-		$sex = self::filter($sheet->getCell('D'.$i)->getValue());
-		if ($sex == '男' || $sex == 1) $examinee->sex = 1;
-		else $examinee->sex = 0;
-		$education = array();
-		$work = array();
+        $examinee = new Examinee();
+        foreach ($this->excel_col as $key => $value) {
+            $examinee->$value = self::filter($sheet->getCell($key.$i)->getValue());
+        }
+        $sex = self::filter($sheet->getCell('D'.$i)->getValue());
+        if ($sex == '男' || $sex == 1) $examinee->sex = 1;
+        else $examinee->sex = 0;
+        $education = array();
+        $work = array();
         $k = 0;
         $n = 0;
         $flag = 0;
-		$this->readother_examinee($sheet,$education,$this->edu_name, $i);
-		$this->readother_examinee($sheet,$work,$this->work_name,$i);
+        $this->readother_examinee($sheet,$education,$this->edu_name, $i);
+        $this->readother_examinee($sheet,$work,$this->work_name,$i);
         $highest_column = PHPExcel_Cell::columnIndexFromString($sheet->getHighestColumn());
-        for($j = 12;$j < $highest_column;$j = $j + 4){
+        for($j = 14;$j < $highest_column;$j = $j + 4){
             //教育经历
             if( self::filter($sheet->getCellByColumnAndRow($j,$i)->getValue()) == 'end'){
                 $flag = 1;
@@ -134,35 +135,35 @@ class ExcelLoader
                 }
             }
         }
-		$examinee->other = json_encode(array('education' => $education, 'work' => $work),JSON_UNESCAPED_UNICODE);
-		$examinee->number = $number;
-		$examinee->password = $this->random_string();
-		$examinee->project_id = $project_id;
+        $examinee->other = json_encode(array('education' => $education, 'work' => $work),JSON_UNESCAPED_UNICODE);
+        $examinee->number = $number;
+        $examinee->password = $this->random_string();
+        $examinee->project_id = $project_id;
 
-		if (!$examinee->save()) {
-			foreach ($examinee->getMessages() as $message) {
-				throw new Exception($message);
-			}
-		}
-	}
+        if (!$examinee->save()) {
+            foreach ($examinee->getMessages() as $message) {
+                throw new Exception($message);
+            }
+        }
+    }
 
     function readother_examinee($sheet, $other_array, $name_array, $i)
     {
-		$other_col = 'M';
-		for ($j = 0; $j < 4; $j++) {
-			for ($k = 0; $k < 4; $k++) { 
-				$other_array[$j][$name_array[$k]] = self::filter($sheet->getCell($other_col.$i)->getValue());
-				$other_col++;
-			}
-		}
+        $other_col = 'M';
+        for ($j = 0; $j < 4; $j++) {
+            for ($k = 0; $k < 4; $k++) { 
+                $other_array[$j][$name_array[$k]] = self::filter($sheet->getCell($other_col.$i)->getValue());
+                $other_col++;
+            }
+        }
     }
 
 
 
     /**
-	 * 需求量表导入
-	 */
-	public function LoadInquery ($filename, $project_id, $db)
+     * 需求量表导入
+     */
+    public function LoadInquery ($filename, $project_id, $db)
     {
         $this->baseLoad('readline_inquery',$filename, $project_id, $db);
     }
@@ -201,28 +202,28 @@ class ExcelLoader
 
     }
 
-	/**
-	 * 导入面询专家
-	 */
-	public function LoadInterviewer ($filename, $project_id, $db)
-	{
-		$this->baseLoad('readline_interviewer',$filename, $project_id, $db);
-	}
+    /**
+     * 导入面询专家
+     */
+    public function LoadInterviewer ($filename, $project_id, $db)
+    {
+        $this->baseLoad('readline_interviewer',$filename, $project_id, $db);
+    }
 
     public function readline_interviewer($sheet, $project_id, $i)
     {
-		$interviewer = new Manager();
-		
-		$interviewer->name = self::filter($sheet->getCell('C'.$i)->getValue());
-		$interviewer->username = $this->random_string();
-		$interviewer->password = $this->random_string();
-		$interviewer->role = 'I';
-		$interviewer->project_id = $project_id;
-		if (!$interviewer->save()) {
-			foreach ($interviewer->getMessages() as $message) {
-				throw new Exception($message);
-			}
-		}
+        $interviewer = new Manager();
+        
+        $interviewer->name = self::filter($sheet->getCell('C'.$i)->getValue());
+        $interviewer->username = $this->random_string();
+        $interviewer->password = $this->random_string();
+        $interviewer->role = 'I';
+        $interviewer->project_id = $project_id;
+        if (!$interviewer->save()) {
+            foreach ($interviewer->getMessages() as $message) {
+                throw new Exception($message);
+            }
+        }
     } 
 
 
@@ -236,18 +237,18 @@ class ExcelLoader
 
     public function readline_leader($sheet, $project_id, $i)
     {
-    	$leader = new Manager();
-		
-		$leader->name = self::filter($sheet->getCell('C'.$i)->getValue());
-		$leader->username = $this->random_string();
-		$leader->password = $this->random_string();
-		$leader->role = 'L';
-		$leader->project_id = $project_id;
-		if (!$leader->save()) {
-			foreach ($leader->getMessages() as $message) {
-				throw new Exception($message);
-			}
-		}
+        $leader = new Manager();
+        
+        $leader->name = self::filter($sheet->getCell('C'.$i)->getValue());
+        $leader->username = $this->random_string();
+        $leader->password = $this->random_string();
+        $leader->role = 'L';
+        $leader->project_id = $project_id;
+        if (!$leader->save()) {
+            foreach ($leader->getMessages() as $message) {
+                throw new Exception($message);
+            }
+        }
     } 
 
 
@@ -255,29 +256,29 @@ class ExcelLoader
 
     function baseLoad($funcname,$filename, $project_id, $db)
     {
-    	PHPExcel_Settings::setCacheStorageMethod(PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip);
+        PHPExcel_Settings::setCacheStorageMethod(PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip);
         $db->begin(); 
         if (is_readable($filename))
         {
-        	try {
-				$objexcel = PHPExcel_IOFactory::load($filename);
-				$sheet = $objexcel->getSheet(0);
-				$higestrow = $sheet->getHighestRow();
+            try {
+                $objexcel = PHPExcel_IOFactory::load($filename);
+                $sheet = $objexcel->getSheet(0);
+                $higestrow = $sheet->getHighestRow();
 
-				$i = 3;
-				while ($i <= $higestrow) {
-					$k = $sheet->getCell("C".$i)->getValue();
-					if (is_null($k) || $k == "") break;
-					$this->$funcname($sheet, $project_id, $i);
-					$i++;
-				}
-			} catch (Exception $ex) {
-				$errors['Exception'] = $ex->getMessage();
-				$db->rollback();
-				$objexcel->disconnectWorksheets();
-				unlink($filename);
-				return $errors;
-			}
+                $i = 3;
+                while ($i <= $higestrow) {
+                    $k = $sheet->getCell("C".$i)->getValue();
+                    if (is_null($k) || $k == "") break;
+                    $this->$funcname($sheet, $project_id, $i);
+                    $i++;
+                }
+            } catch (Exception $ex) {
+                $errors['Exception'] = $ex->getMessage();
+                $db->rollback();
+                $objexcel->disconnectWorksheets();
+                unlink($filename);
+                return $errors;
+            }
         }
         $db->commit();
 
@@ -287,15 +288,15 @@ class ExcelLoader
     }
 
     /**
-	 * 过滤除中文、英文、数字、-和_以外的字符
-	 */
-	static function filter($data) {
-		$str = (string)$data;
-		$str = preg_replace('/[^A-Za-z0-9\x{4e00}-\x{9fa5}\-_]/iu','',$str);
-		return $str;
-	}
+     * 过滤除中文、英文、数字、-和_以外的字符
+     */
+    static function filter($data) {
+        $str = (string)$data;
+        $str = preg_replace('/[^A-Za-z0-9\x{4e00}-\x{9fa5}\-_]/iu','',$str);
+        return $str;
+    }
 
-	function random_string($max = 6){
+    function random_string($max = 6){
         $chars = explode(" ", "0 1 2 3 4 5 6 7 8 9");
         $rtn = '';
         for($i = 0; $i < $max; $i++){
