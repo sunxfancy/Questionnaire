@@ -8,7 +8,7 @@ use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
 	 */
 class MemoryTable {
 	private static $mysql_memory_list = array(
-		'cpidf' , 'eppsdf', 'epqadf', 'ksdf','spmdf'
+		'cpidf' , 'eppsdf', 'epqadf', 'ksdf','spmdf','cpimd','epqamd','ksmd','spmmd'
 	);
 	/**
 	 * @usage 所有内存表的加载器
@@ -38,6 +38,11 @@ class MemoryTable {
 			case 'epqadf' :$state = self::startMysqlEpqadfMemory(); break;
 			case 'ksdf' : $state = self::startMysqlKsdfMemory(); break;
 			case 'spmdf' : $state = self::startMysqlSpmdfMemory(); break;
+			case 'cpimd' : $state = self::startMysqlCpimdMemory(); break;
+			case 'epqamd' :  $state = self::startMysqlEpqamdMemory(); break;
+			case 'ksmd':  $state = self::startMysqlKsmdMemory(); break;
+			case 'spmmd' :  $state = self::startMysqlSpmmdMemory(); break;
+			
 		}
 		return $state;	
 	}
@@ -222,10 +227,7 @@ class MemoryTable {
 	}
 	/**
 	 * 	public $BZ;
-		public $XH;
-	 */
-	/**
-	 * 
+	 *	public $XH;
 	 * @throws Exception
 	 * @return boolean
 	 */
@@ -256,5 +258,182 @@ class MemoryTable {
 				throw new Exception("Failed, reason: ".$e->getMessage());
 			}
 		}
+	}
+	/**
+	 * public $DM;
+	 * public $YZ;
+	 * public $M;
+	 * public $SD;
+	 * @throws Exception
+	 * @return boolean
+	 */
+	private static function startMysqlCpimdMemory(){
+		$cpimd_first = CpimdMemory::findFirst();
+		if(isset($cpimd_first->DM)){
+			return true;
+		}else{
+			try {
+				$manager     = new TxManager();
+				$transaction = $manager->get();
+				$cpimd_data = Cpimd::find();
+				foreach($cpimd_data as $cpimd_record ){
+					$cpimd_memory = new CpimdMemory();
+					$cpimd_memory->DM = $cpimd_record->DM;
+					$cpimd_memory->YZ = $cpimd_record->YZ;
+					$cpimd_memory->M  = $cpimd_record->M;
+					$cpimd_memory->SD = $cpimd_record->SD;
+					if( $cpimd_memory->create() == false) {
+						unset($cpimd_data);
+						$transaction->rollback("CPIMD DATA INSERT INTO MEMORY TABLE ERROR!");
+					}
+				}
+				if(isset($cpimd_data)){
+					unset($cpimd_data);
+				}
+				$transaction->commit();
+				return true;
+			}catch (TxFailed $e) {
+				throw new Exception("Failed, reason: ".$e->getMessage());
+			}
+		}
+	}
+	/**
+	 * public $DSEX;
+	 * public $EAGEL;
+	 * public $DAGEH;
+	 * public $EM;
+	 * public $ESD;
+	 * public $NM;
+	 * public $NSD;
+	 * public $PM;
+	 * public $PSD;
+	 * public $LM;
+	 * public $LSD;
+	 * @throws Exception
+	 * @return boolean
+	 */
+	private static function startMysqlEpqamdMemory(){
+		$epqamd_first = EpqamdMemory::findFirst();
+		if(isset($epqamd_first->DSEX)){
+			return true;
+		}else{
+			try {
+				$manager     = new TxManager();
+				$transaction = $manager->get();
+				$epqamd_data = Epqamd::find();
+				foreach($epqamd_data as $epqamd_record ){
+					$epqamd_memory = new EpqamdMemory();
+					$epqamd_memory->DSEX = $epqamd_record->DSEX;
+					$epqamd_memory->DAGEL = $epqamd_record->DAGEL;
+					$epqamd_memory->DAGEH  = $epqamd_record->DAGEH;
+					$epqamd_memory->EM = $epqamd_record->EM;
+					$epqamd_memory->ESD = $epqamd_record->ESD;
+					$epqamd_memory->NM = $epqamd_record->NM;
+					$epqamd_memory->NSD = $epqamd_record->NSD;
+					$epqamd_memory->PM = $epqamd_record->PM;
+					$epqamd_memory->PSD = $epqamd_record->PSD;
+					$epqamd_memory->LM = $epqamd_record->LM;
+					$epqamd_memory->LSD = $epqamd_record->LSD;			
+					if( $epqamd_memory->create() == false) {
+						unset($epqamd_data);
+						$transaction->rollback("EPQAMD DATA INSERT INTO MEMORY TABLE ERROR!");
+					}
+				}
+				if(isset($epqamd_data)){
+					unset($epqamd_data);
+				}
+				$transaction->commit();
+				return true;
+			}catch (TxFailed $e) {
+				throw new Exception("Failed, reason: ".$e->getMessage());
+			}
+		}
+	}
+	/**
+	 * public $DM;
+	 * public $YZ;
+	 * public $QSF;
+	 * public $ZZF;
+	 * public $BZF;
+	 * @throws Exception
+	 * @return boolean
+	 */
+	private static function startMysqlKsmdMemory(){
+		$ksmd_first = KsmdMemory::findFirst();
+		if(isset($ksmd_first->YZ)){
+			return true;
+		}else{
+			try {
+				$manager     = new TxManager();
+				$transaction = $manager->get();
+				$ksmd_data = Ksmd::find();
+				foreach($ksmd_data as $ksmd_record ){
+					$ksmd_memory = new KsmdMemory();
+					$ksmd_memory->DM = $ksmd_record->DM;
+					$ksmd_memory->YZ = $ksmd_record->YZ;
+					$ksmd_memory->QSF  = $ksmd_record->QSF;
+					$ksmd_memory->ZZF = $ksmd_record->ZZF;
+					$ksmd_memory->BZF = $ksmd_record->BZF;
+					if( $ksmd_memory->create() == false) {
+						unset($ksmd_data);
+						$transaction->rollback("KSMD DATA INSERT INTO MEMORY TABLE ERROR!");
+					}
+				}
+				if(isset($ksmd_data)){
+					unset($ksmd_data);
+				}
+				$transaction->commit();
+				return true;
+			}catch (TxFailed $e) {
+				throw new Exception("Failed, reason: ".$e->getMessage());
+			}
+		}
+		
+	}
+	/**
+	 * public $NLL;
+	 * public $NLH;
+	 * public $B95;
+	 * public $B90;
+	 * public $B75;
+	 * public $B50;
+	 * public $B25;
+	 * public $B10;
+	 * public $B5;
+	 */
+	private static function startMysqlSpmmdMemory(){
+		$spmmd_first = SpmmdMemory::findFirst();
+		if(isset($spmmd_first->NLL)){
+			return true;
+		}else{
+			try {
+				$manager     = new TxManager();
+				$transaction = $manager->get();
+				$spmmd_data = Spmmd::find();
+				foreach($spmmd_data as $spmmd_record ){
+					$spmmd_memory = new SpmmdMemory();
+					$spmmd_memory->NLL = $spmmd_record->NLL;
+					$spmmd_memory->NLH = $spmmd_record->NLH;
+					$spmmd_memory->B95 = $spmmd_record->B95;
+					$spmmd_memory->B90 = $spmmd_record->B90;
+					$spmmd_memory->B75 = $spmmd_record->B75;
+					$spmmd_memory->B50 = $spmmd_record->B50;
+					$spmmd_memory->B25 = $spmmd_record->B25;
+					$spmmd_memory->B10 = $spmmd_record->B10;
+					$spmmd_memory->B5  = $spmmd_record->B5;
+					if( $spmmd_memory->create() == false) {
+						unset($ksmd_data);
+						$transaction->rollback("SPMMD DATA INSERT INTO MEMORY TABLE ERROR!");
+					}
+				}
+				if(isset($spmmd_data)){
+					unset($spmmd_data);
+				}
+				$transaction->commit();
+				return true;
+			}catch (TxFailed $e) {
+				throw new Exception("Failed, reason: ".$e->getMessage());
+			}
+		}	
 	}
 }
