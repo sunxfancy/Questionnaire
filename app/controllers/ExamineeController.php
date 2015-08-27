@@ -12,7 +12,6 @@
 use Phalcon\Mvc\Model\Transaction\Failed as TxFailed;
 use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
 
-
 class ExamineeController extends Base
 {
 
@@ -40,7 +39,7 @@ class ExamineeController extends Base
         if ($examinee)
         {
             $this->session->set('Examinee', $examinee);
-            $this->dataReturn(array('url' =>'/examinee/editinfo'));
+            $this->dataReturn(array('url' =>'/examinee/inquery'));
             return;
         }
     }
@@ -58,6 +57,22 @@ class ExamineeController extends Base
                             'title'=>"test您认为公司发展",
                             'options'=>"资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力",
                             'is_multi'=>true);
+        $this->dataReturn($question);
+    }
+
+    public function getInqueryAction(){
+        $project_id = $this->session->get('Examinee')->project_id;
+        $inquery = InqueryQuestion::find(array(
+            'project_id=?1',
+            'bind'=>array(1=>$project_id)));
+        foreach ($inquery as $inquerys) {
+            $question = array('ques_length' =>(int)20,
+                              'index'       =>$inquerys->id,
+                              'title'       =>$inquerys->topic,
+                              'options'     =>$inquerys->options,
+                              'is_multi'    =>$inquerys->is_radio
+                            );
+        }
         $this->dataReturn($question);
     }
 
@@ -127,14 +142,14 @@ class ExamineeController extends Base
             $this->dataReturn(array("total_time"=>$total_time));
             /*end of code chunk*/
             /**********************************************************************/
-            $examinee = Examinee::findFirst($id);
-            $examinee->total_time = $total_time;
-            $examinee->is_exam_com = 1;
-            if (!$examinee->save()) {
-                foreach ($examinee->getMessages() as $msg) {
-                    echo $msg."\n";
-                }
-            }
+            // $examinee = Examinee::findFirst($id);
+            // $examinee->total_time = $total_time;
+            // $examinee->is_exam_com = 1;
+            // if (!$examinee->save()) {
+            //     foreach ($examinee->getMessages() as $msg) {
+            //         echo $msg."\n";
+            //     }
+            // }
             return;
         }
         $question_ans = new QuestionAns();
@@ -142,17 +157,16 @@ class ExamineeController extends Base
         $paper_name = $this->request->getPost("paper_name", "string");
         $question_ans->paper_id = $this->getPaperId($paper_name);
         $question_ans->examinee_id = $id;
-
         $question_ans->question_number_list =implode("|",$this->request->getPost("order"));
         if($question_ans->save()){
             $this->dataReturn(array("flag"=>true));
-            // $examinee = Examinee::findFirst($id);
-            // $examinee->is_exam_com = 1;
-            // if (!$examinee->save()) {
-            //     foreach ($examinee->getMessages() as $msg) {
-            //         echo $msg."\n";
-            //     }
-            // }
+            $examinee = Examinee::findFirst($id);
+            $examinee->is_exam_com = 1;
+            if (!$examinee->save()) {
+                foreach ($examinee->getMessages() as $msg) {
+                    echo $msg."\n";
+                }
+            }
         }
         else{
             $this->dataReturn(array("flag"=>false));

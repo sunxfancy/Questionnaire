@@ -67,30 +67,39 @@ class InterviewerController extends Base
     						"number" => $i
     				)
     		));
-    		$examinee_id = $res->id;
-    		$condition = "manager_id = :manager_id: AND examinee_id = :examinee_id:";
-    		/*
-    		 * 判断interview表中是否存在记录
-    		* 若存在，则无需更新
-    		* 若不存在，则将数据插入到interview表中
-    		*/
-    		$interview = Interview::findFirst(array(
-    				$condition,
-    				'bind' => array(
-    						'manager_id' => $manager_id,
-    						'examinee_id' => $examinee_id
-    				)
-    		));
-    		$array = array(
-    				'manager_id' => $manager_id,
-    				'examinee_id' => $examinee_id
-    		);
-    		if (!$interview) {
-    			if (Interview::commentSave($array) === false) {
-    				$returnMessage['status'] = 'failed';
-    				break;
-    			}
-    		}
+    		if($res){
+                $examinee_id = $res->id;
+            $condition = "manager_id = :manager_id: AND examinee_id = :examinee_id:";
+            /*
+             * 判断interview表中是否存在记录
+            * 若存在，则无需更新
+            * 若不存在，则将数据插入到interview表中
+            */
+            $interview = Interview::findFirst(array(
+                    $condition,
+                    'bind' => array(
+                            'manager_id' => $manager_id,
+                            'examinee_id' => $examinee_id,
+
+                    )
+            ));
+            $array = array(
+                    'manager_id' => $manager_id,
+                    'examinee_id' => $examinee_id,
+                    'advantage' => '',
+                    'disadvantage' => '',
+                    'remark' => ''
+            );
+            if (!$interview) {
+                if (Interview::commentSave($array) === false) {
+                    $returnMessage['status'] = 'failed';
+                    break;
+                }
+            }
+            }
+            else{
+                continue;
+            }
     	}
     	echo json_encode($returnMessage);
     }

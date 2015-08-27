@@ -10,14 +10,14 @@
             <table border="1" cellspacing="0" cellpadding="0" style="margin:0 auto;font-size:16px; font-family:'微软雅黑'">
                 <tr>
                     <td style="width:120px;line-height:33px;">姓名</td>
-                    <td style="width:180px;"><input id="name" type="text" value="{{ name }}" style="width:178px;font-size:16px;"></td>
+                    <td style="width:180px;"><input id="name" type="text" value="{{ name }}" style="width:178px;font-size:16px;color:black;"></td>
                     <td style="width:120px;line-height:33px;">性别</td>
-                    <td style="width: 180px;"><input id="sex" type="text" value="{{ sex }}" style="width:178px;font-size:16px;"></td>
+                    <td style="width: 180px;"><input id="sex" type="text" value="{{ sex }}" style="width:178px;font-size:16px;color:black;"></td>
                 </tr>
                 <tr>
                     <td style="width:120px;line-height:33px;">学历</td>
                     <td style="width:180px;">
-                        <select id="education" type="text" value="{{ education }}" style="width:178px;font-size:16px;line-height:28px;font-family:'微软雅黑'">
+                        <select id="education" type="text" value="{{ education }}" style="width:178px;font-size:16px;color:black;line-height:28px;font-family:'微软雅黑'">
                             <option value="{{ education }}">{{ education }}</option>
                             <option value="函授大专">函授大专</option>
                             <option value="在职大专">在职大专</option>
@@ -33,7 +33,7 @@
                     </td>
                     <td style=" width:120px;line-height:33px;">学位</td>
                     <td style="width:180px;">
-                        <select id="degree" type="text" value="{{ degree }}" style="width:178px;font-size:16px;line-height:28px; font-family:'微软雅黑'">
+                        <select id="degree" type="text" value="{{ degree }}" style="width:178px;font-size:16px;color:black;line-height:28px; font-family:'微软雅黑'">
                             <option value="{{ degree }}">{{ degree }}</option>
                             <option value="工科学士学位">工科学士学位</option>
                             <option value="理科学士学位">理科学士学位</option>
@@ -49,13 +49,13 @@
                     <td style=" width:120px;line-height:33px;">出生年月</td>
                     <td style="width:180px;">
                         <div class="input-append date form_datetime">
-                            <input id="birthday" type="text" value="{{birthday}}" readonly style="width:178px;height:31px;">
+                            <input id="birthday" type="text" value="{{birthday}}" readonly style="width:178px;height:31px;color:black;">
                             <span class="add-on"><i class="icon-th"></i></span>
                         </div>
                     </td>
                     <td style=" width:120px;line-height:33px;">籍贯</td>
                     <td style="width:180px;">
-                        <select id="native" type="text" value="{{ native }}" style="width:178px;font-size:16px;line-height:28px; font-family:'微软雅黑'">
+                        <select id="native" type="text" value="{{ native }}" style="width:178px;font-size:16px;color:black;line-height:28px; font-family:'微软雅黑'">
                             <option value="{{ native }}">{{ native }}</option> 
                             <option value="北京市">北京市</option>
                             <option value="安徽省">安徽省</option>
@@ -97,7 +97,7 @@
                 <tr>
                     <td style=" width:120px;line-height:33px;">政治面貌</td>
                     <td style="width:180px;">
-                        <select id="politics" type="text" value="{{ politics }}" style="width:178px;font-size:16px;line-height:28px;font-family:'微软雅黑'">
+                        <select id="politics" type="text" value="{{ politics }}" style="width:178px;font-size:16px;color:black;line-height:28px;font-family:'微软雅黑'">
                             <option value="{{ politics }}">{{ politics }}</option>
                             <option value="无">无党派</option>
                             <option value="团员">团员</option>
@@ -108,7 +108,7 @@
                     </td>
                     <td style=" width:120px;line-height:33px;">职称</td>
                     <td style="width:180px;">
-                        <select id="professional" type="text" value="{{ professional }}" style="width:178px;font-size:16px;line-height:28px;font-family:'微软雅黑'">
+                        <select id="professional" type="text" value="{{ professional }}" style="width:178px;font-size:16px;color:black;line-height:28px;font-family:'微软雅黑'">
                             <option value="{{ professional }}">{{ professional }}</option>
                             <option value="无职称">无职称</option>
                             <option value="初级">初级</option>
@@ -120,19 +120,19 @@
                 </tr>
                 <tr>
                     <td style=" width:120px;line-height:33px;">工作单位</td>
-                    <td colspan="3" style="font-size:16px;"><input id="employer" type="text" value="{{ employer }}" style="width:478px;font-size:16px;"></td>
+                    <td colspan="3" style="font-size:16px;"><input id="employer" type="text" value="{{ employer }}" style="width:478px;font-size:16px;color:black;"></td>
                 </tr>
                 <tr>
                     <td style=" width:120px;line-height:33px;">部门</td>
-                    <td colspan="3" style="font-size: 16px;"><input id="unit" type="text" value="{{ unit }}" style="width:478px;font-size:16px;"></td>
+                    <td colspan="3" style="font-size: 16px;"><input id="unit" type="text" value="{{ unit }}" style="width:478px;font-size:16px;color:black;"></td>
                 </tr>
                 <tr>
                     <td style=" width:120px;line-height:33px;">岗位/职务</td>
-                    <td colspan="3" style="font-size: 16px;"><input id="duty" type="text" value="{{ duty }}" style="width:478px;font-size:16px;"></td>
+                    <td colspan="3" style="font-size: 16px;"><input id="duty" type="text" value="{{ duty }}" style="width:478px;font-size:16px;color:black;"></td>
                 </tr>
                 <tr>
                     <td style=" width:120px;line-height:33px;">班子/系统成员</td>
-                    <td colspan="3" style="font-size: 16px;"><input id="team" type="text" value="{{ team }}" style="width:478px;font-size:16px;"></td>
+                    <td colspan="3" style="font-size: 16px;"><input id="team" type="text" value="{{ team }}" style="width:478px;font-size:16px;color:black;"></td>
                 </tr>
             </table>
 
