@@ -160,8 +160,8 @@ class FactorScore {
 						$factor_ans->score = $value['score'];
 						$factor_ans->std_score = $value['std_score'];
 						$factor_ans->ans_score = $value['ans_score'];
-						if($factor_ans->save() == false){
-								$transaction->rollback("Cannot update table FactorAns' score");
+						if($factor_ans->create() == false){
+							$transaction->rollback("Cannot update table FactorAns' score");
 						}
 					}
 					$transaction->commit();
@@ -169,7 +169,7 @@ class FactorScore {
 					throw new Exception("Failed, reason: ".$e->getMessage());
 				}
 			}
-		return true;
+			return true;
 		}catch(Exception $e){
 			throw new Exception($e->getMessage());
 		}
