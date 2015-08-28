@@ -26,7 +26,14 @@ class PmController extends Base
     }
 
 	public function detailAction(){
-		
+		$manager = $this->session->get('Manager');
+        $project_id = $manager->project_id;
+        $project = Project::findFirst($project_id);
+        $starttime = $project->starttime;
+        $endtime = $project->endtime;
+        $now = date(Y-m-d);
+        $width = 100*round(strtotime($now)-strtotime($starttime))/round(strtotime($endtime)-strtotime($starttime));
+        
 	}
 
 	public function examineeAction(){
@@ -336,8 +343,20 @@ class PmController extends Base
                     'bind'=>array(1=>$factor_name)));
                 $paper_id = $factor->paper_id;
                 $paper_name = Paper::findFirst($paper_id)->name;
-                $factor_id = $factor->id;
-                $factors[$paper_name][$factor_id] = $factor_name;
+                $childrentype = explode(',',$factor->children_type);
+                if (in_array(0, $childrentype)) {
+                    $factor = explode(',',$factor->children);
+                    foreach ($factor as $factor1) {
+                        $factorss = Factor::findFirst(array(
+                            'name=?1',
+                            'bind'=>array(1=>$factor1)));
+                        $factors[$paper_name][$factorss->id] = $factor1;
+                    }
+                }
+                else{
+                    $factor_id = $factor->id;
+                    $factors[$paper_name][$factor_id] = $factor_name;
+                }
             }
             $factor_json = json_encode($factors,JSON_UNESCAPED_UNICODE);
             try{
