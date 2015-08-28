@@ -723,21 +723,28 @@ class FactorScore {
 						'NLH >= :age: AND NLL <= :age:',
 						'bind'=>array('age'=>$age)));
 				if ($score >= $spmmd->B95) {
-					$std_score = 1;
+					$std_score = 195;
+				}else if ($score >= $spmmd->B90) {
+					$std_score = 290;
 				}else if ($score >= $spmmd->B75) {
-					$std_score =2;
+					$std_score = 275;
+				}else if ($score >= $spmmd->B50) {
+					$std_score = 350;
 				}else if ($score >= $spmmd->B25) {
-					$std_score = 3;
+					$std_score = 325;
+				}else if ($score >= $spmmd->B10) {
+					$std_score = 410;
 				}else if ($score >= $spmmd->B5) {
-					$std_score = 4;
+					$std_score = 45;
 				}else{
-					$std_score = 5;
+					$std_score = 50;
 				}
-				if ($std_score == 1) { $ans_score = 9; 
-				}else if ($std_score == 2) {$ans_score = 7.5; 
-				}else if ($std_score == 3) {$ans_score = 6; 
-				}else if ($std_score == 4) {$ans_score = 5; 
-				}else if ($std_score == 5) {$ans_score = 4; 
+				$flag = substr($std_score,0,1);
+				if ($flag == 1) { $ans_score = 9; 
+				}else if ($flag == 2) {$ans_score = 7.5; 
+				}else if ($flag == 3) {$ans_score = 6; 
+				}else if ($flag == 4) {$ans_score = 5; 
+				}else if ($flag == 5) {$ans_score = 4; 
 				}else {$ans_score = 1;
 				}
 			}else{
