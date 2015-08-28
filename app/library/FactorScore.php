@@ -5,7 +5,7 @@ use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
 	 * @usage 使用条件在BasicScore完成handlePapers后,开始执行handleFactors($examinee_id);
 	 * @param int $examinee_id;
 	 * @author Wangyaohui
-	 * @Date 2015-8-26
+	 * @Date 2015-8-28
 	 */
 class FactorScore {
 	/**

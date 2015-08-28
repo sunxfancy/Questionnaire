@@ -20,9 +20,9 @@ class Test5Controller extends Base
 		$this->insertIndexScore($index_score,$examinee_id);
 	}
 
-	public function wordAction(){
-		WordExport::
-	}
+// 	public function wordAction(){
+// 		WordExport::
+// 	}
 
 	public function insertIndexScore($index_score,$examinee_id){
 		try{

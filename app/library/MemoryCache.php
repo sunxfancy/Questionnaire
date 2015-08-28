@@ -38,18 +38,4 @@ class MemoryCache {
 		) 	
 		);
 	}
-	/**
-	 * @usage 缓存根据试卷编号查取其中涉及的相关因子
-	 * @param int $paper_id
-	 */
-	public static function getFactors($paper_id){
-		return Factor::find(
-			array(
-			"paper_id = :paper_id:",
-			'bind' => array ('paper_id' =>$paper_id),
-			'order'=> 'id asc',
-			'cache'=> array( 'key' => 'factors_in_paper_'.$paper_id)
-		)
-		);
-	}
 }
