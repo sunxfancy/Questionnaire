@@ -675,12 +675,6 @@ class FactorScore {
 			}
 		}
 		ksort($array_all_use);
-// 		清空memcache缓存
-// 		$memcache_obj = new Memcache;
-// 		$memcache_obj->connect('localhost', 11211);
-// 		$memcache_obj->flush();
-// 		echo "finish";
-// 		exit();
 		#得到一个完全有效数组
 		#返回数组
 		$rt_array = array();
