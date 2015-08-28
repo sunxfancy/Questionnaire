@@ -191,12 +191,15 @@ class FactorScore {
 		if(empty(self::$factors_list_finished)){
 			self::getFinishedFactors($resultsets->examinee_id);
 		}
-		foreach(self::$factors_list_all['EPQA'] as $key => $value){
-			if (in_array($value, self::$factors_list_finished)){
-				#false表示EPQA的因子已经写入完成
-				return false;
+		if(!empty(self::$factors_list_finished)){
+			foreach(self::$factors_list_all['EPQA'] as $key => $value){
+				if (in_array($value, self::$factors_list_finished)){
+					#false表示EPQA的因子已经写入完成
+					return false;
+				}
 			}
-		} 
+		}
+		
 		#计算全部因子的得分
 		$score_array  = explode('|', $resultsets->score);
 		$score_array  = array_count_values($score_array);
@@ -280,12 +283,15 @@ class FactorScore {
 		if(empty(self::$factors_list_finished)){
 			self::getFinishedFactors($resultsets->examinee_id);
 		}
-		foreach(self::$factors_list_all['EPPS'] as $key=>$value){
-			if(in_array($value, self::$factors_list_finished)){
-				#false表示EPPS的因子已经写入完成
-				return false;
+		if(!empty(self::$factors_list_finished)){
+			foreach(self::$factors_list_all['EPPS'] as $key=>$value){
+				if(in_array($value, self::$factors_list_finished)){
+					#false表示EPPS的因子已经写入完成
+					return false;
+				}
 			}
 		}
+		
 		#计算全部因子的得分
 		$score_array = explode('|', $resultsets->score);
 		$score_array = array_count_values ($score_array);
@@ -339,10 +345,12 @@ class FactorScore {
 		if(empty(self::$factors_list_finished)){
 			self::getFinishedFactors($resultsets->examinee_id);
 		}
-		foreach(self::$factors_list_all['CPI'] as $key=>$value){
-			if(in_array($value, self::$factors_list_finished)){
-			#false表示CPI的因子已经写入完成
-				return false;
+		if(!empty(self::$factors_list_finished)){
+			foreach(self::$factors_list_all['CPI'] as $key=>$value){
+				if(in_array($value, self::$factors_list_finished)){
+					#false表示CPI的因子已经写入完成
+					return false;
+				}
 			}
 		}
 		$string = str_replace('-', '|', $resultsets->score);
@@ -416,12 +424,15 @@ class FactorScore {
 		if(empty(self::$factors_list_finished)){
 		self::getFinishedFactors($resultsets->examinee_id);
 		}
-		foreach(self::$factors_list_all['SCL'] as $key=>$value){
-			if(in_array($value, self::$factors_list_finished)){
-			#false表示SCL的因子已经写入完成
-			return false;
+		if(!empty(self::$factors_list_finished)){
+			foreach(self::$factors_list_all['SCL'] as $key=>$value){
+				if(in_array($value, self::$factors_list_finished)){
+					#false表示SCL的因子已经写入完成
+					return false;
+				}
+			}
 		}
-		}
+		
 		#整理SCL题目答案
 		$question_ans_array = self::getAnswers($resultsets);
 		#计算SCL因子的原始分，标准分，最终分
@@ -475,12 +486,15 @@ class FactorScore {
 		if(empty(self::$factors_list_finished)) {
 			self::getFinishedFactors($resultsets->examinee_id);
 		}
-		foreach(self::$factors_list_all['16PF'] as $key=>$value) {
-			if(in_array($value, self::$factors_list_finished)){
-				#false表示16PF的因子已经写入完成
-				return false;
+		if(!empty(self::$factors_list_finished)){
+			foreach(self::$factors_list_all['16PF'] as $key=>$value) {
+				if(in_array($value, self::$factors_list_finished)){
+					#false表示16PF的因子已经写入完成
+					return false;
+				}
 			}
 		}
+		
 		#确保加载内存表
 		if(!self::$memory_state){
 			self::beforeStart();
