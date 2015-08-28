@@ -55,7 +55,22 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 		echo $time_consuming .'-'. $memory_consuming;
 	}
 	public function t1Action(){
-		FactorScore::beforeStart();
-		FactorScore::handleFactors(12);
+		$time_start  =  $this->microtime_float ();
+		$memory_start = memory_get_usage( true );
+		try{
+			FactorScore::beforeStart();
+			
+			if(FactorScore::handleFactors(12)){
+				echo "finished";
+			}
+		}catch(Exception $e){
+			$e->getMessage();
+		}
+		$memory_end = memory_get_usage( true );
+		$memory_consuming = ($memory_end - $memory_start)/1024/1024;
+		$time_end = $this->microtime_float();
+		$time_consuming = $time_end - $time_start;
+		echo $time_consuming .'-'. $memory_consuming;
+		
 	}
 }
