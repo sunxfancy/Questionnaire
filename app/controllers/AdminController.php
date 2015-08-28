@@ -2,36 +2,32 @@
 
 class AdminController extends Base
 {
-    public function initialize()
-    {
+    public function initialize(){
         $this->view->setTemplateAfter('base2');
     }
 
-    public function indexAction()
-    {
+    public function indexAction(){
         $this->leftRender('项 目 管 理');
     }
 
-    public function addnewAction()
-    {
+    public function addnewAction(){
         $this->leftRender('新 建 项 目');
     }
 
-    public function newprojectAction()
-    {
+    public function newprojectAction(){
         $manager = new Manager();
         $this->getData($manager, array(
-            'name' => 'pm_name',
+            'name'     => 'pm_name',
             'username' => 'pm_username',
             'password' => 'pm_password'));
         $manager->role = 'P';
         
         $project = new Project();
         $this->getData($project, array(
-            'name' => 'project_name', 
+            'name'        => 'project_name', 
             'description' => 'description',
-            'begintime' => 'begintime',
-            'endtime' => 'endtime'));
+            'begintime'   => 'begintime',
+            'endtime'     => 'endtime'));
         try {
             if (!$manager->save()) {
                 foreach ($manager->getMessages() as $message) {
@@ -53,17 +49,13 @@ class AdminController extends Base
         $this->response->redirect('admin');
     }
 
-
-    public function detailAction($project_id)
-    {
+    public function detailAction($project_id){
         $this->leftRender('项 目 详 情');
         $project = Project::findFirst($project_id);
         $this->view->setVar('project_name',$project->name);
     }
 
-
-    public function listAction()
-    {
+    public function listAction(){
         $builder = $this->modelsManager->createBuilder()
                                        ->columns(array(
                                         'Project.id as id', 'Project.begintime as begintime',
@@ -73,9 +65,7 @@ class AdminController extends Base
                                        ->from('Project')
                                        ->join('Manager', 'Project.manager_id = Manager.id')
                                        ->leftJoin('Examinee', 'Project.id = Examinee.project_id')
-                                       ->groupBy('Examinee.id')
-                                       ;
-
+                                       ->groupBy('Examinee.id');
         $sidx = $this->request->getQuery('sidx','string');
         $sord = $this->request->getQuery('sord','string');
         if ($sidx != null)
@@ -88,22 +78,19 @@ class AdminController extends Base
         $this->datareturn($builder);
     }
 
-
-    public function updateAction()
-    {
+    public function updateAction(){
         $oper = $this->request->getPost('oper', 'string');
         if ($oper == 'edit') {
             $id = $this->request->getPost('id', 'int');
             $project = Project::findFirst($id);
-            $project->name    = $this->request->getPost('name', 'string');
+            $project->name      = $this->request->getPost('name', 'string');
             $project->begintime = $this->request->getPost('begintime', 'string');
-            $project->endtime = $this->request->getPost('endtime', 'string');
+            $project->endtime   = $this->request->getPost('endtime', 'string');
             $manager = Manager::findFirst(array(
                 'project_id=?0',
                 'bind'=>array($id)));
-            $manager->name    = $this->request->getPost('manager_name', 'string');
-            $manager->username        = $this->request->getPost('manager_username', 'string');
-
+            $manager->name     = $this->request->getPost('manager_name', 'string');
+            $manager->username = $this->request->getPost('manager_username', 'string');
             if (!$project->save()||!$manager->save()) {
                 foreach ($project->getMessages() as $message) {
                     echo $message;
@@ -121,10 +108,7 @@ class AdminController extends Base
         }
     }
 
-
-
-	public function datareturn($builder)
-    {
+	public function datareturn($builder){
         $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
         $limit = $this->request->getQuery('rows', 'int');
         $page = $this->request->getQuery('page', 'int');
@@ -138,12 +122,12 @@ class AdminController extends Base
         $ans['total'] = $page->total_pages;
         $ans['page'] = $page->current;
         $ans['records'] = $page->total_items;
-        foreach ($page->items as $key => $item)
-        {
+        foreach ($page->items as $key => $item){
             $ans['rows'][$key] = $item;
         }
         echo json_encode($ans);
         $this->view->disable();
     }
+
 }
 

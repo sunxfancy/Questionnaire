@@ -11,22 +11,18 @@
 */
 class InterviewerController extends Base
 {
-	
-	public function indexAction()
-    {
+	public function indexAction(){
         $this->view->setTemplateAfter('base2');
         $this->leftRender('人 员 面 询');
         $manager = $this->session->get('Manager');
         $this->view->setVar('manager_id',$manager->id);
     }
 
-    public function pointAction($examinee_id)
-    {
+    public function pointAction($examinee_id){
         $this->view->setVar('examinee_id',$examinee_id);
         $this->view->setTemplateAfter('base2');
         $this->leftRender('填写面巡意见');
     }
-
 
     public function interviewAction($examinee_id){
         $returnMessage = array();

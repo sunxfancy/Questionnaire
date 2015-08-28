@@ -135,44 +135,40 @@ class FactorScore {
 			if(empty(self::$papers_list)){
 				self::getPapersByExamineeId($examinee_id);
 			}
-			$rtn_array_paper = array();
-			foreach(self::$papers_list as $question_ans_record){ 
-				$tmp_array = null;
+			foreach(self::$papers_list as $question_ans_record){
 				$paper_name= $question_ans_record->Paper->name;
+				$rtn_array_paper = null;
 				switch(strtoupper($paper_name)){
-					case "EPQA" : $tmp_array = self::calEPQA($question_ans_record); break;
-					case 'EPPS' : $tmp_array = self::calEPPS($question_ans_record); break;
-					case 'CPI'  : $tmp_array = self::calCPI($question_ans_record); break;
-					case 'SCL'  : $tmp_array = self::calSCL($question_ans_record); break;
-					case '16PF' : $tmp_array = self::calKS($question_ans_record); break;
-					case 'SPM'  : $tmp_array = self::calSPM($question_ans_record); break;
+					case "EPQA" : $rtn_array_paper = self::calEPQA($question_ans_record); break;
+					case 'EPPS' : $rtn_array_paper = self::calEPPS($question_ans_record); break;
+					case 'CPI'  : $rtn_array_paper = self::calCPI($question_ans_record); break;
+					case 'SCL'  : $rtn_array_paper = self::calSCL($question_ans_record); break;
+					case '16PF' : $rtn_array_paper = self::calKS($question_ans_record); break;
+					case 'SPM'  : $rtn_array_paper = self::calSPM($question_ans_record); break;
 					default : throw new Exception ("no this type paper:$paper_name");
 				}	
-				if(is_bool($tmp_array) || empty($tmp_array)){
+				if(is_bool($rtn_array_paper) || empty($rtn_array_paper)){
 						continue;
-				}else{
-					foreach($tmp_array as $key => $value ){
-						$rtn_array_paper[$key] = $value;
-					}
-				}	
-			}
-			try{
-				$manager     = new TxManager();
-				$transaction = $manager->get();
-				foreach ( $rtn_array_paper as $key => $value ) {
-					$factor_ans = new FactorAns();
-					$factor_ans->examinee_id = $examinee_id;
-					$factor_ans->factor_id = $key;
-					$factor_ans->score = $value['score'];
-					$factor_ans->std_score = $value['std_score'];
-					$factor_ans->ans_score = $value['ans_score'];
-					if($factor_ans->save() == false){
-							$transaction->rollback("Cannot update table FactorAns' score");
-					}
 				}
-				$transaction->commit();
-			}catch (TxFailed $e) {
-				throw new Exception("Failed, reason: ".$e->getMessage());
+				try{
+					// print_r($rtn_array_paper);
+					$manager     = new TxManager();
+					$transaction = $manager->get();
+					foreach ( $rtn_array_paper as $key => $value ) {
+						$factor_ans = new FactorAns();
+						$factor_ans->examinee_id = $examinee_id;
+						$factor_ans->factor_id = $key;
+						$factor_ans->score = $value['score'];
+						$factor_ans->std_score = $value['std_score'];
+						$factor_ans->ans_score = $value['ans_score'];
+						if($factor_ans->create() == false){
+								$transaction->rollback("Cannot update table FactorAns' score");
+						}
+					}
+					$transaction->commit();
+				}catch (TxFailed $e) {
+					throw new Exception("Failed, reason: ".$e->getMessage());
+				}
 			}
 		return true;
 		}catch(Exception $e){

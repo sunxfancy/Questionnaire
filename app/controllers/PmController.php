@@ -27,15 +27,15 @@ class PmController extends Base
 
 	public function detailAction(){
 		# code...
-        }
+    }
 	
-	public function getTimeAction($project_id){
+	public function getTimeAction(){
 		$project_id = $this->getProjectId();
 		$project = Project::findFirst($project_id);
-		$begintime = $project->begintime;
-		$endtime = $project->endtime;
-		$now = date(Y-m-d);
-		$width = 100*round(strtotime($now)-strtotime($begintime))/round(strtotime($endtime)-strtotime($begintime));		
+		$begintime = date('Y-m-d',strtotime($project->begintime));
+		$endtime = date('Y-m-d',strtotime($project->endtime));
+		$now = date("Y-m-d");
+		$width = 100*round(strtotime($now)-strtotime($begintime))/round(strtotime($endtime)-strtotime($begintime)).'%';		
 		$time = array(
 			'begintime' => $begintime,
 			'endtime'	=> $endtime,
@@ -62,8 +62,8 @@ class PmController extends Base
 				$interview_com++;
 			}
 		}
-		$examinee_percent  = (100*$examinee_com/$examinee_all).'%';
-		$interview_percent = (100*$interview_com/$examinee_com).'%';
+		$examinee_percent  = 100*$examinee_com/$examinee_all.'%';
+		$interview_percent = 100*$interview_com/$examinee_com.'%';
 		$detail = array(
 			'examinee_percent'  => $examinee_percent,
 			'interview_percent' => $interview_percent
@@ -97,8 +97,7 @@ class PmController extends Base
         if($manager){
             $project_detail = ProjectDetail::findFirst(array(
                 "project_id=?1",
-                "bind"=>array(1=>$manager->project_id)
-                ));
+                "bind"=>array(1=>$manager->project_id)));
             $module_name = array();
             $module_names = $project_detail->module_names;
             $module_name = explode(',', $module_names);
@@ -131,10 +130,7 @@ class PmController extends Base
         $project_id = $this->session->get('Manager')->project_id;
         $delete_data = InqueryQuestion::find(array(
                 'project_id = :project_id:',
-                'bind' => array(
-                        'project_id' => $project_id
-                    )
-            ));
+                'bind' => array('project_id' => $project_id)));
         $res = $delete_data->delete();
         $this->upload_base('LoadInquery');
     }
@@ -210,7 +206,6 @@ class PmController extends Base
         $project_id = $this->getProjectId();
         $builder = $this->modelsManager->createBuilder()
                                        ->from('Manager')
-                                       //->join('Project','Project.project_id=Manager.project_id')
                                        ->where("Manager.role = 'I' AND Manager.project_id = '$project_id'");
         $sidx = $this->request->getQuery('sidx','string');
         $sord = $this->request->getQuery('sord','string');
@@ -221,7 +216,6 @@ class PmController extends Base
         if ($sord != null)
             $sort = $sort.' '.$sord;
         $builder = $builder->orderBy($sort);
-        // $this->datareturn($builder);
         $this->interviewData($builder);
     }
 
@@ -231,7 +225,7 @@ class PmController extends Base
             $id = $this->request->getPost('id', 'int');
             $manager = Manager::findFirst($id);
             $manager->name       = $this->request->getPost('name', 'string');
-            $manager->password       = $this->request->getPost('password', 'string');
+            $manager->password   = $this->request->getPost('password', 'string');
             if (!$manager->save()) {
                 foreach ($manager->getMessages() as $message) {
                     echo $message;
@@ -253,7 +247,6 @@ class PmController extends Base
         $project_id = $this->getProjectId();
         $builder = $this->modelsManager->createBuilder()
                                        ->from('Manager')
-                                       //->join('Project','Project.project_id=Manager.project_id')
                                        ->where("Manager.role = 'L' AND Manager.project_id = '$project_id'");
         $sidx = $this->request->getQuery('sidx','string');
         $sord = $this->request->getQuery('sord','string');
@@ -691,7 +684,7 @@ class PmController extends Base
         foreach($interviewer as $key => $item){
             $result[$key] = $item;
         }
-//        return json_decode($result,true);
+        // return json_decode($result,true);
         return $result;
     }
 

@@ -116,6 +116,14 @@
     })(document.getElementById("interviewer-completeness"));
 
     
-    $("div[class=progress-bar]").css("width",p+"%");
+    // $("div[class=progress-bar]").css("width",p+"%");
+
+    $.post('/pm/getTime',function(data){
+        time = data.time;
+    });
+
+    $.post('/pm/getDetail',function(data){
+        time = data.detail;
+    });
 
 </script>
