@@ -38,4 +38,21 @@ class MemoryCache {
 		) 	
 		);
 	}
+	
+	/**
+	 * @method $rt->id $rt->children $rt->name $rt->action
+	 * @param unknown $index_name
+	 */
+	public static function getIndexDetail($index_name){
+		return Index::findFirst(
+			array(
+			"name = :index_name:",
+			'bind' => array( 'index_name' => $index_name),
+			'hydration' => \Phalcon\Mvc\Model\Resultset\Simple::HYDRATE_ARRAYS,
+			'cache' => array ('key' => 'index_detail_name_'.$index_name)
+		)
+		);
+	}
+	
+	
 }
