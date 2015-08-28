@@ -125,10 +125,10 @@
         });
     })(document.getElementById("interviewer-completeness"));
 
-    var now =  date("Ymd");
+    var now =  date("Y-m-d");
     var start = 2015-7-31;
-    var end = 5015-9-27;      
-    var p = round(now-start)/round(end-start);
+    var end = 2015-9-2; 
+    var p =100* round(now-start)/round(end-start);
     $("div[class=progress-bar]").css("width",p+"%");
 
 </script>
