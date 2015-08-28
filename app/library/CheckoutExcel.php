@@ -50,7 +50,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $spm = new PHPExcel_Worksheet($excel, '8.spm'); //创建spm表
         $excel->addSheet($spm); 
         $excel->setActiveSheetIndex(7);
-        self::checkoutSpm($examinee,$excel);
+        self::checkoutSpm($examinee,$excel,$project_id);
 
         $indexarray = new PHPExcel_Worksheet($excel, '9.8+5'); //创建8+5表
         $excel->addSheet($indexarray); 
@@ -598,9 +598,152 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
                                 array(
                                     "factor_id = :id:",'bind'=>array('id'=> $factor[0]->id))
                     );
+            $score = $factorAns[0]->score;
             $std_score = $factorAns[0]->std_score;
             $objActSheet->setCellValue("B$i","$factor_chs_name");
             $objActSheet->setCellValue("C$i","$value");
+            $objActSheet->getStyle("D$i")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objActSheet->getStyle("D$i")->getFont()->setBold(true);
+            $objActSheet->setCellValue("D$i","$score");
+            $objActSheet->getStyle("E$i")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objActSheet->getStyle("E$i")->getFont()->setBold(true);
+            $objActSheet->setCellValue("E$i","$std_score");
+            $i++;
+        }
+    }
+
+    public static function checkoutCpi($examinee,$excel,$project_id){
+        $objActSheet = $excel->getActiveSheet();
+        $objActSheet->getDefaultRowDimension()->setRowHeight(22);
+        $objActSheet->getDefaultColumnDimension()->setWidth(15);
+
+        $objActSheet->getColumnDimension('B')->setWidth(20);        
+
+        $styleArray = array(
+            'borders' => array(
+                'allborders' => array(
+                    // 'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,//细边框
+                    //'color' => array('argb' => 'FFFF0000'),
+                ),
+            ),
+        );
+        $styleArray1 = array(
+            'borders' => array(
+                'outline' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
+                ),
+            ),
+        );
+        $objActSheet->getStyle('A2:F4')->applyFromArray($styleArray1);
+
+        $objActSheet->getRowDimension(1)->setRowHeight(50);
+        $objActSheet->mergeCells('A1:F1');
+        $objActSheet->setCellValue('A1','青年性格问卷（CPI）测试结果');
+        $objActSheet->getStyle('A1')->getFont()->setSize(20);
+        $objActSheet->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objActSheet->setCellValue('A2','分类号');
+        $objActSheet->setCellValue('C2','编号');
+        $objActSheet->setCellValue('E2','姓名');
+        $objActSheet->setCellValue('F2',$examinee->name);
+        $objActSheet->setCellValue('A3','性别');
+        $sex = ($examinee->sex == "1") ? "男" : "女";
+        $objActSheet->setCellValue('B3',$sex);
+        $objActSheet->setCellValue('C3','年龄');
+        $birthday = $examinee->birthday;
+        $bir = explode('-',$birthday);
+        $age = date("Y") - $bir[0];
+        if((date("m")-$bir[1])>0 || ( (date("m")==$bir[1])&&(date("d")>$bir[2]) ))
+            $age++;
+        $objActSheet->getStyle('C3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+        $objActSheet->setCellValue('D3',$age);
+        $objActSheet->setCellValue('E3','职业');
+        $objActSheet->setCellValue('F3',$examinee->duty);
+
+        $objActSheet->setCellValue('A4','日期');
+        $objActSheet->setCellValue('B4',date("Y-m-d"));
+        $objActSheet->getRowDimension(5)->setRowHeight(20);
+
+        $objActSheet->setCellValue('A6','因子名称');
+        $objActSheet->setCellValue('B6','代号');
+        $objActSheet->setCellValue('C6','原始分');
+        $objActSheet->setCellValue('D6','T分');
+        $objActSheet->mergeCells("A7:F7");
+
+        $factors = ProjectDetail::find(
+            array(
+                 "project_id = :project_id:", 'bind' => array('project_id'=>$project_id)
+                 )
+            );
+        $factor_name = json_decode($factors[0]->factor_names,true);
+        $factor_name = $factor_name['CPI'];
+        ksort($factor_name);
+
+        $array1 = array('do','cs','sy','sp','sa','wb');
+        $array2 = array('re','so','sc','po','gi','cm');
+        $array3 = array('ac','ai','ie');
+        $array4 = array('py','fx','fe');
+        $array_one = array();
+        $array_two = array();
+        $array_three = array();
+        $array_four = array();
+        foreach ($factor_name as $key => $value) {
+            if(in_array($value, $array1)){
+                $array_one[$key] = $value;
+            }                
+            if (in_array($value, $array2)) {
+                $array_two[$key] = $value;
+            }
+            if(in_array($value, $array3)){
+                $array_three[$key] = $value;
+            }                
+            if (in_array($value, $array4)) {
+                $array_four[$key] = $value;
+            }
+        }
+        $i = 7;
+        $objActSheet->setCellValue("A$i",'第一类  人际关系适应能力的测验');
+        self::dealCpi($objActSheet,$array_one,$i);
+        $i+=count($array_one)+1;
+        $objActSheet->setCellValue("A$i",'第二类  社会化、成熟度、责任心及价值观念的测验');
+        self::dealCpi($objActSheet,$array_two,$i);
+        $i+=count($array_two)+1;
+        $objActSheet->setCellValue("A$i",' 第三类  成就能力与智能效率的测验');
+        self::dealCpi($objActSheet,$array_three,$i);
+        $i+=count($array_three)+1;
+        $objActSheet->setCellValue("A$i",'第四类  个人的生活态度与倾向的测验');
+        self::dealCpi($objActSheet,$array_four,$i);
+    }
+
+    public static function dealCpi($objActSheet,$array,$i){
+        $objActSheet->mergeCells("A$i:F$i");
+        $k = $i + count($array);
+        $styleArray1 = array(
+            'borders' => array(
+                'outline' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
+                ),
+            ),
+        );
+        $objActSheet->getStyle("A$i:F$k")->applyFromArray($styleArray1);
+        $i++;
+        foreach ($array as $key => $value) {
+            $factor = Factor::find(
+                                array(
+                                    "name = :name:",'bind'=>array('name'=>$value))
+                    );
+            $factor_chs_name = $factor[0]->chs_name;
+            $factorAns = FactorAns::find(
+                                array(
+                                    "factor_id = :id:",'bind'=>array('id'=> $key))
+                    );
+            $score = $factorAns[0]->score;
+            $std_score = $factorAns[0]->std_score;
+            $objActSheet->setCellValue("A$i","$factor_chs_name");
+            $objActSheet->setCellValue("B$i","$value");
+            $objActSheet->getStyle("C$i")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objActSheet->getStyle("C$i")->getFont()->setBold(true);
+            $objActSheet->setCellValue("C$i","$score");
             $objActSheet->getStyle("D$i")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $objActSheet->getStyle("D$i")->getFont()->setBold(true);
             $objActSheet->setCellValue("D$i","$std_score");
@@ -608,12 +751,78 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         }
     }
 
-    public static function checkoutCpi($examinee,$excel){
-        //todo
-    }
+    public static function checkoutSpm($examinee,$excel,$project_id){
+        $objActSheet = $excel->getActiveSheet();
+        $objActSheet->getDefaultRowDimension()->setRowHeight(22);
+        $objActSheet->getDefaultColumnDimension()->setWidth(15);
 
-    public static function checkoutSpm($examinee,$excel){
-        //todo
+        $objActSheet->getColumnDimension('B')->setWidth(20);        
+
+        $styleArray = array(
+            'borders' => array(
+                'allborders' => array(
+                    // 'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,//细边框
+                    //'color' => array('argb' => 'FFFF0000'),
+                ),
+            ),
+        );
+        $styleArray1 = array(
+            'borders' => array(
+                'outline' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
+                ),
+            ),
+        );
+        $objActSheet->getStyle('A2:F4')->applyFromArray($styleArray1);
+
+        $objActSheet->getRowDimension(1)->setRowHeight(50);
+        $objActSheet->mergeCells('A1:F1');
+        $objActSheet->setCellValue('A1','SPM瑞文标准推理测验结果');
+        $objActSheet->getStyle('A1')->getFont()->setSize(20);
+        $objActSheet->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objActSheet->setCellValue('A2','分类号');
+        $objActSheet->setCellValue('C2','编号');
+        $objActSheet->setCellValue('E2','姓名');
+        $objActSheet->setCellValue('F2',$examinee->name);
+        $objActSheet->setCellValue('A3','性别');
+        $sex = ($examinee->sex == "1") ? "男" : "女";
+        $objActSheet->setCellValue('B3',$sex);
+        $objActSheet->setCellValue('C3','年龄');
+        $birthday = $examinee->birthday;
+        $bir = explode('-',$birthday);
+        $age = date("Y") - $bir[0];
+        if((date("m")-$bir[1])>0 || ( (date("m")==$bir[1])&&(date("d")>$bir[2]) ))
+            $age++;
+        $objActSheet->getStyle('C3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+        $objActSheet->setCellValue('D3',$age);
+        $objActSheet->setCellValue('E3','职业');
+        $objActSheet->setCellValue('F3',$examinee->duty);
+
+        $objActSheet->setCellValue('A4','日期');
+        $objActSheet->setCellValue('B4',date("Y-m-d"));
+
+        $objActSheet->setCellValue('A6','总分');
+
+        $objActSheet->setCellValue('C6','百分等级');
+
+        $objActSheet->setCellValue('E6','智力等级');
+
+        $objActSheet->setCellValue('A7','评定结果');
+        $objActSheet->mergeCells('B7:F7');
+
+        $objActSheet->setCellValue('A8','部分');
+        $objActSheet->setCellValue('A9','得分');
+
+        $factors = ProjectDetail::find(
+            array(
+                 "project_id = :project_id:", 'bind' => array('project_id'=>$project_id)
+                 )
+            );
+        // print_r($factors);
+        $factor_name = json_decode($factors[0]->factor_names,true);
+        $factor_name = $factor_name['SPM'];
+        print_r($factor_name);exit;
     }
 
     public static function checkoutIndexArray($examinee,$excel){
