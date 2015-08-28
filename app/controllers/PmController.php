@@ -26,14 +26,13 @@ class PmController extends Base
     }
 
 	public function detailAction(){
-		$manager = $this->session->get('Manager');
-        $project_id = $manager->project_id;
+        $project_id = $this->getProjectId();
         $project = Project::findFirst($project_id);
         $starttime = $project->starttime;
         $endtime = $project->endtime;
         $now = date(Y-m-d);
         $width = 100*round(strtotime($now)-strtotime($starttime))/round(strtotime($endtime)-strtotime($starttime));
-        
+        echo $width;
 	}
 
 	public function examineeAction(){
@@ -93,7 +92,7 @@ class PmController extends Base
     }
 
     public function uploadInqueryAction(){
-        $project_id = $this->session->get('Manager')->project_id;
+        $project_id = $this->getProjectId();
         $delete_data = InqueryQuestion::find(array(
                 'project_id = :project_id:',
                 'bind' => array(
