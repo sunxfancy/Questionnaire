@@ -55,14 +55,11 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 		echo $time_consuming .'-'. $memory_consuming;
 		
 	}	
-
 	public function t2Action(){
 		$time_start  =  $this->microtime_float ();
 		$memory_start = memory_get_usage( true );
 		try{
-			FactorScore::beforeStart();
-			
-			if(FactorScore::handleFactors(12)){
+			if(IndexScore::handleIndexs(12)){
 				echo "finished";
 			}
 		}catch(Exception $e){
@@ -74,7 +71,6 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 		$time_consuming = $time_end - $time_start;
 		echo $time_consuming .'-'. $memory_consuming;
 	}
-
 	public static function clearAction(){
 		// 		清空memcache缓存
 		$memcache_obj = new Memcache;

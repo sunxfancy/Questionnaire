@@ -57,10 +57,10 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $excel->setActiveSheetIndex(8);
         self::checkoutIndexArray($examinee,$excel);
 
-        $struct = new PHPExcel_Worksheet($excel, '10.结构'); //创建结构表
-        $excel->addSheet($struct); 
+         $structure = new PHPExcel_Worksheet($excel,'结构');//创建结构表
+        $excel->addSheet($structure);
         $excel->setActiveSheetIndex(9);
-        self::checkoutStruct($examinee,$excel);
+        self::checkoutModuleResult($examinee,$excel,$project_id);
 
         $write = new PHPExcel_Writer_Excel5($excel);
         header("Pragma: public");
@@ -446,8 +446,24 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
                  "project_id = :project_id:", 'bind' => array('project_id'=>$project_id)
                  )
             );
-        // $factor_name = json_decode($factors[0]->factor_names,true);
-        // $factor_name = $factor_name['EPPS'];
+        $factor_name = json_decode($factors[0]->factor_names,true);
+        $factor_name = $factor_name['EPPS'];
+        $factor_keys = array_keys($factor_name);
+        $factor_epps = FactorAns::find(
+                array(
+                    "factor_id IN ({factor_key:array}) AND examinee_id = :id:",
+                    'bind' => array( 'factor_key' => $factor_keys, 'id'=>$examinee->id),
+                    'order' => 'score desc'
+                    )
+            );
+        // echo "<pre>";
+        // print_r($factor_epps);
+        // $number = count($factor_epps);
+        // echo $number."   ";
+        // foreach($factor_epps as $record){
+            
+            // echo $record->factor_id."  ===  ".$record->score."<br/>";
+        // }
         // $factor = Factor::find(
         //     array(
         //          "name IN ({name:array})", 'bind' => array('name'=>$factor_name)
@@ -819,10 +835,42 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
                  "project_id = :project_id:", 'bind' => array('project_id'=>$project_id)
                  )
             );
-        // print_r($factors);
         $factor_name = json_decode($factors[0]->factor_names,true);
         $factor_name = $factor_name['SPM'];
-        print_r($factor_name);exit;
+        $spmKey = array_keys($factor_name,"spma");
+        $spmKey = $spmKey[0];
+        $spmAns = FactorAns::find(
+                                array(
+                                    "factor_id = :id:",'bind'=>array('id'=> $spmKey))
+                    );
+        $spmScore = ceil($spmAns[0]->score);
+        $spmStdScore = (string)ceil($spmAns[0]->std_score);
+        $percent = substr($spmStdScore,1);
+        $intellect = substr($spmStdScore,0,1);
+        $objActSheet->setCellValue('B6',$spmScore);
+        $objActSheet->setCellValue('D6',$percent);
+        $objActSheet->setCellValue('F6',$intellect);
+        $objActSheet->setCellValue('B7',"$intellect 级");
+        $letterArr = array('A','B','C','D','E','F');
+        $spmArray = array('spma','spmb','spmc','spmd','spme','spmf',);
+        $i = 1;
+        foreach ($factor_name as $key => $value) {
+            if (in_array($value, $spmArray)) {
+                $factorAns = FactorAns::find(
+                                array(
+                                    "factor_id = :id:",'bind'=>array('id'=> $key))
+                    );
+                $score = ceil($factorAns[0]->score);
+                $letter = strtoupper(substr($value,3));
+                $objActSheet->getStyle("$letterArr[$i]8")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                $objActSheet->getStyle("$letterArr[$i]9")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                $objActSheet->setCellValue("$letterArr[$i]8","$letter 类");
+                $objActSheet->setCellValue("$letterArr[$i]9","$score");
+                $i++;
+            }
+            
+        }
+        $objActSheet->getStyle('A6:F9')->applyFromArray($styleArray);
     }
 
     public static function checkoutIndexArray($examinee,$excel){
@@ -833,6 +881,381 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         //todo
     }
 
+    public static function checkoutModuleResult($examinee,$excel,$project_id){
+//        $excel2 = new PHPExcel();
+        $objActSheet = $excel->getActiveSheet();
+        $objActSheet->getDefaultRowDimension()->setRowHeight(20);
+        $objActSheet->getDefaultColumnDimension()->setWidth(20);
+        $resultItem = self::testResultItem();
+        $examinee_id = $examinee->id;
+        $module = self::getScore($examinee_id,$project_id,$resultItem);
+//        var_dump($module);
+//        exit;
+        $k = 1;
+        $objActSheet->getRowDimension($k)->setRowHeight(40);
+        $objActSheet->mergeCells('B'.$k.':F'.$k);
+        foreach($module as $key => $item){
+            if(!empty($item)){
+                if($key == 'mk_xljk'){
+//                    $objActSheet->getRowDimension($k+2)->set
+                    self::structureExcelHead($k,'心理健康评价指标',$objActSheet);
+                    //心理健康水平行
+                    self::structureExcelCommon($k+2,'mk_xljk','zb_xljksp',$resultItem,$objActSheet,$item);
+                    //情绪控制水平行
+                    self::structureExcelCommon($k+3,'mk_xljk','zb_qxkzsp',$resultItem,$objActSheet,$item);
+                    //适应环境水平
+                    self::structureExcelCommon($k+4,'mk_xljk','zb_syhjsp',$resultItem,$objActSheet,$item);
+                    //人际关系调节水平
+                    self::structureExcelCommon($k+5,'mk_xljk','zb_rjgxtjsp',$resultItem,$objActSheet,$item);
+                    //性格
+                    self::structureExcelCommon($k+6,'mk_xljk','zb_xg',$resultItem,$objActSheet,$item);
+                    //执着
+                    self::structureExcelCommon($k+7,'mk_xljk','zb_zz',$resultItem,$objActSheet,$item);
+                    //风险性
+                    self::structureExcelCommon($k+8,'mk_xljk','zb_fxx',$resultItem,$objActSheet,$item);
+                    $objActSheet->mergeCells('B'.($k+9).':C'.($k+9));
+                    $objActSheet->mergeCells('E'.($k+9).':F'.($k+9));
+                    $k += 10;
+
+                }
+                elseif($key == 'mk_szjg'){
+//                    $objActSheet->setCellValue('B'.$k,'素质结构评价指标');
+                    self::structureExcelHead($k,'素质结构评价指标',$objActSheet);
+                    //责任心
+                    self::structureExcelCommon($k+2,'mk_szjg','zb_zrx',$resultItem,$objActSheet,$item);
+                    //诚信度
+                    self::structureExcelCommon($k+3,'mk_szjg','zb_cxd',$resultItem,$objActSheet,$item);
+                    //个人价值取向
+                    self::structureExcelCommon($k+4,'mk_szjg','zb_grjzqx',$resultItem,$objActSheet,$item);
+                    //团队精神
+                    self::structureExcelCommon($k+5,'mk_szjg','zb_tdjs',$resultItem,$objActSheet,$item);
+                    //工作态度
+                    self::structureExcelCommon($k+6,'mk_szjg','zb_gztd',$resultItem,$objActSheet,$item);
+                    //工作作风
+                    self::structureExcelCommon($k+7,'mk_szjg','zb_gzzf',$resultItem,$objActSheet,$item);
+                    //表现性
+                    self::structureExcelCommon($k+8,'mk_szjg','zb_bxx',$resultItem,$objActSheet,$item);
+                    //容纳性
+                    self::structureExcelCommon($k+9,'mk_szjg','zb_rnx',$resultItem,$objActSheet,$item);
+                    $objActSheet->mergeCells('B'.($k+10).':C'.($k+10));
+                    $objActSheet->mergeCells('E'.($k+10).':F'.($k+10));
+                    $k += 11;
+                }
+                elseif($key == 'mk_ztjg'){
+//                    $objActSheet->setCellValue('B'.$k,'智体结构评价指标');
+                    self::structureExcelHead($k,'智体结构评价指标',$objActSheet);
+                    //聪慧性
+                    self::structureExcelCommon($k+2,'mk_ztjg','zb_chd',$resultItem,$objActSheet,$item);
+                    //精明能干
+                    self::structureExcelCommon($k+3,'mk_ztjg','zb_jmng',$resultItem,$objActSheet,$item);
+                    //纪律性
+                    self::structureExcelCommon($k+4,'mk_ztjg','zb_jlx',$resultItem,$objActSheet,$item);
+                    //体质精力
+                    self::structureExcelCommon($k+5,'mk_ztjg','zb_tzjl',$resultItem,$objActSheet,$item);
+                    //分析能力
+                    self::structureExcelCommon($k+6,'mk_ztjg','zb_fxnl',$resultItem,$objActSheet,$item);
+                    //归纳能力
+                    self::structureExcelCommon($k+7,'mk_ztjg','zb_gnnl',$resultItem,$objActSheet,$item);
+
+                    $objActSheet->mergeCells('B'.($k+8).':C'.($k+8));
+                    $objActSheet->mergeCells('E'.($k+8).':F'.($k+8));
+                    $k += 9;
+                }
+                else{
+//                    $objActSheet->setCellValue('B'.$k,'能力结构评价指标');
+                    self::structureExcelHead($k,'能力结构评价指标',$objActSheet);
+                    //独立工作能力
+                    self::structureExcelCommon($k+2,'mk_nljg','zb_dlgznl',$resultItem,$objActSheet,$item);
+                    //创新能力
+                    self::structureExcelCommon($k+3,'mk_nljg','zb_cxnl',$resultItem,$objActSheet,$item);
+                    //应变能力
+                    self::structureExcelCommon($k+4,'mk_nljg','zb_ybnl',$resultItem,$objActSheet,$item);
+                    //判断与决策能力
+                    self::structureExcelCommon($k+5,'mk_nljg','zb_pdyjcnl',$resultItem,$objActSheet,$item);
+                    //组织管理能力
+                    self::structureExcelCommon($k+6,'mk_nljg','zb_zzglnl',$resultItem,$objActSheet,$item);
+                    //社交能力
+                    self::structureExcelCommon($k+7,'mk_nljg','zb_sjnl',$resultItem,$objActSheet,$item);
+                    //领导能力
+                    self::structureExcelCommon($k+8,'mk_nljg','zb_ldnl',$resultItem,$objActSheet,$item);
+                    $k += 8;
+                }
+
+            }
+        }
+        $styleArray = array(
+            'borders' => array(
+                'allborders' => array(
+                    // 'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,//细边框
+                    //'color' => array('argb' => 'FFFF0000'),
+                ),
+            ),
+        );
+        $objActSheet->getStyle('A1:F'.$k)->applyFromArray($styleArray);
+
+
+    }
+    /*
+     * 获取结构表信息
+     */
+    public static function testResultItem(){
+        $result = array();
+        //心理健康模块
+        $result['mk_xljk'] = array(
+            'zb_xljksp' => array(
+                'item' => '心理健康水平',
+                'combineFactor' => 19,
+                'name' => 'zb_xljksp'
+            ),
+            'zb_qxkzsp' => array(
+                'item' => '情绪控制水平',
+                'combineFactor' => 10,
+                'name' => 'zb_qxkzsp'
+            ),
+            'zb_syhjsp' => array(
+                'item' => '适应环境水平',
+                'combineFactor' => 8,
+                'name' => 'zb_syhjsp'
+            ),
+            'zb_rjgxtjsp' => array(
+                'item' => '人际关系调节水平',
+                'combineFactor' => 11,
+                'name' => 'zb_rjgxtjsp'
+            ),
+            'zb_xg' => array(
+                'item' => '性格',
+                'combineFactor' => 10,
+                'name' => 'zb_xg'
+            ),
+            'zb_zz' => array(
+                'item' => '执着',
+                'combineFactor' => 11,
+                'name' => 'zb_zz'
+            ),
+            'zb_fxx' => array(
+                'item' => '风险性',
+                'combineFactor' => 8,
+                'name' => 'zb_fxx'
+            )
+        );
+        //素质结构模块
+        $result['mk_szjg'] = array(
+            'zb_zrx' => array(
+                'item' => '责任心',
+                'combineFactor' => 12,
+                'name' => 'zb_zrx'
+            ),
+            'zb_cxd' => array(
+                'item' => '诚信度',
+                'combineFactor' => 7,
+                'name' => 'zb_cxd'
+            ),
+            'zb_grjzqx' => array(
+                'item' => '个人价值取向',
+                'combineFactor' => 11,
+                'name' => 'zb_grjzqx',
+            ),
+            'zb_tdjs' => array(
+                'item' => '团队精神',
+                'combineFactor' => 9,
+                'name' => 'zb_tdjs'
+            ),
+            'zb_gztd' => array(
+                'item' => '工作态度',
+                'combineFactor' => 7,
+                'name' => 'zb_gztd'
+            ),
+            'zb_gzzf' => array(
+                'item' => '工作作风',
+                'combineFactor' => 8,
+                'name' => 'zb_gzzf'
+            ),
+            'zb_bxx' => array(
+                'item' => '表现性',
+                'combineFactor' => 9,
+                'name' => 'zb_bxx'
+            ),
+            'zb_rnx' => array(
+                'item' => '容纳性',
+                'combineFactor' => 4,
+                'name' => 'zb_rnx'
+            )
+        );
+        //智体结构模块
+        $result['mk_ztjg'] = array(
+            'zb_chd' => array(
+                'item' => '聪慧性',
+                'combineFactor' => 10,
+                'name' => 'zb_chd'
+            ),
+            'zb_jmng' => array(
+                'item' => '精干性',
+                'combineFactor' => 7,
+                'name' => 'zb_jmng'
+            ),
+            'zb_jlx' => array(
+                'item' => '纪律性',
+                'combineFactor' => 8,
+                'name' => 'zb_jlx'
+            ),
+            'zb_tzjl' => array(
+                'item' => '体质精力',
+                'combineFactor' => 8,
+                'name' => 'zb_tzjl'
+            ),
+            'zb_fxnl' => array(
+                'item' => '分析能力',
+                'combineFactor' => 11,
+                'name' => 'zb_fxnl'
+            ),
+            'zb_gnnl' => array(
+                'item' => '归纳能力',
+                'combineFactor' => 12,
+                'name' => 'zb_gnnl'
+            )
+        );
+        //能力结构模块
+        $result['mk_nljg'] = array(
+            'zb_dlgznl' => array(
+                'item' => '独立工作能力',
+                'combineFactor' => 9,
+                'name' => 'zb_dlgznl'
+            ),
+            'zb_cxnl' => array(
+                'item' => '创新能力',
+                'combineFactor' => 12,
+                'name' => 'zb_cxnl'
+            ),
+            'zb_ybnl' => array(
+                'item' => '应变能力',
+                'combineFactor' => 9,
+                'name' => 'zb_ybnl'
+            ),
+            'zb_pdyjcnl' => array(
+                'item' => '判断与决策能力',
+                'combineFactor' => 9,
+                'name' => 'zb_pdyjcnl'
+            ),
+            'zb_zzglnl' => array(
+                'item' => '组织管理能力',
+                'combineFactor' => 8,
+                'name' => 'zb_zzglnl'
+            ),
+            'zb_sjnl' => array(
+                'item' => '社交能力',
+                'combineFactor' => 12,
+                'name' => 'zb_sjnl'
+            ),
+            'zb_ldnl' => array(
+                'item' => '领导能力',
+                'combineFactor' => 6,
+                'name' => 'zb_ldnl'
+            )
+        );
+
+        return $result;
+    }
+
+    public static function getScore($examinee_id,$project_id,$result){
+//        $result = $this->testResultItem();
+        $project_detail = ProjectDetail::findFirst(array(
+            'project_id = :project_id:',
+            'bind' => array(
+                'project_id' => $project_id
+            )
+        ));
+        $module = array();
+        //心理健康模块
+        $module['mk_xljk'] = self::moduleDetailScore('mk_xljk',$project_detail,$result,$examinee_id);
+        //素质结构模块
+        $module['mk_szjg'] = self::moduleDetailScore('mk_szjg',$project_detail,$result,$examinee_id);
+        //智体结构模块
+        $module['mk_ztjg'] = self::moduleDetailScore('mk_ztjg',$project_detail,$result,$examinee_id);
+        //能力结构模块
+        $module['mk_nljg'] = self::moduleDetailScore('mk_nljg',$project_detail,$result,$examinee_id);
+//        var_dump($module);
+//        exit;
+        return $module;
+    }
+    /*
+     * 模块得分
+     */
+    public static function moduleDetailScore($module_name,$project_detail,$result,$examinee_id){
+        $res = array();
+        $project_module = explode(',',$project_detail->module_names);
+        if(in_array($module_name,$project_module)){
+            $module_part = $result[$module_name];
+            foreach($module_part as $key => $value){
+                $index = Index::findFirst(array(
+                    'name = :name:',
+                    'bind' => array(
+                        'name' => $value['name']
+                    )
+                ));
+                $index = json_encode($index);
+                $index = json_decode($index,true);
+//                $index_id = $index->id;
+                $indexAns = IndexAns::findFirst(array(
+                    'index_id = :index_id: AND examinee_id = :examinee_id:',
+                    'bind' => array(
+                        'index_id' => $index['id'],
+                        'examinee_id' => $examinee_id
+                    )
+                ));
+                $indexAns = json_encode($indexAns);
+                $indexAns = json_decode($indexAns,true);
+//                $score = $indexAns->score;
+                $res[$value['name']]['score'] = $indexAns['score'];
+//                score($res[$value['name']]['score']);exit;
+            }
+        }
+        return $res;
+    }
+
+    /*
+     * excel表公共函数
+     */
+    public static function structureExcelCommon($k,$module_name,$module_part,$result,$objActSheet,$item){
+        $objActSheet->setCellValue('A'.$k,$result[$module_name][$module_part]['item']);
+        $objActSheet->mergeCells('B'.$k.':C'.$k);
+        $objActSheet->mergeCells('E'.$k.':F'.$k);
+        $objActSheet->setCellValue('B'.$k,$result[$module_name][$module_part]['combineFactor']);
+//                    $objActSheet->setCellValue('D'.($k+2),$resultItem['mk_xljk']['zb_xljksp']['combineFactor']);
+        if(!$item[$module_part]['score']){
+            $objActSheet->setCellValue('D'.$k,0);
+        }else{
+            $objActSheet->setCellValue('D'.$k,$item[$module_part]['score']);
+        }
+        $objActSheet->getStyle('A'.$k)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objActSheet->getStyle('B'.$k)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objActSheet->getStyle('D'.$k)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    }
+
+    /*
+     * structure表公共表头
+     */
+    public static function structureExcelHead($k,$title,$objActSheet){
+        $objActSheet->setCellValue('B'.$k,$title);
+        $objActSheet->mergeCells('B'.$k.':F'.$k);
+        $objActSheet->getStyle('B'.$k)->getFont()->setBold(true);
+        $objActSheet->getStyle('B'.$k)->getFont()->setSize(20);
+        $objActSheet->getRowDimension($k)->setRowHeight(50);
+        $objActSheet->getStyle('B'.$k)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+//        $objActSheet->getStyle("B$k")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        //表头
+        $k += 1;
+        $objActSheet->setCellValue('A'.$k,'评价指标');
+        $objActSheet->mergeCells('B'.$k.':C'.$k);
+        $objActSheet->mergeCells('E'.$k.':F'.$k);
+        $objActSheet->setCellValue('B'.$k,'组合因素(项)');
+        $objActSheet->setCellValue('D'.$k,'综合分');
+        $objActSheet->setCellValue('E'.$k,'评价结果');
+        $objActSheet->getStyle('A'.$k)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objActSheet->getStyle('B'.$k)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objActSheet->getStyle('D'.$k)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objActSheet->getStyle('E'.$k)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    }
 
     public function testexcel(){
         require_once("../app/classes/PHPExcel.php");
