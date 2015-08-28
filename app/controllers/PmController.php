@@ -343,6 +343,8 @@ class PmController extends Base
                     'bind'=>array(1=>$factor_name)));
                 $paper_id = $factor->paper_id;
                 $paper_name = Paper::findFirst($paper_id)->name;
+                $factor_id = $factor->id;
+                $factors[$paper_name][$factor_id] = $factor_name;
                 $childrentype = explode(',',$factor->children_type);
                 if (in_array(0, $childrentype)) {
                     $factor = explode(',',$factor->children);
@@ -352,10 +354,6 @@ class PmController extends Base
                             'bind'=>array(1=>$factor1)));
                         $factors[$paper_name][$factorss->id] = $factor1;
                     }
-                }
-                else{
-                    $factor_id = $factor->id;
-                    $factors[$paper_name][$factor_id] = $factor_name;
                 }
             }
             $factor_json = json_encode($factors,JSON_UNESCAPED_UNICODE);
