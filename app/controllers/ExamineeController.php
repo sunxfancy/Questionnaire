@@ -49,33 +49,21 @@ class ExamineeController extends Base
         //获得被试者的登陆信息      
 	}
 
-    public function getquesAction(){
-    	$index=$this->request->getPost('index','int');
-        //需要按照index在数据库中搜索量化考评题目       
-        $question = array('ques_length'=>(int)20,
-                            'index'=>(int)$index,
-                            'title'=>"test您认为公司发展",
-                            'options'=>"资源整合能力|融资能力|人力资源管理能力|科研技术能力|科研技术能力|学习能力|工程建设与运营管理能力|内部管理能力|创新能力|风险控制能力",
-                            'is_multi'=>true);
-        $this->dataReturn($question);
-    }
-
     public function getInqueryAction(){
         $project_id = $this->session->get('Examinee')->project_id;
         $inquery = InqueryQuestion::find(array(
             'project_id=?1',
             'bind'=>array(1=>$project_id)));
-        $length = count($inquery);
+        $length = sizeof($inquery);
         $question = array();
-        foreach ($inquery as $inquerys) {
-            $question[] = array('ques_length' =>$length,
-                              'index'       =>$inquerys->id,
-                              'title'       =>$inquerys->topic,
-                              'options'     =>$inquerys->options,
-                              'is_multi'    =>$inquerys->is_radio
-                            );
+        for ($i=0; $i < $length; $i++) {
+            $question[] = array('index'       =>(int)$i,
+                                'title'       =>$inquery[$i]->topic,
+                                'options'     =>$inquery[$i]->options,
+                                'is_multi'    =>($inquery[$i]->is_radio == 1)?false:true
+                                );
         }
-        $this->dataReturn($question);
+        $this->dataReturn(array("question"=>$question));
     }
 
     public function getInqueryAnsAction(){
@@ -85,7 +73,7 @@ class ExamineeController extends Base
         $inquery_ans->examinee_id = $examinee->id;
         $inquery_ans->option = $this->request->getPost("answer", "string");
         if($inquery_ans->save()){
-            $this->dataReturn(array("flag"=>true));
+            $this->dataReturn(array("flag"=>true,"answer"=>$inquery_ans->option));
         }
         else{
             $this->dataReturn(array("flag"=>false));
@@ -156,6 +144,8 @@ class ExamineeController extends Base
             /**********************************************************************/
             /*最后一次提交的处理在这里，$total_time是用户答题使用的总时间，以秒计*/
             $this->dataReturn(array("total_time"=>$total_time));
+            // $this->session->get("Examinee")
+            session_unset("Examinee");
             /*end of code chunk*/
             /**********************************************************************/
             // $examinee = Examinee::findFirst($id);

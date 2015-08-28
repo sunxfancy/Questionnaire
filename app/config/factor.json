@@ -581,12 +581,12 @@
 		    },
 		    "spm": {
 		        "factor": "spma,spmb,spmc,spmd,spme",
-		        "action": "sum",
+		        "action": "spma+spmb+spmc+spmd+spme",
 		        "chs_name": "SPM"
 		    },
 		    "spmabc": {
 		        "factor": "spma,spmb,spmc",
-		        "action": "sum",
+		        "action": "spma+spmb+spmc",
 		        "chs_name": "SPM(A、B、C)"
 		    }
     }

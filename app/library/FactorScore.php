@@ -82,9 +82,6 @@ class FactorScore {
 		}
 		$rt_array['sex'] = $results_from_examinee->sex;
 		$rt_array['age'] = self::calAge($results_from_examinee->birthday, $results_from_examinee->last_login);
-		if($rt_array['age'] < 16 || $rt_array['age'] >= 150){
-			throw new Exception("The age is not appropriate!");
-		}
 		$rt_array['project_id'] = $results_from_examinee->Project->id;
 		self::$examinee_info = $rt_array;
 		unset($rt_array);
@@ -145,35 +142,32 @@ class FactorScore {
 					case "EPQA" : $rtn_array_paper = self::calEPQA($question_ans_record); break;
 					case 'EPPS' : $rtn_array_paper = self::calEPPS($question_ans_record); break;
 					case 'CPI'  : $rtn_array_paper = self::calCPI($question_ans_record); break;
-// 					case 'SCL'  : $rtn_array_paper = self::calSCL($question_ans_record); break;
-// 					case '16PF' : $rtn_array_paper = self::calKS($question_ans_record); break;
-// 					case 'SPM'  : $rtn_array_paper = self::calSPM($question_ans_record); break;
-// 					default : throw new Exception ("no this type paper:$paper_name");
+					case 'SCL'  : $rtn_array_paper = self::calSCL($question_ans_record); break;
+					case '16PF' : $rtn_array_paper = self::calKS($question_ans_record); break;
+					case 'SPM'  : $rtn_array_paper = self::calSPM($question_ans_record); break;
+					default : throw new Exception ("no this type paper:$paper_name");
 				}	
-				echo "<pre>";
-				var_dump($rtn_array_paper);
-				echo "</pre>";
-// 				if(is_bool($rtn_array_paper) || empty($rtn_array_paper)){
-// 						continue;
-// 				}
-// 				try{
-// 					$manager     = new TxManager();
-// 					$transaction = $manager->get();
-// 					foreach ( $rtn_array_paper as $key => $value ) {
-// 						$factor_ans = new FactorAns();
-// 						$factor_ans->examinee_id = $examinee_id;
-// 						$factor_ans->factor_id = $key;
-// 						$factor_ans->score = $value['score'];
-// 						$factor_ans->std_score = $value['std_score'];
-// 						$factor_ans->ans_score = $value['ans_score'];
-// 						if($factor_ans->save() == false){
-// 								$transaction->rollback("Cannot update table FactorAns' score");
-// 						}
-// 					}
-// 					$transaction->commit();
-// 				}catch (TxFailed $e) {
-// 					throw new Exception("Failed, reason: ".$e->getMessage());
-// 				}
+				if(is_bool($rtn_array_paper) || empty($rtn_array_paper)){
+						continue;
+				}
+				try{
+					$manager     = new TxManager();
+					$transaction = $manager->get();
+					foreach ( $rtn_array_paper as $key => $value ) {
+						$factor_ans = new FactorAns();
+						$factor_ans->examinee_id = $examinee_id;
+						$factor_ans->factor_id = $key;
+						$factor_ans->score = $value['score'];
+						$factor_ans->std_score = $value['std_score'];
+						$factor_ans->ans_score = $value['ans_score'];
+						if($factor_ans->save() == false){
+								$transaction->rollback("Cannot update table FactorAns' score");
+						}
+					}
+					$transaction->commit();
+				}catch (TxFailed $e) {
+					throw new Exception("Failed, reason: ".$e->getMessage());
+				}
 			}
 		return true;
 		}catch(Exception $e){
@@ -183,8 +177,6 @@ class FactorScore {
 	
 	/**
 	 * @usage EPQA计算
-	 * @param unknown $string
-	 * @return multitype:
 	 */
 	protected static function calEPQA(&$resultsets){
 		#首先判断是否需要写入epqa相关的因子分数
@@ -218,6 +210,9 @@ class FactorScore {
 			self::getExamineeInfo($resultsets->examinee_id);
 		}
 		$dage =  self::$examinee_info['age'];
+		if($dage <16 || $dage >= 150){
+			throw new Exception("EPQA age is out of range");
+		}
 		$dsex =  self::$examinee_info['sex'] == 1? 1 : 2;
 		#根据$factors_list_all['epqa'];
 		$rt_array = array();
@@ -271,7 +266,6 @@ class FactorScore {
 	}
 	/**
 	 * EPPS 匹配sum  
-	 * @param unknown $array
 	 */
 	public static function calEPPS(&$resultsets){
 		#首先判断是否需要写入epps相关的因子分数
@@ -331,7 +325,6 @@ class FactorScore {
 	}
 	/**
 	 * CPI 匹配 sum
-	 * @param unknown $string
 	 */
 	public static function calCPI(&$resultsets){
 		#首先判断是否需要写入cpi相关的因子分数
@@ -365,8 +358,6 @@ class FactorScore {
 		}
 		$dm =  self::$examinee_info['sex'] == 1? 1 : 2;
 		$rt_array = array();
-		print_r($score_array);
-		exit();
 		foreach(self::$factors_list_all['CPI'] as $key => $value){
 			$rt_array_record = array();
 			#判断要写入的因子是否存在于之前的结果集中，若不存在，则置为0
@@ -374,88 +365,96 @@ class FactorScore {
 			if(isset($score_array[$value])){
 				$score = $score_array[$value];
 			}
-			$std_score = 0;
-		 	$ans_score = 0;
-			
-		}
-		foreach($rt as $key => $score) {
-			$array_record = array();
-			$std_score = 0;
-			$ans_score = 0;			
-			$cpimd = Cpimd::findFirst(array(
-					'DM=?0 and YZ=?1',
-					'bind'=>array(0=>$dm,1=>$key)));
 			$m = 0;
 			$sd = 0;
-			if(isset($cpimd->M)){
-				$m =  $cpimd->M;
-			}
-			if(isset($cpimd->SD)){
-				$sd = $cpimd->SD;
-			}
-			if($m != 0 && $sd != 0){
-				$std_score = 50 + (10 * ($score - $m)) / $sd;
-			}
-			if ($key != 'fx'){
-				$ans_score = $std_score/10;
-			}else{
-				if ($score == 100) $ans_score = 10; 
-				else if ($score > 80) $ans_score = 9; 
-				else if ($score > 65) $ans_score = 8; 
-				else if ($score > 30) $ans_score = 5; 
-				else if ($score > 10) $ans_score = 2;
-				else $ans_score = 1;
-			}
-			$array_record['score'] = $score;
-			$array_record['std_score'] = sprintf("%.2f", $std_score);
-			$array_record['ans_score'] = $ans_score;
-			$rt_array[$key] = $array_record;
+			$std_score = 0;
+		 	$ans_score = 0;
+		 	#标准分
+		 	$cpimd = CpimdMemory::findFirst(
+				array(
+		 		"DM = :dm: AND YZ = :yz:",
+				'bind' => array('dm'=>$dm, 'yz' =>strtoupper($value))
+		 	)
+		 	);
+		 	$m =  $cpimd->M;
+		 	$sd = $cpimd->SD;
+		 	if($m != 0 && $sd != 0){
+		 		$std_score = sprintf("%.2f",50 + (10 * ($score - $m)) / $sd);
+		 	}
+		 	#最终分
+		 	if($value !='fx'){
+		 		$ans_score = sprintf("%.2f",$std_score/10);
+		 	}else{
+		 		if ($std_score == 100) $ans_score = 10;
+		 		else if ($std_score > 80) $ans_score = 9;
+		 		else if ($std_score > 65) $ans_score = 8;
+		 		else if ($std_score > 30) $ans_score = 5;
+		 		else if ($std_score > 10) $ans_score = 2;
+		 		else $ans_score = 1;
+		 	}
+		 	$array_record['score'] = floatval($score);
+		 	$array_record['std_score'] = floatval($std_score);
+		 	$array_record['ans_score'] = floatval($ans_score);
+		 	$rt_array[$key] = $array_record;
 		}
 		return $rt_array;
 	}
 	
 	/**
 	 * SCL : svg
-	 * @param unknown $array
 	 */
-	public static function calSCL(&$array){
-		$number_array = self::getAnswers($array);
-		$paper_id = Paper::getListByName('SCL')->id;
-		$factor = Factor::queryCache($paper_id);
-		$rt = array();
-		foreach($factor as $factor_record){
-			#遍历时为数组
-			$factor_record_number_array = explode(',',$factor_record['children']);
-			$factor_score = 0;
-			$factor_number_count = 0;
-			foreach( $factor_record_number_array as $skey){
-				if(isset($number_array[$skey]) && $number_array[$skey] != 0){
-					$factor_score += $number_array[$skey];
-					$factor_number_count++;
+	public static function calSCL(&$resultsets){
+		#首先判断是否需要写入scl相关的因子分数
+		if(empty(self::$factors_list_all)){
+			self::getFactorsAll($resultsets->examinee_id);
+		}
+		if(!isset(self::$factors_list_all['SCL'])){
+			#true 表示不用写入SCL的相关因子
+			return true;
+		}
+		#其次判断scl相关的因子分数是否已经写入
+		if(empty(self::$factors_list_finished)){
+		self::getFinishedFactors($resultsets->examinee_id);
+		}
+		foreach(self::$factors_list_all['SCL'] as $key=>$value){
+			if(in_array($value, self::$factors_list_finished)){
+			#false表示SCL的因子已经写入完成
+			return false;
+		}
+		}
+		#整理SCL题目答案
+		$question_ans_array = self::getAnswers($resultsets);
+		#计算SCL因子的原始分，标准分，最终分
+		$rt_array = array();
+		foreach(self::$factors_list_all['SCL'] as $key=>$value){
+			$factor_info = MemoryCache::getFactorDetail($value);
+			$question_array = explode(',',$factor_info->children);
+			$score = 0;
+			$std_score = 0;
+			$factor_total_score = 0;
+			$question_number = 0;
+			foreach($question_array as $skey){
+				if(isset($question_ans_array[$skey])){
+					$factor_total_score += $question_ans_array[$skey];
+					$question_number++;
 				}
 			}
-			if($factor_score != 0 ){
-				$rt[$factor_record['name']] = sprintf("%.2f",$factor_score/$factor_number_count);
+			if( $question_number!=0 ){
+				$score = sprintf("%.2f",$factor_total_score/$question_number);
 			}
-// 			$rt[$factor_record['name']] = $factor_score;
-		}
-		$rt_array = array();
-		foreach($rt as $key => $score){
-			$array_record = array();
-			$std_score = 0;
-			$std_score = $score;
+			$std_score  = $score;
 			$ans_score = 0;
-			if ($score == 1) $ans_score = 9; 
-			else if ($score < 1.1) $ans_score = 8; 
-			else if ($score < 1.3) $ans_score = 7; 
-			else if ($score < 1.4) $ans_score = 6; 
-			else if ($score < 1.6 ) $ans_score = 4;
-			else if ($score < 2) $ans_score = 3; 
-			else if ($score < 4) $ans_score = 2; 
+			if ($std_score == 1) $ans_score = 9;
+			else if ($std_score < 1.1) $ans_score = 8;
+			else if ($std_score < 1.3) $ans_score = 7;
+			else if ($std_score < 1.4) $ans_score = 6;
+			else if ($std_score < 1.6 ) $ans_score = 4;
+			else if ($std_score < 2) $ans_score = 3;
+			else if ($std_score < 4) $ans_score = 2;
 			else $ans_score = 1;
-			$array_record['score'] = $score;
-			$array_record['std_score'] = $std_score;
-			$array_record['ans_score'] = $ans_score;
+			$array_record['score'] = floatval($score);
+			$array_record['std_score'] = floatval($std_score);
+			$array_record['ans_score'] = floatval($ans_score);
 			$rt_array[$key] = $array_record;
 		}
 		return $rt_array;	
@@ -463,185 +462,291 @@ class FactorScore {
 	/**
 	 * 16PF
 	 */
-	public static function calKS(&$array,$examinee){
-		$number_array = self::getAnswers($array);
-		$paper_id = Paper::getListByName('16PF')->id;
-		$factor = Factor::queryCache($paper_id);
-		$rt = array();
-		#前16项因子原始分
-		foreach($factor as $factor_record) {
-			if($factor_record['action'] == 'sum'){
-				#循环16次
-				$factor_record_number_array = explode(',',$factor_record['children']);
-				$factor_score = 0;
-				foreach( $factor_record_number_array as $skey){
-					if(isset($number_array[$skey])){
-						$factor_score += $number_array[$skey];
-					}
-				}
-				$rt[$factor_record['name']] = $factor_score;
-				#先遍历完简单因子的结果	
+	public static function calKS(&$resultsets){
+		#首先判断是否需要写入16PF相关的因子分数
+		if(empty(self::$factors_list_all)) {
+			self::getFactorsAll($resultsets->examinee_id);
+		}
+		if(!isset(self::$factors_list_all['16PF'])) {
+			#true 表示不用写入16PF的相关因子
+			return true;
+		}
+		#其次判断16PF相关的因子分数是否已经写入
+		if(empty(self::$factors_list_finished)) {
+			self::getFinishedFactors($resultsets->examinee_id);
+		}
+		foreach(self::$factors_list_all['16PF'] as $key=>$value) {
+			if(in_array($value, self::$factors_list_finished)){
+				#false表示16PF的因子已经写入完成
+				return false;
 			}
 		}
-		$dm = ($examinee->sex ==0) ? 9 : 8;
-		#前16项标准分 及最终得分
+		#确保加载内存表
+		if(!self::$memory_state){
+			self::beforeStart();
+		}
+		#确保个人信息
+		if(empty(self::$examinee_info)){
+			self::getExamineeInfo($resultsets->examinee_id);
+		}
+		$dm =  self::$examinee_info['sex'] == 1? 8 : 9;
+		#整理16PF题目答案
+		$question_ans_array = self::getAnswers($resultsets);
+// 		/**
+// 		 * 注： 此处由于因子中存在包含因子的情况，因此，如果我们按照直接求所需因子的得分，那么能会遗漏包含着的但不需要的因子，因此采取最大集，之后与所需相匹配
+// 		 */
+// 		$factors_in_paper = MemoryCache::getFactors($resultsets->paper_id);
+		
+		#确定所有涉及的因子，不再进行全局遍历
+		$array_all_use = array();
+		foreach(self::$factors_list_all['16PF'] as $key=>$value) {
+			$factor_detail = MemoryCache::getFactorDetail($value);
+			if($factor_detail->action == 'sum'){
+				if(!in_array($value, $array_all_use)){
+					$array_all_use[$key] = $value;
+				}
+			}else{
+				if(!in_array($value, $array_all_use)){
+					$array_all_use[$key] = $value;
+				}
+				$child_factor_str = $factor_detail->children;
+				$child_factor_array = explode(',', $child_factor_str);
+				foreach($child_factor_array as $fvalue){
+					if(!in_array($fvalue, $array_all_use)){
+						$fvalue_tmp = MemoryCache::getFactorDetail($fvalue);
+						$fkey = $fvalue_tmp->id;
+						$array_all_use[$fkey] = $fvalue;
+					}
+				}
+			}
+		}
+		ksort($array_all_use);
+		#得到一个完全有效数组
+		#返回数组
 		$rt_array = array();
-		foreach ($rt as $key => $score ){
-			$array_record = array();
-			$std_score = 0;
-			$ans_score = 0;
-			$ksmd = Ksmd::find(array(
-					'DM=?0 AND YZ=?1',
-					'bind'=>array(0=>$dm,1=>$key)));
-			foreach ($ksmd as $ksmds ) {
-				if ($score <= $ksmds->ZZF && $score >= $ksmds->QSF) {
-					$std_score = $ksmds->BZF;
-				}
-			}
-			if($key =='Q4'){
-				$ans_score = 10-$std_score;
-			}else{
-				$ans_score = $std_score;
-			}
-			$array_record['score'] = $score;
-			$array_record['std_score'] = $std_score;
-			$array_record['ans_score'] = $ans_score;
-			$rt_array[$key] = $array_record;
-			
-		}
-		unset($rt);
-		$rt = array();
-		#后8项原始得分
-		foreach($factor as $factor_record) {
-			if($factor_record['action'] != 'sum'){
-				$factor_score = 0;
-			//$args = preg_replace('/[A-Z][0-9]?/', '\$rt[\'$0\']', $factor_record['children']);
-			$code = preg_replace('/[A-Z][0-9]?/', '\$rt_array[\'$0\'][\'std_score\']', $factor_record['action']);
-			$code =  "\$factor_score = $code;";
-			eval($code);
-			$rt[$factor_record['name']] = sprintf('%.2f',$factor_score);
-			}
-		}
-		#后八项标准得分
-		$factor_ignore = array(
-				'X1','X2','X3','X4','Y1','Y2','Y4'
-		);
-		foreach ($rt as $key => $score ){
-			$array_record = array();
-			$std_score = 0;
-			$ans_score = 0;
-			if (in_array($key, $factor_ignore)){
-				$std_score = $score;
-			}else if ($key == 'Y3'){
-				$ksmd = Ksmd::find(array(
-						'YZ=?1',
-						'bind'=>array(1=>$key)));
-				foreach ($ksmd as $ksmds ) {
-					if ($score <= $ksmds->ZZF && $score >= $ksmds->QSF) {
-						$std_score = $ksmds->BZF;
+		#保存基础数组
+		$basic_array = array();
+		#前16项简单因子处理完毕
+		foreach($array_all_use as $key => $value){
+			$factor_record = MemoryCache::getFactorDetail($value);
+			if($factor_record -> action == 'sum'){
+				$array_record = array();
+				#前16项(至多) 简单因子的原始得分，标准分，及最终得分
+				$factor_record_number_array = explode(',',$factor_record->children);
+				$score = 0;
+				foreach( $factor_record_number_array as $skey){
+					if(isset($question_ans_array[$skey])){
+						$score += $question_ans_array[$skey];
 					}
 				}
-			}else{
-				#no 
+				$std_score = 0;
+				$ans_score = 0;
+				$ksmd = KsmdMemory::findFirst(array(
+						'DM=:dm: AND YZ=:yz: AND QSF <= :score: AND ZZF >= :score:',
+						'bind'=>array('dm'=>$dm, 'yz' =>$value, 'score'=>$score)
+				));
+				$std_score =  $ksmd->BZF;
+				if($value != 'Q4'){
+					$ans_score = $std_score;
+				}else{
+					$ans_score = 10 - $std_score;
+				}
+				$basic_array[$value] = $std_score;
+				$array_record['score'] = $score;
+				$array_record['std_score'] = $std_score;
+				$array_record['ans_score'] = $ans_score;
+				$rt_array[$key] = $array_record;
 			}
-			if($key == 'X1'){
-				$ans_score = 10-$std_score;
-			}else if ($key == 'Y1' || $key == 'Y4' ){
-				$ans_score = $std_score/4;
-			}else if ($key == 'Y2'){
-				$ans_score = $std_score/7.5;
-			}else{
-				$ans_score = $std_score;
+		}
+		#后8项(至多)复杂因子计算
+		foreach($array_all_use as $key => $value){
+			$factor_record = MemoryCache::getFactorDetail($value);
+			if($factor_record->action != 'sum'){
+				$array_record = array();
+				$std_score = 0;
+				$ans_score = 0;
+				$score = 0;
+				$code = preg_replace('/[A-Z][0-9]?/', '\$basic_array[\'$0\']', $factor_record->action);
+				$code =  "\$score = sprintf(\"%.2f\",$code);";
+				eval($code);
+				$score = floatval($score);
+				if($value != 'Y3'){
+					$std_score = $score;
+				}else{
+					$ksmd = KsmdMemory::findFirst(array(
+							'YZ=:yz: AND QSF <= :score: AND ZZF >= :score:',
+							'bind'=>array( 'yz' =>$value, 'score'=>$score)
+					));
+					$std_score =  $ksmd->BZF;
+				}
+				if($value == 'X1'){
+					$ans_score = 10 - $std_score;
+				}else if( $value == 'Y1' || $value == 'Y4'){
+					$ans_score = sprintf("%.2f",$std_score/4);
+				}else if ($value == 'Y2'){
+					$ans_score = sprintf("%.2f",$std_score/7.5);
+				}else{
+					$ans_score = $std_score;
+				}
+				$array_record['score'] = floatval($score);
+				$array_record['std_score'] = floatval($std_score);
+				$array_record['ans_score'] = floatval($ans_score);
+				$rt_array[$key] = $array_record;
 			}
-			
-			$array_record['score'] = $score;
-			$array_record['std_score'] = $std_score;
-			$array_record['ans_score'] = $ans_score;
-			$rt_array[$key] = $array_record;
-				
+		}
+		#对简单因子的再处理，由于之前出现的简单因子可能在总体需要的因子表中并不存在，我们现在需要对照project_detail取出需要的简单因子，而复杂因子只要出现了，那么就肯定要包含
+		#rt_array >= $factor_list_all['16PF'];
+		foreach($rt_array as $key=>$value){
+			if (!array_key_exists($key, self::$factors_list_all['16PF'])){
+				unset($rt_array[$key]);
+			}
 		}
 		return $rt_array;
 	}
 	/**
 	 * SPM
 	 */
-	public static function calSPM(&$array,$examinee){
-		$number_array = self::getAnswers($array);
-		$paper_id = Paper::getListByName('SPM')->id;
-		$factor = Factor::queryCache($paper_id);
-		$rt = array();
-		foreach($factor as $factor_record) {
-			if(strlen($factor_record['name']) == 4){
-				#循环16次
-				$factor_record_number_array = explode(',',$factor_record['children']);
-				$factor_score = 0;
-				foreach( $factor_record_number_array as $skey){
-					if(isset($number_array[$skey])){
-						$factor_score += $number_array[$skey];
-					}
+	public static function calSPM(&$resultsets){
+		#首先判断是否需要写入SPM相关的因子分数
+		if(empty(self::$factors_list_all)) {
+			self::getFactorsAll($resultsets->examinee_id);
+		}
+		if(!isset(self::$factors_list_all['SPM'])) {
+			#true 表示不用写入SPM的相关因子
+			return true;
+		}
+		#其次判断SPM相关的因子分数是否已经写入
+		if(empty(self::$factors_list_finished)) {
+			self::getFinishedFactors($resultsets->examinee_id);
+		}
+		if(!empty(self::$factors_list_finished)){
+			foreach(self::$factors_list_all['SPM'] as $key=>$value) {
+				if(in_array($value, self::$factors_list_finished)){
+				#false表示SPM的因子已经写入完成
+				return false;
 				}
-				$rt[$factor_record['name']] = $factor_score;
-				#先遍历完简单因子的结果	
-			}else{
-				$factor_score = 0;
-				//$args = preg_replace('/[A-Z][0-9]?/', '\$rt[\'$0\']', $factor_record['children']);
-				$action = str_replace(',', '+', $factor_record['children']);
-				$code = preg_replace('/[a-z]+/', '\$rt[\'$0\']',$action);
-				$code =  "\$factor_score = $code;";
-				eval($code);
-				$rt[$factor_record['name']] = $factor_score;
 			}
 		}
-		$age = $examinee->age;
+		#确保加载内存表
+		if(!self::$memory_state){
+			self::beforeStart();
+		}
+		#确保个人信息
+		if(empty(self::$examinee_info)){
+		self::getExamineeInfo($resultsets->examinee_id);
+		}
+		#整理SPM题目答案
+		$question_ans_array = self::getAnswers($resultsets);
+		#确定所有涉及的因子，不再进行全局遍历
+		$array_all_use = array();
+		foreach(self::$factors_list_all['SPM'] as $key=>$value) {
+			$factor_detail = MemoryCache::getFactorDetail($value);
+			if($factor_detail->action == 'sum'){
+				if(!in_array($value, $array_all_use)){
+					$array_all_use[$key] = $value;
+				}
+			}else{
+				if(!in_array($value, $array_all_use)){
+					$array_all_use[$key] = $value;
+				}
+				$child_factor_str = $factor_detail->children;
+				$child_factor_array = explode(',', $child_factor_str);
+				foreach($child_factor_array as $fvalue){
+					if(!in_array($fvalue, $array_all_use)){
+						$fvalue_tmp = MemoryCache::getFactorDetail($fvalue);
+						$fkey = $fvalue_tmp->id;
+						$array_all_use[$fkey] = $fvalue;
+					}
+				}
+			}
+		}
+		ksort($array_all_use);
+		#得到一个完全有效数组
+		#返回数组
 		$rt_array = array();
-		foreach($rt as $key => $score){
+		#保存基础数组
+		$basic_array = array();
+		#简单因子先处理，复杂因子后处理，由于复杂因子使用简单因子的原始分，那么我们次序对其进行运算
+		foreach($array_all_use as $key => $value){
+			$factor_record = MemoryCache::getFactorDetail($value);
+			$score = 0;
+			if($factor_record -> action == 'sum'){
+				#前5项(至多) 简单因子的原始得分
+				$factor_record_number_array = explode(',',$factor_record->children);
+				foreach( $factor_record_number_array as $skey){
+					if(isset($question_ans_array[$skey])){
+						$score += $question_ans_array[$skey];
+					}
+				}
+				$basic_array[$value] = $score;
+			}else{
+				#至多2项
+				$code = preg_replace('/[a-z]+/', '\$basic_array[\'$0\']', $factor_record->action);
+				$code =  "\$score = $code;";
+				eval($code);
+				$basic_array[$value] = $score;
+			}
+		}
+		#basic_array >= $factor_list_all['SPM'];
+		foreach($basic_array as $key=>$value){
+			if (!in_array($key, self::$factors_list_all['SPM'])){
+				unset($basic_array[$key]);
+			}
+		}
+		#现在的$basic_array为有效数组的原始的分
+		$age = self::$examinee_info['age'];
+		#spm的年龄区间 5.25~110
+		if($age <5.25 || $age>=110){
+			throw new Exception("SPM age out of range");
+		}
+		foreach($basic_array as $key=>$score){
+			$factor_record = MemoryCache::getFactorDetail($key);
 			$array_record = array();
 			$std_score = 0;
 			$ans_score = 0;
-			if ($key == 'spm'){
-				$spmmd = Spmmd::findFirst(array(
+			if($key == 'spm'){
+				$spmmd = SpmmdMemory::findFirst(array(
 						'NLH >= :age: AND NLL <= :age:',
 						'bind'=>array('age'=>$age)));
-				foreach ($spmmd as $spmmds) {
-					if ($score >= $spmmd->B95) {
-						$std_score = 1;
-					}
-					else if ($score >= $spmmd->B75) {
-						$std_score =2;
-					}
-					else if ($score >= $spmmd->B25) {
-						$std_score = 3;
-					}
-					else if ($score >= $spmmd->B5) {
-						$std_score = 4;
-					}
-					else{
-						$std_score = 5;
-					}
+				if ($score >= $spmmd->B95) {
+					$std_score = 1;
+				}else if ($score >= $spmmd->B75) {
+					$std_score =2;
+				}else if ($score >= $spmmd->B25) {
+					$std_score = 3;
+				}else if ($score >= $spmmd->B5) {
+					$std_score = 4;
+				}else{
+					$std_score = 5;
 				}
-				$ans_score = ($rt_array['spma']['ans_score']+$rt_array['spmb']['ans_score']+$rt_array['spmc']['ans_score']+$rt_array['spmd']['ans_score']+$rt_array['spme']['ans_score'])/5;
-			}
-			else if ($key == 'spmabc') {
-				$std_score = $score;
-				$ans_score = ($rt_array['spma']['ans_score']+ $rt_array['spmb']['ans_score']+$rt_array['spmc']['ans_score'])/3;
-				
+				if ($std_score == 1) { $ans_score = 9; 
+				}else if ($std_score == 2) {$ans_score = 7.5; 
+				}else if ($std_score == 3) {$ans_score = 6; 
+				}else if ($std_score == 4) {$ans_score = 5; 
+				}else if ($std_score == 5) {$ans_score = 4; 
+				}else {$ans_score = 1;
+				}
 			}else{
 				$std_score = $score;
-				$ans_score = $std_score/2;
+				if($key == 'spmabc'){
+					$ans_score = sprintf("%.2f",$std_score/3.6);
+				}else{
+					$ans_score = sprintf("%.2f",$std_score/1.2);
+				}
 			}
-			$array_record['score'] = $score;
-			$array_record['std_score'] = $std_score;
-			$array_record['ans_score'] = $ans_score;
-			$rt_array[$key] = $array_record;
+			$array_record['score'] = floatval($score);
+			$array_record['std_score'] = floatval($std_score);
+			$array_record['ans_score'] = floatval($ans_score);
+			$rt_array[$factor_record->id] = $array_record;
 		}
 		return $rt_array;
 	}
 	/**
-	 * 返回一个数组[$paper_id][$question_number];
+	 * 返回一个数组[$question_number] = score;
 	 * @param unknown $array
 	 * @return Ambigous <multitype:, unknown>
 	 */
-	public static function getAnswers(&$array){
+	private static function getAnswers(&$array){
 		$rtn_array = array();
 		$number_list = explode('|', $array->question_number_list);
 		$score_list  = explode('|', $array->score);

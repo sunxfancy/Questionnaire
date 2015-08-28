@@ -20,19 +20,9 @@
     <div style="margin-left:40px;font-size:26px;color:red;"> 项目时间计划</div>
 
     <div class="progress" style="width:90%; margin:0 auto;">
-        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" >
+        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%;">
         </div>
     </div>
-    <!-- <table style="width: 100%; font-size: 18px;text-align:center;">
-        <tr style="width:100%;height:25px"><td style="width:20%;height:25px">2014-03-14</td><td style="width:20%;height:25px"></td><td style="width:20%;height:25px"></td><td id="now" style="width:20%;height:25px">当前</td><td style="width:20%;height:25px">2014-07-28</td></tr>
-        <tr style="width:100%;height:25px"><td colspan="5" style="text-align:center;vertical-align:middle;">
-            <div style="width:85%;height:20px;margin:0 auto;">
-                     <table cellspacing="0" style="width:100%;height:100%;">
-                <tr><td style="width:74%;height:100%;background-color:gray;"></td><td style="width:26%;height:100%;background-color:green;"></td></tr>
-                     </table>
-            </div></td></tr>
-        <tr style="width:100%;height:25px"><td style="width:20%;height:25px">起始时间</td><td style="width:20%;height:25px"></td><td style="width:20%;height:25px"></td><td style="width:20%;height:25px">当前</td><td style="width:20%;height:25px">截止时间</td></tr>       
-    </table> -->
 
     <div  style="width:100%;height:40px;text-align:center;margin: 5px 10px;">
         <form class="form-inline" method="POST" action="/pm/uploadInquery" enctype='multipart/form-data'  >
@@ -125,10 +115,7 @@
         });
     })(document.getElementById("interviewer-completeness"));
 
-    var now =  date("Ymd");
-    var start = 2015-7-31;
-    var end = 5015-9-27;      
-    var p = round(now-start)/round(end-start);
+    
     $("div[class=progress-bar]").css("width",p+"%");
 
 </script>

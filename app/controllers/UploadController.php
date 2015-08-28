@@ -228,7 +228,7 @@ class UploadController extends \Phalcon\Mvc\Controller {
 		try{
 			$delete_state = DBHandle::deleteTKByName('SCL');
 			if($delete_state){
-				echo "SCL delete completely";
+				echo "SCL删除成功";
 			}
 		}catch(Exception $e){
 			echo $e->getMessage();
@@ -381,7 +381,7 @@ class UploadController extends \Phalcon\Mvc\Controller {
 		try{
 			$delete_state = DBHandle::deleteTKByName('CPI');
 			if($delete_state){
-				echo "EPQA删除成功";
+				echo "CPI删除成功";
 			}
 		}catch(Exception $e){
 			echo $e->getMessage();
