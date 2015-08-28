@@ -115,10 +115,7 @@
         });
     })(document.getElementById("interviewer-completeness"));
 
-    var now =  strtotime(2015-8-25);//date("Y-m-d");
-    var start = strtotime(2015-7-31);
-    var end = strtotime(2015-9-2); 
-    var p =100* round(now-start)/round(end-start);
+    
     $("div[class=progress-bar]").css("width",p+"%");
 
 </script>
