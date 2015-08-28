@@ -151,7 +151,6 @@ class FactorScore {
 						continue;
 				}
 				try{
-					// print_r($rtn_array_paper);
 					$manager     = new TxManager();
 					$transaction = $manager->get();
 					foreach ( $rtn_array_paper as $key => $value ) {
@@ -162,7 +161,7 @@ class FactorScore {
 						$factor_ans->std_score = $value['std_score'];
 						$factor_ans->ans_score = $value['ans_score'];
 						if($factor_ans->create() == false){
-								$transaction->rollback("Cannot update table FactorAns' score");
+							$transaction->rollback("Cannot update table FactorAns' score");
 						}
 					}
 					$transaction->commit();
@@ -170,7 +169,7 @@ class FactorScore {
 					throw new Exception("Failed, reason: ".$e->getMessage());
 				}
 			}
-		return true;
+			return true;
 		}catch(Exception $e){
 			throw new Exception($e->getMessage());
 		}
