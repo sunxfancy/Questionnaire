@@ -72,5 +72,13 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 		$time_consuming = $time_end - $time_start;
 		echo $time_consuming .'-'. $memory_consuming;
 		
+	}	
+	public static function clearAction(){
+		// 		清空memcache缓存
+		$memcache_obj = new Memcache;
+		$memcache_obj->connect('localhost', 11211);
+		$memcache_obj->flush();
+		echo "finish";
+
 	}
 }
