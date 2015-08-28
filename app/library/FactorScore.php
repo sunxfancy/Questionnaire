@@ -160,6 +160,8 @@ class FactorScore {
 						$factor_ans->score = $value['score'];
 						$factor_ans->std_score = $value['std_score'];
 						$factor_ans->ans_score = $value['ans_score'];
+						print_r($factor_ans);
+						exit();
 						if($factor_ans->save() == false){
 								$transaction->rollback("Cannot update table FactorAns' score");
 						}

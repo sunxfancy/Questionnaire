@@ -46,7 +46,7 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 				echo "finished";
 			}
 		}catch(Exception $e){
-			$e->getMessage();
+			echo $e->getMessage();
 		}
 		$memory_end = memory_get_usage( true );
 		$memory_consuming = ($memory_end - $memory_start)/1024/1024;
@@ -64,7 +64,7 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 				echo "finished";
 			}
 		}catch(Exception $e){
-			$e->getMessage();
+			echo $e->getMessage();
 		}
 		$memory_end = memory_get_usage( true );
 		$memory_consuming = ($memory_end - $memory_start)/1024/1024;
