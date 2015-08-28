@@ -6,29 +6,11 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 	}
 	
 	public function test5Action(){
-		$examinee_id = 12;
-// 		$papers = QuestionAns::getPapers($examinee_id);
-// 		foreach($papers as $value){
-// 			print_r($value);
-// 		}
-// 		print_r($papers);
-// 		try{
-// 		$factor_state = FactorScore::handleFactors($examinee_id);
-// 		if($factor_state){
-// 			echo "id = $examinee_id  factor finished";
-// 		}
-// 		}catch(Exception $e){
-// 			echo $e->getMessage();
-// 			return false;
-// 		}
-// 		try{
-// 			if(BasicScore::beforeStart()){
-// 				BasicScore::handlePapers($examinee_id);
-// 			}
-// 		}catch(Exception $e){
-// 			echo $e->getMessage();
-// 		}
-// 		exit();
+		$str = 124;
+		if(1 == substr($str,0,1)){
+			echo 'eee';
+		}
+		
 		
 	}
 	public function microtime_float () {
