@@ -1,13 +1,9 @@
 <?php
 
-
 class FactorAns extends \Phalcon\Mvc\Model 
 {
-
     public $score;
-
     public $std_score;
-
     /**
      * @var integer
      *

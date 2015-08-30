@@ -6,12 +6,25 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 	}
 	
 	public function test5Action(){
-		$str = 124;
-		if(1 == substr($str,0,1)){
-			echo 'eee';
+		$time_start  =  $this->microtime_float ();
+		$memory_start = memory_get_usage( true );
+		try{
+			BasicScore::beforeStart();
+			if(BasicScore::handlePapers(12)){
+				if(FactorScore::handleFactors(12)){
+					if(IndexScore::handleIndexs(12)){
+						echo "ok ,finished";
+					}
+				}
+			}
+		}catch(Exception $e){
+			echo $e->getMessage();
 		}
-		
-		
+		$memory_end = memory_get_usage( true );
+		$memory_consuming = ($memory_end - $memory_start)/1024/1024;
+		$time_end = $this->microtime_float();
+		$time_consuming = $time_end - $time_start;
+		echo $time_consuming .'-'. $memory_consuming;
 	}
 	public function microtime_float () {
 		list( $usec ,  $sec ) =  explode ( " " ,  microtime ());
@@ -70,6 +83,10 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 		$time_end = $this->microtime_float();
 		$time_consuming = $time_end - $time_start;
 		echo $time_consuming .'-'. $memory_consuming;
+	}
+	public function testAction(){
+		FactorScore::getPapersByExamineeId(17);
+		
 	}
 	public static function clearAction(){
 		// 		清空memcache缓存

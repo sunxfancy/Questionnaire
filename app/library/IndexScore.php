@@ -108,6 +108,15 @@ class IndexScore {
 				$index->examinee_id = $examinee_id;
 				$index->index_id = $key;
 				$index->score = $index_ans[$value];
+				$isWrited = IndexAns::findFirst(
+				array(
+					"examinee_id = :examinee_id: AND index_id = :index_id:",
+					'bind'=>array('examinee_id'=> $examinee_id, 'index_id'=>$key)
+				)
+				);
+				if(isset($isWrited->score)){
+					continue;
+				}
 				if( $index->save() == false ){
 					$transaction->rollback("Cannot insert IndexAns data");
 				}
