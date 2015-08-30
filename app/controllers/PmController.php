@@ -172,6 +172,7 @@ class PmController extends Base
         } else {
             echo json_encode(array('error' => '错误的接口访问'));
         }
+        $this->response->redirect('pm');
     }
 
 	public function listexamineeAction(){

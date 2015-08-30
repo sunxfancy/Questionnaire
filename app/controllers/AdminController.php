@@ -50,6 +50,7 @@ class AdminController extends Base
     }
 
     public function detailAction($project_id){
+        $this->view->setVar('project_id',$project_id);
         $this->leftRender('项 目 详 情');
         $project = Project::findFirst($project_id);
         $this->view->setVar('project_name',$project->name);
@@ -59,13 +60,18 @@ class AdminController extends Base
         $this->view->setVar('begintime',$begintime);
         $this->view->setVar('endtime',$endtime);
         $this->view->setVar('now',$now);
-        $width = 100*round(strtotime($now)-strtotime($begintime))/round(strtotime($endtime)-strtotime($begintime)).'%';     
-        $detail = $this->getDetail($project_id);
-        $this->dataBack(array("width"=>$width,"detail"=>$detail));
+    }
 
+    public function getWidthAction($project_id){
+        $project = Project::findFirst($project_id);
+        $begintime = date('Y-m-d',strtotime($project->begintime));
+        $endtime = date('Y-m-d',strtotime($project->endtime));
+        $now = date("Y-m-d");
+        $width = 100*round(strtotime($now)-strtotime($begintime))/round(strtotime($endtime)-strtotime($begintime)).'%';     
+        $this->dataBack(array("widths"=>$width));
     }
     
-    public function getDetail($project_id){
+    public function getDetailAction($project_id){
         $examinees = Examinee::find(array(
             'project_id=?1',
             'bind'=>array(1=>$project_id)));
@@ -85,7 +91,6 @@ class AdminController extends Base
                  $interview_com++;
              } 
         }
-        exit();
         if ($examinee_all == 0) {
             $examinee_percent = 0;
         }else{
@@ -100,12 +105,7 @@ class AdminController extends Base
             'examinee_percent'  => $examinee_percent,
             'interview_percent' => $interview_percent
         );
-        return $detail;
-    }
-
-    function getProjectId() {
-        $manager = $this->session->get('Manager');
-        return $manager->project_id;
+        $this->dataBack(array("detail"=>$detail));
     }
 
     function dataBack($ans){

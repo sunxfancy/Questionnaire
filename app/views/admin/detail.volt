@@ -6,7 +6,7 @@
                 <div id="project-completeness" style="height:200px;"></div>
             </td>
             <td style="width:5%;"></td>
-            <td style="width:47.5%;">
+            <td style="width:47.5%">
                 <div id="interviewer-completeness" style="height:200px;"></div>
             </td>
         </tr>
@@ -30,10 +30,13 @@
 <script type="text/javascript" src="/lib/flotr2.min.js"></script>
 <script type="text/javascript">
 
-    $.post('/admin/detail',function(data){
-        width = data.width;
+    $.post('/admin/getWidth/'+{{project_id}},function(data){
+        width = data.widths;
+        $("[id=progress]").css("width",width);
+    });
+
+    $.post('/admin/getDetail/'+{{project_id}},function(data){
         details = data.detail; 
-        $("[id=progress]").css("width",width); 
         project_pie(document.getElementById("project-completeness"),details);
         interviewer_pie(document.getElementById("interviewer-completeness"),details);      
     });
