@@ -69,23 +69,53 @@ class ExcelExport {
             $objActSheet->setCellValue('M' . $key, $item->unit);
             $objActSheet->setCellValue('N' . $key, $item->duty);
             $other = json_decode($item->other, true);
-            $education = json_encode($other['education'], JSON_UNESCAPED_UNICODE);
-            $work = json_encode($other['work'], JSON_UNESCAPED_UNICODE);
-            $objActSheet->setCellValue('O' . $key, $education);
-            $objActSheet->setCellValue('P' . $key, $work);
+//            $education = json_encode($other['education'], JSON_UNESCAPED_UNICODE);
+//            $work = json_encode($other['work'], JSON_UNESCAPED_UNICODE);
+            $education = $other['education'];
+            $education_string = '[';
+            $work_string = '[';
+            $work = $other['work'];
+            foreach($education as $k => $v){
+                $education_string .= '{';
+                $education_string .= '学校：'.$v['school'].',';
+                $education_string .= '专业：'.$v['profession'].',';
+                $education_string .= '学位：'.$v['degree'].',';
+                $education_string .= '时间：'.$v['date'];
+                $education_string .= '},';
+            }
+            if($education_string != '['){
+                $education_string = substr($education_string,0,strlen($education_string)-1);
+            }
+            $education_string .= ']';
+            foreach($work as $k => $v){
+                $work_string .= '{';
+                $work_string .= '工作单位：'.$v['employer'].',';
+                $work_string .= '部门：'.$v['unit'];
+                $work_string .= '职务：'.$v['duty'];
+                $work_string .= '时间：'.$v['date'];
+                $work_string .= '},';
+            }
+            if($work_string != '['){
+                $work_string = substr($work_string,0,strlen($work_string)-1);
+            }
+            $work_string .= ']';
+            $objActSheet->setCellValue('O' . $key, $education_string);
+            $objActSheet->setCellValue('P' . $key, $work_string);
         }
 
-            header("Pragma: public");
-            header("Expires: 0");
-            header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
-            header("Content-Type:application/force-download");
-            header("Content-Type:application/vnd.ms-execl");
-            header("Content-Type:application/octet-stream");
-            header('Content-Disposition:attachment;filename="测试人员.xls"');
-            header("Content-Type:application/download");;
-            header("Content-Transfer-Encoding:binary");
-            $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
-            $objWriter->save('php://output');
+//            header("Pragma: public");
+//            header("Expires: 0");
+//            header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
+//            header("Content-Type:application/force-download");
+//            header("Content-Type:application/vnd.ms-execl");
+//            header("Content-Type:application/octet-stream");
+//            header('Content-Disposition:attachment;filename="测试人员.xls"');
+//            header("Content-Type:application/download");;
+//            header("Content-Transfer-Encoding:binary");
+//            $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
+//            $objWriter->save('php://output');
+        header('Content-Disposition:attachment;filename="测试人员.xls"');
+        $this->commonMsg($objPHPExcel);
 
     }
 
@@ -134,6 +164,20 @@ class ExcelExport {
         $objActSheet->getColumnDimension('B')->setAutoSize(true);
         $objActSheet->getColumnDimension('C')->setAutoSize(true);
         $objActSheet->getColumnDimension('D')->setAutoSize(true);
+//        header("Pragma: public");
+//        header("Expires: 0");
+//        header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
+//        header("Content-Type:application/force-download");
+//        header("Content-Type:application/vnd.ms-execl");
+//        header("Content-Type:application/octet-stream");
+//        header("Content-Type:application/download");;
+//        header("Content-Transfer-Encoding:binary");
+//        $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
+//        $objWriter->save('php://output');
+        $this->commonMsg($objPHPExcel);
+    }
+
+    public function commonMsg($objPHPExcel){
         header("Pragma: public");
         header("Expires: 0");
         header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
