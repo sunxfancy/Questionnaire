@@ -81,7 +81,6 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $objActSheet->getDefaultRowDimension()->setRowHeight(25);
         $objActSheet->getDefaultColumnDimension()->setWidth(20);
 
-        // $objActSheet->getRowDimension('A')->setRowHeight(50);
         $objActSheet->getRowDimension(1)->setRowHeight(50);
         $objActSheet->mergeCells('A1:F1');
         $objActSheet->setCellValue('A1','测评人员个人基本情况');
@@ -167,6 +166,24 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
                 $j++;
             }
         }
+        $styleArray = array(
+            'borders' => array(
+                'allborders' => array(
+                    // 'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,//细边框
+                    //'color' => array('argb' => 'FFFF0000'),
+                ),
+            ),
+        );
+        $styleArray1 = array(
+            'borders' => array(
+                'outline' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
+                ),
+            ),
+        );
+        $objActSheet->getStyle('A2:F16')->applyFromArray($styleArray);
+        $objActSheet->getStyle('A2:F16')->applyFromArray($styleArray1);
 
     }
 
@@ -196,9 +213,10 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
                  "examinee_id = :examinee_id:", 'bind' => array('examinee_id'=>$id),
                  'order' => 'score desc'
                  ));
-        $i=1;
+        $i = 0;
+        $k = 0;
         foreach($index_ans_info as $value ){
-            $k = $i + 3;
+            $k = $i + 4;
             $chs_name = (string)$value->Index->chs_name;
             $objActSheet->getStyle("A$k")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $objActSheet->getStyle("C$k")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
@@ -208,7 +226,26 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
             $objActSheet->setCellValue("B$k","$chs_name");
             $objActSheet->setCellValue("C$k","$value->score");
             $i++;
-        }      
+        }
+        $objActSheet->setCellValue('A1',"TQT人才测评系统  ".$i."项指标排序"); 
+        $styleArray = array(
+            'borders' => array(
+                'allborders' => array(
+                    // 'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,//细边框
+                    //'color' => array('argb' => 'FFFF0000'),
+                ),
+            ),
+        );
+        $styleArray1 = array(
+            'borders' => array(
+                'outline' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
+                ),
+            ),
+        );
+        $objActSheet->getStyle("A2:E$k")->applyFromArray($styleArray);
+        $objActSheet->getStyle("A2:E$k")->applyFromArray($styleArray1);     
 
     }
 
@@ -456,22 +493,49 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
                     'order' => 'score desc'
                     )
             );
-        // echo "<pre>";
-        // print_r($factor_epps);
-        // $number = count($factor_epps);
-        // echo $number."   ";
-        // foreach($factor_epps as $record){
-            
-            // echo $record->factor_id."  ===  ".$record->score."<br/>";
-        // }
-        // $factor = Factor::find(
-        //     array(
-        //          "name IN ({name:array})", 'bind' => array('name'=>$factor_name)
-        //          ));
-
-        // echo "<pre>";
-        // print_r($factor);
-        // print_r($factor_name);exit;
+        $number = ceil(count($factor_epps)/2);
+        $i = 1;
+        $str = "";
+        foreach($factor_epps as $key=> $record){
+            $factor = Factor::find(
+                                array(
+                                    "id = :id:",'bind'=>array('id'=>$record->factor_id))
+                    );
+            $factor_chs_name = $factor[0]->chs_name;
+            if(empty($str))
+                $str = $factor_chs_name;
+            else
+                $str = $str."，".$factor_chs_name;
+            if($i<=$number){
+                $j = $i+6;
+                $objActSheet->setCellValue("A$j","$factor_chs_name");
+                $objActSheet->setCellValue("B$j","$record->score");
+                $objActSheet->setCellValue("C$j","$i");
+                $i++;
+            }
+            else{
+                $j = $i-$number+6;
+                $objActSheet->setCellValue("D$j","$factor_chs_name");
+                $objActSheet->setCellValue("E$j","$record->score");
+                $objActSheet->setCellValue("F$j","$i");
+                $i++;
+            }
+        }
+        $k = 6+$number;
+        $objActSheet->getStyle("A6:F$k")->applyFromArray($styleArray);
+        $objActSheet->getStyle("A6:F$k")->applyFromArray($styleArray1);
+        $k++;
+        $objActSheet->getRowDimension($k)->setRowHeight(8);
+        $k++;
+        $objActSheet->mergeCells("A$k:F$k");
+        $objActSheet->setCellValue("A$k","被测者需要倾向按其大小顺序依次排列为: ");
+        $objActSheet->getStyle("A$k")->getFont()->setBold(true);
+        $k++;
+        $objActSheet->getRowDimension($k)->setRowHeight(40);
+        $objActSheet->mergeCells("A$k:F$k");
+        $objActSheet->getStyle("A$k")->getAlignment()->setWrapText(TRUE);
+        $objActSheet->setCellValue("A$k","$str");
+        $objActSheet->getStyle("A".($k-1).":F$k")->applyFromArray($styleArray1);
         
     }
 
@@ -517,7 +581,6 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
             );
         $factor_name = json_decode($factors[0]->factor_names,true);
         $factor_name = $factor_name['SCL'];
-        // print_r($factor_name);exit;
         $i = 3;
         foreach ($factor_name as $key => $value) {
             $factor = Factor::find(
@@ -536,6 +599,24 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
             $objActSheet->setCellValue("E$i","$std_score");
             $i++;
         }
+        $styleArray = array(
+            'borders' => array(
+                'allborders' => array(
+                    // 'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,//细边框
+                    //'color' => array('argb' => 'FFFF0000'),
+                ),
+            ),
+        );
+        $styleArray1 = array(
+            'borders' => array(
+                'outline' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
+                ),
+            ),
+        );
+        $objActSheet->getStyle("A2:E12")->applyFromArray($styleArray);
+        $objActSheet->getStyle("A2:E12")->applyFromArray($styleArray1);
     }
 
     public static function checkoutEpqa($examinee,$excel,$project_id){
@@ -626,6 +707,8 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
             $objActSheet->setCellValue("E$i","$std_score");
             $i++;
         }
+        $objActSheet->getStyle('A6:F'.($i-1))->applyFromArray($styleArray);
+        $objActSheet->getStyle('A6:F'.($i-1))->applyFromArray($styleArray1);
     }
 
     public static function checkoutCpi($examinee,$excel,$project_id){
