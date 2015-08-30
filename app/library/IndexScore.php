@@ -1,7 +1,11 @@
 <?php
 use Phalcon\Mvc\Model\Transaction\Failed as TxFailed;
 use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
-	
+	/**
+	 * 因子层计算得分
+	 * @author Wangyaohui
+	 * @date 2015-8-30
+	 */
 class IndexScore {
 	/**
 	 * 缓存到本地项目id
@@ -21,17 +25,22 @@ class IndexScore {
 	/**
 	 * @usage 通过examinee_id 获取该被试参与的项目涉及到的因子项目
 	 * @param int $examinee_id
+	 * @throws Exception
 	 */
 	private static function getProjectId($examinee_id){
-		self::$project_id = Examinee::findFirst(
+		$results_from_examinee = Examinee::findFirst(
 		array(
 			"id = :examinee_id:",
 			'bind' => array('examinee_id'=>$examinee_id)
 		)
-		)->project_id;
+		);
+		if(!isset($results_from_examinee->project_id)){
+			throw new Exception("This examinee_id not exists!");
+		}
+		self::$project_id = $results_from_examinee->project_id;
 	}
 	/**
-	 * @usage 获取所有要写入的指标数组
+	 * @usage 获取所有要写入的指标数组,将可能要计算的复杂数组置于最后来计算
 	 * @param int $examinee_id
 	 */
 	private static function getIndexs($examinee_id){
@@ -39,6 +48,9 @@ class IndexScore {
 			self::getProjectId($examinee_id);
 		}
 		$project_detail =  MemoryCache::getProjectDetail(self::$project_id);
+		if(!isset($project_detail->index_names)){
+			throw new Exception("no this project!");
+		}
 		$indexs_name_str = $project_detail->index_names;
 		$indexs_name_array = explode(',', $indexs_name_str);
 		$array_after = array();
@@ -60,16 +72,26 @@ class IndexScore {
 	 * @param int $examinee_id
 	 */
 	private static function getFactors($examinee_id){
-		$factors = FactorAns::find(
+		FactorScore::beforeStart();
+		FactorScore::handleFactors($examinee_id);
+		$factors_ans = FactorAns::find(
 				array(
 			"examinee_id = :examinee_id:",
 			'bind' => array('examinee_id' =>$examinee_id)
 		)
 		);
-		$array_after = array();
-		foreach($factors as $value ){
-			self::$factors_list[$value->Factor->name] = $value->ans_score;
+		$rt_array = array();
+		if(count($factors_ans) == 0){
+			throw new Exception("no factors_calculate_results exist");
 		}
+		foreach($factors_ans as $value ){
+			if(!isset($value->ans_score)){
+				throw new Exception("The factor_calculate fails");
+			}else {
+				self::$factors_list[$value->Factor->name] = $value->ans_score;
+			}
+		}
+		if(isset($factors_ans)) { unset($factors_ans);}
 	}
 	/**
 	 * 处理指标得分的核心
@@ -79,25 +101,63 @@ class IndexScore {
 		if(empty(self::$indexs_list)){
 			self::getIndexs($examinee_id);
 		}
+		
 		if(empty(self::$factors_list)){
 			self::getFactors($examinee_id);
 		}
+		if(count(self::$factors_list) == 0){
+			throw new Exception("no factor_results exist");
+		}
+		
 		$index_ans = array();
 		#此处为依次进行
 		foreach(self::$indexs_list as $key => $value ){
 			$score = 0;
+			$index_detail = MemoryCache::getIndexDetail($value);
 			if($value !='zb_ldnl' && $value != 'zb_gzzf'){
-				$index_detail = MemoryCache::getIndexDetail($value);
+				#注意此处解析直接需要知道得到相应的因子得分，如果需要的因子得分而没有得到计算，那么可能报错
 				$code = preg_replace('/[a-zA-Z][a-zA-Z0-9]*/', 'self::$factors_list[\'$0\']', $index_detail->action);
+				$matches = array();
+				preg_match_all('/self\:\:\$factors\_list\[\'[a-zA-Z][a-zA-Z0-9]*\'\]/', $code, $matches);
+				foreach($matches[0] as $key=>$svalue){
+					if(!isset($svalue)){
+						 eval("$svalue = 0;");
+					}
+				}
 				$code =  "\$score = sprintf(\"%.2f\",$code);";
 				eval($code);
 				$index_ans[$value] = $score;
 			}else if ($value == 'zb_ldnl'){
-				$score = (2*($index_ans['zb_pdyjcnl'] + $index_ans['zb_zzglnl'])+ $index_ans['zb_cxnl'] + $index_ans['zb_ybnl']+$index_ans['zb_dlgznl'])/7;
-				$index_ans[$value] = sprintf("%.2f",$score);
+				$code = preg_replace('/zb_[a-zA-Z0-9]*/', '\$index_ans[\'$0\']', $index_detail->action);
+				$matches = array();
+				preg_match_all('/\$index\_ans\[\'[a-zA-Z][a-zA-Z0-9]*\'\]/', $code, $matches);
+				foreach($matches[0] as $key=>$svalue){
+					if(!isset($svalue)){
+						eval("$svalue = 0;");
+					}
+				}
+				$code =  "\$score = sprintf(\"%.2f\",$code);";
+				eval($code);
+				$index_ans[$value] = $score;
 			}else {
-				$score = (1.5*(self::$factors_list['X4'] + $index_ans['zb_rjgxtjsp']) + self::$factors_list['chg'] + self::$factors_list['Y3'] + self::$factors_list['Q3'] + self::$factors_list['spmabc'] +self::$factors_list['aff'])/8;
-				$index_ans[$value] =  sprintf("%.2f",$score);
+				if(!isset($index_ans['zb_rjgxtjsp'])){
+					$index_ans['zb_rjgxtjsp'] = 0;
+				}
+				$code = $index_detail->action;
+				$code = str_replace('zb_rjgxtjsp', 'rjgxtjsptmp', $code);
+				self::$factors_list['rjgxtjsptmp'] = $index_ans['zb_rjgxtjsp'];
+				$code = preg_replace('/[a-zA-Z][a-zA-Z0-9]*/', 'self::$factors_list[\'$0\']', $code);
+				$matches = array();
+				preg_match_all('/self\:\:\$factors\_list\[\'[a-zA-Z][a-zA-Z0-9]*\'\]/', $code, $matches);
+				foreach($matches[0] as $key=>$svalue){
+					if(!isset($svalue)){
+						eval("$svalue = 0;");
+					}
+				}
+				$code =  "\$score = sprintf(\"%.2f\",$code);";
+				eval($code);
+				$index_ans[$value] = $score;
+				if(isset(self::$factors_list['rjgxtjsptmp'])){ unset(self::$factors_list['rjgxtjsptmp']);}
 			}
 		}	
 		try{

@@ -5,78 +5,21 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 		$this->response->setHeader("Content-Type", "text/html; charset=utf-8");
 	}
 	
-	public function test5Action(){
-		$time_start  =  $this->microtime_float ();
-		$memory_start = memory_get_usage( true );
-		try{
-			BasicScore::beforeStart();
-			if(BasicScore::handlePapers(12)){
-				if(FactorScore::handleFactors(12)){
-					if(IndexScore::handleIndexs(12)){
-						echo "ok ,finished";
-					}
-				}
-			}
-		}catch(Exception $e){
-			echo $e->getMessage();
-		}
-		$memory_end = memory_get_usage( true );
-		$memory_consuming = ($memory_end - $memory_start)/1024/1024;
-		$time_end = $this->microtime_float();
-		$time_consuming = $time_end - $time_start;
-		echo $time_consuming .'-'. $memory_consuming;
-	}
-	public function microtime_float () {
+	public static function microtime_float () {
 		list( $usec ,  $sec ) =  explode ( " " ,  microtime ());
 		return ((float) $usec  + (float) $sec );
 	}
 	
 	public function indexAction(){
-		
-		$time_start  =  $this->microtime_float ();
-		$memory_start = memory_get_usage( true );
-		try{
-			BasicScore::beforeStart();
-			if(BasicScore::handlePapers(12)){
-				echo "finished";
-			}
-		}catch(Exception $e){
-			echo $e->getMessage();
-		}
-		$memory_end = memory_get_usage( true );
-		$memory_consuming = ($memory_end - $memory_start)/1024/1024;
-		$time_end = $this->microtime_float();
-		$time_consuming = $time_end - $time_start;
-		echo $time_consuming .'-'. $memory_consuming;
-	}
-	public function t1Action(){
-		$time_start  =  $this->microtime_float ();
-		$memory_start = memory_get_usage( true );
-		try{
-			FactorScore::beforeStart();
-			
-			if(FactorScore::handleFactors(12)){
-				echo "finished";
-			}
-		}catch(Exception $e){
-			echo $e->getMessage();
-		}
-		$memory_end = memory_get_usage( true );
-		$memory_consuming = ($memory_end - $memory_start)/1024/1024;
-		$time_end = $this->microtime_float();
-		$time_consuming = $time_end - $time_start;
-		echo $time_consuming .'-'. $memory_consuming;
-		
-	}	
-	public function t2Action(){
 		$time_start  =  $this->microtime_float ();
 		$memory_start = memory_get_usage( true );
 		try{
 			if(IndexScore::handleIndexs(12)){
-				echo "finished";
+				echo "finished".'<br />';
 			}
+			
 		}catch(Exception $e){
-			echo $e->getMessage();
+			echo $e->getMessage().'<br />';
 		}
 		$memory_end = memory_get_usage( true );
 		$memory_consuming = ($memory_end - $memory_start)/1024/1024;
@@ -84,10 +27,7 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 		$time_consuming = $time_end - $time_start;
 		echo $time_consuming .'-'. $memory_consuming;
 	}
-	public function testAction(){
-		FactorScore::getPapersByExamineeId(17);
-		
-	}
+	
 	public static function clearAction(){
 		// 		清空memcache缓存
 		$memcache_obj = new Memcache;
