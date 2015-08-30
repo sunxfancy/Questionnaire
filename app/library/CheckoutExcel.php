@@ -1510,12 +1510,12 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
      * structure表公共表头
      */
     public static function structureExcelHead($k,$title,$objActSheet){
-        $objActSheet->setCellValue('B'.$k,$title);
-        $objActSheet->mergeCells('B'.$k.':F'.$k);
-        $objActSheet->getStyle('B'.$k)->getFont()->setBold(true);
-        $objActSheet->getStyle('B'.$k)->getFont()->setSize(20);
+        $objActSheet->setCellValue('A'.$k,$title);
+        $objActSheet->mergeCells('A'.$k.':F'.$k);
+        $objActSheet->getStyle('A'.$k)->getFont()->setBold(true);
+        $objActSheet->getStyle('A'.$k)->getFont()->setSize(20);
         $objActSheet->getRowDimension($k)->setRowHeight(50);
-        $objActSheet->getStyle('B'.$k)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objActSheet->getStyle('A'.$k)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 //        $objActSheet->getStyle("B$k")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         //表头
         $k += 1;

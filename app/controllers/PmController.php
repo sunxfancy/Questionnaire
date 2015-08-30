@@ -26,23 +26,24 @@ class PmController extends Base
     }
 
 	public function detailAction(){
-		# code...
-        }
+		$project_id = $this->getProjectId();
+        $project = Project::findFirst($project_id);
+        $begintime = date('Y-m-d',strtotime($project->begintime));
+        $endtime = date('Y-m-d',strtotime($project->endtime));
+        $now = date("Y-m-d");
+        $this->view->setVar('begintime',$begintime);
+        $this->view->setVar('endtime',$endtime);
+        $this->view->setVar('now',$now);
+    }
 	
-	public function getTimeAction($project_id){
+	public function getWidthAction(){
 		$project_id = $this->getProjectId();
 		$project = Project::findFirst($project_id);
-		$begintime = $project->begintime;
-		$endtime = $project->endtime;
-		$now = date(Y-m-d);
-		$width = 100*round(strtotime($now)-strtotime($begintime))/round(strtotime($endtime)-strtotime($begintime));		
-		$time = array(
-			'begintime' => $begintime,
-			'endtime'	=> $endtime,
-			'now'		=> $now,
-			'width' 	=> $width
-		);
-		$this->dataBack(array("time"=>$time));
+		$begintime = date('Y-m-d',strtotime($project->begintime));
+		$endtime = date('Y-m-d',strtotime($project->endtime));
+		$now = date("Y-m-d");
+		$width = 100*round(strtotime($now)-strtotime($begintime))/round(strtotime($endtime)-strtotime($begintime)).'%';		
+		$this->dataBack(array("width"=>$width));
 	}
 	
 	public function getDetailAction(){
@@ -51,19 +52,31 @@ class PmController extends Base
 			'project_id=?1',
 			'bind'=>array(1=>$project_id)));
 		$examinee_all = count($examinees);
-		$examinee_coms = Examinee::find(array(
-			'project_id=?0 and is_exam_com=?1',
-				'bind'=>array(0=>$project_id,1=>1)));
-		$examinee_com = count($examinee_coms);
+        $examinee_com = 0;
+        $examinee_coms = array();
+        foreach ($examinees as $examinee) {
+            if ($examinee->is_exam_com == 1) {
+                $examinee_com ++;
+                $examinee_coms[] = $examinee->id;
+            }
+        }
 		$interview_com = 0;
-		foreach ($examinee_coms as $examinee_com){
-			$interview = Interview::findFirst($examinee_com->id);
-			if (isset($interview->advantage)){
-				$interview_com++;
-			}
-		}
-		$examinee_percent  = (100*$examinee_com/$examinee_all).'%';
-		$interview_percent = (100*$interview_com/$examinee_com).'%';
+        for ($i=0; $i < sizeof($examinee_coms); $i++) { 
+             $interview = Interview::findFirst($examinee_coms[$i]);
+             if (isset($interview->advantage)){
+                 $interview_com++;
+             } 
+        }
+        if ($examinee_all == 0) {
+            $examinee_percent = 0;
+        }else{
+		    $examinee_percent  = $examinee_com / $examinee_all;
+        }
+        if ($examinee_com == 0) {
+            $interview_percent = 0;
+        }else{
+		    $interview_percent = $interview_com / $examinee_com;
+        }
 		$detail = array(
 			'examinee_percent'  => $examinee_percent,
 			'interview_percent' => $interview_percent
@@ -97,8 +110,7 @@ class PmController extends Base
         if($manager){
             $project_detail = ProjectDetail::findFirst(array(
                 "project_id=?1",
-                "bind"=>array(1=>$manager->project_id)
-                ));
+                "bind"=>array(1=>$manager->project_id)));
             $module_name = array();
             $module_names = $project_detail->module_names;
             $module_name = explode(',', $module_names);
@@ -131,10 +143,7 @@ class PmController extends Base
         $project_id = $this->session->get('Manager')->project_id;
         $delete_data = InqueryQuestion::find(array(
                 'project_id = :project_id:',
-                'bind' => array(
-                        'project_id' => $project_id
-                    )
-            ));
+                'bind' => array('project_id' => $project_id)));
         $res = $delete_data->delete();
         $this->upload_base('LoadInquery');
     }
@@ -163,6 +172,7 @@ class PmController extends Base
         } else {
             echo json_encode(array('error' => '错误的接口访问'));
         }
+        $this->response->redirect('pm');
     }
 
 	public function listexamineeAction(){
@@ -210,7 +220,6 @@ class PmController extends Base
         $project_id = $this->getProjectId();
         $builder = $this->modelsManager->createBuilder()
                                        ->from('Manager')
-                                       //->join('Project','Project.project_id=Manager.project_id')
                                        ->where("Manager.role = 'I' AND Manager.project_id = '$project_id'");
         $sidx = $this->request->getQuery('sidx','string');
         $sord = $this->request->getQuery('sord','string');
@@ -221,7 +230,6 @@ class PmController extends Base
         if ($sord != null)
             $sort = $sort.' '.$sord;
         $builder = $builder->orderBy($sort);
-        // $this->datareturn($builder);
         $this->interviewData($builder);
     }
 
@@ -231,7 +239,7 @@ class PmController extends Base
             $id = $this->request->getPost('id', 'int');
             $manager = Manager::findFirst($id);
             $manager->name       = $this->request->getPost('name', 'string');
-            $manager->password       = $this->request->getPost('password', 'string');
+            $manager->password   = $this->request->getPost('password', 'string');
             if (!$manager->save()) {
                 foreach ($manager->getMessages() as $message) {
                     echo $message;
@@ -253,7 +261,6 @@ class PmController extends Base
         $project_id = $this->getProjectId();
         $builder = $this->modelsManager->createBuilder()
                                        ->from('Manager')
-                                       //->join('Project','Project.project_id=Manager.project_id')
                                        ->where("Manager.role = 'L' AND Manager.project_id = '$project_id'");
         $sidx = $this->request->getQuery('sidx','string');
         $sord = $this->request->getQuery('sord','string');
@@ -590,7 +597,7 @@ class PmController extends Base
             )
         );
         $total = count($rows);
-        $term = 'remark is not null AND advantage is not null AND disadvantage is not null AND manager_id=:manager_id:';
+        $term = "remark<>'' AND advantage<>'' AND disadvantage<>'' AND manager_id=:manager_id:";
         $col = Interview::find(
             array(
                 $term,
@@ -691,7 +698,7 @@ class PmController extends Base
         foreach($interviewer as $key => $item){
             $result[$key] = $item;
         }
-//        return json_decode($result,true);
+        // return json_decode($result,true);
         return $result;
     }
 
