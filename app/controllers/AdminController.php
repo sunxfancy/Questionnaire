@@ -53,6 +53,65 @@ class AdminController extends Base
         $this->leftRender('项 目 详 情');
         $project = Project::findFirst($project_id);
         $this->view->setVar('project_name',$project->name);
+        $begintime = date('Y-m-d',strtotime($project->begintime));
+        $endtime = date('Y-m-d',strtotime($project->endtime));
+        $now = date("Y-m-d");
+        $this->view->setVar('begintime',$begintime);
+        $this->view->setVar('endtime',$endtime);
+        $this->view->setVar('now',$now);
+        $width = 100*round(strtotime($now)-strtotime($begintime))/round(strtotime($endtime)-strtotime($begintime)).'%';     
+        $detail = $this->getDetail($project_id);
+        $this->dataBack(array("width"=>$width,"detail"=>$detail));
+
+    }
+    
+    public function getDetail($project_id){
+        $examinees = Examinee::find(array(
+            'project_id=?1',
+            'bind'=>array(1=>$project_id)));
+        $examinee_all = count($examinees);
+        $examinee_com = 0;
+        $examinee_coms = array();
+        foreach ($examinees as $examinee) {
+            if ($examinee->is_exam_com == 1) {
+                $examinee_com ++;
+                $examinee_coms[] = $examinee->id;
+            }
+        }
+        $interview_com = 0;
+        for ($i=0; $i < sizeof($examinee_coms); $i++) { 
+             $interview = Interview::findFirst($examinee_coms[$i]);
+             if (isset($interview->advantage)){
+                 $interview_com++;
+             } 
+        }
+        exit();
+        if ($examinee_all == 0) {
+            $examinee_percent = 0;
+        }else{
+            $examinee_percent  = $examinee_com / $examinee_all;
+        }
+        if ($examinee_com == 0) {
+            $interview_percent = 0;
+        }else{
+            $interview_percent = $interview_com / $examinee_com;
+        }
+        $detail = array(
+            'examinee_percent'  => $examinee_percent,
+            'interview_percent' => $interview_percent
+        );
+        return $detail;
+    }
+
+    function getProjectId() {
+        $manager = $this->session->get('Manager');
+        return $manager->project_id;
+    }
+
+    function dataBack($ans){
+        $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
+        echo json_encode($ans);
+        $this->view->disable();
     }
 
     public function listAction(){
