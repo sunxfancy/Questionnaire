@@ -597,7 +597,7 @@ class PmController extends Base
             )
         );
         $total = count($rows);
-        $term = 'remark is not null AND advantage is not null AND disadvantage is not null AND manager_id=:manager_id:';
+        $term = "remark<>'' AND advantage<>'' AND disadvantage<>'' AND manager_id=:manager_id:";
         $col = Interview::find(
             array(
                 $term,
