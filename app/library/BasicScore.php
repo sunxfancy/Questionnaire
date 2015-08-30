@@ -46,7 +46,7 @@ class BasicScore {
 		);
 	}
 	/**
-	 * @usage 计算得分并写入到库的关键，采取个人按记录插入操作
+	 * @usage 计算得分并写入到库的关键，计算一次插入数据一次
 	 * @param int $examinee_id
 	 * @throws Exception
 	 * @return boolean
@@ -103,7 +103,6 @@ class BasicScore {
 			throw new Exception($e->getMessage());
 		}
 	}
-
 	/**
 	 * 计算SPM基础得分
 	 * @param \Phalcon\Mvc\Model\Resultsets\Simple $array

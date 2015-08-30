@@ -7,32 +7,27 @@ use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
 	 * @author Wangyaohui
 	 * @Date 2015-8-28
 	 */
-class FactorScore {
+class FactorScore{
 	/**
 	 * @usage 添加静态变避免在一次请求中重复加载内存表
 	 * @var boolean
 	 */
-	protected static $memory_state = false;
+	private static $memory_state = false;
 	/**
 	 * @usage 缓存本地的带有成绩的试卷信息
 	 * @var \Phalcon\Mvc\Model\Resultset\Simple
 	 */
 	private static $papers_list = null;
 	/**
-	 * @usage 缓存到本地已经写入过的因子
-	 * @var  array 
-	 */
-	private static $factors_list_finished = null;
-	/**
 	 * @usage 缓存到本地的用户信息  id sex 1男性 0女性  project_id
 	 * @var array 
 	 */
-	private static $examinee_info = null;
+	private static $examinee_info = array();
 	/**
 	 * @usage 缓存到本地的所有需要填写的因子,二维数组,试卷名-因子名
 	 * @var array
 	 */
-	private static $factors_list_all = null;
+	private static $factors_list_all = array();
 	/**
 	 * @usage 在计算基础得分之前，首先加载内存表
 	 * @throws Exception
@@ -40,34 +35,17 @@ class FactorScore {
 	 */
 	public static function beforeStart(){
 		try{
-			self::$memory_state =  MemoryTable::loader();
+			self::$memory_state =  MemoryTable::loader();	
 			return self::$memory_state;
 		}catch(Exception $e){
 			throw new Exception($e->getMessage());
 		}
 	}
 	/**
-	 * @usage 用于查验FactorAns表中已经写入的factor成绩,并将写过的因子名称传给$factor_list;
-	 * @param int $examinee_id
-	 */
-	protected static function getFinishedFactors($examinee_id){
-		$results_from_factor_ans =  FactorAns::find(
-			array(
-			"examinee_id = :examinee_id:",
-			'bind' => array ('examinee_id' =>$examinee_id)
-		)
-		);
-		$rt_array = array();
-		foreach ($results_from_factor_ans as $value){
-			$rt_array[]  = $value->Factor->name;
-		}
-		self::$factors_list_finished = $rt_array;
-		unset($results_from_factor_ans);
-	}
-	/**
 	 * @usage 获取被试的个人信息,主要是两个:性别/年龄
 	 * @param int $examinee_id
 	 */
+	
 	protected static function getExamineeInfo($examinee_id){
 		$results_from_examinee = Examinee::findFirst(
 			array(
@@ -75,6 +53,9 @@ class FactorScore {
 			'bind' => array('examinee_id' =>$examinee_id)
 		)
 		);
+		if(!isset($results_from_examinee->id)){
+			throw new Exception("This examinee_id not exist!");
+		}
 		$rt_array = array();
 		#examinee表中性别：1男性 0女性 
 		if(empty($results_from_examinee->sex)){
@@ -91,27 +72,37 @@ class FactorScore {
 	 * @usage 年龄计算函数
 	 * @param time $birthday
 	 * @param time $today
+	 * @throws Exception
 	 * @return string
 	 */
 	private static function calAge($birthday, $today){
 			$startdate=strtotime($birthday);
 			$enddate=strtotime($today);
+			if($enddate <= $startdate){
+				throw new Exception("The age is not avilable");
+			}
 			$days=round(($enddate-$startdate)/3600/24) ;
 			$age = sprintf("%.2f",$days/365);
 			return $age;
-		}
-	
+	}
 	/**
 	 * @usage 返回被试的全部答卷的得分信息，并写入到类的静态变量$papers_list中
 	 * @param int $examinee_id
+	 * @throws Exception
 	 */
 	protected static function getPapersByExamineeId($examinee_id){
-		self::$papers_list = QuestionAns::find(
+		BasicScore::beforeStart();
+		BasicScore::handlePapers($examinee_id);
+		$rt_list = QuestionAns::find(
 				array(
 						"examinee_id = :examinee_id:",
 						'bind' => array('examinee_id'=>$examinee_id)
 				)
 		);
+		if(count($rt_list) ==0 ){
+			throw new Exception("No paper exist");
+		}
+		self::$papers_list = $rt_list;	
 	}
 	/**
 	 * @usage 返回被试应该写入的所有因子得分
@@ -157,6 +148,16 @@ class FactorScore {
 						$factor_ans = new FactorAns();
 						$factor_ans->examinee_id = $examinee_id;
 						$factor_ans->factor_id = $key;
+						#写入之前先行判断是否已经被写入过
+						$isWrited = FactorAns::findFirst(
+						array(
+							"examinee_id=:examinee_id: AND factor_id = :factor_id:",
+							'bind'=>array('examinee_id'=>$examinee_id, 'factor_id'=>$key)
+						)
+						);
+						if(isset($isWrited->score)){
+							continue;
+						}
 						$factor_ans->score = $value['score'];
 						$factor_ans->std_score = $value['std_score'];
 						$factor_ans->ans_score = $value['ans_score'];
@@ -187,19 +188,6 @@ class FactorScore {
 			#true 表示不用写入EPQA的相关因子
 			return true;
 		}
-		#其次判断epqa相关的因子分数是否已经写入
-		if(empty(self::$factors_list_finished)){
-			self::getFinishedFactors($resultsets->examinee_id);
-		}
-		if(!empty(self::$factors_list_finished)){
-			foreach(self::$factors_list_all['EPQA'] as $key => $value){
-				if (in_array($value, self::$factors_list_finished)){
-					#false表示EPQA的因子已经写入完成
-					return false;
-				}
-			}
-		}
-		
 		#计算全部因子的得分
 		$score_array  = explode('|', $resultsets->score);
 		$score_array  = array_count_values($score_array);
@@ -270,7 +258,7 @@ class FactorScore {
 	/**
 	 * EPPS 匹配sum  
 	 */
-	public static function calEPPS(&$resultsets){
+	protected static function calEPPS(&$resultsets){
 		#首先判断是否需要写入epps相关的因子分数
 		if(empty(self::$factors_list_all)){
 			self::getFactorsAll($resultsets->examinee_id);
@@ -279,19 +267,6 @@ class FactorScore {
 			#true 表示不用写入EPPS的相关因子
 			return true;
 		}
-		#其次判断epps相关的因子分数是否已经写入
-		if(empty(self::$factors_list_finished)){
-			self::getFinishedFactors($resultsets->examinee_id);
-		}
-		if(!empty(self::$factors_list_finished)){
-			foreach(self::$factors_list_all['EPPS'] as $key=>$value){
-				if(in_array($value, self::$factors_list_finished)){
-					#false表示EPPS的因子已经写入完成
-					return false;
-				}
-			}
-		}
-		
 		#计算全部因子的得分
 		$score_array = explode('|', $resultsets->score);
 		$score_array = array_count_values ($score_array);
@@ -332,7 +307,7 @@ class FactorScore {
 	/**
 	 * CPI 匹配 sum
 	 */
-	public static function calCPI(&$resultsets){
+	protected static function calCPI(&$resultsets){
 		#首先判断是否需要写入cpi相关的因子分数
 		if(empty(self::$factors_list_all)){
 			self::getFactorsAll($resultsets->examinee_id);
@@ -340,18 +315,6 @@ class FactorScore {
 		if(!isset(self::$factors_list_all['CPI'])){
 			#true 表示不用写入CPI的相关因子
 			return true;
-		}
-		#其次判断cpi相关的因子分数是否已经写入
-		if(empty(self::$factors_list_finished)){
-			self::getFinishedFactors($resultsets->examinee_id);
-		}
-		if(!empty(self::$factors_list_finished)){
-			foreach(self::$factors_list_all['CPI'] as $key=>$value){
-				if(in_array($value, self::$factors_list_finished)){
-					#false表示CPI的因子已经写入完成
-					return false;
-				}
-			}
 		}
 		$string = str_replace('-', '|', $resultsets->score);
 		$score_array = explode('|', $string);
@@ -407,11 +370,10 @@ class FactorScore {
 		}
 		return $rt_array;
 	}
-	
 	/**
 	 * SCL : svg
 	 */
-	public static function calSCL(&$resultsets){
+	protected static function calSCL(&$resultsets){
 		#首先判断是否需要写入scl相关的因子分数
 		if(empty(self::$factors_list_all)){
 			self::getFactorsAll($resultsets->examinee_id);
@@ -420,19 +382,6 @@ class FactorScore {
 			#true 表示不用写入SCL的相关因子
 			return true;
 		}
-		#其次判断scl相关的因子分数是否已经写入
-		if(empty(self::$factors_list_finished)){
-		self::getFinishedFactors($resultsets->examinee_id);
-		}
-		if(!empty(self::$factors_list_finished)){
-			foreach(self::$factors_list_all['SCL'] as $key=>$value){
-				if(in_array($value, self::$factors_list_finished)){
-					#false表示SCL的因子已经写入完成
-					return false;
-				}
-			}
-		}
-		
 		#整理SCL题目答案
 		$question_ans_array = self::getAnswers($resultsets);
 		#计算SCL因子的原始分，标准分，最终分
@@ -473,7 +422,7 @@ class FactorScore {
 	/**
 	 * 16PF
 	 */
-	public static function calKS(&$resultsets){
+	protected static function calKS(&$resultsets){
 		#首先判断是否需要写入16PF相关的因子分数
 		if(empty(self::$factors_list_all)) {
 			self::getFactorsAll($resultsets->examinee_id);
@@ -482,19 +431,6 @@ class FactorScore {
 			#true 表示不用写入16PF的相关因子
 			return true;
 		}
-		#其次判断16PF相关的因子分数是否已经写入
-		if(empty(self::$factors_list_finished)) {
-			self::getFinishedFactors($resultsets->examinee_id);
-		}
-		if(!empty(self::$factors_list_finished)){
-			foreach(self::$factors_list_all['16PF'] as $key=>$value) {
-				if(in_array($value, self::$factors_list_finished)){
-					#false表示16PF的因子已经写入完成
-					return false;
-				}
-			}
-		}
-		
 		#确保加载内存表
 		if(!self::$memory_state){
 			self::beforeStart();
@@ -620,7 +556,7 @@ class FactorScore {
 	/**
 	 * SPM
 	 */
-	public static function calSPM(&$resultsets){
+	protected static function calSPM(&$resultsets){
 		#首先判断是否需要写入SPM相关的因子分数
 		if(empty(self::$factors_list_all)) {
 			self::getFactorsAll($resultsets->examinee_id);
@@ -628,18 +564,6 @@ class FactorScore {
 		if(!isset(self::$factors_list_all['SPM'])) {
 			#true 表示不用写入SPM的相关因子
 			return true;
-		}
-		#其次判断SPM相关的因子分数是否已经写入
-		if(empty(self::$factors_list_finished)) {
-			self::getFinishedFactors($resultsets->examinee_id);
-		}
-		if(!empty(self::$factors_list_finished)){
-			foreach(self::$factors_list_all['SPM'] as $key=>$value) {
-				if(in_array($value, self::$factors_list_finished)){
-				#false表示SPM的因子已经写入完成
-				return false;
-				}
-			}
 		}
 		#确保加载内存表
 		if(!self::$memory_state){
@@ -764,8 +688,8 @@ class FactorScore {
 	}
 	/**
 	 * 返回一个数组[$question_number] = score;
-	 * @param unknown $array
-	 * @return Ambigous <multitype:, unknown>
+	 * @param array $array
+	 * @return array
 	 */
 	private static function getAnswers(&$array){
 		$rtn_array = array();
@@ -779,7 +703,8 @@ class FactorScore {
 	
 	}
 	
-	/**use for EPPS con
+	/**
+	 * use for EPPS con
 	 * 返回一个$array[$question_number] = choice;
 	 */
 	private static function getEPPSCon(&$array){
