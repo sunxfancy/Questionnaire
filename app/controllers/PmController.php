@@ -26,14 +26,49 @@ class PmController extends Base
     }
 
 	public function detailAction(){
-		$manager = $this->session->get('Manager');
-        $project_id = $manager->project_id;
-        $project = Project::findFirst($project_id);
-        $starttime = $project->starttime;
-        $endtime = $project->endtime;
-        $now = date(Y-m-d);
-        $width = 100*round(strtotime($now)-strtotime($starttime))/round(strtotime($endtime)-strtotime($starttime));
-        
+		# code...
+        }
+	
+	public function getTimeAction($project_id){
+		$project_id = $this->getProjectId();
+		$project = Project::findFirst($project_id);
+		$begintime = $project->begintime;
+		$endtime = $project->endtime;
+		$now = date(Y-m-d);
+		$width = 100*round(strtotime($now)-strtotime($begintime))/round(strtotime($endtime)-strtotime($begintime));		
+		$time = array(
+			'begintime' => $begintime,
+			'endtime'	=> $endtime,
+			'now'		=> $now,
+			'width' 	=> $width
+		);
+		$this->dataBack(array("time"=>$time));
+	}
+	
+	public function getDetailAction(){
+		$project_id = $this->getProjectId();
+		$examinees = Examinee::find(array(
+			'project_id=?1',
+			'bind'=>array(1=>$project_id)));
+		$examinee_all = count($examinees);
+		$examinee_coms = Examinee::find(array(
+			'project_id=?0 and is_exam_com=?1',
+				'bind'=>array(0=>$project_id,1=>1)));
+		$examinee_com = count($examinee_coms);
+		$interview_com = 0;
+		foreach ($examinee_coms as $examinee_com){
+			$interview = Interview::findFirst($examinee_com->id);
+			if (isset($interview->advantage)){
+				$interview_com++;
+			}
+		}
+		$examinee_percent  = (100*$examinee_com/$examinee_all).'%';
+		$interview_percent = (100*$interview_com/$examinee_com).'%';
+		$detail = array(
+			'examinee_percent'  => $examinee_percent,
+			'interview_percent' => $interview_percent
+		);
+		$this->dataBack(array("detail"=>$detail));
 	}
 
 	public function examineeAction(){
@@ -343,6 +378,8 @@ class PmController extends Base
                     'bind'=>array(1=>$factor_name)));
                 $paper_id = $factor->paper_id;
                 $paper_name = Paper::findFirst($paper_id)->name;
+                $factor_id = $factor->id;
+                $factors[$paper_name][$factor_id] = $factor_name;
                 $childrentype = explode(',',$factor->children_type);
                 if (in_array(0, $childrentype)) {
                     $factor = explode(',',$factor->children);
@@ -352,10 +389,6 @@ class PmController extends Base
                             'bind'=>array(1=>$factor1)));
                         $factors[$paper_name][$factorss->id] = $factor1;
                     }
-                }
-                else{
-                    $factor_id = $factor->id;
-                    $factors[$paper_name][$factor_id] = $factor_name;
                 }
             }
             $factor_json = json_encode($factors,JSON_UNESCAPED_UNICODE);

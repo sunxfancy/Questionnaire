@@ -38,18 +38,21 @@ class MemoryCache {
 		) 	
 		);
 	}
+	
 	/**
-	 * @usage 缓存根据试卷编号查取其中涉及的相关因子
-	 * @param int $paper_id
+	 * @method $rt->id $rt->children $rt->name $rt->action
+	 * @param unknown $index_name
 	 */
-	public static function getFactors($paper_id){
-		return Factor::find(
+	public static function getIndexDetail($index_name){
+		return Index::findFirst(
 			array(
-			"paper_id = :paper_id:",
-			'bind' => array ('paper_id' =>$paper_id),
-			'order'=> 'id asc',
-			'cache'=> array( 'key' => 'factors_in_paper_'.$paper_id)
+			"name = :index_name:",
+			'bind' => array( 'index_name' => $index_name),
+			'hydration' => \Phalcon\Mvc\Model\Resultset\Simple::HYDRATE_ARRAYS,
+			'cache' => array ('key' => 'index_detail_name_'.$index_name)
 		)
 		);
 	}
+	
+	
 }

@@ -5,7 +5,7 @@ use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
 	 * @usage 使用条件在BasicScore完成handlePapers后,开始执行handleFactors($examinee_id);
 	 * @param int $examinee_id;
 	 * @author Wangyaohui
-	 * @Date 2015-8-26
+	 * @Date 2015-8-28
 	 */
 class FactorScore {
 	/**
@@ -160,8 +160,8 @@ class FactorScore {
 						$factor_ans->score = $value['score'];
 						$factor_ans->std_score = $value['std_score'];
 						$factor_ans->ans_score = $value['ans_score'];
-						if($factor_ans->save() == false){
-								$transaction->rollback("Cannot update table FactorAns' score");
+						if($factor_ans->create() == false){
+							$transaction->rollback("Cannot update table FactorAns' score");
 						}
 					}
 					$transaction->commit();
@@ -169,7 +169,7 @@ class FactorScore {
 					throw new Exception("Failed, reason: ".$e->getMessage());
 				}
 			}
-		return true;
+			return true;
 		}catch(Exception $e){
 			throw new Exception($e->getMessage());
 		}
@@ -191,12 +191,15 @@ class FactorScore {
 		if(empty(self::$factors_list_finished)){
 			self::getFinishedFactors($resultsets->examinee_id);
 		}
-		foreach(self::$factors_list_all['EPQA'] as $key => $value){
-			if (in_array($value, self::$factors_list_finished)){
-				#false表示EPQA的因子已经写入完成
-				return false;
+		if(!empty(self::$factors_list_finished)){
+			foreach(self::$factors_list_all['EPQA'] as $key => $value){
+				if (in_array($value, self::$factors_list_finished)){
+					#false表示EPQA的因子已经写入完成
+					return false;
+				}
 			}
-		} 
+		}
+		
 		#计算全部因子的得分
 		$score_array  = explode('|', $resultsets->score);
 		$score_array  = array_count_values($score_array);
@@ -280,12 +283,15 @@ class FactorScore {
 		if(empty(self::$factors_list_finished)){
 			self::getFinishedFactors($resultsets->examinee_id);
 		}
-		foreach(self::$factors_list_all['EPPS'] as $key=>$value){
-			if(in_array($value, self::$factors_list_finished)){
-				#false表示EPPS的因子已经写入完成
-				return false;
+		if(!empty(self::$factors_list_finished)){
+			foreach(self::$factors_list_all['EPPS'] as $key=>$value){
+				if(in_array($value, self::$factors_list_finished)){
+					#false表示EPPS的因子已经写入完成
+					return false;
+				}
 			}
 		}
+		
 		#计算全部因子的得分
 		$score_array = explode('|', $resultsets->score);
 		$score_array = array_count_values ($score_array);
@@ -339,10 +345,12 @@ class FactorScore {
 		if(empty(self::$factors_list_finished)){
 			self::getFinishedFactors($resultsets->examinee_id);
 		}
-		foreach(self::$factors_list_all['CPI'] as $key=>$value){
-			if(in_array($value, self::$factors_list_finished)){
-			#false表示CPI的因子已经写入完成
-				return false;
+		if(!empty(self::$factors_list_finished)){
+			foreach(self::$factors_list_all['CPI'] as $key=>$value){
+				if(in_array($value, self::$factors_list_finished)){
+					#false表示CPI的因子已经写入完成
+					return false;
+				}
 			}
 		}
 		$string = str_replace('-', '|', $resultsets->score);
@@ -416,12 +424,15 @@ class FactorScore {
 		if(empty(self::$factors_list_finished)){
 		self::getFinishedFactors($resultsets->examinee_id);
 		}
-		foreach(self::$factors_list_all['SCL'] as $key=>$value){
-			if(in_array($value, self::$factors_list_finished)){
-			#false表示SCL的因子已经写入完成
-			return false;
+		if(!empty(self::$factors_list_finished)){
+			foreach(self::$factors_list_all['SCL'] as $key=>$value){
+				if(in_array($value, self::$factors_list_finished)){
+					#false表示SCL的因子已经写入完成
+					return false;
+				}
+			}
 		}
-		}
+		
 		#整理SCL题目答案
 		$question_ans_array = self::getAnswers($resultsets);
 		#计算SCL因子的原始分，标准分，最终分
@@ -475,12 +486,15 @@ class FactorScore {
 		if(empty(self::$factors_list_finished)) {
 			self::getFinishedFactors($resultsets->examinee_id);
 		}
-		foreach(self::$factors_list_all['16PF'] as $key=>$value) {
-			if(in_array($value, self::$factors_list_finished)){
-				#false表示16PF的因子已经写入完成
-				return false;
+		if(!empty(self::$factors_list_finished)){
+			foreach(self::$factors_list_all['16PF'] as $key=>$value) {
+				if(in_array($value, self::$factors_list_finished)){
+					#false表示16PF的因子已经写入完成
+					return false;
+				}
 			}
 		}
+		
 		#确保加载内存表
 		if(!self::$memory_state){
 			self::beforeStart();
@@ -709,21 +723,28 @@ class FactorScore {
 						'NLH >= :age: AND NLL <= :age:',
 						'bind'=>array('age'=>$age)));
 				if ($score >= $spmmd->B95) {
-					$std_score = 1;
+					$std_score = 195;
+				}else if ($score >= $spmmd->B90) {
+					$std_score = 290;
 				}else if ($score >= $spmmd->B75) {
-					$std_score =2;
+					$std_score = 275;
+				}else if ($score >= $spmmd->B50) {
+					$std_score = 350;
 				}else if ($score >= $spmmd->B25) {
-					$std_score = 3;
+					$std_score = 325;
+				}else if ($score >= $spmmd->B10) {
+					$std_score = 410;
 				}else if ($score >= $spmmd->B5) {
-					$std_score = 4;
+					$std_score = 45;
 				}else{
-					$std_score = 5;
+					$std_score = 50;
 				}
-				if ($std_score == 1) { $ans_score = 9; 
-				}else if ($std_score == 2) {$ans_score = 7.5; 
-				}else if ($std_score == 3) {$ans_score = 6; 
-				}else if ($std_score == 4) {$ans_score = 5; 
-				}else if ($std_score == 5) {$ans_score = 4; 
+				$flag = substr($std_score,0,1);
+				if ($flag == 1) { $ans_score = 9; 
+				}else if ($flag == 2) {$ans_score = 7.5; 
+				}else if ($flag == 3) {$ans_score = 6; 
+				}else if ($flag == 4) {$ans_score = 5; 
+				}else if ($flag == 5) {$ans_score = 4; 
 				}else {$ans_score = 1;
 				}
 			}else{
