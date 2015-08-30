@@ -1107,7 +1107,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
                     $factor_ans[$value][$v]['answer'] = self::getFactorAnswer($examinee_id,$v);//指标测试答案
                     $factor_ans[$value][$v]['chs_name'] = $factor_chs_name;
                 }
-//                $index = self::getIndex($key);//测试指标
+                $index = self::getIndex($key);//测试指标
                 $objActSheet->setCellValue('A'.$row,$weak[$low]);
                 $objActSheet->setCellValue('A'.($row+1),$index['chs_name']);
                 $objActSheet->setCellValue('A'.($row+2),count($index_factors[$key]));
