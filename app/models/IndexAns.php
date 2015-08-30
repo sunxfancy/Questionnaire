@@ -25,5 +25,6 @@ class IndexAns extends \Phalcon\Mvc\Model
     public function initialize()
     {
         $this->belongsTo('index_id',  'Index','id');
+        $this->belongsTo('examinee_id', 'Examinee', 'id');
     }
 }

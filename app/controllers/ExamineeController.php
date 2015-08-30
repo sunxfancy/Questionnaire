@@ -143,7 +143,18 @@ class ExamineeController extends Base
         if($total_time){
             /**********************************************************************/
             /*最后一次提交的处理在这里，$total_time是用户答题使用的总时间，以秒计*/
-            $this->dataReturn(array("total_time"=>$total_time));
+        	$time_start  =  Test4Controller::microtime_float ();
+        	$memory_start = memory_get_usage( true );
+        	try{
+        		IndexScore::handleIndexs($id);
+        	}catch(Exception $e){
+        		 $this->dataReturn(array("total_time"=>$e->getMessage()));
+        	}
+        	$memory_end = memory_get_usage( true );
+        	$memory_consuming = ($memory_end - $memory_start)/1024/1024;
+        	$time_end = Test4Controller::microtime_float();
+        	$time_consuming = $time_end - $time_start;
+            $this->dataReturn(array("total_time"=>$time_consuming .'-'. $memory_consuming));
             // $this->session->get("Examinee")
             session_unset("Examinee");
             /*end of code chunk*/
