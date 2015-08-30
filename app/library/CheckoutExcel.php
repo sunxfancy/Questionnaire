@@ -379,7 +379,9 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
             $std_score = $factorAns[0]->std_score;
             $objActSheet->setCellValue("A$i","$factor_chs_name");
             $objActSheet->setCellValue("B$i","$value");
+            $objActSheet->getStyle("B$i")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $objActSheet->setCellValue("C$i","$std_score");
+            $objActSheet->getStyle("C$i")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $j = $std_score-1;
             $objActSheet->setCellValue("$letter[$j]$i","*");
             $i++;
@@ -395,8 +397,11 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $objActSheet->mergeCells("A$i:C$i");
         $objActSheet->setCellValue("A$i",'因素名称');
         $objActSheet->setCellValue("D$i",'代号');
+        $objActSheet->getStyle("D$i")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
         $objActSheet->mergeCells("E$i:I$i");
         $objActSheet->setCellValue("E$i",'原始分');
+        $objActSheet->getStyle("E$i")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objActSheet->mergeCells("J$i:N$i");
         $objActSheet->setCellValue("J$i",'标准分');
         $objActSheet->setCellValue("O$i",'简要说明');
@@ -418,27 +423,26 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
             $objActSheet->setCellValue("A$i","$factor_chs_name");            
             $objActSheet->setCellValue("D$i","$value");
             $objActSheet->mergeCells("E$i:I$i");
+            $objActSheet->getStyle("D$i")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objActSheet->getStyle("E$i")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $objActSheet->setCellValue("E$i","$score");
             $objActSheet->mergeCells("J$i:N$i");
-            $objActSheet->setCellValue("J$i","$std_score");            
+            if($value == "Y3"){
+                $objActSheet->setCellValue("J$i","$std_score");
+                $objActSheet->getStyle("J$i")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);  
+            }
+                          
             $i++;
         }
         $objActSheet->getStyle("A$j:O".($i-1))->applyFromArray($styleArray);
         $objActSheet->getStyle("A$j:O".($i-1))->applyFromArray($styleArray1);
-        // // $objActSheet->getStyle('A7')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        // // $objActSheet->getStyle('A7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
-        // $objActSheet->getStyle('A7:F30')->getAlignment()->setWrapText(TRUE);
-        // $objActSheet->setCellValue('A7','教育经历（自高中毕业后起，含在职教育经历）');
     }
 
     public static function checkoutEpps($examinee,$excel,$project_id){
         $objActSheet = $excel->getActiveSheet();
         $objActSheet->getDefaultRowDimension()->setRowHeight(22);
         $objActSheet->getDefaultColumnDimension()->setWidth(15);
-
         $objActSheet->getColumnDimension('B')->setWidth(20);
-        
-
         $styleArray = array(
             'borders' => array(
                 'allborders' => array(
@@ -487,7 +491,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $objActSheet->getRowDimension(5)->setRowHeight(8);
 
         $objActSheet->setCellValue("A6","测试项目");
-        $objActSheet->setCellValue("B6","得分");
+        $objActSheet->setCellValue("B6","得分");        
         $objActSheet->setCellValue("C6","得分排序");
         $objActSheet->setCellValue("D6","测试项目");
         $objActSheet->setCellValue("E6","得分");
@@ -538,13 +542,14 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
                     $i++;
                 }
             }else{
-                $j = $number+6;
+                $j = $i-$number+6;
                 $objActSheet->setCellValue("D$j","$factor_chs_name");
                 $objActSheet->setCellValue("E$j","$record->score");
-                    // $objActSheet->setCellValue("F$j","$i");
             }  
         }
         $k = 6+$number;
+        $objActSheet->getStyle("B6:C$k")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objActSheet->getStyle("E6:F$k")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objActSheet->getStyle("A6:F$k")->applyFromArray($styleArray);
         $objActSheet->getStyle("A6:F$k")->applyFromArray($styleArray1);
         $k++;
@@ -571,7 +576,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $objActSheet->mergeCells('A1:E1');
         $objActSheet->setCellValue('A1','SCL90 测试结果');
         $objActSheet->getStyle('A1')->getFont()->setSize(20);
-        $objActSheet->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objActSheet->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
         $objActSheet->setCellValue('A2','分类号');
         $objActSheet->setCellValue('A3','编号');
         $objActSheet->getStyle('B3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
@@ -704,6 +709,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $objActSheet->setCellValue('C6','代号');
         $objActSheet->setCellValue('D6','原始得分');
         $objActSheet->setCellValue('E6','T分');
+        $objActSheet->getStyle("C6:E6")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $factors = ProjectDetail::find(
             array(
                  "project_id = :project_id:", 'bind' => array('project_id'=>$project_id)
@@ -797,6 +803,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $objActSheet->setCellValue('B6','代号');
         $objActSheet->setCellValue('C6','原始分');
         $objActSheet->setCellValue('D6','T分');
+        $objActSheet->getStyle("A6:D6")->getFont()->setBold(true);
         $objActSheet->mergeCells("A7:F7");
 
         $factors = ProjectDetail::find(
@@ -870,6 +877,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
             $std_score = $factorAns[0]->std_score;
             $objActSheet->setCellValue("A$i","$factor_chs_name");
             $objActSheet->setCellValue("B$i","$value");
+            $objActSheet->getStyle("B$i")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $objActSheet->getStyle("C$i")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $objActSheet->getStyle("C$i")->getFont()->setBold(true);
             $objActSheet->setCellValue("C$i","$score");
@@ -976,14 +984,14 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
                     );
                 $score = ceil($factorAns[0]->score);
                 $letter = strtoupper(substr($value,3));
-                $objActSheet->getStyle("$letterArr[$i]8")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-                $objActSheet->getStyle("$letterArr[$i]9")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
                 $objActSheet->setCellValue("$letterArr[$i]8","$letter 类");
                 $objActSheet->setCellValue("$letterArr[$i]9","$score");
                 $i++;
             }
             
         }
+
+        $objActSheet->getStyle("A2:F9")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objActSheet->getStyle('A6:F9')->applyFromArray($styleArray);
     }
 
