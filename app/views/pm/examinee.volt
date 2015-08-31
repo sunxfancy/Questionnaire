@@ -11,6 +11,9 @@
     <div style="width:100%;height:40px;text-align:center;margin: 5px 10px;">
         <form class="form-inline" method="POST" action="/pm/uploadexaminee" enctype="multipart/form-data">
             <div class="form-group">
+                <a class="btn btn-primary" href="/template/人员信息模板.xls">导入模板下载</a>
+            </div>
+            <div class="form-group">
                 <input type="file" name="file" input maxlength="100" style="height:30px;cursor:pointer;">
             </div>
             <div class="form-group">
@@ -67,7 +70,7 @@
                 },
                 {name:'number',index:'number', sorttype:"int",width:100, editable: false,align:'center'},
                 {name:'name',index:'name', sortable:true, width:110,sorttype:"string", editable:true,align:'center'},
-                {name:'sex',index:'sex',width:60, sortable:false, editable:false,align:'center',
+                {name:'sex',index:'sex',width:60, sortable:false, editable:true,align:'center',
                     formatter:function(cellvalue){
                         var temp = "";
                         if(cellvalue == 1){

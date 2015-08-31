@@ -74,8 +74,7 @@
 
     function check(){ 
         with(document.all){
-        if(pm_password.value!=re_pm_password.value)
-            {
+        if(pm_password.value!=re_pm_password.value){
                 alert("两次密码输入不一致！请重新输入...")
                 pm_password.value = "";
                 re_pm_password.value = "";
