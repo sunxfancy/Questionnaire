@@ -337,35 +337,37 @@ class ExamineeController extends Base
         }
     }
    
-    public function dividepeoAction($manager_id){
-    	$this->view->disable();
-    	$condition = 'manager_id = :manager_id:';
-    	$interview = Interview::find();
-    	$term = '(';
-    	foreach($interview as $key => $item){
-    		$term .= ' id<>'.$item->examinee_id.' AND ';
-    	}
-    	if($term == '('){
-    		$phql = 'SELECT * FROM Examinee';
-    		$row = $this->modelsManager->executeQuery($phql);
-    		$data = array();
-    		foreach($row as $key => $value){
-    			$data[$key] = $value;
-    		}
-    		$data = json_encode($data);
-    		echo $data;
-    	}else{
-    		$term = substr($term,0,strlen($term)-4);
-    		$term .= ')';
-    		$phql = 'SELECT * FROM Examinee WHERE '.$term;
-    		$row = $this->modelsManager->executeQuery($phql);
-    		$data = array();
-    		foreach($row as $key => $value){
-    			$data[$key] = $value;
-    		}
-    		$data = json_encode($data);
-    		echo $data;
-    	}
+     public function dividepeoAction($manager_id){
+//        $project_id = $this->session->get('Manager')->project_id;
+        $project_id = $this->session->get('Manager')->project_id;
+        $this->view->disable();
+//      $condition = 'manager_id = :manager_id:';
+        $interview = Interview::find();
+        $term = '(';
+        foreach($interview as $key => $item){
+            $term .= ' id<>'.$item->examinee_id.' AND ';
+        }
+        if($term == '('){
+            $phql = 'SELECT * FROM Examinee WHERE project_id='.$project_id;
+            $row = $this->modelsManager->executeQuery($phql);
+            $data = array();
+            foreach($row as $key => $value){
+                $data[$key] = $value;
+            }
+            $data = json_encode($data);
+            echo $data;
+        }else{
+            $term = substr($term,0,strlen($term)-4);
+            $term .= ')';
+            $phql = 'SELECT * FROM Examinee WHERE '.$term.' AND project_id='.$project_id;
+            $row = $this->modelsManager->executeQuery($phql);
+            $data = array();
+            foreach($row as $key => $value){
+                $data[$key] = $value;
+            }
+            $data = json_encode($data);
+            echo $data;
+        }
     }
 
     public function getPaperId($paper_name){

@@ -48,9 +48,23 @@ class ExcelLoader
                 'project_id' => $project_id
             )
         ));
+//        echo count($examinee);
+//        exit
         $project = new Project();
-        $data_num = count($examinee);
-        $last_number = $examinee[$data_num-1]->number+1;
+        if(count($examinee) == 0){
+            $date = date('y-m-d');
+            $date = explode('-',$date);
+            if($project_id < 10){
+                $last_number = $date[0].'0'.$project_id.'0001';
+            }else{
+                $last_number = $date[0].$project_id.'0001';
+            }
+
+        }
+        else{
+            $data_num = count($examinee);
+            $last_number = $examinee[$data_num-1]->number+1;
+        }
 //        $last_number = 1;
         $db->begin(); 
         if (is_readable($filename))
@@ -306,5 +320,3 @@ class ExcelLoader
         return $rtn;
     }
 }
-
-
