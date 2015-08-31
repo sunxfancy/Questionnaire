@@ -11,28 +11,28 @@ include("../app/classes/PHPExcel.php");
 
 
 /**
- *
- */
+* 
+*/
 class ExcelLoader
 {
     private $options = '';
     private function __construct() {
         $this->excel_col = array( 'C' => 'name',     'E' => 'native',   'F' => 'education',
-            'G' => 'degree', 'H' => 'birthday', 'I' => 'politics',
-            'J' => 'professional', 'K' => 'team',     'L' => 'employer',
-            'M' => 'unit','N' => 'duty');
+                                  'G' => 'degree', 'H' => 'birthday', 'I' => 'politics',
+                                  'J' => 'professional', 'K' => 'team',     'L' => 'employer',
+                                  'M' => 'unit','N' => 'duty');
         $this->edu_name = array('school','profession','degree','date');
         $this->work_name = array('employer','unit','duty','date');
     }
 
-    private static $instance;
+    private static $instance;  
     public static function getInstance()
     {
-        if (!(self::$instance instanceof self))
-        {
-            self::$instance = new self();
-        }
-        return self::$instance;
+        if (!(self::$instance instanceof self))  
+        {  
+            self::$instance = new self();  
+        }  
+        return self::$instance;  
     }
 
     /**
@@ -66,7 +66,7 @@ class ExcelLoader
             $last_number = $examinee[$data_num-1]->number+1;
         }
 //        $last_number = 1;
-        $db->begin();
+        $db->begin(); 
         if (is_readable($filename))
         {
             try {
@@ -165,7 +165,7 @@ class ExcelLoader
     {
         $other_col = 'M';
         for ($j = 0; $j < 4; $j++) {
-            for ($k = 0; $k < 4; $k++) {
+            for ($k = 0; $k < 4; $k++) { 
                 $other_array[$j][$name_array[$k]] = self::filter($sheet->getCell($other_col.$i)->getValue());
                 $other_col++;
             }
@@ -227,7 +227,7 @@ class ExcelLoader
     public function readline_interviewer($sheet, $project_id, $i)
     {
         $interviewer = new Manager();
-
+        
         $interviewer->name = self::filter($sheet->getCell('C'.$i)->getValue());
         $interviewer->username = $this->random_string();
         $interviewer->password = $this->random_string();
@@ -238,7 +238,7 @@ class ExcelLoader
                 throw new Exception($message);
             }
         }
-    }
+    } 
 
 
     /**
@@ -252,7 +252,7 @@ class ExcelLoader
     public function readline_leader($sheet, $project_id, $i)
     {
         $leader = new Manager();
-
+        
         $leader->name = self::filter($sheet->getCell('C'.$i)->getValue());
         $leader->username = $this->random_string();
         $leader->password = $this->random_string();
@@ -263,7 +263,7 @@ class ExcelLoader
                 throw new Exception($message);
             }
         }
-    }
+    } 
 
 
 
@@ -271,7 +271,7 @@ class ExcelLoader
     function baseLoad($funcname,$filename, $project_id, $db)
     {
         PHPExcel_Settings::setCacheStorageMethod(PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip);
-        $db->begin();
+        $db->begin(); 
         if (is_readable($filename))
         {
             try {
