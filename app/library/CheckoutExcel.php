@@ -20,7 +20,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $msgWorkSheet = new PHPExcel_Worksheet($excel, '2.TQT人才测评系统'); //创建指标排序表
         $excel->addSheet($msgWorkSheet); 
         $excel->setActiveSheetIndex(1);
-        self::checkoutIndex($examinee,$excel); 
+        self::checkoutIndex($examinee,$excel,$project_id); 
 
         $pf16 = new PHPExcel_Worksheet($excel, '3.16pf'); //创建16pf表
         $excel->addSheet($pf16); 
@@ -189,7 +189,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
     }
 
     //导出指标排序
-    public static function checkoutIndex($examinee,$excel){
+    public static function checkoutIndex($examinee,$excel,$project_id){
         $objActSheet = $excel->getActiveSheet();
         $objActSheet->getDefaultRowDimension()->setRowHeight(25);
         $objActSheet->getDefaultColumnDimension()->setWidth(20);
@@ -207,25 +207,26 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         *通过$examinee->id在index_ans表中找到index_id 和 score
         *通过index_id 在index表中找到指标名称（chs_name）
         */
-        $id = $examinee->id;
-        $index_ans_info = IndexAns::find(
-            array(
-                 "examinee_id = :examinee_id:", 'bind' => array('examinee_id'=>$id),
-                 'order' => 'score desc'
-                 ));
+        $examinee_id = $examinee->id;
+        $index = self::getIndexScore($project_id,$examinee_id);
         $i = 1;
         $k = 0;
-        $sum = count($index_ans_info);
-        foreach($index_ans_info as $value ){
+        $sum = count($index);
+        foreach($index as $key => $value ){
             $k = $i + 2;
-            $chs_name = (string)$value->Index->chs_name;
+            $index_ans_info = Index::find(
+                    array('name = :name:','bind'=>array(
+                        'name' => $key))
+                );
+            $chs_name = $index_ans_info[0]->chs_name;
+
             $objActSheet->getStyle("A$k")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $objActSheet->getStyle("C$k")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $objActSheet->getStyle("A$k")->getFont()->setBold(true);
             $objActSheet->getStyle("C$k")->getFont()->setBold(true);
             $objActSheet->setCellValue("A$k","$i");
             $objActSheet->setCellValue("B$k","$chs_name");
-            $objActSheet->setCellValue("C$k","$value->score");            
+            $objActSheet->setCellValue("C$k","$value");            
             if($i<=8){
                 $objActSheet->setCellValue("D$k","#");
                 $objActSheet->getStyle("D$k")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
@@ -1072,19 +1073,11 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
                 $start_row = $row;
                 $row = $row + 1;
                 foreach($index_factors[$key] as $i => $item){
-                    if(substr($item,0,3) != 'zb_'){
-                        $objActSheet->setCellValue('B'.$row,self::getFactorMsg($item)['chs_name']);
-                        $factor_answer = self::getFactorAnswer($examinee_id,$item);
-                        $objActSheet->setCellValue('C'.$row,$factor_answer['score']);
-                        $objActSheet->setCellValue('D'.$row,$factor_answer['std_score']);
-                        $row++;
-                    }else{
-                        $objActSheet->setCellValue('B'.$row,self::getIndex($item)['chs_name']);
-                        $index_answer = self::getIndexScore2($item,$examinee_id);
-                        $objActSheet->setCellValue('C'.$row,$index_answer['score']);
-                        $objActSheet->setCellValue('D'.$row,$index_answer['score']);
-                        $row++;
-                    }
+                    $objActSheet->setCellValue('B'.$row,self::getFactorMsg($item)['chs_name']);
+                    $factor_answer = self::getFactorAnswer($examinee_id,$item);
+                    $objActSheet->setCellValue('C'.$row,$factor_answer['score']);
+                    $objActSheet->setCellValue('D'.$row,$factor_answer['std_score']);
+                    $row++;
                 }
 //                $row++;
                 if($value){
@@ -1095,6 +1088,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
                 $row++;
                 $objActSheet->getStyle('A'.$row.':E'.$row)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
                 $objActSheet->getStyle('A'.$row.':E'.$row)->getFill()->getStartColor()->setRGB('#BEBEBE');
+                $objActSheet->mergeCells('A'.$row.':E'.$row);
 //                $objActSheet->mergeCells('A'.$start_row.':E'.$row);
                 $styleArray = array(
                     'borders' => array(
@@ -1112,9 +1106,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
                 break;
             }
         }
-        // asort($index_score);
-        $index_score = array_reverse($index_score);
-        //弱项导出
+        $index_score = array_reverse($index_score,true);
         foreach($index_score as $key => $value){
             if($low <= 4){
                 $index_factor = $index_factors[$key];
@@ -1131,19 +1123,11 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
                 $start_row = $row;
                 $row = $row + 1;
                 foreach($index_factors[$key] as $i => $item){
-                    if(substr($item,0,3) != 'zb_'){
-                        $objActSheet->setCellValue('B'.$row,self::getFactorMsg($item)['chs_name']);
-                        $factor_answer = self::getFactorAnswer($examinee_id,$item);
-                        $objActSheet->setCellValue('C'.$row,$factor_answer['score']);
-                        $objActSheet->setCellValue('D'.$row,$factor_answer['std_score']);
-                        $row++;
-                    }else{
-                        $objActSheet->setCellValue('B'.$row,self::getIndex($item)['chs_name']);
-                        $index_answer = self::getIndexScore2($item,$examinee_id);
-                        $objActSheet->setCellValue('C'.$row,$index_answer['score']);
-                        $objActSheet->setCellValue('D'.$row,$index_answer['score']);
-                        $row++;
-                    }
+                    $objActSheet->setCellValue('B'.$row,self::getFactorMsg($item)['chs_name']);
+                    $factor_answer = self::getFactorAnswer($examinee_id,$item);
+                    $objActSheet->setCellValue('C'.$row,$factor_answer['score']);
+                    $objActSheet->setCellValue('D'.$row,$factor_answer['std_score']);
+                    $row++;
                 }
 //                $row++;
                 if($value){
@@ -1590,10 +1574,10 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
                 'bind' => array(
                     'index_id' => $index['id'],
                     'examinee_id' => $examinee_id
-                )
+                ),
             ));
             $index_ans = json_decode(json_encode($index_ans),true);
-            $index_score[$value] = $index_ans['score'];
+            $index_score["$value"] = $index_ans['score'];
         }
         arsort($index_score);
         return $index_score;
@@ -1618,8 +1602,15 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
             $children = $index['children'];
             $children_name = explode(',',$children);
             foreach($children_name as $k => $item){
+                if(substr($item,0,3) == 'zb_'){
+                    $secondLevelIndex = self::getIndex($item);
+                    $secondLevelIndexChildren = explode(',',$secondLevelIndex['children']);
+                    foreach($secondLevelIndexChildren as $i => $v){
+                        $returnArray[$value][$v] = $v;
+                    }
+                }else{
                     $returnArray[$value][$item] = $item;
-//                }
+                }
             }
 //            $num = count($returnArray[$value]);
 //            $returnArray[$value]['num'] = $num;
@@ -1670,25 +1661,6 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
             )
         ));
         return json_decode(json_encode($factor),true);
-    }
-
-    public static function getIndexScore2($index_name,$examinee_id){
-        $index = Index::findFirst(array(
-            'name = :name:',
-            'bind' => array(
-                'name' => $index_name
-            )
-        ));
-        $index = json_decode(json_encode($index),true);
-        $index_ans = IndexAns::findFirst(array(
-            'index_id = :index_id: AND examinee_id = :examinee_id:',
-            'bind' => array(
-                'index_id' => $index['id'],
-                'examinee_id' => $examinee_id
-            )
-        ));
-        $index_ans = json_decode(json_encode($index_ans),true);
-        return $index_ans;
     }
 
 
