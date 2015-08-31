@@ -341,14 +341,14 @@ class ExamineeController extends Base
 //        $project_id = $this->session->get('Manager')->project_id;
         $project_id = $this->session->get('Manager')->project_id;
         $this->view->disable();
-//    	$condition = 'manager_id = :manager_id:';
+//      $condition = 'manager_id = :manager_id:';
         $interview = Interview::find();
         $term = '(';
         foreach($interview as $key => $item){
             $term .= ' id<>'.$item->examinee_id.' AND ';
         }
         if($term == '('){
-            $phql = 'SELECT * FROM Examinee project_id='.$project_id;
+            $phql = 'SELECT * FROM Examinee WHERE project_id='.$project_id;
             $row = $this->modelsManager->executeQuery($phql);
             $data = array();
             foreach($row as $key => $value){
