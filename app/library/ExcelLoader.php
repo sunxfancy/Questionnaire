@@ -8,8 +8,6 @@
 
 include("../app/classes/PHPExcel.php");
 
-
-
 /**
 * 
 */
@@ -26,10 +24,8 @@ class ExcelLoader
     }
 
     private static $instance;  
-    public static function getInstance()
-    {
-        if (!(self::$instance instanceof self))  
-        {  
+    public static function getInstance(){
+        if (!(self::$instance instanceof self)){  
             self::$instance = new self();  
         }  
         return self::$instance;  
@@ -37,44 +33,27 @@ class ExcelLoader
 
     /**
      * 被试人员导入
-     * TODO: 后面超过4条的部分
      */
-    public function LoadExaminee ($filename, $project_id, $db)
-    {
+    public function LoadExaminee ($filename, $project_id, $db){
         PHPExcel_Settings::setCacheStorageMethod(PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip);
         $examinee = Examinee::find(array(
             'project_id = :project_id:',
-            'bind' => array(
-                'project_id' => $project_id
-            )
-        ));
-//        echo count($examinee);
-//        exit
+            'bind' => array('project_id' => $project_id)));
         $project = new Project();
-        if(count($examinee) == 0){
-            $date = date('y-m-d');
-            $date = explode('-',$date);
-            if($project_id < 10){
-                $last_number = $date[0].'0'.$project_id.'0001';
-            }else{
-                $last_number = $date[0].$project_id.'0001';
-            }
-
+        if(count($examinee) == 0){ 
+                $last_number = $project_id.'0001';
         }
         else{
             $data_num = count($examinee);
             $last_number = $examinee[$data_num-1]->number+1;
         }
-//        $last_number = 1;
         $db->begin(); 
-        if (is_readable($filename))
-        {
+        if (is_readable($filename)){
             try {
                 $objexcel = PHPExcel_IOFactory::load($filename);
                 $sheet = $objexcel->getSheet(0);
                 $higestrow = $sheet->getHighestRow();
-
-//              $last_number = $project->last_examinee_id;
+                // $last_number = $project->last_examinee_id;
                 $i = 3;
                 while ($i <= $higestrow) {
                     $k = $sheet->getCell("C".$i)->getValue();
@@ -90,8 +69,6 @@ class ExcelLoader
                 unlink($filename);
                 return $errors;
             }
-
-
         }
         $project->last_examinee_id = $last_number;
         $project->save();
@@ -102,8 +79,7 @@ class ExcelLoader
         return 0;
     }
 
-    public function readline_examinee($sheet, $project_id, $number, $i)
-    {
+    public function readline_examinee($sheet, $project_id, $number, $i){
         $examinee = new Examinee();
         foreach ($this->excel_col as $key => $value) {
             $examinee->$value = self::filter($sheet->getCell($key.$i)->getValue());
@@ -161,8 +137,7 @@ class ExcelLoader
         }
     }
 
-    function readother_examinee($sheet, $other_array, $name_array, $i)
-    {
+    function readother_examinee($sheet, $other_array, $name_array, $i){
         $other_col = 'M';
         for ($j = 0; $j < 4; $j++) {
             for ($k = 0; $k < 4; $k++) { 
@@ -172,18 +147,14 @@ class ExcelLoader
         }
     }
 
-
-
     /**
      * 需求量表导入
      */
-    public function LoadInquery ($filename, $project_id, $db)
-    {
+    public function LoadInquery ($filename, $project_id, $db){
         $this->baseLoad('readline_inquery',$filename, $project_id, $db);
     }
 
-    public function readline_inquery($sheet, $project_id, $i)
-    {
+    public function readline_inquery($sheet, $project_id, $i){
         $inquery_question = new InqueryQuestion();
 
         $inquery_question->topic = self::filter($sheet->getCell('B'.$i)->getValue());
@@ -212,24 +183,29 @@ class ExcelLoader
                 throw new Exception($message);
             }
         }
-
-
     }
 
     /**
      * 导入面询专家
      */
-    public function LoadInterviewer ($filename, $project_id, $db)
-    {
+    public function LoadInterviewer ($filename, $project_id, $db){
         $this->baseLoad('readline_interviewer',$filename, $project_id, $db);
     }
 
-    public function readline_interviewer($sheet, $project_id, $i)
-    {
-        $interviewer = new Manager();
+    public function readline_interviewer($sheet, $project_id, $i){
+        $interviewer = Manager::find(array(
+            'project_id =?0 and role=?1',
+            'bind' => array(0=> $project_id,1=>'I')));
+        $data_num = count($interviewer);
+        if($data_num == 0){ 
+            $last_number = $project_id.'1'.'01';
+        }else{
+            $last_number = $interviewer[$data_num-1]->username+1;
+        }
         
+        $interviewer = new Manager();      
         $interviewer->name = self::filter($sheet->getCell('C'.$i)->getValue());
-        $interviewer->username = $this->random_string();
+        $interviewer->username = $last_number;
         $interviewer->password = $this->random_string();
         $interviewer->role = 'I';
         $interviewer->project_id = $project_id;
@@ -240,21 +216,27 @@ class ExcelLoader
         }
     } 
 
-
     /**
      * 导入领导
      */
-    public function LoadLeader ($filename, $project_id, $db)
-    {
+    public function LoadLeader ($filename, $project_id, $db){
         $this->baseLoad('readline_leader',$filename, $project_id, $db);
     }
 
-    public function readline_leader($sheet, $project_id, $i)
-    {
-        $leader = new Manager();
-        
+    public function readline_leader($sheet, $project_id, $i){
+        $leader = Manager::find(array(
+            'project_id =?0 and role=?1',
+            'bind' => array(0=> $project_id,1=>'L')));
+        $data_num = count($leader);
+        if($data_num == 0){ 
+                $last_number = $project_id.'2'.'01';
+        }else{
+            $last_number = $leader[$data_num-1]->username+1;
+        }
+
+        $leader = new Manager();        
         $leader->name = self::filter($sheet->getCell('C'.$i)->getValue());
-        $leader->username = $this->random_string();
+        $leader->username = $last_number;
         $leader->password = $this->random_string();
         $leader->role = 'L';
         $leader->project_id = $project_id;
@@ -265,15 +247,10 @@ class ExcelLoader
         }
     } 
 
-
-
-
-    function baseLoad($funcname,$filename, $project_id, $db)
-    {
+    function baseLoad($funcname,$filename, $project_id, $db){
         PHPExcel_Settings::setCacheStorageMethod(PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip);
         $db->begin(); 
-        if (is_readable($filename))
-        {
+        if (is_readable($filename)){
             try {
                 $objexcel = PHPExcel_IOFactory::load($filename);
                 $sheet = $objexcel->getSheet(0);
@@ -319,4 +296,5 @@ class ExcelLoader
         }
         return $rtn;
     }
+
 }

@@ -70,7 +70,7 @@
                 },
                 {name:'number',index:'number', sorttype:"int",width:100, editable: false,align:'center'},
                 {name:'name',index:'name', sortable:true, width:110,sorttype:"string", editable:true,align:'center'},
-                {name:'sex',index:'sex',width:60, sortable:false, editable:false,align:'center',
+                {name:'sex',index:'sex',width:60, sortable:false, editable:true,align:'center',
                     formatter:function(cellvalue){
                         var temp = "";
                         if(cellvalue == 1){
