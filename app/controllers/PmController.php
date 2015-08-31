@@ -25,8 +25,8 @@ class PmController extends Base
         $this->leftRender('北京政法系统人才测评项目管理平台');
     }
 
-	public function detailAction(){
-		$project_id = $this->getProjectId();
+    public function detailAction(){
+        $project_id = $this->getProjectId();
         $project = Project::findFirst($project_id);
         $begintime = date('Y-m-d',strtotime($project->begintime));
         $endtime = date('Y-m-d',strtotime($project->endtime));
@@ -35,23 +35,23 @@ class PmController extends Base
         $this->view->setVar('endtime',$endtime);
         $this->view->setVar('now',$now);
     }
-	
-	public function getWidthAction(){
-		$project_id = $this->getProjectId();
-		$project = Project::findFirst($project_id);
-		$begintime = date('Y-m-d',strtotime($project->begintime));
-		$endtime = date('Y-m-d',strtotime($project->endtime));
-		$now = date("Y-m-d");
-		$width = 100*round(strtotime($now)-strtotime($begintime))/round(strtotime($endtime)-strtotime($begintime)).'%';		
-		$this->dataBack(array("width"=>$width));
-	}
-	
-	public function getDetailAction(){
-		$project_id = $this->getProjectId();
-		$examinees = Examinee::find(array(
-			'project_id=?1',
-			'bind'=>array(1=>$project_id)));
-		$examinee_all = count($examinees);
+    
+    public function getWidthAction(){
+        $project_id = $this->getProjectId();
+        $project = Project::findFirst($project_id);
+        $begintime = date('Y-m-d',strtotime($project->begintime));
+        $endtime = date('Y-m-d',strtotime($project->endtime));
+        $now = date("Y-m-d");
+        $width = 100*round(strtotime($now)-strtotime($begintime))/round(strtotime($endtime)-strtotime($begintime)).'%';     
+        $this->dataBack(array("width"=>$width));
+    }
+    
+    public function getDetailAction(){
+        $project_id = $this->getProjectId();
+        $examinees = Examinee::find(array(
+            'project_id=?1',
+            'bind'=>array(1=>$project_id)));
+        $examinee_all = count($examinees);
         $examinee_com = 0;
         $examinee_coms = array();
         foreach ($examinees as $examinee) {
@@ -60,7 +60,7 @@ class PmController extends Base
                 $examinee_coms[] = $examinee->id;
             }
         }
-		$interview_com = 0;
+        $interview_com = 0;
         for ($i=0; $i < sizeof($examinee_coms); $i++) { 
              $interview = Interview::findFirst($examinee_coms[$i]);
              if (isset($interview->advantage)){
@@ -70,35 +70,35 @@ class PmController extends Base
         if ($examinee_all == 0) {
             $examinee_percent = 0;
         }else{
-		    $examinee_percent  = $examinee_com / $examinee_all;
+            $examinee_percent  = $examinee_com / $examinee_all;
         }
         if ($examinee_com == 0) {
             $interview_percent = 0;
         }else{
-		    $interview_percent = $interview_com / $examinee_com;
+            $interview_percent = $interview_com / $examinee_com;
         }
-		$detail = array(
-			'examinee_percent'  => $examinee_percent,
-			'interview_percent' => $interview_percent
-		);
-		$this->dataBack(array("detail"=>$detail));
-	}
+        $detail = array(
+            'examinee_percent'  => $examinee_percent,
+            'interview_percent' => $interview_percent
+        );
+        $this->dataBack(array("detail"=>$detail));
+    }
 
-	public function examineeAction(){
-		# code...
-	}
+    public function examineeAction(){
+        # code...
+    }
 
-	public function interviewerAction(){
-		# code...
-	}
+    public function interviewerAction(){
+        # code...
+    }
 
-	public function leaderAction(){
-		# code...
-	}
+    public function leaderAction(){
+        # code...
+    }
 
-	public function resultAction(){
-		# code...
-	}
+    public function resultAction(){
+        # code...
+    }
 
     public function selectmoduleAction(){
         $this->view->setTemplateAfter('base2');
@@ -175,7 +175,7 @@ class PmController extends Base
         $this->response->redirect('pm');
     }
 
-	public function listexamineeAction(){
+    public function listexamineeAction(){
         $project_id = $this->getProjectId();
         $builder = $this->modelsManager->createBuilder()                            
                                        ->from('Examinee')
@@ -190,9 +190,9 @@ class PmController extends Base
             $sort = $sort.' '.$sord;
         $builder = $builder->orderBy($sort);
         $this->datareturn($builder);
-	}
+    }
 
-	public function updateexamineeAction(){
+    public function updateexamineeAction(){
         $oper = $this->request->getPost('oper', 'string');
         if ($oper == 'edit') {
             $id = $this->request->getPost('id', 'int');
