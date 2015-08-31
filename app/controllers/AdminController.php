@@ -15,19 +15,30 @@ class AdminController extends Base
     }
 
     public function newprojectAction(){
+        $date = date('y');
+        $project = Project::find();
+        $project_num = count($project)+1;
+        $project_last = $project->getLast();
+        if($project_num == 1){ 
+                $project_id = $date.substr(strval($project_num+100),1,2);
+        }else{           
+            $project_id = $project_last->id+1;
+        }
+
         $manager = new Manager();
         $this->getData($manager, array(
             'name'     => 'pm_name',
             'username' => 'pm_username',
             'password' => 'pm_password'));
         $manager->role = 'P';
-        
+
         $project = new Project();
         $this->getData($project, array(
             'name'        => 'project_name', 
             'description' => 'description',
             'begintime'   => 'begintime',
             'endtime'     => 'endtime'));
+        $project->id = $project_id;
         try {
             if (!$manager->save()) {
                 foreach ($manager->getMessages() as $message) {
