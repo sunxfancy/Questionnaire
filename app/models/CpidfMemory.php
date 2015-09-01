@@ -30,6 +30,9 @@ class CpidfMemory extends \Phalcon\Mvc\Model{
 			'bind' =>array('th'=>$th, 'xz'=>$xz)
 		)
 		);	
+		if(!isset($record->TH)){
+			throw new Exception('Not found the record-Cpidf-'.'-th-'.$th.'-xz-'.$xz);
+		}
 		$rtn_array = array();	
 		if( $record->DO == 1 ){
 			$rtn_array[] = 'do';

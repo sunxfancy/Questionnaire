@@ -2,22 +2,22 @@
 use Phalcon\Mvc\Model\Transaction\Failed as TxFailed;
 use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
 	/**
-	 * @usage 使用条件在BasicScore完成handlePapers后,开始执行handleFactors($examinee_id);
-	 * @param int $examinee_id;
+	 * @usage 写入因子成绩
+	 * @state 2~3
 	 * @author Wangyaohui
-	 * @Date 2015-8-28
+	 * @notice 1.内存表的加载需首先完成
+	 * 		   2.Examinee表中存有examinee_id, 及相应的project_id , state, QuestionAns表中有相应记录
+	 * 		   3.对比project_detail
+	 * @Date 2015-9-1
 	 */
 class FactorScore{
+	
+	private static $error_state = 2;
 	/**
 	 * @usage 添加静态变避免在一次请求中重复加载内存表
 	 * @var boolean
 	 */
 	private static $memory_state = false;
-	/**
-	 * @usage 缓存本地的带有成绩的试卷信息
-	 * @var \Phalcon\Mvc\Model\Resultset\Simple
-	 */
-	private static $papers_list = null;
 	/**
 	 * @usage 缓存到本地的用户信息  id sex 1男性 0女性  project_id
 	 * @var array 
@@ -33,40 +33,44 @@ class FactorScore{
 	 * @throws Exception
 	 * @return boolean
 	 */
-	public static function beforeStart(){
-		try{
-			self::$memory_state =  MemoryTable::loader();	
-			return self::$memory_state;
-		}catch(Exception $e){
-			throw new Exception($e->getMessage());
-		}
+	protected static function loadMemoryTable(){
+		self::$memory_state =  MemoryTable::loader();	
+		return self::$memory_state;
 	}
 	/**
-	 * @usage 获取被试的个人信息,主要是两个:性别/年龄
+	 * @usage 获取被试的个人信息, 成功则返回数组/性别/年龄, 失败则返回false表示这一层已经完成 异常则表示底层没有完成 
 	 * @param int $examinee_id
 	 */
-	
 	protected static function getExamineeInfo($examinee_id){
-		$results_from_examinee = Examinee::findFirst(
+		$examinee_info = Examinee::findFirst(
 			array(
 			"id = :examinee_id:",
 			'bind' => array('examinee_id' =>$examinee_id)
 		)
 		);
-		if(!isset($results_from_examinee->id)){
-			throw new Exception("This examinee_id not exist!");
-		}
-		$rt_array = array();
-		#examinee表中性别：1男性 0女性 
-		if(empty($results_from_examinee->sex)){
-			throw new Exception("The sex is null");
-		}
-		$rt_array['sex'] = $results_from_examinee->sex;
-		$rt_array['age'] = self::calAge($results_from_examinee->birthday, $results_from_examinee->last_login);
-		$rt_array['project_id'] = $results_from_examinee->Project->id;
-		self::$examinee_info = $rt_array;
-		unset($rt_array);
-		unset($results_from_examinee);
+		if(!isset($examinee_info->id)){
+			throw new Exception(self::$error_state."-不存在id号-".$examinee_id);
+		}else{
+			if($examinee_info->state == 2){
+				$rt_array = array();
+				#examinee表中性别：1男性 0女性
+				if(empty($examinee_info->sex)){
+					throw new Exception(self::$error_state."-性别不能为空-");
+				}
+				$rt_array['sex'] = $examinee_info->sex;
+				$rt_array['age'] = self::calAge($examinee_info->birthday, $examinee_info->last_login);
+				$rt_array['project_id'] = $examinee_info->project_id;
+				self::$examinee_info = $rt_array;
+				if(isset($rt_array)){unset($rt_array);}
+				if(isset($examinee_info)){unset($examinee_info);};
+				return true;
+				
+			}else if($examinee_info->state <= 1 ){
+				throw new Exception(self::$error_state.'-下层计算还未完成-'.'id-'.$examinee_id.'-state-'.$examinee_info->state);
+			}else{
+				return false;
+			}
+		}	
 	}
 	/**
 	 * @usage 年龄计算函数
@@ -79,30 +83,39 @@ class FactorScore{
 			$startdate=strtotime($birthday);
 			$enddate=strtotime($today);
 			if($enddate <= $startdate){
-				throw new Exception("The age is not avilable");
+				throw new Exception(self::$state."-The age is not avilable-".$birthday.'-'.$today);
 			}
 			$days=round(($enddate-$startdate)/3600/24) ;
 			$age = sprintf("%.2f",$days/365);
 			return $age;
 	}
-	/**
-	 * @usage 返回被试的全部答卷的得分信息，并写入到类的静态变量$papers_list中
-	 * @param int $examinee_id
-	 * @throws Exception
-	 */
+	
 	protected static function getPapersByExamineeId($examinee_id){
-		BasicScore::beforeStart();
-		BasicScore::handlePapers($examinee_id);
 		$rt_list = QuestionAns::find(
 				array(
 						"examinee_id = :examinee_id:",
 						'bind' => array('examinee_id'=>$examinee_id)
 				)
 		);
-		if(count($rt_list) ==0 ){
-			throw new Exception("No paper exist");
+		if(empty(self::$factors_list_all)){
+			self::getFactorsAll($examinee_id);
 		}
-		self::$papers_list = $rt_list;	
+		if(count($rt_list) != count(self::$factors_list_all)){
+			throw new Exception(self::$error_state.'-答卷数量不正确-'.count($rt_list).'-'.count(self::$factors_list_all));
+		}
+		$papers_id_tmp = array();
+		foreach($rt_list as $value){
+			$papers_id_tmp[] = $value->paper_id;
+		}
+		$project_papers_id = array();
+		foreach(self::$factors_list_all as $key=>$value){
+			$project_papers_id[] = MemoryCache::getPaperDetail($key)->id;
+		}
+		if(!array_diff(  $papers_id_tmp , $project_papers_id) ) {
+			return $rt_list;
+		}else{
+			throw new Exception(self::$error_state.'-答卷信息与题库信息不符-'.print_r($papers_id_tmp,true).print_r($project_papers_id,true));
+		}
 	}
 	/**
 	 * @usage 返回被试应该写入的所有因子得分
@@ -122,11 +135,23 @@ class FactorScore{
 	 * @return boolean
 	 */
 	public static function handleFactors($examinee_id){
-		try {
-			if(empty(self::$papers_list)){
-				self::getPapersByExamineeId($examinee_id);
+		#加载内存表
+		if(!self::$memory_state){
+			self::loadMemoryTable();
+		}
+		if(empty(self::$examinee_info)){
+			#false表示已经写入完成
+			if(!self::getExamineeInfo($examinee_id)){
+				return false;
 			}
-			foreach(self::$papers_list as $question_ans_record){
+		}
+		#读取project_detail
+		if(empty(self::$factors_list_all)){
+			self::getFactorsAll($examinee_id);
+		}
+		#读取questionAns
+		$papers_list = self::getPapersByExamineeId($examinee_id);
+		foreach($papers_list as $question_ans_record){
 				$paper_name= $question_ans_record->Paper->name;
 				$rtn_array_paper = null;
 				switch(strtoupper($paper_name)){
@@ -136,7 +161,7 @@ class FactorScore{
 					case 'SCL'  : $rtn_array_paper = self::calSCL($question_ans_record); break;
 					case '16PF' : $rtn_array_paper = self::calKS($question_ans_record); break;
 					case 'SPM'  : $rtn_array_paper = self::calSPM($question_ans_record); break;
-					default : throw new Exception ("no this type paper:$paper_name");
+					default : throw new Exception (self::$error_state."-不存在试卷-$paper_name");
 				}	
 				if(is_bool($rtn_array_paper) || empty($rtn_array_paper)){
 						continue;
@@ -145,9 +170,6 @@ class FactorScore{
 					$manager     = new TxManager();
 					$transaction = $manager->get();
 					foreach ( $rtn_array_paper as $key => $value ) {
-						$factor_ans = new FactorAns();
-						$factor_ans->examinee_id = $examinee_id;
-						$factor_ans->factor_id = $key;
 						#写入之前先行判断是否已经被写入过
 						$isWrited = FactorAns::findFirst(
 						array(
@@ -155,25 +177,26 @@ class FactorScore{
 							'bind'=>array('examinee_id'=>$examinee_id, 'factor_id'=>$key)
 						)
 						);
-						if(isset($isWrited->score)){
+						if(isset($isWrited->factor_id)){
 							continue;
 						}
+						$factor_ans = new FactorAns();
+						$factor_ans->setTransaction($transaction);
+						$factor_ans->examinee_id = $examinee_id;
+						$factor_ans->factor_id = $key;
 						$factor_ans->score = $value['score'];
 						$factor_ans->std_score = $value['std_score'];
 						$factor_ans->ans_score = $value['ans_score'];
-						if($factor_ans->create() == false){
-							$transaction->rollback("Cannot update table FactorAns' score");
+						if($factor_ans->save() == false){
+							$transaction->rollback(self::$error_state."插入数据失败".print_r($factor_ans));
 						}
 					}
 					$transaction->commit();
 				}catch (TxFailed $e) {
-					throw new Exception("Failed, reason: ".$e->getMessage());
+					throw new Exception($e->getMessage());
 				}
 			}
 			return true;
-		}catch(Exception $e){
-			throw new Exception($e->getMessage());
-		}
 	}
 	
 	/**
@@ -195,14 +218,14 @@ class FactorScore{
 		#标准分及最终分计算
 		#确保加载内存表
 		if(!self::$memory_state){
-			self::beforeStart();
+			self::loadMemoryTable();
 		}
 		if(empty(self::$examinee_info)){
 			self::getExamineeInfo($resultsets->examinee_id);
 		}
 		$dage =  self::$examinee_info['age'];
 		if($dage <16 || $dage >= 150){
-			throw new Exception("EPQA age is out of range");
+			throw new Exception(self::$error_state."EPQA年龄范围超限（16~150）".$dage);
 		}
 		$dsex =  self::$examinee_info['sex'] == 1? 1 : 2;
 		#根据$factors_list_all['epqa'];
@@ -221,6 +244,9 @@ class FactorScore{
 		 	$epqamd = EpqamdMemory::findFirst(array(
 		 		'DAGEL <= :age: AND DAGEH > :age: AND DSEX = :sex:',
 		 		'bind'=>array('age'=>$dage,'sex'=>$dsex)));
+		 	if(!isset($epqamd->DSEX)){
+		 		throw new Exception(self::$error_state."-EPQAmd不存在记录-".'age-'.$dage.'-sex-'.$dsex);
+		 	}
 			switch($value){
 		 		case 'epqae':
 		 			$m = $epqamd->EM;
@@ -246,7 +272,7 @@ class FactorScore{
 		 			$std_score = sprintf("%.2f",50 + (10 * ($score - $m)) / $sd);
 		 			$ans_score = sprintf("%.2f",10 - $std_score/10);
 		 			break;
-		 		default:throw new Exception("not found");
+		 		default:throw new Exception(self::$error_state.'-EPQAmd不存在因子-'.$value);
 		 	}
 		 $rt_array_record['score'] = floatval($score);
 		 $rt_array_record['std_score'] = floatval($std_score);
@@ -322,7 +348,7 @@ class FactorScore{
 		unset($score_array['']);
 		#确保加载内存表
 		if(!self::$memory_state){
-			self::beforeStart();
+			self::loadMemoryTable();
 		}
 		if(empty(self::$examinee_info)){
 			self::getExamineeInfo($resultsets->examinee_id);
@@ -347,6 +373,9 @@ class FactorScore{
 				'bind' => array('dm'=>$dm, 'yz' =>strtoupper($value))
 		 	)
 		 	);
+		 	if(!isset($cpimd->DM)){
+		 		throw new Exception(self::$error_state.'-CPI不存在记录-'.'-DM-'.$dm.'-YZ-'.$value);
+		 	}
 		 	$m =  $cpimd->M;
 		 	$sd = $cpimd->SD;
 		 	if($m != 0 && $sd != 0){
@@ -433,7 +462,7 @@ class FactorScore{
 		}
 		#确保加载内存表
 		if(!self::$memory_state){
-			self::beforeStart();
+			self::loadMemoryTable();
 		}
 		#确保个人信息
 		if(empty(self::$examinee_info)){
@@ -495,6 +524,9 @@ class FactorScore{
 						'DM=:dm: AND YZ=:yz: AND QSF <= :score: AND ZZF >= :score:',
 						'bind'=>array('dm'=>$dm, 'yz' =>$value, 'score'=>$score)
 				));
+				if(!isset($ksmd->BZF)){
+					throw new Exception(self::$error_state.'-Ksmd 不存在记录-'.'DM-'.$dm.'-YZ-'.$value.'-QSF-'.$score);
+				}
 				$std_score =  $ksmd->BZF;
 				if($value != 'Q4'){
 					$ans_score = $std_score;
@@ -527,6 +559,9 @@ class FactorScore{
 							'YZ=:yz: AND QSF <= :score: AND ZZF >= :score:',
 							'bind'=>array( 'yz' =>$value, 'score'=>$score)
 					));
+					if(!isset($ksmd->BZF)){
+						throw new Exception(self::$error_state.'-Ksmd不存在记录-'.'YZ-'.$value.'-QSF-'.$score);
+					}
 					$std_score =  $ksmd->BZF;
 				}
 				if($value == 'X1'){
@@ -567,7 +602,7 @@ class FactorScore{
 		}
 		#确保加载内存表
 		if(!self::$memory_state){
-			self::beforeStart();
+			self::loadMemoryTable();
 		}
 		#确保个人信息
 		if(empty(self::$examinee_info)){
@@ -635,7 +670,7 @@ class FactorScore{
 		$age = self::$examinee_info['age'];
 		#spm的年龄区间 5.25~110
 		if($age <5.25 || $age>=110){
-			throw new Exception("SPM age out of range");
+			throw new Exception(self::$error_state."SPM年龄范围越界".$age);
 		}
 		foreach($basic_array as $key=>$score){
 			$factor_record = MemoryCache::getFactorDetail($key);
@@ -646,6 +681,9 @@ class FactorScore{
 				$spmmd = SpmmdMemory::findFirst(array(
 						'NLH >= :age: AND NLL <= :age:',
 						'bind'=>array('age'=>$age)));
+				if(!isset($spmmd->NLH)){
+					throw new Exception(self::$error_state.'-Spmmd不存在记录-'.'age-'.$age);
+				}
 				if ($score >= $spmmd->B95) {
 					$std_score = 195;
 				}else if ($score >= $spmmd->B90) {
@@ -741,6 +779,39 @@ class FactorScore{
 			}
 		}
 		return $con_score;
+	}
+	
+	/**
+	 * @usage 完成因子得分计算后的被试状态转换
+	 * @param int $examinee_id
+	 * @throws Exception
+	 * @return boolean
+	 */
+	public static function finishedFactor($examinee_id){
+		$examinee_info = Examinee::findFirst(
+				array("id = :id:",
+						'bind'=>array('id'=>$examinee_id)
+				)
+		);
+		#如果examinee_id为空，这种处理也合适
+		if(isset($examinee_info->id)){
+			try{
+				$manager     = new TxManager();
+				$transaction = $manager->get();
+				$examinee_info->setTransaction($transaction);
+				$examinee_info->state = 3;
+				if($examinee_info->save() == false){
+					$transaction->rollback(self::$error_state.'-数据库插入失败-'.print_r($examinee_info,true));
+				}
+				$transaction->commit();
+				return true;
+			}catch (TxFailed $e) {
+				throw new Exception($e->getMessage());
+			}
+		}else{
+			throw new Exception(self::$error_state.'-不存在该账号的用户-'.$examinee_id);
+		}
+	
 	}
 	
 }

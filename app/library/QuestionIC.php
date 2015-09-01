@@ -3,10 +3,10 @@
 	 * @usage 被试答案提交
 	 * @state 0~1
 	 * @author Wangyaohui
-	 * @notice: 1.Examinee中存在examinee_id
+	 * @notice  1.Examinee中存在examinee_id
 	 * 		    2.paper_name合理性与答案的范围及题号的数量的合理性
 	 *          3.对照project_detail判断题号与答案
-	 * 
+	 * @date 2015-8-31
 	 */
 
 use Phalcon\Mvc\Model\Transaction\Failed as TxFailed;
@@ -15,6 +15,7 @@ use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
 class QuestionIC {
 	
 	private static $error_state = 0;
+	
 	private static $array_values = array(
 		'SCL' =>array( 'a', 'b', 'c', 'd', 'e' ),
 		'CPI' =>array( 'a', 'b' ),
@@ -112,6 +113,15 @@ class QuestionIC {
 			throw new Exception(self::$error_state.'-题目数量与题库不符-'.print_r(array_diff( $project_detail[$paper_name] , $number_array ),true));
 		}
 	}
+	/**
+	 * @usage 写入被试的答卷信息
+	 * @param int $examinee_id
+	 * @param string $paper_name
+	 * @param string $option_str
+	 * @param array $number_array
+	 * @throws Exception
+	 * @return boolean
+	 */
 	public static function insertQuestionAns($examinee_id, $paper_name, $option_str, $number_array){
 		$project_id = self::getProjectId($examinee_id);
 		$paper_name = strtoupper($paper_name);
@@ -148,6 +158,13 @@ class QuestionIC {
 		}
 	}
 	
+	/**
+	 * @usage 完成答卷后的被试状态转换
+	 * @param int $examinee_id
+	 * @param int $exam_time
+	 * @throws Exception
+	 * @return boolean
+	 */
 	public static function finishedExam($examinee_id, $exam_time){
 		if(!is_int($exam_time) ||  $exam_time <= 0){
 			throw new Exception(self::$error_state.'-答题时间的数据错误-'.var_dump($exam_time));
