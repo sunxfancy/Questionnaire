@@ -18,16 +18,18 @@ class SpmdfMemory extends  \Phalcon\Mvc\Model {
 	public static function getRecord($th, $xz){
 		$record = self::findFirst(
 				array(
-						"XH = :th: AND BZ = :bz:",
-						'bind' => array('th'=>$th, 'bz'=>$xz)
+						"XH = :th:",
+						'bind' => array('th'=>$th)
 				)
 		);
-		$rtn_str = null;
-		if(isset($record->BZ)){
-			$rtn_str = 1;
+		if(!isset($record->XH)){
+			throw new Exception('Not found the record-Spmdf-'.'-th-'.$th);
 		}else{
-			$rtn_str = 0;
+			if($record->BZ == $xz){
+				return 1;
+			}else{
+				return 0;
+			}
 		}
-		return $rtn_str;
 	}
 }

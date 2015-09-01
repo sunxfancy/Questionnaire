@@ -2,11 +2,16 @@
 use Phalcon\Mvc\Model\Transaction\Failed as TxFailed;
 use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
 	/**
-	 * 因子层计算得分
+	 * @usage 写入指标成绩
+	 * @state 3~4
 	 * @author Wangyaohui
+	 * @notice 1.Examinee表状态到3
+	 * 		   2.FactorAns表中的信息
+	 * 		   3.对比Project_detail表
 	 * @date 2015-8-30
 	 */
 class IndexScore {
+	private static $error_state = 3;
 	/**
 	 * 缓存到本地项目id
 	 * @var int
@@ -23,21 +28,29 @@ class IndexScore {
 	 */
 	private static $factors_list = array();
 	/**
-	 * @usage 通过examinee_id 获取该被试参与的项目涉及到的因子项目
+	 * @usage 获取project_id 成功则返回id， 失败返回false，表示已经完成这一层，抛出异常则下层没有完成
 	 * @param int $examinee_id
 	 * @throws Exception
 	 */
 	private static function getProjectId($examinee_id){
-		$results_from_examinee = Examinee::findFirst(
-		array(
-			"id = :examinee_id:",
-			'bind' => array('examinee_id'=>$examinee_id)
-		)
+		$examinee_info = Examinee::findFirst(
+				array("id = :id:",
+						'bind'=>array('id'=>$examinee_id)
+				)
 		);
-		if(!isset($results_from_examinee->project_id)){
-			throw new Exception("This examinee_id not exists!");
+		#如果examinee_id为空，这种处理也合适
+		if(isset($examinee_info->state)){
+			if($examinee_info->state == 3){
+				self::$project_id = $examinee_info->project_id;
+				return true;
+			}else if($examinee_info->state <= 2 ){
+				throw new Exception(self::$error_state.'-下层计算还未完成-'.$examinee_info->state);
+			}else{
+				return false;
+			}
+		}else{
+			throw new Exception(self::$error_state.'-不存在该账号的用户-'.$examinee_id);
 		}
-		self::$project_id = $results_from_examinee->project_id;
 	}
 	/**
 	 * @usage 获取所有要写入的指标数组,将可能要计算的复杂数组置于最后来计算
@@ -49,7 +62,7 @@ class IndexScore {
 		}
 		$project_detail =  MemoryCache::getProjectDetail(self::$project_id);
 		if(!isset($project_detail->index_names)){
-			throw new Exception("no this project!");
+			throw new Exception(self::$error_state.'不存在指标'.print_r($project_detail));
 		}
 		$indexs_name_str = $project_detail->index_names;
 		$indexs_name_array = explode(',', $indexs_name_str);
@@ -72,43 +85,72 @@ class IndexScore {
 	 * @param int $examinee_id
 	 */
 	private static function getFactors($examinee_id){
-		FactorScore::beforeStart();
-		FactorScore::handleFactors($examinee_id);
 		$factors_ans = FactorAns::find(
 				array(
 			"examinee_id = :examinee_id:",
 			'bind' => array('examinee_id' =>$examinee_id)
 		)
 		);
-		$rt_array = array();
 		if(count($factors_ans) == 0){
-			throw new Exception("no factors_calculate_results exist");
+			throw new Exception(self::$error_state.'-下层因子成绩未写入-'.count($factors_ans));
 		}
-		foreach($factors_ans as $value ){
-			if(!isset($value->ans_score)){
-				throw new Exception("The factor_calculate fails");
-			}else {
-				self::$factors_list[$value->Factor->name] = $value->ans_score;
+		if(empty(self::$project_id)){
+			self::getProjectId($examinee_id);
+		}
+		$project_detail = MemoryCache::getProjectDetail(self::$project_id);
+		$factor_needed  = json_decode($project_detail->factor_names, true);
+		foreach($factor_needed as $key=>$value){
+			if(is_scalar($value)){
+				$factor_detail = MemoryCache::getFactorDetail($value);
+				$factor_id = $factor_detail->id;
+				$factor_ans = FactorAns::findFirst(
+				array(
+						"examinee_id = :examinee_id: AND factor_id = :factor_id:",
+						'bind'=>array('examinee_id'=>$examinee_id,'factor_id'=>$factor_id)
+				)
+				);
+				if(!isset($factor_ans->examinee_id)){
+					throw new Exception(self::$error_state.'-因子计分未写入-name-'.$value.'-id-'.$factor_id);
+				}
+				self::$factors_list[$value] = $factor_ans->ans_score;
+			}else{
+				foreach($value as $skey=>$svalue){
+					$factor_detail = MemoryCache::getFactorDetail($svalue);
+					$factor_id = $factor_detail->id;
+					$factor_ans = FactorAns::findFirst(
+					array(
+						"examinee_id = :examinee_id: AND factor_id = :factor_id:",
+						'bind'=>array('examinee_id'=>$examinee_id,'factor_id'=>$factor_id)
+					)
+					);
+					if(!isset($factor_ans->examinee_id)){
+						throw new Exception(self::$error_state.'-因子计分未写入-name-'.$svalue.'-id-'.$factor_id);
+					}
+					self::$factors_list[$svalue] = $factor_ans->ans_score;
+				}
 			}
 		}
-		if(isset($factors_ans)) { unset($factors_ans);}
+		if(isset($factor_needed)) { unset($factor_needed); }
 	}
 	/**
 	 * 处理指标得分的核心
 	 * @param int $examinee_id
 	 */
 	public static function handleIndexs($examinee_id) {
+		#判定项目存在
+		if(empty(self::$project_id)){
+			$index_state = self::getProjectId($examinee_id);
+			#false 表示这一层已经完成
+			if(!$index_state){
+				return false;
+			}
+		}
+		#获取必须存到数据库的相关因子
+		self::getFactors($examinee_id);
+		#获取需要计算的指标
 		if(empty(self::$indexs_list)){
 			self::getIndexs($examinee_id);
 		}
-		
-		if(empty(self::$factors_list)){
-			self::getFactors($examinee_id);
-		}
-		if(count(self::$factors_list) == 0){
-			throw new Exception("no factor_results exist");
-		}
-		
 		$index_ans = array();
 		#此处为依次进行
 		foreach(self::$indexs_list as $key => $value ){
@@ -165,6 +207,7 @@ class IndexScore {
 			$transaction = $manager->get();	
 			foreach (self::$indexs_list as  $key=>$value) {
 				$index = new IndexAns();
+				$index->setTransaction($transaction);
 				$index->examinee_id = $examinee_id;
 				$index->index_id = $key;
 				$index->score = $index_ans[$value];
@@ -187,5 +230,37 @@ class IndexScore {
 			throw new Exception("Failed, reason: ".$e->getMessage());
 		}
 		
+	}
+	/**
+	 * @usage 完成指标得分计算后的被试状态转换
+	 * @param int $examinee_id
+	 * @throws Exception
+	 * @return boolean
+	 */
+	public static function finishedIndex($examinee_id){
+		$examinee_info = Examinee::findFirst(
+				array("id = :id:",
+						'bind'=>array('id'=>$examinee_id)
+				)
+		);
+		#如果examinee_id为空，这种处理也合适
+		if(isset($examinee_info->id)){
+			try{
+				$manager     = new TxManager();
+				$transaction = $manager->get();
+				$examinee_info->setTransaction($transaction);
+				$examinee_info->state = 4;
+				if($examinee_info->save() == false){
+					$transaction->rollback(self::$error_state.'-数据库插入失败-'.print_r($examinee_info,true));
+				}
+				$transaction->commit();
+				return true;
+			}catch (TxFailed $e) {
+				throw new Exception($e->getMessage());
+			}
+		}else{
+			throw new Exception(self::$error_state.'-不存在该账号的用户-'.$examinee_id);
+		}
+	
 	}
 }

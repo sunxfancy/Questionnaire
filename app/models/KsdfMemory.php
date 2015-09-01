@@ -21,6 +21,9 @@ class KsdfMemory extends \Phalcon\Mvc\Model {
 			'bind' => array('th'=>$th)
 		)
 		);
+		if(!isset($record->TH)){
+			throw new Exception('Not found the record-Ksdf-'.'-th-'.$th.'-xz-'.$xz);
+		}
 		return $record->$xz;
 	}
 }

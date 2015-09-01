@@ -14,9 +14,9 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 		$time_start  =  $this->microtime_float ();
 		$memory_start = memory_get_usage( true );
 		try{
-			if(IndexScore::handleIndexs(12)){
-				echo "finished".'<br />';
-			}
+			$state = FactorScore::handleFactors(12);
+			FactorScore::finishedFactor(12);
+			var_dump($state);
 			
 		}catch(Exception $e){
 			echo $e->getMessage().'<br />';
