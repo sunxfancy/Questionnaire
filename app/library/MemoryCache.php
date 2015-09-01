@@ -22,6 +22,20 @@ class MemoryCache {
 		)
 		);
 	}
+	/**
+	 * @method $rt->id, $rt->description;
+	 * @param string $paper_name
+	 */
+	public static function getPaperDetail($paper_name){
+		return Paper::findFirst(
+			  	array(
+					"name = :name:",
+			  		'bind' => array('name'=>$paper_name),
+			  		'hydration' => \Phalcon\Mvc\Model\Resultset\Simple::HYDRATE_ARRAYS,
+			  		'cache' => array ('key' => 'paper_detail_name_'.$paper_name)
+		)
+		);
+	}
 	
 	/**
 	 * @method $rt->id $rt->name $rt->children

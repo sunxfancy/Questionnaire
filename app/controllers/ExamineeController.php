@@ -137,58 +137,123 @@ class ExamineeController extends Base
         return $data;
     }
 
+//     public function getExamAnswerAction(){
+//         $id = $this->session->get('Examinee')->id;
+//         $total_time=$this->request->getPost("total_time","int");
+//         if($total_time){
+//             /**********************************************************************/
+//             /*最后一次提交的处理在这里，$total_time是用户答题使用的总时间，以秒计*/
+//         	$time_start  =  Test4Controller::microtime_float ();
+//         	$memory_start = memory_get_usage( true );
+//         	try{
+//         		IndexScore::handleIndexs($id);
+//         	}catch(Exception $e){
+//         		 $this->dataReturn(array("total_time"=>$e->getMessage()));
+//         	}
+//         	$memory_end = memory_get_usage( true );
+//         	$memory_consuming = ($memory_end - $memory_start)/1024/1024;
+//         	$time_end = Test4Controller::microtime_float();
+//         	$time_consuming = $time_end - $time_start;
+//             $this->dataReturn(array("total_time"=>$time_consuming .'-'. $memory_consuming));
+//             // $this->session->get("Examinee")
+//             session_unset("Examinee");
+//             /*end of code chunk*/
+//             /**********************************************************************/
+//             // $examinee = Examinee::findFirst($id);
+//             // $examinee->total_time = $total_time;
+//             // $examinee->is_exam_com = 1;
+//             // if (!$examinee->save()) {
+//             //     foreach ($examinee->getMessages() as $msg) {
+//             //         echo $msg."\n";
+//             //     }
+//             // }
+//             return;
+//         }
+//         $question_ans = new QuestionAns();
+//         $question_ans->option = $this->request->getPost("answer", "string");
+//         $paper_name = $this->request->getPost("paper_name", "string");
+//         $question_ans->paper_id = $this->getPaperId($paper_name);
+//         $question_ans->examinee_id = $id;
+//         $question_ans->question_number_list =implode("|",$this->request->getPost("order"));
+//         if($question_ans->save()){
+//             $this->dataReturn(array("flag"=>true));
+//             $examinee = Examinee::findFirst($id);
+//             $examinee->is_exam_com = 1;
+//             if (!$examinee->save()) {
+//                 foreach ($examinee->getMessages() as $msg) {
+//                     echo $msg."\n";
+//                 }
+//             }
+//         }
+//         else{
+//             $this->dataReturn(array("flag"=>false));
+//         }
+//     }
     public function getExamAnswerAction(){
-        $id = $this->session->get('Examinee')->id;
-        $total_time=$this->request->getPost("total_time","int");
-        if($total_time){
-            /**********************************************************************/
-            /*最后一次提交的处理在这里，$total_time是用户答题使用的总时间，以秒计*/
-        	$time_start  =  Test4Controller::microtime_float ();
-        	$memory_start = memory_get_usage( true );
-        	try{
-        		IndexScore::handleIndexs($id);
-        	}catch(Exception $e){
-        		 $this->dataReturn(array("total_time"=>$e->getMessage()));
-        	}
-        	$memory_end = memory_get_usage( true );
-        	$memory_consuming = ($memory_end - $memory_start)/1024/1024;
-        	$time_end = Test4Controller::microtime_float();
-        	$time_consuming = $time_end - $time_start;
-            $this->dataReturn(array("total_time"=>$time_consuming .'-'. $memory_consuming));
-            // $this->session->get("Examinee")
-            session_unset("Examinee");
-            /*end of code chunk*/
-            /**********************************************************************/
-            // $examinee = Examinee::findFirst($id);
-            // $examinee->total_time = $total_time;
-            // $examinee->is_exam_com = 1;
-            // if (!$examinee->save()) {
-            //     foreach ($examinee->getMessages() as $msg) {
-            //         echo $msg."\n";
-            //     }
-            // }
-            return;
-        }
-        $question_ans = new QuestionAns();
-        $question_ans->option = $this->request->getPost("answer", "string");
-        $paper_name = $this->request->getPost("paper_name", "string");
-        $question_ans->paper_id = $this->getPaperId($paper_name);
-        $question_ans->examinee_id = $id;
-        $question_ans->question_number_list =implode("|",$this->request->getPost("order"));
-        if($question_ans->save()){
-            $this->dataReturn(array("flag"=>true));
-            $examinee = Examinee::findFirst($id);
-            $examinee->is_exam_com = 1;
-            if (!$examinee->save()) {
-                foreach ($examinee->getMessages() as $msg) {
-                    echo $msg."\n";
-                }
-            }
-        }
-        else{
-            $this->dataReturn(array("flag"=>false));
-        }
+    	$id = $this->session->get('Examinee')->id;
+    	$total_time=$this->request->getPost("total_time","int");
+    	if($total_time){
+    		/**********************************************************************/
+    		/*最后一次提交的处理在这里，$total_time是用户答题使用的总时间，以秒计*/
+    		$time_start  =  Test4Controller::microtime_float ();
+    		$memory_start = memory_get_usage( true );
+    		try{
+    			QuestionIC::finishedExam($id, intval($total_time));
+    		}catch(Exception $e){
+    			$this->dataReturn(array("total_time"=>$e->getMessage()));
+    		}
+    		$memory_end = memory_get_usage( true );
+    		$memory_consuming = ($memory_end - $memory_start)/1024/1024;
+    		$time_end = Test4Controller::microtime_float();
+    		$time_consuming = $time_end - $time_start;
+    		$this->dataReturn(array("total_time"=>$time_consuming .'-'. $memory_consuming));
+    		// $this->session->get("Examinee")
+    		//session_unset("Examinee");
+    		/*end of code chunk*/
+    		/**********************************************************************/
+    		// $examinee = Examinee::findFirst($id);
+    		// $examinee->total_time = $total_time;
+    		// $examinee->is_exam_com = 1;
+    		// if (!$examinee->save()) {
+    		//     foreach ($examinee->getMessages() as $msg) {
+    		//         echo $msg."\n";
+    		//     }
+    		// }
+    		return;
+    	}
+    	$option = $this->request->getPost("answer", "string");
+    	$paper_name = $this->request->getPost("paper_name", "string");
+    	$number = $this->request->getPost("order");
+    	$time_start  =  Test4Controller::microtime_float ();
+    	$memory_start = memory_get_usage( true );
+    	try{
+    		QuestionIC::insertQuestionAns($id, $paper_name, $option, $number);
+    	}catch(Exception $e){
+    		$this->dataReturn(array("total_time"=>$e->getMessage()));
+    	}
+    	$memory_end = memory_get_usage( true );
+    	$memory_consuming = ($memory_end - $memory_start)/1024/1024;
+    	$time_end = Test4Controller::microtime_float();
+    	$time_consuming = $time_end - $time_start;
+//     	echo $time_consuming.'-'.$memory_consuming;
+//     	exit();
+    	$this->dataReturn(array("flag"=>true));
+//     	exit();
+//     	if($question_ans->save()){
+//     		$this->dataReturn(array("flag"=>true));
+//     		$examinee = Examinee::findFirst($id);
+//     		$examinee->is_exam_com = 1;
+//     		if (!$examinee->save()) {
+//     			foreach ($examinee->getMessages() as $msg) {
+//     				echo $msg."\n";
+//     			}
+//     		}
+//     	}
+//     	else{
+//     		$this->dataReturn(array("flag"=>false));
+//     	}
     }
+   	
 
     public function editinfoAction(){
         $this->leftRender("个 人 信 息 填 写");
