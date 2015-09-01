@@ -16,20 +16,15 @@ class MemoryTable {
 	 * @return boolean
 	 */
 	public static function loader(){
-		try{
-			foreach(self::$mysql_memory_list as $value){
-				self::startMysqlMemoryTable($value);
-			}
-			return true;
-		}catch(Exception $e){
-			throw new Exception($e->getMessage());
+		foreach(self::$mysql_memory_list as $value){
+			self::startMysqlMemoryTable($value);
 		}
 	}
 	
 	private static function startMysqlMemoryTable($table_name){
 		$table_name = strtolower($table_name);
 		if(!in_array($table_name, self::$mysql_memory_list, true)){
-			throw new Exception ('There is no memory table for this table!');
+			throw new Exception ("There is no memory table for table named $table_name!");
 		}
 		$state = false;
 		switch ($table_name){
@@ -81,6 +76,7 @@ class MemoryTable {
 				$cpidf_data = Cpidf::find();
 				foreach($cpidf_data as $cpidf_record ){
 					$cpidf_memory = new CpidfMemory();
+					$cpidf_memory->setTransaction($transaction);
 					$cpidf_memory->TH = $cpidf_record->TH;
 					$cpidf_memory->XZ = $cpidf_record->XZ;
 					$cpidf_memory->AC = $cpidf_record->AC;
@@ -133,6 +129,7 @@ class MemoryTable {
 				$eppsdf_data = Eppsdf::find();
 				foreach($eppsdf_data as $eppsdf_record ){
 					$eppsdf_memory = new EppsdfMemory();
+					$eppsdf_memory->setTransaction($transaction);
 					$eppsdf_memory->TH = $eppsdf_record->TH;
 					$eppsdf_memory->A  = $eppsdf_record->A;
 					$eppsdf_memory->B  = $eppsdf_record->B;
@@ -169,6 +166,7 @@ class MemoryTable {
 				$epqadf_data = Epqadf::find();
 				foreach($epqadf_data as $epqadf_record ){
 					$epqadf_memory = new EpqadfMemory();
+					$epqadf_memory->setTransaction($transaction);
 					$epqadf_memory->TH = $epqadf_record->TH;
 					$epqadf_memory->XZ = $epqadf_record->XZ;
 					$epqadf_memory->E = $epqadf_record->E;
@@ -206,6 +204,7 @@ class MemoryTable {
 				$ksdf_data = Ksdf::find();
 				foreach($ksdf_data as $ksdf_record ){
 					$ksdf_memory = new KsdfMemory();
+					$ksdf_memory->setTransaction($transaction);
 					$ksdf_memory->TH = $ksdf_record->TH;
 					$ksdf_memory->A  = $ksdf_record->A;
 					$ksdf_memory->B  = $ksdf_record->B;
@@ -242,6 +241,7 @@ class MemoryTable {
 				$spmdf_data = Spmdf::find();
 				foreach($spmdf_data as $spmdf_record ){
 					$spmdf_memory = new SpmdfMemory();
+					$spmdf_memory->setTransaction($transaction);
 					$spmdf_memory->XH = $spmdf_record->XH;
 					$spmdf_memory->BZ = $spmdf_record->BZ;
 					if( $spmdf_memory->create() == false) {
@@ -278,6 +278,7 @@ class MemoryTable {
 				$cpimd_data = Cpimd::find();
 				foreach($cpimd_data as $cpimd_record ){
 					$cpimd_memory = new CpimdMemory();
+					$cpimd_memory->setTransaction($transaction);
 					$cpimd_memory->DM = $cpimd_record->DM;
 					$cpimd_memory->YZ = $cpimd_record->YZ;
 					$cpimd_memory->M  = $cpimd_record->M;
@@ -323,6 +324,7 @@ class MemoryTable {
 				$epqamd_data = Epqamd::find();
 				foreach($epqamd_data as $epqamd_record ){
 					$epqamd_memory = new EpqamdMemory();
+					$epqamd_memory -> setTransaction($transaction);
 					$epqamd_memory->DSEX = $epqamd_record->DSEX;
 					$epqamd_memory->DAGEL = $epqamd_record->DAGEL;
 					$epqamd_memory->DAGEH  = $epqamd_record->DAGEH;
@@ -369,6 +371,7 @@ class MemoryTable {
 				$ksmd_data = Ksmd::find();
 				foreach($ksmd_data as $ksmd_record ){
 					$ksmd_memory = new KsmdMemory();
+					$ksmd_memory->setTransaction($transaction);
 					$ksmd_memory->DM = $ksmd_record->DM;
 					$ksmd_memory->YZ = $ksmd_record->YZ;
 					$ksmd_memory->QSF  = $ksmd_record->QSF;
@@ -412,6 +415,7 @@ class MemoryTable {
 				$spmmd_data = Spmmd::find();
 				foreach($spmmd_data as $spmmd_record ){
 					$spmmd_memory = new SpmmdMemory();
+					$spmmd_memory->setTransaction($transaction);
 					$spmmd_memory->NLL = $spmmd_record->NLL;
 					$spmmd_memory->NLH = $spmmd_record->NLH;
 					$spmmd_memory->B95 = $spmmd_record->B95;

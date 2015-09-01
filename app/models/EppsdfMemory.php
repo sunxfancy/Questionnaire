@@ -13,6 +13,9 @@ class EppsdfMemory extends \Phalcon\Mvc\Model{
 						'bind' => array('th'=>$th)
 				)
 		);
+		if(!isset($record->TH)){
+			throw new Exception('Not found the record-Eppsdf-'.'-th-'.$th.'-xz-'.$xz);
+		}
 		$rtn_str = null;
 		switch($record->$xz){
 		case 1: $rtn_str = 'ach'; break;
@@ -30,6 +33,7 @@ class EppsdfMemory extends \Phalcon\Mvc\Model{
 		case 13: $rtn_str = 'end'; break;
 		case 14: $rtn_str = 'het'; break;
 		case 15: $rtn_str = 'agg'; break;
+		default: throw new Exception("Not found the factor_name according to ".$record->$xz);
 		}
 		return $rtn_str;
 	}

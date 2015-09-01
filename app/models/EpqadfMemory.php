@@ -23,6 +23,9 @@ class EpqadfMemory extends \Phalcon\Mvc\Model{
 			'bind' =>array('th'=>$th, 'xz'=>$xz)
 		)
 		);
+		if(!isset($record->TH)){
+			throw new Exception('Not found the record-EPQAdf-'.'-th-'.$th.'-xz-'.$xz);
+		}
 		$rtn_array = array();
 		if( $record->E == 1 ){
 			$rtn_array[] = 'epqae';

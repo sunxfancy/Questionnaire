@@ -2,106 +2,150 @@
 use Phalcon\Mvc\Model\Transaction\Failed as TxFailed;
 use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
 	/**
-	 * @usage 首先调用beforeStart(),导入内存表,之后调用handlePapers($exmainee_id),写入个人基础成绩
-	 * @time_comsuming
-	 * @notice 内存表的加载需首先完成
+	 * @usage 写入个人基础成绩
+	 * @state 1~2 
 	 * @author Wangyaohui
-	 * @date 2015-8-26
+	 * @notice  1.内存表的加载需首先完成
+	 * 			2.Examinee表中存有examinee_id, 及相应的project_id , state, QuestionAns表中有相应记录
+	 * 			3.对比project_detail
+	 * @date 2015-9-1
 	 */
 class BasicScore {
+	
+	private static $error_state = 1;
 	/**
 	 * @usage 添加静态变避免在一次请求中重复加载内存表
 	 * @var boolean
 	 */
-	protected static $memory_state = false;
+	private static $memory_state = false;
 	/**
-	 * @ usage 本地缓存被试的答卷信息
-	 * @var  \Phalcon\Mvc\Model\Resultset\Simple | null
-	 */
-	protected static $papers_list = null;
-	/**
-	 * @usage 在计算因子得分之前，首先加载常模转换表
+	 * @usage 加载内存表
 	 * @throws Exception
 	 * @return boolean
 	 */
-	public static function beforeStart(){
-		try{
-			self::$memory_state =  MemoryTable::loader();	
-			return self::$memory_state;
-		}catch(Exception $e){
-			throw new Exception($e->getMessage());
+	protected static function loadMemoryTable(){
+		self::$memory_state =  MemoryTable::loader();	
+		return self::$memory_state;
+	}
+	/**
+	 * @usage 被试状态判断,需要计算则返回project_id，计算完成则返回false，其他抛出异常
+	 * @param int $examinee_id
+	 * @throws Exception
+	 */
+	protected static function getExamineeInfo($examinee_id){
+		$examinee_info = Examinee::findFirst(
+				array("id = :id:",
+						'bind'=>array('id'=>$examinee_id)
+				)
+		);
+		#如果examinee_id为空，这种处理也合适
+		if(isset($examinee_info->state)){
+			if($examinee_info->state == 1){
+				return $examinee_info->project_id;
+			}else if($examinee_info->state == 0 ){
+				throw new Exception(self::$error_state.'-下层计算还未完成-'.$examinee_info->state);
+			}else{
+				return false;
+			}
+		}else{
+			throw new Exception(self::$error_state.'-不存在该账号的用户-'.$examinee_id);
 		}
 	}
 	/**
-	 * @usage 返回被试的全部答卷信息，并写入到类的静态变量$papers_list中
+	 * @usage 获取被试的试卷信息，判断试卷是否全部完成，成功则返回试卷信息
+	 * @param int $project_id
 	 * @param int $examinee_id
-	 * @return boolean
+	 * @throws Exception
+	 * @return unknown
 	 */
-	protected static function getPapersByExamineeId($examinee_id){
-		self::$papers_list = QuestionAns::find(
+	protected static function getPapers($project_id, $examinee_id){
+		$project_detail_json = MemoryCache::getProjectDetail($project_id);
+		$project_detail = json_decode($project_detail_json->exam_json, true);
+		$papers_tmp = QuestionAns::find(
 				array(
 						"examinee_id = :examinee_id:",
 						'bind' => array('examinee_id'=>$examinee_id)
 				)
 		);
+		if( count($papers_tmp) != count($project_detail) ){
+			throw new Exception(self::$error_state.'-答卷数量不正确-'.count($papers_tmp).'-'.count($project_detail));
+		}
+		$papers_id_tmp = array();
+		foreach($papers_tmp as $value){
+			$papers_id_tmp[] = $value->paper_id;
+		}
+		$project_papers_id = array();
+		foreach($project_detail as $key=>$value){
+			$project_papers_id[] = MemoryCache::getPaperDetail($key)->id;
+		}
+		if(!array_diff(  $papers_id_tmp , $project_papers_id) ) {
+			return $papers_tmp;
+		}else{
+			throw new Exception(self::$error_state.'-答卷信息与题库信息不符-'.print_r($papers_id_tmp,true).print_r($project_papers_id,true));
+		}
 	}
+	
 	/**
-	 * @usage 计算得分并写入到库的关键，计算一次插入数据一次
+	 * @usage 计算得分并写入到库的关键，计算一次插入数据一次 true 表示写入完成，false表示已经写入过，此次只是扫库
 	 * @param int $examinee_id
 	 * @throws Exception
 	 * @return boolean
 	 */
 	public static function handlePapers($examinee_id){
-		try {
-			#写入$papers_list;
-			if(empty(self::$papers_list)){
-				self::getPapersByExamineeId($examinee_id);
-			}
-			#若$paper_list 中的有效数据为空，则会跳过以下循环---对phalcon对象数组
-			foreach(self::$papers_list as $paper_ans_data ){
-			 	#判断被试的答题是否已经被写入分数，若未写入，则进行处理，否则，不处理
-			 	if(empty( $paper_ans_data->score )){
-			 		$paper_name = $paper_ans_data->Paper->name;
-			 		$score_line = null;
-			 		switch(strtoupper(trim($paper_name))){
-			 				case 'EPQA' : $score_line = self::handleEPQA($paper_ans_data); break;
-			 				case 'EPPS' : $score_line = self::handleEPPS($paper_ans_data); break;
-			 				case 'CPI' :  $score_line = self::handleCPI($paper_ans_data); break;
-			 				case '16PF' : $score_line = self::handle16PF($paper_ans_data); break;
-			 				case 'SCL' : $score_line = self::handleSCL($paper_ans_data); break;
-			 				case 'SPM' : $score_line = self::handleSPM($paper_ans_data); break;
-			 				default :  throw new Exception('wrong paper_name from table paper');
-			 		}
-			 		#获取到score_line 写入到数据库中
-			 		if(!empty($score_line)){
-			 			try{
-			 			#这里的数据处理进行单条处理，失败则回滚，尽量减少数据库的重复操作
-			 			$manager     = new TxManager();
-			 			$transaction = $manager->get();
-			 			$question_ans_record = new QuestionAns();
-			 			$question_ans_record->score = $score_line;
-			 			$question_ans_record->paper_id = $paper_ans_data->paper_id;
-			 			$question_ans_record->examinee_id = $paper_ans_data->examinee_id;
-			 			$question_ans_record->option = $paper_ans_data->option;
-			 			$question_ans_record->question_number_list =$paper_ans_data->question_number_list;
-			 			if($question_ans_record->update() == false){
-			 				 $transaction->rollback("Cannot update table Question_ans' score");
-			 				}
-			 			$transaction->commit();
-			 			}catch (TxFailed $e) {
-    						throw new Exception("Failed, reason: ".$e->getMessage());
-    					}
-			 		}else{
-			 			throw new Exception ("The string of score result is null");
-			 		}
-			 	}else{
-			 		#说明已经写入过score
-			 	}
-			}
-			return true;
-		}catch (Exception $e){
-			throw new Exception($e->getMessage());
+		if(!self::$memory_state){
+			self::loadMemoryTable();
 		}
+		#表示已经完成了这一层计算，不必再算
+		$project_id = self::getExamineeInfo($examinee_id);
+		if(!$project_id){
+			return false;
+		}
+		$papers_list = self::getPapers($project_id, $examinee_id);
+		$papers_count = count($papers_list);
+		$ignore_count = 0;
+		foreach($papers_list as $paper_ans_data ){
+		 	#判断被试的答题是否已经被写入分数，若未写入，则进行处理，否则，不处理
+		 	if(empty( $paper_ans_data->score )){
+		 		$paper_name = $paper_ans_data->Paper->name;
+		 		$score_line = null;
+		 		switch(strtoupper($paper_name)){
+ 				case 'EPQA' : $score_line = self::handleEPQA($paper_ans_data); break;
+ 				case 'EPPS' : $score_line = self::handleEPPS($paper_ans_data); break;
+ 				case 'CPI' :  $score_line = self::handleCPI($paper_ans_data); break;
+ 				case '16PF' : $score_line = self::handle16PF($paper_ans_data); break;
+ 				case 'SCL' : $score_line = self::handleSCL($paper_ans_data); break;
+ 				case 'SPM' : $score_line = self::handleSPM($paper_ans_data); break;
+ 				default :  throw new Exception(self::$error_state.'-不存在试卷-'.$paper_name);
+	 		}
+	 		#获取到score_line 写入到数据库中
+	 		if(!empty($score_line)){
+	 			try{
+	 			#这里的数据处理进行单条处理，失败则回滚，尽量减少数据库的重复操作
+	 			$manager     = new TxManager();
+	 			$transaction = $manager->get();
+	 			$paper_ans_data->setTransaction($transaction);
+	 			$paper_ans_data->score = $score_line;
+	 			if($paper_ans_data->save() == false){
+	 				 $transaction->rollback(self::$error_state."插入数据库失败".print_r($paper_ans_data,true));
+	 			}
+			 	$transaction->commit();
+			 	}catch (TxFailed $e) {
+    				 throw new Exception($e->getMessage());
+    			}
+		 	 }else{
+		 			throw new Exception (self::$error_state."-成绩字符串为空");
+		 	 }
+		 	}else{
+		 		#说明已经写入过score
+		 		$ignore_count ++;
+		 	}
+		}
+		if($papers_count != $ignore_count){
+			return true;
+		}else{
+			return false;
+		}
+		
 	}
 	/**
 	 * 计算SPM基础得分
@@ -112,7 +156,7 @@ class BasicScore {
 		$array_list = self::strDivideToArray($array->option, $array->question_number_list);
 		#判断内存表状态
 		if(!self::$memory_state){
-			self::beforeStart();
+			self::loadMemoryTable();
 		}
 		$rtn_array = array();
 		foreach($array_list as $array_record){
@@ -129,7 +173,7 @@ class BasicScore {
 		$array_list = self::strDivideToArray($array->option, $array->question_number_list);
 		#判断内存表状态
 		if(!self::$memory_state){
-			self::beforeStart();
+			self::loadMemoryTable();
 		}
 		$rtn_array = array();
 		foreach($array_list as $array_record){
@@ -160,7 +204,7 @@ class BasicScore {
 		$array_list = self::strDivideToArray($array->option, $array->question_number_list);
 		#判断内存表状态
 		if(!self::$memory_state){
-			self::beforeStart();
+			self::loadMemoryTable();
 		}
 		$rtn_array = array();
 		foreach($array_list as $array_record){
@@ -177,7 +221,7 @@ class BasicScore {
 		$array_list = self::strDivideToArray($array->option, $array->question_number_list);
 		#判断内存表状态
 		if(!self::$memory_state){
-			self::beforeStart();
+			self::loadMemoryTable();
 		}
 		$rtn_array = array();
 		foreach($array_list as $array_record){
@@ -194,7 +238,7 @@ class BasicScore {
 		$array_list = self::strDivideToArray($array->option, $array->question_number_list);
 		#判断内存表状态
 		if(!self::$memory_state){
-			self::beforeStart();
+			self::loadMemoryTable();
 		}
 		$rtn_array = array();
 		foreach($array_list as $array_record){
@@ -207,14 +251,13 @@ class BasicScore {
 	 * @param string $str_option
 	 * @param string $str_number
 	 * @throws Exception
-	 * @return multitype:multitype:string Ambigous <>
 	 */
 	private static function strDivideToArray($str_option, $str_number){
 		$str_option_array = explode('|', $str_option);
 		$str_number_array = explode('|', $str_number);
 		$count = count($str_option_array);
 		if( $count != count($str_number_array)){
-			throw new Exception("The two strings are not appropriate in count");
+			throw new Exception("The two strings are not appropriate in count-".$count.'-'.$count($str_number_array).'-'.$str_option.'-'.$str_number);
 		}else{
 			$rtn = array();
 			for($i = 0; $i<$count; $i++){
@@ -227,10 +270,42 @@ class BasicScore {
 					$rtn[] = $tmp;
 				}else{
 					if(isset($rtn)){ unset($rtn);}
-					throw new Exception("The two strings are not appropriate in type");
+					throw new Exception("The two strings are not appropriate in type".$str_number_array[$i].$str_option_array[$i]);
 				}
 			}
 			return $rtn;
 		}		
+	}
+	/**
+	 * @usage 完成基础得分计算后的被试状态转换
+	 * @param int $examinee_id
+	 * @throws Exception
+	 * @return boolean
+	 */
+	public static function finishedBasic($examinee_id){
+		$examinee_info = Examinee::findFirst(
+				array("id = :id:",
+						'bind'=>array('id'=>$examinee_id)
+				)
+		);
+		#如果examinee_id为空，这种处理也合适
+		if(isset($examinee_info->id)){
+			try{
+				$manager     = new TxManager();
+				$transaction = $manager->get();
+				$examinee_info->setTransaction($transaction);
+				$examinee_info->state = 2;
+				if($examinee_info->save() == false){
+					$transaction->rollback(self::$error_state.'-数据库插入失败-'.print_r($examinee_info,true));
+				}
+				$transaction->commit();
+				return true;
+			}catch (TxFailed $e) {
+				throw new Exception($e->getMessage());
+			}
+		}else{
+			throw new Exception(self::$error_state.'-不存在该账号的用户-'.$examinee_id);
+		}
+	
 	}
 }
