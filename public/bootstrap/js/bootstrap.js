@@ -834,7 +834,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
 
   var Modal = function (element, options) {
     this.options        = options
-    this.$body          = $(document.body)
+    this.$body          = $(document.body) 
     this.$element       = $(element)
     this.$backdrop      =
     this.isShown        = null
@@ -872,7 +872,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
     this.isShown = true
 
     this.checkScrollbar()
-    this.$body.addClass('modal-open')
+    // this.$body.addClass('modal-open')
 
     this.setScrollbar()
     this.escape()
