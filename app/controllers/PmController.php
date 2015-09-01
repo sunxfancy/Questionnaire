@@ -362,9 +362,9 @@ class PmController extends Base
     }
 
     public function writeprojectdetailAction(){
-        $manager=$this->session->get('Manager');
-        if($manager){
-            $project_id = $manager->project_id;
+        $managers=$this->session->get('Manager');
+        $project_id =$managers->project_id;
+        if($managers){
             $module_names = array();
             $checkeds=$this->request->getpost('checkeds');
             $values=$this->request->getpost('values'); 
@@ -373,11 +373,29 @@ class PmController extends Base
                     $module_names[]=$this->getModuleName($values[$i]);
                 }  
             }
-            $index_names = $this->getIndex($module_names);
-            $factor_names = $this->getFactor($index_names);
-            $exam_json = $this->getNumber($factor_names);
-            $module_names = implode(',', $module_names);
-            $index_names = implode(',', $index_names);
+            if (count($module_names) == 10) {
+                $index = Index::find();
+                $index_names = array();
+                foreach ($index as $indexs) {
+                    $index_names[] = $indexs->name;
+                }
+                $factor = Factor::find();
+                $factor_names = array();
+                foreach ($factor as $fac) {
+                    $factor_names[] = $fac->name; 
+                }
+                $question = Question::find();
+                $examination = array();
+                foreach ($question as $questions) {
+                    $paper_name = Paper::findFirst($questions->paper_id)->name;
+                    $examination[$paper_name][] = $questions->number;
+                }
+                $exam_json = json_encode($examination,JSON_UNESCAPED_UNICODE);
+            }else{
+                $index_names = $this->getIndex($module_names);
+                $factor_names = $this->getFactor($index_names);
+                $exam_json = $this->getNumber($factor_names);
+            }
             $factors = array();
             foreach ($factor_names as $factor_name) {
                 $factor = Factor::findFirst(array(
@@ -399,22 +417,27 @@ class PmController extends Base
                 }
             }
             $factor_json = json_encode($factors,JSON_UNESCAPED_UNICODE);
+            $module_names = implode(',', $module_names);
+            $index_names = implode(',', $index_names);
             try{
                 $manager     = new TxManager();
                 $transaction = $manager->get();
 
                 $project_detail = new ProjectDetail();
-                $project_detail->project_id = $project_id;
+                $project_detail->project_id   = $project_id;
                 $project_detail->module_names = $module_names;
-                $project_detail->index_names = $index_names;
+                $project_detail->index_names  = $index_names;
                 $project_detail->factor_names = $factor_json;
-                $project_detail->exam_json = $exam_json;
-                if( $project_detail->save() == false ){
+                $project_detail->exam_json    = $exam_json;
+                if( !$project_detail->save()){
                     $transaction->rollback("Cannot insert ProjectDetail data");
-                }   
-                $this->dataBack(array('url' =>'/pm/index'));
-                $transaction->commit();
-                return true;
+                    $this->dataBack(array('error' => "存储失败！请重新提交！!"));
+                    return false;
+                }else{  
+                    $this->dataBack(array('url' =>'/pm/index'));
+                    $transaction->commit();
+                    return true;
+                }
             }catch (TxFailed $e) {
                 throw new Exception("Failed, reason: ".$e->getMessage());
             }
@@ -526,13 +549,6 @@ class PmController extends Base
         }
         $json = json_encode($questions_number,JSON_UNESCAPED_UNICODE);
         return $json;
-    }
-
-    public function getPaperId($paper_name){
-        $paper = Paper::findFirst(array(
-            'name=?1',
-            'bind'=>array(1=>$paper_name)));
-        return $paper->id;
     }
 
     public function sort_and_unique($array){
