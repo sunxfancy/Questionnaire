@@ -31,8 +31,7 @@
          
         <button class="btn btn-primary" id='sel_all' >全选</button>        
         <button class="btn btn-primary" id='unsel_all'>全不选</button>
-        <button class="btn btn-primary" id="submit">确定</button>
-     
+        <button class="btn btn-primary" id="submit">确定</button>    
           
     </div>
 </div>
@@ -51,8 +50,6 @@
                     $("[value="+ans[i]+"]").prop("checked","checked");
                 };
             }
-
-
         });
 
         $("#lingdaoli").click(function(){
@@ -79,16 +76,16 @@
             for(var i=0;i<checks.length;i++){
                 checkeds[i]=checks[i].checked;
                 values[i]=checks[i].value;
-            }
+            }          
             $.post('/pm/writeprojectdetail',{'checkeds':checkeds,'values':values}, function(data) {
                  /*optional stuff to do after success */
-                 if(data.error){
+                if(data.error){
                     alert(data.error);
                     return;
-                 }else{
+                }else{
                     alert("提交成功!")
                     window.location.href=data.url;
-                 }
+                }
             });
         })
     })
