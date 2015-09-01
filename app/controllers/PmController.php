@@ -424,6 +424,7 @@ class PmController extends Base
                 $transaction = $manager->get();
 
                 $project_detail = new ProjectDetail();
+                $project_detail->setTransaction($transaction);
                 $project_detail->project_id   = $project_id;
                 $project_detail->module_names = $module_names;
                 $project_detail->index_names  = $index_names;

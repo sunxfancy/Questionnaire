@@ -42,7 +42,9 @@
 
     <div style="margin-top:15px;"></div>
     <table style="margin:0 auto;">
-    <tr><td><textarea type="text" id="description" style=" line-height: 28px;outline: none;height: 100px;width: 600px;font-size:16px;">更详细的信息描述...</textarea></td></tr>
+    <tr><td>
+        <textarea type="text" id="description" style=" line-height: 28px;outline: none;height: 100px;width: 600px;font-size:16px;">更详细的信息描述...</textarea>
+    </td></tr>
     </table>
 
     <div style="width:100%;height:40px;text-align:center;margin: 10px 10px;">
@@ -82,10 +84,21 @@
         }
     }
 
-    $(".form_datetime").datetimepicker({
+    var date = new Date();
+    var now = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+    $('#begintime').datetimepicker({
         format: 'yyyy-mm-dd hh:ii',
         autoclose: true,
         todayBtn: true,
+        startDate: now,
         pickerPosition: "bottom-left"
     });
+    $('#endtime').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        autoclose: true,
+        todayBtn: true,
+        startDate: now,
+        pickerPosition: "bottom-left"
+    });
+
 </script>

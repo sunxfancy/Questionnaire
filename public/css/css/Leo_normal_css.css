@@ -94,7 +94,7 @@
     -webkit-box-shadow:2px 2px 10px #202020 ;	/*for chrome,safari*/
 	box-shadow:2px 2px 10px #202020 ;			/*for opero, IE9+  %% IE6不支持阴影*/
 	-moz-box-shadow:2px 2px 10px #202020;		/*for firefox*/
-   float:left;
+    float:left;
 }
 
 
