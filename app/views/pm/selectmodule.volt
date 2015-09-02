@@ -92,8 +92,8 @@
         $('#unsel_all').click(function(){ $(":checkbox").prop('checked',false);});
 
         $("#submit").click(function(){
-            $('.Leo_question').css('width','843px');
-            $('#myModal').modal({backdrop: 'static'});
+            // $('.Leo_question').css('width','843px');
+            // $('#myModal').modal({backdrop: 'static'});
             var checks=$(":checkbox");
             var checkeds=new Array();
             var values=new Array();
@@ -108,7 +108,7 @@
                     return;
                 }else{
                     // alert("提交成功!")
-                    $('#close').window.location.href=data.url;
+                    window.location.href=data.url;
                 }
             });
         })

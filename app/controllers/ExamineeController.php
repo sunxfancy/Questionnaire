@@ -152,6 +152,7 @@ class ExamineeController extends Base
     			IndexScore::finishedIndex($id);
     		}catch(Exception $e){
     			$this->dataReturn(array("total_time"=>$e->getMessage()));
+    			return ;
     		}
     		$memory_end = memory_get_usage( true );
     		$memory_consuming = ($memory_end - $memory_start)/1024/1024;
@@ -169,12 +170,14 @@ class ExamineeController extends Base
     		QuestionIC::insertQuestionAns($id, $paper_name, $option, $number);
     	}catch(Exception $e){
     		$this->dataReturn(array("flag"=>false));
+    		return;
     	}
     	$memory_end = memory_get_usage( true );
     	$memory_consuming = ($memory_end - $memory_start)/1024/1024;
     	$time_end = Test4Controller::microtime_float();
     	$time_consuming = $time_end - $time_start;
     	$this->dataReturn(array("flag"=>true));
+    	return;
     }
 //     public function getExamAnswerAction(){
 //         $id = $this->session->get('Examinee')->id;
