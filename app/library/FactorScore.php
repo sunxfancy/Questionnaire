@@ -54,7 +54,7 @@ class FactorScore{
 			if($examinee_info->state == 2){
 				$rt_array = array();
 				#examinee表中性别：1男性 0女性
-				if($examinee_info->sex != 1 ||  $examinee_info->sex != 0){
+				if($examinee_info->sex != 1 && $examinee_info->sex != 0){
 					throw new Exception(self::$error_state."-性别不明-".$examinee_info->sex);
 				}
 				$rt_array['sex'] = $examinee_info->sex;

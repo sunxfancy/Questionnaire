@@ -433,7 +433,7 @@ function ans_complete(){
         alert(data.total_time);
         alert("提交成功!您已完成全部题目的作答，谢谢您的配合。\n点击‘确定’退出系统。");
         $.cookie("paper_id"+{{number}},"",{experies:-1});
-        $.cookie("exam_ans"+{{number}},"",{expires:-1});
+        $.cookie("exam_ans"+{{number}},"",{expeires:-1});
         $.cookie("total_time","",{experies:-1});
         window.location.href="/"
     });
