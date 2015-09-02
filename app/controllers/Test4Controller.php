@@ -11,6 +11,11 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 	}
 	
 	public function indexAction(){
+// 		var_dump(empty(0));
+// 		var_dump(empty(''));
+// 		var_dump(empty(false));
+// 		var_dump(empty(true));
+// 		exit();
 // 		$time_start  =  $this->microtime_float ();
 // 		$memory_start = memory_get_usage( true );
 // 		try{

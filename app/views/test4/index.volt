@@ -39,9 +39,7 @@ $('#myModal').on('shown.bs.modal', function () {
 	$.post({
 		url:'/test4/getTest',
 		data: { time : 3600 },
-		success: fucntion(data){
-			
-		},
+		success: 
 		
 		
 		
