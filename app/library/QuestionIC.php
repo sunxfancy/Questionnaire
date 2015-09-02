@@ -25,6 +25,11 @@ class QuestionIC {
 	);
 	
 	#1
+	/**
+	 * @usage 被试状态判断,需要计算则返回project_id，计算完成的不再计算返回false
+	 * @param int $examinee_id
+	 * @throws Exception
+	 */
 	protected static function getProjectId($examinee_id){
 		$examinee_info = Examinee::findFirst(
 		array("id = :id:",
@@ -33,7 +38,11 @@ class QuestionIC {
 		);
 		#如果examinee_id为空，这种处理也合适
 		if(isset($examinee_info->project_id)){
-			return $examinee_info->project_id;
+			if($examinee_info->state == 0){
+				return $examinee_info->project_id;
+			}else {
+				return false;
+			}
 		}else{
 			throw new Exception(self::$error_state.'-不存在该账号的用户-'.$examinee_id);
 		}
@@ -124,6 +133,9 @@ class QuestionIC {
 	 */
 	public static function insertQuestionAns($examinee_id, $paper_name, $option_str, $number_array){
 		$project_id = self::getProjectId($examinee_id);
+		if(!$project_id){
+			return false;
+		}
 		$paper_name = strtoupper($paper_name);
 		switch($paper_name){
 			case 'EPQA': self::checkEPQA($option_str, $number_array,$project_id); break;
