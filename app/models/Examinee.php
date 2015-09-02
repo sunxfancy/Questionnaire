@@ -118,6 +118,18 @@ class Examinee extends \Phalcon\Mvc\Model
      */
     public $is_exam_com;
 
+    /**
+     * @var integer
+     *
+     */
+    public $state;
+
+    /**
+     * @var integer
+     *
+     */
+    public $exam_time;
+
 
     public function initialize()
     {

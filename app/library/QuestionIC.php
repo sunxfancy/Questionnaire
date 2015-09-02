@@ -36,6 +36,8 @@ class QuestionIC {
 		'bind'=>array('id'=>$examinee_id)
 		)
 		);
+		print_r($examinee_info);
+		exit();
 		#如果examinee_id为空，这种处理也合适
 		if(isset($examinee_info->project_id)){
 			if($examinee_info->state == 0){
