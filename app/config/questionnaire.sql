@@ -1,35 +1,25 @@
--- phpMyAdmin SQL Dump
--- version 4.1.14
--- http://www.phpmyadmin.net
---
--- Host: 127.0.0.1
--- Generation Time: Aug 24, 2015 at 03:30 AM
--- Server version: 5.6.17
--- PHP Version: 5.5.12
+/*
+Navicat MySQL Data Transfer
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
+Source Server         : loaclhost
+Source Server Version : 50617
+Source Host           : localhost:3306
+Source Database       : questionnaire
 
+Target Server Type    : MYSQL
+Target Server Version : 50617
+File Encoding         : 65001
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+Date: 2015-09-02 11:22:53
+*/
 
---
--- Database: `questionnaire`
---
-CREATE DATABASE IF NOT EXISTS `questionnaire` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `questionnaire`;
+SET FOREIGN_KEY_CHECKS=0;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `cpidf`
---
-
+-- ----------------------------
+-- Table structure for `cpidf`
+-- ----------------------------
 DROP TABLE IF EXISTS `cpidf`;
-CREATE TABLE IF NOT EXISTS `cpidf` (
+CREATE TABLE `cpidf` (
   `TH` int(11) NOT NULL,
   `XZ` tinyint(4) NOT NULL,
   `DO` tinyint(4) DEFAULT NULL,
@@ -53,481 +43,475 @@ CREATE TABLE IF NOT EXISTS `cpidf` (
   PRIMARY KEY (`TH`,`XZ`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `cpidf`
---
+-- ----------------------------
+-- Records of cpidf
+-- ----------------------------
+INSERT INTO `cpidf` VALUES ('1', '1', '0', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('1', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('2', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('2', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('3', '1', '0', null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('3', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('4', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('4', '2', '0', null, null, null, '1', null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf` VALUES ('5', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('5', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null);
+INSERT INTO `cpidf` VALUES ('6', '1', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('6', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('7', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('7', '2', '0', null, null, null, null, '1', null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('8', '1', '0', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('8', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('9', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('9', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf` VALUES ('10', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('10', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('11', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('11', '2', '0', null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('12', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('12', '2', '0', null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('13', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf` VALUES ('13', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('14', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('14', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('15', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('15', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('16', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('16', '2', '0', null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('17', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('17', '2', '0', null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('18', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('18', '2', '0', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('19', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('19', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf` VALUES ('20', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('20', '2', '0', null, null, null, null, null, null, null, '1', null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('21', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('21', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('22', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('22', '2', '0', null, null, null, null, null, null, null, '1', null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('23', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('23', '2', '0', '1', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('24', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('24', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('25', '1', '0', null, '1', '1', null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf` VALUES ('25', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('26', '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('26', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('27', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('27', '2', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null);
+INSERT INTO `cpidf` VALUES ('28', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf` VALUES ('28', '2', '0', null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('29', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('29', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf` VALUES ('30', '1', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('30', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('31', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf` VALUES ('31', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('32', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('32', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('33', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('33', '2', '0', null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('34', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('34', '2', '0', null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('35', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('35', '2', '0', null, null, null, null, '1', null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('36', '1', '0', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('36', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('37', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('37', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('38', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('38', '2', '0', null, '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('39', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('39', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('40', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('40', '2', '0', null, null, '1', null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf` VALUES ('41', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('41', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('42', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('42', '2', '0', null, null, null, null, null, null, null, '1', null, '1', null, null, null, null, null, null, '1');
+INSERT INTO `cpidf` VALUES ('43', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('43', '2', '0', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('44', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('44', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('45', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('45', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf` VALUES ('46', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('46', '2', '0', null, '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('47', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('47', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null);
+INSERT INTO `cpidf` VALUES ('48', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('48', '2', '0', null, null, null, null, '1', null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('49', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('49', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('50', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('50', '2', '0', '1', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('51', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('51', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null);
+INSERT INTO `cpidf` VALUES ('52', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('52', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('53', '1', '0', null, '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('53', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('54', '1', '0', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('54', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('55', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('55', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('56', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf` VALUES ('56', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('57', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('57', '2', '1', null, '1', null, '1', null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf` VALUES ('58', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('58', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('59', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('59', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('60', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('60', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf` VALUES ('61', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('61', '2', '0', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('62', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('62', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf` VALUES ('63', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('63', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('64', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('64', '2', '0', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('65', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('65', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf` VALUES ('66', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('66', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf` VALUES ('67', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('67', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null);
+INSERT INTO `cpidf` VALUES ('68', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('68', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('69', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('69', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('70', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('70', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf` VALUES ('71', '1', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf` VALUES ('71', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('72', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('72', '2', '0', null, '1', null, null, null, null, null, null, null, null, null, '1', null, null, '1', null, null);
+INSERT INTO `cpidf` VALUES ('73', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('73', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('74', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('74', '2', '0', null, null, null, null, null, null, null, '1', '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('75', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('75', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('76', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('76', '2', '0', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('77', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('77', '2', '0', null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('78', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('78', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('79', '1', '0', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('79', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('80', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('80', '2', '0', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('81', '1', '0', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('81', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('82', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('82', '2', '0', null, null, null, null, null, '1', '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('83', '1', '1', '1', '1', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf` VALUES ('83', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('84', '1', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('84', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('85', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('85', '2', '0', null, null, null, null, null, null, null, '1', null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('86', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('86', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('87', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('87', '2', '0', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('88', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('88', '2', '0', null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('89', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('89', '2', '1', null, null, '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('90', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('90', '2', '0', null, null, null, null, null, null, null, '1', null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('91', '1', '1', null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('91', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('92', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('92', '2', '0', null, null, null, null, null, null, null, '1', '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('93', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('93', '2', '0', null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('94', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('94', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, '1', null, null);
+INSERT INTO `cpidf` VALUES ('95', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('95', '2', '0', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('96', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('96', '2', '0', null, null, null, null, '1', null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('97', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('97', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('98', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('98', '2', '0', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('99', '1', '0', '1', null, '1', null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf` VALUES ('99', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('100', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('100', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('101', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('101', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('102', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('102', '2', '0', null, null, null, null, null, null, null, null, '1', null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf` VALUES ('103', '1', '0', null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('103', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('104', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('104', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf` VALUES ('105', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('105', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null);
+INSERT INTO `cpidf` VALUES ('106', '1', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('106', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('107', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('107', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, '1', null, null, null, null, '1');
+INSERT INTO `cpidf` VALUES ('108', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf` VALUES ('108', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('109', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('109', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('110', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('110', '2', '0', null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('111', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('111', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf` VALUES ('112', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('112', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null);
+INSERT INTO `cpidf` VALUES ('113', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('113', '2', '0', '1', null, '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('114', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('114', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null);
+INSERT INTO `cpidf` VALUES ('115', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('115', '2', '0', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('116', '1', '0', null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('116', '2', '0', null, null, null, null, null, null, null, '1', null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('117', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('117', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('118', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('118', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('119', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('119', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf` VALUES ('120', '1', '0', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('120', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('121', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('121', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('122', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf` VALUES ('122', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('123', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('123', '2', '0', null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('124', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('124', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf` VALUES ('125', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('125', '2', '0', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('126', '1', '0', null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('126', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('127', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('127', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf` VALUES ('128', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('128', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf` VALUES ('129', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('129', '2', '0', null, null, null, null, null, null, null, '1', '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('130', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('130', '2', '1', null, '1', null, '1', null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf` VALUES ('131', '1', '0', null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('131', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('132', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('132', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('133', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('133', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('134', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('134', '2', '0', null, null, null, null, '1', null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('135', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('135', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('136', '1', '0', null, '1', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf` VALUES ('136', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('137', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('137', '2', '0', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('138', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf` VALUES ('138', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('139', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('139', '2', '0', '1', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf` VALUES ('140', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('140', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf` VALUES ('141', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('141', '2', '0', null, null, null, null, null, null, null, '1', null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('142', '1', '0', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('142', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('143', '1', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('143', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('144', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('144', '2', '0', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('145', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('145', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null);
+INSERT INTO `cpidf` VALUES ('146', '1', '0', null, '1', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf` VALUES ('146', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('147', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('147', '2', '0', null, '1', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('148', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('148', '2', '0', null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('149', '1', '0', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('149', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('150', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('150', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('151', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('151', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('152', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('152', '2', '0', null, null, null, null, null, null, null, '1', '1', null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf` VALUES ('153', '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('153', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('154', '1', '0', null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('154', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('155', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('155', '2', '0', null, null, null, null, '1', null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('156', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('156', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('157', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('157', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('158', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('158', '2', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('159', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('159', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('160', '1', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('160', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('161', '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('161', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('162', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('162', '2', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('163', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('163', '2', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('164', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('164', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf` VALUES ('165', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('165', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf` VALUES ('166', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('166', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('167', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf` VALUES ('167', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('168', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('168', '2', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('169', '1', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('169', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('170', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('170', '2', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('171', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('171', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('172', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('172', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('173', '1', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('173', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('174', '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('174', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('175', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('175', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf` VALUES ('176', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('176', '2', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('177', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('177', '2', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('178', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('178', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('179', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('179', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf` VALUES ('180', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('180', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('181', '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('181', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('182', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('182', '2', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('183', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('183', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf` VALUES ('184', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('184', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf` VALUES ('185', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('185', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf` VALUES ('186', '1', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('186', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('187', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('187', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('188', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('188', '2', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('189', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('189', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf` VALUES ('190', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('190', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf` VALUES ('191', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('191', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('192', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('192', '2', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('193', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('193', '2', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('194', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('194', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf` VALUES ('195', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('195', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('196', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('196', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('197', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('197', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('198', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('198', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf` VALUES ('199', '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('199', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('200', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('200', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('201', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('201', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('202', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('202', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('203', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('203', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf` VALUES ('204', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('204', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('205', '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('205', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('206', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('206', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('207', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('207', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('208', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('208', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf` VALUES ('209', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('209', '2', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('210', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('210', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf` VALUES ('211', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('211', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('212', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('212', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf` VALUES ('213', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('213', '2', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('214', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('214', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('215', '1', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('215', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('216', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('216', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('217', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('217', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('218', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('218', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('219', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('219', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('220', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('220', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('221', '1', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('221', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('222', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('222', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf` VALUES ('223', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('223', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf` VALUES ('224', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('224', '2', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('225', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('225', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('226', '1', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('226', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('227', '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('227', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('228', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('228', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf` VALUES ('229', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('229', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('230', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf` VALUES ('230', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
 
-INSERT INTO `cpidf` (`TH`, `XZ`, `DO`, `CS`, `SY`, `SP`, `SA`, `WB`, `RE`, `SO`, `SC`, `PO`, `GI`, `CM`, `AC`, `AI`, `IE`, `PY`, `FX`, `FE`) VALUES
-(1, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(1, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(2, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(2, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(3, 1, 0, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(3, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(4, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(4, 2, 0, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(5, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(5, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL),
-(6, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(6, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(7, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(7, 2, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(8, 1, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(8, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(9, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(9, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-(10, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(10, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(11, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(11, 2, 0, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(12, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(12, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(13, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-(13, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(14, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(14, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL),
-(15, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(15, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(16, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(16, 2, 0, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(17, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(17, 2, 0, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(18, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(18, 2, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(19, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(19, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(20, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(20, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(21, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(21, 2, 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(22, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(22, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(23, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(23, 2, 0, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(24, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(24, 2, 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL),
-(25, 1, 0, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL),
-(25, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(26, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(26, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(27, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(27, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL),
-(28, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-(28, 2, 0, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(29, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(29, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(30, 1, 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(30, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(31, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-(31, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(32, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(32, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(33, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(33, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(34, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(34, 2, 0, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(35, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(35, 2, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(36, 1, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(36, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(37, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(37, 2, 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(38, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(38, 2, 0, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(39, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(39, 2, 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(40, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(40, 2, 0, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL),
-(41, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(41, 2, 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(42, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(42, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-(43, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(43, 2, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(44, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(44, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(45, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(45, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-(46, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(46, 2, 0, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(47, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(47, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL),
-(48, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(48, 2, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(49, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(49, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(50, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(50, 2, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(51, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(51, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL),
-(52, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(52, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(53, 1, 0, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(53, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(54, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(54, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(55, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(55, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(56, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-(56, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(57, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(57, 2, 1, NULL, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL),
-(58, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(58, 2, 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(59, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(59, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(60, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(60, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(61, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(61, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL),
-(62, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(62, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(63, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(63, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(64, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(64, 2, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(65, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(65, 2, 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-(66, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(66, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(67, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(67, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL),
-(68, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(68, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(69, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(69, 2, 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(70, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(70, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(71, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-(71, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(72, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(72, 2, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 1, NULL, NULL),
-(73, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(73, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(74, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(74, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(75, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(75, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(76, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(76, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL),
-(77, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(77, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(78, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(78, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(79, 1, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(79, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(80, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(80, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL),
-(81, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(81, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(82, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(82, 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(83, 1, 1, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL),
-(83, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(84, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(84, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(85, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(85, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(86, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(86, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL),
-(87, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(87, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL),
-(88, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(88, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(89, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(89, 2, 1, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(90, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(90, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(91, 1, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(91, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(92, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(92, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(93, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(93, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(94, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(94, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL),
-(95, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(95, 2, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(96, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(96, 2, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(97, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(97, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(98, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(98, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL),
-(99, 1, 0, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL),
-(99, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(100, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(100, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(101, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(101, 2, 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(102, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(102, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(103, 1, 0, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(103, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(104, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(104, 2, 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-(105, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(105, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL),
-(106, 1, 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(106, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(107, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(107, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 1),
-(108, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-(108, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(109, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(109, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(110, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(110, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(111, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(111, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(112, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(112, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL),
-(113, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(113, 2, 0, 1, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(114, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(114, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL),
-(115, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(115, 2, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(116, 1, 0, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(116, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(117, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(117, 2, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL),
-(118, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(118, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(119, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(119, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(120, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(120, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(121, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(121, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL),
-(122, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-(122, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(123, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(123, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(124, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(124, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-(125, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(125, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL),
-(126, 1, 0, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(126, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(127, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(127, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(128, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(128, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(129, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(129, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(130, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(130, 2, 1, NULL, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL),
-(131, 1, 0, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(131, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(132, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(132, 2, 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(133, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(133, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(134, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(134, 2, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(135, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(135, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(136, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL),
-(136, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(137, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(137, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL),
-(138, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-(138, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(139, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(139, 2, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(140, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(140, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-(141, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(141, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(142, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(142, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(143, 1, 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(143, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(144, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(144, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL),
-(145, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(145, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL),
-(146, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL),
-(146, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(147, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(147, 2, 0, NULL, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(148, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(148, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(149, 1, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(149, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(150, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(150, 2, 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(151, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(151, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(152, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(152, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(153, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(153, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(154, 1, 0, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(154, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(155, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(155, 2, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(156, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(156, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(157, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(157, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(158, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(158, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
-(159, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(159, 2, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(160, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
-(160, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(161, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(161, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(162, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(162, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
-(163, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(163, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
-(164, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(164, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL),
-(165, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(165, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL),
-(166, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(166, 2, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(167, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL),
-(167, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(168, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(168, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
-(169, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(169, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(170, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(170, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(171, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(171, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(172, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(172, 2, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(173, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
-(173, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(174, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(174, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(175, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(175, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL),
-(176, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(176, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
-(177, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(177, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
-(178, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(178, 2, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(179, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(179, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL),
-(180, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(180, 2, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(181, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(181, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(182, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(182, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
-(183, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(183, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL),
-(184, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(184, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL),
-(185, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(185, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL),
-(186, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(186, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(187, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(187, 2, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(188, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(188, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
-(189, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(189, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL),
-(190, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(190, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL),
-(191, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(191, 2, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(192, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(192, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
-(193, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(193, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(194, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(194, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL),
-(195, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(195, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(196, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(196, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(197, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(197, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(198, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(198, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL),
-(199, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(199, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(200, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(200, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(201, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(201, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(202, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(202, 2, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(203, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(203, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL),
-(204, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(204, 2, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(205, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(205, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(206, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(206, 2, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(207, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(207, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(208, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(208, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL),
-(209, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(209, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(210, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(210, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL),
-(211, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(211, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(212, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(212, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL),
-(213, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(213, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(214, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(214, 2, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(215, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
-(215, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(216, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(216, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(217, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(217, 2, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(218, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(218, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(219, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(219, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(220, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(220, 2, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(221, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(221, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(222, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(222, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL),
-(223, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(223, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL),
-(224, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(224, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(225, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(225, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `cpidf` (`TH`, `XZ`, `DO`, `CS`, `SY`, `SP`, `SA`, `WB`, `RE`, `SO`, `SC`, `PO`, `GI`, `CM`, `AC`, `AI`, `IE`, `PY`, `FX`, `FE`) VALUES
-(226, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
-(226, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(227, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(227, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(228, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(228, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL),
-(229, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(229, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(230, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(230, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `cpidf_memory`
---
-
+-- ----------------------------
+-- Table structure for `cpidf_memory`
+-- ----------------------------
 DROP TABLE IF EXISTS `cpidf_memory`;
-CREATE TABLE IF NOT EXISTS `cpidf_memory` (
+CREATE TABLE `cpidf_memory` (
   `TH` int(11) NOT NULL,
   `XZ` tinyint(4) NOT NULL,
   `DO` tinyint(4) DEFAULT NULL,
@@ -551,14 +535,475 @@ CREATE TABLE IF NOT EXISTS `cpidf_memory` (
   PRIMARY KEY (`TH`,`XZ`)
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Records of cpidf_memory
+-- ----------------------------
+INSERT INTO `cpidf_memory` VALUES ('1', '1', '0', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('1', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('2', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('2', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('3', '1', '0', null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('3', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('4', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('4', '2', '0', null, null, null, '1', null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('5', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('5', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null);
+INSERT INTO `cpidf_memory` VALUES ('6', '1', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('6', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('7', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('7', '2', '0', null, null, null, null, '1', null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('8', '1', '0', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('8', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('9', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('9', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf_memory` VALUES ('10', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('10', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('11', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('11', '2', '0', null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('12', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('12', '2', '0', null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('13', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf_memory` VALUES ('13', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('14', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('14', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('15', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('15', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('16', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('16', '2', '0', null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('17', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('17', '2', '0', null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('18', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('18', '2', '0', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('19', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('19', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('20', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('20', '2', '0', null, null, null, null, null, null, null, '1', null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('21', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('21', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('22', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('22', '2', '0', null, null, null, null, null, null, null, '1', null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('23', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('23', '2', '0', '1', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('24', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('24', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('25', '1', '0', null, '1', '1', null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('25', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('26', '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('26', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('27', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('27', '2', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null);
+INSERT INTO `cpidf_memory` VALUES ('28', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf_memory` VALUES ('28', '2', '0', null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('29', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('29', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('30', '1', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('30', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('31', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf_memory` VALUES ('31', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('32', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('32', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('33', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('33', '2', '0', null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('34', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('34', '2', '0', null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('35', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('35', '2', '0', null, null, null, null, '1', null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('36', '1', '0', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('36', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('37', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('37', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('38', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('38', '2', '0', null, '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('39', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('39', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('40', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('40', '2', '0', null, null, '1', null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('41', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('41', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('42', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('42', '2', '0', null, null, null, null, null, null, null, '1', null, '1', null, null, null, null, null, null, '1');
+INSERT INTO `cpidf_memory` VALUES ('43', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('43', '2', '0', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('44', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('44', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('45', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('45', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf_memory` VALUES ('46', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('46', '2', '0', null, '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('47', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('47', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null);
+INSERT INTO `cpidf_memory` VALUES ('48', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('48', '2', '0', null, null, null, null, '1', null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('49', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('49', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('50', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('50', '2', '0', '1', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('51', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('51', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null);
+INSERT INTO `cpidf_memory` VALUES ('52', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('52', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('53', '1', '0', null, '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('53', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('54', '1', '0', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('54', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('55', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('55', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('56', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf_memory` VALUES ('56', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('57', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('57', '2', '1', null, '1', null, '1', null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('58', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('58', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('59', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('59', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('60', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('60', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('61', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('61', '2', '0', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('62', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('62', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('63', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('63', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('64', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('64', '2', '0', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('65', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('65', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf_memory` VALUES ('66', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('66', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('67', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('67', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null);
+INSERT INTO `cpidf_memory` VALUES ('68', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('68', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('69', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('69', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('70', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('70', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('71', '1', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf_memory` VALUES ('71', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('72', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('72', '2', '0', null, '1', null, null, null, null, null, null, null, null, null, '1', null, null, '1', null, null);
+INSERT INTO `cpidf_memory` VALUES ('73', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('73', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('74', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('74', '2', '0', null, null, null, null, null, null, null, '1', '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('75', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('75', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('76', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('76', '2', '0', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('77', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('77', '2', '0', null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('78', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('78', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('79', '1', '0', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('79', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('80', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('80', '2', '0', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('81', '1', '0', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('81', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('82', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('82', '2', '0', null, null, null, null, null, '1', '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('83', '1', '1', '1', '1', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('83', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('84', '1', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('84', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('85', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('85', '2', '0', null, null, null, null, null, null, null, '1', null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('86', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('86', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('87', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('87', '2', '0', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('88', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('88', '2', '0', null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('89', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('89', '2', '1', null, null, '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('90', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('90', '2', '0', null, null, null, null, null, null, null, '1', null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('91', '1', '1', null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('91', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('92', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('92', '2', '0', null, null, null, null, null, null, null, '1', '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('93', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('93', '2', '0', null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('94', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('94', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, '1', null, null);
+INSERT INTO `cpidf_memory` VALUES ('95', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('95', '2', '0', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('96', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('96', '2', '0', null, null, null, null, '1', null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('97', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('97', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('98', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('98', '2', '0', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('99', '1', '0', '1', null, '1', null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('99', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('100', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('100', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('101', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('101', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('102', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('102', '2', '0', null, null, null, null, null, null, null, null, '1', null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('103', '1', '0', null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('103', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('104', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('104', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf_memory` VALUES ('105', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('105', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null);
+INSERT INTO `cpidf_memory` VALUES ('106', '1', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('106', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('107', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('107', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, '1', null, null, null, null, '1');
+INSERT INTO `cpidf_memory` VALUES ('108', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf_memory` VALUES ('108', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('109', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('109', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('110', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('110', '2', '0', null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('111', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('111', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('112', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('112', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null);
+INSERT INTO `cpidf_memory` VALUES ('113', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('113', '2', '0', '1', null, '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('114', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('114', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null);
+INSERT INTO `cpidf_memory` VALUES ('115', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('115', '2', '0', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('116', '1', '0', null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('116', '2', '0', null, null, null, null, null, null, null, '1', null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('117', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('117', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('118', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('118', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('119', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('119', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('120', '1', '0', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('120', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('121', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('121', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('122', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf_memory` VALUES ('122', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('123', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('123', '2', '0', null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('124', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('124', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf_memory` VALUES ('125', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('125', '2', '0', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('126', '1', '0', null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('126', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('127', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('127', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('128', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('128', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('129', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('129', '2', '0', null, null, null, null, null, null, null, '1', '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('130', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('130', '2', '1', null, '1', null, '1', null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('131', '1', '0', null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('131', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('132', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('132', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('133', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('133', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('134', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('134', '2', '0', null, null, null, null, '1', null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('135', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('135', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('136', '1', '0', null, '1', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('136', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('137', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('137', '2', '0', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('138', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf_memory` VALUES ('138', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('139', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('139', '2', '0', '1', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('140', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('140', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `cpidf_memory` VALUES ('141', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('141', '2', '0', null, null, null, null, null, null, null, '1', null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('142', '1', '0', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('142', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('143', '1', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('143', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('144', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('144', '2', '0', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('145', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('145', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null);
+INSERT INTO `cpidf_memory` VALUES ('146', '1', '0', null, '1', null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('146', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('147', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('147', '2', '0', null, '1', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('148', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('148', '2', '0', null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('149', '1', '0', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('149', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('150', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('150', '2', '0', null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('151', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('151', '2', '0', null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('152', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('152', '2', '0', null, null, null, null, null, null, null, '1', '1', null, null, null, '1', null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('153', '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('153', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('154', '1', '0', null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('154', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('155', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('155', '2', '0', null, null, null, null, '1', null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('156', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('156', '2', '0', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('157', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('157', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('158', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('158', '2', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('159', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('159', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('160', '1', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('160', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('161', '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('161', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('162', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('162', '2', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('163', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('163', '2', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('164', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('164', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf_memory` VALUES ('165', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('165', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf_memory` VALUES ('166', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('166', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('167', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf_memory` VALUES ('167', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('168', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('168', '2', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('169', '1', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('169', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('170', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('170', '2', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('171', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('171', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('172', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('172', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('173', '1', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('173', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('174', '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('174', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('175', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('175', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf_memory` VALUES ('176', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('176', '2', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('177', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('177', '2', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('178', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('178', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('179', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('179', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('180', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('180', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('181', '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('181', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('182', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('182', '2', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('183', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('183', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf_memory` VALUES ('184', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('184', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf_memory` VALUES ('185', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('185', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('186', '1', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('186', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('187', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('187', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('188', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('188', '2', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('189', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('189', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf_memory` VALUES ('190', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('190', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf_memory` VALUES ('191', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('191', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('192', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('192', '2', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('193', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('193', '2', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('194', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('194', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf_memory` VALUES ('195', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('195', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('196', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('196', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('197', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('197', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('198', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('198', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf_memory` VALUES ('199', '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('199', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('200', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('200', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('201', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('201', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('202', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('202', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('203', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('203', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf_memory` VALUES ('204', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('204', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('205', '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('205', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('206', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('206', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('207', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('207', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('208', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('208', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('209', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('209', '2', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('210', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('210', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('211', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('211', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('212', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('212', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('213', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('213', '2', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('214', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('214', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('215', '1', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('215', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('216', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('216', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('217', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('217', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('218', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('218', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('219', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('219', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('220', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('220', '2', '0', null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('221', '1', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('221', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('222', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('222', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('223', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('223', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf_memory` VALUES ('224', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('224', '2', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('225', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('225', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('226', '1', '0', null, null, null, null, null, null, null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('226', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('227', '1', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('227', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('228', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('228', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
+INSERT INTO `cpidf_memory` VALUES ('229', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('229', '2', '0', null, null, null, null, null, null, '1', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('230', '1', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `cpidf_memory` VALUES ('230', '2', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '1', null);
 
---
--- Table structure for table `cpimd`
---
-
+-- ----------------------------
+-- Table structure for `cpimd`
+-- ----------------------------
 DROP TABLE IF EXISTS `cpimd`;
-CREATE TABLE IF NOT EXISTS `cpimd` (
+CREATE TABLE `cpimd` (
   `DM` tinyint(4) NOT NULL,
   `YZ` char(2) NOT NULL,
   `M` float(11,2) NOT NULL,
@@ -566,315 +1011,583 @@ CREATE TABLE IF NOT EXISTS `cpimd` (
   PRIMARY KEY (`DM`,`YZ`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `cpimd`
---
+-- ----------------------------
+-- Records of cpimd
+-- ----------------------------
+INSERT INTO `cpimd` VALUES ('1', 'AC', '8.72', '2.56');
+INSERT INTO `cpimd` VALUES ('1', 'AI', '6.69', '2.31');
+INSERT INTO `cpimd` VALUES ('1', 'CM', '9.84', '1.89');
+INSERT INTO `cpimd` VALUES ('1', 'CS', '6.08', '2.40');
+INSERT INTO `cpimd` VALUES ('1', 'DO', '9.25', '3.52');
+INSERT INTO `cpimd` VALUES ('1', 'FE', '7.04', '2.31');
+INSERT INTO `cpimd` VALUES ('1', 'FX', '4.81', '2.53');
+INSERT INTO `cpimd` VALUES ('1', 'GI', '10.03', '3.38');
+INSERT INTO `cpimd` VALUES ('1', 'IE', '9.86', '2.29');
+INSERT INTO `cpimd` VALUES ('1', 'PO', '9.57', '3.10');
+INSERT INTO `cpimd` VALUES ('1', 'PY', '5.62', '2.04');
+INSERT INTO `cpimd` VALUES ('1', 'RE', '10.12', '2.54');
+INSERT INTO `cpimd` VALUES ('1', 'SA', '4.71', '2.27');
+INSERT INTO `cpimd` VALUES ('1', 'SC', '15.04', '4.97');
+INSERT INTO `cpimd` VALUES ('1', 'SO', '13.03', '3.10');
+INSERT INTO `cpimd` VALUES ('1', 'SP', '8.82', '2.92');
+INSERT INTO `cpimd` VALUES ('1', 'SY', '9.21', '3.37');
+INSERT INTO `cpimd` VALUES ('1', 'WB', '14.21', '3.38');
+INSERT INTO `cpimd` VALUES ('2', 'AC', '8.98', '2.48');
+INSERT INTO `cpimd` VALUES ('2', 'AI', '6.63', '2.33');
+INSERT INTO `cpimd` VALUES ('2', 'CM', '9.97', '1.83');
+INSERT INTO `cpimd` VALUES ('2', 'CS', '5.64', '2.51');
+INSERT INTO `cpimd` VALUES ('2', 'DO', '8.51', '3.12');
+INSERT INTO `cpimd` VALUES ('2', 'FE', '9.09', '2.35');
+INSERT INTO `cpimd` VALUES ('2', 'FX', '4.79', '2.68');
+INSERT INTO `cpimd` VALUES ('2', 'GI', '9.99', '3.93');
+INSERT INTO `cpimd` VALUES ('2', 'IE', '9.64', '2.46');
+INSERT INTO `cpimd` VALUES ('2', 'PO', '9.78', '3.10');
+INSERT INTO `cpimd` VALUES ('2', 'PY', '5.86', '1.99');
+INSERT INTO `cpimd` VALUES ('2', 'RE', '10.93', '2.42');
+INSERT INTO `cpimd` VALUES ('2', 'SA', '4.37', '2.20');
+INSERT INTO `cpimd` VALUES ('2', 'SC', '16.26', '5.01');
+INSERT INTO `cpimd` VALUES ('2', 'SO', '13.83', '3.06');
+INSERT INTO `cpimd` VALUES ('2', 'SP', '8.32', '2.76');
+INSERT INTO `cpimd` VALUES ('2', 'SY', '9.14', '3.18');
+INSERT INTO `cpimd` VALUES ('2', 'WB', '14.34', '3.29');
 
-INSERT INTO `cpimd` (`DM`, `YZ`, `M`, `SD`) VALUES
-(1, 'AC', 8.72, 2.56),
-(1, 'AI', 6.69, 2.31),
-(1, 'CM', 9.84, 1.89),
-(1, 'CS', 6.08, 2.40),
-(1, 'DO', 9.25, 3.52),
-(1, 'FE', 7.04, 2.31),
-(1, 'FX', 4.81, 2.53),
-(1, 'GI', 10.03, 3.38),
-(1, 'IE', 9.86, 2.29),
-(1, 'PO', 9.57, 3.10),
-(1, 'PY', 5.62, 2.04),
-(1, 'RE', 10.12, 2.54),
-(1, 'SA', 4.71, 2.27),
-(1, 'SC', 15.04, 4.97),
-(1, 'SO', 13.03, 3.10),
-(1, 'SP', 8.82, 2.92),
-(1, 'SY', 9.21, 3.37),
-(1, 'WB', 14.21, 3.38),
-(2, 'AC', 8.98, 2.48),
-(2, 'AI', 6.63, 2.33),
-(2, 'CM', 9.97, 1.83),
-(2, 'CS', 5.64, 2.51),
-(2, 'DO', 8.51, 3.12),
-(2, 'FE', 9.09, 2.35),
-(2, 'FX', 4.79, 2.68),
-(2, 'GI', 9.99, 3.93),
-(2, 'IE', 9.64, 2.46),
-(2, 'PO', 9.78, 3.10),
-(2, 'PY', 5.86, 1.99),
-(2, 'RE', 10.93, 2.42),
-(2, 'SA', 4.37, 2.20),
-(2, 'SC', 16.26, 5.01),
-(2, 'SO', 13.83, 3.06),
-(2, 'SP', 8.32, 2.76),
-(2, 'SY', 9.14, 3.18),
-(2, 'WB', 14.34, 3.29);
+-- ----------------------------
+-- Table structure for `cpimd_memory`
+-- ----------------------------
+DROP TABLE IF EXISTS `cpimd_memory`;
+CREATE TABLE `cpimd_memory` (
+  `DM` tinyint(4) NOT NULL,
+  `YZ` char(2) NOT NULL,
+  `M` float(11,2) NOT NULL,
+  `SD` float(11,2) NOT NULL,
+  PRIMARY KEY (`DM`,`YZ`)
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Records of cpimd_memory
+-- ----------------------------
+INSERT INTO `cpimd_memory` VALUES ('1', 'AC', '8.72', '2.56');
+INSERT INTO `cpimd_memory` VALUES ('1', 'AI', '6.69', '2.31');
+INSERT INTO `cpimd_memory` VALUES ('1', 'CM', '9.84', '1.89');
+INSERT INTO `cpimd_memory` VALUES ('1', 'CS', '6.08', '2.40');
+INSERT INTO `cpimd_memory` VALUES ('1', 'DO', '9.25', '3.52');
+INSERT INTO `cpimd_memory` VALUES ('1', 'FE', '7.04', '2.31');
+INSERT INTO `cpimd_memory` VALUES ('1', 'FX', '4.81', '2.53');
+INSERT INTO `cpimd_memory` VALUES ('1', 'GI', '10.03', '3.38');
+INSERT INTO `cpimd_memory` VALUES ('1', 'IE', '9.86', '2.29');
+INSERT INTO `cpimd_memory` VALUES ('1', 'PO', '9.57', '3.10');
+INSERT INTO `cpimd_memory` VALUES ('1', 'PY', '5.62', '2.04');
+INSERT INTO `cpimd_memory` VALUES ('1', 'RE', '10.12', '2.54');
+INSERT INTO `cpimd_memory` VALUES ('1', 'SA', '4.71', '2.27');
+INSERT INTO `cpimd_memory` VALUES ('1', 'SC', '15.04', '4.97');
+INSERT INTO `cpimd_memory` VALUES ('1', 'SO', '13.03', '3.10');
+INSERT INTO `cpimd_memory` VALUES ('1', 'SP', '8.82', '2.92');
+INSERT INTO `cpimd_memory` VALUES ('1', 'SY', '9.21', '3.37');
+INSERT INTO `cpimd_memory` VALUES ('1', 'WB', '14.21', '3.38');
+INSERT INTO `cpimd_memory` VALUES ('2', 'AC', '8.98', '2.48');
+INSERT INTO `cpimd_memory` VALUES ('2', 'AI', '6.63', '2.33');
+INSERT INTO `cpimd_memory` VALUES ('2', 'CM', '9.97', '1.83');
+INSERT INTO `cpimd_memory` VALUES ('2', 'CS', '5.64', '2.51');
+INSERT INTO `cpimd_memory` VALUES ('2', 'DO', '8.51', '3.12');
+INSERT INTO `cpimd_memory` VALUES ('2', 'FE', '9.09', '2.35');
+INSERT INTO `cpimd_memory` VALUES ('2', 'FX', '4.79', '2.68');
+INSERT INTO `cpimd_memory` VALUES ('2', 'GI', '9.99', '3.93');
+INSERT INTO `cpimd_memory` VALUES ('2', 'IE', '9.64', '2.46');
+INSERT INTO `cpimd_memory` VALUES ('2', 'PO', '9.78', '3.10');
+INSERT INTO `cpimd_memory` VALUES ('2', 'PY', '5.86', '1.99');
+INSERT INTO `cpimd_memory` VALUES ('2', 'RE', '10.93', '2.42');
+INSERT INTO `cpimd_memory` VALUES ('2', 'SA', '4.37', '2.20');
+INSERT INTO `cpimd_memory` VALUES ('2', 'SC', '16.26', '5.01');
+INSERT INTO `cpimd_memory` VALUES ('2', 'SO', '13.83', '3.06');
+INSERT INTO `cpimd_memory` VALUES ('2', 'SP', '8.32', '2.76');
+INSERT INTO `cpimd_memory` VALUES ('2', 'SY', '9.14', '3.18');
+INSERT INTO `cpimd_memory` VALUES ('2', 'WB', '14.34', '3.29');
 
---
--- Table structure for table `eppsdf`
---
-
+-- ----------------------------
+-- Table structure for `eppsdf`
+-- ----------------------------
 DROP TABLE IF EXISTS `eppsdf`;
-CREATE TABLE IF NOT EXISTS `eppsdf` (
+CREATE TABLE `eppsdf` (
   `A` tinyint(4) NOT NULL,
   `B` tinyint(4) NOT NULL,
   `TH` int(11) NOT NULL,
   PRIMARY KEY (`TH`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `eppsdf`
---
+-- ----------------------------
+-- Records of eppsdf
+-- ----------------------------
+INSERT INTO `eppsdf` VALUES ('1', '1', '1');
+INSERT INTO `eppsdf` VALUES ('2', '1', '2');
+INSERT INTO `eppsdf` VALUES ('3', '1', '3');
+INSERT INTO `eppsdf` VALUES ('4', '1', '4');
+INSERT INTO `eppsdf` VALUES ('5', '1', '5');
+INSERT INTO `eppsdf` VALUES ('1', '2', '6');
+INSERT INTO `eppsdf` VALUES ('2', '2', '7');
+INSERT INTO `eppsdf` VALUES ('3', '2', '8');
+INSERT INTO `eppsdf` VALUES ('4', '2', '9');
+INSERT INTO `eppsdf` VALUES ('5', '2', '10');
+INSERT INTO `eppsdf` VALUES ('1', '3', '11');
+INSERT INTO `eppsdf` VALUES ('2', '3', '12');
+INSERT INTO `eppsdf` VALUES ('3', '3', '13');
+INSERT INTO `eppsdf` VALUES ('4', '3', '14');
+INSERT INTO `eppsdf` VALUES ('5', '3', '15');
+INSERT INTO `eppsdf` VALUES ('1', '4', '16');
+INSERT INTO `eppsdf` VALUES ('2', '4', '17');
+INSERT INTO `eppsdf` VALUES ('3', '4', '18');
+INSERT INTO `eppsdf` VALUES ('4', '4', '19');
+INSERT INTO `eppsdf` VALUES ('5', '4', '20');
+INSERT INTO `eppsdf` VALUES ('1', '5', '21');
+INSERT INTO `eppsdf` VALUES ('2', '5', '22');
+INSERT INTO `eppsdf` VALUES ('3', '5', '23');
+INSERT INTO `eppsdf` VALUES ('4', '5', '24');
+INSERT INTO `eppsdf` VALUES ('5', '5', '25');
+INSERT INTO `eppsdf` VALUES ('1', '6', '26');
+INSERT INTO `eppsdf` VALUES ('2', '6', '27');
+INSERT INTO `eppsdf` VALUES ('3', '6', '28');
+INSERT INTO `eppsdf` VALUES ('4', '6', '29');
+INSERT INTO `eppsdf` VALUES ('5', '6', '30');
+INSERT INTO `eppsdf` VALUES ('1', '7', '31');
+INSERT INTO `eppsdf` VALUES ('2', '7', '32');
+INSERT INTO `eppsdf` VALUES ('3', '7', '33');
+INSERT INTO `eppsdf` VALUES ('4', '7', '34');
+INSERT INTO `eppsdf` VALUES ('5', '7', '35');
+INSERT INTO `eppsdf` VALUES ('1', '8', '36');
+INSERT INTO `eppsdf` VALUES ('2', '8', '37');
+INSERT INTO `eppsdf` VALUES ('3', '8', '38');
+INSERT INTO `eppsdf` VALUES ('4', '8', '39');
+INSERT INTO `eppsdf` VALUES ('5', '8', '40');
+INSERT INTO `eppsdf` VALUES ('1', '9', '41');
+INSERT INTO `eppsdf` VALUES ('2', '9', '42');
+INSERT INTO `eppsdf` VALUES ('3', '9', '43');
+INSERT INTO `eppsdf` VALUES ('4', '9', '44');
+INSERT INTO `eppsdf` VALUES ('5', '9', '45');
+INSERT INTO `eppsdf` VALUES ('1', '10', '46');
+INSERT INTO `eppsdf` VALUES ('2', '10', '47');
+INSERT INTO `eppsdf` VALUES ('3', '10', '48');
+INSERT INTO `eppsdf` VALUES ('4', '10', '49');
+INSERT INTO `eppsdf` VALUES ('5', '10', '50');
+INSERT INTO `eppsdf` VALUES ('1', '11', '51');
+INSERT INTO `eppsdf` VALUES ('2', '11', '52');
+INSERT INTO `eppsdf` VALUES ('3', '11', '53');
+INSERT INTO `eppsdf` VALUES ('4', '11', '54');
+INSERT INTO `eppsdf` VALUES ('5', '11', '55');
+INSERT INTO `eppsdf` VALUES ('1', '12', '56');
+INSERT INTO `eppsdf` VALUES ('2', '12', '57');
+INSERT INTO `eppsdf` VALUES ('3', '12', '58');
+INSERT INTO `eppsdf` VALUES ('4', '12', '59');
+INSERT INTO `eppsdf` VALUES ('5', '12', '60');
+INSERT INTO `eppsdf` VALUES ('1', '13', '61');
+INSERT INTO `eppsdf` VALUES ('2', '13', '62');
+INSERT INTO `eppsdf` VALUES ('3', '13', '63');
+INSERT INTO `eppsdf` VALUES ('4', '13', '64');
+INSERT INTO `eppsdf` VALUES ('5', '13', '65');
+INSERT INTO `eppsdf` VALUES ('1', '14', '66');
+INSERT INTO `eppsdf` VALUES ('2', '14', '67');
+INSERT INTO `eppsdf` VALUES ('3', '14', '68');
+INSERT INTO `eppsdf` VALUES ('4', '14', '69');
+INSERT INTO `eppsdf` VALUES ('5', '14', '70');
+INSERT INTO `eppsdf` VALUES ('1', '15', '71');
+INSERT INTO `eppsdf` VALUES ('2', '15', '72');
+INSERT INTO `eppsdf` VALUES ('3', '15', '73');
+INSERT INTO `eppsdf` VALUES ('4', '15', '74');
+INSERT INTO `eppsdf` VALUES ('5', '15', '75');
+INSERT INTO `eppsdf` VALUES ('6', '1', '76');
+INSERT INTO `eppsdf` VALUES ('7', '1', '77');
+INSERT INTO `eppsdf` VALUES ('8', '1', '78');
+INSERT INTO `eppsdf` VALUES ('9', '1', '79');
+INSERT INTO `eppsdf` VALUES ('10', '1', '80');
+INSERT INTO `eppsdf` VALUES ('6', '2', '81');
+INSERT INTO `eppsdf` VALUES ('7', '2', '82');
+INSERT INTO `eppsdf` VALUES ('8', '2', '83');
+INSERT INTO `eppsdf` VALUES ('9', '2', '84');
+INSERT INTO `eppsdf` VALUES ('10', '2', '85');
+INSERT INTO `eppsdf` VALUES ('6', '3', '86');
+INSERT INTO `eppsdf` VALUES ('7', '3', '87');
+INSERT INTO `eppsdf` VALUES ('8', '3', '88');
+INSERT INTO `eppsdf` VALUES ('9', '3', '89');
+INSERT INTO `eppsdf` VALUES ('10', '3', '90');
+INSERT INTO `eppsdf` VALUES ('6', '4', '91');
+INSERT INTO `eppsdf` VALUES ('7', '4', '92');
+INSERT INTO `eppsdf` VALUES ('8', '4', '93');
+INSERT INTO `eppsdf` VALUES ('9', '4', '94');
+INSERT INTO `eppsdf` VALUES ('10', '4', '95');
+INSERT INTO `eppsdf` VALUES ('6', '5', '96');
+INSERT INTO `eppsdf` VALUES ('7', '5', '97');
+INSERT INTO `eppsdf` VALUES ('8', '5', '98');
+INSERT INTO `eppsdf` VALUES ('9', '5', '99');
+INSERT INTO `eppsdf` VALUES ('10', '5', '100');
+INSERT INTO `eppsdf` VALUES ('6', '6', '101');
+INSERT INTO `eppsdf` VALUES ('7', '6', '102');
+INSERT INTO `eppsdf` VALUES ('8', '6', '103');
+INSERT INTO `eppsdf` VALUES ('9', '6', '104');
+INSERT INTO `eppsdf` VALUES ('10', '6', '105');
+INSERT INTO `eppsdf` VALUES ('6', '7', '106');
+INSERT INTO `eppsdf` VALUES ('7', '7', '107');
+INSERT INTO `eppsdf` VALUES ('8', '7', '108');
+INSERT INTO `eppsdf` VALUES ('9', '7', '109');
+INSERT INTO `eppsdf` VALUES ('10', '7', '110');
+INSERT INTO `eppsdf` VALUES ('6', '8', '111');
+INSERT INTO `eppsdf` VALUES ('7', '8', '112');
+INSERT INTO `eppsdf` VALUES ('8', '8', '113');
+INSERT INTO `eppsdf` VALUES ('9', '8', '114');
+INSERT INTO `eppsdf` VALUES ('10', '8', '115');
+INSERT INTO `eppsdf` VALUES ('6', '9', '116');
+INSERT INTO `eppsdf` VALUES ('7', '9', '117');
+INSERT INTO `eppsdf` VALUES ('8', '9', '118');
+INSERT INTO `eppsdf` VALUES ('9', '9', '119');
+INSERT INTO `eppsdf` VALUES ('10', '9', '120');
+INSERT INTO `eppsdf` VALUES ('6', '10', '121');
+INSERT INTO `eppsdf` VALUES ('7', '10', '122');
+INSERT INTO `eppsdf` VALUES ('8', '10', '123');
+INSERT INTO `eppsdf` VALUES ('9', '10', '124');
+INSERT INTO `eppsdf` VALUES ('10', '10', '125');
+INSERT INTO `eppsdf` VALUES ('6', '11', '126');
+INSERT INTO `eppsdf` VALUES ('7', '11', '127');
+INSERT INTO `eppsdf` VALUES ('8', '11', '128');
+INSERT INTO `eppsdf` VALUES ('9', '11', '129');
+INSERT INTO `eppsdf` VALUES ('10', '11', '130');
+INSERT INTO `eppsdf` VALUES ('6', '12', '131');
+INSERT INTO `eppsdf` VALUES ('7', '12', '132');
+INSERT INTO `eppsdf` VALUES ('8', '12', '133');
+INSERT INTO `eppsdf` VALUES ('9', '12', '134');
+INSERT INTO `eppsdf` VALUES ('10', '12', '135');
+INSERT INTO `eppsdf` VALUES ('6', '13', '136');
+INSERT INTO `eppsdf` VALUES ('7', '13', '137');
+INSERT INTO `eppsdf` VALUES ('8', '13', '138');
+INSERT INTO `eppsdf` VALUES ('9', '13', '139');
+INSERT INTO `eppsdf` VALUES ('10', '13', '140');
+INSERT INTO `eppsdf` VALUES ('6', '14', '141');
+INSERT INTO `eppsdf` VALUES ('7', '14', '142');
+INSERT INTO `eppsdf` VALUES ('8', '14', '143');
+INSERT INTO `eppsdf` VALUES ('9', '14', '144');
+INSERT INTO `eppsdf` VALUES ('10', '14', '145');
+INSERT INTO `eppsdf` VALUES ('6', '15', '146');
+INSERT INTO `eppsdf` VALUES ('7', '15', '147');
+INSERT INTO `eppsdf` VALUES ('8', '15', '148');
+INSERT INTO `eppsdf` VALUES ('9', '15', '149');
+INSERT INTO `eppsdf` VALUES ('10', '15', '150');
+INSERT INTO `eppsdf` VALUES ('11', '1', '151');
+INSERT INTO `eppsdf` VALUES ('12', '1', '152');
+INSERT INTO `eppsdf` VALUES ('13', '1', '153');
+INSERT INTO `eppsdf` VALUES ('14', '1', '154');
+INSERT INTO `eppsdf` VALUES ('15', '1', '155');
+INSERT INTO `eppsdf` VALUES ('11', '2', '156');
+INSERT INTO `eppsdf` VALUES ('12', '2', '157');
+INSERT INTO `eppsdf` VALUES ('13', '2', '158');
+INSERT INTO `eppsdf` VALUES ('14', '2', '159');
+INSERT INTO `eppsdf` VALUES ('15', '2', '160');
+INSERT INTO `eppsdf` VALUES ('11', '3', '161');
+INSERT INTO `eppsdf` VALUES ('12', '3', '162');
+INSERT INTO `eppsdf` VALUES ('13', '3', '163');
+INSERT INTO `eppsdf` VALUES ('14', '3', '164');
+INSERT INTO `eppsdf` VALUES ('15', '3', '165');
+INSERT INTO `eppsdf` VALUES ('11', '4', '166');
+INSERT INTO `eppsdf` VALUES ('12', '4', '167');
+INSERT INTO `eppsdf` VALUES ('13', '4', '168');
+INSERT INTO `eppsdf` VALUES ('14', '4', '169');
+INSERT INTO `eppsdf` VALUES ('15', '4', '170');
+INSERT INTO `eppsdf` VALUES ('11', '5', '171');
+INSERT INTO `eppsdf` VALUES ('12', '5', '172');
+INSERT INTO `eppsdf` VALUES ('13', '5', '173');
+INSERT INTO `eppsdf` VALUES ('14', '5', '174');
+INSERT INTO `eppsdf` VALUES ('15', '5', '175');
+INSERT INTO `eppsdf` VALUES ('11', '6', '176');
+INSERT INTO `eppsdf` VALUES ('12', '6', '177');
+INSERT INTO `eppsdf` VALUES ('13', '6', '178');
+INSERT INTO `eppsdf` VALUES ('14', '6', '179');
+INSERT INTO `eppsdf` VALUES ('15', '6', '180');
+INSERT INTO `eppsdf` VALUES ('11', '7', '181');
+INSERT INTO `eppsdf` VALUES ('12', '7', '182');
+INSERT INTO `eppsdf` VALUES ('13', '7', '183');
+INSERT INTO `eppsdf` VALUES ('14', '7', '184');
+INSERT INTO `eppsdf` VALUES ('15', '7', '185');
+INSERT INTO `eppsdf` VALUES ('11', '8', '186');
+INSERT INTO `eppsdf` VALUES ('12', '8', '187');
+INSERT INTO `eppsdf` VALUES ('13', '8', '188');
+INSERT INTO `eppsdf` VALUES ('14', '8', '189');
+INSERT INTO `eppsdf` VALUES ('15', '8', '190');
+INSERT INTO `eppsdf` VALUES ('11', '9', '191');
+INSERT INTO `eppsdf` VALUES ('12', '9', '192');
+INSERT INTO `eppsdf` VALUES ('13', '9', '193');
+INSERT INTO `eppsdf` VALUES ('14', '9', '194');
+INSERT INTO `eppsdf` VALUES ('15', '9', '195');
+INSERT INTO `eppsdf` VALUES ('11', '10', '196');
+INSERT INTO `eppsdf` VALUES ('12', '10', '197');
+INSERT INTO `eppsdf` VALUES ('13', '10', '198');
+INSERT INTO `eppsdf` VALUES ('14', '10', '199');
+INSERT INTO `eppsdf` VALUES ('15', '10', '200');
+INSERT INTO `eppsdf` VALUES ('11', '11', '201');
+INSERT INTO `eppsdf` VALUES ('12', '11', '202');
+INSERT INTO `eppsdf` VALUES ('13', '11', '203');
+INSERT INTO `eppsdf` VALUES ('14', '11', '204');
+INSERT INTO `eppsdf` VALUES ('15', '11', '205');
+INSERT INTO `eppsdf` VALUES ('11', '12', '206');
+INSERT INTO `eppsdf` VALUES ('12', '12', '207');
+INSERT INTO `eppsdf` VALUES ('13', '12', '208');
+INSERT INTO `eppsdf` VALUES ('14', '12', '209');
+INSERT INTO `eppsdf` VALUES ('15', '12', '210');
+INSERT INTO `eppsdf` VALUES ('11', '13', '211');
+INSERT INTO `eppsdf` VALUES ('12', '13', '212');
+INSERT INTO `eppsdf` VALUES ('13', '13', '213');
+INSERT INTO `eppsdf` VALUES ('14', '13', '214');
+INSERT INTO `eppsdf` VALUES ('15', '13', '215');
+INSERT INTO `eppsdf` VALUES ('11', '14', '216');
+INSERT INTO `eppsdf` VALUES ('12', '14', '217');
+INSERT INTO `eppsdf` VALUES ('13', '14', '218');
+INSERT INTO `eppsdf` VALUES ('14', '14', '219');
+INSERT INTO `eppsdf` VALUES ('15', '14', '220');
+INSERT INTO `eppsdf` VALUES ('11', '15', '221');
+INSERT INTO `eppsdf` VALUES ('12', '15', '222');
+INSERT INTO `eppsdf` VALUES ('13', '15', '223');
+INSERT INTO `eppsdf` VALUES ('14', '15', '224');
+INSERT INTO `eppsdf` VALUES ('15', '15', '225');
 
-INSERT INTO `eppsdf` (`A`, `B`, `TH`) VALUES
-(1, 1, 1),
-(2, 1, 2),
-(3, 1, 3),
-(4, 1, 4),
-(5, 1, 5),
-(1, 2, 6),
-(2, 2, 7),
-(3, 2, 8),
-(4, 2, 9),
-(5, 2, 10),
-(1, 3, 11),
-(2, 3, 12),
-(3, 3, 13),
-(4, 3, 14),
-(5, 3, 15),
-(1, 4, 16),
-(2, 4, 17),
-(3, 4, 18),
-(4, 4, 19),
-(5, 4, 20),
-(1, 5, 21),
-(2, 5, 22),
-(3, 5, 23),
-(4, 5, 24),
-(5, 5, 25),
-(1, 6, 26),
-(2, 6, 27),
-(3, 6, 28),
-(4, 6, 29),
-(5, 6, 30),
-(1, 7, 31),
-(2, 7, 32),
-(3, 7, 33),
-(4, 7, 34),
-(5, 7, 35),
-(1, 8, 36),
-(2, 8, 37),
-(3, 8, 38),
-(4, 8, 39),
-(5, 8, 40),
-(1, 9, 41),
-(2, 9, 42),
-(3, 9, 43),
-(4, 9, 44),
-(5, 9, 45),
-(1, 10, 46),
-(2, 10, 47),
-(3, 10, 48),
-(4, 10, 49),
-(5, 10, 50),
-(1, 11, 51),
-(2, 11, 52),
-(3, 11, 53),
-(4, 11, 54),
-(5, 11, 55),
-(1, 12, 56),
-(2, 12, 57),
-(3, 12, 58),
-(4, 12, 59),
-(5, 12, 60),
-(1, 13, 61),
-(2, 13, 62),
-(3, 13, 63),
-(4, 13, 64),
-(5, 13, 65),
-(1, 14, 66),
-(2, 14, 67),
-(3, 14, 68),
-(4, 14, 69),
-(5, 14, 70),
-(1, 15, 71),
-(2, 15, 72),
-(3, 15, 73),
-(4, 15, 74),
-(5, 15, 75),
-(6, 1, 76),
-(7, 1, 77),
-(8, 1, 78),
-(9, 1, 79),
-(10, 1, 80),
-(6, 2, 81),
-(7, 2, 82),
-(8, 2, 83),
-(9, 2, 84),
-(10, 2, 85),
-(6, 3, 86),
-(7, 3, 87),
-(8, 3, 88),
-(9, 3, 89),
-(10, 3, 90),
-(6, 4, 91),
-(7, 4, 92),
-(8, 4, 93),
-(9, 4, 94),
-(10, 4, 95),
-(6, 5, 96),
-(7, 5, 97),
-(8, 5, 98),
-(9, 5, 99),
-(10, 5, 100),
-(6, 6, 101),
-(7, 6, 102),
-(8, 6, 103),
-(9, 6, 104),
-(10, 6, 105),
-(6, 7, 106),
-(7, 7, 107),
-(8, 7, 108),
-(9, 7, 109),
-(10, 7, 110),
-(6, 8, 111),
-(7, 8, 112),
-(8, 8, 113),
-(9, 8, 114),
-(10, 8, 115),
-(6, 9, 116),
-(7, 9, 117),
-(8, 9, 118),
-(9, 9, 119),
-(10, 9, 120),
-(6, 10, 121),
-(7, 10, 122),
-(8, 10, 123),
-(9, 10, 124),
-(10, 10, 125),
-(6, 11, 126),
-(7, 11, 127),
-(8, 11, 128),
-(9, 11, 129),
-(10, 11, 130),
-(6, 12, 131),
-(7, 12, 132),
-(8, 12, 133),
-(9, 12, 134),
-(10, 12, 135),
-(6, 13, 136),
-(7, 13, 137),
-(8, 13, 138),
-(9, 13, 139),
-(10, 13, 140),
-(6, 14, 141),
-(7, 14, 142),
-(8, 14, 143),
-(9, 14, 144),
-(10, 14, 145),
-(6, 15, 146),
-(7, 15, 147),
-(8, 15, 148),
-(9, 15, 149),
-(10, 15, 150),
-(11, 1, 151),
-(12, 1, 152),
-(13, 1, 153),
-(14, 1, 154),
-(15, 1, 155),
-(11, 2, 156),
-(12, 2, 157),
-(13, 2, 158),
-(14, 2, 159),
-(15, 2, 160),
-(11, 3, 161),
-(12, 3, 162),
-(13, 3, 163),
-(14, 3, 164),
-(15, 3, 165),
-(11, 4, 166),
-(12, 4, 167),
-(13, 4, 168),
-(14, 4, 169),
-(15, 4, 170),
-(11, 5, 171),
-(12, 5, 172),
-(13, 5, 173),
-(14, 5, 174),
-(15, 5, 175),
-(11, 6, 176),
-(12, 6, 177),
-(13, 6, 178),
-(14, 6, 179),
-(15, 6, 180),
-(11, 7, 181),
-(12, 7, 182),
-(13, 7, 183),
-(14, 7, 184),
-(15, 7, 185),
-(11, 8, 186),
-(12, 8, 187),
-(13, 8, 188),
-(14, 8, 189),
-(15, 8, 190),
-(11, 9, 191),
-(12, 9, 192),
-(13, 9, 193),
-(14, 9, 194),
-(15, 9, 195),
-(11, 10, 196),
-(12, 10, 197),
-(13, 10, 198),
-(14, 10, 199),
-(15, 10, 200),
-(11, 11, 201),
-(12, 11, 202),
-(13, 11, 203),
-(14, 11, 204),
-(15, 11, 205),
-(11, 12, 206),
-(12, 12, 207),
-(13, 12, 208),
-(14, 12, 209),
-(15, 12, 210),
-(11, 13, 211),
-(12, 13, 212),
-(13, 13, 213),
-(14, 13, 214),
-(15, 13, 215),
-(11, 14, 216),
-(12, 14, 217),
-(13, 14, 218),
-(14, 14, 219),
-(15, 14, 220),
-(11, 15, 221),
-(12, 15, 222),
-(13, 15, 223),
-(14, 15, 224),
-(15, 15, 225);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `eppsdf_memory`
---
-
+-- ----------------------------
+-- Table structure for `eppsdf_memory`
+-- ----------------------------
 DROP TABLE IF EXISTS `eppsdf_memory`;
-CREATE TABLE IF NOT EXISTS `eppsdf_memory` (
+CREATE TABLE `eppsdf_memory` (
   `A` tinyint(4) NOT NULL,
   `B` tinyint(4) NOT NULL,
   `TH` int(11) NOT NULL,
   PRIMARY KEY (`TH`)
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Records of eppsdf_memory
+-- ----------------------------
+INSERT INTO `eppsdf_memory` VALUES ('1', '1', '1');
+INSERT INTO `eppsdf_memory` VALUES ('2', '1', '2');
+INSERT INTO `eppsdf_memory` VALUES ('3', '1', '3');
+INSERT INTO `eppsdf_memory` VALUES ('4', '1', '4');
+INSERT INTO `eppsdf_memory` VALUES ('5', '1', '5');
+INSERT INTO `eppsdf_memory` VALUES ('1', '2', '6');
+INSERT INTO `eppsdf_memory` VALUES ('2', '2', '7');
+INSERT INTO `eppsdf_memory` VALUES ('3', '2', '8');
+INSERT INTO `eppsdf_memory` VALUES ('4', '2', '9');
+INSERT INTO `eppsdf_memory` VALUES ('5', '2', '10');
+INSERT INTO `eppsdf_memory` VALUES ('1', '3', '11');
+INSERT INTO `eppsdf_memory` VALUES ('2', '3', '12');
+INSERT INTO `eppsdf_memory` VALUES ('3', '3', '13');
+INSERT INTO `eppsdf_memory` VALUES ('4', '3', '14');
+INSERT INTO `eppsdf_memory` VALUES ('5', '3', '15');
+INSERT INTO `eppsdf_memory` VALUES ('1', '4', '16');
+INSERT INTO `eppsdf_memory` VALUES ('2', '4', '17');
+INSERT INTO `eppsdf_memory` VALUES ('3', '4', '18');
+INSERT INTO `eppsdf_memory` VALUES ('4', '4', '19');
+INSERT INTO `eppsdf_memory` VALUES ('5', '4', '20');
+INSERT INTO `eppsdf_memory` VALUES ('1', '5', '21');
+INSERT INTO `eppsdf_memory` VALUES ('2', '5', '22');
+INSERT INTO `eppsdf_memory` VALUES ('3', '5', '23');
+INSERT INTO `eppsdf_memory` VALUES ('4', '5', '24');
+INSERT INTO `eppsdf_memory` VALUES ('5', '5', '25');
+INSERT INTO `eppsdf_memory` VALUES ('1', '6', '26');
+INSERT INTO `eppsdf_memory` VALUES ('2', '6', '27');
+INSERT INTO `eppsdf_memory` VALUES ('3', '6', '28');
+INSERT INTO `eppsdf_memory` VALUES ('4', '6', '29');
+INSERT INTO `eppsdf_memory` VALUES ('5', '6', '30');
+INSERT INTO `eppsdf_memory` VALUES ('1', '7', '31');
+INSERT INTO `eppsdf_memory` VALUES ('2', '7', '32');
+INSERT INTO `eppsdf_memory` VALUES ('3', '7', '33');
+INSERT INTO `eppsdf_memory` VALUES ('4', '7', '34');
+INSERT INTO `eppsdf_memory` VALUES ('5', '7', '35');
+INSERT INTO `eppsdf_memory` VALUES ('1', '8', '36');
+INSERT INTO `eppsdf_memory` VALUES ('2', '8', '37');
+INSERT INTO `eppsdf_memory` VALUES ('3', '8', '38');
+INSERT INTO `eppsdf_memory` VALUES ('4', '8', '39');
+INSERT INTO `eppsdf_memory` VALUES ('5', '8', '40');
+INSERT INTO `eppsdf_memory` VALUES ('1', '9', '41');
+INSERT INTO `eppsdf_memory` VALUES ('2', '9', '42');
+INSERT INTO `eppsdf_memory` VALUES ('3', '9', '43');
+INSERT INTO `eppsdf_memory` VALUES ('4', '9', '44');
+INSERT INTO `eppsdf_memory` VALUES ('5', '9', '45');
+INSERT INTO `eppsdf_memory` VALUES ('1', '10', '46');
+INSERT INTO `eppsdf_memory` VALUES ('2', '10', '47');
+INSERT INTO `eppsdf_memory` VALUES ('3', '10', '48');
+INSERT INTO `eppsdf_memory` VALUES ('4', '10', '49');
+INSERT INTO `eppsdf_memory` VALUES ('5', '10', '50');
+INSERT INTO `eppsdf_memory` VALUES ('1', '11', '51');
+INSERT INTO `eppsdf_memory` VALUES ('2', '11', '52');
+INSERT INTO `eppsdf_memory` VALUES ('3', '11', '53');
+INSERT INTO `eppsdf_memory` VALUES ('4', '11', '54');
+INSERT INTO `eppsdf_memory` VALUES ('5', '11', '55');
+INSERT INTO `eppsdf_memory` VALUES ('1', '12', '56');
+INSERT INTO `eppsdf_memory` VALUES ('2', '12', '57');
+INSERT INTO `eppsdf_memory` VALUES ('3', '12', '58');
+INSERT INTO `eppsdf_memory` VALUES ('4', '12', '59');
+INSERT INTO `eppsdf_memory` VALUES ('5', '12', '60');
+INSERT INTO `eppsdf_memory` VALUES ('1', '13', '61');
+INSERT INTO `eppsdf_memory` VALUES ('2', '13', '62');
+INSERT INTO `eppsdf_memory` VALUES ('3', '13', '63');
+INSERT INTO `eppsdf_memory` VALUES ('4', '13', '64');
+INSERT INTO `eppsdf_memory` VALUES ('5', '13', '65');
+INSERT INTO `eppsdf_memory` VALUES ('1', '14', '66');
+INSERT INTO `eppsdf_memory` VALUES ('2', '14', '67');
+INSERT INTO `eppsdf_memory` VALUES ('3', '14', '68');
+INSERT INTO `eppsdf_memory` VALUES ('4', '14', '69');
+INSERT INTO `eppsdf_memory` VALUES ('5', '14', '70');
+INSERT INTO `eppsdf_memory` VALUES ('1', '15', '71');
+INSERT INTO `eppsdf_memory` VALUES ('2', '15', '72');
+INSERT INTO `eppsdf_memory` VALUES ('3', '15', '73');
+INSERT INTO `eppsdf_memory` VALUES ('4', '15', '74');
+INSERT INTO `eppsdf_memory` VALUES ('5', '15', '75');
+INSERT INTO `eppsdf_memory` VALUES ('6', '1', '76');
+INSERT INTO `eppsdf_memory` VALUES ('7', '1', '77');
+INSERT INTO `eppsdf_memory` VALUES ('8', '1', '78');
+INSERT INTO `eppsdf_memory` VALUES ('9', '1', '79');
+INSERT INTO `eppsdf_memory` VALUES ('10', '1', '80');
+INSERT INTO `eppsdf_memory` VALUES ('6', '2', '81');
+INSERT INTO `eppsdf_memory` VALUES ('7', '2', '82');
+INSERT INTO `eppsdf_memory` VALUES ('8', '2', '83');
+INSERT INTO `eppsdf_memory` VALUES ('9', '2', '84');
+INSERT INTO `eppsdf_memory` VALUES ('10', '2', '85');
+INSERT INTO `eppsdf_memory` VALUES ('6', '3', '86');
+INSERT INTO `eppsdf_memory` VALUES ('7', '3', '87');
+INSERT INTO `eppsdf_memory` VALUES ('8', '3', '88');
+INSERT INTO `eppsdf_memory` VALUES ('9', '3', '89');
+INSERT INTO `eppsdf_memory` VALUES ('10', '3', '90');
+INSERT INTO `eppsdf_memory` VALUES ('6', '4', '91');
+INSERT INTO `eppsdf_memory` VALUES ('7', '4', '92');
+INSERT INTO `eppsdf_memory` VALUES ('8', '4', '93');
+INSERT INTO `eppsdf_memory` VALUES ('9', '4', '94');
+INSERT INTO `eppsdf_memory` VALUES ('10', '4', '95');
+INSERT INTO `eppsdf_memory` VALUES ('6', '5', '96');
+INSERT INTO `eppsdf_memory` VALUES ('7', '5', '97');
+INSERT INTO `eppsdf_memory` VALUES ('8', '5', '98');
+INSERT INTO `eppsdf_memory` VALUES ('9', '5', '99');
+INSERT INTO `eppsdf_memory` VALUES ('10', '5', '100');
+INSERT INTO `eppsdf_memory` VALUES ('6', '6', '101');
+INSERT INTO `eppsdf_memory` VALUES ('7', '6', '102');
+INSERT INTO `eppsdf_memory` VALUES ('8', '6', '103');
+INSERT INTO `eppsdf_memory` VALUES ('9', '6', '104');
+INSERT INTO `eppsdf_memory` VALUES ('10', '6', '105');
+INSERT INTO `eppsdf_memory` VALUES ('6', '7', '106');
+INSERT INTO `eppsdf_memory` VALUES ('7', '7', '107');
+INSERT INTO `eppsdf_memory` VALUES ('8', '7', '108');
+INSERT INTO `eppsdf_memory` VALUES ('9', '7', '109');
+INSERT INTO `eppsdf_memory` VALUES ('10', '7', '110');
+INSERT INTO `eppsdf_memory` VALUES ('6', '8', '111');
+INSERT INTO `eppsdf_memory` VALUES ('7', '8', '112');
+INSERT INTO `eppsdf_memory` VALUES ('8', '8', '113');
+INSERT INTO `eppsdf_memory` VALUES ('9', '8', '114');
+INSERT INTO `eppsdf_memory` VALUES ('10', '8', '115');
+INSERT INTO `eppsdf_memory` VALUES ('6', '9', '116');
+INSERT INTO `eppsdf_memory` VALUES ('7', '9', '117');
+INSERT INTO `eppsdf_memory` VALUES ('8', '9', '118');
+INSERT INTO `eppsdf_memory` VALUES ('9', '9', '119');
+INSERT INTO `eppsdf_memory` VALUES ('10', '9', '120');
+INSERT INTO `eppsdf_memory` VALUES ('6', '10', '121');
+INSERT INTO `eppsdf_memory` VALUES ('7', '10', '122');
+INSERT INTO `eppsdf_memory` VALUES ('8', '10', '123');
+INSERT INTO `eppsdf_memory` VALUES ('9', '10', '124');
+INSERT INTO `eppsdf_memory` VALUES ('10', '10', '125');
+INSERT INTO `eppsdf_memory` VALUES ('6', '11', '126');
+INSERT INTO `eppsdf_memory` VALUES ('7', '11', '127');
+INSERT INTO `eppsdf_memory` VALUES ('8', '11', '128');
+INSERT INTO `eppsdf_memory` VALUES ('9', '11', '129');
+INSERT INTO `eppsdf_memory` VALUES ('10', '11', '130');
+INSERT INTO `eppsdf_memory` VALUES ('6', '12', '131');
+INSERT INTO `eppsdf_memory` VALUES ('7', '12', '132');
+INSERT INTO `eppsdf_memory` VALUES ('8', '12', '133');
+INSERT INTO `eppsdf_memory` VALUES ('9', '12', '134');
+INSERT INTO `eppsdf_memory` VALUES ('10', '12', '135');
+INSERT INTO `eppsdf_memory` VALUES ('6', '13', '136');
+INSERT INTO `eppsdf_memory` VALUES ('7', '13', '137');
+INSERT INTO `eppsdf_memory` VALUES ('8', '13', '138');
+INSERT INTO `eppsdf_memory` VALUES ('9', '13', '139');
+INSERT INTO `eppsdf_memory` VALUES ('10', '13', '140');
+INSERT INTO `eppsdf_memory` VALUES ('6', '14', '141');
+INSERT INTO `eppsdf_memory` VALUES ('7', '14', '142');
+INSERT INTO `eppsdf_memory` VALUES ('8', '14', '143');
+INSERT INTO `eppsdf_memory` VALUES ('9', '14', '144');
+INSERT INTO `eppsdf_memory` VALUES ('10', '14', '145');
+INSERT INTO `eppsdf_memory` VALUES ('6', '15', '146');
+INSERT INTO `eppsdf_memory` VALUES ('7', '15', '147');
+INSERT INTO `eppsdf_memory` VALUES ('8', '15', '148');
+INSERT INTO `eppsdf_memory` VALUES ('9', '15', '149');
+INSERT INTO `eppsdf_memory` VALUES ('10', '15', '150');
+INSERT INTO `eppsdf_memory` VALUES ('11', '1', '151');
+INSERT INTO `eppsdf_memory` VALUES ('12', '1', '152');
+INSERT INTO `eppsdf_memory` VALUES ('13', '1', '153');
+INSERT INTO `eppsdf_memory` VALUES ('14', '1', '154');
+INSERT INTO `eppsdf_memory` VALUES ('15', '1', '155');
+INSERT INTO `eppsdf_memory` VALUES ('11', '2', '156');
+INSERT INTO `eppsdf_memory` VALUES ('12', '2', '157');
+INSERT INTO `eppsdf_memory` VALUES ('13', '2', '158');
+INSERT INTO `eppsdf_memory` VALUES ('14', '2', '159');
+INSERT INTO `eppsdf_memory` VALUES ('15', '2', '160');
+INSERT INTO `eppsdf_memory` VALUES ('11', '3', '161');
+INSERT INTO `eppsdf_memory` VALUES ('12', '3', '162');
+INSERT INTO `eppsdf_memory` VALUES ('13', '3', '163');
+INSERT INTO `eppsdf_memory` VALUES ('14', '3', '164');
+INSERT INTO `eppsdf_memory` VALUES ('15', '3', '165');
+INSERT INTO `eppsdf_memory` VALUES ('11', '4', '166');
+INSERT INTO `eppsdf_memory` VALUES ('12', '4', '167');
+INSERT INTO `eppsdf_memory` VALUES ('13', '4', '168');
+INSERT INTO `eppsdf_memory` VALUES ('14', '4', '169');
+INSERT INTO `eppsdf_memory` VALUES ('15', '4', '170');
+INSERT INTO `eppsdf_memory` VALUES ('11', '5', '171');
+INSERT INTO `eppsdf_memory` VALUES ('12', '5', '172');
+INSERT INTO `eppsdf_memory` VALUES ('13', '5', '173');
+INSERT INTO `eppsdf_memory` VALUES ('14', '5', '174');
+INSERT INTO `eppsdf_memory` VALUES ('15', '5', '175');
+INSERT INTO `eppsdf_memory` VALUES ('11', '6', '176');
+INSERT INTO `eppsdf_memory` VALUES ('12', '6', '177');
+INSERT INTO `eppsdf_memory` VALUES ('13', '6', '178');
+INSERT INTO `eppsdf_memory` VALUES ('14', '6', '179');
+INSERT INTO `eppsdf_memory` VALUES ('15', '6', '180');
+INSERT INTO `eppsdf_memory` VALUES ('11', '7', '181');
+INSERT INTO `eppsdf_memory` VALUES ('12', '7', '182');
+INSERT INTO `eppsdf_memory` VALUES ('13', '7', '183');
+INSERT INTO `eppsdf_memory` VALUES ('14', '7', '184');
+INSERT INTO `eppsdf_memory` VALUES ('15', '7', '185');
+INSERT INTO `eppsdf_memory` VALUES ('11', '8', '186');
+INSERT INTO `eppsdf_memory` VALUES ('12', '8', '187');
+INSERT INTO `eppsdf_memory` VALUES ('13', '8', '188');
+INSERT INTO `eppsdf_memory` VALUES ('14', '8', '189');
+INSERT INTO `eppsdf_memory` VALUES ('15', '8', '190');
+INSERT INTO `eppsdf_memory` VALUES ('11', '9', '191');
+INSERT INTO `eppsdf_memory` VALUES ('12', '9', '192');
+INSERT INTO `eppsdf_memory` VALUES ('13', '9', '193');
+INSERT INTO `eppsdf_memory` VALUES ('14', '9', '194');
+INSERT INTO `eppsdf_memory` VALUES ('15', '9', '195');
+INSERT INTO `eppsdf_memory` VALUES ('11', '10', '196');
+INSERT INTO `eppsdf_memory` VALUES ('12', '10', '197');
+INSERT INTO `eppsdf_memory` VALUES ('13', '10', '198');
+INSERT INTO `eppsdf_memory` VALUES ('14', '10', '199');
+INSERT INTO `eppsdf_memory` VALUES ('15', '10', '200');
+INSERT INTO `eppsdf_memory` VALUES ('11', '11', '201');
+INSERT INTO `eppsdf_memory` VALUES ('12', '11', '202');
+INSERT INTO `eppsdf_memory` VALUES ('13', '11', '203');
+INSERT INTO `eppsdf_memory` VALUES ('14', '11', '204');
+INSERT INTO `eppsdf_memory` VALUES ('15', '11', '205');
+INSERT INTO `eppsdf_memory` VALUES ('11', '12', '206');
+INSERT INTO `eppsdf_memory` VALUES ('12', '12', '207');
+INSERT INTO `eppsdf_memory` VALUES ('13', '12', '208');
+INSERT INTO `eppsdf_memory` VALUES ('14', '12', '209');
+INSERT INTO `eppsdf_memory` VALUES ('15', '12', '210');
+INSERT INTO `eppsdf_memory` VALUES ('11', '13', '211');
+INSERT INTO `eppsdf_memory` VALUES ('12', '13', '212');
+INSERT INTO `eppsdf_memory` VALUES ('13', '13', '213');
+INSERT INTO `eppsdf_memory` VALUES ('14', '13', '214');
+INSERT INTO `eppsdf_memory` VALUES ('15', '13', '215');
+INSERT INTO `eppsdf_memory` VALUES ('11', '14', '216');
+INSERT INTO `eppsdf_memory` VALUES ('12', '14', '217');
+INSERT INTO `eppsdf_memory` VALUES ('13', '14', '218');
+INSERT INTO `eppsdf_memory` VALUES ('14', '14', '219');
+INSERT INTO `eppsdf_memory` VALUES ('15', '14', '220');
+INSERT INTO `eppsdf_memory` VALUES ('11', '15', '221');
+INSERT INTO `eppsdf_memory` VALUES ('12', '15', '222');
+INSERT INTO `eppsdf_memory` VALUES ('13', '15', '223');
+INSERT INTO `eppsdf_memory` VALUES ('14', '15', '224');
+INSERT INTO `eppsdf_memory` VALUES ('15', '15', '225');
 
---
--- Table structure for table `epqadf`
---
-
+-- ----------------------------
+-- Table structure for `epqadf`
+-- ----------------------------
 DROP TABLE IF EXISTS `epqadf`;
-CREATE TABLE IF NOT EXISTS `epqadf` (
+CREATE TABLE `epqadf` (
   `TH` int(11) NOT NULL,
   `XZ` tinyint(4) NOT NULL,
   `E` tinyint(4) DEFAULT NULL,
@@ -884,196 +1597,191 @@ CREATE TABLE IF NOT EXISTS `epqadf` (
   PRIMARY KEY (`TH`,`XZ`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `epqadf`
---
+-- ----------------------------
+-- Records of epqadf
+-- ----------------------------
+INSERT INTO `epqadf` VALUES ('1', '1', '1', '0', '0', '0');
+INSERT INTO `epqadf` VALUES ('1', '2', '0', '0', '0', '0');
+INSERT INTO `epqadf` VALUES ('2', '1', '0', '0', '0', '0');
+INSERT INTO `epqadf` VALUES ('2', '2', '0', '0', '1', '0');
+INSERT INTO `epqadf` VALUES ('3', '1', '0', '1', '0', '0');
+INSERT INTO `epqadf` VALUES ('3', '2', '0', '0', '0', '0');
+INSERT INTO `epqadf` VALUES ('4', '1', '0', '0', '0', '0');
+INSERT INTO `epqadf` VALUES ('4', '2', '0', '0', '0', '1');
+INSERT INTO `epqadf` VALUES ('5', '1', '1', null, null, null);
+INSERT INTO `epqadf` VALUES ('5', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('6', '1', null, '0', null, null);
+INSERT INTO `epqadf` VALUES ('6', '2', null, null, '1', null);
+INSERT INTO `epqadf` VALUES ('7', '1', null, '1', '0', null);
+INSERT INTO `epqadf` VALUES ('7', '2', null, null, null, '0');
+INSERT INTO `epqadf` VALUES ('8', '1', null, null, null, '0');
+INSERT INTO `epqadf` VALUES ('8', '2', null, null, '0', '1');
+INSERT INTO `epqadf` VALUES ('9', '1', '0', null, null, null);
+INSERT INTO `epqadf` VALUES ('9', '2', '0', null, '1', null);
+INSERT INTO `epqadf` VALUES ('10', '1', '1', '0', null, null);
+INSERT INTO `epqadf` VALUES ('10', '2', null, null, '0', null);
+INSERT INTO `epqadf` VALUES ('11', '1', null, '0', null, null);
+INSERT INTO `epqadf` VALUES ('11', '2', null, null, '1', '0');
+INSERT INTO `epqadf` VALUES ('12', '1', null, '1', '0', '0');
+INSERT INTO `epqadf` VALUES ('12', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('13', '1', '1', null, null, null);
+INSERT INTO `epqadf` VALUES ('13', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('14', '1', '1', '0', null, null);
+INSERT INTO `epqadf` VALUES ('14', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('15', '1', null, '1', '0', null);
+INSERT INTO `epqadf` VALUES ('15', '2', null, null, null, '0');
+INSERT INTO `epqadf` VALUES ('16', '1', '0', null, null, null);
+INSERT INTO `epqadf` VALUES ('16', '2', null, null, null, '1');
+INSERT INTO `epqadf` VALUES ('17', '1', '1', null, null, null);
+INSERT INTO `epqadf` VALUES ('17', '2', null, null, '0', null);
+INSERT INTO `epqadf` VALUES ('18', '1', null, '0', null, null);
+INSERT INTO `epqadf` VALUES ('18', '2', null, null, '1', null);
+INSERT INTO `epqadf` VALUES ('19', '1', '0', '1', '0', null);
+INSERT INTO `epqadf` VALUES ('19', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('20', '1', null, '0', null, '1');
+INSERT INTO `epqadf` VALUES ('20', '2', null, null, null, '0');
+INSERT INTO `epqadf` VALUES ('21', '1', '0', null, null, null);
+INSERT INTO `epqadf` VALUES ('21', '2', '1', null, null, '0');
+INSERT INTO `epqadf` VALUES ('22', '1', '0', '0', '1', null);
+INSERT INTO `epqadf` VALUES ('22', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('23', '1', null, '1', '0', null);
+INSERT INTO `epqadf` VALUES ('23', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('24', '1', null, '0', null, '0');
+INSERT INTO `epqadf` VALUES ('24', '2', null, null, null, '1');
+INSERT INTO `epqadf` VALUES ('25', '1', '1', null, null, null);
+INSERT INTO `epqadf` VALUES ('25', '2', null, null, null, '0');
+INSERT INTO `epqadf` VALUES ('26', '1', null, '0', '1', null);
+INSERT INTO `epqadf` VALUES ('26', '2', '0', null, null, null);
+INSERT INTO `epqadf` VALUES ('27', '1', null, '1', '0', '0');
+INSERT INTO `epqadf` VALUES ('27', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('28', '1', '0', '0', null, null);
+INSERT INTO `epqadf` VALUES ('28', '2', null, null, null, '1');
+INSERT INTO `epqadf` VALUES ('29', '1', '0', '0', null, null);
+INSERT INTO `epqadf` VALUES ('29', '2', '1', null, null, null);
+INSERT INTO `epqadf` VALUES ('30', '1', null, '0', '1', null);
+INSERT INTO `epqadf` VALUES ('30', '2', null, null, '0', null);
+INSERT INTO `epqadf` VALUES ('31', '1', null, '1', null, '0');
+INSERT INTO `epqadf` VALUES ('31', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('32', '1', '0', null, '0', '1');
+INSERT INTO `epqadf` VALUES ('32', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('33', '1', '1', null, null, null);
+INSERT INTO `epqadf` VALUES ('33', '2', null, null, '0', null);
+INSERT INTO `epqadf` VALUES ('34', '1', null, '0', '1', null);
+INSERT INTO `epqadf` VALUES ('34', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('35', '1', '0', '1', '0', null);
+INSERT INTO `epqadf` VALUES ('35', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('36', '1', null, '0', null, '1');
+INSERT INTO `epqadf` VALUES ('36', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('37', '1', '1', null, null, null);
+INSERT INTO `epqadf` VALUES ('37', '2', '0', null, null, null);
+INSERT INTO `epqadf` VALUES ('38', '1', null, '0', '0', null);
+INSERT INTO `epqadf` VALUES ('38', '2', null, null, '1', null);
+INSERT INTO `epqadf` VALUES ('39', '1', null, '1', '0', null);
+INSERT INTO `epqadf` VALUES ('39', '2', null, null, null, '0');
+INSERT INTO `epqadf` VALUES ('40', '1', '0', null, null, null);
+INSERT INTO `epqadf` VALUES ('40', '2', null, null, null, '1');
+INSERT INTO `epqadf` VALUES ('41', '1', '1', null, '0', null);
+INSERT INTO `epqadf` VALUES ('41', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('42', '1', null, '0', null, null);
+INSERT INTO `epqadf` VALUES ('42', '2', null, null, '1', null);
+INSERT INTO `epqadf` VALUES ('43', '1', '0', '1', '0', null);
+INSERT INTO `epqadf` VALUES ('43', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('44', '1', null, null, '0', '0');
+INSERT INTO `epqadf` VALUES ('44', '2', null, null, null, '1');
+INSERT INTO `epqadf` VALUES ('45', '1', '0', null, null, null);
+INSERT INTO `epqadf` VALUES ('45', '2', '1', null, null, '0');
+INSERT INTO `epqadf` VALUES ('46', '1', '0', '0', '1', null);
+INSERT INTO `epqadf` VALUES ('46', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('47', '1', null, '1', '0', null);
+INSERT INTO `epqadf` VALUES ('47', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('48', '1', null, null, null, '0');
+INSERT INTO `epqadf` VALUES ('48', '2', null, null, null, '1');
+INSERT INTO `epqadf` VALUES ('49', '1', '1', null, null, null);
+INSERT INTO `epqadf` VALUES ('49', '2', '0', null, null, null);
+INSERT INTO `epqadf` VALUES ('50', '1', null, '0', '1', null);
+INSERT INTO `epqadf` VALUES ('50', '2', null, null, '0', null);
+INSERT INTO `epqadf` VALUES ('51', '1', null, '1', '0', null);
+INSERT INTO `epqadf` VALUES ('51', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('52', '1', null, null, null, '0');
+INSERT INTO `epqadf` VALUES ('52', '2', null, null, null, '1');
+INSERT INTO `epqadf` VALUES ('53', '1', '1', null, '0', null);
+INSERT INTO `epqadf` VALUES ('53', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('54', '1', null, '0', null, null);
+INSERT INTO `epqadf` VALUES ('54', '2', null, null, null, '1');
+INSERT INTO `epqadf` VALUES ('55', '1', '1', null, '0', null);
+INSERT INTO `epqadf` VALUES ('55', '2', null, null, null, '0');
+INSERT INTO `epqadf` VALUES ('56', '1', '0', null, null, '0');
+INSERT INTO `epqadf` VALUES ('56', '2', null, null, '1', null);
+INSERT INTO `epqadf` VALUES ('57', '1', '0', '1', '0', null);
+INSERT INTO `epqadf` VALUES ('57', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('58', '1', null, '0', '0', '1');
+INSERT INTO `epqadf` VALUES ('58', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('59', '1', null, '1', '0', null);
+INSERT INTO `epqadf` VALUES ('59', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('60', '1', '0', null, '0', null);
+INSERT INTO `epqadf` VALUES ('60', '2', null, null, null, '1');
+INSERT INTO `epqadf` VALUES ('61', '1', '1', null, null, null);
+INSERT INTO `epqadf` VALUES ('61', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('62', '1', null, '0', '0', null);
+INSERT INTO `epqadf` VALUES ('62', '2', null, null, '1', null);
+INSERT INTO `epqadf` VALUES ('63', '1', null, '1', null, '0');
+INSERT INTO `epqadf` VALUES ('63', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('64', '1', '0', null, null, null);
+INSERT INTO `epqadf` VALUES ('64', '2', null, null, null, '1');
+INSERT INTO `epqadf` VALUES ('65', '1', '1', '0', '0', null);
+INSERT INTO `epqadf` VALUES ('65', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('66', '1', null, '0', '1', null);
+INSERT INTO `epqadf` VALUES ('66', '2', null, null, '0', null);
+INSERT INTO `epqadf` VALUES ('67', '1', null, '1', null, null);
+INSERT INTO `epqadf` VALUES ('67', '2', null, null, null, '0');
+INSERT INTO `epqadf` VALUES ('68', '1', '0', null, '1', '0');
+INSERT INTO `epqadf` VALUES ('68', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('69', '1', null, '1', '0', null);
+INSERT INTO `epqadf` VALUES ('69', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('70', '1', null, '0', null, null);
+INSERT INTO `epqadf` VALUES ('70', '2', null, null, null, '1');
+INSERT INTO `epqadf` VALUES ('71', '1', '1', null, null, null);
+INSERT INTO `epqadf` VALUES ('71', '2', null, null, null, '0');
+INSERT INTO `epqadf` VALUES ('72', '1', '0', '0', null, null);
+INSERT INTO `epqadf` VALUES ('72', '2', null, null, '1', null);
+INSERT INTO `epqadf` VALUES ('73', '1', null, '1', '0', null);
+INSERT INTO `epqadf` VALUES ('73', '2', null, null, null, '0');
+INSERT INTO `epqadf` VALUES ('74', '1', null, '1', null, null);
+INSERT INTO `epqadf` VALUES ('74', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('75', '1', '0', null, '1', null);
+INSERT INTO `epqadf` VALUES ('75', '2', null, null, null, '0');
+INSERT INTO `epqadf` VALUES ('76', '1', '0', '0', '1', null);
+INSERT INTO `epqadf` VALUES ('76', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('77', '1', null, '1', '0', null);
+INSERT INTO `epqadf` VALUES ('77', '2', null, null, '0', null);
+INSERT INTO `epqadf` VALUES ('78', '1', null, '1', null, '0');
+INSERT INTO `epqadf` VALUES ('78', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('79', '1', '0', null, null, '0');
+INSERT INTO `epqadf` VALUES ('79', '2', null, null, null, '1');
+INSERT INTO `epqadf` VALUES ('80', '1', '1', null, null, null);
+INSERT INTO `epqadf` VALUES ('80', '2', null, null, '0', '0');
+INSERT INTO `epqadf` VALUES ('81', '1', null, '0', '1', '0');
+INSERT INTO `epqadf` VALUES ('81', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('82', '1', null, '1', null, null);
+INSERT INTO `epqadf` VALUES ('82', '2', null, null, null, '0');
+INSERT INTO `epqadf` VALUES ('83', '1', '0', null, null, null);
+INSERT INTO `epqadf` VALUES ('83', '2', null, null, null, '1');
+INSERT INTO `epqadf` VALUES ('84', '1', '1', '0', null, null);
+INSERT INTO `epqadf` VALUES ('84', '2', null, null, null, '0');
+INSERT INTO `epqadf` VALUES ('85', '1', '0', null, '1', null);
+INSERT INTO `epqadf` VALUES ('85', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('86', '1', '0', '1', null, null);
+INSERT INTO `epqadf` VALUES ('86', '2', null, null, null, null);
+INSERT INTO `epqadf` VALUES ('87', '1', null, null, null, '1');
+INSERT INTO `epqadf` VALUES ('87', '2', null, null, null, '0');
+INSERT INTO `epqadf` VALUES ('88', '1', '0', null, '0', null);
+INSERT INTO `epqadf` VALUES ('88', '2', null, null, '1', null);
 
-INSERT INTO `epqadf` (`TH`, `XZ`, `E`, `N`, `P`, `L`) VALUES
-(1, 1, 1, 0, 0, 0),
-(1, 2, 0, 0, 0, 0),
-(2, 1, 0, 0, 0, 0),
-(2, 2, 0, 0, 1, 0),
-(3, 1, 0, 1, 0, 0),
-(3, 2, 0, 0, 0, 0),
-(4, 1, 0, 0, 0, 0),
-(4, 2, 0, 0, 0, 1),
-(5, 1, 1, NULL, NULL, NULL),
-(5, 2, NULL, NULL, NULL, NULL),
-(6, 1, NULL, 0, NULL, NULL),
-(6, 2, NULL, NULL, 1, NULL),
-(7, 1, NULL, 1, 0, NULL),
-(7, 2, NULL, NULL, NULL, 0),
-(8, 1, NULL, NULL, NULL, 0),
-(8, 2, NULL, NULL, 0, 1),
-(9, 1, 0, NULL, NULL, NULL),
-(9, 2, 0, NULL, 1, NULL),
-(10, 1, 1, 0, NULL, NULL),
-(10, 2, NULL, NULL, 0, NULL),
-(11, 1, NULL, 0, NULL, NULL),
-(11, 2, NULL, NULL, 1, 0),
-(12, 1, NULL, 1, 0, 0),
-(12, 2, NULL, NULL, NULL, NULL),
-(13, 1, 1, NULL, NULL, NULL),
-(13, 2, NULL, NULL, NULL, NULL),
-(14, 1, 1, 0, NULL, NULL),
-(14, 2, NULL, NULL, NULL, NULL),
-(15, 1, NULL, 1, 0, NULL),
-(15, 2, NULL, NULL, NULL, 0),
-(16, 1, 0, NULL, NULL, NULL),
-(16, 2, NULL, NULL, NULL, 1),
-(17, 1, 1, NULL, NULL, NULL),
-(17, 2, NULL, NULL, 0, NULL),
-(18, 1, NULL, 0, NULL, NULL),
-(18, 2, NULL, NULL, 1, NULL),
-(19, 1, 0, 1, 0, NULL),
-(19, 2, NULL, NULL, NULL, NULL),
-(20, 1, NULL, 0, NULL, 1),
-(20, 2, NULL, NULL, NULL, 0),
-(21, 1, 0, NULL, NULL, NULL),
-(21, 2, 1, NULL, NULL, 0),
-(22, 1, 0, 0, 1, NULL),
-(22, 2, NULL, NULL, NULL, NULL),
-(23, 1, NULL, 1, 0, NULL),
-(23, 2, NULL, NULL, NULL, NULL),
-(24, 1, NULL, 0, NULL, 0),
-(24, 2, NULL, NULL, NULL, 1),
-(25, 1, 1, NULL, NULL, NULL),
-(25, 2, NULL, NULL, NULL, 0),
-(26, 1, NULL, 0, 1, NULL),
-(26, 2, 0, NULL, NULL, NULL),
-(27, 1, NULL, 1, 0, 0),
-(27, 2, NULL, NULL, NULL, NULL),
-(28, 1, 0, 0, NULL, NULL),
-(28, 2, NULL, NULL, NULL, 1),
-(29, 1, 0, 0, NULL, NULL),
-(29, 2, 1, NULL, NULL, NULL),
-(30, 1, NULL, 0, 1, NULL),
-(30, 2, NULL, NULL, 0, NULL),
-(31, 1, NULL, 1, NULL, 0),
-(31, 2, NULL, NULL, NULL, NULL),
-(32, 1, 0, NULL, 0, 1),
-(32, 2, NULL, NULL, NULL, NULL),
-(33, 1, 1, NULL, NULL, NULL),
-(33, 2, NULL, NULL, 0, NULL),
-(34, 1, NULL, 0, 1, NULL),
-(34, 2, NULL, NULL, NULL, NULL),
-(35, 1, 0, 1, 0, NULL),
-(35, 2, NULL, NULL, NULL, NULL),
-(36, 1, NULL, 0, NULL, 1),
-(36, 2, NULL, NULL, NULL, NULL),
-(37, 1, 1, NULL, NULL, NULL),
-(37, 2, 0, NULL, NULL, NULL),
-(38, 1, NULL, 0, 0, NULL),
-(38, 2, NULL, NULL, 1, NULL),
-(39, 1, NULL, 1, 0, NULL),
-(39, 2, NULL, NULL, NULL, 0),
-(40, 1, 0, NULL, NULL, NULL),
-(40, 2, NULL, NULL, NULL, 1),
-(41, 1, 1, NULL, 0, NULL),
-(41, 2, NULL, NULL, NULL, NULL),
-(42, 1, NULL, 0, NULL, NULL),
-(42, 2, NULL, NULL, 1, NULL),
-(43, 1, 0, 1, 0, NULL),
-(43, 2, NULL, NULL, NULL, NULL),
-(44, 1, NULL, NULL, 0, 0),
-(44, 2, NULL, NULL, NULL, 1),
-(45, 1, 0, NULL, NULL, NULL),
-(45, 2, 1, NULL, NULL, 0),
-(46, 1, 0, 0, 1, NULL),
-(46, 2, NULL, NULL, NULL, NULL),
-(47, 1, NULL, 1, 0, NULL),
-(47, 2, NULL, NULL, NULL, NULL),
-(48, 1, NULL, NULL, NULL, 0),
-(48, 2, NULL, NULL, NULL, 1),
-(49, 1, 1, NULL, NULL, NULL),
-(49, 2, 0, NULL, NULL, NULL),
-(50, 1, NULL, 0, 1, NULL),
-(50, 2, NULL, NULL, 0, NULL),
-(51, 1, NULL, 1, 0, NULL),
-(51, 2, NULL, NULL, NULL, NULL),
-(52, 1, NULL, NULL, NULL, 0),
-(52, 2, NULL, NULL, NULL, 1),
-(53, 1, 1, NULL, 0, NULL),
-(53, 2, NULL, NULL, NULL, NULL),
-(54, 1, NULL, 0, NULL, NULL),
-(54, 2, NULL, NULL, NULL, 1),
-(55, 1, 1, NULL, 0, NULL),
-(55, 2, NULL, NULL, NULL, 0),
-(56, 1, 0, NULL, NULL, 0),
-(56, 2, NULL, NULL, 1, NULL),
-(57, 1, 0, 1, 0, NULL),
-(57, 2, NULL, NULL, NULL, NULL),
-(58, 1, NULL, 0, 0, 1),
-(58, 2, NULL, NULL, NULL, NULL),
-(59, 1, NULL, 1, 0, NULL),
-(59, 2, NULL, NULL, NULL, NULL),
-(60, 1, 0, NULL, 0, NULL),
-(60, 2, NULL, NULL, NULL, 1),
-(61, 1, 1, NULL, NULL, NULL),
-(61, 2, NULL, NULL, NULL, NULL),
-(62, 1, NULL, 0, 0, NULL),
-(62, 2, NULL, NULL, 1, NULL),
-(63, 1, NULL, 1, NULL, 0),
-(63, 2, NULL, NULL, NULL, NULL),
-(64, 1, 0, NULL, NULL, NULL),
-(64, 2, NULL, NULL, NULL, 1),
-(65, 1, 1, 0, 0, NULL),
-(65, 2, NULL, NULL, NULL, NULL),
-(66, 1, NULL, 0, 1, NULL),
-(66, 2, NULL, NULL, 0, NULL),
-(67, 1, NULL, 1, NULL, NULL),
-(67, 2, NULL, NULL, NULL, 0),
-(68, 1, 0, NULL, 1, 0),
-(68, 2, NULL, NULL, NULL, NULL),
-(69, 1, NULL, 1, 0, NULL),
-(69, 2, NULL, NULL, NULL, NULL),
-(70, 1, NULL, 0, NULL, NULL),
-(70, 2, NULL, NULL, NULL, 1),
-(71, 1, 1, NULL, NULL, NULL),
-(71, 2, NULL, NULL, NULL, 0),
-(72, 1, 0, 0, NULL, NULL),
-(72, 2, NULL, NULL, 1, NULL),
-(73, 1, NULL, 1, 0, NULL),
-(73, 2, NULL, NULL, NULL, 0),
-(74, 1, NULL, 1, NULL, NULL),
-(74, 2, NULL, NULL, NULL, NULL),
-(75, 1, 0, NULL, 1, NULL),
-(75, 2, NULL, NULL, NULL, 0),
-(76, 1, 0, 0, 1, NULL),
-(76, 2, NULL, NULL, NULL, NULL),
-(77, 1, NULL, 1, 0, NULL),
-(77, 2, NULL, NULL, 0, NULL),
-(78, 1, NULL, 1, NULL, 0),
-(78, 2, NULL, NULL, NULL, NULL),
-(79, 1, 0, NULL, NULL, 0),
-(79, 2, NULL, NULL, NULL, 1),
-(80, 1, 1, NULL, NULL, NULL),
-(80, 2, NULL, NULL, 0, 0),
-(81, 1, NULL, 0, 1, 0),
-(81, 2, NULL, NULL, NULL, NULL),
-(82, 1, NULL, 1, NULL, NULL),
-(82, 2, NULL, NULL, NULL, 0),
-(83, 1, 0, NULL, NULL, NULL),
-(83, 2, NULL, NULL, NULL, 1),
-(84, 1, 1, 0, NULL, NULL),
-(84, 2, NULL, NULL, NULL, 0),
-(85, 1, 0, NULL, 1, NULL),
-(85, 2, NULL, NULL, NULL, NULL),
-(86, 1, 0, 1, NULL, NULL),
-(86, 2, NULL, NULL, NULL, NULL),
-(87, 1, NULL, NULL, NULL, 1),
-(87, 2, NULL, NULL, NULL, 0),
-(88, 1, 0, NULL, 0, NULL),
-(88, 2, NULL, NULL, 1, NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `epqadf_memory`
---
-
+-- ----------------------------
+-- Table structure for `epqadf_memory`
+-- ----------------------------
 DROP TABLE IF EXISTS `epqadf_memory`;
-CREATE TABLE IF NOT EXISTS `epqadf_memory` (
+CREATE TABLE `epqadf_memory` (
   `TH` int(11) NOT NULL,
   `XZ` tinyint(4) NOT NULL,
   `E` tinyint(4) DEFAULT NULL,
@@ -1083,14 +1791,191 @@ CREATE TABLE IF NOT EXISTS `epqadf_memory` (
   PRIMARY KEY (`TH`,`XZ`)
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Records of epqadf_memory
+-- ----------------------------
+INSERT INTO `epqadf_memory` VALUES ('1', '1', '1', '0', '0', '0');
+INSERT INTO `epqadf_memory` VALUES ('1', '2', '0', '0', '0', '0');
+INSERT INTO `epqadf_memory` VALUES ('2', '1', '0', '0', '0', '0');
+INSERT INTO `epqadf_memory` VALUES ('2', '2', '0', '0', '1', '0');
+INSERT INTO `epqadf_memory` VALUES ('3', '1', '0', '1', '0', '0');
+INSERT INTO `epqadf_memory` VALUES ('3', '2', '0', '0', '0', '0');
+INSERT INTO `epqadf_memory` VALUES ('4', '1', '0', '0', '0', '0');
+INSERT INTO `epqadf_memory` VALUES ('4', '2', '0', '0', '0', '1');
+INSERT INTO `epqadf_memory` VALUES ('5', '1', '1', null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('5', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('6', '1', null, '0', null, null);
+INSERT INTO `epqadf_memory` VALUES ('6', '2', null, null, '1', null);
+INSERT INTO `epqadf_memory` VALUES ('7', '1', null, '1', '0', null);
+INSERT INTO `epqadf_memory` VALUES ('7', '2', null, null, null, '0');
+INSERT INTO `epqadf_memory` VALUES ('8', '1', null, null, null, '0');
+INSERT INTO `epqadf_memory` VALUES ('8', '2', null, null, '0', '1');
+INSERT INTO `epqadf_memory` VALUES ('9', '1', '0', null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('9', '2', '0', null, '1', null);
+INSERT INTO `epqadf_memory` VALUES ('10', '1', '1', '0', null, null);
+INSERT INTO `epqadf_memory` VALUES ('10', '2', null, null, '0', null);
+INSERT INTO `epqadf_memory` VALUES ('11', '1', null, '0', null, null);
+INSERT INTO `epqadf_memory` VALUES ('11', '2', null, null, '1', '0');
+INSERT INTO `epqadf_memory` VALUES ('12', '1', null, '1', '0', '0');
+INSERT INTO `epqadf_memory` VALUES ('12', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('13', '1', '1', null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('13', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('14', '1', '1', '0', null, null);
+INSERT INTO `epqadf_memory` VALUES ('14', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('15', '1', null, '1', '0', null);
+INSERT INTO `epqadf_memory` VALUES ('15', '2', null, null, null, '0');
+INSERT INTO `epqadf_memory` VALUES ('16', '1', '0', null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('16', '2', null, null, null, '1');
+INSERT INTO `epqadf_memory` VALUES ('17', '1', '1', null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('17', '2', null, null, '0', null);
+INSERT INTO `epqadf_memory` VALUES ('18', '1', null, '0', null, null);
+INSERT INTO `epqadf_memory` VALUES ('18', '2', null, null, '1', null);
+INSERT INTO `epqadf_memory` VALUES ('19', '1', '0', '1', '0', null);
+INSERT INTO `epqadf_memory` VALUES ('19', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('20', '1', null, '0', null, '1');
+INSERT INTO `epqadf_memory` VALUES ('20', '2', null, null, null, '0');
+INSERT INTO `epqadf_memory` VALUES ('21', '1', '0', null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('21', '2', '1', null, null, '0');
+INSERT INTO `epqadf_memory` VALUES ('22', '1', '0', '0', '1', null);
+INSERT INTO `epqadf_memory` VALUES ('22', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('23', '1', null, '1', '0', null);
+INSERT INTO `epqadf_memory` VALUES ('23', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('24', '1', null, '0', null, '0');
+INSERT INTO `epqadf_memory` VALUES ('24', '2', null, null, null, '1');
+INSERT INTO `epqadf_memory` VALUES ('25', '1', '1', null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('25', '2', null, null, null, '0');
+INSERT INTO `epqadf_memory` VALUES ('26', '1', null, '0', '1', null);
+INSERT INTO `epqadf_memory` VALUES ('26', '2', '0', null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('27', '1', null, '1', '0', '0');
+INSERT INTO `epqadf_memory` VALUES ('27', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('28', '1', '0', '0', null, null);
+INSERT INTO `epqadf_memory` VALUES ('28', '2', null, null, null, '1');
+INSERT INTO `epqadf_memory` VALUES ('29', '1', '0', '0', null, null);
+INSERT INTO `epqadf_memory` VALUES ('29', '2', '1', null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('30', '1', null, '0', '1', null);
+INSERT INTO `epqadf_memory` VALUES ('30', '2', null, null, '0', null);
+INSERT INTO `epqadf_memory` VALUES ('31', '1', null, '1', null, '0');
+INSERT INTO `epqadf_memory` VALUES ('31', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('32', '1', '0', null, '0', '1');
+INSERT INTO `epqadf_memory` VALUES ('32', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('33', '1', '1', null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('33', '2', null, null, '0', null);
+INSERT INTO `epqadf_memory` VALUES ('34', '1', null, '0', '1', null);
+INSERT INTO `epqadf_memory` VALUES ('34', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('35', '1', '0', '1', '0', null);
+INSERT INTO `epqadf_memory` VALUES ('35', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('36', '1', null, '0', null, '1');
+INSERT INTO `epqadf_memory` VALUES ('36', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('37', '1', '1', null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('37', '2', '0', null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('38', '1', null, '0', '0', null);
+INSERT INTO `epqadf_memory` VALUES ('38', '2', null, null, '1', null);
+INSERT INTO `epqadf_memory` VALUES ('39', '1', null, '1', '0', null);
+INSERT INTO `epqadf_memory` VALUES ('39', '2', null, null, null, '0');
+INSERT INTO `epqadf_memory` VALUES ('40', '1', '0', null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('40', '2', null, null, null, '1');
+INSERT INTO `epqadf_memory` VALUES ('41', '1', '1', null, '0', null);
+INSERT INTO `epqadf_memory` VALUES ('41', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('42', '1', null, '0', null, null);
+INSERT INTO `epqadf_memory` VALUES ('42', '2', null, null, '1', null);
+INSERT INTO `epqadf_memory` VALUES ('43', '1', '0', '1', '0', null);
+INSERT INTO `epqadf_memory` VALUES ('43', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('44', '1', null, null, '0', '0');
+INSERT INTO `epqadf_memory` VALUES ('44', '2', null, null, null, '1');
+INSERT INTO `epqadf_memory` VALUES ('45', '1', '0', null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('45', '2', '1', null, null, '0');
+INSERT INTO `epqadf_memory` VALUES ('46', '1', '0', '0', '1', null);
+INSERT INTO `epqadf_memory` VALUES ('46', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('47', '1', null, '1', '0', null);
+INSERT INTO `epqadf_memory` VALUES ('47', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('48', '1', null, null, null, '0');
+INSERT INTO `epqadf_memory` VALUES ('48', '2', null, null, null, '1');
+INSERT INTO `epqadf_memory` VALUES ('49', '1', '1', null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('49', '2', '0', null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('50', '1', null, '0', '1', null);
+INSERT INTO `epqadf_memory` VALUES ('50', '2', null, null, '0', null);
+INSERT INTO `epqadf_memory` VALUES ('51', '1', null, '1', '0', null);
+INSERT INTO `epqadf_memory` VALUES ('51', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('52', '1', null, null, null, '0');
+INSERT INTO `epqadf_memory` VALUES ('52', '2', null, null, null, '1');
+INSERT INTO `epqadf_memory` VALUES ('53', '1', '1', null, '0', null);
+INSERT INTO `epqadf_memory` VALUES ('53', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('54', '1', null, '0', null, null);
+INSERT INTO `epqadf_memory` VALUES ('54', '2', null, null, null, '1');
+INSERT INTO `epqadf_memory` VALUES ('55', '1', '1', null, '0', null);
+INSERT INTO `epqadf_memory` VALUES ('55', '2', null, null, null, '0');
+INSERT INTO `epqadf_memory` VALUES ('56', '1', '0', null, null, '0');
+INSERT INTO `epqadf_memory` VALUES ('56', '2', null, null, '1', null);
+INSERT INTO `epqadf_memory` VALUES ('57', '1', '0', '1', '0', null);
+INSERT INTO `epqadf_memory` VALUES ('57', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('58', '1', null, '0', '0', '1');
+INSERT INTO `epqadf_memory` VALUES ('58', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('59', '1', null, '1', '0', null);
+INSERT INTO `epqadf_memory` VALUES ('59', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('60', '1', '0', null, '0', null);
+INSERT INTO `epqadf_memory` VALUES ('60', '2', null, null, null, '1');
+INSERT INTO `epqadf_memory` VALUES ('61', '1', '1', null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('61', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('62', '1', null, '0', '0', null);
+INSERT INTO `epqadf_memory` VALUES ('62', '2', null, null, '1', null);
+INSERT INTO `epqadf_memory` VALUES ('63', '1', null, '1', null, '0');
+INSERT INTO `epqadf_memory` VALUES ('63', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('64', '1', '0', null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('64', '2', null, null, null, '1');
+INSERT INTO `epqadf_memory` VALUES ('65', '1', '1', '0', '0', null);
+INSERT INTO `epqadf_memory` VALUES ('65', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('66', '1', null, '0', '1', null);
+INSERT INTO `epqadf_memory` VALUES ('66', '2', null, null, '0', null);
+INSERT INTO `epqadf_memory` VALUES ('67', '1', null, '1', null, null);
+INSERT INTO `epqadf_memory` VALUES ('67', '2', null, null, null, '0');
+INSERT INTO `epqadf_memory` VALUES ('68', '1', '0', null, '1', '0');
+INSERT INTO `epqadf_memory` VALUES ('68', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('69', '1', null, '1', '0', null);
+INSERT INTO `epqadf_memory` VALUES ('69', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('70', '1', null, '0', null, null);
+INSERT INTO `epqadf_memory` VALUES ('70', '2', null, null, null, '1');
+INSERT INTO `epqadf_memory` VALUES ('71', '1', '1', null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('71', '2', null, null, null, '0');
+INSERT INTO `epqadf_memory` VALUES ('72', '1', '0', '0', null, null);
+INSERT INTO `epqadf_memory` VALUES ('72', '2', null, null, '1', null);
+INSERT INTO `epqadf_memory` VALUES ('73', '1', null, '1', '0', null);
+INSERT INTO `epqadf_memory` VALUES ('73', '2', null, null, null, '0');
+INSERT INTO `epqadf_memory` VALUES ('74', '1', null, '1', null, null);
+INSERT INTO `epqadf_memory` VALUES ('74', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('75', '1', '0', null, '1', null);
+INSERT INTO `epqadf_memory` VALUES ('75', '2', null, null, null, '0');
+INSERT INTO `epqadf_memory` VALUES ('76', '1', '0', '0', '1', null);
+INSERT INTO `epqadf_memory` VALUES ('76', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('77', '1', null, '1', '0', null);
+INSERT INTO `epqadf_memory` VALUES ('77', '2', null, null, '0', null);
+INSERT INTO `epqadf_memory` VALUES ('78', '1', null, '1', null, '0');
+INSERT INTO `epqadf_memory` VALUES ('78', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('79', '1', '0', null, null, '0');
+INSERT INTO `epqadf_memory` VALUES ('79', '2', null, null, null, '1');
+INSERT INTO `epqadf_memory` VALUES ('80', '1', '1', null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('80', '2', null, null, '0', '0');
+INSERT INTO `epqadf_memory` VALUES ('81', '1', null, '0', '1', '0');
+INSERT INTO `epqadf_memory` VALUES ('81', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('82', '1', null, '1', null, null);
+INSERT INTO `epqadf_memory` VALUES ('82', '2', null, null, null, '0');
+INSERT INTO `epqadf_memory` VALUES ('83', '1', '0', null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('83', '2', null, null, null, '1');
+INSERT INTO `epqadf_memory` VALUES ('84', '1', '1', '0', null, null);
+INSERT INTO `epqadf_memory` VALUES ('84', '2', null, null, null, '0');
+INSERT INTO `epqadf_memory` VALUES ('85', '1', '0', null, '1', null);
+INSERT INTO `epqadf_memory` VALUES ('85', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('86', '1', '0', '1', null, null);
+INSERT INTO `epqadf_memory` VALUES ('86', '2', null, null, null, null);
+INSERT INTO `epqadf_memory` VALUES ('87', '1', null, null, null, '1');
+INSERT INTO `epqadf_memory` VALUES ('87', '2', null, null, null, '0');
+INSERT INTO `epqadf_memory` VALUES ('88', '1', '0', null, '0', null);
+INSERT INTO `epqadf_memory` VALUES ('88', '2', null, null, '1', null);
 
---
--- Table structure for table `epqamd`
---
-
+-- ----------------------------
+-- Table structure for `epqamd`
+-- ----------------------------
 DROP TABLE IF EXISTS `epqamd`;
-CREATE TABLE IF NOT EXISTS `epqamd` (
+CREATE TABLE `epqamd` (
   `DSEX` tinyint(4) NOT NULL,
   `DAGEL` int(11) NOT NULL,
   `DAGEH` int(11) NOT NULL,
@@ -1105,32 +1990,62 @@ CREATE TABLE IF NOT EXISTS `epqamd` (
   PRIMARY KEY (`DSEX`,`DAGEL`,`DAGEH`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `epqamd`
---
+-- ----------------------------
+-- Records of epqamd
+-- ----------------------------
+INSERT INTO `epqamd` VALUES ('1', '16', '20', '11.55', '3.99', '12.31', '4.00', '6.65', '4.36', '11.76', '4.18');
+INSERT INTO `epqamd` VALUES ('1', '20', '30', '10.63', '4.44', '11.26', '4.26', '5.96', '2.84', '12.17', '3.57');
+INSERT INTO `epqamd` VALUES ('1', '30', '40', '9.92', '3.90', '12.02', '4.56', '5.85', '3.32', '12.39', '3.93');
+INSERT INTO `epqamd` VALUES ('1', '40', '50', '9.65', '4.77', '10.12', '5.04', '5.67', '2.54', '13.55', '3.56');
+INSERT INTO `epqamd` VALUES ('1', '50', '60', '8.63', '3.69', '11.07', '6.31', '6.05', '3.31', '13.93', '3.80');
+INSERT INTO `epqamd` VALUES ('1', '60', '150', '9.80', '4.64', '8.92', '4.59', '4.40', '2.33', '15.35', '2.73');
+INSERT INTO `epqamd` VALUES ('2', '16', '20', '10.23', '4.09', '12.28', '4.92', '5.06', '2.69', '12.85', '4.08');
+INSERT INTO `epqamd` VALUES ('2', '20', '30', '8.65', '4.49', '13.06', '4.42', '4.92', '2.95', '13.35', '3.63');
+INSERT INTO `epqamd` VALUES ('2', '30', '40', '8.97', '4.45', '12.02', '5.05', '4.80', '3.33', '14.17', '3.65');
+INSERT INTO `epqamd` VALUES ('2', '40', '50', '8.37', '4.35', '12.15', '5.73', '4.03', '2.40', '15.41', '3.22');
+INSERT INTO `epqamd` VALUES ('2', '50', '60', '9.22', '4.21', '11.09', '5.21', '4.05', '2.90', '14.09', '4.03');
+INSERT INTO `epqamd` VALUES ('2', '60', '150', '9.34', '4.31', '11.36', '5.08', '3.82', '2.41', '15.95', '3.65');
 
-INSERT INTO `epqamd` (`DSEX`, `DAGEL`, `DAGEH`, `EM`, `ESD`, `NM`, `NSD`, `PM`, `PSD`, `LM`, `LSD`) VALUES
-(1, 16, 20, 11.55, 3.99, 12.31, 4.00, 6.65, 4.36, 11.76, 4.18),
-(1, 20, 30, 10.63, 4.44, 11.26, 4.26, 5.96, 2.84, 12.17, 3.57),
-(1, 30, 40, 9.92, 3.90, 12.02, 4.56, 5.85, 3.32, 12.39, 3.93),
-(1, 40, 50, 9.65, 4.77, 10.12, 5.04, 5.67, 2.54, 13.55, 3.56),
-(1, 50, 60, 8.63, 3.69, 11.07, 6.31, 6.05, 3.31, 13.93, 3.80),
-(1, 60, 150, 9.80, 4.64, 8.92, 4.59, 4.40, 2.33, 15.35, 2.73),
-(2, 16, 20, 10.23, 4.09, 12.28, 4.92, 5.06, 2.69, 12.85, 4.08),
-(2, 20, 30, 8.65, 4.49, 13.06, 4.42, 4.92, 2.95, 13.35, 3.63),
-(2, 30, 40, 8.97, 4.45, 12.02, 5.05, 4.80, 3.33, 14.17, 3.65),
-(2, 40, 50, 8.37, 4.35, 12.15, 5.73, 4.03, 2.40, 15.41, 3.22),
-(2, 50, 60, 9.22, 4.21, 11.09, 5.21, 4.05, 2.90, 14.09, 4.03),
-(2, 60, 150, 9.34, 4.31, 11.36, 5.08, 3.82, 2.41, 15.95, 3.65);
+-- ----------------------------
+-- Table structure for `epqamd_memory`
+-- ----------------------------
+DROP TABLE IF EXISTS `epqamd_memory`;
+CREATE TABLE `epqamd_memory` (
+  `DSEX` tinyint(4) NOT NULL,
+  `DAGEL` int(11) NOT NULL,
+  `DAGEH` int(11) NOT NULL,
+  `EM` float(11,2) NOT NULL,
+  `ESD` float(11,2) NOT NULL,
+  `NM` float(11,2) NOT NULL,
+  `NSD` float(11,2) NOT NULL,
+  `PM` float(11,2) NOT NULL,
+  `PSD` float(11,2) NOT NULL,
+  `LM` float(11,2) NOT NULL,
+  `LSD` float(11,2) NOT NULL,
+  PRIMARY KEY (`DSEX`,`DAGEL`,`DAGEH`)
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Records of epqamd_memory
+-- ----------------------------
+INSERT INTO `epqamd_memory` VALUES ('1', '16', '20', '11.55', '3.99', '12.31', '4.00', '6.65', '4.36', '11.76', '4.18');
+INSERT INTO `epqamd_memory` VALUES ('1', '20', '30', '10.63', '4.44', '11.26', '4.26', '5.96', '2.84', '12.17', '3.57');
+INSERT INTO `epqamd_memory` VALUES ('1', '30', '40', '9.92', '3.90', '12.02', '4.56', '5.85', '3.32', '12.39', '3.93');
+INSERT INTO `epqamd_memory` VALUES ('1', '40', '50', '9.65', '4.77', '10.12', '5.04', '5.67', '2.54', '13.55', '3.56');
+INSERT INTO `epqamd_memory` VALUES ('1', '50', '60', '8.63', '3.69', '11.07', '6.31', '6.05', '3.31', '13.93', '3.80');
+INSERT INTO `epqamd_memory` VALUES ('1', '60', '150', '9.80', '4.64', '8.92', '4.59', '4.40', '2.33', '15.35', '2.73');
+INSERT INTO `epqamd_memory` VALUES ('2', '16', '20', '10.23', '4.09', '12.28', '4.92', '5.06', '2.69', '12.85', '4.08');
+INSERT INTO `epqamd_memory` VALUES ('2', '20', '30', '8.65', '4.49', '13.06', '4.42', '4.92', '2.95', '13.35', '3.63');
+INSERT INTO `epqamd_memory` VALUES ('2', '30', '40', '8.97', '4.45', '12.02', '5.05', '4.80', '3.33', '14.17', '3.65');
+INSERT INTO `epqamd_memory` VALUES ('2', '40', '50', '8.37', '4.35', '12.15', '5.73', '4.03', '2.40', '15.41', '3.22');
+INSERT INTO `epqamd_memory` VALUES ('2', '50', '60', '9.22', '4.21', '11.09', '5.21', '4.05', '2.90', '14.09', '4.03');
+INSERT INTO `epqamd_memory` VALUES ('2', '60', '150', '9.34', '4.31', '11.36', '5.08', '3.82', '2.41', '15.95', '3.65');
 
---
--- Table structure for table `examinee`
---
-
+-- ----------------------------
+-- Table structure for `examinee`
+-- ----------------------------
 DROP TABLE IF EXISTS `examinee`;
-CREATE TABLE IF NOT EXISTS `examinee` (
+CREATE TABLE `examinee` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `number` varchar(45) NOT NULL COMMENT '被试人员编号，等同username',
   `password` varchar(256) NOT NULL,
@@ -1149,30 +2064,23 @@ CREATE TABLE IF NOT EXISTS `examinee` (
   `project_id` int(11) NOT NULL COMMENT '所属项目id',
   `birthday` date DEFAULT NULL,
   `last_login` datetime DEFAULT NULL,
-  `is_exam_com` tinyint(1) NOT NULL DEFAULT '0',
+  `state` tinyint(4) DEFAULT '0' COMMENT '测试状态：0，未答题；1，答案存储成功；2，基础得分算完；3，因子得分算完；4，指标得分算完；5，十项报表生成；6，最终报告生成',
+  `exam_time` int(11) DEFAULT NULL COMMENT '答题时间记录',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_UNIQUE` (`number`),
-  KEY `index3` (`project_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
+  KEY `index3` (`project_id`),
+  CONSTRAINT `fk_examinee_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `examinee`
---
+-- ----------------------------
+-- Records of examinee
+-- ----------------------------
 
-INSERT INTO `examinee` (`id`, `number`, `password`, `name`, `other`, `sex`, `native`, `education`, `politics`, `professional`, `degree`, `employer`, `unit`, `team`, `duty`, `project_id`, `birthday`, `last_login`, `is_exam_com`) VALUES
-(12, '15010001', 'efxonl', '孙西风', '{"education":[],"work":[]}', 1, '浙江省', '函授本科', '群众', '', '', '', '', '', '', 1, '1993-11-12', '2015-08-23 14:51:51', 1),
-(13, '15010002', '2oumzy', '孙西风', '{"education":[],"work":[]}', 1, '河北', '大本', '群众', '', '', '', '', '', '', 1, '1993-11-12', '2015-08-19 12:44:29', 1),
-(14, '15010003', '0mzg2o', '孙西风', '{"education":[],"work":[]}', 1, '河北', '大本', '群众', NULL, NULL, '', '', NULL, '', 1, '1993-11-12', NULL, 0),
-(15, '15010004', 'zkxvjb', '孙西风', '{"education":[],"work":[]}', 1, '河北', '大本', '群众', '', '', '', '', '', '', 1, '1993-11-12', '2015-08-19 05:11:29', 0);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `factor`
---
-
+-- ----------------------------
+-- Table structure for `factor`
+-- ----------------------------
 DROP TABLE IF EXISTS `factor`;
-CREATE TABLE IF NOT EXISTS `factor` (
+CREATE TABLE `factor` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `factor` double DEFAULT NULL COMMENT '因子系数，并未使用，暂时保留',
@@ -1187,193 +2095,118 @@ CREATE TABLE IF NOT EXISTS `factor` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
   KEY `index2` (`father_factor`),
-  KEY `index4` (`paper_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=142 ;
+  KEY `index4` (`paper_id`),
+  CONSTRAINT `fk_factor_1` FOREIGN KEY (`father_factor`) REFERENCES `factor` (`id`) ON DELETE SET NULL ON UPDATE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=221 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `factor`
---
+-- ----------------------------
+-- Records of factor
+-- ----------------------------
+INSERT INTO `factor` VALUES ('142', 'A', null, null, '134', '3,26,27,51,52,76,101,126,151,176', '1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', null, '乐群性');
+INSERT INTO `factor` VALUES ('143', 'B', null, null, '134', '28,53,54,77,78,102,103,127,128,152,153,177,178', '1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', null, '聪慧性');
+INSERT INTO `factor` VALUES ('144', 'C', null, null, '134', '4,5,29,30,55,79,80,104,105,129,130,154,179', '1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', null, '稳定性');
+INSERT INTO `factor` VALUES ('145', 'E', null, null, '134', '6,7,31,32,56,57,81,106,131,155,156,180,181', '1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', null, '恃强性');
+INSERT INTO `factor` VALUES ('146', 'F', null, null, '134', '8,33,58,82,83,107,108,132,133,157,158,182,183', '1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', null, '兴奋性');
+INSERT INTO `factor` VALUES ('147', 'G', null, null, '134', '9,34,59,84,109,134,159,160,184,185', '1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', null, '有恒性');
+INSERT INTO `factor` VALUES ('148', 'H', null, null, '134', '10,35,36,60,61,85,86,110,111,135,136,161,186', '1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', null, '敢为性');
+INSERT INTO `factor` VALUES ('149', 'I', null, null, '134', '11,12,37,62,87,112,137,138,162,163', '1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', null, '敏感性');
+INSERT INTO `factor` VALUES ('150', 'L', null, null, '134', '13,38,63,64,88,89,113,114,139,164', '1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', null, '怀疑性');
+INSERT INTO `factor` VALUES ('151', 'M', null, null, '134', '14,15,39,40,65,90,91,115,116,140,141,165,166', '1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', null, '幻想性');
+INSERT INTO `factor` VALUES ('152', 'N', null, null, '134', '16,17,41,42,66,67,92,117,142,167', '1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', null, '世故性');
+INSERT INTO `factor` VALUES ('153', 'O', null, null, '134', '18,19,43,44,68,69,93,94,118,119,143,144,168', '1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', null, '忧虑性');
+INSERT INTO `factor` VALUES ('154', 'Q1', null, null, '134', '20,21,45,46,70,95,120,145,169,170', '1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', null, '实验性');
+INSERT INTO `factor` VALUES ('155', 'Q2', null, null, '134', '22,47,71,72,96,97,121,122,146,171', '1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', null, '独立性');
+INSERT INTO `factor` VALUES ('156', 'Q3', null, null, '134', '23,24,48,73,98,123,147,148,172,173', '1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', null, '自律性');
+INSERT INTO `factor` VALUES ('157', 'Q4', null, null, '134', '25,49,50,74,75,99,100,124,125,149,150,174,175', '1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=10-$ans', null, '紧张性');
+INSERT INTO `factor` VALUES ('158', 'X1', null, null, '134', 'L,O,Q4,C,H,Q3', '0,0,0,0,0,0', '(38+2*L+3*O+4*Q4-(2*C+2*H+2*Q3))/10', '$ans=10-$ans', null, '适应与焦虑');
+INSERT INTO `factor` VALUES ('159', 'X2', null, null, '134', 'A,E,F,H,Q2', '0,0,0,0,0', '(2*A+3*E+4*F+5*H-(2*Q2+11))/10', '$ans=$ans', null, '内向与外向');
+INSERT INTO `factor` VALUES ('160', 'X3', null, null, '134', 'C,E,F,N,A,I,M', '0,0,0,0,0,0,0', '(77+2*C+2*E+2*F+2*N-(4*A+6*I+2*M))/10', '$ans=$ans', null, '感情用事');
+INSERT INTO `factor` VALUES ('161', 'X4', null, null, '134', 'E,M,Q1,Q2,A,G', '0,0,0,0,0,0', '(4*E+3*M+4*Q1+4*Q2-(3*A+2*G))/10', '$ans=$ans', null, '怯懦与果断');
+INSERT INTO `factor` VALUES ('162', 'Y1', null, null, '134', 'C,F,O,Q4', '0,0,0,0', 'C+F+(11-O)+(11-Q4)', '$ans=$ans/4', null, '心理健康');
+INSERT INTO `factor` VALUES ('163', 'Y2', null, null, '134', 'Q3,G,C,E,N,Q1,Q2', '0,0,0,0,0,0,0', '2*Q3+2*G+2*C+E+N+Q1+Q2', '$ans=$ans/7.5', null, '专业成就');
+INSERT INTO `factor` VALUES ('164', 'Y3', null, null, '134', 'A,B,E,F,H,I,M,N,Q1,Q2', '0,0,0,0,0,0,0,0,0,0', '2*(11-A)+2*B+E+2*(11-F)+H+2*I+M+(11-N)+Q1+2*Q2', '$ans=$ans', null, '创造力');
+INSERT INTO `factor` VALUES ('165', 'Y4', null, null, '134', 'B,G,Q3,F', '0,0,0,0', 'B+G+Q3+(11-F)', '$ans=$ans/4', null, '成长能力');
+INSERT INTO `factor` VALUES ('166', 'end', null, null, '136', '153,158,163,168,173,178,182,188,193,198,203,208,213,218,223,61,62,63,64,65,136,137,138,139,140,211,212,213,214,215', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum-1', '$ans=$ans/2.8', null, '持久需要');
+INSERT INTO `factor` VALUES ('167', 'int', null, null, '136', '77,82,87,92,97,102,107,112,117,122,127,132,137,142,147,31,32,33,34,35,106,107,108,109,110,181,182,183,184,185', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum-1', '$ans=$ans/2.8', null, '省察需要');
+INSERT INTO `factor` VALUES ('168', 'ord', null, null, '136', '3,8,13,18,23,28,33,38,43,48,53,58,63,68,73,11,12,13,14,15,86,87,88,89,90,161,162,163,164,165', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum-1', '$ans=$ans/2.8', null, '秩序需要');
+INSERT INTO `factor` VALUES ('169', 'ach', null, null, '136', '1,6,11,16,21,26,31,36,41,46,51,56,61,66,71,1,2,3,4,5,76,77,78,79,80,151,152,153,154,155', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum-1', '$ans=$ans/2.8', null, '成就需要');
+INSERT INTO `factor` VALUES ('170', 'chg', null, null, '136', '152,157,162,167,172,177,182,187,192,197,202,207,212,217,222,56,57,58,59,60,131,132,133,134,135,206,207,208,209,210', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum-1', '$ans=$ans/2.8', null, '变异需要');
+INSERT INTO `factor` VALUES ('171', 'aba', null, null, '136', '80,85,90,95,100,105,110,115,120,125,130,135,140,145,150,46,47,48,49,50,121,122,123,124,125,196,197,198,199,200', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum-1', '$ans=$ans/2.8', null, '谦卑需要');
+INSERT INTO `factor` VALUES ('172', 'dom', null, null, '136', '79,84,89,94,99,104,109,114,119,124,129,134,139,144,149,41,42,43,44,45,116,117,118,119,120,191,192,193,194,195', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum-1', '$ans=$ans/2.8', null, '支配需要');
+INSERT INTO `factor` VALUES ('173', 'aff', null, null, '136', '76,81,86,91,96,101,106,111,116,121,126,131,136,141,146,26,27,28,29,30,101,102,103,104,105,176,177,178,179,180', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum-1', '$ans=$ans/2.8', null, '亲和需要');
+INSERT INTO `factor` VALUES ('174', 'def', null, null, '136', '2,7,12,17,22,27,32,37,42,47,52,57,62,67,72,6,7,8,9,10,81,82,83,84,85,156,157,158,159,160', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum-1', '$ans=$ans/2.8', null, '顺从需要');
+INSERT INTO `factor` VALUES ('175', 'agg', null, null, '136', '155,160,165,170,175,180,185,190,195,200,205,210,215,220,225,71,72,73,74,75,146,147,148,149,150,221,222,223,224,225', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum-1', '$ans=$ans/2.8', null, '攻击需要');
+INSERT INTO `factor` VALUES ('176', 'suc', null, null, '136', '78,83,88,93,98,103,108,113,118,123,128,133,138,143,148,36,37,38,39,40,111,112,113,114,115,186,187,188,189,190', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum-1', '$ans=$ans/2.8', null, '求助需要');
+INSERT INTO `factor` VALUES ('177', 'exh', null, null, '136', '4,9,14,19,24,29,34,39,44,49,54,59,64,69,74,16,17,18,19,20,91,92,93,94,95,166,167,168,169,170', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum-1', '$ans=$ans/2.8', null, '表现需要');
+INSERT INTO `factor` VALUES ('178', 'aut', null, null, '136', '5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,21,22,23,24,25,96,97,98,99,100,171,172,173,174,175', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum-1', '$ans=$ans/2.8', null, '自主需要');
+INSERT INTO `factor` VALUES ('179', 'het', null, null, '136', '154,159,164,169,174,179,184,189,194,199,204,209,214,219,224,66,67,68,69,70,141,142,143,144,145,216,217,218,219,220', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum-1', '$ans=$ans/2.8', null, '异性恋需要');
+INSERT INTO `factor` VALUES ('180', 'nur', null, null, '136', '151,156,161,166,171,176,181,186,191,196,201,206,211,216,221,51,52,53,54,55,126,127,128,129,130,201,202,203,204,205', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum-1', '$ans=$ans/2.8', null, '慈善需要');
+INSERT INTO `factor` VALUES ('181', 'con', null, null, '136', '1,7,13,19,25,26,32,38,44,50,51,57,63,69,75,101,107,113,119,125,151,157,163,169,175,201,207,213,219,225', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', 'if ($ans == 1) $ans = 9; else                    if ($ans == 2) $ans = 8; else                      if ($ans == 3) $ans = 7; else                    if ($ans == 4) $ans = 5; else                     if($ans ==6 ) $ans=2; else $ans = 1;', null, '稳定系数');
+INSERT INTO `factor` VALUES ('182', 'soma', null, null, '137', '1,4,12,27,40,42,48,49,52,53,56,58', '1,1,1,1,1,1,1,1,1,1,1,1', 'avg', 'if ($ans == 1) $ans = 9; else                    if ($ans < 1.1) $ans = 8; else                      if ($ans < 1.3) $ans = 7; else                    if ($ans < 1.4) $ans = 6; else                     if($ans <1.6 ) $ans=4;else                     if ($ans < 2) $ans = 3; else                      if ($ans < 4) $ans = 2; else $ans = 1;', null, '躯体化');
+INSERT INTO `factor` VALUES ('183', 'obse', null, null, '137', '3,9,10,28,38,45,46,51,55,65', '1,1,1,1,1,1,1,1,1,1', 'avg', 'if ($ans == 1) $ans = 9; else                    if ($ans < 1.1) $ans = 8; else                      if ($ans < 1.3) $ans = 7; else                    if ($ans < 1.4) $ans = 6; else                     if($ans <1.6 ) $ans=4;else                     if ($ans < 2) $ans = 3; else                      if ($ans < 4) $ans = 2; else $ans = 1;', null, '强迫症状');
+INSERT INTO `factor` VALUES ('184', 'inte', null, null, '137', '6,21,34,36,37,41,61,69,73', '1,1,1,1,1,1,1,1,1', 'avg', 'if ($ans == 1) $ans = 9; else                    if ($ans < 1.1) $ans = 8; else                      if ($ans < 1.3) $ans = 7; else                    if ($ans < 1.4) $ans = 6; else                     if($ans <1.6 ) $ans=4;else                     if ($ans < 2) $ans = 3; else                      if ($ans < 4) $ans = 2; else $ans = 1;', null, '人际关系敏感');
+INSERT INTO `factor` VALUES ('185', 'depr', null, null, '137', '5,14,15,20,22,26,29,30,31,32,54,71,79', '1,1,1,1,1,1,1,1,1,1,1,1,1', 'avg', 'if ($ans == 1) $ans = 9; else                    if ($ans < 1.1) $ans = 8; else                      if ($ans < 1.3) $ans = 7; else                    if ($ans < 1.4) $ans = 6; else                     if($ans <1.6 ) $ans=4;else                     if ($ans < 2) $ans = 3; else                      if ($ans < 4) $ans = 2; else $ans = 1;', null, '忧郁');
+INSERT INTO `factor` VALUES ('186', 'anxi', null, null, '137', '2,17,23,33,39,57,72,78,80,86', '1,1,1,1,1,1,1,1,1,1', 'avg', 'if ($ans == 1) $ans = 9; else                    if ($ans < 1.1) $ans = 8; else                      if ($ans < 1.3) $ans = 7; else                    if ($ans < 1.4) $ans = 6; else                     if($ans <1.6 ) $ans=4;else                     if ($ans < 2) $ans = 3; else                      if ($ans < 4) $ans = 2; else $ans = 1;', null, '焦虑');
+INSERT INTO `factor` VALUES ('187', 'host', null, null, '137', '11,24,63,67,74,81', '1,1,1,1,1,1', 'avg', 'if ($ans == 1) $ans = 9; else                    if ($ans < 1.1) $ans = 8; else                      if ($ans < 1.3) $ans = 7; else                    if ($ans < 1.4) $ans = 6; else                     if($ans <1.6 ) $ans=4;else                     if ($ans < 2) $ans = 3; else                      if ($ans < 4) $ans = 2; else $ans = 1;', null, '敌对');
+INSERT INTO `factor` VALUES ('188', 'phob', null, null, '137', '13,25,47,50,70,75,82', '1,1,1,1,1,1,1', 'avg', 'if ($ans == 1) $ans = 9; else                    if ($ans < 1.1) $ans = 8; else                      if ($ans < 1.3) $ans = 7; else                    if ($ans < 1.4) $ans = 6; else                     if($ans <1.6 ) $ans=4;else                     if ($ans < 2) $ans = 3; else                      if ($ans < 4) $ans = 2; else $ans = 1;', null, '恐怖');
+INSERT INTO `factor` VALUES ('189', 'parn', null, null, '137', '8,18,43,68,76,83', '1,1,1,1,1,1', 'avg', 'if ($ans == 1) $ans = 9; else                    if ($ans < 1.1) $ans = 8; else                      if ($ans < 1.3) $ans = 7; else                    if ($ans < 1.4) $ans = 6; else                     if($ans <1.6 ) $ans=4;else                     if ($ans < 2) $ans = 3; else                      if ($ans < 4) $ans = 2; else $ans = 1;', null, '偏执');
+INSERT INTO `factor` VALUES ('190', 'psyc', null, null, '137', '7,16,35,62,77,84,85,87,88,90', '1,1,1,1,1,1,1,1,1,1', 'avg', 'if ($ans == 1) $ans = 9; else                    if ($ans < 1.1) $ans = 8; else                      if ($ans < 1.3) $ans = 7; else                    if ($ans < 1.4) $ans = 6; else                     if($ans <1.6 ) $ans=4;else                     if ($ans < 2) $ans = 3; else                      if ($ans < 4) $ans = 2; else $ans = 1;', null, '精神病性');
+INSERT INTO `factor` VALUES ('191', 'qtfm', null, null, '137', '19,44,59,60,64,66,89', '1,1,1,1,1,1,1', 'avg', 'if ($ans == 1) $ans = 9; else                    if ($ans < 1.1) $ans = 8; else                      if ($ans < 1.3) $ans = 7; else                    if ($ans < 1.4) $ans = 6; else                     if($ans <1.6 ) $ans=4;else                     if ($ans < 2) $ans = 3; else                      if ($ans < 4) $ans = 2; else $ans = 1;', null, '其它');
+INSERT INTO `factor` VALUES ('192', 'epqae', null, null, '133', '1,5,10,13,14,17,21,25,29,33,37,41,45,49,53,55,61,65,71,80,84', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', null, '内外向');
+INSERT INTO `factor` VALUES ('193', 'epqan', null, null, '133', '3,7,12,15,19,23,27,31,35,39,43,47,51,57,59,63,67,69,73,74,77,78,82,86', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=10-$ans/10', null, '神经质');
+INSERT INTO `factor` VALUES ('194', 'epqap', null, null, '133', '2,6,9,11,18,22,26,30,34,38,42,46,50,56,62,66,68,72,75,76,81,85,88', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=10-$ans/10', null, '精神质');
+INSERT INTO `factor` VALUES ('195', 'epqal', null, null, '133', '4,8,16,20,24,28,32,36,40,44,48,52,54,58,60,64,70,79,83,87', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=10-$ans/10', null, '掩饰性');
+INSERT INTO `factor` VALUES ('196', 'do', null, null, '135', '26,27,57,83,89,91,130,153,161,170,174,181,193,199,205,109,213,224,227', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', null, '支配性');
+INSERT INTO `factor` VALUES ('197', 'cs', null, null, '135', '8,18,23,36,43,50,79,83,95,99,113,115,139,149', '1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', null, '进取性');
+INSERT INTO `factor` VALUES ('198', 'sy', null, null, '135', '1,25,38,46,53,54,57,64,72,81,83,120,130,136,146,147', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', null, '社交性');
+INSERT INTO `factor` VALUES ('199', 'sp', null, null, '135', '3,11,23,25,28,34,38,40,46,53,89,99,103,113,116,126,131', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', null, '自在性');
+INSERT INTO `factor` VALUES ('200', 'sa', null, null, '135', '4,16,17,57,89,91,113,130,147,154', '1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', null, '自承性');
+INSERT INTO `factor` VALUES ('201', 'wb', null, null, '135', '7,35,48,96,117,134,155,159,166,172,178,180,187,191,202,204,206,214,217,220', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', null, '幸福感');
+INSERT INTO `factor` VALUES ('202', 're', null, null, '135', '21,24,30,37,39,41,58,65,69,82,101,104,106,132,143,150', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', null, '责任感');
+INSERT INTO `factor` VALUES ('203', 'so', null, null, '135', '71,82,84,107,157,169,171,186,195,196,197,201,207,211,216,218,219,221,225,229', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', null, '社会化');
+INSERT INTO `factor` VALUES ('204', 'sc', null, null, '135', '3,14,20,22,26,42,53,59,68,74,85,86,90,92,94,96,116,121,129,135,141,142,152,154,155,156', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', null, '自制力');
+INSERT INTO `factor` VALUES ('205', 'po', null, null, '135', '7,12,33,48,50,74,77,88,92,93,102,110,123,129,134,148,152', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', null, '宽容性');
+INSERT INTO `factor` VALUES ('206', 'gi', null, null, '135', '6,15,20,22,32,35,42,44,49,52,55,73,75,78,85,90,100,116,118,133,141,151', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', null, '好印象');
+INSERT INTO `factor` VALUES ('207', 'cm', null, null, '135', '158,160,162,163,168,173,176,177,182,188,192,215,226', '1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', null, '同众性');
+INSERT INTO `factor` VALUES ('208', 'ac', null, null, '135', '14,24,61,72,76,80,86,87,98,107,117,121,125,137,144', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', null, '遵循成就');
+INSERT INTO `factor` VALUES ('209', 'ai', null, null, '135', '4,19,29,60,62,66,70,102,111,119,127,128,139,152', '1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', null, '独立成就');
+INSERT INTO `factor` VALUES ('210', 'ie', null, null, '135', '25,40,57,83,99,130,136,146,179,185,208,210,212,222', '1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', null, '精干性');
+INSERT INTO `factor` VALUES ('211', 'py', null, null, '135', '5,27,47,51,67,72,94,105,112,114,145', '1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', null, '心理性');
+INSERT INTO `factor` VALUES ('212', 'fx', null, null, '135', '164,165,167,175,183,184,189,190,194,198,203,223,228,230', '1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', 'if ($ans == 100) $ans = 10; else                    if ($ans > 80) $ans = 9; else                      if ($ans > 65) $ans = 8; else                    if ($ans > 30) $ans = 5; else                     if ($ans > 10) $ans = 2;else $ans = 1;', null, '灵活性');
+INSERT INTO `factor` VALUES ('213', 'fe', null, null, '135', '9,13,28,31,42,45,56,65,71,104,107,108,122,124,138,140', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', null, '女性化');
+INSERT INTO `factor` VALUES ('214', 'spma', null, null, '138', '1,2,3,4,5,6,7,8,9,10,11,12', '1,1,1,1,1,1,1,1,1,1,1,1', 'sum', 'if ($ans == 1) $ans = 9; else                    if ($ans == 2) $ans = 7.5; else                      if ($ans == 3) $ans = 6; else                    if ($ans == 4) $ans = 5; else                      if ($ans == 5) $ans = 4; else $ans = 1;', null, 'SPM(A)');
+INSERT INTO `factor` VALUES ('215', 'spmb', null, null, '138', '13,14,15,16,17,18,19,20,21,22,23,24', '1,1,1,1,1,1,1,1,1,1,1,1', 'sum', 'if ($ans == 1) $ans = 9; else                    if ($ans == 2) $ans = 7.5; else                      if ($ans == 3) $ans = 6; else                    if ($ans == 4) $ans = 5; else                      if ($ans == 5) $ans = 4; else $ans = 1;', null, 'SPM(B)');
+INSERT INTO `factor` VALUES ('216', 'spmc', null, null, '138', '25,26,27,28,29,30,31,32,33,34,35,36', '1,1,1,1,1,1,1,1,1,1,1,1', 'sum', 'if ($ans == 1) $ans = 9; else                    if ($ans == 2) $ans = 7.5; else                      if ($ans == 3) $ans = 6; else                    if ($ans == 4) $ans = 5; else                      if ($ans == 5) $ans = 4; else $ans = 1;', null, 'SPM(C)');
+INSERT INTO `factor` VALUES ('217', 'spmd', null, null, '138', '37,38,39,40,41,42,43,44,45,46,47,48', '1,1,1,1,1,1,1,1,1,1,1,1', 'sum', 'if ($ans == 1) $ans = 9; else                    if ($ans == 2) $ans = 7.5; else                      if ($ans == 3) $ans = 6; else                    if ($ans == 4) $ans = 5; else                      if ($ans == 5) $ans = 4; else $ans = 1;', null, 'SPM(D)');
+INSERT INTO `factor` VALUES ('218', 'spme', null, null, '138', '49,50,51,52,53,54,55,56,57,58,59,60', '1,1,1,1,1,1,1,1,1,1,1,1', 'sum', 'if ($ans == 1) $ans = 9; else                    if ($ans == 2) $ans = 7.5; else                      if ($ans == 3) $ans = 6; else                    if ($ans == 4) $ans = 5; else                      if ($ans == 5) $ans = 4; else $ans = 1;', null, 'SPM(E)');
+INSERT INTO `factor` VALUES ('219', 'spm', null, null, '138', 'spma,spmb,spmc,spmd,spme', '0,0,0,0,0', 'spma+spmb+spmc+spmd+spme', null, null, 'SPM');
+INSERT INTO `factor` VALUES ('220', 'spmabc', null, null, '138', 'spma,spmb,spmc', '0,0,0', 'spma+spmb+spmc', null, null, 'SPM(A、B、C)');
 
-INSERT INTO `factor` (`id`, `name`, `factor`, `father_factor`, `paper_id`, `children`, `children_type`, `action`, `ans_do`, `chabiao`, `chs_name`) VALUES
-(62, 'A', NULL, NULL, 134, '3,26,27,51,52,76,101,126,151,176', '1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', NULL, '乐群性'),
-(63, 'B', NULL, NULL, 134, '28,53,54,77,78,102,103,127,128,152,153,177,178', '1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', NULL, '聪慧性'),
-(64, 'C', NULL, NULL, 134, '4,5,29,30,55,79,80,104,105,129,130,154,179', '1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', NULL, '稳定性'),
-(65, 'E', NULL, NULL, 134, '6,7,31,32,56,57,81,106,131,155,156,180,181', '1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', NULL, '恃强性'),
-(66, 'F', NULL, NULL, 134, '8,33,58,82,83,107,108,132,133,157,158,182,183', '1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', NULL, '兴奋性'),
-(67, 'G', NULL, NULL, 134, '9,34,59,84,109,134,159,160,184,185', '1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', NULL, '有恒性'),
-(68, 'H', NULL, NULL, 134, '10,35,36,60,61,85,86,110,111,135,136,161,186', '1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', NULL, '敢为性'),
-(69, 'I', NULL, NULL, 134, '11,12,37,62,87,112,137,138,162,163', '1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', NULL, '敏感性'),
-(70, 'L', NULL, NULL, 134, '13,38,63,64,88,89,113,114,139,164', '1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', NULL, '怀疑性'),
-(71, 'M', NULL, NULL, 134, '14,15,39,40,65,90,91,115,116,140,141,165,166', '1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', NULL, '幻想性'),
-(72, 'N', NULL, NULL, 134, '16,17,41,42,66,67,92,117,142,167', '1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', NULL, '世故性'),
-(73, 'O', NULL, NULL, 134, '18,19,43,44,68,69,93,94,118,119,143,144,168', '1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', NULL, '忧虑性'),
-(74, 'Q1', NULL, NULL, 134, '20,21,45,46,70,95,120,145,169,170', '1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', NULL, '实验性'),
-(75, 'Q2', NULL, NULL, 134, '22,47,71,72,96,97,121,122,146,171', '1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', NULL, '独立性'),
-(76, 'Q3', NULL, NULL, 134, '23,24,48,73,98,123,147,148,172,173', '1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans', NULL, '自律性'),
-(77, 'Q4', NULL, NULL, 134, '25,49,50,74,75,99,100,124,125,149,150,174,175', '1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=10-$ans', NULL, '紧张性'),
-(78, 'X1', NULL, NULL, 134, 'L,O,Q4,C,H,Q3', '0,0,0,0,0,0', '(38+2*L+3*O+4*Q4-(2*C+2*H+2*Q3))/10', '$ans=10-$ans', NULL, '适应与焦虑'),
-(79, 'X2', NULL, NULL, 134, 'A,E,F,H,Q2', '0,0,0,0,0', '(2*A+3*E+4*F+5*H-(2*Q2+11))/10', '$ans=$ans', NULL, '内向与外向'),
-(80, 'X3', NULL, NULL, 134, 'C,E,F,N,A,I,M', '0,0,0,0,0,0,0', '(77+2*C+2*E+2*F+2*N-(4*A+6*I+2*M))/10', '$ans=$ans', NULL, '感情用事'),
-(81, 'X4', NULL, NULL, 134, 'E,M,Q1,Q2,A,G', '0,0,0,0,0,0', '(4*E+3*M+4*Q1+4*Q2-(3*A+2*G))/10', '$ans=$ans', NULL, '怯懦与果断'),
-(82, 'Y1', NULL, NULL, 134, 'C,F,O,Q4', '0,0,0,0', 'C+F+(11-O)+(11-Q4)', '$ans=$ans/4', NULL, '心理健康'),
-(83, 'Y2', NULL, NULL, 134, 'Q3,G,C,E,N,Q1,Q2', '0,0,0,0,0,0,0', '2*Q3+2*G+2*C+E+N+Q1+Q2', '$ans=$ans/7.5', NULL, '专业成就'),
-(84, 'Y3', NULL, NULL, 134, 'A,B,E,F,H,I,M,N,Q1,Q2', '0,0,0,0,0,0,0,0,0,0', '2*(11-A)+2*B+E+2*(11-F)+H+2*I+M+(11-N)+Q1+2*Q2', '$ans=$ans', NULL, '创造力'),
-(85, 'Y4', NULL, NULL, 134, 'B,G,Q3,F', '0,0,0,0', 'B+G+Q3+(11-F)', '$ans=$ans/4', NULL, '成长能力'),
-(86, 'end', NULL, NULL, 136, '153,158,163,168,173,178,182,188,193,198,203,208,213,218,223,61,62,63,64,65,136,137,138,139,140,211,212,213,214,215', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=($ans-1)/2.8', NULL, '持久需要'),
-(87, 'int', NULL, NULL, 136, '77,82,87,92,97,102,107,112,117,122,127,132,137,142,147,31,32,33,34,35,106,107,108,109,110,181,182,183,184,185', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=($ans-1)/2.8', NULL, '省察需要'),
-(88, 'ord', NULL, NULL, 136, '3,8,13,18,23,28,33,38,43,48,53,58,63,68,73,11,12,13,14,15,86,87,88,89,90,161,162,163,164,165', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=($ans-1)/2.8', NULL, '秩序需要'),
-(89, 'ach', NULL, NULL, 136, '1,6,11,16,21,26,31,36,41,46,51,56,61,66,71,1,2,3,4,5,76,77,78,79,80,151,152,153,154,155', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=($ans-1)/2.8', NULL, '成就需要'),
-(90, 'chg', NULL, NULL, 136, '152,157,162,167,172,177,182,187,192,197,202,207,212,217,222,56,57,58,59,60,131,132,133,134,135,206,207,208,209,210', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=($ans-1)/2.8', NULL, '变异需要'),
-(91, 'aba', NULL, NULL, 136, '80,85,90,95,100,105,110,115,120,125,130,135,140,145,150,46,47,48,49,50,121,122,123,124,125,196,197,198,199,200', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=($ans-1)/2.8', NULL, '谦卑需要'),
-(92, 'dom', NULL, NULL, 136, '79,84,89,94,99,104,109,114,119,124,129,134,139,144,149,41,42,43,44,45,116,117,118,119,120,191,192,193,194,195', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=($ans-1)/2.8', NULL, '支配需要'),
-(93, 'aff', NULL, NULL, 136, '76,81,86,91,96,101,106,111,116,121,126,131,136,141,146,26,27,28,29,30,101,102,103,104,105,176,177,178,179,180', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=($ans-1)/2.8', NULL, '亲和需要'),
-(94, 'def', NULL, NULL, 136, '2,7,12,17,22,27,32,37,42,47,52,57,62,67,72,6,7,8,9,10,81,82,83,84,85,156,157,158,159,160', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=($ans-1)/2.8', NULL, '顺从需要'),
-(95, 'agg', NULL, NULL, 136, '155,160,165,170,175,180,185,190,195,200,205,210,215,220,225,71,72,73,74,75,146,147,148,149,150,221,222,223,224,225', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=($ans-1)/2.8', NULL, '攻击需要'),
-(96, 'suc', NULL, NULL, 136, '78,83,88,93,98,103,108,113,118,123,128,133,138,143,148,36,37,38,39,40,111,112,113,114,115,186,187,188,189,190', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=($ans-1)/2.8', NULL, '求助需要'),
-(97, 'exh', NULL, NULL, 136, '4,9,14,19,24,29,34,39,44,49,54,59,64,69,74,16,17,18,19,20,91,92,93,94,95,166,167,168,169,170', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=($ans-1)/2.8', NULL, '表现需要'),
-(98, 'aut', NULL, NULL, 136, '5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,21,22,23,24,25,96,97,98,99,100,171,172,173,174,175', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=($ans-1)/2.8', NULL, '自主需要'),
-(99, 'het', NULL, NULL, 136, '154,159,164,169,174,179,184,189,194,199,204,209,214,219,224,66,67,68,69,70,141,142,143,144,145,216,217,218,219,220', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=($ans-1)/2.8', NULL, '异性恋需要'),
-(100, 'nur', NULL, NULL, 136, '151,156,161,166,171,176,181,186,191,196,201,206,211,216,221,51,52,53,54,55,126,127,128,129,130,201,202,203,204,205', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=($ans-1)/2.8', NULL, '慈善需要'),
-(101, 'con', NULL, NULL, 136, '1,7,13,19,25,26,32,38,44,50,51,57,63,69,75,101,107,113,119,125,151,157,163,169,175,201,207,213,219,225', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', 'if ($ans == 1) $ans = 9; else                    if ($ans == 2) $ans = 8; else                      if ($ans == 3) $ans = 7; else                    if ($ans == 4) $ans = 5; else                     if($ans ==6 ) $ans=2; else $ans = 1;', NULL, '稳定系数'),
-(102, 'soma', NULL, NULL, 137, '1,4,12,27,40,42,48,49,52,53,56,58', '1,1,1,1,1,1,1,1,1,1,1,1', 'avg', '', NULL, '躯体化'),
-(103, 'inte', NULL, NULL, 137, '6,21,34,36,37,41,61,69,73', '1,1,1,1,1,1,1,1,1', 'avg', 'if ($ans == 1) $ans = 9; else                    if ($ans < 1.1) $ans = 8; else                      if ($ans < 1.3) $ans = 7; else                    if ($ans < 1.4) $ans = 6; else                     if($ans <1.6 ) $ans=4;else                     if ($ans < 2) $ans = 3; else                      if ($ans < 4) $ans = 2; else $ans = 1;', NULL, '人际关系敏感'),
-(104, 'depr', NULL, NULL, 137, '5,14,15,20,22,26,29,30,31,32,54,71,79', '1,1,1,1,1,1,1,1,1,1,1,1,1', 'avg', 'if ($ans == 1) $ans = 9; else                    if ($ans < 1.1) $ans = 8; else                      if ($ans < 1.3) $ans = 7; else                    if ($ans < 1.4) $ans = 6; else                     if($ans <1.6 ) $ans=4;else                     if ($ans < 2) $ans = 3; else                      if ($ans < 4) $ans = 2; else $ans = 1;', NULL, '忧郁'),
-(105, 'anxi', NULL, NULL, 137, '2,17,23,33,39,57,72,78,80,86', '1,1,1,1,1,1,1,1,1,1', 'avg', 'if ($ans == 1) $ans = 9; else                    if ($ans < 1.1) $ans = 8; else                      if ($ans < 1.3) $ans = 7; else                    if ($ans < 1.4) $ans = 6; else                     if($ans <1.6 ) $ans=4;else                     if ($ans < 2) $ans = 3; else                      if ($ans < 4) $ans = 2; else $ans = 1;', NULL, '焦虑'),
-(106, 'host', NULL, NULL, 137, '11,24,63,67,74,81', '1,1,1,1,1,1', 'avg', 'if ($ans == 1) $ans = 9; else                    if ($ans < 1.1) $ans = 8; else                      if ($ans < 1.3) $ans = 7; else                    if ($ans < 1.4) $ans = 6; else                     if($ans <1.6 ) $ans=4;else                     if ($ans < 2) $ans = 3; else                      if ($ans < 4) $ans = 2; else $ans = 1;', NULL, '敌对'),
-(107, 'phob', NULL, NULL, 137, '13,25,47,50,70,75,82', '1,1,1,1,1,1,1', 'avg', 'if ($ans == 1) $ans = 9; else                    if ($ans < 1.1) $ans = 8; else                      if ($ans < 1.3) $ans = 7; else                    if ($ans < 1.4) $ans = 6; else                     if($ans <1.6 ) $ans=4;else                     if ($ans < 2) $ans = 3; else                      if ($ans < 4) $ans = 2; else $ans = 1;', NULL, '恐怖'),
-(108, 'parn', NULL, NULL, 137, '8,18,43,68,76,83', '1,1,1,1,1,1', 'avg', 'if ($ans == 1) $ans = 9; else                    if ($ans < 1.1) $ans = 8; else                      if ($ans < 1.3) $ans = 7; else                    if ($ans < 1.4) $ans = 6; else                     if($ans <1.6 ) $ans=4;else                     if ($ans < 2) $ans = 3; else                      if ($ans < 4) $ans = 2; else $ans = 1;', NULL, '偏执'),
-(109, 'psyc', NULL, NULL, 137, '7,16,35,62,77,84,85,87,88,90', '1,1,1,1,1,1,1,1,1,1', 'avg', 'if ($ans == 1) $ans = 9; else                    if ($ans < 1.1) $ans = 8; else                      if ($ans < 1.3) $ans = 7; else                    if ($ans < 1.4) $ans = 6; else                     if($ans <1.6 ) $ans=4;else                     if ($ans < 2) $ans = 3; else                      if ($ans < 4) $ans = 2; else $ans = 1;', NULL, '精神病性'),
-(110, 'qtfm', NULL, NULL, 137, '19,44,59,60,64,66,89', '1,1,1,1,1,1,1', 'avg', 'if ($ans == 1) $ans = 9; else                    if ($ans < 1.1) $ans = 8; else                      if ($ans < 1.3) $ans = 7; else                    if ($ans < 1.4) $ans = 6; else                     if($ans <1.6 ) $ans=4;else                     if ($ans < 2) $ans = 3; else                      if ($ans < 4) $ans = 2; else $ans = 1;', NULL, '其它'),
-(111, 'epqae', NULL, NULL, 133, '1,5,10,13,14,17,21,25,29,33,37,41,45,49,53,55,61,65,71,80,84', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', NULL, '内外向'),
-(112, 'epqan', NULL, NULL, 133, '3,7,12,15,19,23,27,31,35,39,43,47,51,57,59,63,67,69,73,74,77,78,82,86', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=10-$ans/10', NULL, '神经质'),
-(113, 'epqap', NULL, NULL, 133, '2,6,9,11,18,22,26,30,34,38,42,46,50,56,62,66,68,72,75,76,81,85,88', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=10-$ans/10', NULL, '精神质'),
-(114, 'epqal', NULL, NULL, 133, '4,8,16,20,24,28,32,36,40,44,48,52,54,58,60,64,70,79,83,87', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=10-$ans/10', NULL, '掩饰性'),
-(115, 'do', NULL, NULL, 135, '26,27,57,83,89,91,130,153,161,170,174,181,193,199,205,109,213,224,227', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', NULL, '支配性'),
-(116, 'cs', NULL, NULL, 135, '8,18,23,36,43,50,79,83,95,99,113,115,139,149', '1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', NULL, '进取性'),
-(117, 'sy', NULL, NULL, 135, '1,25,38,46,53,54,57,64,72,81,83,120,130,136,146,147', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', NULL, '社交性'),
-(118, 'sp', NULL, NULL, 135, '3,11,23,25,28,34,38,40,46,53,89,99,103,113,116,126,131', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', NULL, '自在性'),
-(119, 'sa', NULL, NULL, 135, '4,16,17,57,89,91,113,130,147,154', '1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', NULL, '自承性'),
-(120, 'wb', NULL, NULL, 135, '7,35,48,96,117,134,155,159,166,172,178,180,187,191,202,204,206,214,217,220', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', NULL, '幸福感'),
-(121, 're', NULL, NULL, 135, '21,24,30,37,39,41,58,65,69,82,101,104,106,132,143,150', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', NULL, '责任感'),
-(122, 'so', NULL, NULL, 135, '71,82,84,107,157,169,171,186,195,196,197,201,207,211,216,218,219,221,225,229', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', NULL, '社会化'),
-(123, 'sc', NULL, NULL, 135, '3,14,20,22,26,42,53,59,68,74,85,86,90,92,94,96,116,121,129,135,141,142,152,154,155,156', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', NULL, '自制力'),
-(125, 'gi', NULL, NULL, 135, '6,15,20,22,32,35,42,44,49,52,55,73,75,78,85,90,100,116,118,133,141,151', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', NULL, '好印象'),
-(126, 'cm', NULL, NULL, 135, '158,160,162,163,168,173,176,177,182,188,192,215,226', '1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', NULL, '同众性'),
-(127, 'ac', NULL, NULL, 135, '14,24,61,72,76,80,86,87,98,107,117,121,125,137,144', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', NULL, '遵循成就'),
-(128, 'ai', NULL, NULL, 135, '4,19,29,60,62,66,70,102,111,119,127,128,139,152', '1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', NULL, '独立成就'),
-(129, 'ie', NULL, NULL, 135, '25,40,57,83,99,130,136,146,179,185,208,210,212,222', '1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', NULL, '精干性'),
-(130, 'py', NULL, NULL, 135, '5,27,47,51,67,72,94,105,112,114,145', '1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', NULL, '心理性'),
-(131, 'fx', NULL, NULL, 135, '164,165,167,175,183,184,189,190,194,198,203,223,228,230', '1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', 'if ($ans == 100) $ans = 10; else                    if ($ans > 80) $ans = 9; else                      if ($ans > 65) $ans = 8; else                    if ($ans > 30) $ans = 5; else                     if ($ans > 10) $ans = 2;else $ans = 1;', NULL, '灵活性'),
-(132, 'fe', NULL, NULL, 135, '9,13,28,31,42,45,56,65,71,104,107,108,122,124,138,140', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', NULL, '女性化'),
-(133, 'spma', NULL, NULL, 138, '1,2,3,4,5,6,7,8,9,10,11,12', '1,1,1,1,1,1,1,1,1,1,1,1', 'sum', 'if ($ans == 1) $ans = 9; else                    if ($ans == 2) $ans = 7.5; else                      if ($ans == 3) $ans = 6; else                    if ($ans == 4) $ans = 5; else                      if ($ans == 5) $ans = 4; else $ans = 1;', NULL, 'SPM(A)'),
-(134, 'spmb', NULL, NULL, 138, '13,14,15,16,17,18,19,20,21,22,23,24', '1,1,1,1,1,1,1,1,1,1,1,1', 'sum', 'if ($ans == 1) $ans = 9; else                    if ($ans == 2) $ans = 7.5; else                      if ($ans == 3) $ans = 6; else                    if ($ans == 4) $ans = 5; else                      if ($ans == 5) $ans = 4; else $ans = 1;', NULL, 'SPM(B)'),
-(135, 'spmc', NULL, NULL, 138, '25,26,27,28,29,30,31,32,33,34,35,36', '1,1,1,1,1,1,1,1,1,1,1,1', 'sum', 'if ($ans == 1) $ans = 9; else                    if ($ans == 2) $ans = 7.5; else                      if ($ans == 3) $ans = 6; else                    if ($ans == 4) $ans = 5; else                      if ($ans == 5) $ans = 4; else $ans = 1;', NULL, 'SPM(C)'),
-(136, 'spmd', NULL, NULL, 138, '37,38,39,40,41,42,43,44,45,46,47,48', '1,1,1,1,1,1,1,1,1,1,1,1', 'sum', 'if ($ans == 1) $ans = 9; else                    if ($ans == 2) $ans = 7.5; else                      if ($ans == 3) $ans = 6; else                    if ($ans == 4) $ans = 5; else                      if ($ans == 5) $ans = 4; else $ans = 1;', NULL, 'SPM(D)'),
-(137, 'spme', NULL, NULL, 138, '49,50,51,52,53,54,55,56,57,58,59,60', '1,1,1,1,1,1,1,1,1,1,1,1', 'sum', 'if ($ans == 1) $ans = 9; else                    if ($ans == 2) $ans = 7.5; else                      if ($ans == 3) $ans = 6; else                    if ($ans == 4) $ans = 5; else                      if ($ans == 5) $ans = 4; else $ans = 1;', NULL, 'SPM(E)'),
-(138, 'spm', NULL, NULL, 138, 'spma,spmb,spmc,spmd,spme', '0,0,0,0,0', 'sum', NULL, NULL, 'SPM'),
-(139, 'spmabc', NULL, NULL, 138, 'spma,spmb,spmc', '0,0,0', 'sum', NULL, NULL, 'SPM(A、B、C)'),
-(140, 'obse', NULL, NULL, 137, '3,9,10,28,38,45,46,51,55,65', '1,1,1,1,1,1,1,1,1,1', 'avg', 'if ($ans == 1) $ans = 9; else                    if ($ans < 1.1) $ans = 8; else                      if ($ans < 1.3) $ans = 7; else                    if ($ans < 1.4) $ans = 6; else                     if($ans <1.6 ) $ans=4;else                     if ($ans < 2) $ans = 3; else                      if ($ans < 4) $ans = 2; else $ans = 1;', NULL, '强迫症状'),
-(141, 'po', NULL, NULL, 135, '7,12,33,48,50,74,77,88,92,93,102,110,123,129,134,148,152', '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', 'sum', '$ans=$ans/10', NULL, '宽容性');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `factor_ans`
---
-
+-- ----------------------------
+-- Table structure for `factor_ans`
+-- ----------------------------
 DROP TABLE IF EXISTS `factor_ans`;
-CREATE TABLE IF NOT EXISTS `factor_ans` (
+CREATE TABLE `factor_ans` (
   `score` float(11,2) DEFAULT NULL COMMENT '因子得分',
   `std_score` float(11,2) DEFAULT NULL COMMENT '因子标准分',
   `examinee_id` int(11) NOT NULL COMMENT '被试人员id，并非编号',
   `factor_id` int(11) NOT NULL COMMENT '所属因子id',
   `ans_score` float(11,2) DEFAULT NULL,
   PRIMARY KEY (`examinee_id`,`factor_id`),
-  KEY `fk_factor_ans_2_idx` (`factor_id`)
+  KEY `fk_factor_ans_2_idx` (`factor_id`),
+  CONSTRAINT `fk_factor_ans_1` FOREIGN KEY (`examinee_id`) REFERENCES `examinee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_factor_ans_2` FOREIGN KEY (`factor_id`) REFERENCES `factor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `factor_ans`
---
+-- ----------------------------
+-- Records of factor_ans
+-- ----------------------------
 
-INSERT INTO `factor_ans` (`score`, `std_score`, `examinee_id`, `factor_id`, `ans_score`) VALUES
-(NULL, NULL, 12, 62, NULL),
-(NULL, NULL, 12, 63, NULL),
-(NULL, NULL, 12, 64, NULL),
-(NULL, NULL, 12, 65, NULL),
-(NULL, NULL, 12, 66, NULL),
-(NULL, NULL, 12, 67, NULL),
-(NULL, NULL, 12, 68, NULL),
-(NULL, NULL, 12, 69, NULL),
-(NULL, NULL, 12, 70, NULL),
-(NULL, NULL, 12, 71, NULL),
-(NULL, NULL, 12, 72, NULL),
-(NULL, NULL, 12, 73, NULL),
-(NULL, NULL, 12, 74, NULL),
-(NULL, NULL, 12, 75, NULL),
-(NULL, NULL, 12, 76, NULL),
-(NULL, NULL, 12, 77, NULL),
-(NULL, NULL, 12, 78, NULL),
-(NULL, NULL, 12, 79, NULL),
-(NULL, NULL, 12, 80, NULL),
-(NULL, NULL, 12, 81, NULL),
-(NULL, NULL, 12, 82, NULL),
-(NULL, NULL, 12, 83, NULL),
-(NULL, NULL, 12, 84, NULL),
-(NULL, NULL, 12, 85, NULL),
-(NULL, NULL, 12, 86, NULL),
-(NULL, NULL, 12, 87, NULL),
-(NULL, NULL, 12, 88, NULL),
-(NULL, NULL, 12, 89, NULL),
-(NULL, NULL, 12, 90, NULL),
-(NULL, NULL, 12, 91, NULL),
-(NULL, NULL, 12, 92, NULL),
-(NULL, NULL, 12, 93, NULL),
-(NULL, NULL, 12, 94, NULL),
-(NULL, NULL, 12, 95, NULL),
-(NULL, NULL, 12, 96, NULL),
-(NULL, NULL, 12, 97, NULL),
-(NULL, NULL, 12, 98, NULL),
-(NULL, NULL, 12, 100, NULL),
-(NULL, NULL, 12, 101, NULL),
-(NULL, NULL, 12, 102, NULL),
-(NULL, NULL, 12, 103, NULL),
-(NULL, NULL, 12, 108, NULL),
-(NULL, NULL, 12, 111, NULL),
-(NULL, NULL, 12, 112, NULL),
-(NULL, NULL, 12, 113, NULL),
-(NULL, NULL, 12, 114, NULL),
-(NULL, NULL, 12, 115, NULL),
-(NULL, NULL, 12, 116, NULL),
-(NULL, NULL, 12, 117, NULL),
-(NULL, NULL, 12, 118, NULL),
-(NULL, NULL, 12, 119, NULL),
-(NULL, NULL, 12, 120, NULL),
-(NULL, NULL, 12, 121, NULL),
-(NULL, NULL, 12, 122, NULL),
-(NULL, NULL, 12, 123, NULL),
-(NULL, NULL, 12, 125, NULL),
-(NULL, NULL, 12, 126, NULL),
-(NULL, NULL, 12, 127, NULL),
-(NULL, NULL, 12, 128, NULL),
-(NULL, NULL, 12, 129, NULL),
-(NULL, NULL, 12, 130, NULL),
-(NULL, NULL, 12, 131, NULL),
-(NULL, NULL, 12, 136, NULL),
-(NULL, NULL, 12, 137, NULL),
-(NULL, NULL, 12, 138, NULL),
-(NULL, NULL, 12, 139, NULL),
-(NULL, NULL, 12, 140, NULL),
-(NULL, NULL, 12, 141, NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `index`
---
-
+-- ----------------------------
+-- Table structure for `index`
+-- ----------------------------
 DROP TABLE IF EXISTS `index`;
-CREATE TABLE IF NOT EXISTS `index` (
+CREATE TABLE `index` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL COMMENT '指标名',
   `father_index` int(11) DEFAULT NULL COMMENT '父指标id，计算时会使用',
@@ -1386,172 +2219,125 @@ CREATE TABLE IF NOT EXISTS `index` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
   KEY `index2` (`father_index`),
-  KEY `index3` (`module_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
+  KEY `index3` (`module_id`),
+  CONSTRAINT `fk_index_1` FOREIGN KEY (`father_index`) REFERENCES `index` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
+  CONSTRAINT `fk_index_2` FOREIGN KEY (`module_id`) REFERENCES `module` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `index`
---
+-- ----------------------------
+-- Records of index
+-- ----------------------------
+INSERT INTO `index` VALUES ('2', 'zb_ldnl', null, null, 'zb_pdyjcnl,zb_zzglnl,zb_cxnl,zb_ybnl,zb_dlgznl', '0,0,0,0,0', '领导能力', null, '(2*(zb_pdyjcnl + zb_zzglnl)+ zb_cxnl + zb_ybnl+ zb_dlgznl)/7');
+INSERT INTO `index` VALUES ('3', 'zb_pdyjcnl', null, null, 'X4,H,chg,Y3,ord,end,aut,X3', '1,1,1,1,1,1,1,1', '判断与决策能力', null, '(1.5*(X4 + H)+chg +Y3 + ord+end +aut +X3)/8');
+INSERT INTO `index` VALUES ('4', 'zb_zzglnl', null, null, 'dom,ord,H,X4,Y2,ach,end,aut,re,do', '1,1,1,1,1,1,1,1,1,1', '组织管理能力', null, '(1.5*(dom + ord) + H + X4 + Y2 + ach + end + aut + re + do)/11');
+INSERT INTO `index` VALUES ('5', 'zb_fxx', null, null, 'H,chg,M,Q2,I,sp,sa,A', '1,1,1,1,1,1,1,1', '风险性', null, '(1.5*(H + chg) + M + Q2 + I + sp + sa + A)/9');
+INSERT INTO `index` VALUES ('6', 'zb_dlgznl', null, null, 'aut,Q2,dom,ai,ach,exh,def,Q1,H,E,ie', '1,1,1,1,1,1,1,1,1,1,1', '独立工作能力', null, '(1.5*(aut + Q2) + dom + ai + ach + exh + def + Q1 + H + E + ie)/12');
+INSERT INTO `index` VALUES ('7', 'zb_cxnl', null, null, 'Y3,H,chg,M,I,F,Q1,L,A,fx,py,end,Y4', '1,1,1,1,1,1,1,1,1,1,1,1,1', '创新能力', null, '(1.5*(Y3 + H + chg) + M + I + F + Q1 + L + A + fx + py + end + Y4)/14.5');
+INSERT INTO `index` VALUES ('8', 'zb_ybnl', null, null, 'X1,Y4,Y3,chg,ach,Q1,I,B,Q3', '1,1,1,1,1,1,1,1,1', '应变能力', null, '(1.5*(X1 + Y4) + Y3 + chg + ach + Q1 + I + B + Q3)/10');
+INSERT INTO `index` VALUES ('9', 'zb_jlx', null, null, 'Q3,sc,sa,po,G,fx,so,int', '1,1,1,1,1,1,1,1', '纪律性', null, '(1.5*(Q3 + sc) + sa + po + G + fx + so + int)/9');
+INSERT INTO `index` VALUES ('10', 'zb_fxnl', null, null, 'spmd,Y3,int,B,Y4,Y2,end,Q2,ord,E,L', '1,1,1,1,1,1,1,1,1,1,1', '分析能力', null, '(1.5*(spmd + Y3 + int) + B + Y4 + Y2 + end + Q2 + ord + E + L)/12.5');
+INSERT INTO `index` VALUES ('11', 'zb_gnnl', null, null, 'spme,spmd,Y2,ai,ac,chg,aut,dom,Q2,N,fx,ie', '1,1,1,1,1,1,1,1,1,1,1,1', '归纳能力', null, '(1.5*(spme + spmd + Y2) + ai + ac + chg + aut + dom + Q2 + N + fx + ie)/13.5');
+INSERT INTO `index` VALUES ('12', 'zb_zrx', null, null, 're,G,C,Q2,ach,end,ac,ai,def,aut,ord,dom', '1,1,1,1,1,1,1,1,1,1,1,1', '责任心', null, '(2*(re + G + C + Q2) + ach + end + ac + ai + def + aut + ord + dom)/16');
+INSERT INTO `index` VALUES ('13', 'zb_cxd', null, null, 'con,epqal,gi,wb,Q3,re,cm', '1,1,1,1,1,1,1', '诚信度', null, '(1.5*(con + epqal) + gi + wb + Q3 + re + cm)/8');
+INSERT INTO `index` VALUES ('14', 'zb_grjzqx', null, null, 'ach,Y2,cs,exh,dom,nur,aff,aba,def,gi,wb,Q3,sc,po', '1,1,1,1,1,1,1,1,1,1,1,1,1,1', '个人价值取向', null, '(2*(ach + Y2 + cs) + exh + dom + nur + aff + aba + def + gi + wb + Q3 + sc +po)/17');
+INSERT INTO `index` VALUES ('15', 'zb_tdjs', null, null, 'ac,A,Y2,aff,def,ach,ord,end,aut,cs,ai', '1,1,1,1,1,1,1,1,1,1,1', '团队精神', null, '(1.5*(ac + A + Y2) + aff + def + ach + ord + end + aut + cs +ai)/12.5');
+INSERT INTO `index` VALUES ('16', 'zb_gztd', null, null, 're,Q2,G,ord,end,sc,Y4', '1,1,1,1,1,1,1', '工作态度', null, '(1.5*(re + Q2) + G + ord + end + sc + Y4)/8');
+INSERT INTO `index` VALUES ('17', 'zb_gzzf', null, null, 'X4,zb_rjgxtjsp,chg,Y3,Q3,spmabc,aff', '1,0,1,1,1,1,1', '工作作风', null, '(1.5*(X4 + zb_rjgxtjsp) + chg + Y3 + Q3 + spmabc + aff)/8');
+INSERT INTO `index` VALUES ('18', 'zb_rnx', null, null, 'po,nur,aff,ac,aba,def,X1,A,L,E', '1,1,1,1,1,1,1,1,1,1', '容纳性', null, '(1.5*(po + nur + aff) + ac + aba + def + X1 + A + L + E)/11.5');
+INSERT INTO `index` VALUES ('19', 'zb_bxx', null, null, 'exh,gi,cm,wb,sy,aut,dom,agg,Q2', '1,1,1,1,1,1,1,1,1', '表现性', null, '(1.5*(exh + gi + cm) + wb + sy + aut + dom + agg + Q2)/10.5');
+INSERT INTO `index` VALUES ('20', 'zb_rjgxtjsp', null, null, 'po,aff,nur,def,E,X3,N,inte,I,aba,suc,fx', '1,1,1,1,1,1,1,1,1,1,1,1', '人际关系调节水平', null, '(1.5*(po + aff + nur) + def + E + X3 + N + inte + I + aba + suc +fx)/13.5');
+INSERT INTO `index` VALUES ('21', 'zb_tzjl', null, null, 'soma,obse,epqap,epqan,F,M,G,I', '1,1,1,1,1,1,1,1', '体质精力', null, '(1.5*(soma + obse) + epqap + epqan + F + M + G + I)/9');
+INSERT INTO `index` VALUES ('22', 'zb_xg', null, null, 'X2,epqae,A,sy,sa,sp,F,exh,spmabc,I', '1,1,1,1,1,1,1,1,1,1', '性格', null, '(1.5*(X2 + epqae + A) + sy + sa + sp + F + exh + spmabc + I)/11.5');
+INSERT INTO `index` VALUES ('23', 'zb_qxkzsp', null, null, 'Y1,sc,C,G,Q3,F,I,po,N,epqan', '1,1,1,1,1,1,1,1,1,1', '情绪控制水平', null, '(1.5*(Y1 + sc + C) + G + Q3 + F + I + po + N + epqan)/11.5');
+INSERT INTO `index` VALUES ('24', 'zb_syhjsp', null, null, 'Y4,fx,sp,O,sc,po,Q4,X1', '1,1,1,1,1,1,1,1', '适应环境水平', null, '(1.5*(Y4 + fx) + sp + O + sc + po + Q4 + X1)/9');
+INSERT INTO `index` VALUES ('25', 'zb_zz', null, null, 'ai,end,E,G,aut,def,agg,Q2,H,L,parn', '1,1,1,1,1,1,1,1,1,1,1', '执着', null, '(1.5*(ai + end + E) + G + aut + def + agg + Q2 + H + L + parn)/12.5');
+INSERT INTO `index` VALUES ('26', 'zb_xljksp', null, null, 'Y1,C,sc,X1,sa,Q3,py,O,Q4,A', '1,1,1,1,1,1,1,1,1,1', '心理健康水平', null, '(1.5*(Y1 + C + sc + X1) + sa + Q3 + py + O + Q4+ A)/12');
+INSERT INTO `index` VALUES ('27', 'zb_sjnl', null, null, 'sy,aff,def,end,agg,I,F,epqae,A,L,E,sp', '1,1,1,1,1,1,1,1,1,1,1,1', '社交水平', null, '(1.5*(sy + aff + def + end) + agg + I + F + epqae + A + L + E +sp)/14');
+INSERT INTO `index` VALUES ('28', 'zb_chd', null, null, 'B,spm,Y4,Y2,Y3,chg,ai,ac,ie,N', '1,1,1,1,1,1,1,1,1,1', '聪慧度', null, '(1.5*(B + spm + Y4) + Y2 + Y3 + chg + ai + ac + ie + N)/11.5');
+INSERT INTO `index` VALUES ('29', 'zb_jmng', null, null, 'ie,N,fx,sc,po,sa,Y4', '1,1,1,1,1,1,1', '精明能干', null, '(1.5*(ie + N) + fx + sc + po + sa + Y4)/8');
 
-INSERT INTO `index` (`id`, `name`, `father_index`, `module_id`, `children`, `children_type`, `chs_name`, `ans_do`, `action`) VALUES
-(1, 'ldnl', NULL, NULL, 'pdyjcnl,zznl,cxnl,ybnl,dlgznl', '0,0,0,0,0', NULL, NULL, '(2*(pdyjcnl + zznl) + cxnl + ybnl + dlgznl)/7'),
-(2, 'zb_ldnl', NULL, NULL, 'zb_pdyjcnl,zb_zzglnl,zb_cxnl,zb_ybnl,zb_dlgznl', '0,0,0,0,0', '领导能力', NULL, '(2*(zb_pdyjcnl + zb_zzglnl)+ zb_cxnl + zb_ybnl+ zb_dlgznl)/7'),
-(3, 'zb_pdyjcnl', NULL, NULL, 'X4,H,chg,Y3,ord,end,aut,X3', '1,1,1,1,1,1,1,1', '判断与决策能力', NULL, '(1.5*(X4 + H)+chg +Y3 + ord+end +aut +X3)/8'),
-(4, 'zb_zzglnl', NULL, NULL, 'dom,ord,H,X4,Y2,ach,end,aut,re,do', '1,1,1,1,1,1,1,1,1,1', '组织管理能力', NULL, '(1.5*(dom + ord) + H + X4 + Y2 + ach + end + aut + re + do)/11'),
-(5, 'zb_fxx', NULL, NULL, 'H,chg,M,Q2,I,sp,sa,A', '1,1,1,1,1,1,1,1', '风险性', NULL, '(1.5*(H + chg) + M + Q2 + I + sp + sa + A)/9'),
-(6, 'zb_dlgznl', NULL, NULL, 'aut,Q2,dom,ai,ach,exh,def,Q1,H,E,ie', '1,1,1,1,1,1,1,1,1,1,1', '独立工作能力', NULL, '(1.5*(aut + Q2) + dom + ai + ach + exh + def + Q1 + H + E + ie)/12'),
-(7, 'zb_cxnl', NULL, NULL, 'Y3,H,chg,M,I,F,Q1,L,A,fx,py,end,Y4', '1,1,1,1,1,1,1,1,1,1,1,1,1', '创新能力', NULL, '(1.5*(Y3 + H + chg) + M + I + F + Q1 + L + A + fx + py + end + Y4)/14.5'),
-(8, 'zb_ybnl', NULL, NULL, 'X1,Y4,Y3,chg,ach,Q1,I,B,Q3', '1,1,1,1,1,1,1,1,1', '应变能力', NULL, '(1.5*(X1 + Y4) + Y3 + chg + ach + Q1 + I + B + Q3)/10'),
-(9, 'zb_jlx', NULL, NULL, 'Q3,sc,sa,po,G,fx,so,int', '1,1,1,1,1,1,1,1', '纪律性', NULL, '(1.5*(Q3 + sc) + sa + po + G + fx + so + int)/9'),
-(10, 'zb_fxnl', NULL, NULL, 'spmd,Y3,int,B,Y4,Y2,end,Q2,ord,E,L', '1,1,1,1,1,1,1,1,1,1,1', '分析能力', NULL, '(1.5*(spmd + Y3 + int) + B + Y4 + Y2 + end + Q2 + ord + E + L)/12.5'),
-(11, 'zb_gnnl', NULL, NULL, 'spme,spmd,Y2,ai,ac,chg,aut,dom,Q2,N,fx,ie', '1,1,1,1,1,1,1,1,1,1,1,1', '归纳能力', NULL, '(1.5*(spme + spmd + Y2) + ai + ac + chg + aut + dom + Q2 + N + fx + ie)/13.5'),
-(12, 'zb_zrx', NULL, NULL, 're,G,C,Q2,ach,end,ac,ai,def,aut,ord,dom', '1,1,1,1,1,1,1,1,1,1,1,1', '责任心', NULL, '(2*(re + G + C + Q2) + ach + end + ac + ai + def + aut + ord + dom)/16'),
-(13, 'zb_cxd', NULL, NULL, 'con,epqal,gi,wb,Q3,re,cm', '1,1,1,1,1,1,1', '诚信度', NULL, '(1.5*(con + epqal) + gi + wb + Q3 + re + cm)/8'),
-(14, 'zb_grjzqx', NULL, NULL, 'ach,Y2,cs,exh,dom,nur,aff,aba,def,gi,wb,Q3,sc,po', '1,1,1,1,1,1,1,1,1,1,1,1,1,1', '个人价值取向', NULL, '(2*(ach + Y2 + cs) + exh + dom + nur + aff + aba + def + gi + wb + Q3 + sc +po)/17'),
-(15, 'zb_tdjs', NULL, NULL, 'ac,A,Y2,aff,def,ach,ord,end,aut,cs,ai', '1,1,1,1,1,1,1,1,1,1,1', '团队精神', NULL, '(1.5*(ac + A + Y2) + aff + def + ach + ord + end + aut + cs +ai)/12.5'),
-(16, 'zb_gztd', NULL, NULL, 're,Q2,G,ord,end,sc,Y4', '1,1,1,1,1,1,1', '工作态度', NULL, '(1.5*(re + Q2) + G + ord + end + sc + Y4)/8'),
-(17, 'zb_gzzf', NULL, NULL, 'X4,zb_rjgxtjsp,chg,Y3,Q3,spmabc,aff', '1,0,1,1,1,1,1', '工作作风', NULL, '(1.5*(X4 + zb_rjgxtjsp) + chg + Y3 + Q3 + spmabc + aff)/8'),
-(18, 'zb_rnx', NULL, NULL, 'po,nur,aff,ac,aba,def,X1,A,L,E', '1,1,1,1,1,1,1,1,1,1', '容纳性', NULL, '(1.5*(po + nur + aff) + ac + aba + def + X1 + A + L + E)/11.5'),
-(19, 'zb_bxx', NULL, NULL, 'exh,gi,cm,wb,sy,aut,dom,agg,Q2', '1,1,1,1,1,1,1,1,1', '表现性', NULL, '(1.5*(exh + gi + cm) + wb + sy + aut + dom + agg + Q2)/10.5'),
-(20, 'zb_rjgxtjsp', NULL, NULL, 'po,aff,nur,def,E,X3,N,inte,I,aba,suc,fx', '1,1,1,1,1,1,1,1,1,1,1,1', '人际关系调节水平', NULL, '(1.5*(po + aff + nur) + def + E + X3 + N + inte + I + aba + suc +fx)/13.5'),
-(21, 'zb_tzjl', NULL, NULL, 'soma,obse,epqap,epqan,F,M,G,I', '1,1,1,1,1,1,1,1', '体质精力', NULL, '(1.5*(soma + obse) + epqap + epqan + F + M + G + I)/9'),
-(22, 'zb_xg', NULL, NULL, 'X2,epqae,A,sy,sa,sp,F,exh,spmabc,I', '1,1,1,1,1,1,1,1,1,1', '性格', NULL, '(1.5*(X2 + epqae + A) + sy + sa + sp + F + exh + spmabc + I)/11.5'),
-(23, 'zb_qxkzsp', NULL, NULL, 'Y1,sc,C,G,Q3,F,I,po,N,epqan', '1,1,1,1,1,1,1,1,1,1', '情绪控制水平', NULL, '(1.5*(Y1 + sc + C) + G + Q3 + F + I + po + N + epqan)/11.5'),
-(24, 'zb_syhjsp', NULL, NULL, 'Y4,fx,sp,O,sc,po,Q4,X1', '1,1,1,1,1,1,1,1', '适应环境水平', NULL, '(1.5*(Y4 + fx) + sp + O + sc + po + Q4 + X1)/9'),
-(25, 'zb_zz', NULL, NULL, 'ai,end,E,G,aut,def,agg,Q2,H,L,parn', '1,1,1,1,1,1,1,1,1,1,1', '执着', NULL, '(1.5*(ai + end + E) + G + aut + def + agg + Q2 + H + L + parn)/12.5'),
-(26, 'zb_xljksp', NULL, NULL, 'Y1,C,sc,X1,sa,Q3,py,O,Q4,A', '1,1,1,1,1,1,1,1,1,1', '心理健康水平', NULL, '(1.5*(Y1 + C + sc + X1) + sa + Q3 + py + O + Q4+ A)/12'),
-(27, 'zb_sjnl', NULL, NULL, 'sy,aff,def,end,agg,I,F,epqae,A,L,E,sp', '1,1,1,1,1,1,1,1,1,1,1,1', '社交水平', NULL, '(1.5*(sy + aff + def + end) + agg + I + F + epqae + A + L + E +sp)/14'),
-(28, 'zb_chd', NULL, NULL, 'B,spm,Y4,Y2,Y3,chg,ai,ac,ie,N', '1,1,1,1,1,1,1,1,1,1', '聪慧度', NULL, '(1.5*(B + spm + Y4) + Y2 + Y3 + chg + ai + ac + ie + N)/11.5'),
-(29, 'zb_jmng', NULL, NULL, 'ie,N,fx,sc,po,sa,Y4', '1,1,1,1,1,1,1', '精明能干', NULL, '(1.5*(ie + N) + fx + sc + po + sa + Y4)/8');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `index_ans`
---
-
+-- ----------------------------
+-- Table structure for `index_ans`
+-- ----------------------------
 DROP TABLE IF EXISTS `index_ans`;
-CREATE TABLE IF NOT EXISTS `index_ans` (
-  `score` int(11) DEFAULT NULL COMMENT '指标最终得分\n',
+CREATE TABLE `index_ans` (
+  `score` float(11,2) NOT NULL COMMENT '指标最终得分\n',
   `index_id` int(11) NOT NULL COMMENT '指标id',
   `examinee_id` int(11) NOT NULL COMMENT '被试人员id，并非编号',
   PRIMARY KEY (`index_id`,`examinee_id`),
   KEY `fk_index_ans_1_idx` (`examinee_id`),
-  KEY `fk_index_ans_2_idx` (`index_id`)
+  KEY `fk_index_ans_2_idx` (`index_id`),
+  CONSTRAINT `fk_index_ans_1` FOREIGN KEY (`examinee_id`) REFERENCES `examinee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_index_ans_2` FOREIGN KEY (`index_id`) REFERENCES `index` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `index_ans`
---
+-- ----------------------------
+-- Records of index_ans
+-- ----------------------------
 
-INSERT INTO `index_ans` (`score`, `index_id`, `examinee_id`) VALUES
-(NULL, 2, 12),
-(NULL, 3, 12),
-(NULL, 4, 12),
-(NULL, 5, 12),
-(NULL, 6, 12),
-(NULL, 7, 12),
-(NULL, 8, 12),
-(NULL, 9, 12),
-(NULL, 10, 12),
-(NULL, 11, 12),
-(NULL, 12, 12),
-(NULL, 13, 12),
-(NULL, 14, 12),
-(NULL, 15, 12),
-(NULL, 16, 12),
-(NULL, 17, 12),
-(NULL, 18, 12),
-(NULL, 19, 12),
-(NULL, 20, 12),
-(NULL, 21, 12),
-(NULL, 22, 12),
-(NULL, 23, 12),
-(NULL, 24, 12),
-(NULL, 25, 12),
-(NULL, 26, 12),
-(NULL, 27, 12),
-(NULL, 28, 12),
-(NULL, 29, 12);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `inquery`
---
-
-DROP TABLE IF EXISTS `inquery`;
-CREATE TABLE IF NOT EXISTS `inquery` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `project_id` int(11) DEFAULT NULL COMMENT '所属项目id',
-  `description` text COMMENT '指导语',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `project_id_UNIQUE` (`project_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `inquery_ans`
---
-
+-- ----------------------------
+-- Table structure for `inquery_ans`
+-- ----------------------------
 DROP TABLE IF EXISTS `inquery_ans`;
-CREATE TABLE IF NOT EXISTS `inquery_ans` (
-  `inquery_id` int(11) NOT NULL,
+CREATE TABLE `inquery_ans` (
+  `project_id` int(11) NOT NULL,
   `examinee_id` int(11) NOT NULL,
   `option` text,
-  PRIMARY KEY (`inquery_id`,`examinee_id`),
-  KEY `fk_inquery_ans_2_idx` (`examinee_id`)
+  PRIMARY KEY (`project_id`,`examinee_id`),
+  KEY `fk_inquery_ans_2_idx` (`examinee_id`),
+  KEY `fk_inquery_ans_1_idx` (`project_id`) USING BTREE,
+  CONSTRAINT `fk_inquery_ans_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_inquery_ans_2` FOREIGN KEY (`examinee_id`) REFERENCES `examinee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Records of inquery_ans
+-- ----------------------------
 
---
--- Table structure for table `inquery_question`
---
-
+-- ----------------------------
+-- Table structure for `inquery_question`
+-- ----------------------------
 DROP TABLE IF EXISTS `inquery_question`;
-CREATE TABLE IF NOT EXISTS `inquery_question` (
+CREATE TABLE `inquery_question` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `topic` text COMMENT '题目描述',
   `options` text,
   `is_radio` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `project_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_project_id` (`project_id`),
+  CONSTRAINT `fk_project_id` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Records of inquery_question
+-- ----------------------------
 
---
--- Table structure for table `interview`
---
-
+-- ----------------------------
+-- Table structure for `interview`
+-- ----------------------------
 DROP TABLE IF EXISTS `interview`;
-CREATE TABLE IF NOT EXISTS `interview` (
+CREATE TABLE `interview` (
   `advantage` text COMMENT '5条优势',
   `disadvantage` text COMMENT '3条劣势',
   `remark` text COMMENT '评语',
   `manager_id` int(11) NOT NULL,
   `examinee_id` int(11) NOT NULL,
   PRIMARY KEY (`manager_id`,`examinee_id`),
-  KEY `fk_interview_2_idx` (`examinee_id`)
+  KEY `fk_interview_2_idx` (`examinee_id`),
+  CONSTRAINT `fk_interview_1` FOREIGN KEY (`manager_id`) REFERENCES `manager` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_interview_2` FOREIGN KEY (`examinee_id`) REFERENCES `examinee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `interview`
---
+-- ----------------------------
+-- Records of interview
+-- ----------------------------
 
-INSERT INTO `interview` (`advantage`, `disadvantage`, `remark`, `manager_id`, `examinee_id`) VALUES
-('1.|2.|3.|4.|5.', '1.|2.|3.', '', 91, 12),
-('1.|2.|3.|4.|5.', '1.|2.|3.', 'hahhahahahah', 91, 14);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ksdf`
---
-
+-- ----------------------------
+-- Table structure for `ksdf`
+-- ----------------------------
 DROP TABLE IF EXISTS `ksdf`;
-CREATE TABLE IF NOT EXISTS `ksdf` (
+CREATE TABLE `ksdf` (
   `TH` int(11) NOT NULL,
   `A` tinyint(4) NOT NULL,
   `B` tinyint(4) NOT NULL,
@@ -1559,207 +2345,202 @@ CREATE TABLE IF NOT EXISTS `ksdf` (
   PRIMARY KEY (`TH`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `ksdf`
---
+-- ----------------------------
+-- Records of ksdf
+-- ----------------------------
+INSERT INTO `ksdf` VALUES ('1', '0', '0', '0');
+INSERT INTO `ksdf` VALUES ('2', '0', '0', '0');
+INSERT INTO `ksdf` VALUES ('3', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('4', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('5', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('6', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('7', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('8', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('9', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('10', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('11', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('12', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('13', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('14', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('15', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('16', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('17', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('18', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('19', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('20', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('21', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('22', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('23', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('24', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('25', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('26', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('27', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('28', '0', '1', '0');
+INSERT INTO `ksdf` VALUES ('29', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('30', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('31', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('32', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('33', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('34', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('35', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('36', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('37', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('38', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('39', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('40', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('41', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('42', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('43', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('44', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('45', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('46', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('47', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('48', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('49', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('50', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('51', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('52', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('53', '0', '1', '0');
+INSERT INTO `ksdf` VALUES ('54', '0', '1', '0');
+INSERT INTO `ksdf` VALUES ('55', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('56', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('57', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('58', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('59', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('60', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('61', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('62', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('63', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('64', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('65', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('66', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('67', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('68', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('69', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('70', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('71', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('72', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('73', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('74', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('75', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('76', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('77', '0', '0', '1');
+INSERT INTO `ksdf` VALUES ('78', '0', '1', '0');
+INSERT INTO `ksdf` VALUES ('79', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('80', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('81', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('82', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('83', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('84', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('85', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('86', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('87', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('88', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('89', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('90', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('91', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('92', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('93', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('94', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('95', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('96', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('97', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('98', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('99', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('100', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('101', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('102', '0', '0', '1');
+INSERT INTO `ksdf` VALUES ('103', '0', '1', '0');
+INSERT INTO `ksdf` VALUES ('104', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('105', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('106', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('107', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('108', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('109', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('110', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('111', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('112', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('113', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('114', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('115', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('116', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('117', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('118', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('119', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('120', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('121', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('122', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('123', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('124', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('125', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('126', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('127', '0', '0', '1');
+INSERT INTO `ksdf` VALUES ('128', '0', '1', '0');
+INSERT INTO `ksdf` VALUES ('129', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('130', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('131', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('132', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('133', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('134', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('135', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('136', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('137', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('138', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('139', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('140', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('141', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('142', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('143', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('144', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('145', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('146', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('147', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('148', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('149', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('150', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('151', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('152', '0', '1', '0');
+INSERT INTO `ksdf` VALUES ('153', '0', '0', '1');
+INSERT INTO `ksdf` VALUES ('154', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('155', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('156', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('157', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('158', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('159', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('160', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('161', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('162', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('163', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('164', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('165', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('166', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('167', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('168', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('169', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('170', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('171', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('172', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('173', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('174', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('175', '0', '1', '2');
+INSERT INTO `ksdf` VALUES ('176', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('177', '1', '0', '0');
+INSERT INTO `ksdf` VALUES ('178', '1', '0', '0');
+INSERT INTO `ksdf` VALUES ('179', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('180', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('181', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('182', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('183', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('184', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('185', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('186', '2', '1', '0');
+INSERT INTO `ksdf` VALUES ('187', '0', '0', '0');
 
-INSERT INTO `ksdf` (`TH`, `A`, `B`, `C`) VALUES
-(1, 0, 0, 0),
-(2, 0, 0, 0),
-(3, 2, 1, 0),
-(4, 2, 1, 0),
-(5, 0, 1, 2),
-(6, 0, 1, 2),
-(7, 2, 1, 0),
-(8, 0, 1, 2),
-(9, 0, 1, 2),
-(10, 2, 1, 0),
-(11, 0, 1, 2),
-(12, 0, 1, 2),
-(13, 2, 1, 0),
-(14, 0, 1, 2),
-(15, 0, 1, 2),
-(16, 0, 1, 2),
-(17, 2, 1, 0),
-(18, 2, 1, 0),
-(19, 0, 1, 2),
-(20, 2, 1, 0),
-(21, 2, 1, 0),
-(22, 0, 1, 2),
-(23, 0, 1, 2),
-(24, 0, 1, 2),
-(25, 2, 1, 0),
-(26, 0, 1, 2),
-(27, 0, 1, 2),
-(28, 0, 1, 0),
-(29, 0, 1, 2),
-(30, 2, 1, 0),
-(31, 0, 1, 2),
-(32, 0, 1, 2),
-(33, 2, 1, 0),
-(34, 0, 1, 2),
-(35, 0, 1, 2),
-(36, 2, 1, 0),
-(37, 2, 1, 0),
-(38, 2, 1, 0),
-(39, 2, 1, 0),
-(40, 2, 1, 0),
-(41, 0, 1, 2),
-(42, 2, 1, 0),
-(43, 2, 1, 0),
-(44, 0, 1, 2),
-(45, 0, 1, 2),
-(46, 2, 1, 0),
-(47, 2, 1, 0),
-(48, 2, 1, 0),
-(49, 2, 1, 0),
-(50, 2, 1, 0),
-(51, 0, 1, 2),
-(52, 2, 1, 0),
-(53, 0, 1, 0),
-(54, 0, 1, 0),
-(55, 2, 1, 0),
-(56, 2, 1, 0),
-(57, 0, 1, 2),
-(58, 2, 1, 0),
-(59, 2, 1, 0),
-(60, 0, 1, 2),
-(61, 0, 1, 2),
-(62, 0, 1, 2),
-(63, 0, 1, 2),
-(64, 0, 1, 2),
-(65, 2, 1, 0),
-(66, 0, 1, 2),
-(67, 0, 1, 2),
-(68, 0, 1, 2),
-(69, 2, 1, 0),
-(70, 2, 1, 0),
-(71, 2, 1, 0),
-(72, 2, 1, 0),
-(73, 2, 1, 0),
-(74, 2, 1, 0),
-(75, 0, 1, 2),
-(76, 0, 1, 2),
-(77, 0, 0, 1),
-(78, 0, 1, 0),
-(79, 0, 1, 2),
-(80, 0, 1, 2),
-(81, 0, 1, 2),
-(82, 0, 1, 2),
-(83, 0, 1, 2),
-(84, 0, 1, 2),
-(85, 0, 1, 2),
-(86, 0, 1, 2),
-(87, 0, 1, 2),
-(88, 2, 1, 0),
-(89, 0, 1, 2),
-(90, 0, 1, 2),
-(91, 2, 1, 0),
-(92, 0, 1, 2),
-(93, 0, 1, 2),
-(94, 0, 1, 2),
-(95, 0, 1, 2),
-(96, 0, 1, 2),
-(97, 0, 1, 2),
-(98, 2, 1, 0),
-(99, 2, 1, 0),
-(100, 0, 1, 2),
-(101, 2, 1, 0),
-(102, 0, 0, 1),
-(103, 0, 1, 0),
-(104, 2, 1, 0),
-(105, 2, 1, 0),
-(106, 0, 1, 2),
-(107, 0, 1, 2),
-(108, 0, 1, 2),
-(109, 2, 1, 0),
-(110, 2, 1, 0),
-(111, 2, 1, 0),
-(112, 2, 1, 0),
-(113, 2, 1, 0),
-(114, 2, 1, 0),
-(115, 2, 1, 0),
-(116, 0, 1, 2),
-(117, 2, 1, 0),
-(118, 2, 1, 0),
-(119, 2, 1, 0),
-(120, 0, 1, 2),
-(121, 0, 1, 2),
-(122, 0, 1, 2),
-(123, 0, 1, 2),
-(124, 2, 1, 0),
-(125, 0, 1, 2),
-(126, 2, 1, 0),
-(127, 0, 0, 1),
-(128, 0, 1, 0),
-(129, 2, 1, 0),
-(130, 2, 1, 0),
-(131, 2, 1, 0),
-(132, 2, 1, 0),
-(133, 2, 1, 0),
-(134, 2, 1, 0),
-(135, 0, 1, 2),
-(136, 2, 1, 0),
-(137, 0, 1, 2),
-(138, 2, 1, 0),
-(139, 0, 1, 2),
-(140, 2, 1, 0),
-(141, 0, 1, 2),
-(142, 2, 1, 0),
-(143, 2, 1, 0),
-(144, 0, 1, 2),
-(145, 2, 1, 0),
-(146, 2, 1, 0),
-(147, 2, 1, 0),
-(148, 2, 1, 0),
-(149, 2, 1, 0),
-(150, 2, 1, 0),
-(151, 0, 1, 2),
-(152, 0, 1, 0),
-(153, 0, 0, 1),
-(154, 0, 1, 2),
-(155, 2, 1, 0),
-(156, 2, 1, 0),
-(157, 0, 1, 2),
-(158, 0, 1, 2),
-(159, 0, 1, 2),
-(160, 2, 1, 0),
-(161, 0, 1, 2),
-(162, 0, 1, 2),
-(163, 2, 1, 0),
-(164, 2, 1, 0),
-(165, 0, 1, 2),
-(166, 0, 1, 2),
-(167, 2, 1, 0),
-(168, 2, 1, 0),
-(169, 2, 1, 0),
-(170, 0, 1, 2),
-(171, 2, 1, 0),
-(172, 0, 1, 2),
-(173, 2, 1, 0),
-(174, 2, 1, 0),
-(175, 0, 1, 2),
-(176, 2, 1, 0),
-(177, 1, 0, 0),
-(178, 1, 0, 0),
-(179, 2, 1, 0),
-(180, 2, 1, 0),
-(181, 2, 1, 0),
-(182, 2, 1, 0),
-(183, 2, 1, 0),
-(184, 2, 1, 0),
-(185, 2, 1, 0),
-(186, 2, 1, 0),
-(187, 0, 0, 0);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ksdf_memory`
---
-
+-- ----------------------------
+-- Table structure for `ksdf_memory`
+-- ----------------------------
 DROP TABLE IF EXISTS `ksdf_memory`;
-CREATE TABLE IF NOT EXISTS `ksdf_memory` (
+CREATE TABLE `ksdf_memory` (
   `TH` int(11) NOT NULL,
   `A` tinyint(4) NOT NULL,
   `B` tinyint(4) NOT NULL,
@@ -1767,14 +2548,202 @@ CREATE TABLE IF NOT EXISTS `ksdf_memory` (
   PRIMARY KEY (`TH`)
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Records of ksdf_memory
+-- ----------------------------
+INSERT INTO `ksdf_memory` VALUES ('1', '0', '0', '0');
+INSERT INTO `ksdf_memory` VALUES ('2', '0', '0', '0');
+INSERT INTO `ksdf_memory` VALUES ('3', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('4', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('5', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('6', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('7', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('8', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('9', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('10', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('11', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('12', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('13', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('14', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('15', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('16', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('17', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('18', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('19', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('20', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('21', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('22', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('23', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('24', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('25', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('26', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('27', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('28', '0', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('29', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('30', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('31', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('32', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('33', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('34', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('35', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('36', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('37', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('38', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('39', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('40', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('41', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('42', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('43', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('44', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('45', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('46', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('47', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('48', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('49', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('50', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('51', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('52', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('53', '0', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('54', '0', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('55', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('56', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('57', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('58', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('59', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('60', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('61', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('62', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('63', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('64', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('65', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('66', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('67', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('68', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('69', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('70', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('71', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('72', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('73', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('74', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('75', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('76', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('77', '0', '0', '1');
+INSERT INTO `ksdf_memory` VALUES ('78', '0', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('79', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('80', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('81', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('82', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('83', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('84', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('85', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('86', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('87', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('88', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('89', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('90', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('91', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('92', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('93', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('94', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('95', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('96', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('97', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('98', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('99', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('100', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('101', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('102', '0', '0', '1');
+INSERT INTO `ksdf_memory` VALUES ('103', '0', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('104', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('105', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('106', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('107', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('108', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('109', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('110', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('111', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('112', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('113', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('114', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('115', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('116', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('117', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('118', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('119', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('120', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('121', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('122', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('123', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('124', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('125', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('126', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('127', '0', '0', '1');
+INSERT INTO `ksdf_memory` VALUES ('128', '0', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('129', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('130', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('131', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('132', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('133', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('134', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('135', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('136', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('137', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('138', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('139', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('140', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('141', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('142', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('143', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('144', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('145', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('146', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('147', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('148', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('149', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('150', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('151', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('152', '0', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('153', '0', '0', '1');
+INSERT INTO `ksdf_memory` VALUES ('154', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('155', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('156', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('157', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('158', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('159', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('160', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('161', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('162', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('163', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('164', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('165', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('166', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('167', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('168', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('169', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('170', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('171', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('172', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('173', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('174', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('175', '0', '1', '2');
+INSERT INTO `ksdf_memory` VALUES ('176', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('177', '1', '0', '0');
+INSERT INTO `ksdf_memory` VALUES ('178', '1', '0', '0');
+INSERT INTO `ksdf_memory` VALUES ('179', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('180', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('181', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('182', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('183', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('184', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('185', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('186', '2', '1', '0');
+INSERT INTO `ksdf_memory` VALUES ('187', '0', '0', '0');
 
---
--- Table structure for table `ksmd`
---
-
+-- ----------------------------
+-- Table structure for `ksmd`
+-- ----------------------------
 DROP TABLE IF EXISTS `ksmd`;
-CREATE TABLE IF NOT EXISTS `ksmd` (
+CREATE TABLE `ksmd` (
   `DM` int(11) NOT NULL DEFAULT '0',
   `YZ` char(2) CHARACTER SET latin1 NOT NULL,
   `QSF` int(11) NOT NULL,
@@ -1783,350 +2752,692 @@ CREATE TABLE IF NOT EXISTS `ksmd` (
   PRIMARY KEY (`YZ`,`DM`,`QSF`,`ZZF`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `ksmd`
---
+-- ----------------------------
+-- Records of ksmd
+-- ----------------------------
+INSERT INTO `ksmd` VALUES ('8', 'A', '0', '2', '1');
+INSERT INTO `ksmd` VALUES ('8', 'A', '3', '3', '2');
+INSERT INTO `ksmd` VALUES ('8', 'A', '4', '5', '3');
+INSERT INTO `ksmd` VALUES ('8', 'A', '6', '7', '4');
+INSERT INTO `ksmd` VALUES ('8', 'A', '8', '10', '5');
+INSERT INTO `ksmd` VALUES ('8', 'A', '11', '12', '6');
+INSERT INTO `ksmd` VALUES ('8', 'A', '13', '13', '7');
+INSERT INTO `ksmd` VALUES ('8', 'A', '14', '15', '8');
+INSERT INTO `ksmd` VALUES ('8', 'A', '16', '17', '9');
+INSERT INTO `ksmd` VALUES ('8', 'A', '18', '999', '10');
+INSERT INTO `ksmd` VALUES ('9', 'A', '0', '3', '1');
+INSERT INTO `ksmd` VALUES ('9', 'A', '4', '5', '2');
+INSERT INTO `ksmd` VALUES ('9', 'A', '6', '7', '3');
+INSERT INTO `ksmd` VALUES ('9', 'A', '8', '8', '4');
+INSERT INTO `ksmd` VALUES ('9', 'A', '9', '10', '5');
+INSERT INTO `ksmd` VALUES ('9', 'A', '11', '12', '6');
+INSERT INTO `ksmd` VALUES ('9', 'A', '13', '14', '7');
+INSERT INTO `ksmd` VALUES ('9', 'A', '15', '16', '8');
+INSERT INTO `ksmd` VALUES ('9', 'A', '17', '17', '9');
+INSERT INTO `ksmd` VALUES ('9', 'A', '18', '999', '10');
+INSERT INTO `ksmd` VALUES ('8', 'B', '0', '3', '1');
+INSERT INTO `ksmd` VALUES ('8', 'B', '4', '4', '2');
+INSERT INTO `ksmd` VALUES ('8', 'B', '5', '6', '3');
+INSERT INTO `ksmd` VALUES ('8', 'B', '7', '7', '4');
+INSERT INTO `ksmd` VALUES ('8', 'B', '8', '8', '5');
+INSERT INTO `ksmd` VALUES ('8', 'B', '9', '9', '6');
+INSERT INTO `ksmd` VALUES ('8', 'B', '10', '10', '7');
+INSERT INTO `ksmd` VALUES ('8', 'B', '11', '11', '8');
+INSERT INTO `ksmd` VALUES ('8', 'B', '12', '12', '9');
+INSERT INTO `ksmd` VALUES ('8', 'B', '13', '999', '10');
+INSERT INTO `ksmd` VALUES ('9', 'B', '0', '3', '1');
+INSERT INTO `ksmd` VALUES ('9', 'B', '4', '5', '2');
+INSERT INTO `ksmd` VALUES ('9', 'B', '6', '6', '3');
+INSERT INTO `ksmd` VALUES ('9', 'B', '7', '7', '4');
+INSERT INTO `ksmd` VALUES ('9', 'B', '8', '8', '5');
+INSERT INTO `ksmd` VALUES ('9', 'B', '9', '9', '6');
+INSERT INTO `ksmd` VALUES ('9', 'B', '10', '10', '7');
+INSERT INTO `ksmd` VALUES ('9', 'B', '11', '11', '8');
+INSERT INTO `ksmd` VALUES ('9', 'B', '12', '12', '9');
+INSERT INTO `ksmd` VALUES ('9', 'B', '13', '999', '10');
+INSERT INTO `ksmd` VALUES ('8', 'C', '0', '6', '1');
+INSERT INTO `ksmd` VALUES ('8', 'C', '7', '8', '2');
+INSERT INTO `ksmd` VALUES ('8', 'C', '9', '10', '3');
+INSERT INTO `ksmd` VALUES ('8', 'C', '11', '12', '4');
+INSERT INTO `ksmd` VALUES ('8', 'C', '13', '15', '5');
+INSERT INTO `ksmd` VALUES ('8', 'C', '16', '17', '6');
+INSERT INTO `ksmd` VALUES ('8', 'C', '18', '19', '7');
+INSERT INTO `ksmd` VALUES ('8', 'C', '20', '21', '8');
+INSERT INTO `ksmd` VALUES ('8', 'C', '22', '23', '9');
+INSERT INTO `ksmd` VALUES ('8', 'C', '24', '999', '10');
+INSERT INTO `ksmd` VALUES ('9', 'C', '0', '5', '1');
+INSERT INTO `ksmd` VALUES ('9', 'C', '6', '7', '2');
+INSERT INTO `ksmd` VALUES ('9', 'C', '8', '9', '3');
+INSERT INTO `ksmd` VALUES ('9', 'C', '10', '11', '4');
+INSERT INTO `ksmd` VALUES ('9', 'C', '12', '13', '5');
+INSERT INTO `ksmd` VALUES ('9', 'C', '14', '16', '6');
+INSERT INTO `ksmd` VALUES ('9', 'C', '17', '18', '7');
+INSERT INTO `ksmd` VALUES ('9', 'C', '19', '20', '8');
+INSERT INTO `ksmd` VALUES ('9', 'C', '21', '22', '9');
+INSERT INTO `ksmd` VALUES ('9', 'C', '23', '999', '10');
+INSERT INTO `ksmd` VALUES ('8', 'E', '0', '5', '1');
+INSERT INTO `ksmd` VALUES ('8', 'E', '6', '6', '2');
+INSERT INTO `ksmd` VALUES ('8', 'E', '7', '8', '3');
+INSERT INTO `ksmd` VALUES ('8', 'E', '9', '10', '4');
+INSERT INTO `ksmd` VALUES ('8', 'E', '11', '12', '5');
+INSERT INTO `ksmd` VALUES ('8', 'E', '13', '14', '6');
+INSERT INTO `ksmd` VALUES ('8', 'E', '15', '16', '7');
+INSERT INTO `ksmd` VALUES ('8', 'E', '17', '18', '8');
+INSERT INTO `ksmd` VALUES ('8', 'E', '19', '20', '9');
+INSERT INTO `ksmd` VALUES ('8', 'E', '21', '999', '10');
+INSERT INTO `ksmd` VALUES ('9', 'E', '0', '3', '1');
+INSERT INTO `ksmd` VALUES ('9', 'E', '4', '5', '2');
+INSERT INTO `ksmd` VALUES ('9', 'E', '6', '7', '3');
+INSERT INTO `ksmd` VALUES ('9', 'E', '8', '9', '4');
+INSERT INTO `ksmd` VALUES ('9', 'E', '10', '11', '5');
+INSERT INTO `ksmd` VALUES ('9', 'E', '12', '13', '6');
+INSERT INTO `ksmd` VALUES ('9', 'E', '14', '15', '7');
+INSERT INTO `ksmd` VALUES ('9', 'E', '16', '17', '8');
+INSERT INTO `ksmd` VALUES ('9', 'E', '18', '19', '9');
+INSERT INTO `ksmd` VALUES ('9', 'E', '20', '999', '10');
+INSERT INTO `ksmd` VALUES ('8', 'F', '0', '3', '1');
+INSERT INTO `ksmd` VALUES ('8', 'F', '4', '5', '2');
+INSERT INTO `ksmd` VALUES ('8', 'F', '6', '7', '3');
+INSERT INTO `ksmd` VALUES ('8', 'F', '8', '9', '4');
+INSERT INTO `ksmd` VALUES ('8', 'F', '10', '12', '5');
+INSERT INTO `ksmd` VALUES ('8', 'F', '13', '14', '6');
+INSERT INTO `ksmd` VALUES ('8', 'F', '15', '17', '7');
+INSERT INTO `ksmd` VALUES ('8', 'F', '18', '19', '8');
+INSERT INTO `ksmd` VALUES ('8', 'F', '20', '21', '9');
+INSERT INTO `ksmd` VALUES ('8', 'F', '22', '999', '10');
+INSERT INTO `ksmd` VALUES ('9', 'F', '0', '2', '1');
+INSERT INTO `ksmd` VALUES ('9', 'F', '3', '5', '2');
+INSERT INTO `ksmd` VALUES ('9', 'F', '6', '7', '3');
+INSERT INTO `ksmd` VALUES ('9', 'F', '8', '9', '4');
+INSERT INTO `ksmd` VALUES ('9', 'F', '10', '12', '5');
+INSERT INTO `ksmd` VALUES ('9', 'F', '13', '15', '6');
+INSERT INTO `ksmd` VALUES ('9', 'F', '16', '17', '7');
+INSERT INTO `ksmd` VALUES ('9', 'F', '18', '19', '8');
+INSERT INTO `ksmd` VALUES ('9', 'F', '20', '22', '9');
+INSERT INTO `ksmd` VALUES ('9', 'F', '23', '999', '10');
+INSERT INTO `ksmd` VALUES ('8', 'G', '0', '5', '1');
+INSERT INTO `ksmd` VALUES ('8', 'G', '6', '6', '2');
+INSERT INTO `ksmd` VALUES ('8', 'G', '7', '8', '3');
+INSERT INTO `ksmd` VALUES ('8', 'G', '9', '10', '4');
+INSERT INTO `ksmd` VALUES ('8', 'G', '11', '12', '5');
+INSERT INTO `ksmd` VALUES ('8', 'G', '13', '14', '6');
+INSERT INTO `ksmd` VALUES ('8', 'G', '15', '16', '7');
+INSERT INTO `ksmd` VALUES ('8', 'G', '17', '17', '8');
+INSERT INTO `ksmd` VALUES ('8', 'G', '18', '19', '9');
+INSERT INTO `ksmd` VALUES ('8', 'G', '20', '999', '10');
+INSERT INTO `ksmd` VALUES ('9', 'G', '0', '5', '1');
+INSERT INTO `ksmd` VALUES ('9', 'G', '6', '7', '2');
+INSERT INTO `ksmd` VALUES ('9', 'G', '8', '8', '3');
+INSERT INTO `ksmd` VALUES ('9', 'G', '9', '10', '4');
+INSERT INTO `ksmd` VALUES ('9', 'G', '11', '12', '5');
+INSERT INTO `ksmd` VALUES ('9', 'G', '13', '14', '6');
+INSERT INTO `ksmd` VALUES ('9', 'G', '15', '16', '7');
+INSERT INTO `ksmd` VALUES ('9', 'G', '17', '17', '8');
+INSERT INTO `ksmd` VALUES ('9', 'G', '18', '19', '9');
+INSERT INTO `ksmd` VALUES ('9', 'G', '20', '999', '10');
+INSERT INTO `ksmd` VALUES ('8', 'H', '0', '1', '1');
+INSERT INTO `ksmd` VALUES ('8', 'H', '2', '3', '2');
+INSERT INTO `ksmd` VALUES ('8', 'H', '4', '6', '3');
+INSERT INTO `ksmd` VALUES ('8', 'H', '7', '8', '4');
+INSERT INTO `ksmd` VALUES ('8', 'H', '9', '10', '5');
+INSERT INTO `ksmd` VALUES ('8', 'H', '11', '13', '6');
+INSERT INTO `ksmd` VALUES ('8', 'H', '14', '15', '7');
+INSERT INTO `ksmd` VALUES ('8', 'H', '16', '18', '8');
+INSERT INTO `ksmd` VALUES ('8', 'H', '19', '20', '9');
+INSERT INTO `ksmd` VALUES ('8', 'H', '21', '999', '10');
+INSERT INTO `ksmd` VALUES ('9', 'H', '0', '1', '1');
+INSERT INTO `ksmd` VALUES ('9', 'H', '2', '3', '2');
+INSERT INTO `ksmd` VALUES ('9', 'H', '4', '5', '3');
+INSERT INTO `ksmd` VALUES ('9', 'H', '6', '7', '4');
+INSERT INTO `ksmd` VALUES ('9', 'H', '8', '10', '5');
+INSERT INTO `ksmd` VALUES ('9', 'H', '11', '13', '6');
+INSERT INTO `ksmd` VALUES ('9', 'H', '14', '15', '7');
+INSERT INTO `ksmd` VALUES ('9', 'H', '16', '17', '8');
+INSERT INTO `ksmd` VALUES ('9', 'H', '18', '20', '9');
+INSERT INTO `ksmd` VALUES ('9', 'H', '21', '999', '10');
+INSERT INTO `ksmd` VALUES ('8', 'I', '0', '3', '1');
+INSERT INTO `ksmd` VALUES ('8', 'I', '4', '5', '2');
+INSERT INTO `ksmd` VALUES ('8', 'I', '6', '6', '3');
+INSERT INTO `ksmd` VALUES ('8', 'I', '7', '7', '4');
+INSERT INTO `ksmd` VALUES ('8', 'I', '8', '9', '5');
+INSERT INTO `ksmd` VALUES ('8', 'I', '10', '11', '6');
+INSERT INTO `ksmd` VALUES ('8', 'I', '12', '12', '7');
+INSERT INTO `ksmd` VALUES ('8', 'I', '13', '14', '8');
+INSERT INTO `ksmd` VALUES ('8', 'I', '15', '15', '9');
+INSERT INTO `ksmd` VALUES ('8', 'I', '16', '999', '10');
+INSERT INTO `ksmd` VALUES ('9', 'I', '0', '4', '1');
+INSERT INTO `ksmd` VALUES ('9', 'I', '5', '5', '2');
+INSERT INTO `ksmd` VALUES ('9', 'I', '6', '7', '3');
+INSERT INTO `ksmd` VALUES ('9', 'I', '8', '8', '4');
+INSERT INTO `ksmd` VALUES ('9', 'I', '9', '10', '5');
+INSERT INTO `ksmd` VALUES ('9', 'I', '11', '12', '6');
+INSERT INTO `ksmd` VALUES ('9', 'I', '13', '13', '7');
+INSERT INTO `ksmd` VALUES ('9', 'I', '14', '15', '8');
+INSERT INTO `ksmd` VALUES ('9', 'I', '16', '17', '9');
+INSERT INTO `ksmd` VALUES ('9', 'I', '18', '999', '10');
+INSERT INTO `ksmd` VALUES ('8', 'L', '0', '4', '1');
+INSERT INTO `ksmd` VALUES ('8', 'L', '5', '5', '2');
+INSERT INTO `ksmd` VALUES ('8', 'L', '6', '7', '3');
+INSERT INTO `ksmd` VALUES ('8', 'L', '8', '9', '4');
+INSERT INTO `ksmd` VALUES ('8', 'L', '10', '11', '5');
+INSERT INTO `ksmd` VALUES ('8', 'L', '12', '12', '6');
+INSERT INTO `ksmd` VALUES ('8', 'L', '13', '14', '7');
+INSERT INTO `ksmd` VALUES ('8', 'L', '15', '15', '8');
+INSERT INTO `ksmd` VALUES ('8', 'L', '16', '17', '9');
+INSERT INTO `ksmd` VALUES ('8', 'L', '18', '999', '10');
+INSERT INTO `ksmd` VALUES ('9', 'L', '0', '3', '1');
+INSERT INTO `ksmd` VALUES ('9', 'L', '4', '4', '2');
+INSERT INTO `ksmd` VALUES ('9', 'L', '5', '6', '3');
+INSERT INTO `ksmd` VALUES ('9', 'L', '7', '8', '4');
+INSERT INTO `ksmd` VALUES ('9', 'L', '9', '10', '5');
+INSERT INTO `ksmd` VALUES ('9', 'L', '11', '12', '6');
+INSERT INTO `ksmd` VALUES ('9', 'L', '13', '13', '7');
+INSERT INTO `ksmd` VALUES ('9', 'L', '14', '15', '8');
+INSERT INTO `ksmd` VALUES ('9', 'L', '16', '17', '9');
+INSERT INTO `ksmd` VALUES ('9', 'L', '18', '999', '10');
+INSERT INTO `ksmd` VALUES ('8', 'M', '0', '3', '1');
+INSERT INTO `ksmd` VALUES ('8', 'M', '4', '4', '2');
+INSERT INTO `ksmd` VALUES ('8', 'M', '5', '6', '3');
+INSERT INTO `ksmd` VALUES ('8', 'M', '7', '8', '4');
+INSERT INTO `ksmd` VALUES ('8', 'M', '9', '10', '5');
+INSERT INTO `ksmd` VALUES ('8', 'M', '11', '13', '6');
+INSERT INTO `ksmd` VALUES ('8', 'M', '14', '14', '7');
+INSERT INTO `ksmd` VALUES ('8', 'M', '15', '16', '8');
+INSERT INTO `ksmd` VALUES ('8', 'M', '17', '18', '9');
+INSERT INTO `ksmd` VALUES ('8', 'M', '19', '999', '10');
+INSERT INTO `ksmd` VALUES ('9', 'M', '0', '5', '1');
+INSERT INTO `ksmd` VALUES ('9', 'M', '6', '6', '2');
+INSERT INTO `ksmd` VALUES ('9', 'M', '7', '8', '3');
+INSERT INTO `ksmd` VALUES ('9', 'M', '9', '10', '4');
+INSERT INTO `ksmd` VALUES ('9', 'M', '11', '12', '5');
+INSERT INTO `ksmd` VALUES ('9', 'M', '13', '14', '6');
+INSERT INTO `ksmd` VALUES ('9', 'M', '15', '16', '7');
+INSERT INTO `ksmd` VALUES ('9', 'M', '17', '17', '8');
+INSERT INTO `ksmd` VALUES ('9', 'M', '18', '19', '9');
+INSERT INTO `ksmd` VALUES ('9', 'M', '20', '999', '10');
+INSERT INTO `ksmd` VALUES ('8', 'N', '0', '3', '1');
+INSERT INTO `ksmd` VALUES ('8', 'N', '4', '4', '2');
+INSERT INTO `ksmd` VALUES ('8', 'N', '5', '6', '3');
+INSERT INTO `ksmd` VALUES ('8', 'N', '7', '7', '4');
+INSERT INTO `ksmd` VALUES ('8', 'N', '8', '9', '5');
+INSERT INTO `ksmd` VALUES ('8', 'N', '10', '11', '6');
+INSERT INTO `ksmd` VALUES ('8', 'N', '12', '12', '7');
+INSERT INTO `ksmd` VALUES ('8', 'N', '13', '14', '8');
+INSERT INTO `ksmd` VALUES ('8', 'N', '15', '15', '9');
+INSERT INTO `ksmd` VALUES ('8', 'N', '16', '999', '10');
+INSERT INTO `ksmd` VALUES ('9', 'N', '0', '3', '1');
+INSERT INTO `ksmd` VALUES ('9', 'N', '4', '5', '2');
+INSERT INTO `ksmd` VALUES ('9', 'N', '6', '6', '3');
+INSERT INTO `ksmd` VALUES ('9', 'N', '7', '7', '4');
+INSERT INTO `ksmd` VALUES ('9', 'N', '8', '9', '5');
+INSERT INTO `ksmd` VALUES ('9', 'N', '10', '11', '6');
+INSERT INTO `ksmd` VALUES ('9', 'N', '12', '13', '7');
+INSERT INTO `ksmd` VALUES ('9', 'N', '14', '14', '8');
+INSERT INTO `ksmd` VALUES ('9', 'N', '15', '16', '9');
+INSERT INTO `ksmd` VALUES ('9', 'N', '17', '999', '10');
+INSERT INTO `ksmd` VALUES ('8', 'O', '0', '1', '1');
+INSERT INTO `ksmd` VALUES ('8', 'O', '2', '2', '2');
+INSERT INTO `ksmd` VALUES ('8', 'O', '3', '4', '3');
+INSERT INTO `ksmd` VALUES ('8', 'O', '5', '6', '4');
+INSERT INTO `ksmd` VALUES ('8', 'O', '7', '8', '5');
+INSERT INTO `ksmd` VALUES ('8', 'O', '9', '10', '6');
+INSERT INTO `ksmd` VALUES ('8', 'O', '11', '12', '7');
+INSERT INTO `ksmd` VALUES ('8', 'O', '13', '14', '8');
+INSERT INTO `ksmd` VALUES ('8', 'O', '15', '16', '9');
+INSERT INTO `ksmd` VALUES ('8', 'O', '17', '999', '10');
+INSERT INTO `ksmd` VALUES ('9', 'O', '0', '1', '1');
+INSERT INTO `ksmd` VALUES ('9', 'O', '2', '3', '2');
+INSERT INTO `ksmd` VALUES ('9', 'O', '4', '5', '3');
+INSERT INTO `ksmd` VALUES ('9', 'O', '6', '8', '4');
+INSERT INTO `ksmd` VALUES ('9', 'O', '9', '9', '5');
+INSERT INTO `ksmd` VALUES ('9', 'O', '10', '12', '6');
+INSERT INTO `ksmd` VALUES ('9', 'O', '13', '14', '7');
+INSERT INTO `ksmd` VALUES ('9', 'O', '15', '16', '8');
+INSERT INTO `ksmd` VALUES ('9', 'O', '17', '18', '9');
+INSERT INTO `ksmd` VALUES ('9', 'O', '19', '999', '10');
+INSERT INTO `ksmd` VALUES ('8', 'Q1', '0', '4', '1');
+INSERT INTO `ksmd` VALUES ('8', 'Q1', '5', '6', '2');
+INSERT INTO `ksmd` VALUES ('8', 'Q1', '7', '7', '3');
+INSERT INTO `ksmd` VALUES ('8', 'Q1', '8', '9', '4');
+INSERT INTO `ksmd` VALUES ('8', 'Q1', '10', '11', '5');
+INSERT INTO `ksmd` VALUES ('8', 'Q1', '12', '13', '6');
+INSERT INTO `ksmd` VALUES ('8', 'Q1', '14', '14', '7');
+INSERT INTO `ksmd` VALUES ('8', 'Q1', '15', '16', '8');
+INSERT INTO `ksmd` VALUES ('8', 'Q1', '17', '17', '9');
+INSERT INTO `ksmd` VALUES ('8', 'Q1', '18', '999', '10');
+INSERT INTO `ksmd` VALUES ('9', 'Q1', '0', '4', '1');
+INSERT INTO `ksmd` VALUES ('9', 'Q1', '5', '5', '2');
+INSERT INTO `ksmd` VALUES ('9', 'Q1', '6', '7', '3');
+INSERT INTO `ksmd` VALUES ('9', 'Q1', '8', '9', '4');
+INSERT INTO `ksmd` VALUES ('9', 'Q1', '10', '11', '5');
+INSERT INTO `ksmd` VALUES ('9', 'Q1', '12', '13', '6');
+INSERT INTO `ksmd` VALUES ('9', 'Q1', '14', '14', '7');
+INSERT INTO `ksmd` VALUES ('9', 'Q1', '15', '15', '8');
+INSERT INTO `ksmd` VALUES ('9', 'Q1', '16', '17', '9');
+INSERT INTO `ksmd` VALUES ('9', 'Q1', '18', '999', '10');
+INSERT INTO `ksmd` VALUES ('8', 'Q2', '0', '5', '1');
+INSERT INTO `ksmd` VALUES ('8', 'Q2', '6', '7', '2');
+INSERT INTO `ksmd` VALUES ('8', 'Q2', '8', '9', '3');
+INSERT INTO `ksmd` VALUES ('8', 'Q2', '10', '10', '4');
+INSERT INTO `ksmd` VALUES ('8', 'Q2', '11', '12', '5');
+INSERT INTO `ksmd` VALUES ('8', 'Q2', '13', '15', '6');
+INSERT INTO `ksmd` VALUES ('8', 'Q2', '16', '16', '7');
+INSERT INTO `ksmd` VALUES ('8', 'Q2', '17', '18', '8');
+INSERT INTO `ksmd` VALUES ('8', 'Q2', '19', '19', '9');
+INSERT INTO `ksmd` VALUES ('8', 'Q2', '20', '999', '10');
+INSERT INTO `ksmd` VALUES ('9', 'Q2', '0', '3', '1');
+INSERT INTO `ksmd` VALUES ('9', 'Q2', '4', '5', '2');
+INSERT INTO `ksmd` VALUES ('9', 'Q2', '6', '7', '3');
+INSERT INTO `ksmd` VALUES ('9', 'Q2', '8', '9', '4');
+INSERT INTO `ksmd` VALUES ('9', 'Q2', '10', '11', '5');
+INSERT INTO `ksmd` VALUES ('9', 'Q2', '12', '13', '6');
+INSERT INTO `ksmd` VALUES ('9', 'Q2', '14', '15', '7');
+INSERT INTO `ksmd` VALUES ('9', 'Q2', '16', '17', '8');
+INSERT INTO `ksmd` VALUES ('9', 'Q2', '18', '18', '9');
+INSERT INTO `ksmd` VALUES ('9', 'Q2', '19', '999', '10');
+INSERT INTO `ksmd` VALUES ('8', 'Q3', '0', '4', '1');
+INSERT INTO `ksmd` VALUES ('8', 'Q3', '5', '6', '2');
+INSERT INTO `ksmd` VALUES ('8', 'Q3', '7', '8', '3');
+INSERT INTO `ksmd` VALUES ('8', 'Q3', '9', '10', '4');
+INSERT INTO `ksmd` VALUES ('8', 'Q3', '11', '12', '5');
+INSERT INTO `ksmd` VALUES ('8', 'Q3', '13', '14', '6');
+INSERT INTO `ksmd` VALUES ('8', 'Q3', '15', '16', '7');
+INSERT INTO `ksmd` VALUES ('8', 'Q3', '17', '17', '8');
+INSERT INTO `ksmd` VALUES ('8', 'Q3', '18', '19', '9');
+INSERT INTO `ksmd` VALUES ('8', 'Q3', '20', '999', '10');
+INSERT INTO `ksmd` VALUES ('9', 'Q3', '0', '3', '1');
+INSERT INTO `ksmd` VALUES ('9', 'Q3', '4', '5', '2');
+INSERT INTO `ksmd` VALUES ('9', 'Q3', '6', '7', '3');
+INSERT INTO `ksmd` VALUES ('9', 'Q3', '8', '9', '4');
+INSERT INTO `ksmd` VALUES ('9', 'Q3', '10', '12', '5');
+INSERT INTO `ksmd` VALUES ('9', 'Q3', '13', '14', '6');
+INSERT INTO `ksmd` VALUES ('9', 'Q3', '15', '16', '7');
+INSERT INTO `ksmd` VALUES ('9', 'Q3', '17', '18', '8');
+INSERT INTO `ksmd` VALUES ('9', 'Q3', '19', '19', '9');
+INSERT INTO `ksmd` VALUES ('9', 'Q3', '20', '999', '10');
+INSERT INTO `ksmd` VALUES ('8', 'Q4', '0', '2', '1');
+INSERT INTO `ksmd` VALUES ('8', 'Q4', '3', '4', '2');
+INSERT INTO `ksmd` VALUES ('8', 'Q4', '5', '6', '3');
+INSERT INTO `ksmd` VALUES ('8', 'Q4', '7', '8', '4');
+INSERT INTO `ksmd` VALUES ('8', 'Q4', '9', '10', '5');
+INSERT INTO `ksmd` VALUES ('8', 'Q4', '11', '13', '6');
+INSERT INTO `ksmd` VALUES ('8', 'Q4', '14', '15', '7');
+INSERT INTO `ksmd` VALUES ('8', 'Q4', '16', '17', '8');
+INSERT INTO `ksmd` VALUES ('8', 'Q4', '18', '19', '9');
+INSERT INTO `ksmd` VALUES ('8', 'Q4', '20', '999', '10');
+INSERT INTO `ksmd` VALUES ('9', 'Q4', '0', '2', '1');
+INSERT INTO `ksmd` VALUES ('9', 'Q4', '3', '4', '2');
+INSERT INTO `ksmd` VALUES ('9', 'Q4', '5', '6', '3');
+INSERT INTO `ksmd` VALUES ('9', 'Q4', '7', '8', '4');
+INSERT INTO `ksmd` VALUES ('9', 'Q4', '9', '11', '5');
+INSERT INTO `ksmd` VALUES ('9', 'Q4', '12', '14', '6');
+INSERT INTO `ksmd` VALUES ('9', 'Q4', '15', '16', '7');
+INSERT INTO `ksmd` VALUES ('9', 'Q4', '17', '18', '8');
+INSERT INTO `ksmd` VALUES ('9', 'Q4', '19', '20', '9');
+INSERT INTO `ksmd` VALUES ('9', 'Q4', '21', '999', '10');
+INSERT INTO `ksmd` VALUES ('0', 'Y3', '0', '62', '1');
+INSERT INTO `ksmd` VALUES ('0', 'Y3', '63', '67', '2');
+INSERT INTO `ksmd` VALUES ('0', 'Y3', '68', '72', '3');
+INSERT INTO `ksmd` VALUES ('0', 'Y3', '73', '77', '4');
+INSERT INTO `ksmd` VALUES ('0', 'Y3', '78', '82', '5');
+INSERT INTO `ksmd` VALUES ('0', 'Y3', '83', '87', '6');
+INSERT INTO `ksmd` VALUES ('0', 'Y3', '88', '92', '7');
+INSERT INTO `ksmd` VALUES ('0', 'Y3', '93', '97', '8');
+INSERT INTO `ksmd` VALUES ('0', 'Y3', '98', '102', '9');
+INSERT INTO `ksmd` VALUES ('0', 'Y3', '103', '999', '10');
 
-INSERT INTO `ksmd` (`DM`, `YZ`, `QSF`, `ZZF`, `BZF`) VALUES
-(8, 'A', 0, 2, 1),
-(8, 'A', 3, 3, 2),
-(8, 'A', 4, 5, 3),
-(8, 'A', 6, 7, 4),
-(8, 'A', 8, 10, 5),
-(8, 'A', 11, 12, 6),
-(8, 'A', 13, 13, 7),
-(8, 'A', 14, 15, 8),
-(8, 'A', 16, 17, 9),
-(8, 'A', 18, 999, 10),
-(9, 'A', 0, 3, 1),
-(9, 'A', 4, 5, 2),
-(9, 'A', 6, 7, 3),
-(9, 'A', 8, 8, 4),
-(9, 'A', 9, 10, 5),
-(9, 'A', 11, 12, 6),
-(9, 'A', 13, 14, 7),
-(9, 'A', 15, 16, 8),
-(9, 'A', 17, 17, 9),
-(9, 'A', 18, 999, 10),
-(8, 'B', 0, 3, 1),
-(8, 'B', 4, 4, 2),
-(8, 'B', 5, 6, 3),
-(8, 'B', 7, 7, 4),
-(8, 'B', 8, 8, 5),
-(8, 'B', 9, 9, 6),
-(8, 'B', 10, 10, 7),
-(8, 'B', 11, 11, 8),
-(8, 'B', 12, 12, 9),
-(8, 'B', 13, 999, 10),
-(9, 'B', 0, 3, 1),
-(9, 'B', 4, 5, 2),
-(9, 'B', 6, 6, 3),
-(9, 'B', 7, 7, 4),
-(9, 'B', 8, 8, 5),
-(9, 'B', 9, 9, 6),
-(9, 'B', 10, 10, 7),
-(9, 'B', 11, 11, 8),
-(9, 'B', 12, 12, 9),
-(9, 'B', 13, 999, 10),
-(8, 'C', 0, 6, 1),
-(8, 'C', 7, 8, 2),
-(8, 'C', 9, 10, 3),
-(8, 'C', 11, 12, 4),
-(8, 'C', 13, 15, 5),
-(8, 'C', 16, 17, 6),
-(8, 'C', 18, 19, 7),
-(8, 'C', 20, 21, 8),
-(8, 'C', 22, 23, 9),
-(8, 'C', 24, 999, 10),
-(9, 'C', 0, 5, 1),
-(9, 'C', 6, 7, 2),
-(9, 'C', 8, 9, 3),
-(9, 'C', 10, 11, 4),
-(9, 'C', 12, 13, 5),
-(9, 'C', 14, 16, 6),
-(9, 'C', 17, 18, 7),
-(9, 'C', 19, 20, 8),
-(9, 'C', 21, 22, 9),
-(9, 'C', 23, 999, 10),
-(8, 'E', 0, 5, 1),
-(8, 'E', 6, 6, 2),
-(8, 'E', 7, 8, 3),
-(8, 'E', 9, 10, 4),
-(8, 'E', 11, 12, 5),
-(8, 'E', 13, 14, 6),
-(8, 'E', 15, 16, 7),
-(8, 'E', 17, 18, 8),
-(8, 'E', 19, 20, 9),
-(8, 'E', 21, 999, 10),
-(9, 'E', 0, 3, 1),
-(9, 'E', 4, 5, 2),
-(9, 'E', 6, 7, 3),
-(9, 'E', 8, 9, 4),
-(9, 'E', 10, 11, 5),
-(9, 'E', 12, 13, 6),
-(9, 'E', 14, 15, 7),
-(9, 'E', 16, 17, 8),
-(9, 'E', 18, 19, 9),
-(9, 'E', 20, 999, 10),
-(8, 'F', 0, 3, 1),
-(8, 'F', 4, 5, 2),
-(8, 'F', 6, 7, 3),
-(8, 'F', 8, 9, 4),
-(8, 'F', 10, 12, 5),
-(8, 'F', 13, 14, 6),
-(8, 'F', 15, 17, 7),
-(8, 'F', 18, 19, 8),
-(8, 'F', 20, 21, 9),
-(8, 'F', 22, 999, 10),
-(9, 'F', 0, 2, 1),
-(9, 'F', 3, 5, 2),
-(9, 'F', 6, 7, 3),
-(9, 'F', 8, 9, 4),
-(9, 'F', 10, 12, 5),
-(9, 'F', 13, 15, 6),
-(9, 'F', 16, 17, 7),
-(9, 'F', 18, 19, 8),
-(9, 'F', 20, 22, 9),
-(9, 'F', 23, 999, 10),
-(8, 'G', 0, 5, 1),
-(8, 'G', 6, 6, 2),
-(8, 'G', 7, 8, 3),
-(8, 'G', 9, 10, 4),
-(8, 'G', 11, 12, 5),
-(8, 'G', 13, 14, 6),
-(8, 'G', 15, 16, 7),
-(8, 'G', 17, 17, 8),
-(8, 'G', 18, 19, 9),
-(8, 'G', 20, 999, 10),
-(9, 'G', 0, 5, 1),
-(9, 'G', 6, 7, 2),
-(9, 'G', 8, 8, 3),
-(9, 'G', 9, 10, 4),
-(9, 'G', 11, 12, 5),
-(9, 'G', 13, 14, 6),
-(9, 'G', 15, 16, 7),
-(9, 'G', 17, 17, 8),
-(9, 'G', 18, 19, 9),
-(9, 'G', 20, 999, 10),
-(8, 'H', 0, 1, 1),
-(8, 'H', 2, 3, 2),
-(8, 'H', 4, 6, 3),
-(8, 'H', 7, 8, 4),
-(8, 'H', 9, 10, 5),
-(8, 'H', 11, 13, 6),
-(8, 'H', 14, 15, 7),
-(8, 'H', 16, 18, 8),
-(8, 'H', 19, 20, 9),
-(8, 'H', 21, 999, 10),
-(9, 'H', 0, 1, 1),
-(9, 'H', 2, 3, 2),
-(9, 'H', 4, 5, 3),
-(9, 'H', 6, 7, 4),
-(9, 'H', 8, 10, 5),
-(9, 'H', 11, 13, 6),
-(9, 'H', 14, 15, 7),
-(9, 'H', 16, 17, 8),
-(9, 'H', 18, 20, 9),
-(9, 'H', 21, 999, 10),
-(8, 'I', 0, 3, 1),
-(8, 'I', 4, 5, 2),
-(8, 'I', 6, 6, 3),
-(8, 'I', 7, 7, 4),
-(8, 'I', 8, 9, 5),
-(8, 'I', 10, 11, 6),
-(8, 'I', 12, 12, 7),
-(8, 'I', 13, 14, 8),
-(8, 'I', 15, 15, 9),
-(8, 'I', 16, 999, 10),
-(9, 'I', 0, 4, 1),
-(9, 'I', 5, 5, 2),
-(9, 'I', 6, 7, 3),
-(9, 'I', 8, 8, 4),
-(9, 'I', 9, 10, 5),
-(9, 'I', 11, 12, 6),
-(9, 'I', 13, 13, 7),
-(9, 'I', 14, 15, 8),
-(9, 'I', 16, 17, 9),
-(9, 'I', 18, 999, 10),
-(8, 'L', 0, 4, 1),
-(8, 'L', 5, 5, 2),
-(8, 'L', 6, 7, 3),
-(8, 'L', 8, 9, 4),
-(8, 'L', 10, 11, 5),
-(8, 'L', 12, 12, 6),
-(8, 'L', 13, 14, 7),
-(8, 'L', 15, 15, 8),
-(8, 'L', 16, 17, 9),
-(8, 'L', 18, 999, 10),
-(9, 'L', 0, 3, 1),
-(9, 'L', 4, 4, 2),
-(9, 'L', 5, 6, 3),
-(9, 'L', 7, 8, 4),
-(9, 'L', 9, 10, 5),
-(9, 'L', 11, 12, 6),
-(9, 'L', 13, 13, 7),
-(9, 'L', 14, 15, 8),
-(9, 'L', 16, 17, 9),
-(9, 'L', 18, 999, 10),
-(8, 'M', 0, 3, 1),
-(8, 'M', 4, 4, 2),
-(8, 'M', 5, 6, 3),
-(8, 'M', 7, 8, 4),
-(8, 'M', 9, 10, 5),
-(8, 'M', 11, 13, 6),
-(8, 'M', 14, 14, 7),
-(8, 'M', 15, 16, 8),
-(8, 'M', 17, 18, 9),
-(8, 'M', 19, 999, 10),
-(9, 'M', 0, 5, 1),
-(9, 'M', 6, 6, 2),
-(9, 'M', 7, 8, 3),
-(9, 'M', 9, 10, 4),
-(9, 'M', 11, 12, 5),
-(9, 'M', 13, 14, 6),
-(9, 'M', 15, 16, 7),
-(9, 'M', 17, 17, 8),
-(9, 'M', 18, 19, 9),
-(9, 'M', 20, 999, 10),
-(8, 'N', 0, 3, 1),
-(8, 'N', 4, 4, 2),
-(8, 'N', 5, 6, 3),
-(8, 'N', 7, 7, 4),
-(8, 'N', 8, 9, 5),
-(8, 'N', 10, 11, 6),
-(8, 'N', 12, 12, 7),
-(8, 'N', 13, 14, 8),
-(8, 'N', 15, 15, 9),
-(8, 'N', 16, 999, 10),
-(9, 'N', 0, 3, 1),
-(9, 'N', 4, 5, 2),
-(9, 'N', 6, 6, 3),
-(9, 'N', 7, 7, 4),
-(9, 'N', 8, 9, 5),
-(9, 'N', 10, 11, 6),
-(9, 'N', 12, 13, 7),
-(9, 'N', 14, 14, 8),
-(9, 'N', 15, 16, 9),
-(9, 'N', 17, 999, 10),
-(8, 'O', 0, 1, 1),
-(8, 'O', 2, 2, 2),
-(8, 'O', 3, 4, 3),
-(8, 'O', 5, 6, 4),
-(8, 'O', 7, 8, 5),
-(8, 'O', 9, 10, 6),
-(8, 'O', 11, 12, 7),
-(8, 'O', 13, 14, 8),
-(8, 'O', 15, 16, 9),
-(8, 'O', 17, 999, 10),
-(9, 'O', 0, 1, 1),
-(9, 'O', 2, 3, 2),
-(9, 'O', 4, 5, 3),
-(9, 'O', 6, 8, 4),
-(9, 'O', 9, 9, 5),
-(9, 'O', 10, 12, 6),
-(9, 'O', 13, 14, 7),
-(9, 'O', 15, 16, 8),
-(9, 'O', 17, 18, 9),
-(9, 'O', 19, 999, 10),
-(8, 'Q1', 0, 4, 1),
-(8, 'Q1', 5, 6, 2),
-(8, 'Q1', 7, 7, 3),
-(8, 'Q1', 8, 9, 4),
-(8, 'Q1', 10, 11, 5),
-(8, 'Q1', 12, 13, 6),
-(8, 'Q1', 14, 14, 7),
-(8, 'Q1', 15, 16, 8),
-(8, 'Q1', 17, 17, 9),
-(8, 'Q1', 18, 999, 10),
-(9, 'Q1', 0, 4, 1),
-(9, 'Q1', 5, 5, 2),
-(9, 'Q1', 6, 7, 3),
-(9, 'Q1', 8, 9, 4),
-(9, 'Q1', 10, 11, 5),
-(9, 'Q1', 12, 13, 6),
-(9, 'Q1', 14, 14, 7),
-(9, 'Q1', 15, 15, 8),
-(9, 'Q1', 16, 17, 9),
-(9, 'Q1', 18, 999, 10),
-(8, 'Q2', 0, 5, 1),
-(8, 'Q2', 6, 7, 2),
-(8, 'Q2', 8, 9, 3),
-(8, 'Q2', 10, 10, 4),
-(8, 'Q2', 11, 12, 5),
-(8, 'Q2', 13, 15, 6),
-(8, 'Q2', 16, 16, 7),
-(8, 'Q2', 17, 18, 8),
-(8, 'Q2', 19, 19, 9),
-(8, 'Q2', 20, 999, 10),
-(9, 'Q2', 0, 3, 1),
-(9, 'Q2', 4, 5, 2),
-(9, 'Q2', 6, 7, 3),
-(9, 'Q2', 8, 9, 4),
-(9, 'Q2', 10, 11, 5),
-(9, 'Q2', 12, 13, 6),
-(9, 'Q2', 14, 15, 7),
-(9, 'Q2', 16, 17, 8),
-(9, 'Q2', 18, 18, 9),
-(9, 'Q2', 19, 999, 10),
-(8, 'Q3', 0, 4, 1),
-(8, 'Q3', 5, 6, 2),
-(8, 'Q3', 7, 8, 3),
-(8, 'Q3', 9, 10, 4),
-(8, 'Q3', 11, 12, 5),
-(8, 'Q3', 13, 14, 6),
-(8, 'Q3', 15, 16, 7),
-(8, 'Q3', 17, 17, 8),
-(8, 'Q3', 18, 19, 9),
-(8, 'Q3', 20, 999, 10),
-(9, 'Q3', 0, 3, 1),
-(9, 'Q3', 4, 5, 2),
-(9, 'Q3', 6, 7, 3),
-(9, 'Q3', 8, 9, 4),
-(9, 'Q3', 10, 12, 5),
-(9, 'Q3', 13, 14, 6),
-(9, 'Q3', 15, 16, 7),
-(9, 'Q3', 17, 18, 8),
-(9, 'Q3', 19, 19, 9),
-(9, 'Q3', 20, 999, 10),
-(8, 'Q4', 0, 2, 1),
-(8, 'Q4', 3, 4, 2),
-(8, 'Q4', 5, 6, 3),
-(8, 'Q4', 7, 8, 4),
-(8, 'Q4', 9, 10, 5),
-(8, 'Q4', 11, 13, 6),
-(8, 'Q4', 14, 15, 7),
-(8, 'Q4', 16, 17, 8),
-(8, 'Q4', 18, 19, 9),
-(8, 'Q4', 20, 999, 10),
-(9, 'Q4', 0, 2, 1),
-(9, 'Q4', 3, 4, 2),
-(9, 'Q4', 5, 6, 3),
-(9, 'Q4', 7, 8, 4),
-(9, 'Q4', 9, 11, 5),
-(9, 'Q4', 12, 14, 6),
-(9, 'Q4', 15, 16, 7),
-(9, 'Q4', 17, 18, 8),
-(9, 'Q4', 19, 20, 9),
-(9, 'Q4', 21, 999, 10),
-(0, 'Y3', 0, 62, 1),
-(0, 'Y3', 63, 67, 2),
-(0, 'Y3', 68, 72, 3),
-(0, 'Y3', 73, 77, 4),
-(0, 'Y3', 78, 82, 5),
-(0, 'Y3', 83, 87, 6),
-(0, 'Y3', 88, 92, 7),
-(0, 'Y3', 93, 97, 8),
-(0, 'Y3', 98, 102, 9),
-(0, 'Y3', 103, 999, 10);
+-- ----------------------------
+-- Table structure for `ksmd_memory`
+-- ----------------------------
+DROP TABLE IF EXISTS `ksmd_memory`;
+CREATE TABLE `ksmd_memory` (
+  `DM` int(11) NOT NULL DEFAULT '0',
+  `YZ` char(2) CHARACTER SET latin1 NOT NULL,
+  `QSF` int(11) NOT NULL,
+  `ZZF` int(11) NOT NULL,
+  `BZF` int(11) NOT NULL,
+  PRIMARY KEY (`YZ`,`DM`,`QSF`,`ZZF`)
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Records of ksmd_memory
+-- ----------------------------
+INSERT INTO `ksmd_memory` VALUES ('8', 'A', '0', '2', '1');
+INSERT INTO `ksmd_memory` VALUES ('8', 'A', '3', '3', '2');
+INSERT INTO `ksmd_memory` VALUES ('8', 'A', '4', '5', '3');
+INSERT INTO `ksmd_memory` VALUES ('8', 'A', '6', '7', '4');
+INSERT INTO `ksmd_memory` VALUES ('8', 'A', '8', '10', '5');
+INSERT INTO `ksmd_memory` VALUES ('8', 'A', '11', '12', '6');
+INSERT INTO `ksmd_memory` VALUES ('8', 'A', '13', '13', '7');
+INSERT INTO `ksmd_memory` VALUES ('8', 'A', '14', '15', '8');
+INSERT INTO `ksmd_memory` VALUES ('8', 'A', '16', '17', '9');
+INSERT INTO `ksmd_memory` VALUES ('8', 'A', '18', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('9', 'A', '0', '3', '1');
+INSERT INTO `ksmd_memory` VALUES ('9', 'A', '4', '5', '2');
+INSERT INTO `ksmd_memory` VALUES ('9', 'A', '6', '7', '3');
+INSERT INTO `ksmd_memory` VALUES ('9', 'A', '8', '8', '4');
+INSERT INTO `ksmd_memory` VALUES ('9', 'A', '9', '10', '5');
+INSERT INTO `ksmd_memory` VALUES ('9', 'A', '11', '12', '6');
+INSERT INTO `ksmd_memory` VALUES ('9', 'A', '13', '14', '7');
+INSERT INTO `ksmd_memory` VALUES ('9', 'A', '15', '16', '8');
+INSERT INTO `ksmd_memory` VALUES ('9', 'A', '17', '17', '9');
+INSERT INTO `ksmd_memory` VALUES ('9', 'A', '18', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('8', 'B', '0', '3', '1');
+INSERT INTO `ksmd_memory` VALUES ('8', 'B', '4', '4', '2');
+INSERT INTO `ksmd_memory` VALUES ('8', 'B', '5', '6', '3');
+INSERT INTO `ksmd_memory` VALUES ('8', 'B', '7', '7', '4');
+INSERT INTO `ksmd_memory` VALUES ('8', 'B', '8', '8', '5');
+INSERT INTO `ksmd_memory` VALUES ('8', 'B', '9', '9', '6');
+INSERT INTO `ksmd_memory` VALUES ('8', 'B', '10', '10', '7');
+INSERT INTO `ksmd_memory` VALUES ('8', 'B', '11', '11', '8');
+INSERT INTO `ksmd_memory` VALUES ('8', 'B', '12', '12', '9');
+INSERT INTO `ksmd_memory` VALUES ('8', 'B', '13', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('9', 'B', '0', '3', '1');
+INSERT INTO `ksmd_memory` VALUES ('9', 'B', '4', '5', '2');
+INSERT INTO `ksmd_memory` VALUES ('9', 'B', '6', '6', '3');
+INSERT INTO `ksmd_memory` VALUES ('9', 'B', '7', '7', '4');
+INSERT INTO `ksmd_memory` VALUES ('9', 'B', '8', '8', '5');
+INSERT INTO `ksmd_memory` VALUES ('9', 'B', '9', '9', '6');
+INSERT INTO `ksmd_memory` VALUES ('9', 'B', '10', '10', '7');
+INSERT INTO `ksmd_memory` VALUES ('9', 'B', '11', '11', '8');
+INSERT INTO `ksmd_memory` VALUES ('9', 'B', '12', '12', '9');
+INSERT INTO `ksmd_memory` VALUES ('9', 'B', '13', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('8', 'C', '0', '6', '1');
+INSERT INTO `ksmd_memory` VALUES ('8', 'C', '7', '8', '2');
+INSERT INTO `ksmd_memory` VALUES ('8', 'C', '9', '10', '3');
+INSERT INTO `ksmd_memory` VALUES ('8', 'C', '11', '12', '4');
+INSERT INTO `ksmd_memory` VALUES ('8', 'C', '13', '15', '5');
+INSERT INTO `ksmd_memory` VALUES ('8', 'C', '16', '17', '6');
+INSERT INTO `ksmd_memory` VALUES ('8', 'C', '18', '19', '7');
+INSERT INTO `ksmd_memory` VALUES ('8', 'C', '20', '21', '8');
+INSERT INTO `ksmd_memory` VALUES ('8', 'C', '22', '23', '9');
+INSERT INTO `ksmd_memory` VALUES ('8', 'C', '24', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('9', 'C', '0', '5', '1');
+INSERT INTO `ksmd_memory` VALUES ('9', 'C', '6', '7', '2');
+INSERT INTO `ksmd_memory` VALUES ('9', 'C', '8', '9', '3');
+INSERT INTO `ksmd_memory` VALUES ('9', 'C', '10', '11', '4');
+INSERT INTO `ksmd_memory` VALUES ('9', 'C', '12', '13', '5');
+INSERT INTO `ksmd_memory` VALUES ('9', 'C', '14', '16', '6');
+INSERT INTO `ksmd_memory` VALUES ('9', 'C', '17', '18', '7');
+INSERT INTO `ksmd_memory` VALUES ('9', 'C', '19', '20', '8');
+INSERT INTO `ksmd_memory` VALUES ('9', 'C', '21', '22', '9');
+INSERT INTO `ksmd_memory` VALUES ('9', 'C', '23', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('8', 'E', '0', '5', '1');
+INSERT INTO `ksmd_memory` VALUES ('8', 'E', '6', '6', '2');
+INSERT INTO `ksmd_memory` VALUES ('8', 'E', '7', '8', '3');
+INSERT INTO `ksmd_memory` VALUES ('8', 'E', '9', '10', '4');
+INSERT INTO `ksmd_memory` VALUES ('8', 'E', '11', '12', '5');
+INSERT INTO `ksmd_memory` VALUES ('8', 'E', '13', '14', '6');
+INSERT INTO `ksmd_memory` VALUES ('8', 'E', '15', '16', '7');
+INSERT INTO `ksmd_memory` VALUES ('8', 'E', '17', '18', '8');
+INSERT INTO `ksmd_memory` VALUES ('8', 'E', '19', '20', '9');
+INSERT INTO `ksmd_memory` VALUES ('8', 'E', '21', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('9', 'E', '0', '3', '1');
+INSERT INTO `ksmd_memory` VALUES ('9', 'E', '4', '5', '2');
+INSERT INTO `ksmd_memory` VALUES ('9', 'E', '6', '7', '3');
+INSERT INTO `ksmd_memory` VALUES ('9', 'E', '8', '9', '4');
+INSERT INTO `ksmd_memory` VALUES ('9', 'E', '10', '11', '5');
+INSERT INTO `ksmd_memory` VALUES ('9', 'E', '12', '13', '6');
+INSERT INTO `ksmd_memory` VALUES ('9', 'E', '14', '15', '7');
+INSERT INTO `ksmd_memory` VALUES ('9', 'E', '16', '17', '8');
+INSERT INTO `ksmd_memory` VALUES ('9', 'E', '18', '19', '9');
+INSERT INTO `ksmd_memory` VALUES ('9', 'E', '20', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('8', 'F', '0', '3', '1');
+INSERT INTO `ksmd_memory` VALUES ('8', 'F', '4', '5', '2');
+INSERT INTO `ksmd_memory` VALUES ('8', 'F', '6', '7', '3');
+INSERT INTO `ksmd_memory` VALUES ('8', 'F', '8', '9', '4');
+INSERT INTO `ksmd_memory` VALUES ('8', 'F', '10', '12', '5');
+INSERT INTO `ksmd_memory` VALUES ('8', 'F', '13', '14', '6');
+INSERT INTO `ksmd_memory` VALUES ('8', 'F', '15', '17', '7');
+INSERT INTO `ksmd_memory` VALUES ('8', 'F', '18', '19', '8');
+INSERT INTO `ksmd_memory` VALUES ('8', 'F', '20', '21', '9');
+INSERT INTO `ksmd_memory` VALUES ('8', 'F', '22', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('9', 'F', '0', '2', '1');
+INSERT INTO `ksmd_memory` VALUES ('9', 'F', '3', '5', '2');
+INSERT INTO `ksmd_memory` VALUES ('9', 'F', '6', '7', '3');
+INSERT INTO `ksmd_memory` VALUES ('9', 'F', '8', '9', '4');
+INSERT INTO `ksmd_memory` VALUES ('9', 'F', '10', '12', '5');
+INSERT INTO `ksmd_memory` VALUES ('9', 'F', '13', '15', '6');
+INSERT INTO `ksmd_memory` VALUES ('9', 'F', '16', '17', '7');
+INSERT INTO `ksmd_memory` VALUES ('9', 'F', '18', '19', '8');
+INSERT INTO `ksmd_memory` VALUES ('9', 'F', '20', '22', '9');
+INSERT INTO `ksmd_memory` VALUES ('9', 'F', '23', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('8', 'G', '0', '5', '1');
+INSERT INTO `ksmd_memory` VALUES ('8', 'G', '6', '6', '2');
+INSERT INTO `ksmd_memory` VALUES ('8', 'G', '7', '8', '3');
+INSERT INTO `ksmd_memory` VALUES ('8', 'G', '9', '10', '4');
+INSERT INTO `ksmd_memory` VALUES ('8', 'G', '11', '12', '5');
+INSERT INTO `ksmd_memory` VALUES ('8', 'G', '13', '14', '6');
+INSERT INTO `ksmd_memory` VALUES ('8', 'G', '15', '16', '7');
+INSERT INTO `ksmd_memory` VALUES ('8', 'G', '17', '17', '8');
+INSERT INTO `ksmd_memory` VALUES ('8', 'G', '18', '19', '9');
+INSERT INTO `ksmd_memory` VALUES ('8', 'G', '20', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('9', 'G', '0', '5', '1');
+INSERT INTO `ksmd_memory` VALUES ('9', 'G', '6', '7', '2');
+INSERT INTO `ksmd_memory` VALUES ('9', 'G', '8', '8', '3');
+INSERT INTO `ksmd_memory` VALUES ('9', 'G', '9', '10', '4');
+INSERT INTO `ksmd_memory` VALUES ('9', 'G', '11', '12', '5');
+INSERT INTO `ksmd_memory` VALUES ('9', 'G', '13', '14', '6');
+INSERT INTO `ksmd_memory` VALUES ('9', 'G', '15', '16', '7');
+INSERT INTO `ksmd_memory` VALUES ('9', 'G', '17', '17', '8');
+INSERT INTO `ksmd_memory` VALUES ('9', 'G', '18', '19', '9');
+INSERT INTO `ksmd_memory` VALUES ('9', 'G', '20', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('8', 'H', '0', '1', '1');
+INSERT INTO `ksmd_memory` VALUES ('8', 'H', '2', '3', '2');
+INSERT INTO `ksmd_memory` VALUES ('8', 'H', '4', '6', '3');
+INSERT INTO `ksmd_memory` VALUES ('8', 'H', '7', '8', '4');
+INSERT INTO `ksmd_memory` VALUES ('8', 'H', '9', '10', '5');
+INSERT INTO `ksmd_memory` VALUES ('8', 'H', '11', '13', '6');
+INSERT INTO `ksmd_memory` VALUES ('8', 'H', '14', '15', '7');
+INSERT INTO `ksmd_memory` VALUES ('8', 'H', '16', '18', '8');
+INSERT INTO `ksmd_memory` VALUES ('8', 'H', '19', '20', '9');
+INSERT INTO `ksmd_memory` VALUES ('8', 'H', '21', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('9', 'H', '0', '1', '1');
+INSERT INTO `ksmd_memory` VALUES ('9', 'H', '2', '3', '2');
+INSERT INTO `ksmd_memory` VALUES ('9', 'H', '4', '5', '3');
+INSERT INTO `ksmd_memory` VALUES ('9', 'H', '6', '7', '4');
+INSERT INTO `ksmd_memory` VALUES ('9', 'H', '8', '10', '5');
+INSERT INTO `ksmd_memory` VALUES ('9', 'H', '11', '13', '6');
+INSERT INTO `ksmd_memory` VALUES ('9', 'H', '14', '15', '7');
+INSERT INTO `ksmd_memory` VALUES ('9', 'H', '16', '17', '8');
+INSERT INTO `ksmd_memory` VALUES ('9', 'H', '18', '20', '9');
+INSERT INTO `ksmd_memory` VALUES ('9', 'H', '21', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('8', 'I', '0', '3', '1');
+INSERT INTO `ksmd_memory` VALUES ('8', 'I', '4', '5', '2');
+INSERT INTO `ksmd_memory` VALUES ('8', 'I', '6', '6', '3');
+INSERT INTO `ksmd_memory` VALUES ('8', 'I', '7', '7', '4');
+INSERT INTO `ksmd_memory` VALUES ('8', 'I', '8', '9', '5');
+INSERT INTO `ksmd_memory` VALUES ('8', 'I', '10', '11', '6');
+INSERT INTO `ksmd_memory` VALUES ('8', 'I', '12', '12', '7');
+INSERT INTO `ksmd_memory` VALUES ('8', 'I', '13', '14', '8');
+INSERT INTO `ksmd_memory` VALUES ('8', 'I', '15', '15', '9');
+INSERT INTO `ksmd_memory` VALUES ('8', 'I', '16', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('9', 'I', '0', '4', '1');
+INSERT INTO `ksmd_memory` VALUES ('9', 'I', '5', '5', '2');
+INSERT INTO `ksmd_memory` VALUES ('9', 'I', '6', '7', '3');
+INSERT INTO `ksmd_memory` VALUES ('9', 'I', '8', '8', '4');
+INSERT INTO `ksmd_memory` VALUES ('9', 'I', '9', '10', '5');
+INSERT INTO `ksmd_memory` VALUES ('9', 'I', '11', '12', '6');
+INSERT INTO `ksmd_memory` VALUES ('9', 'I', '13', '13', '7');
+INSERT INTO `ksmd_memory` VALUES ('9', 'I', '14', '15', '8');
+INSERT INTO `ksmd_memory` VALUES ('9', 'I', '16', '17', '9');
+INSERT INTO `ksmd_memory` VALUES ('9', 'I', '18', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('8', 'L', '0', '4', '1');
+INSERT INTO `ksmd_memory` VALUES ('8', 'L', '5', '5', '2');
+INSERT INTO `ksmd_memory` VALUES ('8', 'L', '6', '7', '3');
+INSERT INTO `ksmd_memory` VALUES ('8', 'L', '8', '9', '4');
+INSERT INTO `ksmd_memory` VALUES ('8', 'L', '10', '11', '5');
+INSERT INTO `ksmd_memory` VALUES ('8', 'L', '12', '12', '6');
+INSERT INTO `ksmd_memory` VALUES ('8', 'L', '13', '14', '7');
+INSERT INTO `ksmd_memory` VALUES ('8', 'L', '15', '15', '8');
+INSERT INTO `ksmd_memory` VALUES ('8', 'L', '16', '17', '9');
+INSERT INTO `ksmd_memory` VALUES ('8', 'L', '18', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('9', 'L', '0', '3', '1');
+INSERT INTO `ksmd_memory` VALUES ('9', 'L', '4', '4', '2');
+INSERT INTO `ksmd_memory` VALUES ('9', 'L', '5', '6', '3');
+INSERT INTO `ksmd_memory` VALUES ('9', 'L', '7', '8', '4');
+INSERT INTO `ksmd_memory` VALUES ('9', 'L', '9', '10', '5');
+INSERT INTO `ksmd_memory` VALUES ('9', 'L', '11', '12', '6');
+INSERT INTO `ksmd_memory` VALUES ('9', 'L', '13', '13', '7');
+INSERT INTO `ksmd_memory` VALUES ('9', 'L', '14', '15', '8');
+INSERT INTO `ksmd_memory` VALUES ('9', 'L', '16', '17', '9');
+INSERT INTO `ksmd_memory` VALUES ('9', 'L', '18', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('8', 'M', '0', '3', '1');
+INSERT INTO `ksmd_memory` VALUES ('8', 'M', '4', '4', '2');
+INSERT INTO `ksmd_memory` VALUES ('8', 'M', '5', '6', '3');
+INSERT INTO `ksmd_memory` VALUES ('8', 'M', '7', '8', '4');
+INSERT INTO `ksmd_memory` VALUES ('8', 'M', '9', '10', '5');
+INSERT INTO `ksmd_memory` VALUES ('8', 'M', '11', '13', '6');
+INSERT INTO `ksmd_memory` VALUES ('8', 'M', '14', '14', '7');
+INSERT INTO `ksmd_memory` VALUES ('8', 'M', '15', '16', '8');
+INSERT INTO `ksmd_memory` VALUES ('8', 'M', '17', '18', '9');
+INSERT INTO `ksmd_memory` VALUES ('8', 'M', '19', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('9', 'M', '0', '5', '1');
+INSERT INTO `ksmd_memory` VALUES ('9', 'M', '6', '6', '2');
+INSERT INTO `ksmd_memory` VALUES ('9', 'M', '7', '8', '3');
+INSERT INTO `ksmd_memory` VALUES ('9', 'M', '9', '10', '4');
+INSERT INTO `ksmd_memory` VALUES ('9', 'M', '11', '12', '5');
+INSERT INTO `ksmd_memory` VALUES ('9', 'M', '13', '14', '6');
+INSERT INTO `ksmd_memory` VALUES ('9', 'M', '15', '16', '7');
+INSERT INTO `ksmd_memory` VALUES ('9', 'M', '17', '17', '8');
+INSERT INTO `ksmd_memory` VALUES ('9', 'M', '18', '19', '9');
+INSERT INTO `ksmd_memory` VALUES ('9', 'M', '20', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('8', 'N', '0', '3', '1');
+INSERT INTO `ksmd_memory` VALUES ('8', 'N', '4', '4', '2');
+INSERT INTO `ksmd_memory` VALUES ('8', 'N', '5', '6', '3');
+INSERT INTO `ksmd_memory` VALUES ('8', 'N', '7', '7', '4');
+INSERT INTO `ksmd_memory` VALUES ('8', 'N', '8', '9', '5');
+INSERT INTO `ksmd_memory` VALUES ('8', 'N', '10', '11', '6');
+INSERT INTO `ksmd_memory` VALUES ('8', 'N', '12', '12', '7');
+INSERT INTO `ksmd_memory` VALUES ('8', 'N', '13', '14', '8');
+INSERT INTO `ksmd_memory` VALUES ('8', 'N', '15', '15', '9');
+INSERT INTO `ksmd_memory` VALUES ('8', 'N', '16', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('9', 'N', '0', '3', '1');
+INSERT INTO `ksmd_memory` VALUES ('9', 'N', '4', '5', '2');
+INSERT INTO `ksmd_memory` VALUES ('9', 'N', '6', '6', '3');
+INSERT INTO `ksmd_memory` VALUES ('9', 'N', '7', '7', '4');
+INSERT INTO `ksmd_memory` VALUES ('9', 'N', '8', '9', '5');
+INSERT INTO `ksmd_memory` VALUES ('9', 'N', '10', '11', '6');
+INSERT INTO `ksmd_memory` VALUES ('9', 'N', '12', '13', '7');
+INSERT INTO `ksmd_memory` VALUES ('9', 'N', '14', '14', '8');
+INSERT INTO `ksmd_memory` VALUES ('9', 'N', '15', '16', '9');
+INSERT INTO `ksmd_memory` VALUES ('9', 'N', '17', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('8', 'O', '0', '1', '1');
+INSERT INTO `ksmd_memory` VALUES ('8', 'O', '2', '2', '2');
+INSERT INTO `ksmd_memory` VALUES ('8', 'O', '3', '4', '3');
+INSERT INTO `ksmd_memory` VALUES ('8', 'O', '5', '6', '4');
+INSERT INTO `ksmd_memory` VALUES ('8', 'O', '7', '8', '5');
+INSERT INTO `ksmd_memory` VALUES ('8', 'O', '9', '10', '6');
+INSERT INTO `ksmd_memory` VALUES ('8', 'O', '11', '12', '7');
+INSERT INTO `ksmd_memory` VALUES ('8', 'O', '13', '14', '8');
+INSERT INTO `ksmd_memory` VALUES ('8', 'O', '15', '16', '9');
+INSERT INTO `ksmd_memory` VALUES ('8', 'O', '17', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('9', 'O', '0', '1', '1');
+INSERT INTO `ksmd_memory` VALUES ('9', 'O', '2', '3', '2');
+INSERT INTO `ksmd_memory` VALUES ('9', 'O', '4', '5', '3');
+INSERT INTO `ksmd_memory` VALUES ('9', 'O', '6', '8', '4');
+INSERT INTO `ksmd_memory` VALUES ('9', 'O', '9', '9', '5');
+INSERT INTO `ksmd_memory` VALUES ('9', 'O', '10', '12', '6');
+INSERT INTO `ksmd_memory` VALUES ('9', 'O', '13', '14', '7');
+INSERT INTO `ksmd_memory` VALUES ('9', 'O', '15', '16', '8');
+INSERT INTO `ksmd_memory` VALUES ('9', 'O', '17', '18', '9');
+INSERT INTO `ksmd_memory` VALUES ('9', 'O', '19', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q1', '0', '4', '1');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q1', '5', '6', '2');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q1', '7', '7', '3');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q1', '8', '9', '4');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q1', '10', '11', '5');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q1', '12', '13', '6');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q1', '14', '14', '7');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q1', '15', '16', '8');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q1', '17', '17', '9');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q1', '18', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q1', '0', '4', '1');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q1', '5', '5', '2');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q1', '6', '7', '3');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q1', '8', '9', '4');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q1', '10', '11', '5');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q1', '12', '13', '6');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q1', '14', '14', '7');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q1', '15', '15', '8');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q1', '16', '17', '9');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q1', '18', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q2', '0', '5', '1');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q2', '6', '7', '2');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q2', '8', '9', '3');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q2', '10', '10', '4');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q2', '11', '12', '5');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q2', '13', '15', '6');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q2', '16', '16', '7');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q2', '17', '18', '8');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q2', '19', '19', '9');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q2', '20', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q2', '0', '3', '1');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q2', '4', '5', '2');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q2', '6', '7', '3');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q2', '8', '9', '4');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q2', '10', '11', '5');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q2', '12', '13', '6');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q2', '14', '15', '7');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q2', '16', '17', '8');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q2', '18', '18', '9');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q2', '19', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q3', '0', '4', '1');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q3', '5', '6', '2');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q3', '7', '8', '3');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q3', '9', '10', '4');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q3', '11', '12', '5');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q3', '13', '14', '6');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q3', '15', '16', '7');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q3', '17', '17', '8');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q3', '18', '19', '9');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q3', '20', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q3', '0', '3', '1');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q3', '4', '5', '2');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q3', '6', '7', '3');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q3', '8', '9', '4');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q3', '10', '12', '5');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q3', '13', '14', '6');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q3', '15', '16', '7');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q3', '17', '18', '8');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q3', '19', '19', '9');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q3', '20', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q4', '0', '2', '1');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q4', '3', '4', '2');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q4', '5', '6', '3');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q4', '7', '8', '4');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q4', '9', '10', '5');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q4', '11', '13', '6');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q4', '14', '15', '7');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q4', '16', '17', '8');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q4', '18', '19', '9');
+INSERT INTO `ksmd_memory` VALUES ('8', 'Q4', '20', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q4', '0', '2', '1');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q4', '3', '4', '2');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q4', '5', '6', '3');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q4', '7', '8', '4');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q4', '9', '11', '5');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q4', '12', '14', '6');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q4', '15', '16', '7');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q4', '17', '18', '8');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q4', '19', '20', '9');
+INSERT INTO `ksmd_memory` VALUES ('9', 'Q4', '21', '999', '10');
+INSERT INTO `ksmd_memory` VALUES ('0', 'Y3', '0', '62', '1');
+INSERT INTO `ksmd_memory` VALUES ('0', 'Y3', '63', '67', '2');
+INSERT INTO `ksmd_memory` VALUES ('0', 'Y3', '68', '72', '3');
+INSERT INTO `ksmd_memory` VALUES ('0', 'Y3', '73', '77', '4');
+INSERT INTO `ksmd_memory` VALUES ('0', 'Y3', '78', '82', '5');
+INSERT INTO `ksmd_memory` VALUES ('0', 'Y3', '83', '87', '6');
+INSERT INTO `ksmd_memory` VALUES ('0', 'Y3', '88', '92', '7');
+INSERT INTO `ksmd_memory` VALUES ('0', 'Y3', '93', '97', '8');
+INSERT INTO `ksmd_memory` VALUES ('0', 'Y3', '98', '102', '9');
+INSERT INTO `ksmd_memory` VALUES ('0', 'Y3', '103', '999', '10');
 
---
--- Table structure for table `manager`
---
-
+-- ----------------------------
+-- Table structure for `manager`
+-- ----------------------------
 DROP TABLE IF EXISTS `manager`;
-CREATE TABLE IF NOT EXISTS `manager` (
+CREATE TABLE `manager` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(45) NOT NULL,
   `password` varchar(256) NOT NULL,
@@ -2136,58 +3447,22 @@ CREATE TABLE IF NOT EXISTS `manager` (
   `last_login` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index3` (`username`),
-  KEY `index2` (`project_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=111 ;
+  KEY `index2` (`project_id`),
+  CONSTRAINT `fk_manager_project` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `manager`
---
+-- ----------------------------
+-- Records of manager
+-- ----------------------------
+INSERT INTO `manager` VALUES ('1', 'sa', '123456', 'M', null, 'gly', '2015-08-10 16:47:38');
+INSERT INTO `manager` VALUES ('8', 'hh', '123456', null, null, '哈哈', null);
+INSERT INTO `manager` VALUES ('11', 'hw', '123456', null, null, '汉王', null);
 
-INSERT INTO `manager` (`id`, `username`, `password`, `role`, `project_id`, `name`, `last_login`) VALUES
-(1, 'sa', '123456', 'M', NULL, 'gly', '2015-08-10 16:47:38'),
-(2, 'pm', '123456', 'P', 1, '经理', '2015-08-22 17:30:20'),
-(8, 'hh', '123456', NULL, NULL, '哈哈', NULL),
-(11, 'hw', '123456', NULL, NULL, '汉王', NULL),
-(60, 'pm2', '123456', 'P', 2, 'pm2.5', '2015-08-10 17:12:48'),
-(81, '107779', '380188', 'L', 1, '领导1', NULL),
-(82, '478933', '923609', 'L', 1, '领导2', NULL),
-(83, '699855', '114125', 'L', 1, '领导3', NULL),
-(84, '664102', '614373', 'L', 1, '领导4', NULL),
-(85, '528774', '233122', 'L', 1, '领导5', NULL),
-(86, '416103', '544602', 'L', 1, '领导6', NULL),
-(87, '953904', '088360', 'L', 1, '领导7', NULL),
-(88, '155695', '344652', 'L', 1, '领导8', NULL),
-(89, '760173', '910870', 'L', 1, '领导9', NULL),
-(90, '189825', '525131', 'L', 1, '领导10', NULL),
-(91, '691693', '565973', 'I', 1, '专家1', '2015-08-18 11:57:26'),
-(92, '037667', '956424', 'I', 1, '专家2', NULL),
-(93, '288094', '410167', 'I', 1, '专家3', NULL),
-(94, '149848', '241186', 'I', 1, '专家4', NULL),
-(95, '441307', '827849', 'I', 1, '专家5', NULL),
-(96, '337145', '838631', 'I', 1, '专家6', NULL),
-(97, '811966', '935330', 'I', 1, '专家7', NULL),
-(98, '538858', '700752', 'I', 1, '专家8', NULL),
-(99, '732481', '682496', 'I', 1, '专家9', NULL),
-(100, '092720', '602570', 'I', 1, '专家10', NULL),
-(101, '857909', '687630', 'I', 2, '专家1', NULL),
-(102, '768711', '779959', 'I', 2, '专家2', NULL),
-(103, '485404', '535543', 'I', 2, '专家3', NULL),
-(104, '720167', '015617', 'I', 2, '专家4', NULL),
-(105, '582359', '503611', 'I', 2, '专家5', NULL),
-(106, '434872', '993470', 'I', 2, '专家6', NULL),
-(107, '867420', '059915', 'I', 2, '专家7', NULL),
-(108, '332178', '493653', 'I', 2, '专家8', NULL),
-(109, '638373', '197289', 'I', 2, '专家9', NULL),
-(110, '358676', '646598', 'I', 2, '专家10', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `module`
---
-
+-- ----------------------------
+-- Table structure for `module`
+-- ----------------------------
 DROP TABLE IF EXISTS `module`;
-CREATE TABLE IF NOT EXISTS `module` (
+CREATE TABLE `module` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL COMMENT '模块名',
   `belong_module` varchar(45) DEFAULT NULL,
@@ -2195,92 +3470,52 @@ CREATE TABLE IF NOT EXISTS `module` (
   `children` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=26 ;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `module`
---
+-- ----------------------------
+-- Records of module
+-- ----------------------------
+INSERT INTO `module` VALUES ('9', 'ldl', '胜任力', null, 'ldnl,pdyjcnl,zzglnl');
+INSERT INTO `module` VALUES ('14', '胜任力', '素质测评模块', null, null);
+INSERT INTO `module` VALUES ('15', '素质测评模块', '素质测评模块', null, null);
+INSERT INTO `module` VALUES ('16', 'mk_ldl', '胜任力', '领导力', 'zb_ldnl,zb_pdyjcnl,zb_zzglnl,zb_fxx');
+INSERT INTO `module` VALUES ('17', 'mk_zysz', '胜任力', '职业素质', 'zb_dlgznl,zb_cxnl,zb_tdjs,zb_gztd,zb_gzzf');
+INSERT INTO `module` VALUES ('18', 'mk_swnl', '胜任力', '思维能力', 'zb_jlx,zb_fxnl,zb_gnnl');
+INSERT INTO `module` VALUES ('19', 'mk_tdpz', '胜任力', '态度品质', 'zb_zrx,zb_cxd,zb_grjzqx,zb_rnx');
+INSERT INTO `module` VALUES ('20', 'mk_zynl', '胜任力', '专业能力', 'zb_bxx,zb_ybnl,zb_jmng,zb_rjgxtjsp,zb_chd');
+INSERT INTO `module` VALUES ('21', 'mk_grtz', '胜任力', '个人特质', 'zb_tzjl,zb_xg,zb_qxkzsp,zb_syhjsp,zb_sjnl,zb_zz,zb_xljksp');
+INSERT INTO `module` VALUES ('22', 'mk_xljk', '素质测评模块', '心理健康', 'zb_xljksp,zb_qxkzsp,zb_syhjsp,zb_rjgxtjsp,zb_xg,zb_zz,zb_fxx');
+INSERT INTO `module` VALUES ('23', 'mk_szjg', '素质测评模块', '素质结构', 'zb_zrx,zb_cxd,zb_grjzqx,zb_tdjs,zb_gztd,zb_gzzf,zb_bxx,zb_rnx');
+INSERT INTO `module` VALUES ('24', 'mk_ztjg', '素质测评模块', '智体结构', 'zb_chd,zb_jmng,zb_jlx,zb_tzjl,zb_fxnl,zb_gnnl');
+INSERT INTO `module` VALUES ('25', 'mk_nljg', '素质测评模块', '能力结构', 'zb_dlgznl,zb_cxnl,zb_ybnl,zb_pdyjcnl,zb_zzglnl,zb_sjnl,zb_ldnl');
 
-INSERT INTO `module` (`id`, `name`, `belong_module`, `chs_name`, `children`) VALUES
-(9, 'ldl', '胜任力', NULL, 'ldnl,pdyjcnl,zzglnl'),
-(14, '胜任力', '素质测评模块', NULL, NULL),
-(15, '素质测评模块', '素质测评模块', NULL, NULL),
-(16, 'mk_ldl', '胜任力', '领导力', 'zb_ldnl,zb_pdyjcnl,zb_zzglnl,zb_fxx'),
-(17, 'mk_zysz', '胜任力', '职业素质', 'zb_dlgznl,zb_cxnl,zb_tdjs,zb_gztd,zb_gzzf'),
-(18, 'mk_swnl', '胜任力', '思维能力', 'zb_jlx,zb_fxnl,zb_gnnl'),
-(19, 'mk_tdpz', '胜任力', '态度品质', 'zb_zrx,zb_cxd,zb_grjzqx,zb_rnx'),
-(20, 'mk_zynl', '胜任力', '专业能力', 'zb_bxx,zb_ybnl,zb_jmng,zb_rjgxtjsp,zb_chd'),
-(21, 'mk_grtz', '胜任力', '个人特质', 'zb_tzjl,zb_xg,zb_qxkzsp,zb_syhjsp,zb_sjnl,zb_zz,zb_xljksp'),
-(22, 'mk_xljk', '素质测评模块', '心理健康', 'zb_xljksp,zb_qxkzsp,zb_syhjsp,zb_rjgxtjsp,zb_xg,zb_zz,zb_fxx'),
-(23, 'mk_szjg', '素质测评模块', '素质结构', 'zb_zrx,zb_cxd,zb_grjzqx,zb_tdjs,zb_gztd,zb_gzzf,zb_bxx,zb_rnx'),
-(24, 'mk_ztjg', '素质测评模块', '智体结构', 'zb_chd,zb_jmng,zb_jlx,zb_tzjl,zb_fxnl,zb_gnnl'),
-(25, 'mk_nljg', '素质测评模块', '能力结构', 'zb_dlgznl,zb_cxnl,zb_ybnl,zb_pdyjcnl,zb_zzglnl,zb_sjnl,zb_ldnl');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `paper`
---
-
+-- ----------------------------
+-- Table structure for `paper`
+-- ----------------------------
 DROP TABLE IF EXISTS `paper`;
-CREATE TABLE IF NOT EXISTS `paper` (
+CREATE TABLE `paper` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(2000) DEFAULT NULL COMMENT '指导语',
   `name` varchar(200) DEFAULT NULL COMMENT '试卷名',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=139 ;
+) ENGINE=InnoDB AUTO_INCREMENT=139 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `paper`
---
+-- ----------------------------
+-- Records of paper
+-- ----------------------------
+INSERT INTO `paper` VALUES ('133', '请根据自己的实际情况作“是”或“不是”的回答。这些问题要求你按自己的实际情况回答，不要去猜测怎样才是正确的回答。因为这里不存在正确或错误的回答，也没有捉弄人的问题，将问题的意思看懂了就快点回答，不要花很多时间去想。每个问题都要问答。问卷无时间限制，但不要拖延太长，也不要未看懂问题便回答。', 'EPQA');
+INSERT INTO `paper` VALUES ('134', '卡特尔十六种人格因素测验包括一些有关个人兴趣与态度的问题。每个人都有自己的看法，对问题的回答自然不同。无所谓正确或错误。请来试者尽量表达自己的意见。<br />每道题有三种选择。作答时，请注意下列四点：<br />１．请不要费时斟酌。应当顺其自然地依你个人的反应选答。一般地说来，问题都略嫌简短而不能包含所有有关的因素或条件。通常每分钟可作五六题，全部问题应在半小时内完成。<br />２．除非在万不得已的情形下，尽量避免如“介乎Ａ与Ｃ之间”或“不甚确定”这样的中性答案。<br />３．请不要遗漏，务必对每一个问题作答。 有些问题似乎不符合于你，有些问题又似乎涉及隐私，但本测验的目的，在于研究比较青年或成人的兴趣和态度，希望来试者真实作答。<br />４．作答时，请坦白表达自己的兴趣与态度，不必顾虑到主试者或其他人的意见与立场。', '16PF');
+INSERT INTO `paper` VALUES ('135', '本测验含有一系列观点的陈述，请仔细阅读每一条，看看自己对它的感觉如何，如果你同意某个观点或该陈述真实地反映了你的情况，就作“是”的回答，否则作“否”的回答。', 'CPI');
+INSERT INTO `paper` VALUES ('136', '本测验包括许多成对的语句，任何选择都无所谓对错，对它们所描述的特征，你可能喜欢，也可能不喜欢，其方式你可能曾感觉到，也可能没有感觉到，请你从中选出最能表现或接近你当前特征或感觉的那一个。如果两句话都没有正确描述你的情况，那你应当选择你认为能比较正确反映你的情况的那一个。<br /> 总之，对于每道题的A、B两种选择你必须而且只能选择其一。', 'EPPS');
+INSERT INTO `paper` VALUES ('137', '以下列出了有些人可能会有的问题，请仔细地阅读每一条，然后根据最近一星期以内下述情况影响您的实际感觉，在每个问题后标明该题的程度得分。', 'SCL');
+INSERT INTO `paper` VALUES ('138', '下面要做的是一个有趣的测试，完成它时要认真看、认真想， 前面的题认真了，会对做后面的题目有好处；<br />每道测试题都有一张主题图，在主题图中，图案是缺了一部分的，主题图下有6－8张小图片，其中有一张小图片可以使主题图整个图案合理与完整。请确定哪一张小图片补充在主题图缺少的空白处最合适。<br />本测验无时间限制，请认真去做。请记住，每个题目只有一个正确答案。', 'SPM');
 
-INSERT INTO `paper` (`id`, `description`, `name`) VALUES
-(133, '请根据自己的实际情况作“是”或“不是”的回答。这些问题要求你按自己的实际情况回答，不要去猜测怎样才是正确的回答。因为这里不存在正确或错误的回答，也没有捉弄人的问题，将问题的意思看懂了就快点回答，不要花很多时间去想。每个问题都要问答。问卷无时间限制，但不要拖延太长，也不要未看懂问题便回答。', 'EPQA'),
-(134, '卡特尔十六种人格因素测验包括一些有关个人兴趣与态度的问题。每个人都有自己的看法，对问题的回答自然不同。无所谓正确或错误。请来试者尽量表达自己的意见。<br />每道题有三种选择。作答时，请注意下列四点：<br />１．请不要费时斟酌。应当顺其自然地依你个人的反应选答。一般地说来，问题都略嫌简短而不能包含所有有关的因素或条件。通常每分钟可作五六题，全部问题应在半小时内完成。<br />２．除非在万不得已的情形下，尽量避免如“介乎Ａ与Ｃ之间”或“不甚确定”这样的中性答案。<br />３．请不要遗漏，务必对每一个问题作答。 有些问题似乎不符合于你，有些问题又似乎涉及隐私，但本测验的目的，在于研究比较青年或成人的兴趣和态度，希望来试者真实作答。<br />４．作答时，请坦白表达自己的兴趣与态度，不必顾虑到主试者或其他人的意见与立场。', '16PF'),
-(135, '本测验含有一系列观点的陈述，请仔细阅读每一条，看看自己对它的感觉如何，如果你同意某个观点或该陈述真实地反映了你的情况，就作“是”的回答，否则作“否”的回答。', 'CPI'),
-(136, '本测验包括许多成对的语句，任何选择都无所谓对错，对它们所描述的特征，你可能喜欢，也可能不喜欢，其方式你可能曾感觉到，也可能没有感觉到，请你从中选出最能表现或接近你当前特征或感觉的那一个。如果两句话都没有正确描述你的情况，那你应当选择你认为能比较正确反映你的情况的那一个。<br /> 总之，对于每道题的A、B两种选择你必须而且只能选择其一。', 'EPPS'),
-(137, '以下列出了有些人可能会有的问题，请仔细地阅读每一条，然后根据最近一星期以内下述情况影响您的实际感觉，在每个问题后标明该题的程度得分。', 'SCL'),
-(138, '下面要做的是一个有趣的测试，完成它时要认真看、认真想， 前面的题认真了，会对做后面的题目有好处；<br />每道测试题都有一张主题图，在主题图中，图案是缺了一部分的，主题图下有6－8张小图片，其中有一张小图片可以使主题图整个图案合理与完整。请确定哪一张小图片补充在主题图缺少的空白处最合适。<br />本测验无时间限制，请认真去做。请记住，每个题目只有一个正确答案。', 'SPM');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pmrel`
---
-
-DROP TABLE IF EXISTS `pmrel`;
-CREATE TABLE IF NOT EXISTS `pmrel` (
-  `project_id` int(11) NOT NULL,
-  `module_id` int(11) NOT NULL,
-  PRIMARY KEY (`project_id`,`module_id`),
-  KEY `fk_pmrel_2_idx` (`module_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `pmrel`
---
-
-INSERT INTO `pmrel` (`project_id`, `module_id`) VALUES
-(1, 16),
-(1, 17),
-(1, 18),
-(1, 19),
-(1, 20),
-(1, 21),
-(1, 22),
-(1, 23),
-(1, 24),
-(1, 25);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `project`
---
-
+-- ----------------------------
+-- Table structure for `project`
+-- ----------------------------
 DROP TABLE IF EXISTS `project`;
-CREATE TABLE IF NOT EXISTS `project` (
+CREATE TABLE `project` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `begintime` datetime DEFAULT NULL COMMENT '开始时间',
   `endtime` datetime DEFAULT NULL COMMENT '结束时间',
@@ -2289,41 +3524,37 @@ CREATE TABLE IF NOT EXISTS `project` (
   `manager_id` int(11) NOT NULL COMMENT '项目经理id',
   `last_examinee_id` int(11) DEFAULT '1',
   PRIMARY KEY (`id`),
-  KEY `fk_project_1_idx` (`manager_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+  KEY `fk_project_1_idx` (`manager_id`),
+  CONSTRAINT `fk_project_1` FOREIGN KEY (`manager_id`) REFERENCES `manager` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `project`
---
+-- ----------------------------
+-- Records of project
+-- ----------------------------
 
-INSERT INTO `project` (`id`, `begintime`, `endtime`, `name`, `description`, `manager_id`, `last_examinee_id`) VALUES
-(1, '2015-07-01 15:42:00', '2015-08-03 15:43:00', '小测验', '这是周五的小测验', 2, 5),
-(2, '2015-08-04 19:30:00', '2015-08-21 23:55:00', 'lalala', '更详细的信息描述...', 60, 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `project_detail`
---
-
+-- ----------------------------
+-- Table structure for `project_detail`
+-- ----------------------------
 DROP TABLE IF EXISTS `project_detail`;
-CREATE TABLE IF NOT EXISTS `project_detail` (
+CREATE TABLE `project_detail` (
   `project_id` int(11) NOT NULL COMMENT '项目编号',
   `module_names` text COMMENT '模块序列',
   `index_names` text COMMENT '指标序列',
   `factor_names` text COMMENT '因子序列',
   `exam_json` text COMMENT 'json格式的{试卷名:题号}',
-  PRIMARY KEY (`project_id`)
+  PRIMARY KEY (`project_id`),
+  CONSTRAINT `fk_project_detail_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Records of project_detail
+-- ----------------------------
 
---
--- Table structure for table `question`
---
-
+-- ----------------------------
+-- Table structure for `question`
+-- ----------------------------
 DROP TABLE IF EXISTS `question`;
-CREATE TABLE IF NOT EXISTS `question` (
+CREATE TABLE `question` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `topic` text COMMENT '题目描述',
   `options` text COMMENT '题目选项，不同选项用竖线隔开',
@@ -2331,904 +3562,899 @@ CREATE TABLE IF NOT EXISTS `question` (
   `number` int(11) NOT NULL COMMENT '题目在试卷中的编号',
   `paper_id` int(11) DEFAULT NULL COMMENT '所属试卷id',
   PRIMARY KEY (`id`),
-  KEY `fk_question_1_idx` (`paper_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1629 ;
+  KEY `fk_question_1_idx` (`paper_id`),
+  CONSTRAINT `fk_question_1` FOREIGN KEY (`paper_id`) REFERENCES `paper` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3726 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `question`
---
+-- ----------------------------
+-- Records of question
+-- ----------------------------
+INSERT INTO `question` VALUES ('821', 'A1M', 'A1A1|A1A2|A1A3|A1A4|A1A5|A1A6', null, '1', '138');
+INSERT INTO `question` VALUES ('822', 'A2M', 'A2A1|A2A2|A2A3|A2A4|A2A5|A2A6', null, '2', '138');
+INSERT INTO `question` VALUES ('823', 'A3M', 'A3A1|A3A2|A3A3|A3A4|A3A5|A3A6', null, '3', '138');
+INSERT INTO `question` VALUES ('824', 'A4M', 'A4A1|A4A2|A4A3|A4A4|A4A5|A4A6', null, '4', '138');
+INSERT INTO `question` VALUES ('825', 'A5M', 'A5A1|A5A2|A5A3|A5A4|A5A5|A5A6', null, '5', '138');
+INSERT INTO `question` VALUES ('826', 'A6M', 'A6A1|A6A2|A6A3|A6A4|A6A5|A6A6', null, '6', '138');
+INSERT INTO `question` VALUES ('827', 'A7M', 'A7A1|A7A2|A7A3|A7A4|A7A5|A7A6', null, '7', '138');
+INSERT INTO `question` VALUES ('828', 'A8M', 'A8A1|A8A2|A8A3|A8A4|A8A5|A8A6', null, '8', '138');
+INSERT INTO `question` VALUES ('829', 'A9M', 'A9A1|A9A2|A9A3|A9A4|A9A5|A9A6', null, '9', '138');
+INSERT INTO `question` VALUES ('830', 'A10M', 'A10A1|A10A2|A10A3|A10A4|A10A5|A10A6', null, '10', '138');
+INSERT INTO `question` VALUES ('831', 'A11M', 'A11A1|A11A2|A11A3|A11A4|A11A5|A11A6', null, '11', '138');
+INSERT INTO `question` VALUES ('832', 'A12M', 'A12A1|A12A2|A12A3|A12A4|A12A5|A12A6', null, '12', '138');
+INSERT INTO `question` VALUES ('833', 'B1M', 'B1A1|B1A2|B1A3|B1A4|B1A5|B1A6', null, '13', '138');
+INSERT INTO `question` VALUES ('834', 'B2M', 'B2A1|B2A2|B2A3|B2A4|B2A5|B2A6', null, '14', '138');
+INSERT INTO `question` VALUES ('835', 'B3M', 'B3A1|B3A2|B3A3|B3A4|B3A5|B3A6', null, '15', '138');
+INSERT INTO `question` VALUES ('836', 'B4M', 'B4A1|B4A2|B4A3|B4A4|B4A5|B4A6', null, '16', '138');
+INSERT INTO `question` VALUES ('837', 'B5M', 'B5A1|B5A2|B5A3|B5A4|B5A5|B5A6', null, '17', '138');
+INSERT INTO `question` VALUES ('838', 'B6M', 'B6A1|B6A2|B6A3|B6A4|B6A5|B6A6', null, '18', '138');
+INSERT INTO `question` VALUES ('839', 'B7M', 'B7A1|B7A2|B7A3|B7A4|B7A5|B7A6', null, '19', '138');
+INSERT INTO `question` VALUES ('840', 'B8M', 'B8A1|B8A2|B8A3|B8A4|B8A5|B8A6', null, '20', '138');
+INSERT INTO `question` VALUES ('841', 'B9M', 'B9A1|B9A2|B9A3|B9A4|B9A5|B9A6', null, '21', '138');
+INSERT INTO `question` VALUES ('842', 'B10M', 'B10A1|B10A2|B10A3|B10A4|B10A5|B10A6', null, '22', '138');
+INSERT INTO `question` VALUES ('843', 'B11M', 'B11A1|B11A2|B11A3|B11A4|B11A5|B11A6', null, '23', '138');
+INSERT INTO `question` VALUES ('844', 'B12M', 'B12A1|B12A2|B12A3|B12A4|B12A5|B12A6', null, '24', '138');
+INSERT INTO `question` VALUES ('845', 'C1M', 'C1A1|C1A2|C1A3|C1A4|C1A5|C1A6|C1A7|C1A8', null, '25', '138');
+INSERT INTO `question` VALUES ('846', 'C2M', 'C2A1|C2A2|C2A3|C2A4|C2A5|C2A6|C2A7|C2A8', null, '26', '138');
+INSERT INTO `question` VALUES ('847', 'C3M', 'C3A1|C3A2|C3A3|C3A4|C3A5|C3A6|C3A7|C3A8', null, '27', '138');
+INSERT INTO `question` VALUES ('848', 'C4M', 'C4A1|C4A2|C4A3|C4A4|C4A5|C4A6|C4A7|C4A8', null, '28', '138');
+INSERT INTO `question` VALUES ('849', 'C5M', 'C5A1|C5A2|C5A3|C5A4|C5A5|C5A6|C5A7|C5A8', null, '29', '138');
+INSERT INTO `question` VALUES ('850', 'C6M', 'C6A1|C6A2|C6A3|C6A4|C6A5|C6A6|C6A7|C6A8', null, '30', '138');
+INSERT INTO `question` VALUES ('851', 'C7M', 'C7A1|C7A2|C7A3|C7A4|C7A5|C7A6|C7A7|C7A8', null, '31', '138');
+INSERT INTO `question` VALUES ('852', 'C8M', 'C8A1|C8A2|C8A3|C8A4|C8A5|C8A6|C8A7|C8A8', null, '32', '138');
+INSERT INTO `question` VALUES ('853', 'C9M', 'C9A1|C9A2|C9A3|C9A4|C9A5|C9A6|C9A7|C9A8', null, '33', '138');
+INSERT INTO `question` VALUES ('854', 'C10M', 'C10A1|C10A2|C10A3|C10A4|C10A5|C10A6|C10A7|C10A8', null, '34', '138');
+INSERT INTO `question` VALUES ('855', 'C11M', 'C11A1|C11A2|C11A3|C11A4|C11A5|C11A6|C11A7|C11A8', null, '35', '138');
+INSERT INTO `question` VALUES ('856', 'C12M', 'C12A1|C12A2|C12A3|C12A4|C12A5|C12A6|C12A7|C12A8', null, '36', '138');
+INSERT INTO `question` VALUES ('857', 'D1M', 'D1A1|D1A2|D1A3|D1A4|D1A5|D1A6|D1A7|D1A8', null, '37', '138');
+INSERT INTO `question` VALUES ('858', 'D2M', 'D2A1|D2A2|D2A3|D2A4|D2A5|D2A6|D2A7|D2A8', null, '38', '138');
+INSERT INTO `question` VALUES ('859', 'D3M', 'D3A1|D3A2|D3A3|D3A4|D3A5|D3A6|D3A7|D3A8', null, '39', '138');
+INSERT INTO `question` VALUES ('860', 'D4M', 'D4A1|D4A2|D4A3|D4A4|D4A5|D4A6|D4A7|D4A8', null, '40', '138');
+INSERT INTO `question` VALUES ('861', 'D5M', 'D5A1|D5A2|D5A3|D5A4|D5A5|D5A6|D5A7|D5A8', null, '41', '138');
+INSERT INTO `question` VALUES ('862', 'D6M', 'D6A1|D6A2|D6A3|D6A4|D6A5|D6A6|D6A7|D6A8', null, '42', '138');
+INSERT INTO `question` VALUES ('863', 'D7M', 'D7A1|D7A2|D7A3|D7A4|D7A5|D7A6|D7A7|D7A8', null, '43', '138');
+INSERT INTO `question` VALUES ('864', 'D8M', 'D8A1|D8A2|D8A3|D8A4|D8A5|D8A6|D8A7|D8A8', null, '44', '138');
+INSERT INTO `question` VALUES ('865', 'D9M', 'D9A1|D9A2|D9A3|D9A4|D9A5|D9A6|D9A7|D9A8', null, '45', '138');
+INSERT INTO `question` VALUES ('866', 'D10M', 'D10A1|D10A2|D10A3|D10A4|D10A5|D10A6|D10A7|D10A8', null, '46', '138');
+INSERT INTO `question` VALUES ('867', 'D11M', 'D11A1|D11A2|D11A3|D11A4|D11A5|D11A6|D11A7|D11A8', null, '47', '138');
+INSERT INTO `question` VALUES ('868', 'D12M', 'D12A1|D12A2|D12A3|D12A4|D12A5|D12A6|D12A7|D12A8', null, '48', '138');
+INSERT INTO `question` VALUES ('869', 'E1M', 'E1A1|E1A2|E1A3|E1A4|E1A5|E1A6|E1A7|E1A8', null, '49', '138');
+INSERT INTO `question` VALUES ('870', 'E2M', 'E2A1|E2A2|E2A3|E2A4|E2A5|E2A6|E2A7|E2A8', null, '50', '138');
+INSERT INTO `question` VALUES ('871', 'E3M', 'E3A1|E3A2|E3A3|E3A4|E3A5|E3A6|E3A7|E3A8', null, '51', '138');
+INSERT INTO `question` VALUES ('872', 'E4M', 'E4A1|E4A2|E4A3|E4A4|E4A5|E4A6|E4A7|E4A8', null, '52', '138');
+INSERT INTO `question` VALUES ('873', 'E5M', 'E5A1|E5A2|E5A3|E5A4|E5A5|E5A6|E5A7|E5A8', null, '53', '138');
+INSERT INTO `question` VALUES ('874', 'E6M', 'E6A1|E6A2|E6A3|E6A4|E6A5|E6A6|E6A7|E6A8', null, '54', '138');
+INSERT INTO `question` VALUES ('875', 'E7M', 'E7A1|E7A2|E7A3|E7A4|E7A5|E7A6|E7A7|E7A8', null, '55', '138');
+INSERT INTO `question` VALUES ('876', 'E8M', 'E8A1|E8A2|E8A3|E8A4|E8A5|E8A6|E8A7|E8A8', null, '56', '138');
+INSERT INTO `question` VALUES ('877', 'E9M', 'E9A1|E9A2|E9A3|E9A4|E9A5|E9A6|E9A7|E9A8', null, '57', '138');
+INSERT INTO `question` VALUES ('878', 'E10M', 'E10A1|E10A2|E10A3|E10A4|E10A5|E10A6|E10A7|E10A8', null, '58', '138');
+INSERT INTO `question` VALUES ('879', 'E11M', 'E11A1|E11A2|E11A3|E11A4|E11A5|E11A6|E11A7|E11A8', null, '59', '138');
+INSERT INTO `question` VALUES ('880', 'E12M', 'E12A1|E12A2|E12A3|E12A4|E12A5|E12A6|E12A7|E12A8', null, '60', '138');
+INSERT INTO `question` VALUES ('1629', '头痛。', '没有|很轻|中等|偏重|严重', null, '1', '137');
+INSERT INTO `question` VALUES ('1630', '神经过敏,心中不踏实。', '没有|很轻|中等|偏重|严重', null, '2', '137');
+INSERT INTO `question` VALUES ('1631', '头脑中有不必要的想法或字句盘旋。', '没有|很轻|中等|偏重|严重', null, '3', '137');
+INSERT INTO `question` VALUES ('1632', '头昏或昏倒。', '没有|很轻|中等|偏重|严重', null, '4', '137');
+INSERT INTO `question` VALUES ('1633', '对异性的兴趣减退。', '没有|很轻|中等|偏重|严重', null, '5', '137');
+INSERT INTO `question` VALUES ('1634', '对旁人责备求全。', '没有|很轻|中等|偏重|严重', null, '6', '137');
+INSERT INTO `question` VALUES ('1635', '感到别人能控制您的思想。', '没有|很轻|中等|偏重|严重', null, '7', '137');
+INSERT INTO `question` VALUES ('1636', '责怪别人制造麻烦。', '没有|很轻|中等|偏重|严重', null, '8', '137');
+INSERT INTO `question` VALUES ('1637', '忘记性大。', '没有|很轻|中等|偏重|严重', null, '9', '137');
+INSERT INTO `question` VALUES ('1638', '担心自己的衣饰整齐及仪态的端正。', '没有|很轻|中等|偏重|严重', null, '10', '137');
+INSERT INTO `question` VALUES ('1639', '容易烦恼和激动。', '没有|很轻|中等|偏重|严重', null, '11', '137');
+INSERT INTO `question` VALUES ('1640', '胸痛。', '没有|很轻|中等|偏重|严重', null, '12', '137');
+INSERT INTO `question` VALUES ('1641', '害怕空旷的场所或街道。', '没有|很轻|中等|偏重|严重', null, '13', '137');
+INSERT INTO `question` VALUES ('1642', '感到自己的精力下降,活动减慢。', '没有|很轻|中等|偏重|严重', null, '14', '137');
+INSERT INTO `question` VALUES ('1643', '想结束自己的生命。', '没有|很轻|中等|偏重|严重', null, '15', '137');
+INSERT INTO `question` VALUES ('1644', '听到旁人听不到的声音。', '没有|很轻|中等|偏重|严重', null, '16', '137');
+INSERT INTO `question` VALUES ('1645', '发抖。', '没有|很轻|中等|偏重|严重', null, '17', '137');
+INSERT INTO `question` VALUES ('1646', '感到大多数人都不可信任。', '没有|很轻|中等|偏重|严重', null, '18', '137');
+INSERT INTO `question` VALUES ('1647', '胃口不好。', '没有|很轻|中等|偏重|严重', null, '19', '137');
+INSERT INTO `question` VALUES ('1648', '容易哭泣。', '没有|很轻|中等|偏重|严重', null, '20', '137');
+INSERT INTO `question` VALUES ('1649', '同异性相处时感到害羞不自在。', '没有|很轻|中等|偏重|严重', null, '21', '137');
+INSERT INTO `question` VALUES ('1650', '感到受骗,中了圈套或有人想抓住您。', '没有|很轻|中等|偏重|严重', null, '22', '137');
+INSERT INTO `question` VALUES ('1651', '无缘无故地突然感到害怕。', '没有|很轻|中等|偏重|严重', null, '23', '137');
+INSERT INTO `question` VALUES ('1652', '自己不能控制地大发脾气。', '没有|很轻|中等|偏重|严重', null, '24', '137');
+INSERT INTO `question` VALUES ('1653', '怕单独出门。', '没有|很轻|中等|偏重|严重', null, '25', '137');
+INSERT INTO `question` VALUES ('1654', '经常责怪自己。', '没有|很轻|中等|偏重|严重', null, '26', '137');
+INSERT INTO `question` VALUES ('1655', '腰痛。', '没有|很轻|中等|偏重|严重', null, '27', '137');
+INSERT INTO `question` VALUES ('1656', '感到难以完成任务。', '没有|很轻|中等|偏重|严重', null, '28', '137');
+INSERT INTO `question` VALUES ('1657', '感到孤独。', '没有|很轻|中等|偏重|严重', null, '29', '137');
+INSERT INTO `question` VALUES ('1658', '感到苦闷。', '没有|很轻|中等|偏重|严重', null, '30', '137');
+INSERT INTO `question` VALUES ('1659', '过分担忧。', '没有|很轻|中等|偏重|严重', null, '31', '137');
+INSERT INTO `question` VALUES ('1660', '对事物不感兴趣。', '没有|很轻|中等|偏重|严重', null, '32', '137');
+INSERT INTO `question` VALUES ('1661', '感到害怕。', '没有|很轻|中等|偏重|严重', null, '33', '137');
+INSERT INTO `question` VALUES ('1662', '您的感情容易受到伤害。', '没有|很轻|中等|偏重|严重', null, '34', '137');
+INSERT INTO `question` VALUES ('1663', '旁人能知道您的私下想法。', '没有|很轻|中等|偏重|严重', null, '35', '137');
+INSERT INTO `question` VALUES ('1664', '感到别人不理解您、不同情您。', '没有|很轻|中等|偏重|严重', null, '36', '137');
+INSERT INTO `question` VALUES ('1665', '感到人们对您不友好,不喜欢您。', '没有|很轻|中等|偏重|严重', null, '37', '137');
+INSERT INTO `question` VALUES ('1666', '做事必须做得很慢以保证做得正确。', '没有|很轻|中等|偏重|严重', null, '38', '137');
+INSERT INTO `question` VALUES ('1667', '心跳得很厉害。', '没有|很轻|中等|偏重|严重', null, '39', '137');
+INSERT INTO `question` VALUES ('1668', '恶心或胃部不舒服。', '没有|很轻|中等|偏重|严重', null, '40', '137');
+INSERT INTO `question` VALUES ('1669', '感到比不上他人。', '没有|很轻|中等|偏重|严重', null, '41', '137');
+INSERT INTO `question` VALUES ('1670', '肌肉酸痛。', '没有|很轻|中等|偏重|严重', null, '42', '137');
+INSERT INTO `question` VALUES ('1671', '感到有人在监视您、谈论您。', '没有|很轻|中等|偏重|严重', null, '43', '137');
+INSERT INTO `question` VALUES ('1672', '难以入睡。', '没有|很轻|中等|偏重|严重', null, '44', '137');
+INSERT INTO `question` VALUES ('1673', '做事必须反复检查。', '没有|很轻|中等|偏重|严重', null, '45', '137');
+INSERT INTO `question` VALUES ('1674', '难以做出决定。', '没有|很轻|中等|偏重|严重', null, '46', '137');
+INSERT INTO `question` VALUES ('1675', '怕乘电车、公共汽车、地铁或火车。', '没有|很轻|中等|偏重|严重', null, '47', '137');
+INSERT INTO `question` VALUES ('1676', '呼吸有困难。', '没有|很轻|中等|偏重|严重', null, '48', '137');
+INSERT INTO `question` VALUES ('1677', '一阵阵发冷或发热。', '没有|很轻|中等|偏重|严重', null, '49', '137');
+INSERT INTO `question` VALUES ('1678', '因为感到害怕而避开某些东西、场合或活动。', '没有|很轻|中等|偏重|严重', null, '50', '137');
+INSERT INTO `question` VALUES ('1679', '脑子变空了。', '没有|很轻|中等|偏重|严重', null, '51', '137');
+INSERT INTO `question` VALUES ('1680', '身体发麻或刺痛。', '没有|很轻|中等|偏重|严重', null, '52', '137');
+INSERT INTO `question` VALUES ('1681', '喉咙有梗塞感。', '没有|很轻|中等|偏重|严重', null, '53', '137');
+INSERT INTO `question` VALUES ('1682', '感到前途没有希望。', '没有|很轻|中等|偏重|严重', null, '54', '137');
+INSERT INTO `question` VALUES ('1683', '不能集中注意。', '没有|很轻|中等|偏重|严重', null, '55', '137');
+INSERT INTO `question` VALUES ('1684', '感到身体的某一部分软弱无力。', '没有|很轻|中等|偏重|严重', null, '56', '137');
+INSERT INTO `question` VALUES ('1685', '感到紧张或容易紧张。', '没有|很轻|中等|偏重|严重', null, '57', '137');
+INSERT INTO `question` VALUES ('1686', '感到手或脚发重。', '没有|很轻|中等|偏重|严重', null, '58', '137');
+INSERT INTO `question` VALUES ('1687', '想到死亡的事。', '没有|很轻|中等|偏重|严重', null, '59', '137');
+INSERT INTO `question` VALUES ('1688', '吃得太多。', '没有|很轻|中等|偏重|严重', null, '60', '137');
+INSERT INTO `question` VALUES ('1689', '当别人看着您或谈论您时感到不自在。', '没有|很轻|中等|偏重|严重', null, '61', '137');
+INSERT INTO `question` VALUES ('1690', '有一些不属于您自己的想法。', '没有|很轻|中等|偏重|严重', null, '62', '137');
+INSERT INTO `question` VALUES ('1691', '有想打人或伤害他人的冲动。', '没有|很轻|中等|偏重|严重', null, '63', '137');
+INSERT INTO `question` VALUES ('1692', '醒得太早。', '没有|很轻|中等|偏重|严重', null, '64', '137');
+INSERT INTO `question` VALUES ('1693', '必须反复洗手、点数目或触摸某些东西。', '没有|很轻|中等|偏重|严重', null, '65', '137');
+INSERT INTO `question` VALUES ('1694', '睡得不稳不深。', '没有|很轻|中等|偏重|严重', null, '66', '137');
+INSERT INTO `question` VALUES ('1695', '有想摔坏或破坏东西的冲动。', '没有|很轻|中等|偏重|严重', null, '67', '137');
+INSERT INTO `question` VALUES ('1696', '有一些别人没有的想法或念头。', '没有|很轻|中等|偏重|严重', null, '68', '137');
+INSERT INTO `question` VALUES ('1697', '感到对别人神经过敏。', '没有|很轻|中等|偏重|严重', null, '69', '137');
+INSERT INTO `question` VALUES ('1698', '在商店或电影院等人多的地方感到不自在。', '没有|很轻|中等|偏重|严重', null, '70', '137');
+INSERT INTO `question` VALUES ('1699', '感到任何事情都很困难。', '没有|很轻|中等|偏重|严重', null, '71', '137');
+INSERT INTO `question` VALUES ('1700', '一阵阵恐惧或惊恐。', '没有|很轻|中等|偏重|严重', null, '72', '137');
+INSERT INTO `question` VALUES ('1701', '感到在公共场合吃东西很不舒服。', '没有|很轻|中等|偏重|严重', null, '73', '137');
+INSERT INTO `question` VALUES ('1702', '经常与人争论。', '没有|很轻|中等|偏重|严重', null, '74', '137');
+INSERT INTO `question` VALUES ('1703', '单独一个人时神经很紧张。', '没有|很轻|中等|偏重|严重', null, '75', '137');
+INSERT INTO `question` VALUES ('1704', '别人对您的成绩没有做出恰当的评价。', '没有|很轻|中等|偏重|严重', null, '76', '137');
+INSERT INTO `question` VALUES ('1705', '即使和别人在一起也感到孤单。', '没有|很轻|中等|偏重|严重', null, '77', '137');
+INSERT INTO `question` VALUES ('1706', '感到坐立不安心神不定。', '没有|很轻|中等|偏重|严重', null, '78', '137');
+INSERT INTO `question` VALUES ('1707', '感到自己没有什么价值。', '没有|很轻|中等|偏重|严重', null, '79', '137');
+INSERT INTO `question` VALUES ('1708', '感到熟悉的东西变成陌生或不像是真的。', '没有|很轻|中等|偏重|严重', null, '80', '137');
+INSERT INTO `question` VALUES ('1709', '大叫或摔东西。', '没有|很轻|中等|偏重|严重', null, '81', '137');
+INSERT INTO `question` VALUES ('1710', '害怕会在公共场合昏倒。', '没有|很轻|中等|偏重|严重', null, '82', '137');
+INSERT INTO `question` VALUES ('1711', '感到别人想占您的便宜。', '没有|很轻|中等|偏重|严重', null, '83', '137');
+INSERT INTO `question` VALUES ('1712', '为一些有关性的想法而很苦恼。', '没有|很轻|中等|偏重|严重', null, '84', '137');
+INSERT INTO `question` VALUES ('1713', '您认为应该因为自己的过错而受到惩罚。', '没有|很轻|中等|偏重|严重', null, '85', '137');
+INSERT INTO `question` VALUES ('1714', '感到要很快把事情做完。', '没有|很轻|中等|偏重|严重', null, '86', '137');
+INSERT INTO `question` VALUES ('1715', '感到自己的身体有严重问题。', '没有|很轻|中等|偏重|严重', null, '87', '137');
+INSERT INTO `question` VALUES ('1716', '从未感到和其他人很亲近。', '没有|很轻|中等|偏重|严重', null, '88', '137');
+INSERT INTO `question` VALUES ('1717', '感到自己有罪。', '没有|很轻|中等|偏重|严重', null, '89', '137');
+INSERT INTO `question` VALUES ('1718', '感到自己的脑子有毛病。', '没有|很轻|中等|偏重|严重', null, '90', '137');
+INSERT INTO `question` VALUES ('1725', null, '当我的朋友有麻烦时,我喜欢帮助他们。|对我所承担的一切事情,我都喜欢尽我最大的努力去做。', null, '1', '136');
+INSERT INTO `question` VALUES ('1726', null, '我喜欢探求伟人对我所感兴趣的各种问题有什么看法。|我喜欢完成具有重大意义的事情。', null, '2', '136');
+INSERT INTO `question` VALUES ('1727', null, '我喜欢我写的所有的东西都很精确、清楚、有条有理。|我喜欢在某些职工、专业或专门项目上自己是公认的权威。', null, '3', '136');
+INSERT INTO `question` VALUES ('1728', null, '我喜欢在宴会上讲些趣事与笑话。|我喜欢写本伟大的小说或剧本。', null, '4', '136');
+INSERT INTO `question` VALUES ('1729', null, '我喜欢能随我的意志来去自如。|我喜欢能够自豪地说我将一件难题成功处理了。', null, '5', '136');
+INSERT INTO `question` VALUES ('1730', null, '我喜欢解答其他人觉得困难的谜语与问题。|我喜欢遵从指示去做人家期待我做的事。', null, '6', '136');
+INSERT INTO `question` VALUES ('1731', null, '我喜欢在日常生活中经验到新奇与改变。|当我认为我的上级做得对时,我喜欢对他们表示我的看法。', null, '7', '136');
+INSERT INTO `question` VALUES ('1732', null, '对我所承担的任何工作,我喜欢对其细节做计划与组织。|我喜欢遵从指示做我所该做的事。', null, '8', '136');
+INSERT INTO `question` VALUES ('1733', null, '在公共场合中,我喜欢人们注意和评价我的外表。|我喜欢读伟人的故事。', null, '9', '136');
+INSERT INTO `question` VALUES ('1734', null, '我喜欢回避要我按照例行方法办事的场合。|我喜欢读伟人的故事。', null, '10', '136');
+INSERT INTO `question` VALUES ('1735', null, '我喜欢在某些职业、专业或专门项目上自己是个公认的权威。|我喜欢在工作开始之前做好组织和计划。', null, '11', '136');
+INSERT INTO `question` VALUES ('1736', null, '我喜欢探求伟人们对各种我所感兴趣的问题的看法。|假如我必须旅行时,我喜欢把事情先安排好。', null, '12', '136');
+INSERT INTO `question` VALUES ('1737', null, '我喜欢将我开了头的工作或任务完成。|我喜欢保持我的书桌或工作间的清洁与整齐。', null, '13', '136');
+INSERT INTO `question` VALUES ('1738', null, '我喜欢告诉别人我所经历的冒险与奇特的事情。|我喜欢饮食有规律,并且有固（在）定时间吃东西。', null, '14', '136');
+INSERT INTO `question` VALUES ('1739', null, '我喜欢独立决定我所要做的事。|我喜欢保持书桌或工作间的清洁与整齐。', null, '15', '136');
+INSERT INTO `question` VALUES ('1740', null, '我喜欢比其他人做得更好。|我喜欢在宴会上讲些趣闻与笑话。', null, '16', '136');
+INSERT INTO `question` VALUES ('1741', null, '我喜欢遵从习俗,并避免做我所尊敬的人认为不合常规的事。|我喜欢谈我的成就。', null, '17', '136');
+INSERT INTO `question` VALUES ('1742', null, '我喜欢我的生活安排得好,过得顺利,而不用对我的计划作太多的改变。|我喜欢告诉别人我所经历的冒险与奇特的事情。', null, '18', '136');
+INSERT INTO `question` VALUES ('1743', null, '我喜欢阅读以性为主体的书与剧本。|我喜欢在团体中成为众目所瞩的对象。', null, '19', '136');
+INSERT INTO `question` VALUES ('1744', null, '我喜欢批评权威人士。|我喜欢用些别人不懂其意的字眼。', null, '20', '136');
+INSERT INTO `question` VALUES ('1745', null, '我喜欢完成其他人认为需要技巧和努力的工作。|我喜欢能随我的意志来去自如。', null, '21', '136');
+INSERT INTO `question` VALUES ('1746', null, '我喜欢称赞我所崇拜的人。|我喜欢很自如地做我所想做的事。', null, '22', '136');
+INSERT INTO `question` VALUES ('1747', null, '我喜欢将我的信、账单和其他文件整齐地排列着并以某种系统存档。|我希望独立决定我所要做的事。', null, '23', '136');
+INSERT INTO `question` VALUES ('1748', null, '我喜欢提出明知没有人能回答得出来的问题。|我喜欢批评权威人士。', null, '24', '136');
+INSERT INTO `question` VALUES ('1749', null, '当我动怒时,我想摔东西。|我喜欢回避责任与义务。', null, '25', '136');
+INSERT INTO `question` VALUES ('1750', null, '我喜欢将所有承担的事办成功。|我喜欢结交新朋友。', null, '26', '136');
+INSERT INTO `question` VALUES ('1751', null, '我喜欢遵照指示去做我所该做的事。|我喜欢与朋友有深厚的交情。', null, '27', '136');
+INSERT INTO `question` VALUES ('1752', null, '我喜欢我写的所有的东西都很精确、清楚、有条有理。|我喜欢广交朋友。', null, '28', '136');
+INSERT INTO `question` VALUES ('1753', null, '我喜欢在宴会中说趣闻与笑话。|我喜欢写信给我的朋友。', null, '29', '136');
+INSERT INTO `question` VALUES ('1754', null, '我喜欢能随我的意志来去自如。|我喜欢与朋友共享一切。', null, '30', '136');
+INSERT INTO `question` VALUES ('1755', null, '我喜欢解答别人认为困难的谜语与问题。|我喜欢就一个人为什么做去判断他,而不是从他实际上做什么去判断他。', null, '31', '136');
+INSERT INTO `question` VALUES ('1756', null, '我喜欢接受我所崇拜的人领导。|我喜欢了解我的朋友们对他们所面对的各种问题怎样感觉。', null, '32', '136');
+INSERT INTO `question` VALUES ('1757', null, '我喜欢饮食有规律,并且在固定时间吃东西。|我喜欢研究与分析别人的行动。', null, '33', '136');
+INSERT INTO `question` VALUES ('1758', null, '我喜欢说些别人认为机智与聪明的事。|我喜欢将自己放在别人的立场上,看自己若处于相同的情境会有什么感觉。', null, '34', '136');
+INSERT INTO `question` VALUES ('1759', null, '我喜欢照我的意思做我想做的事。|我喜欢观察其他人在某个场合的感觉。', null, '35', '136');
+INSERT INTO `question` VALUES ('1760', null, '我喜欢完成别人认为需要技巧和努力的工作。|我喜欢在我失败的时候朋友们能鼓励我。', null, '36', '136');
+INSERT INTO `question` VALUES ('1761', null, '做计划时,我喜欢从其见解为我所敬重的人那里获得些建议。|我喜欢我的朋友对我仁慈。', null, '37', '136');
+INSERT INTO `question` VALUES ('1762', null, '我喜欢我的朋友的生活安排得好,过得顺利,而不用对我的计划做太多得改变。|当我生病时,我喜欢我的朋友感到不安。', null, '38', '136');
+INSERT INTO `question` VALUES ('1763', null, '我喜欢在团体中成为众目所瞩的对象。|当我受伤或生病时,我喜欢我的朋友小题大做。', null, '39', '136');
+INSERT INTO `question` VALUES ('1764', null, '我喜欢回避要我按照例行方法办事的场合。|当我沮丧时,我喜欢我的朋友们同情并使我愉快。', null, '40', '136');
+INSERT INTO `question` VALUES ('1765', null, '我想写一本伟大的小说或剧本。|当作为群众团体的一个成员时,我喜欢被指定或被选为领导者。', null, '41', '136');
+INSERT INTO `question` VALUES ('1766', null, '在团体中,我喜欢接受别人的领导来决定团体该做什么。|只要可能,我就喜欢监督与指导别人的行动。', null, '42', '136');
+INSERT INTO `question` VALUES ('1767', null, '我喜欢将我的信、账单或其他文件整齐地排列着,并依某种系统存档。|我喜欢成为我所属的机构与团体的领导者之一。', null, '43', '136');
+INSERT INTO `question` VALUES ('1768', null, '我喜欢问些明知没人回答得出来的问题。|我喜欢告诉别人怎么做他们的工作。', null, '44', '136');
+INSERT INTO `question` VALUES ('1769', null, '我喜欢回避责任与义务。|我喜欢被人们叫去做和事佬。', null, '45', '136');
+INSERT INTO `question` VALUES ('1770', null, '我喜欢在某种职业、专业或专门的项目上成为公认的权威。|每当我做错了事,我感到有罪恶感。', null, '46', '136');
+INSERT INTO `question` VALUES ('1771', null, '我喜欢读伟人的故事。|我觉得我必须承认我所做的一些错事。', null, '47', '136');
+INSERT INTO `question` VALUES ('1772', null, '对我所承担的任何工作,我喜欢对其细节作好计划与组织。|当事情不顺时,我感到我比任何人更该受到责备。', null, '48', '136');
+INSERT INTO `question` VALUES ('1773', null, '我喜欢用些别人常常不明白其意义的字眼。|我觉得样样不如别人。', null, '49', '136');
+INSERT INTO `question` VALUES ('1774', null, '我喜欢批评权威人士。|在认为是我的上司的人面前,我感到胆怯。', null, '50', '136');
+INSERT INTO `question` VALUES ('1775', null, '对我所承担的一切事情,我喜欢尽力而为。|我喜欢帮助比我不幸的人。', null, '51', '136');
+INSERT INTO `question` VALUES ('1776', null, '我喜欢探求伟人们对我所感兴趣的各种问题有什么看法。|我喜欢对我的朋友们慷慨。', null, '52', '136');
+INSERT INTO `question` VALUES ('1777', null, '在处理难题时,我喜欢在开始之前做计划。|我喜欢为我的朋友做点小事。', null, '53', '136');
+INSERT INTO `question` VALUES ('1778', null, '我喜欢对别人谈我所经历的冒险与奇特的事。|我喜欢我的朋友信任我,并对我倾诉他们的麻烦。', null, '54', '136');
+INSERT INTO `question` VALUES ('1779', null, '我喜欢发表我对事情的看法。|我喜欢原谅有时可能伤害了我的朋友。', null, '55', '136');
+INSERT INTO `question` VALUES ('1780', null, '我喜欢自己能比别人做得更好。|我喜欢在新奇的餐厅里饮食。', null, '56', '136');
+INSERT INTO `question` VALUES ('1781', null, '我喜欢遵从习俗避免做我所尊敬的人认为不合常规的事情。|我喜欢追求。', null, '57', '136');
+INSERT INTO `question` VALUES ('1782', null, '在开始工作之前,我喜欢对它做好组织和计划。|我喜欢旅行和到处观光。', null, '58', '136');
+INSERT INTO `question` VALUES ('1783', null, '在公共场合,我喜欢人们注意和评价我的外表。|我喜欢搬家,住到不同的地方。', null, '59', '136');
+INSERT INTO `question` VALUES ('1784', null, '我喜欢独立决定我所要做的事。|我喜欢做些新鲜且有变化的事。', null, '60', '136');
+INSERT INTO `question` VALUES ('1785', null, '我喜欢我能自豪地说我解决了一个难题。|对我所承担的事,我喜欢认真去做。', null, '61', '136');
+INSERT INTO `question` VALUES ('1786', null, '当我认为我的上司做得对时,我喜欢对他们表示我的看法。|我喜欢在接受其他事之前完成手头的事。', null, '62', '136');
+INSERT INTO `question` VALUES ('1787', null, '假如我必须旅行时,我喜欢事先计划好。|我喜欢继续解我的难题或问题,直到解决为止。', null, '63', '136');
+INSERT INTO `question` VALUES ('1788', null, '我有时喜欢做些事情,只是为了想看看别人对此事的反应。|我喜欢固定于某一职业或问题上,甚至看来它（它看来）好像没有什么希望。', null, '64', '136');
+INSERT INTO `question` VALUES ('1789', null, '我喜欢做别人认为不合常规的事。|我喜欢不受干扰地长时间工作。', null, '65', '136');
+INSERT INTO `question` VALUES ('1790', null, '我喜欢完成具有重大意义的事。|我不在乎与迷人的异性表示亲切。', null, '66', '136');
+INSERT INTO `question` VALUES ('1791', null, '我喜欢称赞我所崇拜的人。|我喜欢被异性认为身材吸引人。', null, '67', '136');
+INSERT INTO `question` VALUES ('1792', null, '我喜欢保持我的书桌与工作间的清洁与整齐。|我喜欢与异性谈情说爱。', null, '68', '136');
+INSERT INTO `question` VALUES ('1793', null, '我喜欢谈我的成就。|我喜欢听或说以性为主的笑话。', null, '69', '136');
+INSERT INTO `question` VALUES ('1794', null, '我喜欢依我的方式做事而不在乎别人的看法。|我喜欢看以性为主的书或剧本。', null, '70', '136');
+INSERT INTO `question` VALUES ('1795', null, '我喜欢写本伟大的小说或剧本。|我喜欢考虑与我看法相反的观点。', null, '71', '136');
+INSERT INTO `question` VALUES ('1796', null, '在团体中我喜欢接受别人的领导来决定团体该做什么。|假如某人罪有应得的话我想公开地进行批评。', null, '72', '136');
+INSERT INTO `question` VALUES ('1797', null, '我喜欢我的生活安排得好,过得顺利而不用对我的计划做太多的改变。|当我动怒时,我想摔东西。', null, '73', '136');
+INSERT INTO `question` VALUES ('1798', null, '我喜欢问些没有人能回答的问题。|我喜欢对别人说我对他们的看法。', null, '74', '136');
+INSERT INTO `question` VALUES ('1799', null, '我喜欢回避责任与义务。|我想取笑那些我认为他们行为愚蠢的人。', null, '75', '136');
+INSERT INTO `question` VALUES ('1800', null, '我喜欢对我的朋友忠实。|对所有我承担的事,我喜欢尽力做好。', null, '76', '136');
+INSERT INTO `question` VALUES ('1801', null, '我喜欢观察别人在某些情况下的感觉。|我喜欢我能自豪地说我成功地解决了一件难题。', null, '77', '136');
+INSERT INTO `question` VALUES ('1802', null, '当我失败时,我喜欢我的朋友鼓励我。|我喜欢将所承担的事做得很成功。', null, '78', '136');
+INSERT INTO `question` VALUES ('1803', null, '我喜欢成为所属机构与团体的领导之一。|我喜欢能比别人做得更好。', null, '79', '136');
+INSERT INTO `question` VALUES ('1804', null, '当发生差错时,我觉得比别人更该受到责备。|我喜欢解答别人认为困难的谜语与问题。', null, '80', '136');
+INSERT INTO `question` VALUES ('1805', null, '我喜欢为我的朋友做事。|做计划时,我喜欢从其见解为我所尊敬的人那里得到些建议。', null, '81', '136');
+INSERT INTO `question` VALUES ('1806', null, '我喜欢将自己放在别人的处境上,去想象同样情况下也会有什么感觉。|当我认为我的上司做得对时,我喜欢对他们表示我的看法。', null, '82', '136');
+INSERT INTO `question` VALUES ('1807', null, '当我有问题时,我喜欢被我的朋友同情与了解。|我喜欢接受我所尊敬的人领导。', null, '83', '136');
+INSERT INTO `question` VALUES ('1808', null, '在群众团体中,我喜欢被指定或选为领导者。|在团体中,我喜欢接受别人的领导来决定团体该怎么做。', null, '84', '136');
+INSERT INTO `question` VALUES ('1809', null, '假如我做错了事,我觉得应该受到处罚。|我喜欢遵从习俗,并避免做我所尊敬的人认为不合常规的事。', null, '85', '136');
+INSERT INTO `question` VALUES ('1810', null, '我喜欢与朋友共享一切。|在开始做困难的事情之前,我喜欢先做计划。', null, '86', '136');
+INSERT INTO `question` VALUES ('1811', null, '我喜欢了解我的朋友在面临各种问题时的感觉。|假如我必须旅行,我喜欢先将事情安排好。', null, '87', '136');
+INSERT INTO `question` VALUES ('1812', null, '我喜欢我的朋友对我仁慈。|在开始之前,我喜欢将工作组织计划好。', null, '88', '136');
+INSERT INTO `question` VALUES ('1813', null, '我喜欢被别人看作领导。|我喜欢将我的信、账单或其他文件整齐地排列着, 并依某种系统存档。', null, '89', '136');
+INSERT INTO `question` VALUES ('1814', null, '我感到我所受的痛苦与折磨对我而言是好处多于坏处。|我喜欢我的生活安排的好,过得顺利,而不用对我的计划做太多的改变。', null, '90', '136');
+INSERT INTO `question` VALUES ('1815', null, '我喜欢与我的朋友有深厚的交情。|我喜欢说些别人认为机智与聪明的事。', null, '91', '136');
+INSERT INTO `question` VALUES ('1816', null, '我喜欢探求朋友们的性格并尝试找出他们成为这样的原因。|我有时喜欢做些事情,只是为了想看看别人对它的反应。', null, '92', '136');
+INSERT INTO `question` VALUES ('1817', null, '当我受伤或生病时,我喜欢我的朋友小题大做。|我喜欢谈我的成就。', null, '93', '136');
+INSERT INTO `question` VALUES ('1818', null, '我喜欢告诉别人该怎么做他们的工作。|我喜欢成为团体中众目所瞩的对象。', null, '94', '136');
+INSERT INTO `question` VALUES ('1819', null, '在所认定的强者面前我感到胆怯。|我喜欢用些别人不懂其意的字眼。', null, '95', '136');
+INSERT INTO `question` VALUES ('1820', null, '我比较喜欢与朋友共事而不喜欢独自工作。|我不表达我对事情的看法。', null, '96', '136');
+INSERT INTO `question` VALUES ('1821', null, '我喜欢研究与分析他人的行动。|我喜欢作别人认为不合常规的事。', null, '97', '136');
+INSERT INTO `question` VALUES ('1822', null, '当我生病时,我喜欢朋友们为我感伤。|我喜欢避免需要依常规做事的场合。', null, '98', '136');
+INSERT INTO `question` VALUES ('1823', null, '只要可能,我喜欢监督与指导别人的行为。|我喜欢依我的方式办事不管别人的想法。', null, '99', '136');
+INSERT INTO `question` VALUES ('1824', null, '我觉得处处不如人。|我喜欢回避责任与义务。', null, '100', '136');
+INSERT INTO `question` VALUES ('1825', null, '我喜欢将我所承担的事办成功。|我喜欢结交新朋友。', null, '101', '136');
+INSERT INTO `question` VALUES ('1826', null, '我喜欢分析我自己的动机与情感。|我喜欢广交朋友。', null, '102', '136');
+INSERT INTO `question` VALUES ('1827', null, '当我遇困难时,我喜欢我的朋友帮助我。|我喜欢为我的朋友做事。', null, '103', '136');
+INSERT INTO `question` VALUES ('1828', null, '当我的观点被冲击时,我喜欢为之辩护。|我喜欢写信给我的朋友。', null, '104', '136');
+INSERT INTO `question` VALUES ('1829', null, '每当我做错事时,我感到内疚。|我喜欢与朋友有深交。', null, '105', '136');
+INSERT INTO `question` VALUES ('1830', null, '我喜欢与朋友共享一切。|我喜欢分析我自己的动机与感情。', null, '106', '136');
+INSERT INTO `question` VALUES ('1831', null, '我喜欢接受我所尊敬的人的领导。|我喜欢了解我的朋友在面临各种问题时的感觉。', null, '107', '136');
+INSERT INTO `question` VALUES ('1832', null, '我喜欢我的朋友们高兴地为我办点小事。|我喜欢从人们为什么那样做而不从他实际做什么来判断人。', null, '108', '136');
+INSERT INTO `question` VALUES ('1833', null, '大家在一起时,我喜欢决定人们该做什么。|我喜欢预测我的朋友们在各种情况下的反应。', null, '109', '136');
+INSERT INTO `question` VALUES ('1834', null, '当我退让或避免了冲突时,我觉得比争取达到目标还好些。|我喜欢分析他人的感情与动机。', null, '110', '136');
+INSERT INTO `question` VALUES ('1835', null, '我喜欢结交新朋友。|当我有麻烦时,我喜欢我的朋友帮助我。', null, '111', '136');
+INSERT INTO `question` VALUES ('1836', null, '我喜欢从人们为什么那样做而不从他实际做什么来判断人。|我喜欢我的朋友们对我有深情。', null, '112', '136');
+INSERT INTO `question` VALUES ('1837', null, '我喜欢将我的生活安排好,过得顺利,而不用对我的计划做太大的改变。|当我生病时,我喜欢我的朋友们为我感伤。', null, '113', '136');
+INSERT INTO `question` VALUES ('1838', null, '我喜欢被人们叫去做和事佬。|我喜欢我的朋友们高兴地为我办点小事。', null, '114', '136');
+INSERT INTO `question` VALUES ('1839', null, '我觉得我必须承认自己做错了的事。|当我沮丧时,我喜欢我的朋友们同情我,并使我愉快。', null, '115', '136');
+INSERT INTO `question` VALUES ('1840', null, '我喜欢与朋友们共事而不喜欢独自进行工作。|当我的观点被攻击时,我喜欢为之辩护。', null, '116', '136');
+INSERT INTO `question` VALUES ('1841', null, '我喜欢观察我的朋友们的性格,试着找出究竟是什么缘故使他们成为现在这样。|我喜欢能说服与影响其他人去做我想做的事。', null, '117', '136');
+INSERT INTO `question` VALUES ('1842', null, '当我沮丧时我喜欢我的朋友同情我,并使我愉快。|在团体中,我喜欢决定我们该做什么。', null, '118', '136');
+INSERT INTO `question` VALUES ('1843', null, '我喜欢问我明知没有人回答得出来的问题。|我喜欢告诉别人怎么做他们的工作。', null, '119', '136');
+INSERT INTO `question` VALUES ('1844', null, '在我所认定的强者面前,我感到胆怯。|只要我能够的话,我喜欢监督与指导别人的行动。', null, '120', '136');
+INSERT INTO `question` VALUES ('1845', null, '我喜欢加入一个成员之间彼此温暖与友善的团体。|我知道自己做错了事时会感到内疚。', null, '121', '136');
+INSERT INTO `question` VALUES ('1846', null, '我喜欢分析别人的感情与动机。|由于自己无能处理各种情况使我感到沮丧。', null, '122', '136');
+INSERT INTO `question` VALUES ('1847', null, '当我生病时,我喜欢我的朋友们为我感伤。|当我退让与避免争执时,我感到比争取达到目的还好些。', null, '123', '136');
+INSERT INTO `question` VALUES ('1848', null, '我喜欢我能够说服与影响他人做我想做的事。|由于自己无能处理各种情况使我感到沮丧。', null, '124', '136');
+INSERT INTO `question` VALUES ('1849', null, '我喜欢批评权威人士。|在我认为是自己的人面前,我感到胆怯。', null, '125', '136');
+INSERT INTO `question` VALUES ('1850', null, '我喜欢加入在成员之间彼此具有温暖与友善感情的团体。|当我的朋友们有麻烦时,我喜欢帮助他们。', null, '126', '136');
+INSERT INTO `question` VALUES ('1851', null, '我喜欢分析我的动机与情感。|当我的朋友们受伤时,我喜欢同情他们。', null, '127', '136');
+INSERT INTO `question` VALUES ('1852', null, '当我有麻烦时,我喜欢我的朋友帮助我。|我喜欢待人仁慈与同情。', null, '128', '136');
+INSERT INTO `question` VALUES ('1853', null, '我喜欢成为我所属机构与团体的领导之一。|当我朋友受伤或生病时,我喜欢同情他们。', null, '129', '136');
+INSERT INTO `question` VALUES ('1854', null, '我觉得我所受的痛苦与不幸是好处多于坏处。|我喜欢对我的朋友表示自己的深情。', null, '130', '136');
+INSERT INTO `question` VALUES ('1855', null, '我喜欢与朋友共事而不喜欢独立工作。|我喜欢试验与尝试新东西。', null, '131', '136');
+INSERT INTO `question` VALUES ('1856', null, '我喜欢思索我的朋友们的性格,探讨为什么他们像现在这样。|我喜欢尝试新的职业,而不喜欢一直做同样的老事情。', null, '132', '136');
+INSERT INTO `question` VALUES ('1857', null, '当我有问题时,我喜欢我的朋友们能同情与了解。|我喜欢那些原来不熟悉的人。', null, '133', '136');
+INSERT INTO `question` VALUES ('1858', null, '当我的观点被攻击时,我喜欢为之辩护。|我喜欢在日常生活中经历新鲜与变迁。', null, '134', '136');
+INSERT INTO `question` VALUES ('1859', null, '当我退让避免了争执时,我感到比照自己的方式做还好些。|我喜欢搬家住到不同的地方。', null, '135', '136');
+INSERT INTO `question` VALUES ('1860', null, '我喜欢为我的朋友办事。|当我有功课要做时,我喜欢及时做并一直工作至完成为止。', null, '136', '136');
+INSERT INTO `question` VALUES ('1861', null, '我喜欢分析别人的感情与动机。|当我工作时,我喜欢避开干扰。', null, '137', '136');
+INSERT INTO `question` VALUES ('1862', null, '我喜欢我的朋友们高兴地为我办点小事。|我喜欢熬夜将工作完成。', null, '138', '136');
+INSERT INTO `question` VALUES ('1863', null, '我喜欢被别人当作领导。|我喜欢长时间地工作而不受别人干扰。', null, '139', '136');
+INSERT INTO `question` VALUES ('1864', null, '假如我做错了事的话,我觉得我应受责备。|我喜欢坚持我的职业与方向,甚至看来好像没什么进展时,我也不在乎。', null, '140', '136');
+INSERT INTO `question` VALUES ('1865', null, '我喜欢对我的朋友忠实。|我喜欢与迷人的异性约会。', null, '141', '136');
+INSERT INTO `question` VALUES ('1866', null, '我喜欢预测我的朋友在各种情况下的行动。|我喜欢参与有关性与性行为的讨论。', null, '142', '136');
+INSERT INTO `question` VALUES ('1867', null, '我喜欢我的朋友们对我有深情。|我喜欢变得性兴奋。', null, '143', '136');
+INSERT INTO `question` VALUES ('1868', null, '在一群人中,我喜欢由我决定该做什么。|我喜欢参与有性的社交场合。', null, '144', '136');
+INSERT INTO `question` VALUES ('1869', null, '我为自己无力处理各种情况感到沮丧。|我喜欢看以性为主题的书与剧本。', null, '145', '136');
+INSERT INTO `question` VALUES ('1870', null, '我喜欢写信给我的朋友。|我喜欢看报纸上有关谋杀与其他暴力方面的新闻。', null, '146', '136');
+INSERT INTO `question` VALUES ('1871', null, '我喜欢预测我的朋友们在各种情况下将怎样做。|我喜欢攻击与我观点相反的看法。', null, '147', '136');
+INSERT INTO `question` VALUES ('1872', null, '当我受伤或生病时,我喜欢我的朋友们为我小题大做。|当事情不顺时,我想责怪别人。', null, '148', '136');
+INSERT INTO `question` VALUES ('1873', null, '我喜欢告诉别人如何做他们的工作。|当有人侮辱我时,我想报复。', null, '149', '136');
+INSERT INTO `question` VALUES ('1874', null, '我感到我处处不如人。|当我不赞同他们的看法时,我喜欢说服他们。', null, '150', '136');
+INSERT INTO `question` VALUES ('1875', null, '当我的朋友们有麻烦时,我喜欢帮助他们。|对我所承担的事,我喜欢尽力而为。', null, '151', '136');
+INSERT INTO `question` VALUES ('1876', null, '对我所承担的一切事情,我喜欢认真去做。|我喜欢完成某些具有重大意义的事。', null, '152', '136');
+INSERT INTO `question` VALUES ('1877', null, '对我所承担的一切事情,我喜欢认真去做。|我喜欢完成某些具有重大意义的事。', null, '153', '136');
+INSERT INTO `question` VALUES ('1878', null, '我喜欢与迷人的异性约会。|对我所承担的事我希望能够做成功。', null, '154', '136');
+INSERT INTO `question` VALUES ('1879', null, '我喜欢看报上有关谋杀与其他形式的暴力新闻。|我想写本伟大的小说或剧本。', null, '155', '136');
+INSERT INTO `question` VALUES ('1880', null, '我喜欢为我的朋友们做点小事。|做计划时,我喜欢我所敬重的人给我提出些建议。', null, '156', '136');
+INSERT INTO `question` VALUES ('1881', null, '我喜欢在日常生活中经历新奇与变异。|当我认为我的上司做的对时,我喜欢对他们表示我的看法。', null, '157', '136');
+INSERT INTO `question` VALUES ('1882', null, '我喜欢熬夜将工作完成。|我喜欢称赞我所仰慕的人。', null, '158', '136');
+INSERT INTO `question` VALUES ('1883', null, '我喜欢变得性兴奋。|我喜欢接受我所仰慕的人领导。', null, '159', '136');
+INSERT INTO `question` VALUES ('1884', null, '当有人侮辱我时,我想报复。|在团体中,我喜欢接受别人的领导来决定团体该做什么。', null, '160', '136');
+INSERT INTO `question` VALUES ('1885', null, '我喜欢对我的朋友们慷慨。|在做困难的事之前,我喜欢做个计划。', null, '161', '136');
+INSERT INTO `question` VALUES ('1886', null, '我喜欢交新朋友。|我希望我的一切作品都是严密、整齐而有条理的。', null, '162', '136');
+INSERT INTO `question` VALUES ('1887', null, '我喜欢将我开了头的事情或工作完成。|我喜欢使我的书桌与工作间保持清洁与整齐。', null, '163', '136');
+INSERT INTO `question` VALUES ('1888', null, '我喜欢被别人认为身材迷人。|对我所承担的任何事,我喜欢巨细无遗地进行计划与组织。', null, '164', '136');
+INSERT INTO `question` VALUES ('1889', null, '我喜欢告诉别人我对他们的看法。|我喜欢饮食有规律,并在固定的时间吃东西。', null, '165', '136');
+INSERT INTO `question` VALUES ('1890', null, '我喜欢对我的朋友表示深情。|我喜欢说些别人认为机智与聪明的事。', null, '166', '136');
+INSERT INTO `question` VALUES ('1891', null, '我喜欢尝试新的工作而不喜欢一直做同样的老事情。|我有时想做一些事情的目的只为了想看别人对它的反应。', null, '167', '136');
+INSERT INTO `question` VALUES ('1892', null, '我喜欢坚持自己的工作与方向,即使看来好像已进入了无底深渊,我也不在乎。|在公共场合中我喜欢人注意我和评价我的外表。', null, '168', '136');
+INSERT INTO `question` VALUES ('1893', null, '我喜欢看以性为主题的书与剧本。|在团体中,我喜欢成为众人所瞩目的对象。', null, '169', '136');
+INSERT INTO `question` VALUES ('1894', null, '当事情不顺时,我想责怪别人。|我喜欢问些明知没人能回答的问题。', null, '170', '136');
+INSERT INTO `question` VALUES ('1895', null, '当我的朋友们受伤或生病时,我喜欢对他们表示同情。|我喜欢说我对事情的看法。', null, '171', '136');
+INSERT INTO `question` VALUES ('1896', null, '我喜欢在新奇的餐厅吃饭。|我喜欢做些别人认为不合常规的事。', null, '172', '136');
+INSERT INTO `question` VALUES ('1897', null, '在承担其他事之前,我喜欢每次只做一件事并将它完成。|我喜欢能自如地做我想做的事。', null, '173', '136');
+INSERT INTO `question` VALUES ('1898', null, '我喜欢参与有关性与性行为的讨论。|我喜欢照我自己的方式来做而不管别人有什么看法。', null, '174', '136');
+INSERT INTO `question` VALUES ('1899', null, '当我动怒时,我想摔东西。|我喜欢回避责任与义务。', null, '175', '136');
+INSERT INTO `question` VALUES ('1900', null, '当我的朋友们有困难时,我喜欢帮助他们。|我喜欢对我的朋友们忠实。', null, '176', '136');
+INSERT INTO `question` VALUES ('1901', null, '我喜欢做些新鲜的事。|我喜欢交新朋友。', null, '177', '136');
+INSERT INTO `question` VALUES ('1902', null, '当我有功课要做时,我喜欢即时开始并持续到工作完成为止。|我喜欢参与那些成员之间具有温暖与友善情感的团体。', null, '178', '136');
+INSERT INTO `question` VALUES ('1903', null, '我喜欢与迷人的异性约会。|我喜欢广交朋友。', null, '179', '136');
+INSERT INTO `question` VALUES ('1904', null, '我喜欢攻击与我观点相反的看法。|我喜欢给朋友写信。', null, '180', '136');
+INSERT INTO `question` VALUES ('1905', null, '我喜欢对我的朋友们慷慨。|我喜欢观察别人在某一情况下的感觉。', null, '181', '136');
+INSERT INTO `question` VALUES ('1906', null, '我喜欢在新奇的餐厅吃饭。|我喜欢将自己放在别人的立场来想象在同样的情况下我会有什么感觉。', null, '182', '136');
+INSERT INTO `question` VALUES ('1907', null, '我喜欢熬夜将工作完成。|我喜欢预测我的朋友们在各种情况下会怎么做。', null, '183', '136');
+INSERT INTO `question` VALUES ('1908', null, '我喜欢变得性兴奋。|我喜欢研究分析别人的行为。', null, '184', '136');
+INSERT INTO `question` VALUES ('1909', null, '我喜欢取笑那些我觉得是做了蠢事的人。|我喜欢预测我的朋友们在各种情况下会怎么做。', null, '185', '136');
+INSERT INTO `question` VALUES ('1910', null, '对有时伤害我的朋友,我喜欢原谅他们。|当我失败时,我喜欢我的朋友们鼓励我。', null, '186', '136');
+INSERT INTO `question` VALUES ('1911', null, '我喜欢试验与尝试新的事情。|当我有问题时,我喜欢我的朋友们能同情与了解。', null, '187', '136');
+INSERT INTO `question` VALUES ('1912', null, '我喜欢持续地了解谜语与问题,直到解决为止。|我喜欢我的朋友对我仁慈。', null, '188', '136');
+INSERT INTO `question` VALUES ('1913', null, '我喜欢被异性认为身材迷人。|我喜欢我的朋友们对我有深情。', null, '189', '136');
+INSERT INTO `question` VALUES ('1914', null, '假如某人是罪有应得,我会公开批评他。|当我受伤或生病时,我喜欢我的朋友们小题大做。', null, '190', '136');
+INSERT INTO `question` VALUES ('1915', null, '我喜欢对我的朋友们有深情。|我喜欢被人当作领导。', null, '191', '136');
+INSERT INTO `question` VALUES ('1916', null, '我喜欢尝试新的工作而不愿一直做同样的老事情。|在群众团体中,我喜欢被指定或被选为领导。', null, '192', '136');
+INSERT INTO `question` VALUES ('1917', null, '对我起了头的一切事情,我都喜欢将它完成。|我喜欢我能够说服与影响别人做我所要做的事。', null, '193', '136');
+INSERT INTO `question` VALUES ('1918', null, '我喜欢参与有关性行为的讨论。|我愿意被人们叫去做和事佬。', null, '194', '136');
+INSERT INTO `question` VALUES ('1919', null, '当我动怒时,我想摔东西。|我喜欢告诉别人怎么去做他的工作。', null, '195', '136');
+INSERT INTO `question` VALUES ('1920', null, '我喜欢对我的朋友们表示深情。|当事情有差错时,我觉得我比任何人都更该受到责备。', null, '196', '136');
+INSERT INTO `question` VALUES ('1921', null, '我喜欢搬家,住在不同的地方。|当我做错事时,我觉得我该受到处罚。', null, '197', '136');
+INSERT INTO `question` VALUES ('1922', null, '我喜欢坚持自己的工作或方向,甚至当它们看来好像已使我陷入无底深渊时,我也不在乎。|我觉得我所受的痛苦与不幸是好处多于坏处。', null, '198', '136');
+INSERT INTO `question` VALUES ('1923', null, '我喜欢看以性为主题的书与剧本。|我觉得我必须承认有些事我做错了。', null, '199', '136');
+INSERT INTO `question` VALUES ('1924', null, '当事情不顺时,我想责怪别人。|我觉得我处处不如人。', null, '200', '136');
+INSERT INTO `question` VALUES ('1925', null, '对我所承担的一切事情,我喜欢尽力而为。|我喜欢帮助比我不幸的人。', null, '201', '136');
+INSERT INTO `question` VALUES ('1926', null, '我喜欢做新的和各不相同的事。|我喜欢待人仁慈和同情。', null, '202', '136');
+INSERT INTO `question` VALUES ('1927', null, '当我有功课做时,我喜欢及时开始并一直做到完成为止。|我喜欢帮助比我不幸的人。', null, '203', '136');
+INSERT INTO `question` VALUES ('1928', null, '我喜欢参与有异性的社交场合。|我喜欢原谅有时可能伤害了我的朋友。', null, '204', '136');
+INSERT INTO `question` VALUES ('1929', null, '我喜欢攻击与我观点相反的看法。|我喜欢我的朋友们信任我并告诉我他们的问题。', null, '205', '136');
+INSERT INTO `question` VALUES ('1930', null, '我喜欢待人仁慈和同情。|我喜欢旅行到各处看看。', null, '206', '136');
+INSERT INTO `question` VALUES ('1931', null, '我喜欢遵照习俗,避免做人家认为不合常规的事。|我喜欢追求新潮流与时髦。', null, '207', '136');
+INSERT INTO `question` VALUES ('1932', null, '对我所承担的一切事情,  我喜欢认真去做。|我喜欢在日常生活中经历新奇与变异。', null, '208', '136');
+INSERT INTO `question` VALUES ('1933', null, '我不在乎与迷人的异性表示亲近。|我喜欢试验与尝试新的事情。', null, '209', '136');
+INSERT INTO `question` VALUES ('1934', null, '当我不赞同他人的意见时,我想指责别人。|我喜欢追求新潮流与时髦。', null, '210', '136');
+INSERT INTO `question` VALUES ('1935', null, '我喜欢帮助比我不幸的人。|我喜欢将我开了头的任何事情或工作完成。', null, '211', '136');
+INSERT INTO `question` VALUES ('1936', null, '我喜欢搬家,住在不同的地方。|我喜欢长时间地工作而不受干扰。', null, '212', '136');
+INSERT INTO `question` VALUES ('1937', null, '假如我必须旅行的话,我喜欢先将事情安排好。|我喜欢持续地解难题直到解出为止。', null, '213', '136');
+INSERT INTO `question` VALUES ('1938', null, '我喜欢与异性谈恋爱。|在承担别的事之前,我喜欢将现在的工作或任务完成。', null, '214', '136');
+INSERT INTO `question` VALUES ('1939', null, '我喜欢对别人说我对他们的看法。|当我工作时,我喜欢避免干扰。', null, '215', '136');
+INSERT INTO `question` VALUES ('1940', null, '我喜欢为我的朋友们办点小事。|我喜欢参与有异性的社交场合。', null, '216', '136');
+INSERT INTO `question` VALUES ('1941', null, '我喜欢见到不熟识的人。|我不在乎与迷人的异性表示亲近。', null, '217', '136');
+INSERT INTO `question` VALUES ('1942', null, '我喜欢持续解难题直到解出为止。|我喜欢与异性谈恋爱。', null, '218', '136');
+INSERT INTO `question` VALUES ('1943', null, '我喜欢谈论我的成就。|我喜欢听或说以性为主的笑话。', null, '219', '136');
+INSERT INTO `question` VALUES ('1944', null, '我想取笑那些我认为是做了蠢事的人。|我喜欢听或说以性为主的笑话。', null, '220', '136');
+INSERT INTO `question` VALUES ('1945', null, '我喜欢我的朋友们信任我,并告诉我他们的麻烦。|我喜欢报纸上有关谋杀与其它形式暴力的新闻。', null, '221', '136');
+INSERT INTO `question` VALUES ('1946', null, '我喜欢追求新潮流与时髦。|假如某人罪有应得,我会公开批评他。', null, '222', '136');
+INSERT INTO `question` VALUES ('1947', null, '当我工作时,我喜欢避免干扰。|当我不赞同别人的看法,我想责怪他们。', null, '223', '136');
+INSERT INTO `question` VALUES ('1948', null, '我喜欢听或说以性为主的笑话。|当有人侮辱我时,我想报复。', null, '224', '136');
+INSERT INTO `question` VALUES ('1949', null, '我喜欢回避责任与义务。|当有人做了我认为很愚蠢的事情时,我想取笑他们。', null, '225', '136');
+INSERT INTO `question` VALUES ('2220', '我喜欢参加公众集会,目的是为了同别人在一起。', '是|否', null, '1', '135');
+INSERT INTO `question` VALUES ('2221', '我觉得我父亲是个理想的人。', '是|否', null, '2', '135');
+INSERT INTO `question` VALUES ('2222', '一个人需要不时地\"显示\"一下自己。', '是|否', null, '3', '135');
+INSERT INTO `question` VALUES ('2223', null, '是|否', null, '4', '135');
+INSERT INTO `question` VALUES ('2224', '我常常觉得在专业选择上自己犯了个错误。', '是|否', null, '5', '135');
+INSERT INTO `question` VALUES ('2225', '我一贯遵守这样一条原则：先工作,后娱乐。', '是|否', null, '6', '135');
+INSERT INTO `question` VALUES ('2226', '我有时会感到好像就要发生什么可怕的事情,这种感觉一周内有好几次。', '是|否', null, '7', '135');
+INSERT INTO `question` VALUES ('2227', '我希望当一名记者。', '是|否', null, '8', '135');
+INSERT INTO `question` VALUES ('2228', '我觉得自己愿意干建筑承包工作。', '是|否', null, '9', '135');
+INSERT INTO `question` VALUES ('2229', '我曾有过非常独特、奇异的体验。', '是|否', null, '10', '135');
+INSERT INTO `question` VALUES ('2230', '总的来看,穷人比富人境况好。', '是|否', null, '11', '135');
+INSERT INTO `question` VALUES ('2231', '我一听到自己熟悉的人获得成功,就像自己失败了一样。', '是|否', null, '12', '135');
+INSERT INTO `question` VALUES ('2232', '我希望当服装设计师。', '是|否', null, '13', '135');
+INSERT INTO `question` VALUES ('2233', '别人常常说我莽撞。', '是|否', null, '14', '135');
+INSERT INTO `question` VALUES ('2234', '有时我也讲点闲话。', '是|否', null, '15', '135');
+INSERT INTO `question` VALUES ('2235', '我怀疑自己能否会做好领导工作。', '是|否', null, '16', '135');
+INSERT INTO `question` VALUES ('2236', '我感到很难开口同陌生人交谈。', '是|否', null, '17', '135');
+INSERT INTO `question` VALUES ('2237', '一觉得有人注视我,我就会变得紧张。', '是|否', null, '18', '135');
+INSERT INTO `question` VALUES ('2238', '如果人们能够掌握所有实际情况,对大多数问题来说,只有一个正确的答案。', '是|否', null, '19', '135');
+INSERT INTO `question` VALUES ('2239', '有时我装作比我实际懂得多的样子。', '是|否', null, '20', '135');
+INSERT INTO `question` VALUES ('2240', '为公共事务操心,一点用处也没有,反正自己的所作所为对公共事务毫无影响。', '是|否', null, '21', '135');
+INSERT INTO `question` VALUES ('2241', '有时我真想摔瓶摔碗,发泄一下。', '是|否', null, '22', '135');
+INSERT INTO `question` VALUES ('2242', '不应该让妇女单独在酒馆里喝酒。', '是|否', null, '23', '135');
+INSERT INTO `question` VALUES ('2243', '如果某人冤枉了我,我觉得只要有可能就该批评他,这样做的目的是为了维护原则。', '是|否', null, '24', '135');
+INSERT INTO `question` VALUES ('2244', '我好像和周围的大多数人一样聪明能干。', '是|否', null, '25', '135');
+INSERT INTO `question` VALUES ('2245', '我希望拥有支配他人的权力。', '是|否', null, '26', '135');
+INSERT INTO `question` VALUES ('2246', '我感到很难集中精力去完成一项工作。', '是|否', null, '27', '135');
+INSERT INTO `question` VALUES ('2247', '一想到别人不赞同我,我就变得非常紧张、焦虑。', '是|否', null, '28', '135');
+INSERT INTO `question` VALUES ('2248', '许多人的困难在于他们办事不够认真严肃。', '是|否', null, '29', '135');
+INSERT INTO `question` VALUES ('2249', '我过去喜欢上学。', '是|否', null, '30', '135');
+INSERT INTO `question` VALUES ('2250', '我害怕雷暴雨。', '是|否', null, '31', '135');
+INSERT INTO `question` VALUES ('2251', '有时我真想骂街。', '是|否', null, '32', '135');
+INSERT INTO `question` VALUES ('2252', '我肯定,世界上纯粹、真正的宗教只有一种。', '是|否', null, '33', '135');
+INSERT INTO `question` VALUES ('2253', '听到下流的故事时,我感到窘迫。', '是|否', null, '34', '135');
+INSERT INTO `question` VALUES ('2254', '我有时为避开和某人相遇而穿过马路。', '是|否', null, '35', '135');
+INSERT INTO `question` VALUES ('2255', '我过去常写日记。', '是|否', null, '36', '135');
+INSERT INTO `question` VALUES ('2256', '应该和少数民族搞好团结,但这件事与我无关。', '是|否', null, '37', '135');
+INSERT INTO `question` VALUES ('2257', '我感到很难向任何人谈及自己的情况。', '是|否', null, '38', '135');
+INSERT INTO `question` VALUES ('2258', '我们应该为自己的国家担忧,让世界上其他国家自己管理自己。', '是|否', null, '39', '135');
+INSERT INTO `question` VALUES ('2259', '我经常感到好像整个世界对我毫不在意,在飘然而去。', '是|否', null, '40', '135');
+INSERT INTO `question` VALUES ('2260', '我感到厌烦的时候,喜欢挑起刺激性的事端。', '是|否', null, '41', '135');
+INSERT INTO `question` VALUES ('2261', '我喜欢不时地夸耀一下自己取得的成绩。', '是|否', null, '42', '135');
+INSERT INTO `question` VALUES ('2262', '我害怕深水。', '是|否', null, '43', '135');
+INSERT INTO `question` VALUES ('2263', '必须承认,我常常想方设法按自己的方式行事,丝毫不考虑别人可能要做什么。', '是|否', null, '44', '135');
+INSERT INTO `question` VALUES ('2264', '我觉得自己希望当汽车修理工。', '是|否', null, '45', '135');
+INSERT INTO `question` VALUES ('2265', '在正式的舞会或集会上,我总感到紧张和不舒适。', '是|否', null, '46', '135');
+INSERT INTO `question` VALUES ('2266', '我不愿意看到人们穿戴邋邋遢遢,过于随便。', '是|否', null, '47', '135');
+INSERT INTO `question` VALUES ('2267', '我每周会有一次或多次觉得突然浑身发烧,却没有明显的原因。', '是|否', null, '48', '135');
+INSERT INTO `question` VALUES ('2268', '有时我觉得一切都糟糕得不愿张口提及。', '是|否', null, '49', '135');
+INSERT INTO `question` VALUES ('2269', '如果一切照现在这个样子继续下去,人们很难期望会发生什么了不起的事。', '是|否', null, '50', '135');
+INSERT INTO `question` VALUES ('2270', '我无法使自己的思想集中到某一件事上。', '是|否', null, '51', '135');
+INSERT INTO `question` VALUES ('2271', '必须承认,我经常对工作能少干就少干。', '是|否', null, '52', '135');
+INSERT INTO `question` VALUES ('2272', '我喜欢成为人们注意的中心。', '是|否', null, '53', '135');
+INSERT INTO `question` VALUES ('2273', '单独走进别人正在聚集聊天的房间,我并不感到害怕。', '是|否', null, '54', '135');
+INSERT INTO `question` VALUES ('2274', '有时我非常泄气。', '是|否', null, '55', '135');
+INSERT INTO `question` VALUES ('2275', '想到自己会遭受车祸,我很害怕。', '是|否', null, '56', '135');
+INSERT INTO `question` VALUES ('2276', '和大家在一起的时候,我总想不出恰当的话来说。', '是|否', null, '57', '135');
+INSERT INTO `question` VALUES ('2277', '中学教师总抱怨他们的收入少,但我认为他们也就该挣这么多钱。', '是|否', null, '58', '135');
+INSERT INTO `question` VALUES ('2278', '有时我真想与某人动手打一架。', '是|否', null, '59', '135');
+INSERT INTO `question` VALUES ('2279', '听那种没有自己主见的人讲课很令人讨厌。', '是|否', null, '60', '135');
+INSERT INTO `question` VALUES ('2280', '一个人倘若事先把一切活动都安排好,他很可能会把生活中的乐趣全部剥夺掉。', '是|否', null, '61', '135');
+INSERT INTO `question` VALUES ('2281', '过去念书时,我接受知识很慢。', '是|否', null, '62', '135');
+INSERT INTO `question` VALUES ('2282', '我喜欢诗歌。', '是|否', null, '63', '135');
+INSERT INTO `question` VALUES ('2283', '我不喜欢与别人说话,除非他们先开口。', '是|否', null, '64', '135');
+INSERT INTO `question` VALUES ('2284', '我觉得自己希望骑一辆赛车。', '是|否', null, '65', '135');
+INSERT INTO `question` VALUES ('2285', '有时没有任何原因,甚至当一切很糟糕的时候,我反而又激动又高兴,感到万事如意。', '是|否', null, '66', '135');
+INSERT INTO `question` VALUES ('2286', '我一生的目的之一,就是完成某件我母亲可以引为自豪的工作。', '是|否', null, '67', '135');
+INSERT INTO `question` VALUES ('2287', '我很容易恋爱,也很容易失恋。', '是|否', null, '68', '135');
+INSERT INTO `question` VALUES ('2288', '只要不犯法,回避法律条款也没什么不好。', '是|否', null, '69', '135');
+INSERT INTO `question` VALUES ('2289', '现在做父母的对子女管教太松。', '是|否', null, '70', '135');
+INSERT INTO `question` VALUES ('2290', '我很怕黑暗。', '是|否', null, '71', '135');
+INSERT INTO `question` VALUES ('2291', '碰到困难的问题,我往往容易打退堂鼓。', '是|否', null, '72', '135');
+INSERT INTO `question` VALUES ('2292', '别人的批评和训斥,使我很不舒服。', '是|否', null, '73', '135');
+INSERT INTO `question` VALUES ('2293', '我有一些奇特、少有的念头。', '是|否', null, '74', '135');
+INSERT INTO `question` VALUES ('2294', '身体不舒服的时候,我容易生气发火。', '是|否', null, '75', '135');
+INSERT INTO `question` VALUES ('2295', null, '是|否', null, '76', '135');
+INSERT INTO `question` VALUES ('2296', '我常常发现,在试图做某件事的时候,我的手在发抖。', '是|否', null, '77', '135');
+INSERT INTO `question` VALUES ('2297', '假如迫不得已,非要见很多人的话,我感到很紧张。', '是|否', null, '78', '135');
+INSERT INTO `question` VALUES ('2298', '我希望听到著名歌手在歌剧中演唱。', '是|否', null, '79', '135');
+INSERT INTO `question` VALUES ('2299', '有时没有任何充分的理由,我就生气、发脾气。', '是|否', null, '80', '135');
+INSERT INTO `question` VALUES ('2300', '我喜欢参加社交聚会和联欢会。', '是|否', null, '81', '135');
+INSERT INTO `question` VALUES ('2301', '我父母常常对我的朋友表示反感。', '是|否', null, '82', '135');
+INSERT INTO `question` VALUES ('2302', '我希望同时是好几个俱乐部或社团的成员。', '是|否', null, '83', '135');
+INSERT INTO `question` VALUES ('2303', '过去我的家庭生活一直很幸福。', '是|否', null, '84', '135');
+INSERT INTO `question` VALUES ('2304', '我往往凭一时冲动,鲁莽行事,而没有停下来思考一下。', '是|否', null, '85', '135');
+INSERT INTO `question` VALUES ('2305', '我做事的方法常易被人误解。', '是|否', null, '86', '135');
+INSERT INTO `question` VALUES ('2306', '有时,我突然感到一阵晕眩,所干的事情被打断,周围发生的一切都不知道。', '是|否', null, '87', '135');
+INSERT INTO `question` VALUES ('2307', '某人为我做了一件好事,我常常自问其背后隐藏的动机是什么。', '是|否', null, '88', '135');
+INSERT INTO `question` VALUES ('2308', '我确实缺乏自信心。', '是|否', null, '89', '135');
+INSERT INTO `question` VALUES ('2309', '当某人招致不幸时,其他人大都暗自高兴。', '是|否', null, '90', '135');
+INSERT INTO `question` VALUES ('2310', '假如在某个群众团体工作,我喜欢担任领导职务。', '是|否', null, '91', '135');
+INSERT INTO `question` VALUES ('2311', '有时我觉得好像非要伤害自己或伤害他人。', '是|否', null, '92', '135');
+INSERT INTO `question` VALUES ('2312', '我有不少分外的事要操心。', '是|否', null, '93', '135');
+INSERT INTO `question` VALUES ('2313', '我常常只图一时快乐,即使这样做有损于长远目标也在所不惜。', '是|否', null, '94', '135');
+INSERT INTO `question` VALUES ('2314', '除非与我熟知的人在一起,我一般不爱多说话。', '是|否', null, '95', '135');
+INSERT INTO `question` VALUES ('2315', '我记得自己曾经为了摆脱某件事而假装生病。', '是|否', null, '96', '135');
+INSERT INTO `question` VALUES ('2316', '碰到一位陌生人,我常常感到他比我强。', '是|否', null, '97', '135');
+INSERT INTO `question` VALUES ('2317', '我喜欢让别人去猜测我下一步将干什么。', '是|否', null, '98', '135');
+INSERT INTO `question` VALUES ('2318', '和众人在一起时,假如让我主持一个讨论或就我熟知的事情发表意见,我不会觉得难为情。', '是|否', null, '99', '135');
+INSERT INTO `question` VALUES ('2319', '事情出了差错,我有时责怪他人。', '是|否', null, '100', '135');
+INSERT INTO `question` VALUES ('2320', '我更喜欢自己下了赌注的比赛或游戏。', '是|否', null, '101', '135');
+INSERT INTO `question` VALUES ('2321', '我常常发现,别人嫉妒我的好主意,就是因为他们没有先想到这些主意。', '是|否', null, '102', '135');
+INSERT INTO `question` VALUES ('2322', '我喜欢参加社交集会和其他热热闹闹的活动。', '是|否', null, '103', '135');
+INSERT INTO `question` VALUES ('2323', '我爱打猎。', '是|否', null, '104', '135');
+INSERT INTO `question` VALUES ('2324', '当独自一个人的时候,我发现自己常常在琢磨一些抽象的问题,比如：自由意志、邪恶等等。', '是|否', null, '105', '135');
+INSERT INTO `question` VALUES ('2325', '听到有人被非法地阻止参加选举,我非常气愤。', '是|否', null, '106', '135');
+INSERT INTO `question` VALUES ('2326', '我从前上学时,有时因为惹老师生气被送去见班主任。', '是|否', null, '107', '135');
+INSERT INTO `question` VALUES ('2327', '我希望当一名图书管理员。', '是|否', null, '108', '135');
+INSERT INTO `question` VALUES ('2328', '我很喜欢参加舞会。', '是|否', null, '109', '135');
+INSERT INTO `question` VALUES ('2329', '多数人从内心里并不愿意花力气帮助他人。', '是|否', null, '110', '135');
+INSERT INTO `question` VALUES ('2330', '人们装出他们互相很关心,而实际上并非如此。', '是|否', null, '111', '135');
+INSERT INTO `question` VALUES ('2331', '多数人在性的问题上忧虑过多。', '是|否', null, '112', '135');
+INSERT INTO `question` VALUES ('2332', '遇到不熟悉的人我很难想出什么话题来说。', '是|否', null, '113', '135');
+INSERT INTO `question` VALUES ('2333', '我很喜欢对称的东西,而不喜欢不对称的东西。', '是|否', null, '114', '135');
+INSERT INTO `question` VALUES ('2334', '我宁愿做一名踏踏实实、可以信赖的人,而不愿做一名才华横溢而见异思迁的人。', '是|否', null, '115', '135');
+INSERT INTO `question` VALUES ('2335', '一有机会,我总爱以某种方式显露一下自己。', '是|否', null, '116', '135');
+INSERT INTO `question` VALUES ('2336', '对某些问题,我太容易动肝火,所以无法谈论它们。', '是|否', null, '117', '135');
+INSERT INTO `question` VALUES ('2337', '有时候,我好像简直无力开展工作。', '是|否', null, '118', '135');
+INSERT INTO `question` VALUES ('2338', '若有人没有把贵重物品妥善保管,使其成为诱饵,一旦该物被偷了的话,则放物的人和小偷应受到同样的谴责。', '是|否', null, '119', '135');
+INSERT INTO `question` VALUES ('2339', '我同什么样的人都合得来。', '是|否', null, '120', '135');
+INSERT INTO `question` VALUES ('2340', '我常常被不断涌现又毫无意义的思想所烦忧。', '是|否', null, '121', '135');
+INSERT INTO `question` VALUES ('2341', '假如我是记者,我很希望报道有关剧院的新闻。', '是|否', null, '122', '135');
+INSERT INTO `question` VALUES ('2342', '男人与女人在一起的时候,总想取得女人的好感。', '是|否', null, '123', '135');
+INSERT INTO `question` VALUES ('2343', '我喜欢看指导人们亲自动手做事情的杂志。', '是|否', null, '124', '135');
+INSERT INTO `question` VALUES ('2344', '必须承认,我感到很难在严格的规章制度下工作。', '是|否', null, '125', '135');
+INSERT INTO `question` VALUES ('2345', '我喜欢盛大喧闹的聚会。', '是|否', null, '126', '135');
+INSERT INTO `question` VALUES ('2346', '我有时觉得自己是别人的负担。', '是|否', null, '127', '135');
+INSERT INTO `question` VALUES ('2347', '只有傻子才试图改变我们中国人的生活方式。', '是|否', null, '128', '135');
+INSERT INTO `question` VALUES ('2348', '我常常感到好像做了什么错误的或邪恶的事。', '是|否', null, '129', '135');
+INSERT INTO `question` VALUES ('2349', '以前上学时,我感到很难在全班同学面前讲话。', '是|否', null, '130', '135');
+INSERT INTO `question` VALUES ('2350', '我通常感到人生很有价值。', '是|否', null, '131', '135');
+INSERT INTO `question` VALUES ('2351', '我们应该离开非洲国家,以便澄清他们的问题,我们没有任何理由去帮助他们。', '是|否', null, '132', '135');
+INSERT INTO `question` VALUES ('2352', '有几次,我对某个人很刻薄。', '是|否', null, '133', '135');
+INSERT INTO `question` VALUES ('2353', null, '是|否', null, '134', '135');
+INSERT INTO `question` VALUES ('2354', '我爱自己讲话,而不爱听别人讲话。', '是|否', null, '135', '135');
+INSERT INTO `question` VALUES ('2355', '我喜欢科学。', '是|否', null, '136', '135');
+INSERT INTO `question` VALUES ('2356', '我常常发脾气。', '是|否', null, '137', '135');
+INSERT INTO `question` VALUES ('2357', '必须承认,搬到一个陌生的地方去我会有些害怕。', '是|否', null, '138', '135');
+INSERT INTO `question` VALUES ('2358', '在公共场所,比如在公共汽车上或在商店里,我对盯着我瞧的人感到很烦恼。', '是|否', null, '139', '135');
+INSERT INTO `question` VALUES ('2359', '我自信知道应怎样解决我们今天所面临的国际问题。', '是|否', null, '140', '135');
+INSERT INTO `question` VALUES ('2360', '有时我爱做那些不应该做的、违反制度的事。', '是|否', null, '141', '135');
+INSERT INTO `question` VALUES ('2361', '我很少和家里人吵架。', '是|否', null, '142', '135');
+INSERT INTO `question` VALUES ('2362', '买东西时,如果多找给了我钱,我总是把钱送回去。', '是|否', null, '143', '135');
+INSERT INTO `question` VALUES ('2363', '我常常厌恶自己。', '是|否', null, '144', '135');
+INSERT INTO `question` VALUES ('2364', '相当多的人都会由于不正当的性行为而感到内疚。', '是|否', null, '145', '135');
+INSERT INTO `question` VALUES ('2365', '我喜欢阅读科学方面的书籍。', '是|否', null, '146', '135');
+INSERT INTO `question` VALUES ('2366', '和大家在一起时,我很难表现得自然。', '是|否', null, '147', '135');
+INSERT INTO `question` VALUES ('2367', '有些游戏,我根本不参加,因为我不擅长。', '是|否', null, '148', '135');
+INSERT INTO `question` VALUES ('2368', '我希望加入某个合唱团。', '是|否', null, '149', '135');
+INSERT INTO `question` VALUES ('2369', '小时候,我常因表现不好受到严厉的惩罚。', '是|否', null, '150', '135');
+INSERT INTO `question` VALUES ('2370', '有时,我在实际上无足轻重的事上绞尽了脑汁。', '是|否', null, '151', '135');
+INSERT INTO `question` VALUES ('2371', '我觉得自己常常无缘无故地受到惩罚。', '是|否', null, '152', '135');
+INSERT INTO `question` VALUES ('2372', '我希望当电影或戏剧演员。', '是|否', null, '153', '135');
+INSERT INTO `question` VALUES ('2373', '我情愿自己出钱为他人雪冤,尽管我与此案没有牵连。', '是|否', null, '154', '135');
+INSERT INTO `question` VALUES ('2374', '有时候,我真想做件有害的或惊人的事。', '是|否', null, '155', '135');
+INSERT INTO `question` VALUES ('2375', '我常常感到身体的某些部分有虫爬、火烧、刺痛和即将麻木的感觉。', '是|否', null, '156', '135');
+INSERT INTO `question` VALUES ('2376', '我常常违背父母的意愿。', '是|否', null, '157', '135');
+INSERT INTO `question` VALUES ('2377', '假如是我驾驶汽车,我会尽量不让别人超过我。', '是|否', null, '158', '135');
+INSERT INTO `question` VALUES ('2378', '对明明知道不会伤害自己的事物和人,我也曾感到很害怕。', '是|否', null, '159', '135');
+INSERT INTO `question` VALUES ('2379', '当年,我父母很希望我出类拔萃。', '是|否', null, '160', '135');
+INSERT INTO `question` VALUES ('2380', '我愿意把自己说成是一个性格坚强的人。', '是|否', null, '161', '135');
+INSERT INTO `question` VALUES ('2381', '我几乎从来没有睡着过。', '是|否', null, '162', '135');
+INSERT INTO `question` VALUES ('2382', '投票选举完全是件令人烦恼、毫无意义的事。', '是|否', null, '163', '135');
+INSERT INTO `question` VALUES ('2383', '我觉得生活上井井有条、按时作息很适合我的脾性。', '是|否', null, '164', '135');
+INSERT INTO `question` VALUES ('2384', '我很难同情那种对事物总持怀疑态度、缺乏信心的人。', '是|否', null, '165', '135');
+INSERT INTO `question` VALUES ('2385', '我吃什么东西都是一个味。', '是|否', null, '166', '135');
+INSERT INTO `question` VALUES ('2386', '我做事情常常有始无终,虎头蛇尾。', '是|否', null, '167', '135');
+INSERT INTO `question` VALUES ('2387', '假如一个朋友也没有,我也会很愉快。', '是|否', null, '168', '135');
+INSERT INTO `question` VALUES ('2388', '当我出于无奈去向某人讨个职业时,会感到很紧张。', '是|否', null, '169', '135');
+INSERT INTO `question` VALUES ('2389', '我有时做事胆子很小。', '是|否', null, '170', '135');
+INSERT INTO `question` VALUES ('2390', '我常常希望离开家庭。', '是|否', null, '171', '135');
+INSERT INTO `question` VALUES ('2391', '我的整个脑袋每天好像要疼好长时间。', '是|否', null, '172', '135');
+INSERT INTO `question` VALUES ('2392', '过去在学校里,多数老师对我都很公正和诚恳。', '是|否', null, '173', '135');
+INSERT INTO `question` VALUES ('2393', '必须承认,我讲话很公正。', '是|否', null, '174', '135');
+INSERT INTO `question` VALUES ('2394', '在弄清事实之前,我从不对任何人下结论。', '是|否', null, '175', '135');
+INSERT INTO `question` VALUES ('2395', '假如某人很聪明,从别人身上骗取了一大笔钱,应该允许他拥有这笔钱。', '是|否', null, '176', '135');
+INSERT INTO `question` VALUES ('2396', '如果没有报酬,就不要指望有谁会对社会服务。', '是|否', null, '177', '135');
+INSERT INTO `question` VALUES ('2397', '我家里有好几个人的习惯,既给我添麻烦又添烦恼。', '是|否', null, '178', '135');
+INSERT INTO `question` VALUES ('2398', '必须承认,对于学习新东西,我并没有很强的欲望。', '是|否', null, '179', '135');
+INSERT INTO `question` VALUES ('2399', '好像没有人能理解我。', '是|否', null, '180', '135');
+INSERT INTO `question` VALUES ('2400', '我常常自认为是周围人的领导。', '是|否', null, '181', '135');
+INSERT INTO `question` VALUES ('2401', '老实人要在世界上获得成功,是根本不可能的。', '是|否', null, '182', '135');
+INSERT INTO `question` VALUES ('2402', '我喜欢把一切安排得整整齐齐,井然有序。', '是|否', null, '183', '135');
+INSERT INTO `question` VALUES ('2403', '我很讨厌自己的日常生活和工作被意外的事情打扰。', '是|否', null, '184', '135');
+INSERT INTO `question` VALUES ('2404', '我觉得未来似乎毫无希望。', '是|否', null, '185', '135');
+INSERT INTO `question` VALUES ('2405', '我过去的家庭生活总是很愉快。', '是|否', null, '186', '135');
+INSERT INTO `question` VALUES ('2406', '我有理由嫉妒家里的某一两个人。', '是|否', null, '187', '135');
+INSERT INTO `question` VALUES ('2407', '如果要以牺牲个人乐趣为代价,那我决不会有意地去帮助别人。', '是|否', null, '188', '135');
+INSERT INTO `question` VALUES ('2408', '我参与的辩论或争吵多数是原则问题。', '是|否', null, '189', '135');
+INSERT INTO `question` VALUES ('2409', null, '是|否', null, '190', '135');
+INSERT INTO `question` VALUES ('2410', '一天到晚,我几乎总是口干舌燥。', '是|否', null, '191', '135');
+INSERT INTO `question` VALUES ('2411', '假如过去从未上过学,多数人的经济状况要比现在好。', '是|否', null, '192', '135');
+INSERT INTO `question` VALUES ('2412', '在辩论中,别人很容易把我驳倒。', '是|否', null, '193', '135');
+INSERT INTO `question` VALUES ('2413', '我不喜欢事情总是变化不定、玄不可测。', '是|否', null, '194', '135');
+INSERT INTO `question` VALUES ('2414', '我常饮酒过度。', '是|否', null, '195', '135');
+INSERT INTO `question` VALUES ('2415', '过去,我想弃家出走。', '是|否', null, '196', '135');
+INSERT INTO `question` VALUES ('2416', '生活常常对我很不公平。', '是|否', null, '197', '135');
+INSERT INTO `question` VALUES ('2417', '我认为自己在事非问题上比多数人更严肃认真。', '是|否', null, '198', '135');
+INSERT INTO `question` VALUES ('2418', null, '是|否', null, '199', '135');
+INSERT INTO `question` VALUES ('2419', '我赞成从严加强法制,不论其后果如何。', '是|否', null, '200', '135');
+INSERT INTO `question` VALUES ('2420', '人们常常在背后说我的坏话。', '是|否', null, '201', '135');
+INSERT INTO `question` VALUES ('2421', '我有几种坏习气很根深蒂固,所以要想克服它们,只是白费劲儿。', '是|否', null, '202', '135');
+INSERT INTO `question` VALUES ('2422', '我总想把自己的工作计划组织好。', '是|否', null, '203', '135');
+INSERT INTO `question` VALUES ('2423', '一周有几次,由于胃酸过多,我感到不舒服。', '是|否', null, '204', '135');
+INSERT INTO `question` VALUES ('2424', '我喜欢对别人加以指点,把工作开展起来。', '是|否', null, '205', '135');
+INSERT INTO `question` VALUES ('2425', '我对家里几个人所做的那种工作,感到很难为情。', '是|否', null, '206', '135');
+INSERT INTO `question` VALUES ('2426', '我觉得别人看上去比我幸福。', '是|否', null, '207', '135');
+INSERT INTO `question` VALUES ('2427', '只要工资高,什么工作对我来说都很好。', '是|否', null, '208', '135');
+INSERT INTO `question` VALUES ('2428', '我和不熟悉的人在一起感到难为情。', '是|否', null, '209', '135');
+INSERT INTO `question` VALUES ('2429', '我的生活常常好像毫无意义。', '是|否', null, '210', '135');
+INSERT INTO `question` VALUES ('2430', '年轻时,我有时偷别人的东西。', '是|否', null, '211', '135');
+INSERT INTO `question` VALUES ('2431', '事情一旦不顺利,我就想马上打退堂鼓。', '是|否', null, '212', '135');
+INSERT INTO `question` VALUES ('2432', '过去和我关系密切,同时是我在儿童时代最崇拜的人,是一位女性（母亲、姐妹、姑姨或其他女性）。', '是|否', null, '213', '135');
+INSERT INTO `question` VALUES ('2433', '我常常感到内疚,因为我曾装作对某事后悔莫及,而实际上并非如此。', '是|否', null, '214', '135');
+INSERT INTO `question` VALUES ('2434', '有几次,我生气极了。', '是|否', null, '215', '135');
+INSERT INTO `question` VALUES ('2435', '小时候,我们家不像大多数人家那样安定、平静。', '是|否', null, '216', '135');
+INSERT INTO `question` VALUES ('2436', '家里有些人做的事,使我胆颤心惊。', '是|否', null, '217', '135');
+INSERT INTO `question` VALUES ('2437', '小时候上学时,我常给老师添许多麻烦。', '是|否', null, '218', '135');
+INSERT INTO `question` VALUES ('2438', '假如工钱合理,我希望和一家马戏团或流动曲艺团一道巡回演出。', '是|否', null, '219', '135');
+INSERT INTO `question` VALUES ('2439', '我有突然感到恶心、呕吐的毛病。', '是|否', null, '220', '135');
+INSERT INTO `question` VALUES ('2440', '过去,我们一家相互之间总是亲热异常。', '是|否', null, '221', '135');
+INSERT INTO `question` VALUES ('2441', '我常常在半夜里受到恐吓而惊醒。', '是|否', null, '222', '135');
+INSERT INTO `question` VALUES ('2442', '许多人的毛病在于他们对事物不够认真。', '是|否', null, '223', '135');
+INSERT INTO `question` VALUES ('2443', '我不是那种适合当政治领袖的人。', '是|否', null, '224', '135');
+INSERT INTO `question` VALUES ('2444', '我父母过去从未真正理解过我。', '是|否', null, '225', '135');
+INSERT INTO `question` VALUES ('2445', null, '是|否', null, '226', '135');
+INSERT INTO `question` VALUES ('2446', '别人在做出决策之前,都似乎很自然地找我征求意见。', '是|否', null, '227', '135');
+INSERT INTO `question` VALUES ('2447', '我对自己要求很高,并且觉得别人也该照着去做。', '是|否', null, '228', '135');
+INSERT INTO `question` VALUES ('2448', '一个人假如谁也不信任,生活就会忧郁得多。', '是|否', null, '229', '135');
+INSERT INTO `question` VALUES ('2449', '那些对事情缺乏信心、无把握的人,使我感到不舒服。', '是|否', null, '230', '135');
+INSERT INTO `question` VALUES ('2740', '你是否有许多不同的业余爱好？', '是|不是', null, '1', '133');
+INSERT INTO `question` VALUES ('2741', '你是否在做任何事情以前都要停下来仔细思考？', '是|不是', null, '2', '133');
+INSERT INTO `question` VALUES ('2742', '你的心境是否常有起伏？', '是|不是', null, '3', '133');
+INSERT INTO `question` VALUES ('2743', '你曾有过明知是别人的功劳而你去接受奖励的事吗？', '是|不是', null, '4', '133');
+INSERT INTO `question` VALUES ('2744', '你是否健谈？', '是|不是', null, '5', '133');
+INSERT INTO `question` VALUES ('2745', '欠债会使你不安吗？', '是|不是', null, '6', '133');
+INSERT INTO `question` VALUES ('2746', '你曾无缘无故觉得\"真是难受\"吗？', '是|不是', null, '7', '133');
+INSERT INTO `question` VALUES ('2747', '你曾贪图过分外之物吗？', '是|不是', null, '8', '133');
+INSERT INTO `question` VALUES ('2748', '你是否在晚上小心翼翼地关好门窗？', '是|不是', null, '9', '133');
+INSERT INTO `question` VALUES ('2749', '你是否比较活跃？', '是|不是', null, '10', '133');
+INSERT INTO `question` VALUES ('2750', '你在见到小孩或动物受折磨时是否会感到非常难过？', '是|不是', null, '11', '133');
+INSERT INTO `question` VALUES ('2751', '你是否常常为自己不该做而做了的事,不该说而说了的话而紧张吗？', '是|不是', null, '12', '133');
+INSERT INTO `question` VALUES ('2752', '你喜欢跳降落伞吗？', '是|不是', null, '13', '133');
+INSERT INTO `question` VALUES ('2753', '通常你能在热闹联欢会中尽情地玩吗？', '是|不是', null, '14', '133');
+INSERT INTO `question` VALUES ('2754', '你容易激动吗？', '是|不是', null, '15', '133');
+INSERT INTO `question` VALUES ('2755', '你曾经将自己的过错推给别人吗？', '是|不是', null, '16', '133');
+INSERT INTO `question` VALUES ('2756', '你喜欢会见陌生人吗？', '是|不是', null, '17', '133');
+INSERT INTO `question` VALUES ('2757', '你是否相信保险制度是一种好办法？', '是|不是', null, '18', '133');
+INSERT INTO `question` VALUES ('2758', '你是一个容易伤感情的人吗？', '是|不是', null, '19', '133');
+INSERT INTO `question` VALUES ('2759', '你所有的习惯都是好的吗？', '是|不是', null, '20', '133');
+INSERT INTO `question` VALUES ('2760', '在社交场合你是否总不愿露头角？', '是|不是', null, '21', '133');
+INSERT INTO `question` VALUES ('2761', '你会服用奇异或危险作用的药物吗？', '是|不是', null, '22', '133');
+INSERT INTO `question` VALUES ('2762', '你常有\"厌倦\"之感吗？', '是|不是', null, '23', '133');
+INSERT INTO `question` VALUES ('2763', '你曾拿过别人的东西吗（哪怕一针一线）？', '是|不是', null, '24', '133');
+INSERT INTO `question` VALUES ('2764', '你是否常爱外出？', '是|不是', null, '25', '133');
+INSERT INTO `question` VALUES ('2765', '你是否从伤害你所宠爱的人中而感到乐趣？', '是|不是', null, '26', '133');
+INSERT INTO `question` VALUES ('2766', '你常为有罪恶之感所苦恼吗？', '是|不是', null, '27', '133');
+INSERT INTO `question` VALUES ('2767', '你在谈论中是否有时不懂装懂？', '是|不是', null, '28', '133');
+INSERT INTO `question` VALUES ('2768', '你是否宁愿去看书而不愿去多见人？', '是|不是', null, '29', '133');
+INSERT INTO `question` VALUES ('2769', '你有要伤害你的仇人吗？', '是|不是', null, '30', '133');
+INSERT INTO `question` VALUES ('2770', '你觉得自己是一个神经过敏的人吗？', '是|不是', null, '31', '133');
+INSERT INTO `question` VALUES ('2771', '对人有所失礼时你是否经常要表示歉意？', '是|不是', null, '32', '133');
+INSERT INTO `question` VALUES ('2772', '你有许多朋友吗？', '是|不是', null, '33', '133');
+INSERT INTO `question` VALUES ('2773', '你是否喜爱讲些有时确能伤害人的笑话？', '是|不是', null, '34', '133');
+INSERT INTO `question` VALUES ('2774', '你是一个多忧多虑的人吗？', '是|不是', null, '35', '133');
+INSERT INTO `question` VALUES ('2775', '你在童年是否按照吩咐要做什么便做什么,毫无怨言？', '是|不是', null, '36', '133');
+INSERT INTO `question` VALUES ('2776', '你认为你是一个乐天派吗？', '是|不是', null, '37', '133');
+INSERT INTO `question` VALUES ('2777', '你很讲究礼貌和整洁吗？', '是|不是', null, '38', '133');
+INSERT INTO `question` VALUES ('2778', '你是否总在担心会发生可怕的事情？', '是|不是', null, '39', '133');
+INSERT INTO `question` VALUES ('2779', '你曾损坏或遗失过别人的东西吗？', '是|不是', null, '40', '133');
+INSERT INTO `question` VALUES ('2780', '交新朋友时一般是你采取主动吗？', '是|不是', null, '41', '133');
+INSERT INTO `question` VALUES ('2781', '当别人向你诉苦时,你是否容易理解他们的苦衷？', '是|不是', null, '42', '133');
+INSERT INTO `question` VALUES ('2782', '你认为自己很紧张,如同\"拉紧的弦\"一样吗？', '是|不是', null, '43', '133');
+INSERT INTO `question` VALUES ('2783', '在没有废纸篓时,你是否将废纸扔在地板上？', '是|不是', null, '44', '133');
+INSERT INTO `question` VALUES ('2784', '当你与别人在一起时,你是否言语很少？', '是|不是', null, '45', '133');
+INSERT INTO `question` VALUES ('2785', '你是否认为结婚制度是过时了,应该废止？', '是|不是', null, '46', '133');
+INSERT INTO `question` VALUES ('2786', '你是否有时感到自己可怜？', '是|不是', null, '47', '133');
+INSERT INTO `question` VALUES ('2787', '你是否有时有点自夸？', '是|不是', null, '48', '133');
+INSERT INTO `question` VALUES ('2788', '你是否很容易将一个沉寂的集会搞得活跃起来？', '是|不是', null, '49', '133');
+INSERT INTO `question` VALUES ('2789', '你是否讨厌那种小心翼翼地开车的人？', '是|不是', null, '50', '133');
+INSERT INTO `question` VALUES ('2790', '你为你的健康担忧吗？', '是|不是', null, '51', '133');
+INSERT INTO `question` VALUES ('2791', '你曾讲过什么人的坏话吗？', '是|不是', null, '52', '133');
+INSERT INTO `question` VALUES ('2792', '你是否喜欢对朋友讲笑话和有趣的故事？', '是|不是', null, '53', '133');
+INSERT INTO `question` VALUES ('2793', '你小时候曾对父母粗暴无礼吗？', '是|不是', null, '54', '133');
+INSERT INTO `question` VALUES ('2794', '你是否喜欢与人混在一起？', '是|不是', null, '55', '133');
+INSERT INTO `question` VALUES ('2795', '你若知道自己工作有错误,这会使你感到难过吗？', '是|不是', null, '56', '133');
+INSERT INTO `question` VALUES ('2796', '你患失眠吗？', '是|不是', null, '57', '133');
+INSERT INTO `question` VALUES ('2797', '你吃饭前必定洗手吗？', '是|不是', null, '58', '133');
+INSERT INTO `question` VALUES ('2798', '你常无缘无故感到无精打采和倦怠吗？', '是|不是', null, '59', '133');
+INSERT INTO `question` VALUES ('2799', '和别人玩游戏时,你有过欺骗行为吗？', '是|不是', null, '60', '133');
+INSERT INTO `question` VALUES ('2800', '你是否喜欢从事一些动作迅速的工作？', '是|不是', null, '61', '133');
+INSERT INTO `question` VALUES ('2801', '你的母亲是一位善良的妇人吗？', '是|不是', null, '62', '133');
+INSERT INTO `question` VALUES ('2802', '你是否常常觉得人生非常无味？', '是|不是', null, '63', '133');
+INSERT INTO `question` VALUES ('2803', '你曾利用过某人为自己取得好处吗？', '是|不是', null, '64', '133');
+INSERT INTO `question` VALUES ('2804', '你是否常常参加许多活动,超过你的时间所允许？', '是|不是', null, '65', '133');
+INSERT INTO `question` VALUES ('2805', '是否有几个人总在躲避你？', '是|不是', null, '66', '133');
+INSERT INTO `question` VALUES ('2806', '你是否为你的容貌而非常烦恼？', '是|不是', null, '67', '133');
+INSERT INTO `question` VALUES ('2807', '你是否觉得人们为了未来有保障而办理储蓄和保险所花的时间太多？', '是|不是', null, '68', '133');
+INSERT INTO `question` VALUES ('2808', '你曾有过不如死了为好的愿望吗？', '是|不是', null, '69', '133');
+INSERT INTO `question` VALUES ('2809', '如果有把握永远不会被别人发现,你会逃税吗？', '是|不是', null, '70', '133');
+INSERT INTO `question` VALUES ('2810', '你能使一个集会顺利进行吗？', '是|不是', null, '71', '133');
+INSERT INTO `question` VALUES ('2811', '你能克制自己不对人无礼吗？', '是|不是', null, '72', '133');
+INSERT INTO `question` VALUES ('2812', '遇到一次难堪的经历后,你是否在一段很长的时间内还感到难受？', '是|不是', null, '73', '133');
+INSERT INTO `question` VALUES ('2813', '你患有\"神经过敏\"吗？', '是|不是', null, '74', '133');
+INSERT INTO `question` VALUES ('2814', '你曾经故意说些什么来伤害别人的感情吗？', '是|不是', null, '75', '133');
+INSERT INTO `question` VALUES ('2815', '你与别人的友谊是否容易破裂,虽然不是你的过错？', '是|不是', null, '76', '133');
+INSERT INTO `question` VALUES ('2816', '你常感到孤单吗？', '是|不是', null, '77', '133');
+INSERT INTO `question` VALUES ('2817', '当人家寻你的差错,找你工作中的缺点时,你是否容易在精神上受挫伤？', '是|不是', null, '78', '133');
+INSERT INTO `question` VALUES ('2818', '你赴约会或上班曾迟到过吗？', '是|不是', null, '79', '133');
+INSERT INTO `question` VALUES ('2819', '你喜欢忙忙碌碌地过日子吗？', '是|不是', null, '80', '133');
+INSERT INTO `question` VALUES ('2820', '你愿意别人怕你吗？', '是|不是', null, '81', '133');
+INSERT INTO `question` VALUES ('2821', '你是否觉得有时浑身是劲,而有时又是懒洋洋的吗？', '是|不是', null, '82', '133');
+INSERT INTO `question` VALUES ('2822', '你有时把今天应做的事拖到明天去做吗？', '是|不是', null, '83', '133');
+INSERT INTO `question` VALUES ('2823', '别人认为你是生气勃勃吗？', '是|不是', null, '84', '133');
+INSERT INTO `question` VALUES ('2824', '别人是否对你说了许多谎话？', '是|不是', null, '85', '133');
+INSERT INTO `question` VALUES ('2825', '你是否容易对某些事物容易冒火？', '是|不是', null, '86', '133');
+INSERT INTO `question` VALUES ('2826', '当你犯了错误时,你是否常常愿意承认它？', '是|不是', null, '87', '133');
+INSERT INTO `question` VALUES ('2827', '你会为一动物落入圈套被捉拿而感到很难过吗？', '是|不是', null, '88', '133');
+INSERT INTO `question` VALUES ('3539', '我很明了本测验的说明:', 'A.是的|B.不一定|C.不是的', null, '1', '134');
+INSERT INTO `question` VALUES ('3540', '我对本测验每个问题都会按自己的真实情况作答:', 'A.是的|B.不一定|C.不同意', null, '2', '134');
+INSERT INTO `question` VALUES ('3541', '有度假机会时,我宁愿:', 'A.去一个繁华的都市|B.介乎A与C之间|C.闲居清静而偏僻的郊区', null, '3', '134');
+INSERT INTO `question` VALUES ('3542', '我有足够的能力应付困难:', 'A.是的|B.不确定|C.不是的', null, '4', '134');
+INSERT INTO `question` VALUES ('3543', '即使是关在铁笼内的猛兽,我见了也会惴惴不安:', 'A.是的|B.不一定|C.不是的', null, '5', '134');
+INSERT INTO `question` VALUES ('3544', '我总避免批评别人的言行:', 'A.是的|B.有时如此|C.不是的', null, '6', '134');
+INSERT INTO `question` VALUES ('3545', '我的思想似乎:', 'A.走在了时代前面|B.不一定|C.正符合时代', null, '7', '134');
+INSERT INTO `question` VALUES ('3546', '我不擅长说笑话讲趣事:', 'A.是的|B.介乎A与C之间|C.不是的', null, '8', '134');
+INSERT INTO `question` VALUES ('3547', '当我看到亲友邻居争执时,我总是:', 'A.任其自己解决|B.置之不理|C.予以劝解', null, '9', '134');
+INSERT INTO `question` VALUES ('3548', '在社交场合中,我:', 'A.谈吐自然|B.介乎A与C之间|C.退避三舍,保持沉默', null, '10', '134');
+INSERT INTO `question` VALUES ('3549', '我愿做一名:', 'A.建筑工程师|B.不确定|C.社会科学的教员', null, '11', '134');
+INSERT INTO `question` VALUES ('3550', '阅读时,我宁愿选读:', 'A.著名的宗教教义|B.不确定|C.国家政治组织的理论', null, '12', '134');
+INSERT INTO `question` VALUES ('3551', '我相信许多人都有些心理不正常，但他们都不愿意这样承认:', 'A.是的|B.介乎A与C之间|C.不是的', null, '13', '134');
+INSERT INTO `question` VALUES ('3552', '我所希望的结婚对象应擅长交际而无须有文艺才能:', 'A.是的|B.不一定|C.不是的', null, '14', '134');
+INSERT INTO `question` VALUES ('3553', '对于头脑简单和不讲理的人,我仍然能待之以礼:', 'A.是的|B.介乎A与C之间|C.不是的', null, '15', '134');
+INSERT INTO `question` VALUES ('3554', '受人侍奉时我常感到不安:', 'A.是的|B.介乎A与C之间|C.不是的', null, '16', '134');
+INSERT INTO `question` VALUES ('3555', '从事体力或脑力劳动后，我比平常人需要更多的休息才能恢复工作效率:', 'A.是的|B.介乎A与C之间|C.不是的', null, '17', '134');
+INSERT INTO `question` VALUES ('3556', '半夜醒来,我会为种种忧虑而不能再入眠:', 'A.常常如此|B.有时如此|C.极少如此', null, '18', '134');
+INSERT INTO `question` VALUES ('3557', '事情进行不顺利时,我常会急得掉眼泪:', 'A.从不如此|B.有时如此|C.常常如此', null, '19', '134');
+INSERT INTO `question` VALUES ('3558', '我认为只要双方同意就可以离婚，不应当受传统礼教的束缚:', 'A.是的|B.介乎A与C之间|C.不是的', null, '20', '134');
+INSERT INTO `question` VALUES ('3559', '我对于人或物的兴趣都很容易改变:', 'A.是的|B.介乎A与C之间|C.不是的', null, '21', '134');
+INSERT INTO `question` VALUES ('3560', '筹划事务时,我宁愿:', 'A.和别人合作|B.不确定|C.自己单独进行', null, '22', '134');
+INSERT INTO `question` VALUES ('3561', '我常会无端地自言自语:', 'A.常常如此|B.偶然如此|C.从不如此', null, '23', '134');
+INSERT INTO `question` VALUES ('3562', '无论工作、饮食或出游,我总:', 'A.很匆忙,不能尽兴|B.介乎A与C之间|C.很从容不迫', null, '24', '134');
+INSERT INTO `question` VALUES ('3563', '有时我会怀疑别人是否对我的言谈真正有兴趣:', 'A.是的|B.介乎A与C之间|C.不是的', null, '25', '134');
+INSERT INTO `question` VALUES ('3564', '在工厂中,我宁愿负责:', 'A.机械组|B.介乎A与C之间|C.人事组', null, '26', '134');
+INSERT INTO `question` VALUES ('3565', '在阅读时,我宁愿选读:', 'A.太空旅行|B.不确定|C.家庭教育', null, '27', '134');
+INSERT INTO `question` VALUES ('3566', '下列三个字中哪个字与其它两个字属于不同类别:', 'A.狗|B.石|C.牛', null, '28', '134');
+INSERT INTO `question` VALUES ('3567', '如果我能重新做人,我要:', 'A.把生活安排得和以前不同|B.不确定|C.生活得和以前相仿', null, '29', '134');
+INSERT INTO `question` VALUES ('3568', '在我的一生中,我总能达到我所预期的目标:', 'A.是的|B.不确定|C.不是的', null, '30', '134');
+INSERT INTO `question` VALUES ('3569', '当我说谎时,我总觉得内心不安,不敢正视对方:', 'A.是的|B.不一定|C.不是的', null, '31', '134');
+INSERT INTO `question` VALUES ('3570', '假使我手持一支装有子弹的手枪，我必须取出子弹后才能心安:', 'A.是的|B.介乎A与C之间|C.不是的', null, '32', '134');
+INSERT INTO `question` VALUES ('3571', '朋友们大都认为我是一个说话有风趣的人:', 'A.是的|B.不一定|C.不是的', null, '33', '134');
+INSERT INTO `question` VALUES ('3572', '如果人们知道我的内心世界,他们都会感到惊讶:', 'A.是的|B.不一定|C.不是的', null, '34', '134');
+INSERT INTO `question` VALUES ('3573', '在社交场合中,如果我突然成为众所注意的中心,我会感到局促不安:', 'A.是的|B.介乎A与C之间|C.不是的', null, '35', '134');
+INSERT INTO `question` VALUES ('3574', '我总喜欢参加规模庞大的聚会、舞会或公共集会:', 'A.是的|B.介乎A与C之间|C.不是的', null, '36', '134');
+INSERT INTO `question` VALUES ('3575', '在下列工作中,我喜欢的是:', 'A.音乐|B.不确定|C.手工', null, '37', '134');
+INSERT INTO `question` VALUES ('3576', '我常常怀疑那些过于友善的人动机是否如此:', 'A.是的|B.介乎A与C之间|C.不是的', null, '38', '134');
+INSERT INTO `question` VALUES ('3577', '我宁愿自己的生活像:', 'A.一个艺人或博物学家|B.不确定|C.会计师或保险公司的经纪人', null, '39', '134');
+INSERT INTO `question` VALUES ('3578', '目前世界所需要的是:', 'A.多产生一些富有改善世界计划的理想家|B.不确定|C.脚踏实地的可靠公民', null, '40', '134');
+INSERT INTO `question` VALUES ('3579', '有时候我觉得我需要做剧烈的体力活动:', 'A.是的|B.介乎A与C之间|C.不是的', null, '41', '134');
+INSERT INTO `question` VALUES ('3580', '我愿意与有礼貌有教养的人来往，而不愿和粗鲁野蛮的人为伍:', 'A.是的|B.介乎A与C之间|C.不是的', null, '42', '134');
+INSERT INTO `question` VALUES ('3581', '在处理一些必须凭借智慧的事务中,我的父母的确:', 'A.较一般人差|B.普通|C.超人一等', null, '43', '134');
+INSERT INTO `question` VALUES ('3582', '当上司(或教师)召见我时,我:', 'A.总觉得可以趁机会提出建议|B.介乎A与C之间|C.总怀疑自己做错了什么事', null, '44', '134');
+INSERT INTO `question` VALUES ('3583', '假使薪俸优厚,我愿意专任照料精神病人的职务:', 'A.是的|B.介乎A与C之间|C.不是的', null, '45', '134');
+INSERT INTO `question` VALUES ('3584', '看报时,我喜欢读:', 'A.当前世界基本社会问题的辩论|B.介乎A与C之间|C.地方新闻的报道', null, '46', '134');
+INSERT INTO `question` VALUES ('3585', '我曾担任过:', 'A.一般职务|B.多种职务|C.非常多的职务', null, '47', '134');
+INSERT INTO `question` VALUES ('3586', '逛街时,我宁愿观看一个画家写生,而不愿听人家的辩论:', 'A.是的|B.不一定|C.不是的', null, '48', '134');
+INSERT INTO `question` VALUES ('3587', '我的神经脆弱,稍有刺激的声音就会使我害怕:', 'A.时常如此|B.有时如此|C.从未如此', null, '49', '134');
+INSERT INTO `question` VALUES ('3588', '我在清晨起身时,就常常感到疲乏不堪:', 'A.是的|B.介乎A与C之间|C.不是的', null, '50', '134');
+INSERT INTO `question` VALUES ('3589', '我宁愿是一个:', 'A.管森林的工作人员|B.不确定|C.中小学教员', null, '51', '134');
+INSERT INTO `question` VALUES ('3590', '每逢年节或亲友生日,我:', 'A.喜欢互相赠送礼物|B.不太确定|C.觉得交换礼物是麻烦多事', null, '52', '134');
+INSERT INTO `question` VALUES ('3591', '下列数字中,哪个数字与其他两个数字属于不同类别:', 'A.  5|B.  2|C.  7', null, '53', '134');
+INSERT INTO `question` VALUES ('3592', '[猫]与[鱼]就如同[牛]与:', 'A.牛乳|B.牧草|C.盐', null, '54', '134');
+INSERT INTO `question` VALUES ('3593', '在做人处事的各个方面,我的父母很值得敬佩:', 'A.是的|B.不一定|C.不是的', null, '55', '134');
+INSERT INTO `question` VALUES ('3594', '我觉得我有一些别人所不及的优良品质:', 'A.是的|B.不一定|C.不是的', null, '56', '134');
+INSERT INTO `question` VALUES ('3595', '只要有利于大家,尽管别人认为卑贱的工作,我也乐而为之,不以为耻:', 'A.是的|B.不确定|C.不是的', null, '57', '134');
+INSERT INTO `question` VALUES ('3596', '我喜欢看电影或参加其他娱乐活动:', 'A.每周一次以上(比一般人多)|B.每周一次(与通常人相似)|C.偶然一次(比通常人少)', null, '58', '134');
+INSERT INTO `question` VALUES ('3597', '我喜欢从事需要精确技术的工作:', 'A.是的|B.介乎A与C之间|C.不是的', null, '59', '134');
+INSERT INTO `question` VALUES ('3598', '在有思想,有地位的长者面前,我总较为缄默:', 'A.是的|B.介乎A与C之间|C.不是的', null, '60', '134');
+INSERT INTO `question` VALUES ('3599', '就我来说,在大众前演讲或表演是一件不容易的事:', 'A.是的|B.介乎A与C之间|C.不是的', null, '61', '134');
+INSERT INTO `question` VALUES ('3600', '我宁愿:', 'A.指挥几个人工作|B.不确定|C.和团体共同工作', null, '62', '134');
+INSERT INTO `question` VALUES ('3601', '纵使我做了一桩贻笑大方的事，我也仍然能够将它淡然忘却:', 'A.是的|B.介乎A与C之间|C.不是的', null, '63', '134');
+INSERT INTO `question` VALUES ('3602', '没有人会幸灾乐祸地希望我遭遇困难:', 'A.是的|B.不确定|C.不是的', null, '64', '134');
+INSERT INTO `question` VALUES ('3603', '堂堂男子汉应该:', 'A.考虑人生的意义|B.不确定|C.谋家庭的温饱', null, '65', '134');
+INSERT INTO `question` VALUES ('3604', '我喜欢解决别人已弄得一塌糊涂的问题:', 'A.是的|B.介乎A与C之间|C.不是的', null, '66', '134');
+INSERT INTO `question` VALUES ('3605', '我十分高兴的时候总有[好景不常]之感:', 'A.是的|B.介乎A与C之间|C.不是的', null, '67', '134');
+INSERT INTO `question` VALUES ('3606', '在一般困难处境下,我总能保持乐观:', 'A.是的|B.不一定|C.不是的', null, '68', '134');
+INSERT INTO `question` VALUES ('3607', '迁居是一桩极不愉快的事:', 'A.是的|B.介乎A与C之间|C.不是的', null, '69', '134');
+INSERT INTO `question` VALUES ('3608', '在我年轻的时候,如果我和父母的意见不同,我经常:', 'A.坚持自己的意见|B.介乎A与C之间|C.接受他们的意见', null, '70', '134');
+INSERT INTO `question` VALUES ('3609', '我希望我的爱人能够使家庭:', 'A.有其本身的欢乐与活动|B.介乎A与C之间|C.成为邻里社交活动的一部分', null, '71', '134');
+INSERT INTO `question` VALUES ('3610', '我解决问题多数依靠:', 'A.个人独立思考|B.介乎A与C之间|C.与人互相讨论', null, '72', '134');
+INSERT INTO `question` VALUES ('3611', '需要[当机立断]时,我总:', 'A.镇静地运用理智|B.介乎A与C之间|C.常常紧张兴奋,不能冷静思考', null, '73', '134');
+INSERT INTO `question` VALUES ('3612', '最近,在一两桩事情上,我觉得自己是无辜受累:', 'A.是的|B.介乎A与C之间|C.不是的', null, '74', '134');
+INSERT INTO `question` VALUES ('3613', '我善于控制我的表情:', 'A.是的|B.介乎A与C之间|C.不是的', null, '75', '134');
+INSERT INTO `question` VALUES ('3614', '如果薪俸相等,我宁愿做:', 'A.一个化学研究师|B.不确定|C.旅行社经理', null, '76', '134');
+INSERT INTO `question` VALUES ('3615', '[惊讶]与[新奇]犹如[惧怕]与:', 'A.勇敢|B.焦虑|C.恐怖', null, '77', '134');
+INSERT INTO `question` VALUES ('3616', '下列三个分数中,哪一个与其他两个属不同类别:', 'A.  3/7|B.  3/9|C.  3/11', null, '78', '134');
+INSERT INTO `question` VALUES ('3617', '不知什么缘故,有些人故意回避或冷淡我:', 'A.是的|B.不一定|C.不是的', null, '79', '134');
+INSERT INTO `question` VALUES ('3618', '我虽善意待人,却得不到好报:', 'A.是的|B.不一定|C.不是的', null, '80', '134');
+INSERT INTO `question` VALUES ('3619', '我不喜欢那些夜郎自大,目空一切的人:', 'A.是的|B.介乎A与C之间|C.不是的', null, '81', '134');
+INSERT INTO `question` VALUES ('3620', '和一般人相比,我的朋友的确太少:', 'A.是的|B.介乎A与C之间|C.不是的', null, '82', '134');
+INSERT INTO `question` VALUES ('3621', '出于万不得已时,我才参加社交集会,否则我总设法回避:', 'A.是的|B.不一定|C.不是的', null, '83', '134');
+INSERT INTO `question` VALUES ('3622', '在服务机关中,对上级的逢迎得当,比工作上的表现更为重要:', 'A.是的|B.介乎A与C之间|C.不是的', null, '84', '134');
+INSERT INTO `question` VALUES ('3623', '参加竞赛时,我看重的是竞赛活动,而不计较其成败:', 'A.总是如此|B.一般如此|C.偶然如此', null, '85', '134');
+INSERT INTO `question` VALUES ('3624', '我宁愿我所就的职业有:', 'A.固定可靠的薪水|B.介乎A与C之间|C.薪资高低能随我工作的表现而随时调整', null, '86', '134');
+INSERT INTO `question` VALUES ('3625', '我宁愿阅读:', 'A.军事与政治的事实记载|B.不一定|C.一部富有情感与幻想的作品', null, '87', '134');
+INSERT INTO `question` VALUES ('3626', '有许多人不敢欺骗或犯罪,主要原因是怕受到惩罚:', 'A.是的|B.介乎A与C之间|C.不是的', null, '88', '134');
+INSERT INTO `question` VALUES ('3627', '我的父母(或保护人)从未很严格地要我事事顺从:', 'A.是的|B.不一定|C.不是的', null, '89', '134');
+INSERT INTO `question` VALUES ('3628', '[百折不挠][再接再厉]的精神似乎完全被现代人忽视了:', 'A.是的|B.不一定|C.不是的', null, '90', '134');
+INSERT INTO `question` VALUES ('3629', '如果有人对我发怒,我总:', 'A.设法使他镇静下来|B.不太确定|C.也会恼怒起来', null, '91', '134');
+INSERT INTO `question` VALUES ('3630', '我希望大家都提倡:', 'A.多吃水果以避免杀生|B.不一定|C.发展农业捕灭对农产品有害的动物', null, '92', '134');
+INSERT INTO `question` VALUES ('3631', '无论在极高的屋顶上或极深的隧道中，我很少觉得胆怯不安:', 'A.是的|B.介乎A与C之间|C.不是的', null, '93', '134');
+INSERT INTO `question` VALUES ('3632', '我只要没有过错,不管人家怎样归咎于我,我总能心安理得:', 'A.是的|B.不一定|C.不是的', null, '94', '134');
+INSERT INTO `question` VALUES ('3633', '凡是无法运用理智来解决的问题，有时就不得不靠权力来处理:', 'A.是的|B.介乎A与C之间|C.不是的', null, '95', '134');
+INSERT INTO `question` VALUES ('3634', '我十六、七岁时与异性朋友的交游:', 'A.极多|B.介乎A与C之间|C.不很多', null, '96', '134');
+INSERT INTO `question` VALUES ('3635', '我在交际场所参加的组织中是一个活跃分子:', 'A.是的|B.介乎A与C之间|C.不是的', null, '97', '134');
+INSERT INTO `question` VALUES ('3636', '在人声嘈杂中,我仍能不受妨碍,专心工作:', 'A.是的|B.介乎A与C之间|C.不是的', null, '98', '134');
+INSERT INTO `question` VALUES ('3637', '在某环境下,我常因困惑引起幻想而将工作搁置下来:', 'A.是的|B.介乎A与C之间|C.不是的', null, '99', '134');
+INSERT INTO `question` VALUES ('3638', '我很少用难堪的话去中伤别人的感情:', 'A.是的|B.不太确定|C.不是的', null, '100', '134');
+INSERT INTO `question` VALUES ('3639', '我更愿意做一名:', 'A.商店经理|B.不确定|C.建筑师', null, '101', '134');
+INSERT INTO `question` VALUES ('3640', '[理不胜辞]的意思是:', 'A.理不如辞|B.理多而辞寡|C.辞藻丰富而理由不足', null, '102', '134');
+INSERT INTO `question` VALUES ('3641', '[锄头]与[挖掘]犹如[刀子]与:', 'A.雕刻|B.切剖|C.铲除', null, '103', '134');
+INSERT INTO `question` VALUES ('3642', '我常横过街道,以回避我不愿招乎的人:', 'A.很少如此|B.偶然如此|C.有时如此', null, '104', '134');
+INSERT INTO `question` VALUES ('3643', '在我倾听音乐时,如果人家高谈阔论:', 'A.我仍然能够专心听,不受影响|B.介乎A与C之间|C.我会不能专心欣赏而感到恼恐', null, '105', '134');
+INSERT INTO `question` VALUES ('3644', '在课堂上,如果我的意见与教师不同,我常:', 'A.保持缄默|B.不一定|C.当场表明立场', null, '106', '134');
+INSERT INTO `question` VALUES ('3645', '我和异性友伴交谈时, 竭力避免涉及有关 [性] 的话题:', 'A.是的|B.介乎A与C之间|C.不是的', null, '107', '134');
+INSERT INTO `question` VALUES ('3646', '我待人接物的确不太成功:', 'A.是的|B.不尽然|C.不是的', null, '108', '134');
+INSERT INTO `question` VALUES ('3647', '每当考虑困难问题时,我总是:', 'A.一切都未雨绸缪|B.介乎A与C之间|C.相信到时候会自然解决', null, '109', '134');
+INSERT INTO `question` VALUES ('3648', '我所结交的朋友中,男女各占一半:', 'A.是的|B.介乎A与C之间|C.不是的', null, '110', '134');
+INSERT INTO `question` VALUES ('3649', '我宁可:', 'A.结识很多的人|B.不一定|C.维持几个深交的朋友', null, '111', '134');
+INSERT INTO `question` VALUES ('3650', '我宁为哲学家,而不做机械工程师:', 'A.是的|B.不确定|C.不是的', null, '112', '134');
+INSERT INTO `question` VALUES ('3651', '如果我发现某人自私不义，我总不计一切指摘他的弱点:', 'A.是的|B.介乎A与C之间|C.不是的', null, '113', '134');
+INSERT INTO `question` VALUES ('3652', '我善用心机去影响同伴,使他们能协助我实现目标:', 'A.是的|B.介乎A与C之间|C.不是的', null, '114', '134');
+INSERT INTO `question` VALUES ('3653', '我喜欢做戏剧、音乐、歌剧等新闻采访工作:', 'A.是的|B.不一定|C.不是的', null, '115', '134');
+INSERT INTO `question` VALUES ('3654', '当人们颂扬我时,我总觉得不好意思:', 'A.是的|B.介乎A与C之间|C.不是的', null, '116', '134');
+INSERT INTO `question` VALUES ('3655', '我以为现代最需要解决的问题是:', 'A.政治纠纷|B.不太确定|C.道德标准的有无', null, '117', '134');
+INSERT INTO `question` VALUES ('3656', '我有时会无故地产生一种面临横祸的恐惧:', 'A.是的|B.有时如此|C.不是的', null, '118', '134');
+INSERT INTO `question` VALUES ('3657', '我在童年时,害怕黑暗的次数:', 'A.极多|B.不太多|C.没有', null, '119', '134');
+INSERT INTO `question` VALUES ('3658', '黄昏闲暇,我喜欢:', 'A.看一部历史探险影片|B.不一定|C.念一本科学幻想小说', null, '120', '134');
+INSERT INTO `question` VALUES ('3659', '当人们批评我古怪时,我觉得:', 'A.非常气恼|B.有些动气|C.无所谓', null, '121', '134');
+INSERT INTO `question` VALUES ('3660', '在一个陌生的城市找住址时,我经常:', 'A.就人问路|B.介乎A与C之间|C.参考市区地图', null, '122', '134');
+INSERT INTO `question` VALUES ('3661', '朋友们申言要在家休息时,我仍设法怂恿他们外出:', 'A.是的|B.不一定|C.不是的', null, '123', '134');
+INSERT INTO `question` VALUES ('3662', '在就寝时,我:', 'A.不易入睡|B.介乎A与C之间|C.极容易入睡', null, '124', '134');
+INSERT INTO `question` VALUES ('3663', '有人烦扰我时,我:', 'A.能不露生色|B.介乎A与C之间|C.要说给别人听,以泄气愤', null, '125', '134');
+INSERT INTO `question` VALUES ('3664', '如果薪俸相等,我宁愿做一个:', 'A.律师|B.不确定|C.飞行员或航海员', null, '126', '134');
+INSERT INTO `question` VALUES ('3665', '时间永恒是比喻:', 'A.时间过得很慢|B.忘了时间|C.光阴一去不复返', null, '127', '134');
+INSERT INTO `question` VALUES ('3666', '下列三项记号中,哪一项应紧接:*OOOO**OOO***', 'A.  *O*|B.  OO*|C.  O**', null, '128', '134');
+INSERT INTO `question` VALUES ('3667', '在陌生的地方,我仍能清楚地辩别东西南北的方向:', 'A.是的|B.介乎A与C之间|C.不是的', null, '129', '134');
+INSERT INTO `question` VALUES ('3668', '我的确比一般人幸运,因为我能从事自己所乐的工作:', 'A.是的|B.不一定|C.不是的', null, '130', '134');
+INSERT INTO `question` VALUES ('3669', '如果我急于想借用别人的东西而物主恰又不在，我认为不告而取亦无大碍:', 'A.是的|B.介乎A与C之间|C.不是的', null, '131', '134');
+INSERT INTO `question` VALUES ('3670', '我喜欢向友人追述一些已往有趣的社交经验:', 'A.是的|B.介乎A与C之间|C.不是的', null, '132', '134');
+INSERT INTO `question` VALUES ('3671', '我更愿意做一名:', 'A.演员|B.不确定|C.建筑师', null, '133', '134');
+INSERT INTO `question` VALUES ('3672', '工作学习之余,我总要安排计划,不使时间浪费:', 'A.是的|B.介乎A与C之间|C.不是的', null, '134', '134');
+INSERT INTO `question` VALUES ('3673', '与人交际时,我常会无端地产生一种自卑感:', 'A.是的|B.介乎A与C之间|C.不是的', null, '135', '134');
+INSERT INTO `question` VALUES ('3674', '主动与陌生人交谈:', 'A.是一桩难事|B.介乎A与C之间|C.毫无困难', null, '136', '134');
+INSERT INTO `question` VALUES ('3675', '我喜欢的音乐,多数是:', 'A.轻快活泼|B.介乎A与C之间|C.富于情感', null, '137', '134');
+INSERT INTO `question` VALUES ('3676', '我爱做[白日梦]即[完全沉浸于幻想之中]:', 'A.是的|B.不一定|C.不是的', null, '138', '134');
+INSERT INTO `question` VALUES ('3677', '未来二十年的世界局势定将好:', 'A.是的|B.不一定|C.不是的', null, '139', '134');
+INSERT INTO `question` VALUES ('3678', '童年时,我喜欢阅读:', 'A.战争故事|B.不确定|C.神仙幻想故事', null, '140', '134');
+INSERT INTO `question` VALUES ('3679', '我素来对机械、汽车、飞机等有兴趣:', 'A.是的|B.介乎A与C之间|C.不是的', null, '141', '134');
+INSERT INTO `question` VALUES ('3680', '我愿意做一个缓刑释放罪犯的管理监视人:', 'A.是的|B.介乎A与C之间|C.不是的', null, '142', '134');
+INSERT INTO `question` VALUES ('3681', '人们认为我只不过是一个能苦干,稍有成就的人而已:', 'A.是的|B.介乎A与C之间|C.不是的', null, '143', '134');
+INSERT INTO `question` VALUES ('3682', '在逆境中,我总能保持精神振奋:', 'A.是的|B.不太确定|C.不是的', null, '144', '134');
+INSERT INTO `question` VALUES ('3683', '我以为人工节育是解决世界经济与和平问题的要诀:', 'A.是的|B.不确定|C.不是的', null, '145', '134');
+INSERT INTO `question` VALUES ('3684', '我喜欢独自筹划，避免人家的干涉和猜疑:', 'A.是的|B.介乎A与C之间|C.不是的', null, '146', '134');
+INSERT INTO `question` VALUES ('3685', '我相信[上司不可能没有过错,但他仍有权做当权者]:', 'A.是的|B.不一定|C.不是的', null, '147', '134');
+INSERT INTO `question` VALUES ('3686', '我总设法使自己不粗心大意,忽略细节:', 'A.是的|B.介乎A与C之间|C.不是的', null, '148', '134');
+INSERT INTO `question` VALUES ('3687', '与人争辩或险遭事故后，我常发抖，精疲力竭，不能安心工作:', 'A.是的|B.介乎A与C之间|C.不是的', null, '149', '134');
+INSERT INTO `question` VALUES ('3688', '没有医生处方,我从不乱用药:', 'A.是的|B.介乎A与C之间|C.不是的', null, '150', '134');
+INSERT INTO `question` VALUES ('3689', '为了培养个人的兴趣,我愿意参加:', 'A.摄影组|B.不确定|C.辩论会', null, '151', '134');
+INSERT INTO `question` VALUES ('3690', '星火燎原对等于姑息:', 'A.同情|B.养奸|C.纵容', null, '152', '134');
+INSERT INTO `question` VALUES ('3691', '[钟表]与[时间]犹如[裁缝]与:', 'A.西装|B.剪刀|C.布料', null, '153', '134');
+INSERT INTO `question` VALUES ('3692', '生动的梦境常常滋扰我的睡眠:', 'A.时常如此|B.偶然如此|C.从未如此', null, '154', '134');
+INSERT INTO `question` VALUES ('3693', '我过去曾撕毁一些禁止人们自由的布告:', 'A.是的|B.介乎A与C之间|C.不是的', null, '155', '134');
+INSERT INTO `question` VALUES ('3694', '在一个陌生的城市中,我会:', 'A.到处闲游|B.不确定|C.避免去不安全的地方', null, '156', '134');
+INSERT INTO `question` VALUES ('3695', '我宁愿服饰素洁大方,而不愿争奇斗艳惹人注目:', 'A.是的|B.不确定|C.不是的', null, '157', '134');
+INSERT INTO `question` VALUES ('3696', '黄昏时,安静的娱乐远胜过热闹的宴会:', 'A.是的|B.不确定|C.不是的', null, '158', '134');
+INSERT INTO `question` VALUES ('3697', '我常常明知故犯,不愿意接受好心的建议:', 'A.偶然如此|B.罕有如此|C.从不如此', null, '159', '134');
+INSERT INTO `question` VALUES ('3698', '我总把[是非][善恶]作为判断或取舍的原则:', 'A.是的|B.介乎A与C之间|C.不是的', null, '160', '134');
+INSERT INTO `question` VALUES ('3699', '我工作时不喜欢有许多人在旁参观:', 'A.是的|B.介乎A与C之间|C.不是的', null, '161', '134');
+INSERT INTO `question` VALUES ('3700', '故意去为难一般有教养的人, 如医生、教师等人的尊严, 是一件有趣的事:', 'A.是的|B.介乎A与C之间|C.不是的', null, '162', '134');
+INSERT INTO `question` VALUES ('3701', '在各种课程中,我较喜欢:', 'A.语文|B.不确定|C.数学', null, '163', '134');
+INSERT INTO `question` VALUES ('3702', '那些自以为是、道貌岸然的人最使我生气:', 'A.是的|B.介乎A与C之间|C.不是的', null, '164', '134');
+INSERT INTO `question` VALUES ('3703', '与平常循规蹈矩的人交谈:', 'A.颇有兴趣,亦有所得|B.介乎A与C之间|C.他们思想的肤浅使我厌烦', null, '165', '134');
+INSERT INTO `question` VALUES ('3704', '我喜欢:', 'A.有几个有时对我很苛求而富有感情的朋友|B.介乎A与C之间|C.不受别人的牵涉', null, '166', '134');
+INSERT INTO `question` VALUES ('3705', '如果做民意投票时,我宁愿投票赞同:', 'A.切实根绝有生理缺陷者的生育|B.不确定|C.对杀人犯判处死刑', null, '167', '134');
+INSERT INTO `question` VALUES ('3706', '我有时会无端地感到沮丧痛苦:', 'A.是的|B.介乎A与C之间|C.不是的', null, '168', '134');
+INSERT INTO `question` VALUES ('3707', '当我与立场相反的人辩论时,我主张:', 'A.尽量找出基本观点的差异|B.不一定|C.彼此让步以解决矛盾', null, '169', '134');
+INSERT INTO `question` VALUES ('3708', '我一向重感情而不重理智,因此我的观点常动摇不定:', 'A.是的|B.不确定|C.不是的', null, '170', '134');
+INSERT INTO `question` VALUES ('3709', '我的学习效率多有赖于:', 'A.阅读好书|B.介乎A与C之间|C.参加团体讨论', null, '171', '134');
+INSERT INTO `question` VALUES ('3710', '我宁选一个薪俸高的工作,不在乎有无保障;也不愿意从事薪俸低的固定工作:', 'A.是的|B.不确定|C.不是的', null, '172', '134');
+INSERT INTO `question` VALUES ('3711', '在参加辩论以前,我总先把握住自己的立场:', 'A.经常如此|B.一般如此|C.必要时才如此', null, '173', '134');
+INSERT INTO `question` VALUES ('3712', '我常被一些无所谓的琐事所烦扰:', 'A.是的|B.介乎A与C之间|C.不是的', null, '174', '134');
+INSERT INTO `question` VALUES ('3713', '我宁愿住在嘈杂的城市,而不愿住在安静的乡村:', 'A.是的|B.不确定|C.不是的', null, '175', '134');
+INSERT INTO `question` VALUES ('3714', '我宁愿:', 'A.负责领导儿童游戏|B.不确定|C.协助钟表修理', null, '176', '134');
+INSERT INTO `question` VALUES ('3715', '一人__事,众人受累:', 'A.愤|B.偾|C.喷', null, '177', '134');
+INSERT INTO `question` VALUES ('3716', '望子成龙的家长往往__苗助长:', 'A.揠|B.堰|C.偃', null, '178', '134');
+INSERT INTO `question` VALUES ('3717', '气候的转变并不影响我的情绪:', 'A.是的|B.介乎A与C之间|C.不是的', null, '179', '134');
+INSERT INTO `question` VALUES ('3718', '因为我对于一切问题都有些见解，大家都公认我富于思想:', 'A.是的|B.介乎A与C之间|C.不是的', null, '180', '134');
+INSERT INTO `question` VALUES ('3719', '我讲话的声音:', 'A.宏亮|B.介乎A与C之间|C.低沉', null, '181', '134');
+INSERT INTO `question` VALUES ('3720', '人们公认我是一个活跃热情的人:', 'A.是的|B.介乎A与C之间|C.不是的', null, '182', '134');
+INSERT INTO `question` VALUES ('3721', '我喜欢有旅行和变动机会的工作，而不计较工作本身之是否有保障:', 'A.是的|B.介乎A与C之间|C.不是的', null, '183', '134');
+INSERT INTO `question` VALUES ('3722', '我治事严格,凡事都务求正确尽善:', 'A.是的|B.介乎A与C之间|C.不是的', null, '184', '134');
+INSERT INTO `question` VALUES ('3723', '在取回或归还东西时，我总仔细检查是否东西还保持原状:', 'A.是的|B.介乎A与C之间|C.不是的', null, '185', '134');
+INSERT INTO `question` VALUES ('3724', '我通常精力充沛,忙碌多事:', 'A.是的|B.不一定|C.不是的', null, '186', '134');
+INSERT INTO `question` VALUES ('3725', '我确信我没有遗漏或不经心回答上面任何问题:', 'A.是的|B.不确定|C.不是的', null, '187', '134');
 
-INSERT INTO `question` (`id`, `topic`, `options`, `grade`, `number`, `paper_id`) VALUES
-(1, '头痛。', '没有|很轻|中等|偏重|严重', NULL, 1, 137),
-(2, '神经过敏，心中不踏实。', '没有|很轻|中等|偏重|严重', NULL, 2, 137),
-(3, '头脑中有不必要的想法或字句盘旋。', '没有|很轻|中等|偏重|严重', NULL, 3, 137),
-(4, '头昏或昏倒。', '没有|很轻|中等|偏重|严重', NULL, 4, 137),
-(5, '对异性的兴趣减退。', '没有|很轻|中等|偏重|严重', NULL, 5, 137),
-(6, '对旁人责备求全。', '没有|很轻|中等|偏重|严重', NULL, 6, 137),
-(7, '感到别人能控制您的思想。', '没有|很轻|中等|偏重|严重', NULL, 7, 137),
-(8, '责怪别人制造麻烦。', '没有|很轻|中等|偏重|严重', NULL, 8, 137),
-(9, '忘记性大。', '没有|很轻|中等|偏重|严重', NULL, 9, 137),
-(10, '担心自己的衣饰整齐及仪态的端正。', '没有|很轻|中等|偏重|严重', NULL, 10, 137),
-(11, '容易烦恼和激动。', '没有|很轻|中等|偏重|严重', NULL, 11, 137),
-(12, '胸痛。', '没有|很轻|中等|偏重|严重', NULL, 12, 137),
-(13, '害怕空旷的场所或街道。', '没有|很轻|中等|偏重|严重', NULL, 13, 137),
-(14, '感到自己的精力下降，活动减慢。', '没有|很轻|中等|偏重|严重', NULL, 14, 137),
-(15, '想结束自己的生命。', '没有|很轻|中等|偏重|严重', NULL, 15, 137),
-(16, '听到旁人听不到的声音。', '没有|很轻|中等|偏重|严重', NULL, 16, 137),
-(17, '发抖。', '没有|很轻|中等|偏重|严重', NULL, 17, 137),
-(18, '感到大多数人都不可信任。', '没有|很轻|中等|偏重|严重', NULL, 18, 137),
-(19, '胃口不好。', '没有|很轻|中等|偏重|严重', NULL, 19, 137),
-(20, '容易哭泣。', '没有|很轻|中等|偏重|严重', NULL, 20, 137),
-(21, '同异性相处时感到害羞不自在。', '没有|很轻|中等|偏重|严重', NULL, 21, 137),
-(22, '感到受骗，中了圈套或有人想抓住您。', '没有|很轻|中等|偏重|严重', NULL, 22, 137),
-(23, '无缘无故地突然感到害怕。', '没有|很轻|中等|偏重|严重', NULL, 23, 137),
-(24, '自己不能控制地大发脾气。', '没有|很轻|中等|偏重|严重', NULL, 24, 137),
-(25, '怕单独出门。', '没有|很轻|中等|偏重|严重', NULL, 25, 137),
-(26, '经常责怪自己。', '没有|很轻|中等|偏重|严重', NULL, 26, 137),
-(27, '腰痛。', '没有|很轻|中等|偏重|严重', NULL, 27, 137),
-(28, '感到难以完成任务。', '没有|很轻|中等|偏重|严重', NULL, 28, 137),
-(29, '感到孤独。', '没有|很轻|中等|偏重|严重', NULL, 29, 137),
-(30, '感到苦闷。', '没有|很轻|中等|偏重|严重', NULL, 30, 137),
-(31, '过分担忧。', '没有|很轻|中等|偏重|严重', NULL, 31, 137),
-(32, '对事物不感兴趣。', '没有|很轻|中等|偏重|严重', NULL, 32, 137),
-(33, '感到害怕。', '没有|很轻|中等|偏重|严重', NULL, 33, 137),
-(34, '您的感情容易受到伤害。', '没有|很轻|中等|偏重|严重', NULL, 34, 137),
-(35, '旁人能知道您的私下想法。', '没有|很轻|中等|偏重|严重', NULL, 35, 137),
-(36, '感到别人不理解您、不同情您。', '没有|很轻|中等|偏重|严重', NULL, 36, 137),
-(37, '感到人们对您不友好，不喜欢您。', '没有|很轻|中等|偏重|严重', NULL, 37, 137),
-(38, '做事必须做得很慢以保证做得正确。', '没有|很轻|中等|偏重|严重', NULL, 38, 137),
-(39, '心跳得很厉害。', '没有|很轻|中等|偏重|严重', NULL, 39, 137),
-(40, '恶心或胃部不舒服。', '没有|很轻|中等|偏重|严重', NULL, 40, 137),
-(41, '感到比不上他人。', '没有|很轻|中等|偏重|严重', NULL, 41, 137),
-(42, '肌肉酸痛。', '没有|很轻|中等|偏重|严重', NULL, 42, 137),
-(43, '感到有人在监视您、谈论您。', '没有|很轻|中等|偏重|严重', NULL, 43, 137),
-(44, '难以入睡。', '没有|很轻|中等|偏重|严重', NULL, 44, 137),
-(45, '做事必须反复检查。', '没有|很轻|中等|偏重|严重', NULL, 45, 137),
-(46, '难以作出决定。', '没有|很轻|中等|偏重|严重', NULL, 46, 137),
-(47, '怕乘电车、公共汽车、地铁或火车。', '没有|很轻|中等|偏重|严重', NULL, 47, 137),
-(48, '呼吸有困难。', '没有|很轻|中等|偏重|严重', NULL, 48, 137),
-(49, '一阵阵发冷或发热。', '没有|很轻|中等|偏重|严重', NULL, 49, 137),
-(50, '因为感到害怕而避开某些东西、场合或活动。', '没有|很轻|中等|偏重|严重', NULL, 50, 137),
-(51, '脑子变空了。', '没有|很轻|中等|偏重|严重', NULL, 51, 137),
-(52, '身体发麻或刺痛。', '没有|很轻|中等|偏重|严重', NULL, 52, 137),
-(53, '喉咙有梗塞感。', '没有|很轻|中等|偏重|严重', NULL, 53, 137),
-(54, '感到前途没有希望。', '没有|很轻|中等|偏重|严重', NULL, 54, 137),
-(55, '不能集中注意。', '没有|很轻|中等|偏重|严重', NULL, 55, 137),
-(56, '感到身体的某一部分软弱无力。', '没有|很轻|中等|偏重|严重', NULL, 56, 137),
-(57, '感到紧张或容易紧张。', '没有|很轻|中等|偏重|严重', NULL, 57, 137),
-(58, '感到手或脚发重。', '没有|很轻|中等|偏重|严重', NULL, 58, 137),
-(59, '想到死亡的事。', '没有|很轻|中等|偏重|严重', NULL, 59, 137),
-(60, '吃得太多。', '没有|很轻|中等|偏重|严重', NULL, 60, 137),
-(61, '当别人看着您或谈论您时感到不自在。', '没有|很轻|中等|偏重|严重', NULL, 61, 137),
-(62, '有一些不属于您自己的想法。', '没有|很轻|中等|偏重|严重', NULL, 62, 137),
-(63, '有想打人或伤害他人的冲动。', '没有|很轻|中等|偏重|严重', NULL, 63, 137),
-(64, '醒得太早。', '没有|很轻|中等|偏重|严重', NULL, 64, 137),
-(65, '必须反复洗手、点数目或触摸某些东西。', '没有|很轻|中等|偏重|严重', NULL, 65, 137),
-(66, '睡得不稳不深。', '没有|很轻|中等|偏重|严重', NULL, 66, 137),
-(67, '有想摔坏或破坏东西的冲动。', '没有|很轻|中等|偏重|严重', NULL, 67, 137),
-(68, '有一些别人没有的想法或念头。', '没有|很轻|中等|偏重|严重', NULL, 68, 137),
-(69, '感到对别人神经过敏。', '没有|很轻|中等|偏重|严重', NULL, 69, 137),
-(70, '在商店或电影院等人多的地方感到不自在。', '没有|很轻|中等|偏重|严重', NULL, 70, 137),
-(71, '感到任何事情都很困难。', '没有|很轻|中等|偏重|严重', NULL, 71, 137),
-(72, '一阵阵恐惧或惊恐。', '没有|很轻|中等|偏重|严重', NULL, 72, 137),
-(73, '感到在公共场合吃东西很不舒服。', '没有|很轻|中等|偏重|严重', NULL, 73, 137),
-(74, '经常与人争论。', '没有|很轻|中等|偏重|严重', NULL, 74, 137),
-(75, '单独一个人时神经很紧张。', '没有|很轻|中等|偏重|严重', NULL, 75, 137),
-(76, '别人对您的成绩没有作出恰当的评价。', '没有|很轻|中等|偏重|严重', NULL, 76, 137),
-(77, '即使和别人在一起也感到孤单。', '没有|很轻|中等|偏重|严重', NULL, 77, 137),
-(78, '感到坐立不安心神不定。', '没有|很轻|中等|偏重|严重', NULL, 78, 137),
-(79, '感到自己没有什么价值。', '没有|很轻|中等|偏重|严重', NULL, 79, 137),
-(80, '感到熟悉的东西变成陌生或不象是真的。', '没有|很轻|中等|偏重|严重', NULL, 80, 137),
-(81, '大叫或摔东西。', '没有|很轻|中等|偏重|严重', NULL, 81, 137),
-(82, '害怕会在公共场合昏倒。', '没有|很轻|中等|偏重|严重', NULL, 82, 137),
-(83, '感到别人想占您的便宜。', '没有|很轻|中等|偏重|严重', NULL, 83, 137),
-(84, '为一些有关性的想法而很苦恼。', '没有|很轻|中等|偏重|严重', NULL, 84, 137),
-(85, '您认为应该因为自己的过错而受到惩罚。', '没有|很轻|中等|偏重|严重', NULL, 85, 137),
-(86, '感到要很快把事情做完。', '没有|很轻|中等|偏重|严重', NULL, 86, 137),
-(87, '感到自己的身体有严重问题。', '没有|很轻|中等|偏重|严重', NULL, 87, 137),
-(88, '从未感到和其他人很亲近。', '没有|很轻|中等|偏重|严重', NULL, 88, 137),
-(89, '感到自己有罪。', '没有|很轻|中等|偏重|严重', NULL, 89, 137),
-(90, '感到自己的脑子有毛病。', '没有|很轻|中等|偏重|严重', NULL, 90, 137),
-(91, '我喜欢参加公众集会，目的是为了同别人在一起。', '是|否', NULL, 1, 135),
-(92, '我觉得我父亲是个理想的人。', '是|否', NULL, 2, 135),
-(93, '一个人需要不时地“显示”一下自己。', '是|否', NULL, 3, 135),
-(94, '同别人在一块时，我通常去做对其他人有益的事，而不是光提意见建议。', '是|否', NULL, 4, 135),
-(95, '我常常觉得在专业选择上自己犯了个错误。', '是|否', NULL, 5, 135),
-(96, '我一贯遵守这样一条原则：先工作，后娱乐。', '是|否', NULL, 6, 135),
-(97, '我有时会感到好象就要发生什么可怕的事情，这种感觉一周内有好几次。', '是|否', NULL, 7, 135),
-(98, '我希望当一名记者。', '是|否', NULL, 8, 135),
-(99, '我觉得自己愿意干建筑承包工作。', '是|否', NULL, 9, 135),
-(100, '我曾有过非常独特、奇异的体验。', '是|否', NULL, 10, 135),
-(101, '总的来看，穷人比富人境况好。', '是|否', NULL, 11, 135),
-(102, '我一听到自己熟悉的人获得成功，就象自己失败了一样。', '是|否', NULL, 12, 135),
-(103, '我希望当服装设计师。', '是|否', NULL, 13, 135),
-(104, '别人常常说我莽撞。', '是|否', NULL, 14, 135),
-(105, '有时我也讲点闲话。', '是|否', NULL, 15, 135),
-(106, '我怀疑自己能否会做好领导工作。', '是|否', NULL, 16, 135),
-(107, '我感到很难开口同陌生人交谈。', '是|否', NULL, 17, 135),
-(108, '一觉得有人注视我，我就会变得紧张。', '是|否', NULL, 18, 135),
-(109, '如果人们能够掌握所有实际情况，对大多数问题来说，只有一个正确的答案。', '是|否', NULL, 19, 135),
-(110, '有时我装作比我实际懂得多的样子。', '是|否', NULL, 20, 135),
-(111, '为公共事务操心，一点用处也没有，反正自己的所作所为对公共事务毫无影响。', '是|否', NULL, 21, 135),
-(112, '有时我真想摔瓶摔碗，发泄一下。', '是|否', NULL, 22, 135),
-(113, '不应该让妇女单独在酒馆里喝酒。', '是|否', NULL, 23, 135),
-(114, '如果某人冤枉了我，我觉得只要有可能就该批评他，这样做的目的是为了维护原则。', '是|否', NULL, 24, 135),
-(115, '我好象和周围的大多数人一样聪明能干。', '是|否', NULL, 25, 135),
-(116, '我希望拥有支配他人的权力。', '是|否', NULL, 26, 135),
-(117, '我感到很难集中精力去完成一项工作。', '是|否', NULL, 27, 135),
-(118, '一想到别人不赞同我，我就变得非常紧张、焦虑。', '是|否', NULL, 28, 135),
-(119, '许多人的困难在于他们办事不够认真严肃。', '是|否', NULL, 29, 135),
-(120, '我过去喜欢上学。', '是|否', NULL, 30, 135),
-(121, '我害怕雷暴雨。', '是|否', NULL, 31, 135),
-(122, '有时我真想骂街。', '是|否', NULL, 32, 135),
-(123, '我肯定，世界上纯粹、真正的宗教只有一种。', '是|否', NULL, 33, 135),
-(124, '听到下流的故事时，我感到窘迫。', '是|否', NULL, 34, 135),
-(125, '我有时为避开和某人相遇而穿过马路。', '是|否', NULL, 35, 135),
-(126, '我过去常写日记。', '是|否', NULL, 36, 135),
-(127, '应该和少数民族搞好团结，但这件事与我无关。', '是|否', NULL, 37, 135),
-(128, '我感到很难向任何人谈及自己的情况。', '是|否', NULL, 38, 135),
-(129, '我们应该为自己的国家担忧，让世界上其他国家自己管理自己。', '是|否', NULL, 39, 135),
-(130, '我经常感到好象整个世界对我毫不在意，在飘然而去。', '是|否', NULL, 40, 135),
-(131, '我感到厌烦的时候，喜欢挑起刺激性的事端。', '是|否', NULL, 41, 135),
-(132, '我喜欢不时地夸耀一下自己取得的成绩。', '是|否', NULL, 42, 135),
-(133, '我害怕深水。', '是|否', NULL, 43, 135),
-(134, '必须承认，我常常想方设法按自己的方式行事，丝毫不考虑别人可能要做什么。', '是|否', NULL, 44, 135),
-(135, '我觉得自己希望当汽车修理工。', '是|否', NULL, 45, 135),
-(136, '在正式的舞会或集会上，我总感到紧张和不舒适。', '是|否', NULL, 46, 135),
-(137, '我不愿意看到人们穿戴邋邋遢遢，过于随便。', '是|否', NULL, 47, 135),
-(138, '我每周会有一次或多次觉得突然浑身发烧，却没有明显的原因。', '是|否', NULL, 48, 135),
-(139, '有时我觉得一切都糟糕得不愿张口提及。', '是|否', NULL, 49, 135),
-(140, '如果一切照现在这个样子继续下去，人们很难期望会发生什么了不起的事。', '是|否', NULL, 50, 135),
-(141, '我无法使自己的思想集中到某一件事上。', '是|否', NULL, 51, 135),
-(142, '必须承认，我经常对工作能少干就少干。', '是|否', NULL, 52, 135),
-(143, '我喜欢成为人们注意的中心。', '是|否', NULL, 53, 135),
-(144, '单独走进别人正在聚集聊天的房间，我并不感到害怕。', '是|否', NULL, 54, 135),
-(145, '有时我非常泄气。', '是|否', NULL, 55, 135),
-(146, '想到自己会遭受车祸，我很害怕。', '是|否', NULL, 56, 135),
-(147, '和大家在一起的时候，我总想不出恰当的话来说。', '是|否', NULL, 57, 135),
-(148, '中学教师总抱怨他们的收入少，但我认为他们也就该挣这么多钱。', '是|否', NULL, 58, 135),
-(149, '有时我真想与某人动手打一架。', '是|否', NULL, 59, 135),
-(150, '听那种没有自己主见的人讲课很令人讨厌。', '是|否', NULL, 60, 135),
-(151, '一个人倘若事先把一切活动都安排好，他很可能会把生活中的乐趣全部剥夺掉。', '是|否', NULL, 61, 135),
-(152, '过去念书时，我接受知识很慢。', '是|否', NULL, 62, 135),
-(153, '我喜欢诗歌。', '是|否', NULL, 63, 135),
-(154, '我不喜欢与别人说话，除非他们先开口。', '是|否', NULL, 64, 135),
-(155, '我觉得自己希望骑一辆赛车。', '是|否', NULL, 65, 135),
-(156, '有时没有任何原因，甚至当一切很糟糕的时候，我反而又激动又高兴，感到万事如意。', '是|否', NULL, 66, 135),
-(157, '我一生的目的之一，就是完成某件我母亲可以引为自豪的工作。', '是|否', NULL, 67, 135),
-(158, '我很容易恋爱，也很容易失恋。', '是|否', NULL, 68, 135),
-(159, '只要不犯法，回避法律条款也没什么不好。', '是|否', NULL, 69, 135),
-(160, '现在做父母的对子女管教太松。', '是|否', NULL, 70, 135),
-(161, '我很怕黑暗。', '是|否', NULL, 71, 135),
-(162, '碰到困难的问题，我往往容易打退堂鼓。', '是|否', NULL, 72, 135),
-(163, '别人的批评和训斥，使我很不舒服。', '是|否', NULL, 73, 135),
-(164, '我有一些奇特、少有的念头。', '是|否', NULL, 74, 135),
-(165, '身体不舒服的时候，我容易生气发火。', '是|否', NULL, 75, 135),
-(166, '我患有漫游癖，只有在闭逛旅游时，我才感到愉快。', '是|否', NULL, 76, 135),
-(167, '我常常发现，在试图做某件事的时候，我的手在发抖。', '是|否', NULL, 77, 135),
-(168, '假如迫不得已，非要见很多人的话，我感到很紧张。', '是|否', NULL, 78, 135),
-(169, '我希望听到著名歌手在歌剧中演唱。', '是|否', NULL, 79, 135),
-(170, '有时没有任何充分的理由，我就生气、发脾气。', '是|否', NULL, 80, 135),
-(171, '我喜欢参加社交聚会和联欢会。', '是|否', NULL, 81, 135),
-(172, '我父母常常对我的朋友表示反感。', '是|否', NULL, 82, 135),
-(173, '我希望同时是好几个俱乐部或社团的成员。', '是|否', NULL, 83, 135),
-(174, '过去我的家庭生活一直很幸福。', '是|否', NULL, 84, 135),
-(175, '我往往凭一时冲动，鲁莽行事，而没有停下来思考一下。', '是|否', NULL, 85, 135),
-(176, '我做事的方法常易被人误解。', '是|否', NULL, 86, 135),
-(177, '有时，我突然感到一阵晕眩，所干的事情被打断，周围发生的一切都不知道。', '是|否', NULL, 87, 135),
-(178, '某人为我做了一件好事，我常常自问其背后隐藏的动机是什么。', '是|否', NULL, 88, 135),
-(179, '我确实缺乏自信心。', '是|否', NULL, 89, 135),
-(180, '当某人招致不幸时，其他人大都暗自高兴。', '是|否', NULL, 90, 135),
-(181, '假如在某个群众团体工作，我喜欢担任领导职务。', '是|否', NULL, 91, 135),
-(182, '有时我觉得好象非要伤害自己或伤害他人。', '是|否', NULL, 92, 135),
-(183, '我有不少份外的事要操心。', '是|否', NULL, 93, 135),
-(184, '我常常只图一时快乐，即使这样做有损于长远目标也在所不惜。', '是|否', NULL, 94, 135),
-(185, '除非与我熟知的人在一起，我一般不爱多说话。', '是|否', NULL, 95, 135),
-(186, '我记得自己曾经为了摆脱某件事而假装生病。', '是|否', NULL, 96, 135),
-(187, '碰到一位陌生人，我常常感到他比我强。', '是|否', NULL, 97, 135),
-(188, '我喜欢让别人去猜测我下一步将干什么。', '是|否', NULL, 98, 135),
-(189, '和众人在一起时，假如让我主持一个讨论或就我熟知的事情发表意见，我不会觉得难为情的。', '是|否', NULL, 99, 135),
-(190, '事情出了差错，我有时责怪他人。', '是|否', NULL, 100, 135),
-(191, '我更喜欢自己下了赌注的比赛或游戏。', '是|否', NULL, 101, 135),
-(192, '我常常发现，别人嫉妒我的好主意，就是因为他们没有先想到这些主意。', '是|否', NULL, 102, 135),
-(193, '我喜欢参加社交集会和其他热热闹闹的活动。', '是|否', NULL, 103, 135),
-(194, '我爱打猎。', '是|否', NULL, 104, 135),
-(195, '当独自一个人的时候，我发现自己常常在琢磨一些抽象的问题，比如：自由意志、邪恶等等。', '是|否', NULL, 105, 135),
-(196, '听到有人被非法地阻止参加选举，我非常气愤。', '是|否', NULL, 106, 135),
-(197, '我从前上学时，有时因为惹老师生气被送去见班主任。', '是|否', NULL, 107, 135),
-(198, '我希望当一名图书管理员。', '是|否', NULL, 108, 135),
-(199, '我很喜欢参加舞会。', '是|否', NULL, 109, 135),
-(200, '多数人从内心里并不愿意花力气帮助他人。', '是|否', NULL, 110, 135),
-(201, '人们装出他们互相很关心，而实际上并非如此。', '是|否', NULL, 111, 135),
-(202, '多数人在性的问题上忧虑过多。', '是|否', NULL, 112, 135),
-(203, '遇到不熟悉的人我很难想出什么话题来说。', '是|否', NULL, 113, 135),
-(204, '我很喜欢对称的东西，而不喜欢不对称的东西。', '是|否', NULL, 114, 135),
-(205, '我宁愿做一名踏踏实实、可以信赖的人，而不愿做一名才华横溢而见异思迁的人。', '是|否', NULL, 115, 135),
-(206, '一有机会，我总爱以某种方式显露一下自己。', '是|否', NULL, 116, 135),
-(207, '对某些问题，我太容易动肝火，所以无法谈论它们。', '是|否', NULL, 117, 135),
-(208, '有时候，我好象简直无力开展工作。', '是|否', NULL, 118, 135),
-(209, '若有人没有把贵重物品妥善保管，使其成为诱饵，一旦该物被偷了的话，则放物的人和小偷应受到同样的谴责。', '是|否', NULL, 119, 135),
-(210, '我同什么样的人都合得来。', '是|否', NULL, 120, 135),
-(211, '我常常被不断涌现又毫无意义的思想所烦忧。', '是|否', NULL, 121, 135),
-(212, '假如我是记者，我很希望报道有关剧院的新闻。', '是|否', NULL, 122, 135),
-(213, '男人与女人在一起的时候，总想取得女人的好感。', '是|否', NULL, 123, 135),
-(214, '我喜欢看指导人们亲自动手做事情的杂志。', '是|否', NULL, 124, 135),
-(215, '必须承认，我感到很难在严格的规章制度下工作。', '是|否', NULL, 125, 135),
-(216, '我喜欢盛大喧闹的聚会。', '是|否', NULL, 126, 135),
-(217, '我有时觉得自己是别人的负担。', '是|否', NULL, 127, 135),
-(218, '只有傻子才试图改变我们中国人的生活方式。', '是|否', NULL, 128, 135),
-(219, '我常常感到好象做了什么错误的或邪恶的事。', '是|否', NULL, 129, 135),
-(220, '以前上学时，我感到很难在全班同学面前讲话。', '是|否', NULL, 130, 135),
-(221, '我通常感到人生很有价值。', '是|否', NULL, 131, 135),
-(222, '我们应该离开非洲国家，以便澄清他们的问题，我们没有任何理由去帮助他们。', '是|否', NULL, 132, 135),
-(223, '有几次，我对某个人很刻薄。', '是|否', NULL, 133, 135),
-(224, '我觉得多数人会为了超过他人而说慌。', '是|否', NULL, 134, 135),
-(225, '我爱自己讲话，而不爱听别人讲话。', '是|否', NULL, 135, 135),
-(226, '我喜欢科学。', '是|否', NULL, 136, 135),
-(227, '我常常发脾气。', '是|否', NULL, 137, 135),
-(228, '必须承认，搬到一个陌生的地方去我会有些害怕。', '是|否', NULL, 138, 135),
-(229, '在公共场所，比如在公共汽车上或在商店里，我对盯着我瞧的人感到很烦恼。', '是|否', NULL, 139, 135),
-(230, '我自信知道应怎样解决我们今天所面临的国际问题。', '是|否', NULL, 140, 135),
-(231, '有时我爱做那些不应该做的、违反制度的事。', '是|否', NULL, 141, 135),
-(232, '我很少和家里人吵架。', '是|否', NULL, 142, 135),
-(233, '买东西时，如果多找给了我钱，我总是把钱送回去。', '是|否', NULL, 143, 135),
-(234, '我常常厌恶自己。', '是|否', NULL, 144, 135),
-(235, '相当多的人都会由于不正当的性行为而感到内疚。', '是|否', NULL, 145, 135),
-(236, '我喜欢阅读科学方面的书籍。', '是|否', NULL, 146, 135),
-(237, '和大家在一起时，我很难表现得自然。', '是|否', NULL, 147, 135),
-(238, '有些游戏，我根本不参加，因为我不擅长。', '是|否', NULL, 148, 135),
-(239, '我希望加入某个合唱团。', '是|否', NULL, 149, 135),
-(240, '小时候，我常因表现不好受到严厉的惩罚。', '是|否', NULL, 150, 135),
-(241, '有时，我在实际上无足轻重的事上绞尽了脑汁。', '是|否', NULL, 151, 135),
-(242, '我觉得自己常常无缘无故地受到惩罚。', '是|否', NULL, 152, 135),
-(243, '我希望当电影或戏剧演员。', '是|否', NULL, 153, 135),
-(244, '我情愿自己出钱为他人雪冤，尽管我与此案没有牵连。', '是|否', NULL, 154, 135),
-(245, '有时候，我真想做件有害的或惊人的事。', '是|否', NULL, 155, 135),
-(246, '我常常感到身体的某些部分有虫爬、火烧、刺痛和即将麻木的感觉。', '是|否', NULL, 156, 135),
-(247, '我常常违背父母的意愿。', '是|否', NULL, 157, 135),
-(248, '假如是我驾驶汽车，我会尽量不让别人超过我。', '是|否', NULL, 158, 135),
-(249, '对明明知道不会伤害自己的事物和人，我也曾感到很害  怕。', '是|否', NULL, 159, 135),
-(250, '当年，我父母很希望我出类拔萃。', '是|否', NULL, 160, 135),
-(251, '我愿意把自己说成是一个性格坚强的人。', '是|否', NULL, 161, 135),
-(252, '我几乎从来没有睡着过。', '是|否', NULL, 162, 135),
-(253, '投票选举完全是件令人烦恼、毫无意义的事。', '是|否', NULL, 163, 135),
-(254, '我觉得生活上井井有条、按时作息很适合我的脾性。', '是|否', NULL, 164, 135),
-(255, '我很难同情那种对事物总持怀疑态度、缺乏信心的人。', '是|否', NULL, 165, 135),
-(256, '我吃什么东西都是一个味。', '是|否', NULL, 166, 135),
-(257, '我做事情常常有始无终，虎头蛇尾。', '是|否', NULL, 167, 135),
-(258, '假如一个朋友也没有，我也会很愉快。', '是|否', NULL, 168, 135),
-(259, '当我出于无奈去向某人讨个职业时，会感到很紧张。', '是|否', NULL, 169, 135),
-(260, '我有时做事胆子很小。', '是|否', NULL, 170, 135),
-(261, '我常常希望离开家庭。', '是|否', NULL, 171, 135),
-(262, '我的整个脑袋每天好象要疼好长时间。', '是|否', NULL, 172, 135),
-(263, '过去在学校里，多数老师对我都很公正和诚恳。', '是|否', NULL, 173, 135),
-(264, '必须承认，我讲话很公正。', '是|否', NULL, 174, 135),
-(265, '在弄清事实之前，我从不对任何人下结论。', '是|否', NULL, 175, 135),
-(266, '假如某人很聪明，从别人身上骗取了一大笔钱，应该允许他拥有这笔钱。', '是|否', NULL, 176, 135),
-(267, '如果没有报酬，就不要指望有谁会对社会服务。', '是|否', NULL, 177, 135),
-(268, '我家里有好几个人的习惯，既给我添麻烦又添烦恼。', '是|否', NULL, 178, 135),
-(269, '必须承认，对于学习新东西，我并没有很强的欲望。', '是|否', NULL, 179, 135),
-(270, '好象没有人能理解我。', '是|否', NULL, 180, 135),
-(271, '我常常自认为是周围人的领导。', '是|否', NULL, 181, 135),
-(272, '老实人要在世界上获得成功，是根本不可能的。', '是|否', NULL, 182, 135),
-(273, '我喜欢把一切安排得整整齐齐，井然有序。', '是|否', NULL, 183, 135),
-(274, '我很讨厌自己的日常生活和工作被意外的事情打扰。', '是|否', NULL, 184, 135),
-(275, '我觉得未来似乎毫无希望。', '是|否', NULL, 185, 135),
-(276, '我过去的家庭生活总是很愉快。', '是|否', NULL, 186, 135),
-(277, '我有理由嫉妒家里的某一两个人。', '是|否', NULL, 187, 135),
-(278, '如果要以牺牲个人乐趣为代价，那我决不会有意地去帮助别人。', '是|否', NULL, 188, 135),
-(279, '我参与的辩论或争吵多数是原则问题。', '是|否', NULL, 189, 135),
-(280, '大家公认我是一名勤劳、踏实、愿为大家服务的人。', '是|否', NULL, 190, 135),
-(281, '一天到晚，我几乎总是口干舌燥。', '是|否', NULL, 191, 135),
-(282, '假如过去从未上过学，多数人的经济状况要比现在好。', '是|否', NULL, 192, 135),
-(283, '在辩论中，别人很容易把我驳倒。', '是|否', NULL, 193, 135),
-(284, '我不喜欢事情总是变化不定、玄不可测。', '是|否', NULL, 194, 135),
-(285, '我常饮酒过度。', '是|否', NULL, 195, 135),
-(286, '过去，我想弃家出走。', '是|否', NULL, 196, 135),
-(287, '生活常常对我很不公平。', '是|否', NULL, 197, 135),
-(288, '我认为自己在事非问题上比多数人更严肃认真。', '是|否', NULL, 198, 135),
-(289, '我生来就有影响别人的天赋。', '是|否', NULL, 199, 135),
-(290, '我赞成从严加强法制，不论其后果如何。', '是|否', NULL, 200, 135),
-(291, '人们常常在背后说我的坏话。', '是|否', NULL, 201, 135),
-(292, '我有几种坏习气很根深蒂固，所以要想克服它们，只是白费劲儿。', '是|否', NULL, 202, 135),
-(293, '我总想把自己的工作计划组织好。', '是|否', NULL, 203, 135),
-(294, '一周有几次，由于胃酸过多，我感到不舒服。', '是|否', NULL, 204, 135),
-(295, '我喜欢对别人加以指点，把工作开展起来。', '是|否', NULL, 205, 135),
-(296, '我对家里几个人所做的那种工作，感到很难为情。', '是|否', NULL, 206, 135),
-(297, '我觉得别人看上去比我幸福。', '是|否', NULL, 207, 135),
-(298, '只要工资高，什么工作对我来说都很好。', '是|否', NULL, 208, 135),
-(299, '我和不熟悉的人在一起感到难为情。', '是|否', NULL, 209, 135),
-(300, '我的生活常常好象毫无意义。', '是|否', NULL, 210, 135),
-(301, '年轻时，我有时偷别人的东西。', '是|否', NULL, 211, 135),
-(302, '事情一旦不顺利，我就想马上打退堂鼓。', '是|否', NULL, 212, 135),
-(303, '过去和我关系密切，同时是我在儿童时代最崇拜的人，是一位女性（母亲、姐妹、姑姨或其他女性）。', '是|否', NULL, 213, 135),
-(304, '我常常感到内疚，因为我曾装作对某事后悔莫及，而实际上并非如此。', '是|否', NULL, 214, 135),
-(305, '有几次，我生气极了。', '是|否', NULL, 215, 135),
-(306, '小时候，我们家不象大多数人家那样安定、平静。', '是|否', NULL, 216, 135),
-(307, '家里有些人做的事，使我胆颤心惊。', '是|否', NULL, 217, 135),
-(308, '小时候上学时，我常给老师添许多麻烦。', '是|否', NULL, 218, 135),
-(309, '假如工钱合理，我希望和一家马戏团或流动曲艺团一道巡回演出。', '是|否', NULL, 219, 135),
-(310, '我有突然感到恶心、呕吐的毛病。', '是|否', NULL, 220, 135),
-(311, '过去，我们一家相互之间总是亲热异常。', '是|否', NULL, 221, 135),
-(312, '我常常在半夜里受到恐吓而惊醒。', '是|否', NULL, 222, 135),
-(313, '许多人的毛病在于他们对事物不够认真。', '是|否', NULL, 223, 135),
-(314, '我不是那种适合当政治领袖的人。', '是|否', NULL, 224, 135),
-(315, '我父母过去从未真正理解过我。', '是|否', NULL, 225, 135),
-(316, '假如看到几个孩子打另一个小孩，我一定会设法制止他  们。', '是|否', NULL, 226, 135),
-(317, '别人在做出决策之前，都似乎很自然地找我征求意见。', '是|否', NULL, 227, 135),
-(318, '我对自己要求很高，并且觉得别人也该照着去做。', '是|否', NULL, 228, 135),
-(319, '一个人假如谁也不信任，生活就会忧郁得多。', '是|否', NULL, 229, 135),
-(320, '那些对事情缺乏信心、无把握的人，使我感到不舒服。', '是|否', NULL, 230, 135),
-(321, NULL, '当我的朋友有麻烦时，我喜欢帮助他们。|对我所承担的一切事情，我都喜欢尽我最大的努力去做。', NULL, 1, 136),
-(322, NULL, '我喜欢探求伟人对我所感兴趣的各种问题有什么看法。|我喜欢完成具有重大意义的事情。', NULL, 2, 136),
-(323, NULL, '我喜欢我写的所有的东西都很精确、清楚、有条有理。|我喜欢在某些职工、专业或专门项目上自己是公认的权威。', NULL, 3, 136),
-(324, NULL, '我喜欢在宴会上讲些趣事与笑话。|我喜欢写本伟大的小说或剧本。', NULL, 4, 136),
-(325, NULL, '我喜欢能随我的意志来去自如。|我喜欢能够自豪地说我将一件难题成功处理了。', NULL, 5, 136),
-(326, NULL, '我喜欢解答其他人觉得困难的谜语与问题。|我喜欢遵从指示去做人家期待我做的事。', NULL, 6, 136),
-(327, NULL, '我喜欢在日常生活中经验到新奇与改变。|当我认为我的上级做得对时，我喜欢对他们表示我的看法。', NULL, 7, 136),
-(328, NULL, '对我所承担的任何工作，我喜欢对其细节作计划与组织。|我喜欢遵从指示做我所该做的事。', NULL, 8, 136),
-(329, NULL, '在公共场合中，我喜欢人们注意和评价我的外表。|我喜欢读伟人的故事。', NULL, 9, 136),
-(330, NULL, '我喜欢回避要我按照例行方法办事的场合。|我喜欢读伟人的故事。', NULL, 10, 136),
-(331, NULL, '我喜欢在某些职业、专业或专门项目上自己是个公认的权威。|我喜欢在工作开始之前做好组织和计划。', NULL, 11, 136),
-(332, NULL, '我喜欢探求伟人们对各种我所感兴趣的问题的看  法。|假如我必须旅行时，我喜欢把事情先安排好。', NULL, 12, 136),
-(333, NULL, '我喜欢将我开了头的工作或任务完成。|我喜欢保持我的书桌或工作间的清洁与整齐。', NULL, 13, 136),
-(334, NULL, '我喜欢告诉别人我所经历的冒险与奇特的事情。|我喜欢饮食有规律，并且有固定时间吃东西。', NULL, 14, 136),
-(335, NULL, '我喜欢独立决定我所要做的事。|我喜欢保持书桌或工作间的清洁与整齐。', NULL, 15, 136),
-(336, NULL, '我喜欢比其他人做得更好。|我喜欢在宴会上讲些趣闻与笑话。', NULL, 16, 136),
-(337, NULL, '我喜欢遵从习俗，并避免做我所尊敬的人认为不合常规的事。|我喜欢谈我的成就。', NULL, 17, 136),
-(338, NULL, '我喜欢我的生活按排得好，过得顺利，而不用对我的计划作太多的改变。|我喜欢告诉别人我所经历的冒险与奇特的事情。', NULL, 18, 136),
-(339, NULL, '我喜欢阅读以性为主体的书与剧本。|我喜欢在团体中成为众目所瞩的对象。', NULL, 19, 136),
-(340, NULL, '我喜欢批评权威人士。|我喜欢用些别人不懂其义的字眼。', NULL, 20, 136),
-(341, NULL, '我喜欢完成其他人认为需要技巧和努力的工作。|我喜欢能随我的意志来去自如。', NULL, 21, 136),
-(342, NULL, '我喜欢称赞我所崇拜的人。|我喜欢很自如地做我所想做的事。', NULL, 22, 136),
-(343, NULL, '我喜欢将我的信、帐单和其他文件整齐地排列着并以某种系统存档。|我希望独立决定我所要做的事。', NULL, 23, 136),
-(344, NULL, '我喜欢提出的明知没有人能回答得出来的问题。|我喜欢批评权威人士。', NULL, 24, 136),
-(345, NULL, '当我动怒时，我想摔东西。|我喜欢回避责任与义务。', NULL, 25, 136),
-(346, NULL, '我喜欢将所承担有事办成功。|我喜欢结交新朋友。', NULL, 26, 136),
-(347, NULL, '我喜欢遵照指示去做我所该做的事。|我喜欢与朋友有深厚的交情。', NULL, 27, 136),
-(348, NULL, '我喜欢我写的所有的东西都很精确、清楚、有条有理。|我喜欢广交朋友。', NULL, 28, 136),
-(349, NULL, '我喜欢在宴会中说趣闻与笑话。|我喜欢写信给我的朋友。', NULL, 29, 136),
-(350, NULL, '我喜欢能随我的意志来去自如。|我喜欢与朋友共享一切。', NULL, 30, 136),
-(351, NULL, '我喜欢解答别人认为困难的谜语与问题。|我喜欢就一个人为什么做去判断他，而不是从他实际上做什么去判断他。', NULL, 31, 136),
-(352, NULL, '我喜欢接受我所崇拜的人领导。|我喜欢了解我的朋友们对他们所面对的各种问题怎样感觉。', NULL, 32, 136),
-(353, NULL, '我喜欢饮食有规律，并且在固定时间吃东西。|我喜欢研究与分析别人的行动。', NULL, 33, 136),
-(354, NULL, '我喜欢说些别人认为机智与聪明的事。|我喜欢将自己放在别人的立场上，看自己若处于相同的情境会有什么感觉。', NULL, 34, 136),
-(355, NULL, '我喜欢照我的意思做我想做的事。|我喜欢观察其他人在某个场合的感觉。', NULL, 35, 136),
-(356, NULL, '我喜欢完成别人认为需要技巧和努力的工作。|我喜欢在我失败的时候朋友们能鼓励我。', NULL, 36, 136),
-(357, NULL, '作计划时，我喜欢从其见解为我所敬重的人那里获得些建议。|我喜欢我的朋友对我仁慈。', NULL, 37, 136),
-(358, NULL, '我喜欢我的朋友的生活安排得好，过得顺利，而不用对我的计划作太多的改变。|当我生病时，我喜欢我的朋友感到不安。', NULL, 38, 136),
-(359, NULL, '我喜欢在团体中成为众目所瞩的对象。|当我受伤或生病时，我喜欢我的朋友小题大作。', NULL, 39, 136),
-(360, NULL, '我喜欢回避要我按照例行方法办事的场合。|当我沮丧时，我喜欢我的朋友们同情并使我愉快。', NULL, 40, 136),
-(361, NULL, '我想写一本伟大的小说或剧本。|当作为群众团体的一个成员时，我喜欢被指定或被选为领导者。', NULL, 41, 136),
-(362, NULL, '在团体中，我喜欢接受别人的领导来决定团体该做什么。|只要可能，我就喜欢监督与指导别人的行动。', NULL, 42, 136),
-(363, NULL, '我喜欢将我的信、帐单或其他文件整齐地排列着，并依某种系统存档。|我喜欢成为我所属的机构与团体的领导者之一。', NULL, 43, 136),
-(364, NULL, '我喜欢问些明知没人回答得出来的问题。|我喜欢告诉别人怎么做他们的工作。', NULL, 44, 136),
-(365, NULL, '我喜欢回避责任与义务。|我喜欢被人们叫去做和事佬。', NULL, 45, 136),
-(366, NULL, '我喜欢在某种职业、专业或专门的项目上成为公认的权威。|每当我做错了事，我感到有罪恶感。', NULL, 46, 136),
-(367, NULL, '我喜欢读伟人的故事。|我觉得我必须承认我所做的一些错事。', NULL, 47, 136),
-(368, NULL, '对我所承担的任何工作，我喜欢对其细节作好计划与组织。|当事情不顺时，我感到我比任何人更该受到责备。', NULL, 48, 136),
-(369, NULL, '我喜欢用些别人常常不明白其意义的字眼。|我觉得样样不如别人。', NULL, 49, 136),
-(370, NULL, '我喜欢批评权威人士。|在认为是我的上司的人面前，我感到胆怯。', NULL, 50, 136),
-(371, NULL, '对我所承担的一切事情，我喜欢尽力而为。|我喜欢帮助比我不幸的人。', NULL, 51, 136),
-(372, NULL, '我喜欢探求伟人们对我所感兴趣的各种问题有什么看法。|我喜欢对我的朋友们慷慨。', NULL, 52, 136),
-(373, NULL, '在处理难题时，我喜欢在开始之前作计划。|我喜欢为我的朋友做点小事。', NULL, 53, 136),
-(374, NULL, '我喜欢对别人谈我所经历的冒险与奇特的事。|我喜欢我的朋友信任我，并对我倾诉他们的麻烦。', NULL, 54, 136),
-(375, NULL, '我喜欢发表我对事情的看法。|我喜欢原谅有时可能伤害了我的朋友。', NULL, 55, 136),
-(376, NULL, '我喜欢自己能比别人做得更好。|我喜欢在新奇的餐厅里吃饮。', NULL, 56, 136),
-(377, NULL, '我喜欢遵从习俗避免做我所尊敬的人认为不合常规的事情。|我喜欢追求。', NULL, 57, 136),
-(378, NULL, '在开始工作之前，我喜欢对它做好组织和计划。|我喜欢旅行和到处观光。', NULL, 58, 136),
-(379, NULL, '在公共场合，我喜欢人们注意和评价我的外表。|我喜欢搬家，住到不同的地方。', NULL, 59, 136),
-(380, NULL, '我喜欢独立决定我所要做的事。|我喜欢做些新鲜且有变化的事。', NULL, 60, 136),
-(381, NULL, '我喜欢我能自豪地说我解决了一个难题。|对我所承担的事，我喜欢认真去做。', NULL, 61, 136),
-(382, NULL, '当我认为我的上司做得对时，我喜欢对他们表示我的看法。|我喜欢在接受其他事之前完成手头的事。', NULL, 62, 136),
-(383, NULL, '假如我必须旅行时，我喜欢事先计划好。|我喜欢继续解我的难题或问题，直到解决为止。', NULL, 63, 136),
-(384, NULL, '我有时喜欢做些事情，只为了想看看别人对此事的反应。|我喜欢固定于某一职业或问题上，甚至看来它好象没有什么希望。', NULL, 64, 136),
-(385, NULL, '我喜欢作别人认为不合常规的事。|我喜欢不受干扰地长时间工作。', NULL, 65, 136),
-(386, NULL, '我喜欢完成具有重大意义的事。|我不在乎与谜人的异性表示亲切。', NULL, 66, 136),
-(387, NULL, '我喜欢称赞我所崇拜的人。|我喜欢被异性认为身材吸引人。', NULL, 67, 136),
-(388, NULL, '我喜欢保持我的书桌与工作间的清洁与整齐。|我喜欢与异性谈情说爱。', NULL, 68, 136),
-(389, NULL, '我喜欢谈我的成就。|我喜欢听或说以性为主的笑话。', NULL, 69, 136),
-(390, NULL, '我喜欢依我的方式做事而不在乎别人的看法。|我喜欢看以性为主的书或剧本。', NULL, 70, 136),
-(391, NULL, '我喜欢写本伟大的小说或剧本。|我喜欢考虑与我看法相反的观点。', NULL, 71, 136),
-(392, NULL, '在团体中我喜欢接受别人的领导来决定团体该做什么。|假如某人罪有应得的话我想公开的进行批评。', NULL, 72, 136),
-(393, NULL, '我喜欢我的生活安排得好，过得顺利而不用对我的计划做太多的改变。|当我动怒时，我想摔东西。', NULL, 73, 136),
-(394, NULL, '我喜欢问些没有人能回答的问题。|我喜欢对别人说我对他们的看法。', NULL, 74, 136),
-(395, NULL, '我喜欢回避责任与义务。|我想取笑那些我认为他们行为愚蠢的人。', NULL, 75, 136),
-(396, NULL, '我喜欢对我的朋友忠实。|对所有我承担的事，我喜欢尽力做好。', NULL, 76, 136),
-(397, NULL, '我喜欢观察别人在某些情况下的感觉。|我喜欢我能自豪在说我成功地解决了一件难题。', NULL, 77, 136),
-(398, NULL, '当我失败时，我喜欢我的朋友鼓励我。|我喜欢将所承担的事做得很成功。', NULL, 78, 136),
-(399, NULL, '我喜欢成为所属机构与团体的领导之一。|我喜欢能比别人做得更好。', NULL, 79, 136),
-(400, NULL, '当发生差错时，我觉得比别人更该受到责备。|我喜欢解答别人认为困难的谜语与问题。', NULL, 80, 136),
-(401, NULL, '我喜欢为我的朋友做事。|作计划时，我喜欢从其见解为我所尊敬的人那里得到些建议。', NULL, 81, 136),
-(402, NULL, '我喜欢将自己放在别人的处境上，去想象同样情况下也会有什么感觉。|当我认为我的上司做得对时，我喜欢对他们表示我的看法。', NULL, 82, 136),
-(403, NULL, '当我有问题时，我喜欢被我的朋友同情与了解。|我喜欢接受我所尊敬的人领导。', NULL, 83, 136),
-(404, NULL, '在郡众团体中，我喜欢被指定或选为领导者。|在团体中，我喜欢接受别人的领导来决定团体该怎么做。', NULL, 84, 136),
-(405, NULL, '假如我作错了事，我觉得应该受到处罚。|我喜欢遵从习俗，避免我所尊敬的我认为不合常规的事。', NULL, 85, 136),
-(406, NULL, '我喜欢与朋友共享一切。|在开始做困难的事情之前，我喜欢先做计划。', NULL, 86, 136),
-(407, NULL, '我喜欢了解我的朋友在面临各种问题时的感觉。|假如我必须旅行，我喜欢先将事情安排好。', NULL, 87, 136),
-(408, NULL, '我喜欢我的朋友对我仁慈。|在开始之前，我喜欢将工作组织计划好。', NULL, 88, 136),
-(409, NULL, '我喜欢被别人看作领导。|我喜欢将我的信、帐单或其他文件整齐地排列着, 并依某种系统存档。', NULL, 89, 136),
-(410, NULL, '我感到我所受的痛苦与折磨对我而言是好处多于坏处。|我喜欢我的生活安排的好，过得顺利，而不用对我的计划做太多的改变。', NULL, 90, 136),
-(411, NULL, '我喜欢与我的朋友有深厚的交情。|我喜欢说些别人认为机智与聪明的事。', NULL, 91, 136),
-(412, NULL, '我喜欢探求朋友们的性格并尝试找出他们成为这样的原因。|我有时喜欢做些事情，只是为了想看看别人对它的反应。', NULL, 92, 136),
-(413, NULL, '当我受伤或生病时，我喜欢，的朋友小题大作。|我喜欢谈我的成就。', NULL, 93, 136),
-(414, NULL, '我喜欢告诉别人该怎么做他们的工作。|我喜欢成为团体中众目所瞩的对象。', NULL, 94, 136),
-(415, NULL, '在所认定的强者面前我感到胆怯。|我喜欢用些别人不懂其义的字眼。', NULL, 95, 136),
-(416, NULL, '我比较喜欢与朋友共事而不喜欢独自工作。|我不表达我对事情的看法。', NULL, 96, 136),
-(417, NULL, '我喜欢研究与分析他人的行动。|我喜欢作别人认为不合常规的事。', NULL, 97, 136),
-(418, NULL, '当我生病时，我喜欢朋友们为我感伤。|我喜欢避免需要依常规做事的场合。', NULL, 98, 136),
-(419, NULL, '只要可能，我喜欢监督与指导别人的行为。|我喜欢依我的方式办事不管别人的想法。', NULL, 99, 136),
-(420, NULL, '我觉得处处不如人。|我喜欢回避责任与义务。', NULL, 100, 136),
-(421, NULL, '我喜欢将我所承担的事办成功。|我喜欢结交新朋友。', NULL, 101, 136),
-(422, NULL, '我喜欢分析我自己的动机与情感。|我喜欢广交朋友。', NULL, 102, 136),
-(423, NULL, '当我遇困难时，我喜欢我的朋友帮助我。|我喜欢为我的朋友做事。', NULL, 103, 136),
-(424, NULL, '当我的观点被冲击时，我喜欢为之辩护。|我喜欢写信给我的朋友。', NULL, 104, 136),
-(425, NULL, '每当我做错事时，我感到内疚。|我喜欢与朋友有深交。', NULL, 105, 136),
-(426, NULL, '我喜欢与朋友共享一切。|我喜欢分析我自己的动机与感情。', NULL, 106, 136),
-(427, NULL, '我喜欢接受我所尊敬的人的领导。|我喜欢了解我的朋友在面临各种问题时的感觉。', NULL, 107, 136),
-(428, NULL, '我喜欢我的朋友们高兴地为我办点小事。|我喜欢从人们为什么那样做而不从他实际做什么来判断人。', NULL, 108, 136),
-(429, NULL, '大家在一起时，我喜欢决定人们该做什么。|我喜欢预测我的朋友们在各种情况下的反应。', NULL, 109, 136),
-(430, NULL, '当我退让或避免了冲突时，我觉得比争取达到目标的还好些。|我喜欢分析他人的感情与动机。', NULL, 110, 136),
-(431, NULL, '我喜欢结交新朋友。|当我有麻烦时，我喜欢我的朋友帮助我。', NULL, 111, 136),
-(432, NULL, '我喜欢从人们为什么那样做而不从他实际做什么来判断人。|我喜欢我的朋友们对我有深情。', NULL, 112, 136),
-(433, NULL, '我喜欢将我的生活安排好，过得顺利，而不用对我的计划作太大的改变。|当我生病时，我喜欢我的朋友们为我感伤。', NULL, 113, 136),
-(434, NULL, '我喜欢被人们叫去作和事佬。|我喜欢我的朋友们高兴地为我办点小事。', NULL, 114, 136),
-(435, NULL, '我觉得我必须承认自己做错了的事。|当我沮丧时，我喜欢我的朋友们同情我，并使我愉快。', NULL, 115, 136),
-(436, NULL, '我喜欢与朋友们共事而不喜欢独自进行工作。|当我的观点被攻击时，我喜欢为之辩护。', NULL, 116, 136),
-(437, NULL, '我喜欢观察我的朋友们的性格，试着找出究竟是什么缘故使他们成为现在这样。|我喜欢能说服与影响其他人去做我想做的事。', NULL, 117, 136),
-(438, NULL, '当我沮丧时我喜欢我的朋友同情我，并使我愉快。|在团体中，我喜欢决定我们该做什么。', NULL, 118, 136),
-(439, NULL, '我喜欢问我明知没有人回答得出来的问题。|我喜欢告诉别人怎么做他们的工作。', NULL, 119, 136),
-(440, NULL, '在我所认定的强者面前，我感到胆怯。|只要我能够的话，我喜欢监督与指导别人的行动。', NULL, 120, 136),
-(441, NULL, '我喜欢加入一个成员之间彼此温暖与友善的团体。|我知道自己作错了事时会感到内疚。', NULL, 121, 136),
-(442, NULL, '我喜欢分析别人的感情与动机。|由于自己无能处理各种情况使我感到沮丧。', NULL, 122, 136),
-(443, NULL, '当我生病时，我喜欢我的朋友们为我感伤。|当我退让与避免争执时，我感到比争取达到目的还好些。', NULL, 123, 136),
-(444, NULL, '我喜欢我能够说服与影响他人做我想做的事。|由于自己无能处理各种情况使我感到沮丧。', NULL, 124, 136),
-(445, NULL, '我喜欢批评权威人士。|在我认为是自己的人面前，我感到胆怯。', NULL, 125, 136),
-(446, NULL, '我喜欢加入在成员之间彼此具有温暖与友善感情的团体。|当我的朋友们有麻烦时，我喜欢帮助他们。', NULL, 126, 136),
-(447, NULL, '我喜欢分析我的动机与情感。|当我的朋友们受伤时，我喜欢同情他们。', NULL, 127, 136),
-(448, NULL, '当我有麻烦时，我喜欢我的朋友帮助我。|我喜欢待人仁慈与同情。', NULL, 128, 136),
-(449, NULL, '我喜欢成为我所属机构与团体的领导之一。|当我朋友受伤或生病时，我喜欢同情他们。', NULL, 129, 136),
-(450, NULL, '我觉得我所受的痛苦与不幸是好处多于坏处。|我喜欢对我的朋友表示自己的深情。', NULL, 130, 136),
-(451, NULL, '我喜欢与朋友共事而不喜欢独立工作。|我喜欢试验与尝试新东西。', NULL, 131, 136),
-(452, NULL, '我喜欢思索我的朋友们的性格，探讨为什么他们象现在这样。|我喜欢尝试新的职业，而不喜欢一直做同样的老事情。', NULL, 132, 136),
-(453, NULL, '当我有问题时，我喜欢我的朋友们能同情与了解。|我喜欢那些原来不熟悉的人。', NULL, 133, 136),
-(454, NULL, '当我的观点被攻击时，我喜欢为之辩护。|我喜欢在日常生活中经历新鲜与变迁。', NULL, 134, 136),
-(455, NULL, '当我退让避免了争执时，我感到比照自己的方式做还好些。|我喜欢搬家住到不同的地方。', NULL, 135, 136),
-(456, NULL, '我喜欢为我的朋友办事。|当我有功课要做时，我喜欢及时做并一直工作至完成为止。', NULL, 136, 136),
-(457, NULL, '我喜欢分析别人的感情与动机。|当我工作时，我喜欢避开干扰。', NULL, 137, 136),
-(458, NULL, '我喜欢我的朋友们高兴地为我办点小事。|我喜欢熬夜将工作完成。', NULL, 138, 136),
-(459, NULL, '我喜欢被别人当作领导。|我喜欢长时间地工作而不受别人干扰。', NULL, 139, 136),
-(460, NULL, '假如我做错了事的话，我觉得我应受责备。|我喜欢坚持我的职业与方向，甚至看来好象没什么进展时，我也不在乎。', NULL, 140, 136),
-(461, NULL, '我喜欢对我的朋友忠实。|我喜欢与迷人的异性约会。', NULL, 141, 136),
-(462, NULL, '我喜欢预测我的朋友在各种情况下的行动。|我喜欢参与有关性与性行为的讨论。', NULL, 142, 136),
-(463, NULL, '我喜欢我的朋友们对我有深情。|我喜欢变得性兴奋。', NULL, 143, 136),
-(464, NULL, '在一群人中，我喜欢由我决定该做什么。|我喜欢参与有性的社交场合。', NULL, 144, 136),
-(465, NULL, '我为自己无力处理各种情况感到沮丧。|我喜欢看以性为主题的书与剧本。', NULL, 145, 136),
-(466, NULL, '我喜欢写信给我的朋友。|我喜欢看报上有关谋杀与其他暴力方面的新闻。', NULL, 146, 136),
-(467, NULL, '我喜欢预测我的朋友们在各种情况下将怎样做。|我喜欢攻击与我观点相反的看法。', NULL, 147, 136),
-(468, NULL, '当我受伤或生病时，我喜欢我的朋友们为我小题大作。|当事情不顺时，我想责怪别人。', NULL, 148, 136);
-INSERT INTO `question` (`id`, `topic`, `options`, `grade`, `number`, `paper_id`) VALUES
-(469, NULL, '我喜欢告诉别人如何做他们的工作。|当有人侮辱我时，我想报复。', NULL, 149, 136),
-(470, NULL, '我感到我处处不如人。|当我不赞同他们的看法时，我喜欢说服他们。', NULL, 150, 136),
-(471, NULL, '当我的朋友们有麻烦时，我喜欢帮助他们。|对我所承担的事，我喜欢尽力而为。', NULL, 151, 136),
-(472, NULL, '对我所承担的一切事情，我喜欢认真去做。|我喜欢完成某些具有重大意义的事。', NULL, 152, 136),
-(473, NULL, '对我所承担的一切事情，我喜欢认真去做。|我喜欢完成某些具有重大意义的事。', NULL, 153, 136),
-(474, NULL, '我喜欢与迷人的异性约会。|对我所承担的事我希望能够做成功。', NULL, 154, 136),
-(475, NULL, '我喜欢看报上有关谋杀与其他形式的暴力新闻。|我想写本伟大的小说或剧本。', NULL, 155, 136),
-(476, NULL, '我喜欢为我的朋友们做点小事。|作计划时，我喜欢我所敬重的人给我提出些建议。', NULL, 156, 136),
-(477, NULL, '我喜欢在日常生活中经历新奇与变异。|当我认为我的上司做的对时，我喜欢对他们表示我的看法。', NULL, 157, 136),
-(478, NULL, '我喜欢熬夜将工作完成。|我增欢称赞我所仰慕的人。', NULL, 158, 136),
-(479, NULL, '我喜欢变得性兴奋。|我喜欢接受我所仰慕的人领导。', NULL, 159, 136),
-(480, NULL, '当有人侮辱我时，我想报复。|在团体中，我喜欢接受别人的领导来决定团体该做什么。', NULL, 160, 136),
-(481, NULL, '我喜欢对我的朋友们慷慨。|在做困难的事之前，我喜欢作个计划。', NULL, 161, 136),
-(482, NULL, '我喜欢交新朋友。|我希望我的一切作品都是严密、整齐而有条理的。', NULL, 162, 136),
-(483, NULL, '我喜欢将我开了头的事情或工作完成。|我喜欢使我的书桌与工作间保持清洁与整齐。', NULL, 163, 136),
-(484, NULL, '我喜欢被别人认为身材迷人。|对我所承担的任何事，我喜欢巨细无遗地进行计划与组织。', NULL, 164, 136),
-(485, NULL, '我喜欢告诉别人我对他们的看法。|我喜欢饮食有规律，并在固定的时间吃东西。', NULL, 165, 136),
-(486, NULL, '我喜欢对我的朋友表示深情。|我喜欢说些别人认为机智与聪明的事。', NULL, 166, 136),
-(487, NULL, '我喜欢尝试新的工作而不喜欢一直做同样的老事  情。|我有时想做一些事情的目的只为了想看别人对它的反应。', NULL, 167, 136),
-(488, NULL, '我喜欢坚持自己的工作与方向，即使看来好象已进入了无底深渊，我也不在乎。|在公共场合中我喜欢人注意我和评价我的外表。', NULL, 168, 136),
-(489, NULL, '我喜欢看以性为主题的书与剧本。|在团体中，我喜欢成为众人所注目的对象。', NULL, 169, 136),
-(490, NULL, '当事情不顺时，我想责怪别人。|我喜欢问些明知没人能回答的问题。', NULL, 170, 136),
-(491, NULL, '当我的朋友们受伤或生病时，我喜欢对他们表示同情。|我喜欢说我对事情的看法。', NULL, 171, 136),
-(492, NULL, '我喜欢在新奇的餐厅吃饭。|我喜欢做些别人认为不合常规的事。', NULL, 172, 136),
-(493, NULL, '在承担其他事之前，我喜欢每次只作一件事并将它完成。|我喜欢能自如地做我想作的事。', NULL, 173, 136),
-(494, NULL, '我喜欢参与有关性与性行为的讨论。|我喜欢照我自己的方式来做而不管别人有什么看  法。', NULL, 174, 136),
-(495, NULL, '当我动怒时，我想摔东西。|我喜欢回避责任与义务。', NULL, 175, 136),
-(496, NULL, '当我的朋友们有困难时，我喜欢帮助他们。|我喜欢对我的朋友们忠实。', NULL, 176, 136),
-(497, NULL, '我喜欢做些新鲜的事。|我喜欢交新朋友。', NULL, 177, 136),
-(498, NULL, '当我有功课要做时，我喜欢即时开始并持续到工作完成为止。|我喜欢参与那些成员之间具有温暖与友善情感的团体。', NULL, 178, 136),
-(499, NULL, '我喜欢与迷人的异性约会。|我喜欢广交朋友。', NULL, 179, 136),
-(500, NULL, '我喜欢攻击与我观点相反的看法。|我喜欢给朋友写信。', NULL, 180, 136),
-(501, NULL, '我喜欢对我的朋友们慷慨。|我喜欢观察别人在某一情况下的感觉。', NULL, 181, 136),
-(502, NULL, '我喜欢在新奇的餐厅吃饭。|我喜欢将自己放在别人的立场来想象在同样的情况下我会有什么感觉。', NULL, 182, 136),
-(503, NULL, '我喜欢熬夜将工作完成。|我喜欢预测我的朋友们在各种情况下会怎么做。', NULL, 183, 136),
-(504, NULL, '我喜欢变得性兴奋。|我喜欢研究分析别人的行为。', NULL, 184, 136),
-(505, NULL, '我喜欢取笑那些我觉得是做了蠢事的人。|我喜欢预测我的朋友们在各种情况下会怎么做。', NULL, 185, 136),
-(506, NULL, '对有时伤害我的朋友，我喜欢原谅他们。|当我失败时，我喜欢我的朋友们鼓励我。', NULL, 186, 136),
-(507, NULL, '我喜欢试验与尝试新的事情。|当我有问题时，我喜欢我的朋友们能同情与了解。', NULL, 187, 136),
-(508, NULL, '我喜欢持续地了解迷语与问题,直到解决为止。|我喜欢我的朋友对我仁慈。', NULL, 188, 136),
-(509, NULL, '我喜欢被异性认为身材迷人。|我喜欢我的朋友们对我有深情。', NULL, 189, 136),
-(510, NULL, '假如某人是罪有应得，我会公开批评他。|当我受伤或生病时，我喜欢我的朋友们小题大作。', NULL, 190, 136),
-(511, NULL, '我喜欢对我的朋友们有深情。|我喜欢被人当作领导。', NULL, 191, 136),
-(512, NULL, '我喜欢尝试新的工作而不愿一直做同样的老事情。|在群众团体中，我喜欢被指定或被选为领导。', NULL, 192, 136),
-(513, NULL, '对我起了头的一切事情，我都喜欢将它完成。|我喜欢我能够说服与影响别人做我所要做的事。', NULL, 193, 136),
-(514, NULL, '我喜欢参与有关性行为的讨论。|我愿意被人们叫去做和事佬。', NULL, 194, 136),
-(515, NULL, '当我动怒时，我想摔东西。|我喜欢告诉别人怎么去做他的工作。', NULL, 195, 136),
-(516, NULL, '我喜欢对我的朋友们表示深情。|当事情有差错时，我觉得我比任何人都更该受到责备。', NULL, 196, 136),
-(517, NULL, '我喜欢搬家，住在不同的地方。|当我做错事时，我觉得我该受到处罚。', NULL, 197, 136),
-(518, NULL, '我喜欢坚持自己的工作或方向，甚至当它们看来好象已使我陷入无底深渊时，我也不在乎。|我觉得我所受的痛苦与不幸是好处多于坏处。', NULL, 198, 136),
-(519, NULL, '我喜欢看以性为主题的书与剧本。|我觉得我必须承认有些事我做错了。', NULL, 199, 136),
-(520, NULL, '当事情不顺时，我想责怪别人。|我觉得我处处不如人。', NULL, 200, 136),
-(521, NULL, '对我所承担的一切事情，我喜欢尽力而为。|我喜欢帮助比我不幸的人。', NULL, 201, 136),
-(522, NULL, '我喜欢做新的和各不相同的事。|我喜欢待人仁慈和同情。', NULL, 202, 136),
-(523, NULL, '当我有功课做时，我喜欢及时开始并一直做到完成为止。|我喜欢帮助比我不幸的人。', NULL, 203, 136),
-(524, NULL, '我喜欢参与有异性的社交场合。|我喜欢原谅有时可能伤害了我的朋友。', NULL, 204, 136),
-(525, NULL, '我喜欢攻击与我观点相反的看法。|我喜欢我的朋友们信任我并告诉我他们的问题。', NULL, 205, 136),
-(526, NULL, '我喜欢待人仁慈和同情。|我喜欢旅行到各处看看。', NULL, 206, 136),
-(527, NULL, '我喜欢遵照习俗，避免做人家认为不合常规的事。|我喜欢追求新潮流与时髦。', NULL, 207, 136),
-(528, NULL, '对我所承担的一切事情，  我喜欢认真去做。|我喜欢在日常生活中经历新奇与变异。', NULL, 208, 136),
-(529, NULL, '我不在乎与迷人的异性表示亲近。|我喜欢试验与尝试的事情。', NULL, 209, 136),
-(530, NULL, '当我不赞同他人的意见时，我想指责别人。|我喜欢追求新潮流与时髦。', NULL, 210, 136),
-(531, NULL, '我喜欢帮助比我不幸的人。|我喜欢将我开了头的任何事情或工作完成。', NULL, 211, 136),
-(532, NULL, '我喜欢搬家，住在不同的地方。|我喜欢长时间地工作而不受干扰。', NULL, 212, 136),
-(533, NULL, '假如我必须旅行的话，我喜欢先将事情安排好。|我喜欢持续地解难题直到解出为止。', NULL, 213, 136),
-(534, NULL, '我喜欢与异性谈恋爱。|在承担别的事之前，我喜欢将现在的工作或任务完成。', NULL, 214, 136),
-(535, NULL, '我喜欢对别人说我对他们的看法。|当我工作时，我喜欢避免干扰。', NULL, 215, 136),
-(536, NULL, '我喜欢为我的朋友们办点小事。|我喜欢参与有异性的社交场合。', NULL, 216, 136),
-(537, NULL, '我喜欢见到不熟识的人。|我不在乎与迷人的异性表示亲近。', NULL, 217, 136),
-(538, NULL, '我喜欢持续解难题直到解出为止。|我喜欢与异性谈恋爱。', NULL, 218, 136),
-(539, NULL, '我喜欢谈论我的成就。|我喜欢听或说以性为主的笑话。', NULL, 219, 136),
-(540, NULL, '我想取笑那些我认为是做了蠢事的人。|我喜欢听或说以性为主的笑话。', NULL, 220, 136),
-(541, NULL, '我喜欢我的朋友们信任我，并告诉我他们的麻烦。|我喜欢报上有关谋杀与其它形式暴力的新闻。', NULL, 221, 136),
-(542, NULL, '我喜欢追求新潮流与时髦。|假如某人罪有应得，我会公开批评他。', NULL, 222, 136),
-(543, NULL, '当我工作时，我喜欢避免干扰。|当我不赞同别人的看法，我想责怪他们。', NULL, 223, 136),
-(544, NULL, '我喜欢听说以性为主的笑话。|当有人侮辱我时，我想报复。', NULL, 224, 136),
-(545, NULL, '我喜欢回避责任与义务。|当有人做了我认为很愚蠢的事情时，我想取笑他  们。', NULL, 225, 136),
-(546, '你是否有许多不同的业余爱好？', '是|不是', NULL, 1, 133),
-(547, '你是否在做任何事情以前都要停下来仔细思考？', '是|不是', NULL, 2, 133),
-(548, '你的心境是否常有起伏？', '是|不是', NULL, 3, 133),
-(549, '你曾有过明知是别人的功劳而你去接受奖励的事吗？', '是|不是', NULL, 4, 133),
-(550, '你是否健谈？', '是|不是', NULL, 5, 133),
-(551, '欠债会使你不安吗？', '是|不是', NULL, 6, 133),
-(552, '你曾无缘无故觉得“真是难受”吗？', '是|不是', NULL, 7, 133),
-(553, '你曾贪图过份外之物吗？', '是|不是', NULL, 8, 133),
-(554, '你是否在晚上小心翼翼地关好门窗？', '是|不是', NULL, 9, 133),
-(555, '你是否比较活跃？', '是|不是', NULL, 10, 133),
-(556, '你在见到一小孩或一动物受折磨时是否会感到非常难过？', '是|不是', NULL, 11, 133),
-(557, '你是否常常为自己不该作而作了的事，不该说而说了的话而紧张吗？', '是|不是', NULL, 12, 133),
-(558, '你喜欢跳降落伞吗？', '是|不是', NULL, 13, 133),
-(559, '通常你能在热闹联欢会中尽情地玩吗？', '是|不是', NULL, 14, 133),
-(560, '你容易激动吗？', '是|不是', NULL, 15, 133),
-(561, '你曾经将自己的过错推给别人吗？', '是|不是', NULL, 16, 133),
-(562, '你喜欢会见陌生人吗？', '是|不是', NULL, 17, 133),
-(563, '你是否相信保险制度是一种好办法？', '是|不是', NULL, 18, 133),
-(564, '你是一个容易伤感情的人吗？', '是|不是', NULL, 19, 133),
-(565, '你所有的习惯都是好的吗？', '是|不是', NULL, 20, 133),
-(566, '在社交场合你是否总不愿露头角？', '是|不是', NULL, 21, 133),
-(567, '你会服用奇异或危险作用的药物吗？', '是|不是', NULL, 22, 133),
-(568, '你常有“厌倦”之感吗？', '是|不是', NULL, 23, 133),
-(569, '你曾拿过别人的东西吗（那怕一针一线）？', '是|不是', NULL, 24, 133),
-(570, '你是否常爱外出？', '是|不是', NULL, 25, 133),
-(571, '你是否从伤害你所宠爱的人而感到乐趣？', '是|不是', NULL, 26, 133),
-(572, '你常为有罪恶之感所苦恼吗？', '是|不是', NULL, 27, 133),
-(573, '你在谈论中是否有时不懂装懂？', '是|不是', NULL, 28, 133),
-(574, '你是否宁愿去看书而不愿去多见人？', '是|不是', NULL, 29, 133),
-(575, '你有要伤害你的仇人吗？', '是|不是', NULL, 30, 133),
-(576, '你觉得自己是一个神经过敏的人吗？', '是|不是', NULL, 31, 133),
-(577, '对人有所失礼时你是否经常要表示歉意？', '是|不是', NULL, 32, 133),
-(578, '你有许多朋友吗？', '是|不是', NULL, 33, 133),
-(579, '你是否喜爱讲些有时确能伤害人的笑话？', '是|不是', NULL, 34, 133),
-(580, '你是一个多忧多虑的人吗？', '是|不是', NULL, 35, 133),
-(581, '你在童年是否按照吩咐要做什么便做什么，毫无怨言？', '是|不是', NULL, 36, 133),
-(582, '你认为你是一个乐天派吗？', '是|不是', NULL, 37, 133),
-(583, '你很讲究礼貌和整洁吗？', '是|不是', NULL, 38, 133),
-(584, '你是否总在担心会发生可怕的事情？', '是|不是', NULL, 39, 133),
-(585, '你曾损坏或遗失过别人的东西吗？', '是|不是', NULL, 40, 133),
-(586, '交新朋友时一般是你采取主动吗？', '是|不是', NULL, 41, 133),
-(587, '当别人向你诉苦时，你是否容易理解他们的苦哀？', '是|不是', NULL, 42, 133),
-(588, '你认为自己很紧张，如同“拉紧的弦”一样吗？', '是|不是', NULL, 43, 133),
-(589, '在没有废纸篓时，你是否将废纸扔在地板上？', '是|不是', NULL, 44, 133),
-(590, '当你与别人在一起时，你是否言语很少？', '是|不是', NULL, 45, 133),
-(591, '你是否认为结婚制度是过时了，应该废止？', '是|不是', NULL, 46, 133),
-(592, '你是否有时感到自己可怜？', '是|不是', NULL, 47, 133),
-(593, '你是否有时有点自夸？', '是|不是', NULL, 48, 133),
-(594, '你是否很容易将一个沉寂的集会搞得活跃起来？', '是|不是', NULL, 49, 133),
-(595, '你是否讨厌那种小心翼翼地开车的人？', '是|不是', NULL, 50, 133),
-(596, '你为你的健康担忧吗？', '是|不是', NULL, 51, 133),
-(597, '你曾讲过什么人的坏话吗？', '是|不是', NULL, 52, 133),
-(598, '你是否喜欢对朋友讲笑话和有趣的故事？', '是|不是', NULL, 53, 133),
-(599, '你小时候曾对父母粗暴无礼吗？', '是|不是', NULL, 54, 133),
-(600, '你是否喜欢与人混在一起？', '是|不是', NULL, 55, 133),
-(601, '你如知道自己工作有错误，这会使你感到难过吗？', '是|不是', NULL, 56, 133),
-(602, '你患失眠吗？', '是|不是', NULL, 57, 133),
-(603, '你吃饭前必定洗手吗？', '是|不是', NULL, 58, 133),
-(604, '你常无缘无故感到无精打采和倦怠吗？', '是|不是', NULL, 59, 133),
-(605, '和别人玩游戏时，你有过欺骗行为吗？', '是|不是', NULL, 60, 133),
-(606, '你是否喜欢从事一些动作迅速的工作？', '是|不是', NULL, 61, 133),
-(607, '你的母亲是一位善良的妇人吗？', '是|不是', NULL, 62, 133),
-(608, '你是否常常觉得人生非常无味？', '是|不是', NULL, 63, 133),
-(609, '你曾利用过某人为自己取得好处吗？', '是|不是', NULL, 64, 133),
-(610, '你是否常常参加许多活动，超过你的时间所允许？', '是|不是', NULL, 65, 133),
-(611, '是否有几个人总在躲避你？', '是|不是', NULL, 66, 133),
-(612, '你是否为你的容貌而非常烦恼？', '是|不是', NULL, 67, 133),
-(613, '你是否觉得人们为了未来有保障而办理储蓄和保险所花的时间太多？', '是|不是', NULL, 68, 133),
-(614, '你曾有过不如死了为好的愿望吗？', '是|不是', NULL, 69, 133),
-(615, '如果有把握永远不会被别人发现，你会逃税吗？', '是|不是', NULL, 70, 133),
-(616, '你能使一个集会顺利进行吗？', '是|不是', NULL, 71, 133),
-(617, '你能克制自己不对人无礼吗？', '是|不是', NULL, 72, 133),
-(618, '遇到一次难堪的经历后，你是否在一段很长的时间内还感到难受？', '是|不是', NULL, 73, 133),
-(619, '你患有“神经过敏”吗？', '是|不是', NULL, 74, 133),
-(620, '你曾经故意说些什么来伤害别人的感情吗？', '是|不是', NULL, 75, 133),
-(621, '你与别人的友谊是否容易破裂，虽然不是你的过错？', '是|不是', NULL, 76, 133),
-(622, '你常感到孤单吗？', '是|不是', NULL, 77, 133),
-(623, '当人家寻你的差错，找你工作中的缺点时，你是否容易在精神上受挫伤？', '是|不是', NULL, 78, 133),
-(624, '你赴约会或上班曾迟到过吗？', '是|不是', NULL, 79, 133),
-(625, '你喜欢忙忙碌碌地过日子吗？', '是|不是', NULL, 80, 133),
-(626, '你愿意别人怕你吗？', '是|不是', NULL, 81, 133),
-(627, '你是否觉得有时浑身是劲，而有时又是懒洋洋的吗？', '是|不是', NULL, 82, 133),
-(628, '你有时把今天应做的事拖到明天去做吗？', '是|不是', NULL, 83, 133),
-(629, '别人认为你是生气勃勃吗？', '是|不是', NULL, 84, 133),
-(630, '别人是否对你说了许多谎话？', '是|不是', NULL, 85, 133),
-(631, '你是否容易对某些事物容易冒火？', '是|不是', NULL, 86, 133),
-(632, '当你犯了错误时，你是否常常愿意承认它？', '是|不是', NULL, 87, 133),
-(633, '你会为一动物落入圈套被捉拿而感到很难过吗？', '是|不是', NULL, 88, 133),
-(821, 'A1M', 'A1A1|A1A2|A1A3|A1A4|A1A5|A1A6', NULL, 1, 138),
-(822, 'A2M', 'A2A1|A2A2|A2A3|A2A4|A2A5|A2A6', NULL, 2, 138),
-(823, 'A3M', 'A3A1|A3A2|A3A3|A3A4|A3A5|A3A6', NULL, 3, 138),
-(824, 'A4M', 'A4A1|A4A2|A4A3|A4A4|A4A5|A4A6', NULL, 4, 138),
-(825, 'A5M', 'A5A1|A5A2|A5A3|A5A4|A5A5|A5A6', NULL, 5, 138),
-(826, 'A6M', 'A6A1|A6A2|A6A3|A6A4|A6A5|A6A6', NULL, 6, 138),
-(827, 'A7M', 'A7A1|A7A2|A7A3|A7A4|A7A5|A7A6', NULL, 7, 138),
-(828, 'A8M', 'A8A1|A8A2|A8A3|A8A4|A8A5|A8A6', NULL, 8, 138),
-(829, 'A9M', 'A9A1|A9A2|A9A3|A9A4|A9A5|A9A6', NULL, 9, 138),
-(830, 'A10M', 'A10A1|A10A2|A10A3|A10A4|A10A5|A10A6', NULL, 10, 138),
-(831, 'A11M', 'A11A1|A11A2|A11A3|A11A4|A11A5|A11A6', NULL, 11, 138),
-(832, 'A12M', 'A12A1|A12A2|A12A3|A12A4|A12A5|A12A6', NULL, 12, 138),
-(833, 'B1M', 'B1A1|B1A2|B1A3|B1A4|B1A5|B1A6', NULL, 13, 138),
-(834, 'B2M', 'B2A1|B2A2|B2A3|B2A4|B2A5|B2A6', NULL, 14, 138),
-(835, 'B3M', 'B3A1|B3A2|B3A3|B3A4|B3A5|B3A6', NULL, 15, 138),
-(836, 'B4M', 'B4A1|B4A2|B4A3|B4A4|B4A5|B4A6', NULL, 16, 138),
-(837, 'B5M', 'B5A1|B5A2|B5A3|B5A4|B5A5|B5A6', NULL, 17, 138),
-(838, 'B6M', 'B6A1|B6A2|B6A3|B6A4|B6A5|B6A6', NULL, 18, 138),
-(839, 'B7M', 'B7A1|B7A2|B7A3|B7A4|B7A5|B7A6', NULL, 19, 138),
-(840, 'B8M', 'B8A1|B8A2|B8A3|B8A4|B8A5|B8A6', NULL, 20, 138),
-(841, 'B9M', 'B9A1|B9A2|B9A3|B9A4|B9A5|B9A6', NULL, 21, 138),
-(842, 'B10M', 'B10A1|B10A2|B10A3|B10A4|B10A5|B10A6', NULL, 22, 138),
-(843, 'B11M', 'B11A1|B11A2|B11A3|B11A4|B11A5|B11A6', NULL, 23, 138),
-(844, 'B12M', 'B12A1|B12A2|B12A3|B12A4|B12A5|B12A6', NULL, 24, 138),
-(845, 'C1M', 'C1A1|C1A2|C1A3|C1A4|C1A5|C1A6|C1A7|C1A8', NULL, 25, 138),
-(846, 'C2M', 'C2A1|C2A2|C2A3|C2A4|C2A5|C2A6|C2A7|C2A8', NULL, 26, 138),
-(847, 'C3M', 'C3A1|C3A2|C3A3|C3A4|C3A5|C3A6|C3A7|C3A8', NULL, 27, 138),
-(848, 'C4M', 'C4A1|C4A2|C4A3|C4A4|C4A5|C4A6|C4A7|C4A8', NULL, 28, 138),
-(849, 'C5M', 'C5A1|C5A2|C5A3|C5A4|C5A5|C5A6|C5A7|C5A8', NULL, 29, 138),
-(850, 'C6M', 'C6A1|C6A2|C6A3|C6A4|C6A5|C6A6|C6A7|C6A8', NULL, 30, 138),
-(851, 'C7M', 'C7A1|C7A2|C7A3|C7A4|C7A5|C7A6|C7A7|C7A8', NULL, 31, 138),
-(852, 'C8M', 'C8A1|C8A2|C8A3|C8A4|C8A5|C8A6|C8A7|C8A8', NULL, 32, 138),
-(853, 'C9M', 'C9A1|C9A2|C9A3|C9A4|C9A5|C9A6|C9A7|C9A8', NULL, 33, 138),
-(854, 'C10M', 'C10A1|C10A2|C10A3|C10A4|C10A5|C10A6|C10A7|C10A8', NULL, 34, 138),
-(855, 'C11M', 'C11A1|C11A2|C11A3|C11A4|C11A5|C11A6|C11A7|C11A8', NULL, 35, 138),
-(856, 'C12M', 'C12A1|C12A2|C12A3|C12A4|C12A5|C12A6|C12A7|C12A8', NULL, 36, 138),
-(857, 'D1M', 'D1A1|D1A2|D1A3|D1A4|D1A5|D1A6|D1A7|D1A8', NULL, 37, 138),
-(858, 'D2M', 'D2A1|D2A2|D2A3|D2A4|D2A5|D2A6|D2A7|D2A8', NULL, 38, 138),
-(859, 'D3M', 'D3A1|D3A2|D3A3|D3A4|D3A5|D3A6|D3A7|D3A8', NULL, 39, 138),
-(860, 'D4M', 'D4A1|D4A2|D4A3|D4A4|D4A5|D4A6|D4A7|D4A8', NULL, 40, 138),
-(861, 'D5M', 'D5A1|D5A2|D5A3|D5A4|D5A5|D5A6|D5A7|D5A8', NULL, 41, 138),
-(862, 'D6M', 'D6A1|D6A2|D6A3|D6A4|D6A5|D6A6|D6A7|D6A8', NULL, 42, 138),
-(863, 'D7M', 'D7A1|D7A2|D7A3|D7A4|D7A5|D7A6|D7A7|D7A8', NULL, 43, 138),
-(864, 'D8M', 'D8A1|D8A2|D8A3|D8A4|D8A5|D8A6|D8A7|D8A8', NULL, 44, 138),
-(865, 'D9M', 'D9A1|D9A2|D9A3|D9A4|D9A5|D9A6|D9A7|D9A8', NULL, 45, 138),
-(866, 'D10M', 'D10A1|D10A2|D10A3|D10A4|D10A5|D10A6|D10A7|D10A8', NULL, 46, 138),
-(867, 'D11M', 'D11A1|D11A2|D11A3|D11A4|D11A5|D11A6|D11A7|D11A8', NULL, 47, 138),
-(868, 'D12M', 'D12A1|D12A2|D12A3|D12A4|D12A5|D12A6|D12A7|D12A8', NULL, 48, 138),
-(869, 'E1M', 'E1A1|E1A2|E1A3|E1A4|E1A5|E1A6|E1A7|E1A8', NULL, 49, 138),
-(870, 'E2M', 'E2A1|E2A2|E2A3|E2A4|E2A5|E2A6|E2A7|E2A8', NULL, 50, 138),
-(871, 'E3M', 'E3A1|E3A2|E3A3|E3A4|E3A5|E3A6|E3A7|E3A8', NULL, 51, 138),
-(872, 'E4M', 'E4A1|E4A2|E4A3|E4A4|E4A5|E4A6|E4A7|E4A8', NULL, 52, 138),
-(873, 'E5M', 'E5A1|E5A2|E5A3|E5A4|E5A5|E5A6|E5A7|E5A8', NULL, 53, 138),
-(874, 'E6M', 'E6A1|E6A2|E6A3|E6A4|E6A5|E6A6|E6A7|E6A8', NULL, 54, 138),
-(875, 'E7M', 'E7A1|E7A2|E7A3|E7A4|E7A5|E7A6|E7A7|E7A8', NULL, 55, 138),
-(876, 'E8M', 'E8A1|E8A2|E8A3|E8A4|E8A5|E8A6|E8A7|E8A8', NULL, 56, 138),
-(877, 'E9M', 'E9A1|E9A2|E9A3|E9A4|E9A5|E9A6|E9A7|E9A8', NULL, 57, 138),
-(878, 'E10M', 'E10A1|E10A2|E10A3|E10A4|E10A5|E10A6|E10A7|E10A8', NULL, 58, 138),
-(879, 'E11M', 'E11A1|E11A2|E11A3|E11A4|E11A5|E11A6|E11A7|E11A8', NULL, 59, 138),
-(880, 'E12M', 'E12A1|E12A2|E12A3|E12A4|E12A5|E12A6|E12A7|E12A8', NULL, 60, 138),
-(1442, '我很明了本测验的说明:', 'A.是的|B.不一定|C.不是的', NULL, 1, 134),
-(1443, '我对本测验每个问题都会按自己的真实情况作答:', 'A.是的|B.不一定|C.不同意', NULL, 2, 134),
-(1444, '有度假机会时,我宁愿:', 'A.去一个繁华的都市|B.介乎A与C之间|C.闲居清静而偏僻的郊区', NULL, 3, 134),
-(1445, '我有足够的能力应付困难:', 'A.是的|B.不一定|C.不是的', NULL, 4, 134),
-(1446, '即使是关在铁笼内的猛兽,我见了也会惴惴不安:', 'A.是的|B.不一定|C.不是的', NULL, 5, 134),
-(1447, '我总避免批评别人的言行:', 'A.是的|B.有时如此|C.不是的', NULL, 6, 134),
-(1448, '我的思想似乎:', 'A.走在了时代前面|B.不太一定|C.正符合时代', NULL, 7, 134),
-(1449, '我不擅长说笑话讲趣事:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 8, 134),
-(1450, '当我看到亲友邻居争执时,我总是:', 'A.任其自己解决|B.置之不理|C.予以劝解', NULL, 9, 134),
-(1451, '在社交场合中,我:', 'A.谈吐自然|B.介乎A与C之间|C.退避三舍,保持沉默', NULL, 10, 134),
-(1452, '我愿做一名:', 'A.建筑工程师|B.不确定|C.社会科学的教员', NULL, 11, 134),
-(1453, '阅读时,我宁愿选读:', 'A.著名的宗教教义|B.不确定|C.国家政治组织的理论', NULL, 12, 134),
-(1454, '我相信许多人都有些心理不正常，但他们都不愿意这样承认:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 13, 134),
-(1455, '我所希望的结婚对象应擅长交际而无须有文艺才能:', 'A.是的|B.不一定|C.不是的', NULL, 14, 134),
-(1456, '对于头脑简单和不讲理的人,我仍然能待之以礼:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 15, 134),
-(1457, '受人侍奉时我常感到不安:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 16, 134),
-(1458, '从事体力或脑力劳动后，我比平常人需要更多的休息才能恢复工作效率:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 17, 134),
-(1459, '半夜醒来,我会为种种忧虑而不能再入眠:', 'A.常常如此|B.有时如此|C.极少如此', NULL, 18, 134),
-(1460, '事情进行不顺利时,我常会急得掉眼泪:', 'A.从不如此|B.有时如此|C.时常如此', NULL, 19, 134),
-(1461, '我认为只要双方同意就可以离婚，不应当受传统礼教的束缚:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 20, 134),
-(1462, '我对于人或物的兴趣都很容易改变:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 21, 134),
-(1463, '筹划事务时,我宁愿:', 'A.和别人合作|B.不确定|C.自己单独进行', NULL, 22, 134),
-(1464, '我常会无端地自言自语:', 'A.常常如此|B.偶然如此|C.从不如此', NULL, 23, 134),
-(1465, '无论工作,饮食或出游,我总:', 'A.很匆忙,不能尽兴|B.介乎A与C之间|C.很从容不迫', NULL, 24, 134),
-(1466, '有时我会怀疑别人是否对我的言谈真正有兴趣:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 25, 134),
-(1467, '在工厂中,我宁愿负责:', 'A.机械组|B.介乎A与C之间|C.人事组', NULL, 26, 134),
-(1468, '在阅读时,我宁愿选读:', 'A.太空旅行|B.不太确定|C.家庭教育', NULL, 27, 134),
-(1469, '下列三个字中哪个字与其它两个字属于不同类别:', 'A.狗|B.石|C.牛', NULL, 28, 134),
-(1470, '如果我能重新做人,我要:', 'A.把生活安排得和以前不同|B.不确定|C.生活得和以前相仿', NULL, 29, 134),
-(1471, '在我的一生中,我总能达到我所预期的目标:', 'A.是的|B.不一定|C.不是的', NULL, 30, 134),
-(1472, '当我说谎时,我总觉得内心不安,不敢正视对方:', 'A.是的|B.不一定|C.不是的', NULL, 31, 134),
-(1473, '假使我手持一支装有子弹的手枪，我必须取出子弹后才能心安:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 32, 134),
-(1474, '朋友们大都认为我是一个说话有风趣的人:', 'A.是的|B.不一定|C.不是的', NULL, 33, 134),
-(1475, '如果人们知道我的内心世界,他们都会感到惊讶:', 'A.是的|B.不一定|C.不是的', NULL, 34, 134),
-(1476, '在社交场合中,如果我突然成为众所注意的中心,我会感到局促不安:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 35, 134),
-(1477, '我总喜欢参加规模庞大的聚会,舞会或公共集会:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 36, 134),
-(1478, '在下列工作中,我喜欢的是:', 'A.音乐|B.不一定|C.手工', NULL, 37, 134),
-(1479, '我常常怀疑那些过于友善的人动机是否如此:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 38, 134),
-(1480, '我宁愿自己的生活象:', 'A.一个艺人或博物学家|B.不确定|C.会计师或保险公司的经纪人', NULL, 39, 134),
-(1481, '目前世界所需要的是:', 'A.多产生一些富有改善世界计划的理想家|B.不确定|C.脚踏实地的可靠公民', NULL, 40, 134),
-(1482, '有时候我觉得我需要做剧烈的体力活动:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 41, 134),
-(1483, '我愿意与有礼貌有教养的人来往，而不愿和粗卤野蛮的人为伍:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 42, 134),
-(1484, '在处理一些必须凭籍智慧的事务中,我的父母的确:', 'A.较一般人差|B.普通|C.超人一等', NULL, 43, 134),
-(1485, '当上司(或教师)召见我时,我:', 'A.总觉得可以趁机会提出建议|B.介乎A与C之间|C.总怀疑自己做错了什么事', NULL, 44, 134),
-(1486, '假使薪俸优厚,我愿意专任照料精神病人的职务:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 45, 134),
-(1487, '看报时,我喜欢读:', 'A.当前世界基本社会问题的辩论|B.介乎A与C之间|C.地方新闻的报道', NULL, 46, 134),
-(1488, '我曾担任过:', 'A.一般职务|B.多种职务|C.非常多的职务', NULL, 47, 134),
-(1489, '逛街时,我宁愿观看一个画家写生,而不愿听人家的辩论:', 'A.是的|B.不一定|C.不是的', NULL, 48, 134),
-(1490, '我的神经脆弱,稍有刺激的声音就会使我战惊:', 'A.时常如此|B.有时如此|C.从未如此', NULL, 49, 134),
-(1491, '我在清晨起身时,就常常感到疲乏不堪:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 50, 134),
-(1492, '我宁愿是一个:', 'A.管森林的工作人员|B.不一定|C.中小学教员', NULL, 51, 134),
-(1493, '每逢年节或亲友生日,我:', 'A.喜欢互相赠送礼物|B.不太确定|C.觉得交换礼物是麻烦多事', NULL, 52, 134),
-(1494, '下列数字中,哪个数字与其他两个数字属于不同类别:', 'A.  5|B.  2|C.  7', NULL, 53, 134),
-(1495, '[猫]与[鱼]就如同[牛]与:', 'A.牛乳|B.牧草|C.盐', NULL, 54, 134),
-(1496, '在做人处事的各个方面,我的父母很值得敬佩:', 'A.是的|B.不一定|C.不是的', NULL, 55, 134),
-(1497, '我觉得我有一些别人所不及的优良品质:', 'A.是的|B.不一定|C.不是的', NULL, 56, 134),
-(1498, '只要有利于大家,尽管别人认为卑贱的工作,我也乐而为之,不以为耻:', 'A.是的|B.不太确定|C.不是的', NULL, 57, 134),
-(1499, '我喜欢看电影或参加其他娱乐活动:', 'A.每周一次以上(比一般人多)|B.每周一次(与通常人相似)|C.偶然一次(比通常人少)', NULL, 58, 134),
-(1500, '我喜欢从事需要精确技术的工作:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 59, 134),
-(1501, '在有思想,有地位的长者面前,我总较为缄默:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 60, 134),
-(1502, '就我来说,在大众前演讲或表演是一件不容易的事:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 61, 134),
-(1503, '我宁愿:', 'A.指挥几个人工作|B.不确定|C.和团体共同工作', NULL, 62, 134),
-(1504, '纵使我做了一桩贻笑大方的事，我也仍然能够将它淡然忘却:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 63, 134),
-(1505, '没有人会幸灾乐祸地希望我遭遇困难:', 'A.是的|B.不确定|C.不是的', NULL, 64, 134),
-(1506, '堂堂男子汉应该:', 'A.考虑人生的意义|B.不确定|C.谋家庭的温饱', NULL, 65, 134),
-(1507, '我喜欢解决别人已弄得一塌糊涂的问题:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 66, 134),
-(1508, '我十分高兴的时候总有[好景不常]之感:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 67, 134),
-(1509, '在一般困难处境下,我总能保持乐观:', 'A.是的|B.不一定|C.不是的', NULL, 68, 134),
-(1510, '迁居是一桩极不愉快的事:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 69, 134),
-(1511, '在我年轻的时候,如果我和父母的意见不同,我经常:', 'A.坚持自己的意见|B.介乎A与C之间|C.接受他们的意见', NULL, 70, 134),
-(1512, '我希望我的爱人能够使家庭:', 'A.有其本身的欢乐与活动|B.介乎A与C之间|C.成为邻里社交活动的一部分', NULL, 71, 134),
-(1513, '我解决问题多数依靠:', 'A.个人独立思考|B.介乎A与C之间|C.与人互相讨论', NULL, 72, 134),
-(1514, '需要[当机立断]时,我总:', 'A.镇静地运用理智|B.介乎A与C之间|C.常常紧张兴奋,不能冷静思考', NULL, 73, 134),
-(1515, '最近,在一两桩事情上,我觉得自己是无辜受累:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 74, 134),
-(1516, '我善于控制我的表情:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 75, 134),
-(1517, '如果薪俸相等,我宁愿做:', 'A.一个化学研究师|B.不确定|C.旅行社经理', NULL, 76, 134),
-(1518, '[惊讶]与[新奇]犹如[惧怕]与:', 'A.勇敢|B.焦虑|C.恐怖', NULL, 77, 134),
-(1519, '下列三个分数中,哪一个与其他两个属不同类别:', 'A.  3/7|B.  3/9|C.  3/11', NULL, 78, 134),
-(1520, '不知什么缘故,有些人故意回避或冷淡我:', 'A.是的|B.不一定|C.不是的', NULL, 79, 134),
-(1521, '我虽善意待人,却得不到好报:', 'A.是的|B.不一定|C.不是的', NULL, 80, 134),
-(1522, '我不喜欢那些夜郎自大,目空一切的人:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 81, 134),
-(1523, '和一般人相比,我的朋友的确太少:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 82, 134),
-(1524, '出于万不得已时,我才参加社交集会,否则我总设法回避:', 'A.是的|B.不一定|C.不是的', NULL, 83, 134),
-(1525, '在服务机关中,对上级的逢迎得当,比工作上的表现更为重要:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 84, 134),
-(1526, '参加竞赛时,我看重的是竞赛活动,而不计较其成败:', 'A.总是如此|B.一般如此|C.偶然如此', NULL, 85, 134),
-(1527, '我宁愿我所就的职业有:', 'A.固定可靠的薪水|B.介乎A与C之间|C.薪资高低能随我工作的表现而随时调整', NULL, 86, 134),
-(1528, '我宁愿阅读:', 'A.军事与政治的事实记载|B.不一定|C.一部富有情感与幻想的作品', NULL, 87, 134),
-(1529, '有许多人不敢欺骗或犯罪,主要原因是怕受到惩罚:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 88, 134),
-(1530, '我的父母(或保护人)从未很严格地要我事事顺从:', 'A.是的|B.不一定|C.不是的', NULL, 89, 134),
-(1531, '[百折不挠][再接再励]的精神似乎完全被现代人忽视了:', 'A.是的|B.不一定|C.不是的', NULL, 90, 134),
-(1532, '如果有人对我发怒,我总:', 'A.设法使他镇静下来|B.不太确定|C.也会恼怒起来', NULL, 91, 134),
-(1533, '我希望大家都提倡:', 'A.多吃水果以避免杀生|B.不一定|C.发展农业捕灭对农产品有害的动物', NULL, 92, 134),
-(1534, '无论在极高的屋顶上或极深的隧道中，我很少觉得胆怯不安:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 93, 134),
-(1535, '我只要没有过错,不管人家怎样归咎于我,我总能心安理得:', 'A.是的|B.不一定|C.不是的', NULL, 94, 134),
-(1536, '凡是无法运用理智来解决的问题，有时就不得不靠权力来处理:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 95, 134),
-(1537, '我十六、七岁时与异性朋友的交游:', 'A.极多|B.介乎A与C之间|C.不很多', NULL, 96, 134),
-(1538, '我在交际场或所参加的组织中是一个活跃分子:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 97, 134),
-(1539, '在人声噪杂中,我仍能不受妨碍,专心工作:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 98, 134),
-(1540, '在某环境下,我常因困惑引起幻想而将工作搁置下来:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 99, 134),
-(1541, '我很少用难堪的话去中伤别人的感情:', 'A.是的|B.不太确定|C.不是的', NULL, 100, 134),
-(1542, '我更愿意做一名:', 'A.商店经理|B.不确定|C.建筑师', NULL, 101, 134),
-(1543, '[理不胜辞]的意思是:', 'A.理不如辞|B.理多而辞寡|C.辞藻丰富而理由不足', NULL, 102, 134),
-(1544, '[锄头]与[挖掘]犹如[刀子]与:', 'A.雕刻|B.切剖|C.铲除', NULL, 103, 134),
-(1545, '我常横过街道,以回避我不愿招乎的人:', 'A.很少如此|B.偶然如此|C.有时如此', NULL, 104, 134),
-(1546, '在我倾听音乐时,如果人家高谈阔论:', 'A.我仍然能够专心听,不受影响|B.介乎A与C之间|C.我会不能专心欣赏而感到恼恐', NULL, 105, 134),
-(1547, '在课堂上,如果我的意见与教师不同,我常:', 'A.保持缄默|B.不一定|C.当场表明立场', NULL, 106, 134),
-(1548, '我和异性友伴交谈时, 竭力避免涉及有关 [性] 的话题:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 107, 134),
-(1549, '我待人接物的确不太成功:', 'A.是的|B.不尽然|C.不是的', NULL, 108, 134),
-(1550, '每当考虑困难问题时,我总是:', 'A.一切都未雨稠缪|B.介乎A与C之间|C.相信到时候会自然解决', NULL, 109, 134),
-(1551, '我所结交的朋友中,男女各占一半:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 110, 134),
-(1552, '我宁可:', 'A.结识很多的人|B.不一定|C.维持几个深交的朋友', NULL, 111, 134),
-(1553, '我宁为哲学家,而不做机械工程师:', 'A.是的|B.不确定|C.不是的', NULL, 112, 134),
-(1554, '如果我发现某人自私不义，我总不计一切指摘他的弱点:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 113, 134),
-(1555, '我善用心机去影响同伴,使他们能协助实现我的目标:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 114, 134),
-(1556, '我喜欢做戏剧,音乐,歌剧等新闻采访工作:', 'A.是的|B.不一定|C.不是的', NULL, 115, 134),
-(1557, '当人们颂扬我时,我总觉得不好意思:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 116, 134),
-(1558, '我以为现代最需要解决的问题是:', 'A.政治纠纷|B.不太确定|C.道德标准的有无', NULL, 117, 134),
-(1559, '我有时会无故地产生一种面临横祸的恐惧:', 'A.是的|B.有时如此|C.不是的', NULL, 118, 134),
-(1560, '我在童年时,害怕黑暗的次数:', 'A.极多|B.不太多|C.没有', NULL, 119, 134),
-(1561, '黄昏闲暇,我喜欢:', 'A.看一部历史探险影片|B.不一定|C.念一本科学幻想小说', NULL, 120, 134),
-(1562, '当人们批评我古怪时,我觉得:', 'A.非常气恼|B.有些动气|C.无所谓', NULL, 121, 134),
-(1563, '在一个陌生的城市找住址时,我经常:', 'A.就人问路|B.介乎A与C之间|C.参考市区地图', NULL, 122, 134),
-(1564, '朋友们申言要在家休息时,我仍设法怂恿他们外出:', 'A.是的|B.不一定|C.不是的', NULL, 123, 134),
-(1565, '在就寝时,我:', 'A.不易入睡|B.介乎A与C之间|C.极容易入睡', NULL, 124, 134),
-(1566, '有人烦扰我时,我:', 'A.能不露生色|B.介乎A与C之间|C.要说给别人听,以泄气愤', NULL, 125, 134),
-(1567, '如果薪俸相等,我宁愿做一个:', 'A.律师|B.不确定|C.飞行员或航海员', NULL, 126, 134),
-(1568, '时间永恒是比喻:', 'A.时间过得很慢|B.忘了时间|C.光阴一去不复返', NULL, 127, 134),
-(1569, '下列三项记号中,哪一项应紧接:*OOOO**OOO***', 'A.  *O*|B.  OO*|C.  O**', NULL, 128, 134),
-(1570, '在陌生的地方,我仍能清楚地辩别东西南北的方向:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 129, 134),
-(1571, '我的确比一般人幸运,因为我能从事自己所乐的工作:', 'A.是的|B.不一定|C.不是的', NULL, 130, 134),
-(1572, '如果我急于想借用别人的东西而物主恰又不在，我认为不告而取亦无大碍:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 131, 134),
-(1573, '我喜欢向友人追述一些已往有趣的社交经验:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 132, 134),
-(1574, '我更愿意做一名:', 'A.演员|B.不确定|C.建筑师', NULL, 133, 134),
-(1575, '工作学习之余,我总要安排计划,不使时间浪费:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 134, 134),
-(1576, '与人交际时,我常会无端地产生一种自卑感:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 135, 134),
-(1577, '主动与陌生人交谈:', 'A.是一桩难事|B.介乎A与C之间|C.毫无困难', NULL, 136, 134),
-(1578, '我喜欢的音乐,多数是:', 'A.轻快活泼|B.介乎A与C之间|C.富于情感', NULL, 137, 134),
-(1579, '我爱做[白日梦]即[完全沉浸于幻想之中]:', 'A.是的|B.不一定|C.不是的', NULL, 138, 134),
-(1580, '未来二十年的世界局势定将好:', 'A.是的|B.不一定|C.不是的', NULL, 139, 134),
-(1581, '童年时,我喜欢阅读:', 'A.战争故事|B.不确定|C.神仙幻想故事', NULL, 140, 134),
-(1582, '我素来对机械、汽车、飞机等有兴趣:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 141, 134),
-(1583, '我愿意做一个缓刑释放罪犯的管理监视人:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 142, 134),
-(1584, '人们认为我只不过是一个能苦干,稍有成就的人而已:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 143, 134),
-(1585, '在逆境中,我总能保持精神振奋:', 'A.是的|B.不太确定|C.不是的', NULL, 144, 134),
-(1586, '我以为人工节育是解决世界经济与和平问题的要诀:', 'A.是的|B.不太确定|C.不是的', NULL, 145, 134),
-(1587, '我喜欢独自筹划，避免人家的干涉和猜议:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 146, 134),
-(1588, '我相信[上司不可能没有过错,但他仍有权做当权者]:', 'A.是的|B.不一定|C.不是的', NULL, 147, 134),
-(1589, '我总设法使自己不粗心大意,忽略细节:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 148, 134),
-(1590, '与人争辩或险遭事故后，我常发抖，精疲力竭，不能安心工作:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 149, 134),
-(1591, '没有医生处方,我从不乱用药:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 150, 134),
-(1592, '为了培养个人的兴趣,我愿意参加:', 'A.摄影组|B.不确定|C.辩论会', NULL, 151, 134),
-(1593, '星火,燎原对等于姑息:', 'A.同情|B.养奸|C.纵容', NULL, 152, 134),
-(1594, '[钟表]与[时间]犹如[载缝]与:', 'A.西装|B.剪刀|C.布料', NULL, 153, 134),
-(1595, '生动的梦境常常滋扰我的睡眠:', 'A.时常如此|B.偶然如此|C.从未如此', NULL, 154, 134),
-(1596, '我过去曾撕毁一些禁止人们自由的布告:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 155, 134),
-(1597, '在一个陌生的城市中,我会:', 'A.到处闲游|B.不确定|C.避免去较不安全的地方', NULL, 156, 134),
-(1598, '我宁愿服饰素洁大方,而不愿争奇斗艳惹人注目:', 'A.是的|B.不太确定|C.不是的', NULL, 157, 134),
-(1599, '黄昏时,安静的娱乐远胜过热闹的宴会:', 'A.是的|B.不太确定|C.不是的', NULL, 158, 134),
-(1600, '我常常明知故犯,不愿意接受好心的建议:', 'A.偶然如此|B.罕有如此|C.从不如此', NULL, 159, 134),
-(1601, '我总把[是非][善恶]作为判断或取舍的原则:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 160, 134),
-(1602, '我工作时不喜欢有许多人在旁参观:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 161, 134),
-(1603, '故意去为难一般有教养的人, 如医生, 教师等人的尊严, 是一件有趣的事:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 162, 134),
-(1604, '在各种课程中,我较喜欢:', 'A.语文|B.不确定|C.数学', NULL, 163, 134),
-(1605, '那些自以为是、道貌岸然的人最使我生气:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 164, 134),
-(1606, '与平常循规蹈矩的人交谈:', 'A.颇有兴趣.亦有所得|B.介乎A与C之间|C.他们思想的肤浅使我厌烦', NULL, 165, 134),
-(1607, '我喜欢:', 'A.有几个有时对我很苛求而富有感情的朋友|B.介乎A与C之间|C.不受别人的牵涉', NULL, 166, 134),
-(1608, '如果做民意投票时,我宁愿投票赞同:', 'A.切实根绝有生理缺陷者的生育|B.不确定|C.对杀人犯判处死刑', NULL, 167, 134),
-(1609, '我有时会无端地感到沮丧痛苦:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 168, 134),
-(1610, '当我与立场相反的人辩论时,我主张:', 'A.尽量找出基本观点的差异|B.不一定|C.彼此让步以解决矛盾', NULL, 169, 134),
-(1611, '我一向重感情而不重理智,因此我的观点常动摇不定:', 'A.是的|B.不敢如此|C.不是的', NULL, 170, 134),
-(1612, '我的学习效率多有赖于:', 'A.阅读好书|B.介乎A与C之间|C.参加团体讨论', NULL, 171, 134),
-(1613, '我宁选一个薪俸高的工作,不在乎有无保障;而不愿任薪俸低的固定工作:', 'A.是的|B.不太确定|C.不是的', NULL, 172, 134),
-(1614, '在参加辩论以前,我总先把握住自己的立场:', 'A.经常如此|B.一般如此|C.必要时才如此', NULL, 173, 134),
-(1615, '我常被一些无所谓的琐事所烦扰:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 174, 134),
-(1616, '我宁愿住在嘈杂的城市,而不愿住在安静的乡村:', 'A.是的|B.不太确定|C.不是的', NULL, 175, 134),
-(1617, '我宁愿:', 'A.负责领导儿童游戏|B.不确定|C.协助钟表修理', NULL, 176, 134),
-(1618, '一人__事,众人受累:', 'A.愤|B.偾|C.喷', NULL, 177, 134),
-(1619, '望子成龙的家长往往__苗助长:', 'A.揠|B.堰|C.偃', NULL, 178, 134),
-(1620, '气侯的转变并不影响我的情绪:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 179, 134),
-(1621, '因为我对于一切问题都有些见解，大家都公认我富于思想:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 180, 134),
-(1622, '我讲话的声音:', 'A.宏亮|B.介乎A与C之间|C.低沉', NULL, 181, 134),
-(1623, '人们公认我是一个活跃热情的人:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 182, 134),
-(1624, '我喜欢有旅行和变动机会的工作，而不计较工作本身之是否有保障:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 183, 134),
-(1625, '我治事严格,凡事都务求正确尽善:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 184, 134),
-(1626, '在取回或归还东西时，我总仔细检查是否东西还保持原状:', 'A.是的|B.介乎A与C之间|C.不是的', NULL, 185, 134),
-(1627, '我通常精力充沛,忙碌多事:', 'A.是的|B.不一定|C.不是的', NULL, 186, 134),
-(1628, '我确信我没有遗漏或不经心回答上面任何问题:', 'A.是的|B.不确定|C.不是的', NULL, 187, 134);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `question_ans`
---
-
+-- ----------------------------
+-- Table structure for `question_ans`
+-- ----------------------------
 DROP TABLE IF EXISTS `question_ans`;
-CREATE TABLE IF NOT EXISTS `question_ans` (
+CREATE TABLE `question_ans` (
   `paper_id` int(11) NOT NULL COMMENT '对应题目的id',
   `examinee_id` int(11) NOT NULL COMMENT '被试id',
   `option` text COMMENT '题目原始选项，目前是单选，如果要考虑多选时，最后将这里改成字符串存储',
@@ -3236,120 +4462,168 @@ CREATE TABLE IF NOT EXISTS `question_ans` (
   `question_number_list` text COMMENT '题目的number的列表,注意是试卷内的编号,而不是id',
   PRIMARY KEY (`paper_id`,`examinee_id`),
   KEY `fk_question_ans_1_idx` (`examinee_id`),
-  KEY `fk_question_ans_2_idx` (`paper_id`)
+  KEY `fk_question_ans_2_idx` (`paper_id`),
+  CONSTRAINT `fk_question_ans_1` FOREIGN KEY (`examinee_id`) REFERENCES `examinee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_question_ans_2` FOREIGN KEY (`paper_id`) REFERENCES `paper` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `question_ans`
---
+-- ----------------------------
+-- Records of question_ans
+-- ----------------------------
 
-INSERT INTO `question_ans` (`paper_id`, `examinee_id`, `option`, `score`, `question_number_list`) VALUES
-(133, 12, 'a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a', 'epqae|epqan|||||epqae|epqan|||epqan||epqap|epqal|epqae|||epqae||epqan||epqap||epqae|epqan||epqae|epqae||epqal|epqae|epqae|epqap|epqan|epqan|epqap|', '1|3|4|6|8|9|10|12|18|21|27|28|34|36|37|38|40|41|42|43|45|46|48|49|51|52|53|55|56|58|61|65|68|69|73|76|83'),
-(134, 12, 'a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a', '2|2|0|0|2|0|0|2|0|0|2|0|0|0|2|2|0|2|2|0|0|0|2|0|0|0|0|2|0|0|2|0|0|2|2|2|2|2|0|2|2|0|0|2|2|2|2|2|0|2|0|0|2|2|0|2|2|0|0|0|0|0|2|0|0|0|2|2|2|2|2|2|0|0|0|0|0|0|0|0|0|0|0|0|0|2|0|0|2|0|0|0|0|0|0|2|2|0|2|0|0|2|2|0|0|0|2|2|2|2|2|2|2|0|2|2|2|0|0|0|0|2|0|2|0|0|2|2|2|2|2|2|0|2|0|2|0|2|0|2|2|0|2|2|2|2|2|2|0|0|0|0|2|2|0|0|0|2|0|0|2|2|0|0|2|2|2|0|2|0|2|2|0|2|1|1|2|2|2|2|2|2|2|2', '3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99|100|101|102|103|104|105|106|107|108|109|110|111|112|113|114|115|116|117|118|119|120|121|122|123|124|125|126|127|128|129|130|131|132|133|134|135|136|137|138|139|140|141|142|143|144|145|146|147|148|149|150|151|152|153|154|155|156|157|158|159|160|161|162|163|164|165|166|167|168|169|170|171|172|173|174|175|176|177|178|179|180|181|182|183|184|185|186'),
-(135, 12, 'a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|b', 'sy||sp|||gi||cs|||||fe||||||||||||sy-sp-ie|do||fe||re|fe|||||cs|||||||||||||||||sy-sp|sy||fe|||||||||||||||so-fe||||||||cs||sy||do-cs-sy-ie|so||||po', '1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88'),
-(136, 12, NULL, NULL, '3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99|100|101|102|103|104|105|106|107|108|109|110|111|112|113|114|115|116|117|118|119|120|121|122|123|124|125|126|127|128|129|130|131|132|133|134|135|136|137|138|139|140|141|142|143|144|145|146|147|148|149|150|151|152|153|154|155|156|157|158|159|160|161|162|163|164|165|166|167|168|169|170|171|172|173|174|175|176|177|178|179|180|181|182|183|184|185|186'),
-(137, 12, 'a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a|a', NULL, '1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99|100|101|102|103|104|105|106|107|108|109|110|111|112|113|114|115|116|117|118|119|120|121|122|123|124|125|126|127|128|129|130|131|132|133|134|135|136|137|138|139|140|141|142|143|144|145|146|147|148|149|150|151|152|153|154|155|156|157|158|159|160|161|162|163|164|165|166|167|168|169|170|171|172|173|174|175|176|177|178|179|180|181|182|183|184|185|186|187|188|189|190|191|192|193|194|195|196|197|198|199|200|201|202|203|204|205|206|207|208|209|210|211|212|213|214|215|216|217|218|219|220|221|222|223|224|225');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `spmdf`
---
-
+-- ----------------------------
+-- Table structure for `spmdf`
+-- ----------------------------
 DROP TABLE IF EXISTS `spmdf`;
-CREATE TABLE IF NOT EXISTS `spmdf` (
+CREATE TABLE `spmdf` (
   `BZ` tinyint(4) NOT NULL,
   `XH` int(11) NOT NULL,
   PRIMARY KEY (`XH`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `spmdf`
---
+-- ----------------------------
+-- Records of spmdf
+-- ----------------------------
+INSERT INTO `spmdf` VALUES ('4', '1');
+INSERT INTO `spmdf` VALUES ('5', '2');
+INSERT INTO `spmdf` VALUES ('1', '3');
+INSERT INTO `spmdf` VALUES ('2', '4');
+INSERT INTO `spmdf` VALUES ('6', '5');
+INSERT INTO `spmdf` VALUES ('3', '6');
+INSERT INTO `spmdf` VALUES ('6', '7');
+INSERT INTO `spmdf` VALUES ('2', '8');
+INSERT INTO `spmdf` VALUES ('1', '9');
+INSERT INTO `spmdf` VALUES ('3', '10');
+INSERT INTO `spmdf` VALUES ('4', '11');
+INSERT INTO `spmdf` VALUES ('5', '12');
+INSERT INTO `spmdf` VALUES ('2', '13');
+INSERT INTO `spmdf` VALUES ('6', '14');
+INSERT INTO `spmdf` VALUES ('1', '15');
+INSERT INTO `spmdf` VALUES ('2', '16');
+INSERT INTO `spmdf` VALUES ('1', '17');
+INSERT INTO `spmdf` VALUES ('3', '18');
+INSERT INTO `spmdf` VALUES ('5', '19');
+INSERT INTO `spmdf` VALUES ('6', '20');
+INSERT INTO `spmdf` VALUES ('4', '21');
+INSERT INTO `spmdf` VALUES ('3', '22');
+INSERT INTO `spmdf` VALUES ('4', '23');
+INSERT INTO `spmdf` VALUES ('5', '24');
+INSERT INTO `spmdf` VALUES ('8', '25');
+INSERT INTO `spmdf` VALUES ('2', '26');
+INSERT INTO `spmdf` VALUES ('3', '27');
+INSERT INTO `spmdf` VALUES ('8', '28');
+INSERT INTO `spmdf` VALUES ('7', '29');
+INSERT INTO `spmdf` VALUES ('4', '30');
+INSERT INTO `spmdf` VALUES ('5', '31');
+INSERT INTO `spmdf` VALUES ('1', '32');
+INSERT INTO `spmdf` VALUES ('7', '33');
+INSERT INTO `spmdf` VALUES ('6', '34');
+INSERT INTO `spmdf` VALUES ('1', '35');
+INSERT INTO `spmdf` VALUES ('2', '36');
+INSERT INTO `spmdf` VALUES ('3', '37');
+INSERT INTO `spmdf` VALUES ('4', '38');
+INSERT INTO `spmdf` VALUES ('3', '39');
+INSERT INTO `spmdf` VALUES ('7', '40');
+INSERT INTO `spmdf` VALUES ('8', '41');
+INSERT INTO `spmdf` VALUES ('6', '42');
+INSERT INTO `spmdf` VALUES ('5', '43');
+INSERT INTO `spmdf` VALUES ('4', '44');
+INSERT INTO `spmdf` VALUES ('1', '45');
+INSERT INTO `spmdf` VALUES ('2', '46');
+INSERT INTO `spmdf` VALUES ('5', '47');
+INSERT INTO `spmdf` VALUES ('6', '48');
+INSERT INTO `spmdf` VALUES ('7', '49');
+INSERT INTO `spmdf` VALUES ('6', '50');
+INSERT INTO `spmdf` VALUES ('8', '51');
+INSERT INTO `spmdf` VALUES ('2', '52');
+INSERT INTO `spmdf` VALUES ('1', '53');
+INSERT INTO `spmdf` VALUES ('5', '54');
+INSERT INTO `spmdf` VALUES ('1', '55');
+INSERT INTO `spmdf` VALUES ('6', '56');
+INSERT INTO `spmdf` VALUES ('3', '57');
+INSERT INTO `spmdf` VALUES ('2', '58');
+INSERT INTO `spmdf` VALUES ('4', '59');
+INSERT INTO `spmdf` VALUES ('5', '60');
 
-INSERT INTO `spmdf` (`BZ`, `XH`) VALUES
-(4, 1),
-(5, 2),
-(1, 3),
-(2, 4),
-(6, 5),
-(3, 6),
-(6, 7),
-(2, 8),
-(1, 9),
-(3, 10),
-(4, 11),
-(5, 12),
-(2, 13),
-(6, 14),
-(1, 15),
-(2, 16),
-(1, 17),
-(3, 18),
-(5, 19),
-(6, 20),
-(4, 21),
-(3, 22),
-(4, 23),
-(5, 24),
-(8, 25),
-(2, 26),
-(3, 27),
-(8, 28),
-(7, 29),
-(4, 30),
-(5, 31),
-(1, 32),
-(7, 33),
-(6, 34),
-(1, 35),
-(2, 36),
-(3, 37),
-(4, 38),
-(3, 39),
-(7, 40),
-(8, 41),
-(6, 42),
-(5, 43),
-(4, 44),
-(1, 45),
-(2, 46),
-(5, 47),
-(6, 48),
-(7, 49),
-(6, 50),
-(8, 51),
-(2, 52),
-(1, 53),
-(5, 54),
-(1, 55),
-(6, 56),
-(3, 57),
-(2, 58),
-(4, 59),
-(5, 60);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `spmdf_memory`
---
-
+-- ----------------------------
+-- Table structure for `spmdf_memory`
+-- ----------------------------
 DROP TABLE IF EXISTS `spmdf_memory`;
-CREATE TABLE IF NOT EXISTS `spmdf_memory` (
+CREATE TABLE `spmdf_memory` (
   `BZ` tinyint(4) NOT NULL,
   `XH` int(11) NOT NULL,
   PRIMARY KEY (`XH`)
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Records of spmdf_memory
+-- ----------------------------
+INSERT INTO `spmdf_memory` VALUES ('4', '1');
+INSERT INTO `spmdf_memory` VALUES ('5', '2');
+INSERT INTO `spmdf_memory` VALUES ('1', '3');
+INSERT INTO `spmdf_memory` VALUES ('2', '4');
+INSERT INTO `spmdf_memory` VALUES ('6', '5');
+INSERT INTO `spmdf_memory` VALUES ('3', '6');
+INSERT INTO `spmdf_memory` VALUES ('6', '7');
+INSERT INTO `spmdf_memory` VALUES ('2', '8');
+INSERT INTO `spmdf_memory` VALUES ('1', '9');
+INSERT INTO `spmdf_memory` VALUES ('3', '10');
+INSERT INTO `spmdf_memory` VALUES ('4', '11');
+INSERT INTO `spmdf_memory` VALUES ('5', '12');
+INSERT INTO `spmdf_memory` VALUES ('2', '13');
+INSERT INTO `spmdf_memory` VALUES ('6', '14');
+INSERT INTO `spmdf_memory` VALUES ('1', '15');
+INSERT INTO `spmdf_memory` VALUES ('2', '16');
+INSERT INTO `spmdf_memory` VALUES ('1', '17');
+INSERT INTO `spmdf_memory` VALUES ('3', '18');
+INSERT INTO `spmdf_memory` VALUES ('5', '19');
+INSERT INTO `spmdf_memory` VALUES ('6', '20');
+INSERT INTO `spmdf_memory` VALUES ('4', '21');
+INSERT INTO `spmdf_memory` VALUES ('3', '22');
+INSERT INTO `spmdf_memory` VALUES ('4', '23');
+INSERT INTO `spmdf_memory` VALUES ('5', '24');
+INSERT INTO `spmdf_memory` VALUES ('8', '25');
+INSERT INTO `spmdf_memory` VALUES ('2', '26');
+INSERT INTO `spmdf_memory` VALUES ('3', '27');
+INSERT INTO `spmdf_memory` VALUES ('8', '28');
+INSERT INTO `spmdf_memory` VALUES ('7', '29');
+INSERT INTO `spmdf_memory` VALUES ('4', '30');
+INSERT INTO `spmdf_memory` VALUES ('5', '31');
+INSERT INTO `spmdf_memory` VALUES ('1', '32');
+INSERT INTO `spmdf_memory` VALUES ('7', '33');
+INSERT INTO `spmdf_memory` VALUES ('6', '34');
+INSERT INTO `spmdf_memory` VALUES ('1', '35');
+INSERT INTO `spmdf_memory` VALUES ('2', '36');
+INSERT INTO `spmdf_memory` VALUES ('3', '37');
+INSERT INTO `spmdf_memory` VALUES ('4', '38');
+INSERT INTO `spmdf_memory` VALUES ('3', '39');
+INSERT INTO `spmdf_memory` VALUES ('7', '40');
+INSERT INTO `spmdf_memory` VALUES ('8', '41');
+INSERT INTO `spmdf_memory` VALUES ('6', '42');
+INSERT INTO `spmdf_memory` VALUES ('5', '43');
+INSERT INTO `spmdf_memory` VALUES ('4', '44');
+INSERT INTO `spmdf_memory` VALUES ('1', '45');
+INSERT INTO `spmdf_memory` VALUES ('2', '46');
+INSERT INTO `spmdf_memory` VALUES ('5', '47');
+INSERT INTO `spmdf_memory` VALUES ('6', '48');
+INSERT INTO `spmdf_memory` VALUES ('7', '49');
+INSERT INTO `spmdf_memory` VALUES ('6', '50');
+INSERT INTO `spmdf_memory` VALUES ('8', '51');
+INSERT INTO `spmdf_memory` VALUES ('2', '52');
+INSERT INTO `spmdf_memory` VALUES ('1', '53');
+INSERT INTO `spmdf_memory` VALUES ('5', '54');
+INSERT INTO `spmdf_memory` VALUES ('1', '55');
+INSERT INTO `spmdf_memory` VALUES ('6', '56');
+INSERT INTO `spmdf_memory` VALUES ('3', '57');
+INSERT INTO `spmdf_memory` VALUES ('2', '58');
+INSERT INTO `spmdf_memory` VALUES ('4', '59');
+INSERT INTO `spmdf_memory` VALUES ('5', '60');
 
---
--- Table structure for table `spmmd`
---
-
+-- ----------------------------
+-- Table structure for `spmmd`
+-- ----------------------------
 DROP TABLE IF EXISTS `spmmd`;
-CREATE TABLE IF NOT EXISTS `spmmd` (
+CREATE TABLE `spmmd` (
   `NLL` float(11,2) NOT NULL,
   `NLH` float(11,2) NOT NULL,
   `B95` int(11) NOT NULL,
@@ -3362,137 +4636,87 @@ CREATE TABLE IF NOT EXISTS `spmmd` (
   PRIMARY KEY (`NLL`,`NLH`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `spmmd`
---
+-- ----------------------------
+-- Records of spmmd
+-- ----------------------------
+INSERT INTO `spmmd` VALUES ('5.25', '5.75', '34', '29', '25', '16', '13', '12', '9');
+INSERT INTO `spmmd` VALUES ('5.75', '6.25', '36', '31', '25', '17', '13', '12', '9');
+INSERT INTO `spmmd` VALUES ('6.25', '6.75', '37', '31', '25', '18', '13', '12', '10');
+INSERT INTO `spmmd` VALUES ('6.75', '7.25', '43', '36', '25', '19', '13', '12', '10');
+INSERT INTO `spmmd` VALUES ('7.25', '7.75', '44', '38', '31', '21', '13', '12', '10');
+INSERT INTO `spmmd` VALUES ('7.75', '8.25', '44', '39', '31', '23', '15', '13', '10');
+INSERT INTO `spmmd` VALUES ('8.25', '8.75', '45', '40', '33', '29', '20', '14', '12');
+INSERT INTO `spmmd` VALUES ('8.75', '9.25', '47', '43', '37', '33', '25', '14', '12');
+INSERT INTO `spmmd` VALUES ('9.25', '9.75', '50', '47', '39', '35', '27', '17', '13');
+INSERT INTO `spmmd` VALUES ('9.75', '10.25', '50', '48', '42', '35', '27', '17', '13');
+INSERT INTO `spmmd` VALUES ('10.25', '10.75', '50', '49', '42', '39', '32', '25', '18');
+INSERT INTO `spmmd` VALUES ('10.75', '11.25', '52', '50', '43', '39', '33', '25', '19');
+INSERT INTO `spmmd` VALUES ('11.25', '11.75', '53', '50', '45', '42', '35', '25', '19');
+INSERT INTO `spmmd` VALUES ('11.75', '12.25', '53', '50', '46', '42', '37', '27', '21');
+INSERT INTO `spmmd` VALUES ('12.25', '12.75', '53', '52', '50', '45', '40', '33', '28');
+INSERT INTO `spmmd` VALUES ('12.75', '13.25', '53', '52', '50', '45', '40', '35', '30');
+INSERT INTO `spmmd` VALUES ('13.25', '13.75', '54', '52', '50', '46', '42', '35', '32');
+INSERT INTO `spmmd` VALUES ('13.75', '14.25', '55', '52', '50', '48', '43', '36', '34');
+INSERT INTO `spmmd` VALUES ('14.25', '14.75', '55', '53', '51', '48', '43', '36', '34');
+INSERT INTO `spmmd` VALUES ('14.75', '15.25', '57', '54', '51', '48', '43', '36', '34');
+INSERT INTO `spmmd` VALUES ('15.25', '15.75', '57', '55', '52', '49', '43', '41', '34');
+INSERT INTO `spmmd` VALUES ('15.75', '16.25', '57', '56', '53', '49', '44', '41', '36');
+INSERT INTO `spmmd` VALUES ('16.25', '16.75', '57', '56', '53', '49', '45', '41', '37');
+INSERT INTO `spmmd` VALUES ('16.75', '20.00', '58', '57', '55', '52', '47', '40', '37');
+INSERT INTO `spmmd` VALUES ('20.00', '30.00', '57', '56', '54', '50', '44', '38', '33');
+INSERT INTO `spmmd` VALUES ('30.00', '40.00', '57', '55', '52', '48', '43', '37', '28');
+INSERT INTO `spmmd` VALUES ('40.00', '50.00', '57', '54', '50', '47', '41', '31', '28');
+INSERT INTO `spmmd` VALUES ('50.00', '60.00', '54', '52', '48', '42', '34', '24', '21');
+INSERT INTO `spmmd` VALUES ('60.00', '70.00', '54', '52', '46', '37', '30', '22', '19');
+INSERT INTO `spmmd` VALUES ('70.00', '110.00', '52', '49', '44', '33', '26', '18', '17');
 
-INSERT INTO `spmmd` (`NLL`, `NLH`, `B95`, `B90`, `B75`, `B50`, `B25`, `B10`, `B5`) VALUES
-(5.25, 5.75, 34, 29, 25, 16, 13, 12, 9),
-(5.75, 6.25, 36, 31, 25, 17, 13, 12, 9),
-(6.25, 6.75, 37, 31, 25, 18, 13, 12, 10),
-(6.75, 7.25, 43, 36, 25, 19, 13, 12, 10),
-(7.25, 7.75, 44, 38, 31, 21, 13, 12, 10),
-(7.75, 8.25, 44, 39, 31, 23, 15, 13, 10),
-(8.25, 8.75, 45, 40, 33, 29, 20, 14, 12),
-(8.75, 9.25, 47, 43, 37, 33, 25, 14, 12),
-(9.25, 9.75, 50, 47, 39, 35, 27, 17, 13),
-(9.75, 10.25, 50, 48, 42, 35, 27, 17, 13),
-(10.25, 10.75, 50, 49, 42, 39, 32, 25, 18),
-(10.75, 11.25, 52, 50, 43, 39, 33, 25, 19),
-(11.25, 11.75, 53, 50, 45, 42, 35, 25, 19),
-(11.75, 12.25, 53, 50, 46, 42, 37, 27, 21),
-(12.25, 12.75, 53, 52, 50, 45, 40, 33, 28),
-(12.75, 13.25, 53, 52, 50, 45, 40, 35, 30),
-(13.25, 13.75, 54, 52, 50, 46, 42, 35, 32),
-(13.75, 14.25, 55, 52, 50, 48, 43, 36, 34),
-(14.25, 14.75, 55, 53, 51, 48, 43, 36, 34),
-(14.75, 15.25, 57, 54, 51, 48, 43, 36, 34),
-(15.25, 15.75, 57, 55, 52, 49, 43, 41, 34),
-(15.75, 16.25, 57, 56, 53, 49, 44, 41, 36),
-(16.25, 16.75, 57, 56, 53, 49, 45, 41, 37),
-(16.75, 20.00, 58, 57, 55, 52, 47, 40, 37),
-(20.00, 30.00, 57, 56, 54, 50, 44, 38, 33),
-(30.00, 40.00, 57, 55, 52, 48, 43, 37, 28),
-(40.00, 50.00, 57, 54, 50, 47, 41, 31, 28),
-(50.00, 60.00, 54, 52, 48, 42, 34, 24, 21),
-(60.00, 70.00, 54, 52, 46, 37, 30, 22, 19),
-(70.00, 110.00, 52, 49, 44, 33, 26, 18, 17);
+-- ----------------------------
+-- Table structure for `spmmd_memory`
+-- ----------------------------
+DROP TABLE IF EXISTS `spmmd_memory`;
+CREATE TABLE `spmmd_memory` (
+  `NLL` float(11,2) NOT NULL,
+  `NLH` float(11,2) NOT NULL,
+  `B95` int(11) NOT NULL,
+  `B90` int(11) NOT NULL,
+  `B75` int(11) NOT NULL,
+  `B50` int(11) NOT NULL,
+  `B25` int(11) NOT NULL,
+  `B10` int(11) NOT NULL,
+  `B5` int(11) NOT NULL,
+  PRIMARY KEY (`NLL`,`NLH`)
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `examinee`
---
-ALTER TABLE `examinee`
-  ADD CONSTRAINT `fk_examinee_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `factor`
---
-ALTER TABLE `factor`
-  ADD CONSTRAINT `fk_factor_1` FOREIGN KEY (`father_factor`) REFERENCES `factor` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
-
---
--- Constraints for table `factor_ans`
---
-ALTER TABLE `factor_ans`
-  ADD CONSTRAINT `fk_factor_ans_1` FOREIGN KEY (`examinee_id`) REFERENCES `examinee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_factor_ans_2` FOREIGN KEY (`factor_id`) REFERENCES `factor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `index`
---
-ALTER TABLE `index`
-  ADD CONSTRAINT `fk_index_1` FOREIGN KEY (`father_index`) REFERENCES `index` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
-  ADD CONSTRAINT `fk_index_2` FOREIGN KEY (`module_id`) REFERENCES `module` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `index_ans`
---
-ALTER TABLE `index_ans`
-  ADD CONSTRAINT `fk_index_ans_1` FOREIGN KEY (`examinee_id`) REFERENCES `examinee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_index_ans_2` FOREIGN KEY (`index_id`) REFERENCES `index` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `inquery`
---
-ALTER TABLE `inquery`
-  ADD CONSTRAINT `fk_inquery_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `inquery_ans`
---
-ALTER TABLE `inquery_ans`
-  ADD CONSTRAINT `fk_inquery_ans_1` FOREIGN KEY (`inquery_id`) REFERENCES `inquery` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_inquery_ans_2` FOREIGN KEY (`examinee_id`) REFERENCES `examinee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `interview`
---
-ALTER TABLE `interview`
-  ADD CONSTRAINT `fk_interview_1` FOREIGN KEY (`manager_id`) REFERENCES `manager` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_interview_2` FOREIGN KEY (`examinee_id`) REFERENCES `examinee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `manager`
---
-ALTER TABLE `manager`
-  ADD CONSTRAINT `fk_manager_project` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `pmrel`
---
-ALTER TABLE `pmrel`
-  ADD CONSTRAINT `fk_pmrel_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_pmrel_2` FOREIGN KEY (`module_id`) REFERENCES `module` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `project`
---
-ALTER TABLE `project`
-  ADD CONSTRAINT `fk_project_1` FOREIGN KEY (`manager_id`) REFERENCES `manager` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `project_detail`
---
-ALTER TABLE `project_detail`
-  ADD CONSTRAINT `fk_project_detail_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `question`
---
-ALTER TABLE `question`
-  ADD CONSTRAINT `fk_question_1` FOREIGN KEY (`paper_id`) REFERENCES `paper` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `question_ans`
---
-ALTER TABLE `question_ans`
-  ADD CONSTRAINT `fk_question_ans_1` FOREIGN KEY (`examinee_id`) REFERENCES `examinee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_question_ans_2` FOREIGN KEY (`paper_id`) REFERENCES `paper` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+-- ----------------------------
+-- Records of spmmd_memory
+-- ----------------------------
+INSERT INTO `spmmd_memory` VALUES ('5.25', '5.75', '34', '29', '25', '16', '13', '12', '9');
+INSERT INTO `spmmd_memory` VALUES ('5.75', '6.25', '36', '31', '25', '17', '13', '12', '9');
+INSERT INTO `spmmd_memory` VALUES ('6.25', '6.75', '37', '31', '25', '18', '13', '12', '10');
+INSERT INTO `spmmd_memory` VALUES ('6.75', '7.25', '43', '36', '25', '19', '13', '12', '10');
+INSERT INTO `spmmd_memory` VALUES ('7.25', '7.75', '44', '38', '31', '21', '13', '12', '10');
+INSERT INTO `spmmd_memory` VALUES ('7.75', '8.25', '44', '39', '31', '23', '15', '13', '10');
+INSERT INTO `spmmd_memory` VALUES ('8.25', '8.75', '45', '40', '33', '29', '20', '14', '12');
+INSERT INTO `spmmd_memory` VALUES ('8.75', '9.25', '47', '43', '37', '33', '25', '14', '12');
+INSERT INTO `spmmd_memory` VALUES ('9.25', '9.75', '50', '47', '39', '35', '27', '17', '13');
+INSERT INTO `spmmd_memory` VALUES ('9.75', '10.25', '50', '48', '42', '35', '27', '17', '13');
+INSERT INTO `spmmd_memory` VALUES ('10.25', '10.75', '50', '49', '42', '39', '32', '25', '18');
+INSERT INTO `spmmd_memory` VALUES ('10.75', '11.25', '52', '50', '43', '39', '33', '25', '19');
+INSERT INTO `spmmd_memory` VALUES ('11.25', '11.75', '53', '50', '45', '42', '35', '25', '19');
+INSERT INTO `spmmd_memory` VALUES ('11.75', '12.25', '53', '50', '46', '42', '37', '27', '21');
+INSERT INTO `spmmd_memory` VALUES ('12.25', '12.75', '53', '52', '50', '45', '40', '33', '28');
+INSERT INTO `spmmd_memory` VALUES ('12.75', '13.25', '53', '52', '50', '45', '40', '35', '30');
+INSERT INTO `spmmd_memory` VALUES ('13.25', '13.75', '54', '52', '50', '46', '42', '35', '32');
+INSERT INTO `spmmd_memory` VALUES ('13.75', '14.25', '55', '52', '50', '48', '43', '36', '34');
+INSERT INTO `spmmd_memory` VALUES ('14.25', '14.75', '55', '53', '51', '48', '43', '36', '34');
+INSERT INTO `spmmd_memory` VALUES ('14.75', '15.25', '57', '54', '51', '48', '43', '36', '34');
+INSERT INTO `spmmd_memory` VALUES ('15.25', '15.75', '57', '55', '52', '49', '43', '41', '34');
+INSERT INTO `spmmd_memory` VALUES ('15.75', '16.25', '57', '56', '53', '49', '44', '41', '36');
+INSERT INTO `spmmd_memory` VALUES ('16.25', '16.75', '57', '56', '53', '49', '45', '41', '37');
+INSERT INTO `spmmd_memory` VALUES ('16.75', '20.00', '58', '57', '55', '52', '47', '40', '37');
+INSERT INTO `spmmd_memory` VALUES ('20.00', '30.00', '57', '56', '54', '50', '44', '38', '33');
+INSERT INTO `spmmd_memory` VALUES ('30.00', '40.00', '57', '55', '52', '48', '43', '37', '28');
+INSERT INTO `spmmd_memory` VALUES ('40.00', '50.00', '57', '54', '50', '47', '41', '31', '28');
+INSERT INTO `spmmd_memory` VALUES ('50.00', '60.00', '54', '52', '48', '42', '34', '24', '21');
+INSERT INTO `spmmd_memory` VALUES ('60.00', '70.00', '54', '52', '46', '37', '30', '22', '19');
+INSERT INTO `spmmd_memory` VALUES ('70.00', '110.00', '52', '49', '44', '33', '26', '18', '17');

@@ -36,8 +36,6 @@ class QuestionIC {
 		'bind'=>array('id'=>$examinee_id)
 		)
 		);
-		print_r($examinee_info);
-		exit();
 		#如果examinee_id为空，这种处理也合适
 		if(isset($examinee_info->project_id)){
 			if($examinee_info->state == 0){
@@ -46,7 +44,7 @@ class QuestionIC {
 				return false;
 			}
 		}else{
-			throw new Exception(self::$error_state.'-不存在该账号的用户-'.$examinee_id);
+			throw new Exception(self::$error_state.'-不存在该账号-'.$examinee_id);
 		}
 	}
 	#选项：前24项abc edf 后36项abcd efgh | 题目数量  60
