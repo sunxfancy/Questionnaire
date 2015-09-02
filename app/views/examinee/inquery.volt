@@ -1,38 +1,30 @@
 <script type='text/javascript' src='/js/demand.js'></script>
-  <div class="Leo_question_v2" id="Leo_question_v2">
-        
-        <div class="Leo_question_l" style="height:400px;" id="Leo_question_panel">
+<div class="Leo_question_v2" id="Leo_question_v2">       
+    <div class="Leo_question_l" style="height:400px;" id="Leo_question_panel">
         <div style='width:95%;height:400px;margin:0 auto;'>
-        <!--只需在代码中，对这一部分进行解析，替换，实现题目切换-->
-        <div id="title_div" class="Leo_title_text" =''><span></span></div>
-        <div id='ans_div' style="overflow:auto;font-family:'微软雅黑';">
-        <div></div>
+            <!--只需在代码中，对这一部分进行解析，替换，实现题目切换-->
+            <div id="title_div" class="Leo_title_text" =''><span></span></div>
+            <div id='ans_div' style="overflow:auto;font-family:'微软雅黑';">
+                <div></div>
+            </div>
         </div>
-        </div>
-        </div>
+    </div>
         
-        <div id="Leo_control" style="width:600px;height:60px;text-align:center;">
-            <table style="width:30%;height:60px;margin:0 auto;"><tr style="width:100%;height:100%;"><td style="width:20%;">
-                           <img style="height:40px;display:none;" src="../images/left.png" id="Leo_pageup"/>
-
-                </td><td style="width:20%;">
-                            <img style="height: 40px;" id="Leo_pagedown" src="../images/right.png" />
-
-                </td><td style="width:20%;">
-                            <img style="height: 40px;" id="Leo_checkup" src="../images/signin.png"  />
-
-                </td><td style="width:20%;">
-                            <button style="height: 40px;;" id="Leo_All" value="全选A" />
-
-                </td></tr>
-            
-            </table>
-
-        </div>
-
-    </div>  
-    
-    
+    <div id="Leo_control" style="width:600px;height:60px;text-align:center;">
+        <table style="width:30%;height:60px;margin:0 auto;">
+            <tr style="width:100%;height:100%;"><td style="width:20%;">
+                <img style="height:40px;display:none;" src="../images/left.png" id="Leo_pageup"/>
+            </td><td style="width:20%;">
+                <img style="height: 40px;" id="Leo_pagedown" src="../images/right.png" />
+            </td><td style="width:20%;">
+                <img style="height: 40px;" id="Leo_checkup" src="../images/signin.png"  />
+            </td><td style="width:20%;">
+                <button style="height: 40px;;" id="Leo_All" value="全选A" />
+            </td></tr>            
+        </table>
+    </div>
+</div>  
+       
 <div class="Leo_question_t_v2" style="height:500px;margin-top:0px;">
     <div style="overflow:auto;height:500px;">
         <table style="width:92%;text-align:center;vertical-align:middle;table-layout:fixed;margin:0 auto;" id="Leo_question_table" cellspacing="0"></table>
@@ -314,15 +306,14 @@ function getpaper(url){
 
 function Leo_check(){
     $.post('/Examinee/getInqueryAns',{"answer":$.cookie("ans_cookie"+{{number}})}, function(data) {
-                            if(data.flag){
-                                    alert(data.answer);
-                                    alert("提交成功！点击确定跳转到用户信息填写页面！");
-                                    $.cookie("ans_cookie"+{{number}},"",{expires:-1});
-                                    window.location.href="/Examinee/editinfo"
-                                    return;
-                              }else{
-                                    alert("提交出错，请联系管理员！");
-                              }
-                        });
+            if(data.flag){
+                alert("提交成功！点击确定跳转到用户信息填写页面！");
+                $.cookie("ans_cookie"+{{number}},"",{expires:-1});
+                window.location.href="/Examinee/editinfo";
+                return;
+            }else{
+                alert("提交出错，请联系管理员！");
+            }
+        });
 }
 </script>

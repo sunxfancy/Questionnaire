@@ -157,7 +157,7 @@ class ExcelLoader
     public function readline_inquery($sheet, $project_id, $i){
         $inquery_question = new InqueryQuestion();
 
-        $inquery_question->topic = self::filter($sheet->getCell('B'.$i)->getValue());
+        $inquery_question->topic = $sheet->getCell('B'.$i)->getValue();
         $is_radio = self::filter($sheet->getCell('C'.$i)->getValue());
         if($is_radio == '是'){
             $inquery_question->is_radio = 1;
