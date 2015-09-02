@@ -44,7 +44,7 @@ class QuestionIC {
 				return false;
 			}
 		}else{
-			throw new Exception(self::$error_state.'-不存在该账号的用户-'.$examinee_id);
+			throw new Exception(self::$error_state.'-不存在该账号-'.$examinee_id);
 		}
 	}
 	#选项：前24项abc edf 后36项abcd efgh | 题目数量  60
