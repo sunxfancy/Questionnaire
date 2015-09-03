@@ -2,61 +2,57 @@
 <script type="text/javascript" src="/lib/bootstrap-datetimepicker.js"></script>
 <script type="text/javascript" src="/jqGrid/js/i18n/grid.locale-cn.js"></script>
 <script type="text/javascript" src="/js/bootstrap.js"></script>
-
 <div class="Leo_question">
-    <div class="baseinfo" style="width:100%;height:100%;">
-        <div style="overflow:auto;height:440px;">
-            <div style="height:40px;text-align:center;font-size:28px;">基本信息</div>
+    <div class="baseinfo" style="width:100%;height:100%;overflow:auto;">
+        <div style="height:440px;">
+            <div style="padding:10px;text-align:center;font-size:28px;">基本信息</div>
             <table border="1" cellspacing="0" cellpadding="0" style="margin:0 auto;font-size:16px; font-family:'微软雅黑'">
                 <tr>
-                    <td style="width:120px;line-height:33px;">姓名</td>
+                    <td style="width:120px;line-height:33px;">&nbsp;姓名</td>
                     <td style="width:180px;"><input id="name" type="text" value="{{ name }}" style="width:178px;font-size:16px;color:black;"></td>
-                    <td style="width:120px;line-height:33px;">性别</td>
-                    <td style="width: 180px;"><input id="sex" type="text" value="{{ sex }}" style="width:178px;font-size:16px;color:black;"></td>
+                    <td style="width:120px;line-height:33px;">&nbsp;性别</td>
+                    <td style="width: 180px;">
+                        <select id="sex" type="text" value="{{ sex }}" style="width:178px;font-size:16px;color:black;line-height:28px;font-family:'微软雅黑'">
+                            <option value="男">男</option>
+                            <option value="女">女</option>
+                        </select>
+                    </td>
                 </tr>
                 <tr>
-                    <td style="width:120px;line-height:33px;">学历</td>
+                    <td style="width:120px;line-height:33px;">&nbsp;学历</td>
                     <td style="width:180px;">
                         <select id="education" type="text" value="{{ education }}" style="width:178px;font-size:16px;color:black;line-height:28px;font-family:'微软雅黑'">
-                            <option value="{{ education }}">{{ education }}</option>
-                            <option value="函授大专">函授大专</option>
-                            <option value="在职大专">在职大专</option>
-                            <option value="全日制大专">全日制大专</option>
-                            <option value="函授本科">函授本科</option>
-                            <option value="在职本科">在职本科</option>
-                            <option value="全日制本科">全日制本科</option>
-                            <option value="在职硕士">在职硕士</option>
-                            <option value="全日制硕士">全日制硕士</option>
-                            <option value="博士">博士</option>
+                            <option value="职高">职高</option>
+                            <option value="中专">中专</option>
+                            <option value="技校">技校</option>
+                            <option value="专科">专科</option>
+                            <option value="本科">本科</option>
+                            <option value="研究生">研究生</option>
                             <option value="其他">其他</option>
                         </select>
                     </td>
-                    <td style=" width:120px;line-height:33px;">学位</td>
+                    <td style=" width:120px;line-height:33px;">&nbsp;学位</td>
                     <td style="width:180px;">
                         <select id="degree" type="text" value="{{ degree }}" style="width:178px;font-size:16px;color:black;line-height:28px; font-family:'微软雅黑'">
-                            <option value="{{ degree }}">{{ degree }}</option>
-                            <option value="工科学士学位">工科学士学位</option>
-                            <option value="理科学士学位">理科学士学位</option>
-                            <option value="文科学士学位">文科学士学位</option>
-                            <option value="普通硕士学位">普通硕士学位</option>
-                            <option value="专业硕士学位">专业硕士学位</option>
-                            <option value="博士学位">博士学位</option>
-                            <option value="其他">其他</option>
+                            <option value="无">无</option>
+                            <option value="学士">学士</option>
+                            <option value="硕士">硕士</option>
+                            <option value="博士">博士</option>
                         </select>
                     </td>
                 </tr>
                 <tr>
-                    <td style=" width:120px;line-height:33px;">出生年月</td>
+                    <td style=" width:120px;line-height:33px;">&nbsp;出生年月</td>
                     <td style="width:180px;">
                         <div class="input-append date form_datetime">
-                            <input id="birthday" type="text" value="{{birthday}}" readonly style="width:178px;height:31px;color:black;">
-                            <span class="add-on"><i class="icon-th"></i></span>
+                            <input id="birthday" type="text" value="{{birthday}}" style="width:178px;height:31px;color:black;">
+                            <span class="add-on"><i class="icon-remove"></i></span>
+                            <span class="add-on"><i class="icon-calendar"></i></span>
                         </div>
                     </td>
-                    <td style=" width:120px;line-height:33px;">籍贯</td>
+                    <td style=" width:120px;line-height:33px;">&nbsp;籍贯</td>
                     <td style="width:180px;">
                         <select id="native" type="text" value="{{ native }}" style="width:178px;font-size:16px;color:black;line-height:28px; font-family:'微软雅黑'">
-                            <option value="{{ native }}">{{ native }}</option> 
                             <option value="北京市">北京市</option>
                             <option value="安徽省">安徽省</option>
                             <option value="重庆市">重庆市</option>
@@ -95,21 +91,19 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style=" width:120px;line-height:33px;">政治面貌</td>
+                    <td style=" width:120px;line-height:33px;">&nbsp;政治面貌</td>
                     <td style="width:180px;">
                         <select id="politics" type="text" value="{{ politics }}" style="width:178px;font-size:16px;color:black;line-height:28px;font-family:'微软雅黑'">
-                            <option value="{{ politics }}">{{ politics }}</option>
-                            <option value="无">无党派</option>
+                            <option value="无党派">无党派</option>
                             <option value="团员">团员</option>
                             <option value="党员">党员</option>
                             <option value="群众">群众</option>
                             <option value="民主党派">民主党派</option>
                         </select>
                     </td>
-                    <td style=" width:120px;line-height:33px;">职称</td>
+                    <td style=" width:120px;line-height:33px;">&nbsp;职称</td>
                     <td style="width:180px;">
                         <select id="professional" type="text" value="{{ professional }}" style="width:178px;font-size:16px;color:black;line-height:28px;font-family:'微软雅黑'">
-                            <option value="{{ professional }}">{{ professional }}</option>
                             <option value="无职称">无职称</option>
                             <option value="初级">初级</option>
                             <option value="中级">中级</option>
@@ -119,33 +113,31 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style=" width:120px;line-height:33px;">工作单位</td>
+                    <td style=" width:120px;line-height:33px;">&nbsp;工作单位</td>
                     <td colspan="3" style="font-size:16px;"><input id="employer" type="text" value="{{ employer }}" style="width:478px;font-size:16px;color:black;"></td>
                 </tr>
                 <tr>
-                    <td style=" width:120px;line-height:33px;">部门</td>
+                    <td style=" width:120px;line-height:33px;">&nbsp;部门</td>
                     <td colspan="3" style="font-size: 16px;"><input id="unit" type="text" value="{{ unit }}" style="width:478px;font-size:16px;color:black;"></td>
                 </tr>
                 <tr>
-                    <td style=" width:120px;line-height:33px;">岗位/职务</td>
+                    <td style=" width:120px;line-height:33px;">&nbsp;岗位/职务</td>
                     <td colspan="3" style="font-size: 16px;"><input id="duty" type="text" value="{{ duty }}" style="width:478px;font-size:16px;color:black;"></td>
                 </tr>
                 <tr>
-                    <td style=" width:120px;line-height:33px;">班子/系统成员</td>
+                    <td style=" width:120px;line-height:33px;">&nbsp;班子/系统成员</td>
                     <td colspan="3" style="font-size: 16px;"><input id="team" type="text" value="{{ team }}" style="width:478px;font-size:16px;color:black;"></td>
                 </tr>
             </table>
 
-            <div style="height:10px;"></div>
-            <div style="width:600px;margin:0 auto;overflow:hidden;">
+            <div style="width:600px;margin:0 auto;overflow:hidden;padding:10px 0;">
                 <table id="grid-table1"></table>
             </div>
-            <div style="height:10px;"></div>
             <div style="width:600px;margin:0 auto;overflow:hidden;">
                 <table id="grid-table2"></table>
             </div>
             
-            <div style="width:600px;height:40px;margin:0 auto;margin-top:10px;">  
+            <div style="width:600px;margin:0 auto;padding:10px;">
                 <table style="width:600px; text-align:center;">                
                 <tr><td><button class="btn btn-primary" id="submit">保存</button></td></tr>
                 </table>
@@ -155,30 +147,34 @@
 </div>
 
 <script type="text/javascript" language="javascript">
-    $(".form_datetime").datetimepicker({
+    $("#birthday").datetimepicker({
         format: 'yyyy-mm-dd',
         autoclose: true,
         todayBtn: true,
-        pickerPosition: "bottom-left"
+        // startDate: 1940-01-01,
+        // endDate: 2000-12-31,
+        startView: 2,
+        minView: 2,
+        // pickerPosition: "bottom-right"
     });
 
     $(document).ready(function() {
         $("#submit").click(function(){
-                var base_info ={
-                    "name"          :$("#name").val(),
-                    "sex"           :$("#sex").val(),
-                    "education"     :$("#education").val(),
-                    "degree"        :$("#degree").val(),
-                    "birthday"      :$("#birthday").val(),
-                    "native"        :$("#native").val(),
-                    "politics"      :$("#politics").val(),
-                    "professional"  :$("#professional").val(),
-                    "employer"      :$("#employer").val(),
-                    "unit"          :$("#unit").val(),
-                    "duty"          :$("#duty").val(),
-                    "team"          :$("#team").val()
-                }
-                $.post('/examinee/submit', base_info, callbk);
+            var base_info ={
+                "name"          :$("#name").val(),
+                "sex"           :$("#sex").val(),
+                "education"     :$("#education").val(),
+                "degree"        :$("#degree").val(),
+                "birthday"      :$("#birthday").val(),
+                "native"        :$("#native").val(),
+                "politics"      :$("#politics").val(),
+                "professional"  :$("#professional").val(),
+                "employer"      :$("#employer").val(),
+                "unit"          :$("#unit").val(),
+                "duty"          :$("#duty").val(),
+                "team"          :$("#team").val()
+            }
+            $.post('/examinee/submit', base_info, callbk);
         });
         function callbk(){
             alert("保存成功！");

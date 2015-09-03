@@ -4,7 +4,6 @@
 <script type="text/javascript" src="/lib/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="/lib/bootstrap-datetimepicker.js"></script>
 
-
 <div style="width:100%;height:460px;overflow:hidden;">
     <table id="grid-table"></table>
     <div id="grid-pager"></div>   
@@ -12,7 +11,7 @@
     <div style="width:100%;height:40px;text-align:center;margin: 5px 10px;">
         <form class="form-inline" method="POST" action="/pm/uploadinterviewer" enctype="multipart/form-data">
             <div class="form-group">
-                <a class="btn btn-primary" href="/template/专家导入模板.xls">导入模板下载</a>
+                <a class="btn btn-primary" href="/template/专家导入模板.xls">模板下载</a>
             </div>
             <div class="form-group">
                 <input type="file" name="file" input maxlength="100" style="height:30px;cursor:pointer;">
@@ -27,6 +26,25 @@
     </div>
 </div>
 
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">正在存储选择模块...</h4>
+            </div>
+            <div class="modal-body" style="padding:40px;">
+                <div class="progress" style="height:20px;width:90%;margin:auto;">
+                    <b class="progress__bar">
+                        <span class="progress__text"><em>0%</em></span>
+                    </b>
+                </div>
+            </div>
+        <div class="modal-footer">
+            <button id="close" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
     jQuery(function($) {
@@ -59,22 +77,19 @@
                 {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
                     formatter:'actions', 
                     formatoptions:{ 
-                        keys:true,
-                        
-                        delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
-                    }
-                },
+                        keys:true,                        
+                        delOptions:{recreateForm:true,beforeShowForm:beforeDeleteCallback},
+                    }},
                 {name:'username',index:'username', sorttype:"int",width:80, editable: false,align:'center'},
                 {name:'name',index:'name', sortable:true, width:80,sorttype:"string", editable:true,align:'center'},
                 {name:'password',index:'password',width:80, sortable:false, sorttype:"string", editable:true,align:'center'},
                 {name:'last_login',index:'last_login',width:100, sortable:true, sorttype:"string", editable:false,align:'center'},
-                {name:'degree_of_complete',index:'degree_of_complete', sortable:false,width:90, editable: false,align:'center'},
+                {name:'degree_of_complete',index:'degree_of_complete', sortable:false,width:90, editable: false,align:'center',},
                 {name:'user_divide',index:'user_divide', width:90, sortable:false, resize:false,align:'center',
                     formatter:function(cellvalue,options,rowObject){
                         var temp = "<a href='/pm/userdivide/"+rowObject.id+"' >配置</a>";
                         return temp;
-                    },
-                }
+                    }}
             ], 
             
             viewrecords : true, 
@@ -97,16 +112,11 @@
                     updatePagerIcons(table);
                     enableTooltips(table);
                 }, 0);
-
-                        
-
             },
     
             editurl: "/pm/updateinterviewer",//nothing is saved
-            caption: "面询专家账号管理"
-    
-            ,autowidth: true
-    
+            caption: "面询专家账号管理",  
+            autowidth: true   
         });
         $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
     
@@ -119,7 +129,6 @@
             }, 0);
         }
     
-
         //navButtons
         jQuery(grid_selector).jqGrid('navGrid',pager_selector,
             {   //navbar options

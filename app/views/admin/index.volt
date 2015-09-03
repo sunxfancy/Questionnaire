@@ -62,7 +62,7 @@
                         return temp;
                     }
                 },
-				{name:'id',index:'id', sorttype:"int",width:70, editable: false,align:'center'},
+				{name:'id',index:'id', sorttype:"int", width:70, editable: false,align:'center'},
 				{name:'name',index:'name', sortable:true, width:160,sorttype:"string", editable:true,align:'center'},
 				{name:'manager_name',index:'manager_name',width:80, sortable:false, sorttype:"string", editable:true,align:'center'},
 				{name:'manager_username',index:'manager_username',width:80, sortable:false, sorttype:"string", editable:true,align:'center'},

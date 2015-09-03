@@ -56,10 +56,10 @@
                     }
             	},
             	{name:'last_login',index:'last_login', sortable:true,width:200, editable: false,unformat:pickDate,align:'center'},
-                {name:'is_exam_com',index:'is_exam_com',width:135, sortable:false, editable:false,align:'center',
+                {name:'state',index:'state',width:135, sortable:false, editable:false,align:'center',
                 	formatter:function(cellvalue){
                         var temp = "";
-                        if(cellvalue == 1){
+                        if(cellvalue > 0){
                             temp = "是" ;
                         } 
                         else { 
