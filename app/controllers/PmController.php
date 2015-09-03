@@ -55,15 +55,15 @@ class PmController extends Base
         $examinee_com = 0;
         $examinee_coms = array();
         foreach ($examinees as $examinee) {
-            if ($examinee->is_exam_com == 1) {
+            if ($examinee->state  > 0) {
                 $examinee_com ++;
                 $examinee_coms[] = $examinee->id;
             }
         }
 		$interview_com = 0;
-        for ($i=0; $i < sizeof($examinee_coms); $i++) { 
+        for ($i=0; $i < $examinee_com; $i++) { 
              $interview = Interview::findFirst($examinee_coms[$i]);
-             if (isset($interview->advantage)){
+             if (!empty($interview->advantage) && !empty($interview->disadvantage) &&!empty($interview->remark)){
                  $interview_com++;
              } 
         }
@@ -170,7 +170,8 @@ class PmController extends Base
             }
             // echo 0;
         } else {
-            echo json_encode(array('error' => '错误的接口访问'));
+            // echo json_encode(array('error' => '错误的接口访问'));
+            alert("请选择导入文件！");
         }
         $this->response->redirect('pm');
     }
@@ -180,6 +181,7 @@ class PmController extends Base
         $builder = $this->modelsManager->createBuilder()                            
                                        ->from('Examinee')
                                        ->where("project_id = '$project_id'");
+        
         $sidx = $this->request->getQuery('sidx','string');
         $sord = $this->request->getQuery('sord','string');
         if ($sidx != null)
@@ -198,6 +200,8 @@ class PmController extends Base
             $id = $this->request->getPost('id', 'int');
             $examinee = Examinee::findFirst($id);
             $examinee->name       = $this->request->getPost('name', 'string');
+            $sex = $this->request->getPost('sex', 'string');
+            $examinee->sex = ($sex == '女') ? 0 : 1;
             $examinee->password   = $this->request->getPost('password', 'string');
             if (!$examinee->save()) {
                 foreach ($examinee->getMessages() as $message) {
@@ -214,6 +218,26 @@ class PmController extends Base
                 }
             }
         }
+        // if ($oper == 'add') {
+        //     $examinee->name       = $this->request->getPost('name', 'string');
+        //     $sex = $this->request->getPost('sex', 'string');
+        //     $examinee->sex        = ($sex == '女') ? 0 : 1;
+        //     $examinee->password   = $this->request->getPost('password', 'string');
+        //     $examinee = Examinee::find(array(
+        //     'project_id = :project_id:',
+        //     'bind' => array('project_id' => $project_id)));
+        //     if(count($examinee) == 0){ 
+        //             $last_number = $project_id.'0001';
+        //     }else{
+        //         $data_num = count($examinee);
+        //         $last_number = $examinee[$data_num-1]->number+1;
+        //     }
+        //     if (!$examinee->save()) {
+        //         foreach ($examinee->getMessages() as $message) {
+        //             echo $message;
+        //         }
+        //     }
+        // }
     }
 
     public function listinterviewerAction(){

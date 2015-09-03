@@ -90,13 +90,13 @@ class AdminController extends Base
         $examinee_com = 0;
         $examinee_coms = array();
         foreach ($examinees as $examinee) {
-            if ($examinee->is_exam_com == 1) {
+            if ($examinee->state > 0) {
                 $examinee_com ++;
                 $examinee_coms[] = $examinee->id;
             }
         }
         $interview_com = 0;
-        for ($i=0; $i < sizeof($examinee_coms); $i++) { 
+        for ($i=0; $i < $examinee_com; $i++) { 
              $interview = Interview::findFirst($examinee_coms[$i]);
              if (isset($interview->advantage)){
                  $interview_com++;
@@ -140,8 +140,10 @@ class AdminController extends Base
         $sord = $this->request->getQuery('sord','string');
         if ($sidx != null)
             $sort = $sidx;
-        else
+        else{
             $sort = 'id';
+            $sord = 'desc';
+        }
         if ($sord != null)
             $sort = $sort.' '.$sord;
         $builder = $builder->orderBy($sort);

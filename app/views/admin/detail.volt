@@ -49,7 +49,7 @@
             data: [[0,1-details.examinee_percent]],
             label: '未完成'
         }], {
-            title: '项目完成度',
+            title: '测评完成度',
             resolution: 1,
             HtmlText: true,
             grid: {
@@ -67,7 +67,7 @@
                 explode: 6
             },
             mouse: {
-                track: true
+                track: false
             },
             legend: {
                 position: 'se',
@@ -76,7 +76,7 @@
         });
     }
 
-    function interviewer_pie(container) {
+    function interviewer_pie(container,details) {
         var graph = Flotr.draw(container, [{
             data: [[0, details.interview_percent]],
             label: '已完成'
@@ -101,7 +101,7 @@
                 explode: 6
             },
             mouse: {
-                track: true
+                track: false
             },
             legend: {
                 position: 'se',
