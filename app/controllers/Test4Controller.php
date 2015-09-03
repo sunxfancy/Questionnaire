@@ -2,6 +2,7 @@
 class Test4Controller extends \Phalcon\Mvc\Controller{
 	
 	public function initialize(){
+		$this->view->setTemplateAfter('base3');
 		$this->response->setHeader("Content-Type", "text/html; charset=utf-8");
 	}
 	
@@ -11,6 +12,20 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 	}
 	
 	public function indexAction(){
+		$this->view->setVar('postId', 1111);
+		$this->view->setVar('page_title','test');
+		$this->view->setVar('name','test');
+		$this->view->setVar('number', 110);
+		$this->view->setVar('role', '测试');
+		$this->view->paper = Paper::findFirst();
+		$rtn_array = array(
+			'hello', '你好'
+		);
+		$this->view->visit = $rtn_array;
+		
+		$this->view->json = json_encode($rtn_array);
+// 		FactorScore::handleFactors(17);
+// 		exit();
 // 		var_dump(empty(0));
 // 		var_dump(empty(''));
 // 		var_dump(empty(false));
@@ -32,11 +47,12 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 // 		$time_consuming = $time_end - $time_start;
 // 		echo $time_consuming .'-'. $memory_consuming;
 	}
-	public function getTestAction(){
+	public function gettestAction(){
+		
 		$time=$this->request->getPost("time","int");
-		echo json_decode($time);
+		sleep(5);
+		echo $time;
 	}
-	
 	public static function clearAction(){
 		// 		清空memcache缓存
 		$memcache_obj = new Memcache;
