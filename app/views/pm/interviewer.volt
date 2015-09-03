@@ -30,18 +30,13 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">正在存储选择模块...</h4>
+                <h4 class="modal-title" id="myModalLabel">面询完成情况</h4>
             </div>
             <div class="modal-body" style="padding:40px;">
-                <div class="progress" style="height:20px;width:90%;margin:auto;">
-                    <b class="progress__bar">
-                        <span class="progress__text"><em>0%</em></span>
-                    </b>
-                </div>
+                
             </div>
         <div class="modal-footer">
-            <button id="close" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button id="close" class="btn btn-default" data-dismiss="modal">关闭</button>
         </div>
     </div>
 </div>
