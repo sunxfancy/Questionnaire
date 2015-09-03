@@ -42,6 +42,20 @@
 </div>
 
 <script type="text/javascript">
+    $("#degree_of_complete").click(function(){
+        $('.modal-body').html('');
+        if ($("#degree_of_complete").val == 0) {
+            $('.modal-body').html(
+                "<p class=\"bg-danger\" style='padding:20px;'>还未进行过分配！</p>"
+            );
+        }else{
+            $('.modal-body').html(
+                "<p class=\"bg-danger\" style='padding:20px;'>还未进行过分配！</p>"
+            );
+        }
+        $('#myModal').modal({keyboard:true,});
+    });
+
     jQuery(function($) {
         var grid_selector = "#grid-table";
         var pager_selector = "#grid-pager";
@@ -295,6 +309,5 @@
             $('.navtable .ui-pg-button').tooltip({container:'body'});
             $(table).find('.ui-pg-div').tooltip({container:'body'});
         }
-
     });
 </script>
