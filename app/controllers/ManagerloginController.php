@@ -12,7 +12,7 @@ class ManagerloginController extends Base
 
     public function indexAction()
     {
-
+			
     }
 
     public function loginAction()

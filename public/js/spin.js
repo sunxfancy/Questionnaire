@@ -146,29 +146,28 @@
   }
 
   // Built-in defaults
-
   var defaults = {
-    lines: 12             // The number of lines to draw
-  , length: 7             // The length of each line
-  , width: 5              // The line thickness
-  , radius: 10            // The radius of the inner circle
-  , scale: 1.0            // Scales overall size of the spinner
-  , corners: 1            // Roundness (0..1)
-  , color: '#000'         // #rgb or #rrggbb
-  , opacity: 1/4          // Opacity of the lines
-  , rotate: 0             // Rotation offset
-  , direction: 1          // 1: clockwise, -1: counterclockwise
-  , speed: 1              // Rounds per second
-  , trail: 100            // Afterglow percentage
-  , fps: 20               // Frames per second when using setTimeout()
-  , zIndex: 2e9           // Use a high z-index by default
-  , className: 'spinner'  // CSS class to assign to the element
-  , top: '50%'            // center vertically
-  , left: '50%'           // center horizontally
-  , shadow: false         // Whether to render a shadow
-  , hwaccel: false        // Whether to use hardware acceleration (might be buggy)
-  , position: 'absolute'  // Element positioning
-  }
+		  lines: 10 // The number of lines to draw
+		, length: 4 // The length of each line
+		, width: 1 // The line thickness
+		, radius: 5 // The radius of the inner circle
+		, scale: 1.25 // Scales overall size of the spinner
+		, corners: 0.75 // Corner roundness (0..1)
+		, color: '#d49a3e' // #rgb or #rrggbb or array of colors
+		, opacity: 0.1 // Opacity of the lines
+		, rotate: 10 // The rotation offset
+		, direction: 1 // 1: clockwise, -1: counterclockwise
+		, speed: 2 // Rounds per second
+		, trail: 60 // Afterglow percentage
+		, fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+		, zIndex: 2e9 // The z-index (defaults to 2000000000)
+		, className: 'spinner' // The CSS class to assign to the spinner
+		, top: '49%' // Top position relative to parent
+		, left: '49%' // Left position relative to parent
+		, shadow: true // Whether to render a shadow
+		, hwaccel: false // Whether to use hardware acceleration
+		, position: 'absolute' // Element positioning
+		}
 
   /** The constructor */
   function Spinner (o) {
