@@ -9,7 +9,7 @@
 <body>
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-  Launch demo modal
+  Launch demo modal {{ postId }}
 </button>
 
 <!-- Modal -->
@@ -21,10 +21,10 @@
         <h4 class="modal-title" id="myModalLabel">Modal title</h4>
       </div>
       <div class="modal-body">
-        <div class="progress">
- 		 <div id='progress_record'class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" >
-  		</div>
-	 </div>
+        <div class="progress" style="width:80%;">
+         <div id='progress_record'class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" >
+        </div>
+     </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -36,16 +36,8 @@
 </body>
 <script>
 $('#myModal').on('shown.bs.modal', function () {
-	$.post({
-		url:'/test4/getTest',
-		data: { time : 3600 },
-		success: 
-		
-		
-		
-	})
-  	setInterval( function(){ i++; if(i<100) {$('#progress_record').css('width',i+'%');} else{return;} }, 60);
-  	
-})
+      
+         
+    })
 </script>
 </html>
