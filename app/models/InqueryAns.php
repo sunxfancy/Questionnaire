@@ -8,7 +8,7 @@ class InqueryAns extends \Phalcon\Mvc\Model
      * @var integer
      *
      */
-    public $inquery_id;
+    public $project_id;
 
     /**
      * @var integer
@@ -21,6 +21,11 @@ class InqueryAns extends \Phalcon\Mvc\Model
      *
      */
     public $option;
+    
+    public function initialize(){
+    	$this->belongsTo('exmainee_id', 'Examinee', 'id');
+    	$this->belongsTo('project_id', 'Project', 'id');
+    }
 
 
 }

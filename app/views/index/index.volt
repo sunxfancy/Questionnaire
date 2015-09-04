@@ -34,6 +34,7 @@
 <script type='text/javascript'>
 var target = document.getElementById('submit');
 var spinner = null;
+
 $(document).ready(function() {
     $("body").keypress(function(event) {
       /* Act on the event */
