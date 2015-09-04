@@ -67,6 +67,21 @@ class MemoryCache {
 		)
 		);
 	}
+	/**
+	 * @method foreach $rt['id'] $rt['options']
+	 * @param unknown $project_id
+	 */
+	public static function getInqueryQuestion($project_id){
+		return InqueryQuestion::find(
+			array(
+				"project_id = :project_id:",
+				'bind' => array('project_id'=>$project_id),
+				'hydration' => \Phalcon\Mvc\Model\Resultset\Simple::HYDRATE_ARRAYS,
+				'cache' => array ('key' => 'inquery_question_by_project_id_'.$project_id)
+		)
+		);
+	}
+	
 	
 	
 }

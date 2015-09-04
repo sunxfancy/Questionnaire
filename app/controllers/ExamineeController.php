@@ -18,11 +18,11 @@ class ExamineeController extends Base
 	public function initialize(){
         $this->view->setTemplateAfter('base3');
     }
-
+	#设置examinee转到/
 	public function indexAction(){
-        
+        $this->response->redirect('/');
 	}
-
+	
     public function loginAction(){
         $username = $this->request->getPost("username", "string");
         $password = $this->request->getPost("password", "string");
@@ -45,25 +45,36 @@ class ExamineeController extends Base
     }
 
 	public function inqueryAction(){
-		$this->leftRender("需求量表");
+		$exminee = $this->session->get('Examinee');
+// 		$this->session->remove('Examinee');
+		if(empty($exminee)){
+			$this->response->redirect('/error/index/examinee');
+			$this->view->disable();
+		}else{
+			$this->leftRender("需求量表");
+		}
         //获得被试者的登陆信息      
 	}
 
     public function getInqueryAction(){
         $project_id = $this->session->get('Examinee')->project_id;
-        $inquery = InqueryQuestion::find(array(
-            'project_id=?1',
-            'bind'=>array(1=>$project_id)));
-        $length = sizeof($inquery);
-        $question = array();
-        for ($i=0; $i < $length; $i++) {
-            $question[] = array('index'       =>(int)$i,
-                                'title'       =>$inquery[$i]->topic,
-                                'options'     =>$inquery[$i]->options,
-                                'is_multi'    =>($inquery[$i]->is_radio == 1)?false:true
-                                );
+        $inquery_data = MemoryCache::getInqueryQuestion($project_id);
+        if(count($inquery_data) == 0){
+        	$this->dataReturn(array('error'=>'需求量表获取失败'));
+        	return ;
+        }else{
+        	$question = array();
+        	foreach($inquery_data as $record){
+        		$question[] = array(
+        			'index' => $record['id'],
+        			'title' => $record['topic'],
+        			'options' => $record['options'],
+        			'is_multi' => $record['is_radio'] == 1 ? false : true,
+        		);
+        	}
+        	$this->dataReturn(array('question'=>$question));
+        	return ;
         }
-        $this->dataReturn(array("question"=>$question));
     }
 
     public function getInqueryAnsAction(){
@@ -428,12 +439,10 @@ class ExamineeController extends Base
         $examinee = $this->session->get('Examinee');
         $name = $examinee->name;
         $number = $examinee->number;
-        
         $this->view->setVar('page_title',$title);
         $this->view->setVar('name',$name);
         $this->view->setVar('number',$number);
         $this->view->setVar('role','被试人员');
         /*******************************************************************/
     }
-
 }
