@@ -1,15 +1,4 @@
 <?php
-/**
- * @Author: sxf
- * @Date:   2015-08-01 16:27:51
- * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-03 14:32:36
- */
-
-/**
-* 
-*/
-
 
 class ExamineeController extends Base
 {
@@ -205,46 +194,75 @@ class ExamineeController extends Base
     }
 
     public function editinfoAction(){
-        $this->leftRender("个 人 信 息 填 写");
-        $id = $this->session->get('Examinee')->id;
-        $examinee = Examinee::findFirst($id);
-        $this->view->setVar('name',$examinee->name);
-        $sex = ($examinee->sex == "1") ? "男" : "女";
-        $this->view->setVar('sex',$sex);
-        $this->view->setVar('education',$examinee->education);
-        $this->view->setVar('degree',$examinee->degree);
-        $this->view->setVar('birthday',$examinee->birthday);
-        $this->view->setVar('native',$examinee->native);
-        $this->view->setVar('politics',$examinee->politics);
-        $this->view->setVar('professional',$examinee->professional);
-        $this->view->setVar('employer',$examinee->employer);
-        $this->view->setVar('unit',$examinee->unit);
-        $this->view->setVar('duty',$examinee->duty);
-        $this->view->setVar('team',$examinee->team);
+    	$exminee = $this->session->get('Examinee');
+        if(empty($exminee)){
+        	$this->response->redirect('/error/index/examinee');
+        	$this->view->disable();
+        }else{
+        	 $this->leftRender("个 人 信 息 填 写");
+        } 
+
+    }
+    
+    public function getexamineeinfoAction(){
+    	$examinee = $this->session->get('Examinee');
+    	if(empty($examinee)){
+    		$this->dataReturn(array('error'=>'用户信息获取失败'));
+    		return;
+    	}else{
+    		$examinee_info = Examinee::findFirst($examinee->id);
+    		$question = array();
+    		$question['name'] 		 = $examinee_info->name;
+    		$question['sex']  		 = $examinee_info->sex == 1 ? '男' : '女';
+    		$question['education']    = $examinee_info->education;
+		 	$question['degree'] 	 = $examinee_info->degree;
+		 	$question['birthday']    = $examinee_info->birthday;
+			$question['politics']    = $examinee_info->politics;
+			$question['native']      = $examinee_info->native;
+			$question['professional']= $examinee_info->professional;
+			$question['employer']    = $examinee_info->employer;
+			$question['unit']        = $examinee_info->unit;
+			$question['duty']        = $examinee_info->duty;
+			$question['team']        = $examinee_info->team;
+			$this->dataReturn(array('question'=>$question));
+			return;
+    	}
     }
 
     public function submitAction(){
-        $this->view->disable();
-        $id = $this->session->get('Examinee')->id;
-        $examinee = Examinee::findFirst($id);
-        $examinee->name         = $this->request->getPost("name", "string");
-        $sex = $this->request->getPost("sex", "string");
-        $examinee->sex          = ($sex =="男") ? 1 : 0;
-        $examinee->education    = $this->request->getPost("education", "string");
-        $examinee->degree       = $this->request->getPost("degree", "string");
-        $examinee->birthday     = $this->request->getPost("birthday", "string");
-        $examinee->native       = $this->request->getPost("native", "string");
-        $examinee->politics     = $this->request->getPost("politics", "string");
-        $examinee->professional = $this->request->getPost("professional", "string");
-        $examinee->employer     = $this->request->getPost("employer", "string");
-        $examinee->unit         = $this->request->getPost("unit", "string");
-        $examinee->duty         = $this->request->getPost("duty", "string");
-        $examinee->team         = $this->request->getPost("team", "string");
-        if (!$examinee->save()) {
-            foreach ($examinee->getMessages() as $msg) {
-                echo $msg."\n";
-            }
-        }
+    	$exminee = $this->session->get('Examinee');
+    	if(empty($exminee)){
+    		$this->dataReturn(array('error'=>'用户信息获取失败'));
+    		return;
+    	}
+    	$examinee_id = $exminee->id;
+    	$examinee_info = Examinee::findFirst($examinee_id);
+    	$info_array = array();
+    	$info_array['name'] 		= $this->request->getPost("name", "string");
+    	$info_array['sex']  		= $this->request->getPost('sex', 'string') == '男' ? 1: 0;
+    	$info_array['education'] 	= $this->request->getPost("education", "string");
+    	$info_array['degree']       = $this->request->getPost("degree", "string");
+    	$info_array['birthday']     = $this->request->getPost("birthday", "string");
+    	$pattern = '/^\d{4}[-](0?[1-9]|1[012])[-](0?[1-9]|[12][0-9]|3[01])$/';
+    	if( preg_match($pattern, $info_array['birthday']) == 0 ){
+    		$this->dataReturn(array('error'=>'出生日期填写有误:'.$info_array['birthday'] ));
+    		return ;
+    	}
+    	$info_array['native']       = $this->request->getPost("native", "string");
+    	$info_array['politics']     = $this->request->getPost("politics", "string");
+     	$info_array['professional'] = $this->request->getPost("professional", "string");
+     	$info_array['employer']     = $this->request->getPost("employer", "string");
+     	$info_array['unit']         = $this->request->getPost("unit", "string");
+     	$info_array['duty']         = $this->request->getPost("duty", "string");
+     	$info_array['team']         = $this->request->getPost("team", "string");
+    	try{
+    		ExamineeDB::insertExamineeInfo($examinee_info, $info_array);
+    	}catch(Exception $e){
+    		$this->dataReturn(array('error'=>$e->getMessage()));
+    		return;
+    	}
+    	$this->dataReturn(array('flag'=>true));
+     
     }
 
     public function listeduAction(){

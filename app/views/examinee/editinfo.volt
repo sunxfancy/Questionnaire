@@ -1,18 +1,43 @@
 <script type="text/javascript" src="/jqGrid/js/jquery.jqGrid.min.js"></script>
-<script type="text/javascript" src="/lib/bootstrap-datetimepicker.js"></script>
 <script type="text/javascript" src="/jqGrid/js/i18n/grid.locale-cn.js"></script>
 <script type="text/javascript" src="/js/bootstrap.js"></script>
+<script type="text/javascript" src="/datepicker/js/kit.js"></script>
+        <!--[if IE]>
+        <script src="/datepicker/js/ieFix.js"></script>
+        <![endif]-->
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-30210234-1']);
+            _gaq.push(['_trackPageview']); (function() {
+                var ga = document.createElement('script');
+                ga.type = 'text/javascript';
+                ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(ga, s);
+            })();
+
+        </script>
+        <script src="/datepicker/js/array.js"></script>
+        <script src="/datepicker/js/date.js"></script>
+        <script src="/datepicker/js/dom.js"></script>
+        <script src="/datepicker/js/selector.js"></script>
+<!--widget-->
+<script src="/datepicker/js/datepicker.js"></script>
+<link rel="stylesheet" href="/datepicker/css/datepicker.css" />
+
+
 <div class="Leo_question">
-    <div class="baseinfo" style="width:100%;height:100%;overflow:auto;">
+    <div class="baseinfo" style="width:100%;height:100%;overflow:auto; ">
         <div style="height:440px;">
             <div style="padding:10px;text-align:center;font-size:28px;">基本信息</div>
             <table border="1" cellspacing="0" cellpadding="0" style="margin:0 auto;font-size:16px; font-family:'微软雅黑'">
                 <tr>
                     <td style="width:120px;line-height:33px;">&nbsp;姓名</td>
-                    <td style="width:180px;"><input id="name" type="text" value="{{ name }}" style="width:178px;font-size:16px;color:black;"></td>
+                    <td style="width:180px;"><input id="name" type="text" style="width:178px;font-size:16px;color:black;"></td>
                     <td style="width:120px;line-height:33px;">&nbsp;性别</td>
                     <td style="width: 180px;">
-                        <select id="sex" type="text" value="{{ sex }}" style="width:178px;font-size:16px;color:black;line-height:28px;font-family:'微软雅黑'">
+                        <select id="sex" type="text" style="width:178px;font-size:16px;color:black;line-height:28px;font-family:'微软雅黑'">
                             <option value="男">男</option>
                             <option value="女">女</option>
                         </select>
@@ -21,7 +46,7 @@
                 <tr>
                     <td style="width:120px;line-height:33px;">&nbsp;学历</td>
                     <td style="width:180px;">
-                        <select id="education" type="text" value="{{ education }}" style="width:178px;font-size:16px;color:black;line-height:28px;font-family:'微软雅黑'">
+                        <select id="education" type="text"  style="width:178px;font-size:16px;color:black;line-height:28px;font-family:'微软雅黑'">
                             <option value="职高">职高</option>
                             <option value="中专">中专</option>
                             <option value="技校">技校</option>
@@ -33,7 +58,7 @@
                     </td>
                     <td style=" width:120px;line-height:33px;">&nbsp;学位</td>
                     <td style="width:180px;">
-                        <select id="degree" type="text" value="{{ degree }}" style="width:178px;font-size:16px;color:black;line-height:28px; font-family:'微软雅黑'">
+                        <select id="degree" type="text"  style="width:178px;font-size:16px;color:black;line-height:28px; font-family:'微软雅黑'">
                             <option value="无">无</option>
                             <option value="学士">学士</option>
                             <option value="硕士">硕士</option>
@@ -45,14 +70,12 @@
                     <td style=" width:120px;line-height:33px;">&nbsp;出生年月</td>
                     <td style="width:180px;">
                         <div class="input-append date form_datetime">
-                            <input id="birthday" type="text" value="{{birthday}}" style="width:178px;height:31px;color:black;">
-                            <span class="add-on"><i class="icon-remove"></i></span>
-                            <span class="add-on"><i class="icon-calendar"></i></span>
+                            <input id="birthday" type="text" style="width:178px;height:31px;color:black;" placeholder='格式:1970-8-18'>
                         </div>
                     </td>
                     <td style=" width:120px;line-height:33px;">&nbsp;籍贯</td>
                     <td style="width:180px;">
-                        <select id="native" type="text" value="{{ native }}" style="width:178px;font-size:16px;color:black;line-height:28px; font-family:'微软雅黑'">
+                        <select id="native" type="text" style="width:178px;font-size:16px;color:black;line-height:28px; font-family:'微软雅黑'">
                             <option value="北京市">北京市</option>
                             <option value="安徽省">安徽省</option>
                             <option value="重庆市">重庆市</option>
@@ -93,7 +116,7 @@
                 <tr>
                     <td style=" width:120px;line-height:33px;">&nbsp;政治面貌</td>
                     <td style="width:180px;">
-                        <select id="politics" type="text" value="{{ politics }}" style="width:178px;font-size:16px;color:black;line-height:28px;font-family:'微软雅黑'">
+                        <select id="politics" type="text"  style="width:178px;font-size:16px;color:black;line-height:28px;font-family:'微软雅黑'">
                             <option value="无党派">无党派</option>
                             <option value="团员">团员</option>
                             <option value="党员">党员</option>
@@ -103,7 +126,7 @@
                     </td>
                     <td style=" width:120px;line-height:33px;">&nbsp;职称</td>
                     <td style="width:180px;">
-                        <select id="professional" type="text" value="{{ professional }}" style="width:178px;font-size:16px;color:black;line-height:28px;font-family:'微软雅黑'">
+                        <select id="professional" type="text"  style="width:178px;font-size:16px;color:black;line-height:28px;font-family:'微软雅黑'">
                             <option value="无职称">无职称</option>
                             <option value="初级">初级</option>
                             <option value="中级">中级</option>
@@ -114,19 +137,19 @@
                 </tr>
                 <tr>
                     <td style=" width:120px;line-height:33px;">&nbsp;工作单位</td>
-                    <td colspan="3" style="font-size:16px;"><input id="employer" type="text" value="{{ employer }}" style="width:478px;font-size:16px;color:black;"></td>
+                    <td colspan="3" style="font-size:16px;"><input id="employer" type="text" style="width:478px;font-size:16px;color:black;"></td>
                 </tr>
                 <tr>
                     <td style=" width:120px;line-height:33px;">&nbsp;部门</td>
-                    <td colspan="3" style="font-size: 16px;"><input id="unit" type="text" value="{{ unit }}" style="width:478px;font-size:16px;color:black;"></td>
+                    <td colspan="3" style="font-size: 16px;"><input id="unit" type="text"  style="width:478px;font-size:16px;color:black;"></td>
                 </tr>
                 <tr>
                     <td style=" width:120px;line-height:33px;">&nbsp;岗位/职务</td>
-                    <td colspan="3" style="font-size: 16px;"><input id="duty" type="text" value="{{ duty }}" style="width:478px;font-size:16px;color:black;"></td>
+                    <td colspan="3" style="font-size: 16px;"><input id="duty" type="text" style="width:478px;font-size:16px;color:black;"></td>
                 </tr>
                 <tr>
                     <td style=" width:120px;line-height:33px;">&nbsp;班子/系统成员</td>
-                    <td colspan="3" style="font-size: 16px;"><input id="team" type="text" value="{{ team }}" style="width:478px;font-size:16px;color:black;"></td>
+                    <td colspan="3" style="font-size: 16px;"><input id="team" type="text"  style="width:478px;font-size:16px;color:black;"></td>
                 </tr>
             </table>
 
@@ -146,498 +169,158 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">提示信息</h4>
+        </div>
+        <div class="modal-body"></div>
+        <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript" language="javascript">
-    $("#birthday").datetimepicker({
-        format: 'yyyy-mm-dd',
-        autoclose: true,
-        todayBtn: true,
-        // startDate: 1940-01-01,
-        // endDate: 2000-12-31,
-        startView: 2,
-        minView: 2,
-        // pickerPosition: "bottom-right"
-    });
+    var spinner = null;
+    var target = document.getElementsByClassName('Leo_question')[0];
+    var url="/Examinee/getexamineeinfo";
+$('#myModal').on('hidden.bs.modal', function (e) {
+        $('.Leo_question').css('width','860px')
+});
+$('#myModal').on('hide.bs.modal', function (e) {
+        $('.Leo_question').css('width','860px')
+});
 
-    $(document).ready(function() {
-        $("#submit").click(function(){
-            var base_info ={
-                "name"          :$("#name").val(),
-                "sex"           :$("#sex").val(),
-                "education"     :$("#education").val(),
-                "degree"        :$("#degree").val(),
-                "birthday"      :$("#birthday").val(),
-                "native"        :$("#native").val(),
-                "politics"      :$("#politics").val(),
-                "professional"  :$("#professional").val(),
-                "employer"      :$("#employer").val(),
-                "unit"          :$("#unit").val(),
-                "duty"          :$("#duty").val(),
-                "team"          :$("#team").val()
+$(function(){
+	getInfo(url);
+});
+function getInfo(url){
+        spinner = new Spinner().spin(target);
+        $.post(url, {'paper_name':"inquery"}, function(data) {
+            if(data.error){
+                 if(spinner){ spinner.stop(); }
+                 $('.Leo_question').css('width','843px')
+                 $('.modal-body').html('');
+                 $('.modal-body').html(
+                     "<p class=\"bg-danger\" style='padding:20px;'>"+data.error+ "</p>"
+                     );
+                 $('.modal-footer').html('');
+                 $('.modal-footer').html(
+                    "<a href='/examinee/editinfo'><button type=\"button\" class=\"btn btn-primary\">刷新</button></a>"+
+                    "&nbsp;&nbsp;<a href='/'><button type=\"button\" class=\"btn btn-primary\">退出</button></a>"
+                 );
+                 $('#myModal').modal({
+                    keyboard:true,
+                    backdrop:'static'
+                 })
+            }else{
+                 if(spinner){ spinner.stop(); }
+                 $('.Leo_question').css('width','860px');
+                 //加载成功后获取jqgrid数据
+                 renderring(data.question);    
             }
-            $.post('/examinee/submit', base_info, callbk);
         });
-        function callbk(){
-            alert("保存成功！");
-            window.location.href = '/examinee/doexam';
-        }
+}
+
+function renderring(data){
+    $('#name').val(data.name);
+    $('#sex').val(data.sex);
+    $('#education').val(data.education);
+    $('#degree').val(data.degree);
+    $('#birthday').val(data.birthday);
+    $('#native').val(data.native);
+    $("#politics").val(data.politics);
+    $("#professional").val(data.professional);
+    $("#employer").val(data.employer);
+    $("#unit").val(data.unit);
+    $("#duty").val(data.duty);
+    $("#team").val(data.team);
+}
+
+
+$("#submit").click(function(){
+    var base_info ={
+        "name"          :$("#name").val(),
+        "sex"           :$("#sex").val(),
+        "education"     :$("#education").val(),
+        "degree"        :$("#degree").val(),
+        "birthday"      :$("#birthday").val(),
+        "native"        :$("#native").val(),
+        "politics"      :$("#politics").val(),
+        "professional"  :$("#professional").val(),
+        "employer"      :$("#employer").val(),
+        "unit"          :$("#unit").val(),
+        "duty"          :$("#duty").val(),
+        "team"          :$("#team").val()
+    }
+    $.post('/examinee/submit', base_info, function(data){
+     if(data.error){
+     	         $('.Leo_question').css('width','843px')
+                 $('.modal-body').html('');
+                 $('.modal-body').html(
+                     "<p class=\"bg-danger\" style='padding:20px;'>"+data.error+ "</p>"
+                     );
+                 $('.modal-footer').html('');
+                 $('.modal-footer').html(
+                    "<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">返回修改</button>"+
+                    "&nbsp;&nbsp;<a href='/'><button type=\"button\" class=\"btn btn-primary\">退出</button></a>"
+                 );
+                 $('#myModal').modal({
+                    keyboard:true,
+                    backdrop:'static'
+                 })
+     }else{
+     	        $('.Leo_question').css('width','843px')
+                 $('.modal-body').html('');
+                 $('.modal-body').html(
+                     "<p class=\"bg-success\" style='padding:20px;'>提交成功！点击确定跳转到答题页面！</p>"
+                     );
+                 $('.modal-footer').html('');
+                 $('.modal-footer').html(
+                    "<a href='/examinee/doexam'><button type=\"button\" class=\"btn btn-success\">确认</button></a>"
+                   
+                 );
+                 $('#myModal').modal({
+                    keyboard:true,
+                    backdrop:'static'
+                 })
+     }     	
     });
-
-jQuery(function($) {
-        var grid_selector = "#grid-table1";
-        var pager_selector = "#grid-pager";
-        
-        //resize to fit page size
-        $(window).on('resize.jqGrid', function () {
-            $(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
-        });
-        //resize on sidebar collapse/expand
-        var parent_column = $(grid_selector).closest('[class*="col-"]');
-        $(document).on('settings.ace.jqGrid' , function(ev, event_name, collapsed) {
-            if( event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed' ) {
-                $(grid_selector).jqGrid( 'setGridWidth', parent_column.width() );
-            }
-        })
-
-       jQuery(grid_selector).jqGrid({
-            subGrid : false,
-            url: "/examinee/listedu",
-            datatype: "json",
-            height: 'auto',
-            shrinkToFit:true,
-            forceFit:true,
-            autowidth: true,
-            colNames:[' ','毕业院校','专业','所获学位','起止时间'],
-            colModel:[
-                {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
-                    formatter:'actions', 
-                    formatoptions:{ 
-                        keys:true,                       
-                        delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
+});
+// 时间控件
+$kit.$(function() {
+                //默认日历
+                var picker = new $kit.ui.DatePicker();
+                picker.init();
+                $kit.el('#birthday').appendChild(picker.picker);
+                picker.show();
+                picker.ev({
+                    ev : 'change',
+                    fn : function(e) {
+                        // alert(picker.getValue());
                     }
-                },               
-                {name:'school', index:'school', width:140, editable: true, sortable:false, align:'center'},
-                {name:'profession', index:'profession', sortable:false, width:140, editable:true, align:'center'},
-                {name:'degree', index:'degree', width:80, sortable:false, editable:true, align:'center'},
-                {name:'date', index:'date', sortable:true, width:110, editable: true,edittype:'text',align:'center'}
-                ],
-            viewrecords : true, 
-            rowNum:10,
-            rowList:[10,20,30],
-            pager : pager_selector,
-            altRows: true,
-            toppager: false,
-            
-            multiselect: true,
-            //multikey: "ctrlKey",
-            multiboxonly: true,
-    
-            loadComplete : function() {
-                var table = this;
-                setTimeout(function(){
-                    styleCheckbox(table);
-                    
-                    updateActionIcons(table);
-                    updatePagerIcons(table);
-                    enableTooltips(table);
-                }, 0);
-            },
-    
-            editurl: "/examinee/updateedu",//nothing is saved
-            caption: "教育经历"
-    
-            ,autowidth: true
-    
-        });
-        jQuery("#grid-table1").setGridParam().hideCol("id").trigger("reloadGrid");
-
-        $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
-    
-        //switch element when editing inline
-        function aceSwitch( cellvalue, options, cell ) {
-            setTimeout(function(){
-                $(cell) .find('input[type=checkbox]')
-                    .addClass('ace ace-switch ace-switch-5')
-                    .after('<span class="lbl"></span>');
-            }, 0);
-        }
-    
-        //navButtons
-        jQuery(grid_selector).jqGrid('navGrid',pager_selector,
-            {   //navbar options
-                edit: true,
-                editicon : 'ace-icon fa fa-pencil blue',
-                add: true,
-                addicon : 'ace-icon fa fa-plus-circle purple',
-                del: true,
-                delicon : 'ace-icon fa fa-trash-o red',
-                search: true,
-                searchicon : 'ace-icon fa fa-search orange',
-                refresh: true,
-                refreshicon : 'ace-icon fa fa-refresh green',
-                view: true,
-                viewicon : 'ace-icon fa fa-search-plus grey',
-            },
-            {
-                //edit record form
-                //closeAfterEdit: true,
-                //width: 700,
-                recreateForm: true,
-                beforeShowForm : function(e) {
-                    var form = $(e[0]);
-                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-                    style_edit_form(form);
-                }
-            },
-            {
-                //new record form
-                //width: 700,
-                closeAfterAdd: true,
-                recreateForm: true,
-                viewPagerButtons: false,
-                beforeShowForm : function(e) {
-                    var form = $(e[0]);
-                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
-                    .wrapInner('<div class="widget-header" />')
-                    style_edit_form(form);
-                }
-            },
-            {
-                //delete record form
-                recreateForm: true,
-                beforeShowForm : function(e) {
-                    var form = $(e[0]);
-                    if(form.data('styled')) return false;
-                    
-                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-                    style_delete_form(form);
-                    
-                    form.data('styled', true);
-                },
-                onClick : function(e) {
-                    alert(1);
-                }
-            },
-            {
-                //search form
-                recreateForm: true,
-                afterShowSearch: function(e){
-                    var form = $(e[0]);
-                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
-                    style_search_form(form);
-                },
-                afterRedraw: function(){
-                    style_search_filters($(this));
-                }
-                ,
-                multipleSearch: true,
-            },
-            {
-                //view record form
-                recreateForm: true,
-                beforeShowForm: function(e){
-                    var form = $(e[0]);
-                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
-                }
-            }
-        )
-
-        function style_edit_form(form) {
-            //enable datepicker on "sdate" field and switches for "stock" field
-            form.find('input[name=sdate]').datepicker({format:'yyyy-mm-dd' , autoclose:true})
-                .end().find('input[name=stock]')
-                    .addClass('ace ace-switch ace-switch-5').after('<span class="lbl"></span>');
-                       //don't wrap inside a label element, the checkbox value won't be submitted (POST'ed)
-                      //.addClass('ace ace-switch ace-switch-5').wrap('<label class="inline" />').after('<span class="lbl"></span>');
-    
-            //update buttons classes
-            var buttons = form.next().find('.EditButton .fm-button');
-            buttons.addClass('btn btn-sm').find('[class*="-icon"]').hide();//ui-icon, s-icon
-            buttons.eq(0).addClass('btn-primary').prepend('<i class="ace-icon fa fa-check"></i>');
-            buttons.eq(1).prepend('<i class="ace-icon fa fa-times"></i>')
-            
-            buttons = form.next().find('.navButton a');
-            buttons.find('.ui-icon').hide();
-            buttons.eq(0).append('<i class="ace-icon fa fa-chevron-left"></i>');
-            buttons.eq(1).append('<i class="ace-icon fa fa-chevron-right"></i>');       
-        }
-    
-        function style_delete_form(form) {
-            var buttons = form.next().find('.EditButton .fm-button');
-            buttons.addClass('btn btn-sm btn-white btn-round').find('[class*="-icon"]').hide();//ui-icon, s-icon
-            buttons.eq(0).addClass('btn-danger').prepend('<i class="ace-icon fa fa-trash-o"></i>');
-            buttons.eq(1).addClass('btn-default').prepend('<i class="ace-icon fa fa-times"></i>')
-        }
-        
-        function style_search_filters(form) {
-            form.find('.delete-rule').val('X');
-            form.find('.add-rule').addClass('btn btn-xs btn-primary');
-            form.find('.add-group').addClass('btn btn-xs btn-success');
-            form.find('.delete-group').addClass('btn btn-xs btn-danger');
-        }
-        function style_search_form(form) {
-            var dialog = form.closest('.ui-jqdialog');
-            var buttons = dialog.find('.EditTable')
-            buttons.find('.EditButton a[id*="_reset"]').addClass('btn btn-sm btn-info').find('.ui-icon').attr('class', 'ace-icon fa fa-retweet');
-            buttons.find('.EditButton a[id*="_query"]').addClass('btn btn-sm btn-inverse').find('.ui-icon').attr('class', 'ace-icon fa fa-comment-o');
-            buttons.find('.EditButton a[id*="_search"]').addClass('btn btn-sm btn-purple').find('.ui-icon').attr('class', 'ace-icon fa fa-search');
-        }
-        
-        function beforeDeleteCallback(e) {
-            var form = $(e[0]);
-            if(form.data('styled')) return false;
-            
-            form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-            style_delete_form(form);
-            
-            form.data('styled', true);
-        }
-        
-        function beforeEditCallback(e) {
-            var form = $(e[0]);
-            form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-            style_edit_form(form);
-        }
-    
-        function styleCheckbox(table) {
-
-        }
-        
-        function updateActionIcons(table) {
-
-        }
-        function pickDate( cellvalue, options, cell ) {
-            setTimeout(function(){
-                $(cell) .find('input[type=text]')
-                        .datetimepicker({format:'yyyy-mm-dd hh:ii' , autoclose:true}); 
-            }, 0);
-        }
-        //replace icons with FontAwesome icons like above
-        function updatePagerIcons(table) {
-            var replacement = 
-            {
-                'ui-icon-seek-first' : 'ace-icon fa fa-angle-double-left bigger-140',
-                'ui-icon-seek-prev' : 'ace-icon fa fa-angle-left bigger-140',
-                'ui-icon-seek-next' : 'ace-icon fa fa-angle-right bigger-140',
-                'ui-icon-seek-end' : 'ace-icon fa fa-angle-double-right bigger-140'
-            };
-            $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
-                var icon = $(this);
-                var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
-                
-                if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
-            })
-        }
-    
-        function enableTooltips(table) {
-            $('.navtable .ui-pg-button').tooltip({container:'body'});
-            $(table).find('.ui-pg-div').tooltip({container:'body'});
-        }
-    });
-
-jQuery(function($) {
-        var grid_selector = "#grid-table2";
-        var pager_selector = "#grid-pager";
-        
-        //resize to fit page size
-        $(window).on('resize.jqGrid', function () {
-            $(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
-        });
-        //resize on sidebar collapse/expand
-        var parent_column = $(grid_selector).closest('[class*="col-"]');
-        $(document).on('settings.ace.jqGrid' , function(ev, event_name, collapsed) {
-            if( event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed' ) {
-                $(grid_selector).jqGrid( 'setGridWidth', parent_column.width() );
-            }
-        })
-
-        jQuery(grid_selector).jqGrid({
-            subGrid : false,
-            url: "/examinee/listwork",
-            datatype: "json",
-            height: 'auto',
-            shrinkToFit:true,
-            forceFit:true,
-            autowidth: true,
-            colNames:[' ','就职单位','部门','岗位/职务','起止时间'],
-            colModel:[
-                {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
-                    formatter:'actions', 
-                    formatoptions:{ 
-                        keys:true,
-                        
-                        delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
+                })
+                //输入框下拉
+                $kit.ev({
+                    el : '#birthday',
+                    ev : 'focus',
+                    fn : function(e) {
+                        var d, ipt = e.target;
+                        d = e.target[$kit.ui.DatePicker.defaultConfig.kitWidgetName];
+                        if(d) {
+                            d.show();
+                        } else {
+                            d = new $kit.ui.DatePicker({
+                                date : ipt.value
+                            }).init();
+                            d.adhere($kit.el('#birthday'));
+                            d.show();
+                        }
                     }
-                },
-                {name:'employer', index:'employer', width:190, editable:true, sortable:false, align:'center'},
-                {name:'unit',index:'unit', sortable:false, width:80, editable:true,align:'center'},
-                {name:'duty', index:'duty', width:80, sortable:false, editable:true, align:'center'},
-                {name:'date',index:'date', sortable:true,width:140, editable: true,edittype:'text',align:'center'}
-                ], 
-            viewrecords : true, 
-            rowNum:10,
-            rowList:[10,20,30],
-            pager : pager_selector,
-            altRows: true,
-            toppager: false,
-            
-            multiselect: true,
-            //multikey: "ctrlKey",
-            multiboxonly: true,
-    
-            loadComplete : function() {
-                var table = this;
-                setTimeout(function(){
-                    styleCheckbox(table);
-                    
-                    updateActionIcons(table);
-                    updatePagerIcons(table);
-                    enableTooltips(table);
-                }, 0);
-            },
-    
-            editurl: "/examinee/updatework",//nothing is saved
-            caption: "工作经历"
-    
-            ,autowidth: true
-    
-        });
-        $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
-    
-        //switch element when editing inline
-        function aceSwitch( cellvalue, options, cell ) {
-            setTimeout(function(){
-                $(cell) .find('input[type=checkbox]')
-                    .addClass('ace ace-switch ace-switch-5')
-                    .after('<span class="lbl"></span>');
-            }, 0);
-        }
-    
-        //navButtons
-        jQuery(grid_selector).jqGrid('navGrid',pager_selector,
-            {   //navbar options
-                edit: true,
-                editicon : 'ace-icon fa fa-pencil blue',
-                add: true,
-                addicon : 'ace-icon fa fa-plus-circle purple',
-                del: true,
-                delicon : 'ace-icon fa fa-trash-o red',
-                search: true,
-                searchicon : 'ace-icon fa fa-search orange',
-                refresh: true,
-                refreshicon : 'ace-icon fa fa-refresh green',
-                view: true,
-                viewicon : 'ace-icon fa fa-search-plus grey',
-            },
-            {
-                //edit record form
-                //closeAfterEdit: true,
-                //width: 700,
-                recreateForm: true,
-                beforeShowForm : function(e) {
-                    var form = $(e[0]);
-                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-                    style_edit_form(form);
-                }
-            },
-            {
-                //new record form
-                //width: 700,
-                closeAfterAdd: true,
-                recreateForm: true,
-                viewPagerButtons: false,
-                beforeShowForm : function(e) {
-                    var form = $(e[0]);
-                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
-                    .wrapInner('<div class="widget-header" />')
-                    style_edit_form(form);
-                }
-            },
-            {
-                //delete record form
-                recreateForm: true,
-                beforeShowForm : function(e) {
-                    var form = $(e[0]);
-                    if(form.data('styled')) return false;
-                    
-                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-                    style_delete_form(form);
-                    
-                    form.data('styled', true);
-                },
-                onClick : function(e) {
-                    alert(1);
-                }
-            },
-            {
-                //search form
-                recreateForm: true,
-                afterShowSearch: function(e){
-                    var form = $(e[0]);
-                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
-                    style_search_form(form);
-                },
-                afterRedraw: function(){
-                    style_search_filters($(this));
-                }
-                ,
-                multipleSearch: true,
-            },
-            {
-                //view record form
-                recreateForm: true,
-                beforeShowForm: function(e){
-                    var form = $(e[0]);
-                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
-                }
-            }
-        )
+                });     
 
-        function style_edit_form(form) {
-            //enable datepicker on "sdate" field and switches for "stock" field
-            form.find('input[name=sdate]').datepicker({format:'yyyy-mm-dd' , autoclose:true})
-                .end().find('input[name=stock]')
-                    .addClass('ace ace-switch ace-switch-5').after('<span class="lbl"></span>');
- 
-            var buttons = form.next().find('.EditButton .fm-button');
-            buttons.addClass('btn btn-sm').find('[class*="-icon"]').hide();//ui-icon, s-icon
-            buttons.eq(0).addClass('btn-primary').prepend('<i class="ace-icon fa fa-check"></i>');
-            buttons.eq(1).prepend('<i class="ace-icon fa fa-times"></i>')
-            
-            buttons = form.next().find('.navButton a');
-            buttons.find('.ui-icon').hide();
-            buttons.eq(0).append('<i class="ace-icon fa fa-chevron-left"></i>');
-            buttons.eq(1).append('<i class="ace-icon fa fa-chevron-right"></i>');       
-        }
-    
-        function style_delete_form(form) {
-            var buttons = form.next().find('.EditButton .fm-button');
-            buttons.addClass('btn btn-sm btn-white btn-round').find('[class*="-icon"]').hide();//ui-icon, s-icon
-            buttons.eq(0).addClass('btn-danger').prepend('<i class="ace-icon fa fa-trash-o"></i>');
-            buttons.eq(1).addClass('btn-default').prepend('<i class="ace-icon fa fa-times"></i>')
-        }
-                
-        function beforeDeleteCallback(e) {
-            var form = $(e[0]);
-            if(form.data('styled')) return false;
-            
-            form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-            style_delete_form(form);
-            
-            form.data('styled', true);
-        }
-        
-        function beforeEditCallback(e) {
-            var form = $(e[0]);
-            form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-            style_edit_form(form);
-        }
-    
-        function styleCheckbox(table) {
+})
 
-        }
-        
-        function updateActionIcons(table) {
-
-        }
-    });
 </script> 

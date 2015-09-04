@@ -21,4 +21,21 @@ class ExamineeDB {
 				throw new Exception($e->getMessage());
 		}
 	}
+	public static function insertExamineeInfo(&$info, $array){
+		try{
+			$manager     = new TxManager();
+			$transaction = $manager->get();
+			$info->setTransaction($transaction);
+			foreach($array as $key=>$value){
+				$info->$key = $value;
+			}
+			if ($info->save() == false){
+				$transaction->rollback("插入数据库失败-".print_r($array,true));
+			}
+			$transaction->commit();
+			return true;
+		}catch (TxFailed $e) {
+			throw new Exception($e->getMessage());
+		}
+	}
 }
