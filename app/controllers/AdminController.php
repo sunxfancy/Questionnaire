@@ -68,21 +68,17 @@ class AdminController extends Base
         $begintime = date('Y-m-d',strtotime($project->begintime));
         $endtime = date('Y-m-d',strtotime($project->endtime));
         $now = date("Y-m-d");
+        $width = 100*round(strtotime($now)-strtotime($begintime))/round(strtotime($endtime)-strtotime($begintime)).'%'; 
+        $detail = $this->getDetail($project_id);
+
         $this->view->setVar('begintime',$begintime);
         $this->view->setVar('endtime',$endtime);
         $this->view->setVar('now',$now);
+        $this->view->setVar('width',$width);
+        $this->view->setVar('detail',$detail);
     }
 
-    public function getWidthAction($project_id){
-        $project = Project::findFirst($project_id);
-        $begintime = date('Y-m-d',strtotime($project->begintime));
-        $endtime = date('Y-m-d',strtotime($project->endtime));
-        $now = date("Y-m-d");
-        $width = 100*round(strtotime($now)-strtotime($begintime))/round(strtotime($endtime)-strtotime($begintime)).'%';     
-        $this->dataBack(array("widths"=>$width));
-    }
-    
-    public function getDetailAction($project_id){
+    public function getDetail($project_id){
         $examinees = Examinee::find(array(
             'project_id=?1',
             'bind'=>array(1=>$project_id)));
@@ -97,10 +93,10 @@ class AdminController extends Base
         }
         $interview_com = 0;
         for ($i=0; $i < $examinee_com; $i++) { 
-             $interview = Interview::findFirst($examinee_coms[$i]);
-             if (isset($interview->advantage)){
-                 $interview_com++;
-             } 
+            $interview = Interview::findFirst($examinee_coms[$i]);
+            if (!empty($interview->advantage) && !empty($interview->disadvantage) &&!empty($interview->remark)){
+                $interview_com++;
+            } 
         }
         if ($examinee_all == 0) {
             $examinee_percent = 0;
@@ -116,13 +112,7 @@ class AdminController extends Base
             'examinee_percent'  => $examinee_percent,
             'interview_percent' => $interview_percent
         );
-        $this->dataBack(array("detail"=>$detail));
-    }
-
-    function dataBack($ans){
-        $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
-        echo json_encode($ans);
-        $this->view->disable();
+        return json_encode($detail,true);
     }
 
     public function listAction(){

@@ -39,6 +39,7 @@ class ExcelLoader
         $examinee = Examinee::find(array(
             'project_id = :project_id:',
             'bind' => array('project_id' => $project_id)));
+        $project = new Project();
         if(count($examinee) == 0){ 
                 $last_number = $project_id.'0001';
         }else{
@@ -155,6 +156,7 @@ class ExcelLoader
     public function readline_inquery($sheet, $project_id, $i){
         $inquery_question = new InqueryQuestion();
 
+        $inquery_question->id = $sheet->getCell('A'.$i)->getValue();
         $inquery_question->topic = $sheet->getCell('B'.$i)->getValue();
         $is_radio = self::filter($sheet->getCell('C'.$i)->getValue());
         if($is_radio == '是'){
@@ -247,8 +249,8 @@ class ExcelLoader
 
     function baseLoad($funcname,$filename, $project_id, $db){
         PHPExcel_Settings::setCacheStorageMethod(PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip);
-        $db->begin(); 
         if (is_readable($filename)){
+            $db->begin(); 
             try {
                 $objexcel = PHPExcel_IOFactory::load($filename);
                 $sheet = $objexcel->getSheet(0);
@@ -268,10 +270,9 @@ class ExcelLoader
                 unlink($filename);
                 return $errors;
             }
+            $db->commit();
+            $objexcel->disconnectWorksheets();
         }
-        $db->commit();
-
-        $objexcel->disconnectWorksheets();
         unlink($filename);
         return 0;
     }

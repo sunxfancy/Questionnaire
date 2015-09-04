@@ -34,7 +34,7 @@ class ExamineeController extends Base
 
 	public function inqueryAction(){
 		$exminee = $this->session->get('Examinee');
-// 		$this->session->remove('Examinee');
+ 		// $this->session->remove('Examinee');
 		if(empty($exminee)){
 			$this->response->redirect('/error/index/examinee');
 			$this->view->disable();
@@ -370,10 +370,8 @@ class ExamineeController extends Base
     }
 
     public function dividepeoAction($manager_id){
-//        $project_id = $this->session->get('Manager')->project_id;
         $project_id = $this->session->get('Manager')->project_id;
         $this->view->disable();
-//      $condition = 'manager_id = :manager_id:';
         $interview = Interview::find();
         $term = '(';
         foreach($interview as $key => $item){
