@@ -31,6 +31,12 @@ class InqueryQuestion extends \Phalcon\Mvc\Model
     *@var integer
     */
     public $project_id;
+    
+    public function initialize(){
+    	
+    	$this->belongsTo('project_id', 'Project', 'id');
+    	
+    }
 
 
 }

@@ -13,6 +13,8 @@
     <script type='text/javascript' src='/js/jquery.js'></script>
     <script type='text/javascript' src='/lib/bootstrap-datetimepicker.js'></script>
     <script type='text/javascript' src='/lib/jquery.cookie.js'></script>
+    <script type='text/javascript' src='/js/spin.js'></script>
+    <script type='text/javascript'  src="/bootstrap/js/bootstrap.min.js"></script>
 </head>
 
 <body style="background-image:url(/image/fcbg_blur.png);">

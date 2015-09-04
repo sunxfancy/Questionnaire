@@ -31,23 +31,38 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">提示信息</h4>
+        </div>
+        <div class="modal-body"></div>
+        <div class="modal-footer">
+        	<a href='/examinee/inquery'><button type="button" class="btn btn-primary">刷新</button></a>
+            <a href='/'>                <button type="button" class="btn btn-primary">退出</button></a>
+        </div>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
+    var spinner = null;
+    var target = document.getElementById('Leo_question_v2');
     var questions=new Array();
     var url="/Examinee/getInquery";
     var Leo_now_index=0;
 $(function(){
-
-    $("#Leo_All").click(function(){
-        var ans=new Array();
-        for(var i=0;i<questions.length;i++){
-            ans[i]="a";
-        }
-        $.cookie("ans_cookie"+{{number}},ans.join("|"),{experies:7});
-        initCookie(questions.length,"ans_cookie"+{{number}});
-    });
-
-    getpaper(url); //先从服务器取得全部的需求量表的题目
-
+	getpaper(url); //先从服务器取得全部的需求量表的题目
+	 $("#Leo_All").click(function(){
+         var ans=new Array();
+         for(var i=0;i<questions.length;i++){
+             ans[i]="a";
+         }
+         $.cookie("ans_cookie"+{{ number }}, ans.join("|"), {experies:7});
+         initCookie(questions.length,"ans_cookie"+{{ number }} );
+     });
 
 
      $("#Leo_pagedown").click(function(){
@@ -62,8 +77,9 @@ $(function(){
                 changepage(questions.length-1,true);
                 Leo_checkcomplete();
             });
-
 });
+    
+   
 function initTitle(index){
 
     var option_disp="<div>";
@@ -297,10 +313,27 @@ function Leo_checkcomplete() {
 
 
 function getpaper(url){
+	     spinner = new Spinner().spin(target);
          $.post(url, {'paper_name':"inquery"}, function(data) {
-            questions=data.question;
-            Leo_initPanel(questions.length);
-            initCookie(questions.length,"ans_cookie"+{{number}});
+         	if(data.error){
+         		if(spinner){ spinner.stop(); }
+         		 $('.Leo_question_v2').css('width','573px')
+         		 $('.modal-body').html('');
+                 $('.modal-body').html(
+                     "<p class=\"bg-danger\" style='padding:20px;'>"+data.error+ "</p>"
+                     );
+                $('#myModal').modal({
+                    keyboard:true,
+                    backdrop:'static'
+                })
+         	}else{
+         		 if(spinner){ spinner.stop(); }
+         		 $('.Leo_question_v2').css('width','600px');
+         		 questions=data.question;
+                 Leo_initPanel(questions.length);
+                 initCookie(questions.length,"ans_cookie"+{{ number }});
+         	}
+           
         });
 }
 
