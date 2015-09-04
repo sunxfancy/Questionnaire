@@ -9,8 +9,7 @@
 /**
 * 
 */
-use Phalcon\Mvc\Model\Transaction\Failed as TxFailed;
-use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
+
 
 class ExamineeController extends Base
 {
@@ -57,10 +56,16 @@ class ExamineeController extends Base
 	}
 
     public function getInqueryAction(){
-        $project_id = $this->session->get('Examinee')->project_id;
+// 		$this->session->remove('Examinee');
+    	$exminee = $this->session->get('Examinee');
+    	if(empty($exminee)){
+    		$this->dataReturn(array('error'=>'用户信息获取失败'));
+    		return;
+    	}
+        $project_id = $exminee->project_id;
         $inquery_data = MemoryCache::getInqueryQuestion($project_id);
-        if(count($inquery_data) == 0){
-        	$this->dataReturn(array('error'=>'需求量表获取失败'));
+        if(count($inquery_data) == 0 ){
+        	$this->dataReturn(array('error'=>'需求量表获取失败,返回数据为空'));
         	return ;
         }else{
         	$question = array();
@@ -78,17 +83,25 @@ class ExamineeController extends Base
     }
 
     public function getInqueryAnsAction(){
-        $examinee = $this->session->get('Examinee');
-        $inquery_ans = new InqueryAns();
-        $inquery_ans->project_id = $examinee->project_id;
-        $inquery_ans->examinee_id = $examinee->id;
-        $inquery_ans->option = $this->request->getPost("answer", "string");
-        if($inquery_ans->save()){
-            $this->dataReturn(array("flag"=>true,"answer"=>$inquery_ans->option));
+    	$exminee = $this->session->get('Examinee');
+    	if(empty($exminee)){
+    		$this->dataReturn(array('error'=>'用户信息获取失败'));
+    		return;
+    	}
+    	$project_id = $exminee->project_id;
+    	$examinee_id = $exminee->id;
+        $option = $this->request->getPost("answer", "string");
+        if(empty($option)){
+        	$this->dataReturn(array('error'=>'提交失败:提交信息为空'));
+        	return;
         }
-        else{
-            $this->dataReturn(array("flag"=>false));
+        try{
+        	ExamineeDB::insertInquery($examinee_id, $option, $project_id);
+        }catch(Exception $e){
+        	$this->dataReturn(array('error'=>$e->getMessage()));
+        	return;
         }
+        $this->dataReturn(array('flag'=>true));
     }
 
 	public function doexamAction(){
