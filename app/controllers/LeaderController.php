@@ -11,21 +11,14 @@
 */
 class LeaderController extends Base
 {
-	public function indexAction()
-    {
+	public function indexAction(){
         $this->view->setTemplateAfter('base2');
         $this->leftRender('测 评 结 果');
     }
 
-    public function detailAction()
-    {
-    	
-    }
+    public function detailAction(){}
 
-    public function resultAction()
-    {
-    	
-    }
+    public function resultAction(){}
 
     public function infoAction($examinee_id){
         $this->view->setTemplateAfter('base2');
@@ -44,6 +37,18 @@ class LeaderController extends Base
         $this->view->setVar('unit',$examinee->unit);
         $this->view->setVar('duty',$examinee->duty);
         $this->view->setVar('team',$examinee->team);
+        $this->view->setVar('other',$examinee->other);
+    }
+
+    public function getOtherAction($examinee_id){
+        $examinee = Examinee::findFirst($examinee_id);
+        $this->dataBack(array("other"=>$examinee->other));
+    }
+
+    function dataBack($ans){
+        $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
+        echo json_encode($ans);
+        $this->view->disable();
     }
 
 }

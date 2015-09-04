@@ -6,13 +6,8 @@
  * @Last Modified time: 2015-08-14 17:37:25
  */
 
-/**
-* 
-*/
-
 use Phalcon\Mvc\Model\Transaction\Failed as TxFailed;
 use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
-
 
 class PmController extends Base
 {
@@ -26,28 +21,23 @@ class PmController extends Base
     }
 
 	public function detailAction(){
-		$project_id = $this->getProjectId();
+		$project_id = $this->session->get('Manager')->project_id;
         $project = Project::findFirst($project_id);
         $begintime = date('Y-m-d',strtotime($project->begintime));
         $endtime = date('Y-m-d',strtotime($project->endtime));
         $now = date("Y-m-d");
+        $width = 100*round(strtotime($now)-strtotime($begintime))/round(strtotime($endtime)-strtotime($begintime)).'%';
+        $detail = $this->getDetail($project->id);
+
         $this->view->setVar('begintime',$begintime);
         $this->view->setVar('endtime',$endtime);
         $this->view->setVar('now',$now);
+        $this->view->setVar('width',$width);
+        $this->view->setVar('detail',$detail);
     }
 	
-	public function getWidthAction(){
-		$project_id = $this->getProjectId();
-		$project = Project::findFirst($project_id);
-		$begintime = date('Y-m-d',strtotime($project->begintime));
-		$endtime = date('Y-m-d',strtotime($project->endtime));
-		$now = date("Y-m-d");
-		$width = 100*round(strtotime($now)-strtotime($begintime))/round(strtotime($endtime)-strtotime($begintime)).'%';		
-		$this->dataBack(array("width"=>$width));
-	}
-	
-	public function getDetailAction(){
-		$project_id = $this->getProjectId();
+	public function getDetail(){
+		$project_id = $this->session->get('Manager')->project_id;
 		$examinees = Examinee::find(array(
 			'project_id=?1',
 			'bind'=>array(1=>$project_id)));
@@ -81,7 +71,7 @@ class PmController extends Base
 			'examinee_percent'  => $examinee_percent,
 			'interview_percent' => $interview_percent
 		);
-		$this->dataBack(array("detail"=>$detail));
+		return json_encode($detail,true);
 	}
 
 	public function examineeAction(){
@@ -151,24 +141,19 @@ class PmController extends Base
     public function upload_base($method){
         $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
         $this->view->disable();
-        if ($this->request->isPost() && $this->request->hasFiles())
-        {
+        if ($this->request->isPost() && $this->request->hasFiles()){
             $files = $this->request->getUploadedFiles();
             $filename = "Import-".date("YmdHis");
             $excel = ExcelLoader::getInstance();
             $project_id = $this->session->get('Manager')->project_id;
-            // echo $project_id ."\n";
             $i = 1;
             foreach ($files as $file) {
                 $newname = "./upload/".$filename."-".$i.".xls";
-                // echo $newname."\n";
                 $file->moveTo($newname);
                 $ans = $excel->$method($newname, $project_id, $this->db);
-                // echo $ans ."\n";
                 if ($ans != 0) { echo json_encode($ans); return; }
                 $i++;
             }
-            // echo 0;
         } else {
             // echo json_encode(array('error' => '错误的接口访问'));
             alert("请选择导入文件！");
@@ -177,11 +162,10 @@ class PmController extends Base
     }
 
 	public function listexamineeAction(){
-        $project_id = $this->getProjectId();
+        $project_id = $this->session->get('Manager')->project_id;
         $builder = $this->modelsManager->createBuilder()                            
                                        ->from('Examinee')
-                                       ->where("project_id = '$project_id'");
-        
+                                       ->where("project_id = '$project_id'");      
         $sidx = $this->request->getQuery('sidx','string');
         $sord = $this->request->getQuery('sord','string');
         if ($sidx != null)
@@ -241,7 +225,7 @@ class PmController extends Base
     }
 
     public function listinterviewerAction(){
-        $project_id = $this->getProjectId();
+        $project_id = $this->session->get('Manager')->project_id;
         $builder = $this->modelsManager->createBuilder()
                                        ->from('Manager')
                                        ->where("Manager.role = 'I' AND Manager.project_id = '$project_id'");
@@ -282,7 +266,7 @@ class PmController extends Base
     }
 
     public function listleaderAction(){
-        $project_id = $this->getProjectId();
+        $project_id = $this->session->get('Manager')->project_id;
         $builder = $this->modelsManager->createBuilder()
                                        ->from('Manager')
                                        ->where("Manager.role = 'L' AND Manager.project_id = '$project_id'");
@@ -339,13 +323,13 @@ class PmController extends Base
         $this->view->setVar('unit',$examinee->unit);
         $this->view->setVar('duty',$examinee->duty);
         $this->view->setVar('team',$examinee->team);
+        $this->view->setVar('other',$examinee->other);
     }
 
     //以excel形式，导出被试人员信息和测试结果
-    public function checkAction($examinee_id){
-        
+    public function checkAction($examinee_id){        
         $this->view->disable();
-        $project_id = $this->getProjectId();
+        $project_id = $this->session->get('Manager')->project_id;
         $examinee = Examinee::findFirst($examinee_id);
         CheckoutExcel::checkoutExcel11($examinee,$project_id);
         // $work = json_decode($examinee->other)->work;
@@ -594,59 +578,42 @@ class PmController extends Base
     }
     
     public function examineeofmanagerAction($manager_id){
-       $condition = 'manager_id = :manager_id:';
-       $row = Interview::find(
-               array(
-                       $condition,
-                       'bind' => array(
-                               'manager_id' => $manager_id
-                       )
-               )
-       );
-       $term = '';
-       foreach($row as $key => $item){
-           $term .= ' id='.$item->examinee_id.' OR ';
-       }
-       if(empty($term)){
-           $term = 0;
-       }else{
-           $term = substr($term,0,strlen($term)-3);
-       }
-       $builder = $this->modelsManager->createBuilder()
-       ->from('Examinee')
-       ->where($term);
-       $sidx = $this->request->getQuery('sidx','string');
-       $sord = $this->request->getQuery('sord','string');
-       if ($sidx != null)
-           $sort = $sidx;
-       else
-           $sort = 'number';
-       if ($sord != null)
-           $sort = $sort.' '.$sord;
-       $builder = $builder->orderBy($sort);
-       $this->datareturn($builder);  
+        $row = Interview::find(array(
+           'manager_id = :manager_id:',
+           'bind' => array('manager_id' => $manager_id)));
+        $term = '';
+        foreach($row as $key => $item){
+            $term .= ' id='.$item->examinee_id.' OR ';
+        }
+        if(empty($term)){
+            $term = 0;
+        }else{
+            $term = substr($term,0,strlen($term)-3);
+        }
+        $builder = $this->modelsManager->createBuilder()
+                                      ->from('Examinee')
+                                      ->where($term);
+        $sidx = $this->request->getQuery('sidx','string');
+        $sord = $this->request->getQuery('sord','string');
+        if ($sidx != null)
+            $sort = $sidx;
+        else
+            $sort = 'number';
+        if ($sord != null)
+            $sort = $sort.' '.$sord;
+        $builder = $builder->orderBy($sort);
+        $this->datareturn($builder);  
     }
 
     public function getInterviewResult($manager_id){
-        $condition = 'manager_id = :manager_id:';
-        $rows = Interview::find(
-            array(
-                $condition,
-                'bind' => array(
-                    'manager_id' => $manager_id
-                )
-            )
-        );
+        $rows = Interview::find(array(
+                'manager_id = :manager_id:',
+                'bind' => array('manager_id' => $manager_id)));
         $total = count($rows);
         $term = "remark<>'' AND advantage<>'' AND disadvantage<>'' AND manager_id=:manager_id:";
-        $col = Interview::find(
-            array(
+        $col = Interview::find(array(
                 $term,
-                'bind' => array(
-                    'manager_id' => $manager_id
-                )
-            )
-        );
+                'bind' => array('manager_id' => $manager_id)));
         $part_num = count($col);
         $msg = $part_num.'/'.$total;
         return $msg;
@@ -669,16 +636,9 @@ class PmController extends Base
         foreach ($page->items as $key => $item){
             $item->degree_of_complete = $this->getInterviewResult($item->id);
             $ans['rows'][$key] = $item;
-            // $res = $this->getInterviewResult($item->id);
-            // $ans['rows'][$key]['degree_of_complete'] = $res;
         }
         echo json_encode($ans);
         $this->view->disable();
-    }
-
-    function getProjectId() {
-        $manager = $this->session->get('Manager');
-        return $manager->project_id;
     }
 
     function dataBack($ans){
@@ -692,13 +652,9 @@ class PmController extends Base
      */
     public function examineeExportAction(){
         $project_id = $this->session->get('Manager')->project_id;
-        $condition = 'project_id = :project_id:';
         $examinee = Examinee::find(array(
-            $condition,
-            'bind' => array(
-                'project_id' => $project_id
-            )
-        ));
+            'project_id = :project_id:',
+            'bind' => array('project_id' => $project_id)));
         $result = array();
         foreach($examinee as $key => $item){
             $result[$key] = $item;
@@ -711,7 +667,7 @@ class PmController extends Base
      * 面询人员导出
      */
     public function interviewerExportAction(){
-        $result = $this->interviewInfo('I');
+        $result = $this->roleInfo('I');
         $excelExport = new ExcelExport();
         $excelExport->InterviewerExport($result);
     }
@@ -720,27 +676,45 @@ class PmController extends Base
      * 领导导出
      */
     public function leaderExportAction(){
-        $result = $this->interviewInfo('L');
+        $result = $this->roleInfo('L');
         $excelExport = new ExcelExport();
         $excelExport->LeaderExport($result);
     }
 
-    public function interviewInfo($role){
+    public function roleInfo($role){
         $project_id = $this->session->get('Manager')->project_id;
-        $condition = 'role = :role: AND project_id = :project_id:';
         $interviewer = Manager::find(array(
-            $condition,
-            'bind' => array(
-                'role' => $role,
-                'project_id' => $project_id
-            )
-        ));
+            'role = :role: AND project_id = :project_id:',
+            'bind' => array('role' => $role,'project_id' => $project_id)));
         $result = array();
         foreach($interviewer as $key => $item){
             $result[$key] = $item;
         }
-        // return json_decode($result,true);
         return $result;
+    }
+
+    public function datareturn($builder){
+        $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
+        $limit = $this->request->getQuery('rows', 'int');
+        $page = $this->request->getQuery('page', 'int');
+        if (is_null($limit)) $limit = 10;
+        if (is_null($page)) $page = 1;
+        $paginator = new Phalcon\Paginator\Adapter\QueryBuilder(array("builder" => $builder,
+                                                                      "limit" => $limit,
+                                                                      "page" => $page));
+        $page = $paginator->getPaginate();
+        $ans = array();
+        $ans['total'] = $page->total_pages;
+        $ans['page'] = $page->current;
+        $ans['records'] = $page->total_items;
+        foreach ($page->items as $key => $item){
+            if (isset($item->sex)) {
+                $item->sex = ($item->sex == 1)?'男':'女';
+            }
+            $ans['rows'][$key] = $item;
+        }
+        echo json_encode($ans);
+        $this->view->disable();
     }
 
 }

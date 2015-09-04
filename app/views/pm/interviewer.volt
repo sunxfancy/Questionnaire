@@ -94,7 +94,11 @@
                 {name:'password',index:'password',width:80, sortable:false, sorttype:"string", editable:true,align:'center'},
                 {name:'last_login',index:'last_login',width:100, sortable:true, sorttype:"string", editable:false,align:'center'},
                 {name:'degree_of_complete',index:'degree_of_complete', sortable:false,width:90, editable: false,align:'center'},
-                {name:'check',index:'check', sortable:false,width:90, editable: false,align:'center'},
+                {name:'check',index:'check', sortable:false,width:90, editable: false,align:'center',
+                    formatter:function(cellvalue,options,rowObject){
+                        var temp = "<a href='/pm/interviewinfo/"+rowObject.id+"' >查看</a>";
+                        return temp;
+                    }},
                 {name:'user_divide',index:'user_divide', width:90, sortable:false, resize:false,align:'center',
                     formatter:function(cellvalue,options,rowObject){
                         var temp = "<a href='/pm/userdivide/"+rowObject.id+"' >配置</a>";

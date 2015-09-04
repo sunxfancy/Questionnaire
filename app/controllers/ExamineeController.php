@@ -46,7 +46,7 @@ class ExamineeController extends Base
 
 	public function inqueryAction(){
 		$exminee = $this->session->get('Examinee');
-// 		$this->session->remove('Examinee');
+ 		// $this->session->remove('Examinee');
 		if(empty($exminee)){
 			$this->response->redirect('/error/index/examinee');
 			$this->view->disable();
@@ -190,57 +190,7 @@ class ExamineeController extends Base
     	$this->dataReturn(array("flag"=>true));
     	return;
     }
-//     public function getExamAnswerAction(){
-//         $id = $this->session->get('Examinee')->id;
-//         $total_time=$this->request->getPost("total_time","int");
-//         $option = $this->request->getPost("answer", "string");
-//         $paper_name = $this->request->getPost("paper_name", "string");
-//         $number = $this->request->getPost("order");
-//         $time_start  =  Test4Controller::microtime_float ();
-//         $memory_start = memory_get_usage( true );
-//         try{
-//         	QuestionIC::insertQuestionAns($id, $paper_name, $option, $number);
-//         }catch(Exception $e){
-//         	$this->dataReturn(array('flag'=>false));
-//         }
-//         if($total_time){
-//         	/**********************************************************************/
-//         	/*最后一次提交的处理在这里，$total_time是用户答题使用的总时间，以秒计*/
-//         	$time_start  =  Test4Controller::microtime_float ();
-//         	$memory_start = memory_get_usage( true );
-//         	try{
-//         		QuestionIC::finishedExam($id, intval($total_time));
-//         		BasicScore::handlePapers($id);
-//         		BasicScore::finishedBasic($id);
-//         		FactorScore::handleFactors($id);
-//         		FactorScore::finishedFactor($id);
-//         		IndexScore::handleIndexs($id);
-//         		IndexScore::finishedIndex($id);
-//         	}catch(Exception $e){
-//         		$this->dataReturn(array("total_time"=>$e->getMessage()));
-//         	}
-//         	$memory_end = memory_get_usage( true );
-//         	$memory_consuming = ($memory_end - $memory_start)/1024/1024;
-//         	$time_end = Test4Controller::microtime_float();
-//         	$time_consuming = $time_end - $time_start;
-//         	$this->dataReturn(array("total_time"=>sprintf("%.2f",$time_consuming)));
-//         	// $this->session->get("Examinee")
-//         	session_unset("Examinee");
-//         	/*end of code chunk*/
-//         	/**********************************************************************/
-//         	// $examinee = Examinee::findFirst($id);
-//         	// $examinee->total_time = $total_time;
-//         	// $examinee->is_exam_com = 1;
-//         	// if (!$examinee->save()) {
-//         	//     foreach ($examinee->getMessages() as $msg) {
-//         	//         echo $msg."\n";
-//         	//     }
-//         	// }
-//         	return;
-//         }
-//         $this->dataReturn(array('flag'=>true));
 
-//     }
     public function editinfoAction(){
         $this->leftRender("个 人 信 息 填 写");
         $id = $this->session->get('Examinee')->id;
@@ -389,10 +339,8 @@ class ExamineeController extends Base
     }
 
     public function dividepeoAction($manager_id){
-//        $project_id = $this->session->get('Manager')->project_id;
         $project_id = $this->session->get('Manager')->project_id;
         $this->view->disable();
-//      $condition = 'manager_id = :manager_id:';
         $interview = Interview::find();
         $term = '(';
         foreach($interview as $key => $item){

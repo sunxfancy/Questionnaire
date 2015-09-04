@@ -90,7 +90,17 @@
                         return temp;
                     }                  
                 },
-                {name:'is_ques_com',index:'is_ques_com', sorttype:"int",width:140, sortable:false, editable: false,align:'center'},
+                {name:'state',index:'state', sorttype:"int",width:140, sortable:false, editable: false,align:'center',
+                    formatter:function(cellvalue){
+                        var temp = "";
+                        if(cellvalue > 5){
+                            temp = "是" ;
+                        } 
+                        else { 
+                            temp = "否";
+                        }
+                        return temp;
+                    }},
                 {name:'result',index:'result', sortable:false, width:100, resize:false,align:'center',
                     formatter:function(){
                         var temp = "<a href='/pm/result' >查看</a>";
