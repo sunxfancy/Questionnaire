@@ -1,43 +1,82 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Test</title>
-<link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<script src="/js/jquery.js"></script>
-<script src="/bootstrap/js/bootstrap.min.js"></script>
-</head>
-<body>
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-  Launch demo modal {{ postId }}
-</button>
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        <div class="progress" style="width:80%;">
-         <div id='progress_record'class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" >
-        </div>
-     </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-</body>
-<script>
-$('#myModal').on('shown.bs.modal', function () {
-      
-         
-    })
-</script>
-</html>
+<table id="list1"></table>
+<div id="pager1"></div>
+
+<script type="text/javascript"> 
+jQuery().ready(function (){
+jQuery("#list1").jqGrid({
+    url:'server.php?q=1',
+    datatype: "xml",
+    colNames:['Inv No','Date', 'Client', 'Amount','Tax','Total','Notes'],
+    colModel:[
+        {name:'id',index:'id', width:75},
+        {name:'invdate',index:'invdate', width:90},
+        {name:'name',index:'name', width:100},
+        {name:'amount',index:'amount', width:80, align:"right"},
+        {name:'tax',index:'tax', width:80, align:"right"},      
+        {name:'total',index:'total', width:80,align:"right"},       
+        {name:'note',index:'note', width:150, sortable:false}       
+    ],
+    rowNum:10,
+    autowidth: true,
+    rowList:[10,20,30],
+    pager: jQuery('#pager1'),
+    sortname: 'id',
+    viewrecords: true,
+    sortorder: "desc",
+    caption:"XML Example"
+}).navGrid('#pager1',{edit:false,add:false,del:false});                 
+</script> 
+PHP Code
+
+<?php
+$page = $_GET['page']; // get the requested page
+$limit = $_GET['rows']; // get how many rows we want to have into the grid
+$sidx = $_GET['sidx']; // get index row - i.e. user click to sort
+$sord = $_GET['sord']; // get the direction
+if(!$sidx) $sidx =1;
+// connect to the database
+$db = mysql_connect($dbhost, $dbuser, $dbpassword)
+or die("Connection Error: " . mysql_error());
+
+mysql_select_db($database) or die("Error conecting to db.");
+$result = mysql_query("SELECT COUNT(*) AS count FROM invheader a, clients b WHERE a.client_id=b.client_id");
+$row = mysql_fetch_array($result,MYSQL_ASSOC);
+$count = $row['count'];
+
+if( $count >0 ) {
+    $total_pages = ceil($count/$limit);
+} else {
+    $total_pages = 0;
+}
+if ($page > $total_pages) $page=$total_pages;
+$start = $limit*$page - $limit; // do not put $limit*($page - 1)
+$SQL = "SELECT a.id, a.invdate, b.name, a.amount,a.tax,a.total,a.note FROM invheader a, clients b WHERE "
+." a.client_id=b.client_id ORDER BY $sidx $sord LIMIT $start , $limit";
+$result = mysql_query( $SQL ) or die("Couldnt execute query.".mysql_error());
+
+if ( stristr($_SERVER["HTTP_ACCEPT"],"application/xhtml+xml") ) {
+header("Content-type: application/xhtml+xml;charset=utf-8"); } else {
+header("Content-type: text/xml;charset=utf-8");
+}
+$et = ">";
+
+echo "<?xml version='1.0' encoding='utf-8'?$et\n";
+echo "<rows>";
+echo "<page>".$page."</page>";
+echo "<total>".$total_pages."</total>";
+echo "<records>".$count."</records>";
+// be sure to put text data in CDATA
+while($row = mysql_fetch_array($result,MYSQL_ASSOC)) {
+    echo "<row id='". $row[id]."'>";            
+    echo "<cell>". $row[id]."</cell>";
+    echo "<cell>". $row[invdate]."</cell>";
+    echo "<cell><![CDATA[". $row[name]."]]></cell>";
+    echo "<cell>". $row[amount]."</cell>";
+    echo "<cell>". $row[tax]."</cell>";
+    echo "<cell>". $row[total]."</cell>";
+    echo "<cell><![CDATA[". $row[note]."]]></cell>";
+    echo "</row>";
+}
+echo "</rows>";     
+?>
