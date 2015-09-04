@@ -39,10 +39,7 @@
             <h4 class="modal-title" id="myModalLabel">提示信息</h4>
         </div>
         <div class="modal-body"></div>
-        <div class="modal-footer">
-        	<a href='/examinee/inquery'><button type="button" class="btn btn-primary">刷新</button></a>
-            <a href='/'>                <button type="button" class="btn btn-primary">退出</button></a>
-        </div>
+        <div class="modal-footer"></div>
     </div>
   </div>
 </div>
@@ -53,8 +50,15 @@
     var questions=new Array();
     var url="/Examinee/getInquery";
     var Leo_now_index=0;
+$('#myModal').on('hidden.bs.modal', function (e) {
+        $('.Leo_question_v2').css('width','600px')
+});
+$('#myModal').on('hide.bs.modal', function (e) {
+        $('.Leo_question_v2').css('width','600px')
+});
 $(function(){
 	getpaper(url); //先从服务器取得全部的需求量表的题目
+	$('.Leo_question_v2').css('width','600px');
 	 $("#Leo_All").click(function(){
          var ans=new Array();
          for(var i=0;i<questions.length;i++){
@@ -91,7 +95,7 @@ function initTitle(index){
     var  option1="<div class='Leo_ans_div'><div class='Leo_ans_checkdiv'><input name='ans_sel' type='"+op_type+"' id='123' style='cursor:pointer;'/></div><div class='Leo_ans_checktext'>";
     var option2="</div></div>";
 
-    var title='<span>'+(questions[index].index+1)+"."+questions[index].title+'</span>';
+    var title='<span>'+(questions[index].index)+"."+questions[index].title+'</span>';
     
     var options=questions[index].options.split("|");
 
@@ -115,8 +119,21 @@ function initTitle(index){
                 doclick();
             }else{
                 $(this).prop('checked', '');
-                alert("您的选择已经超过三项，请确认你的选择。");
-                
+                $('.Leo_question_v2').css('width','573px')
+                 $('.modal-body').html('');
+                 $('.modal-body').html(
+                     "<p class=\"bg-danger\" style='padding:20px;'>"+ "您的选择已经超过三项，请确认你的选择。"+ "</p>"
+                     );
+                 $('.modal-footer').html('');
+                 $('.modal-footer').html(
+                    "<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">继续答题</button>"
+                    );
+                 
+                 $('#myModal').modal({
+                    keyboard:true,
+                    backdrop:'static'
+                 }); 
+                //alert("您的选择已经超过三项，请确认你的选择。666"); 
             }
         }else{
             temp=$(this).parent().children('div').children(':radio')[0];
@@ -133,14 +150,28 @@ function initTitle(index){
                 doclick();
             }else{
                 $(this).prop('checked', '');
-                alert("您的选择已经超过三项，请确认你的选择。");
+                 $('.Leo_question_v2').css('width','573px')
+                 $('.modal-body').html('');
+                 $('.modal-body').html(
+                     "<p class=\"bg-danger\" style='padding:20px;'>"+ "您的选择已经超过三项，请确认你的选择。"+ "</p>"
+                     );
+                 $('.modal-footer').html('');
+                 $('.modal-footer').html(
+                    "<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">继续答题</button>"
+                    );
+                 
+                 $('#myModal').modal({
+                    keyboard:true,
+                    backdrop:'static'
+                 }); 
+               // alert("您的选择已经超过三项，请确认你的选择。");
             }
        }else{
             $(this).prop('checked', 'checked');
             $("#newdiv_"+Leo_now_index).css('background-color', '#48fffb');
             changepage(Leo_now_index+1,true);
         }
-    });
+    });
     function doclick(){
         checkcheckbox();
         var now_ans=get_ans_str();
@@ -265,7 +296,6 @@ function initCookie_title(ans_cookie){
  
 function changepage(newpage,isCookie) {
     //newpage为从0开始的计数方式
-
     //这里可以改变为每进行一次点击就更新一次cookie
        if(isCookie){
             var now_ans=get_ans_str();
@@ -301,13 +331,39 @@ function Leo_checkcomplete() {
             }
         }
         if (badques.length != 0) {
-            alert("您的答题是不完整的，其中第" + badques + "题缺少必要的答案！请继续答题！");
-            changepage(badques[0] - 1,true);
+        	$('.Leo_question_v2').css('width','573px')
+                 $('.modal-body').html('');
+                 $('.modal-body').html(
+                     "<p class=\"bg-danger\" style='padding:20px;'>"+"您的答题是不完整的，其中第" + badques + "题缺少必要的答案！请继续答题！"+ "</p>"
+                     );
+                 $('.modal-footer').html('');
+                 $('.modal-footer').html(
+                    "<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">继续答题</button>"
+                    );
+                 
+                 $('#myModal').modal({
+                    keyboard:true,
+                    backdrop:'static'
+                 })
+            //alert("您的答题是不完整的，其中第" + badques + "题缺少必要的答案！请继续答题！");
+                changepage(badques[0] - 1,true);
+            
         } else {
-            var t = confirm("您确定要提交吗？");
-            if (t) {
-                 Leo_check();
-            }
+        	     $('.Leo_question_v2').css('width','573px')
+        	     $('.modal-body').html('');
+                 $('.modal-body').html(
+                     "<p class=\"bg-danger\" style='padding:20px;'>"+"您确定要提交吗?"+ "</p>"
+                     );
+                 $('.modal-footer').html('');
+                 $('.modal-footer').html(
+                    "<button type=\"button\" class=\"btn btn-info\" data-dismiss=\"modal\">返回修改</button>"
+                    +"<button type=\"button\" class=\"btn btn-primary\"  onclick=\"Leo_check();\">确认提交</button>"
+                    );
+                 
+                 $('#myModal').modal({
+                    keyboard:true,
+                    backdrop:'static'
+                 })
         }
     }
 
@@ -316,16 +372,21 @@ function getpaper(url){
 	     spinner = new Spinner().spin(target);
          $.post(url, {'paper_name':"inquery"}, function(data) {
          	if(data.error){
-         		if(spinner){ spinner.stop(); }
+         		 if(spinner){ spinner.stop(); }
          		 $('.Leo_question_v2').css('width','573px')
          		 $('.modal-body').html('');
                  $('.modal-body').html(
                      "<p class=\"bg-danger\" style='padding:20px;'>"+data.error+ "</p>"
                      );
-                $('#myModal').modal({
+                 $('.modal-footer').html('');
+                 $('.modal-footer').html(
+                 	"<a href='/examinee/inquery'><button type=\"button\" class=\"btn btn-primary\">刷新</button></a>"+
+                 	"&nbsp;&nbsp;<a href='/'><button type=\"button\" class=\"btn btn-primary\">退出</button></a>"
+                 );
+                 $('#myModal').modal({
                     keyboard:true,
                     backdrop:'static'
-                })
+                 })
          	}else{
          		 if(spinner){ spinner.stop(); }
          		 $('.Leo_question_v2').css('width','600px');
@@ -339,14 +400,44 @@ function getpaper(url){
 
 function Leo_check(){
     $.post('/Examinee/getInqueryAns',{"answer":$.cookie("ans_cookie"+{{number}})}, function(data) {
-            if(data.flag){
-                alert("提交成功！点击确定跳转到用户信息填写页面！");
-                $.cookie("ans_cookie"+{{number}},"",{expires:-1});
-                window.location.href="/Examinee/editinfo";
-                return;
+            if(data.error){
+                 $('.Leo_question_v2').css('width','573px');
+                 $('.modal-body').html('');
+                 $('.modal-body').html(
+                     "<p class=\"bg-danger\" style='padding:20px;'>"+ data.error + "</p>"
+                     );
+                 $('.modal-footer').html('');
+                 $('.modal-footer').html(
+                    "<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">重新提交</button>"
+                    +"&nbsp;&nbsp;<a href='/'><button type=\"button\" class=\"btn btn-primary\">退出</button></a>"
+                    );
+                 
+                 $('#myModal').modal({
+                        keyboard:true,
+                        backdrop:'static'
+                 })
             }else{
-                alert("提交出错，请联系管理员！");
+            	
+            	$('.Leo_question_v2').css('width','573px');
+                 $('.modal-body').html('');
+                 $('.modal-body').html(
+                     "<p class=\"bg-success\" style='padding:20px;'>"+ "提交成功！点击确定跳转到用户信息填写页面！"+ "</p>"
+                     );
+                 $('.modal-footer').html('');
+                 $('.modal-footer').html(
+                    "<button type=\"button\" class=\"btn btn-success\" onclick='wang_click();'>确定</button>"
+                    );
+                 
+                 $('#myModal').modal({
+                        keyboard:true,
+                        backdrop:'static'
+                 });
             }
         });
+}
+
+function wang_click(){
+	   $.cookie("ans_cookie"+{{number}},"",{expires:-1});
+	   window.location.href='/Examinee/editinfo';
 }
 </script>
