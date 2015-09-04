@@ -1,7 +1,8 @@
 <?php 
 
 class InterviewInfo{
-	public function getInterviewResult($manager_id){
+	//获取被试面巡完成人员及未完成人员名单
+	public static function getInterviewResult($manager_id){
         $interview = Interview::find(array(
                 'manager_id =?1',
                 'bind' => array(1=>$manager_id)));

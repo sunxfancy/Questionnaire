@@ -28,50 +28,12 @@ class PmController extends Base
         $now = date("Y-m-d");
         $width = 100*round(strtotime($now)-strtotime($begintime))/round(strtotime($endtime)-strtotime($begintime)).'%';
         $detail = $this->getDetail($project_id);
-
         $this->view->setVar('begintime',$begintime);
         $this->view->setVar('endtime',$endtime);
         $this->view->setVar('now',$now);
         $this->view->setVar('width',$width);
         $this->view->setVar('detail',$detail);
-    }
-	
-	public function getDetail($project_id){
-		$examinees = Examinee::find(array(
-			'project_id=?1',
-			'bind'=>array(1=>$project_id)));
-		$examinee_all = count($examinees);
-        $examinee_com = 0;
-        $examinee_coms = array();
-        foreach ($examinees as $examinee) {
-            if ($examinee->state  > 0) {
-                $examinee_com ++;
-                $examinee_coms[] = $examinee->id;
-            }
-        }
-		$interview_com = 0;
-        for ($i=0; $i < $examinee_com; $i++) { 
-             $interview = Interview::findFirst($examinee_coms[$i]);
-             if (!empty($interview->advantage) && !empty($interview->disadvantage) &&!empty($interview->remark)){
-                 $interview_com++;
-             } 
-        }
-        if ($examinee_all == 0) {
-            $examinee_percent = 0;
-        }else{
-		    $examinee_percent  = $examinee_com / $examinee_all;
-        }
-        if ($examinee_com == 0) {
-            $interview_percent = 0;
-        }else{
-		    $interview_percent = $interview_com / $examinee_com;
-        }
-		$detail = array(
-			'examinee_percent'  => $examinee_percent,
-			'interview_percent' => $interview_percent
-		);
-		return json_encode($detail,true);
-	}
+    }	
 
 	public function examineeAction(){
 		# code...
@@ -88,6 +50,26 @@ class PmController extends Base
 	public function resultAction(){
 		# code...
 	}
+
+    public function infoAction($examinee_id){
+        $this->view->setTemplateAfter('base2');
+        $this->leftRender('个人信息查看');
+        $examinee = Examinee::findFirst($examinee_id);
+        $this->view->setVar('name',$examinee->name);
+        $sex = ($examinee->sex == "1") ? "男" : "女";
+        $this->view->setVar('sex',$sex);
+        $this->view->setVar('education',$examinee->education);
+        $this->view->setVar('degree',$examinee->degree);
+        $this->view->setVar('birthday',$examinee->birthday);
+        $this->view->setVar('native',$examinee->native);
+        $this->view->setVar('politics',$examinee->politics);
+        $this->view->setVar('professional',$examinee->professional);
+        $this->view->setVar('employer',$examinee->employer);
+        $this->view->setVar('unit',$examinee->unit);
+        $this->view->setVar('duty',$examinee->duty);
+        $this->view->setVar('team',$examinee->team);
+        $this->view->setVar('other',$examinee->other);
+    }
 
     public function selectmoduleAction(){
         $this->view->setTemplateAfter('base2');
@@ -305,67 +287,12 @@ class PmController extends Base
         }
     }
 
-    public function infoAction($examinee_id){
-        $this->view->setTemplateAfter('base2');
-        $this->leftRender('个人信息查看');
-        $examinee = Examinee::findFirst($examinee_id);
-        $this->view->setVar('name',$examinee->name);
-        $sex = ($examinee->sex == "1") ? "男" : "女";
-        $this->view->setVar('sex',$sex);
-        $this->view->setVar('education',$examinee->education);
-        $this->view->setVar('degree',$examinee->degree);
-        $this->view->setVar('birthday',$examinee->birthday);
-        $this->view->setVar('native',$examinee->native);
-        $this->view->setVar('politics',$examinee->politics);
-        $this->view->setVar('professional',$examinee->professional);
-        $this->view->setVar('employer',$examinee->employer);
-        $this->view->setVar('unit',$examinee->unit);
-        $this->view->setVar('duty',$examinee->duty);
-        $this->view->setVar('team',$examinee->team);
-        $this->view->setVar('other',$examinee->other);
-    }
-
     //以excel形式，导出被试人员信息和测试结果
     public function checkAction($examinee_id){        
         $this->view->disable();
         $project_id = $this->session->get('Manager')->project_id;
         $examinee = Examinee::findFirst($examinee_id);
         CheckoutExcel::checkoutExcel11($examinee,$project_id);
-        // $work = json_decode($examinee->other)->work;
-        // echo "<pre>";
-        // print_r($work);
-        // $sumWork = count($work)+2;
-        // if($sumWork<5)
-        //     $sumWork = 5;
-        // for($i = 0;$i<=$sumWork;$i++){
-        //     $j = 1;
-        //     $Work[$i] = (array)$Work[$i];
-        //     foreach ((array)$work[$i] as $key => $value) {
-        //         echo $key."=>".$value."------";
-        //         $j++;
-        //     }
-        // }
-        // $education = (array)$education;
-        // echo "<pre>";
-        // print_r($education);
-        // print_r(gettype($education[0]));
-        // $sum = count($education);
-        // print_r($sum);
-        // // print_r($examinee->birthday);
-        
-        // for($i = 7;$i<=$sum+7;$i++){
-        //     $j = 1;
-        //     $k = $i -7;
-        //     $education[$k] = (array)$education[$k];
-        //     print_r(gettype($education[$k]));
-        //     foreach ($education[$k] as $key => $value) {
-        //         echo $key." ".$value."   ";
-        //         // $objActSheet->setCellValue("$letter[$j]$i","$value");
-        //         $j++;
-        //     }
-        // }
-        // echo "<pre>";
-        // print_r($aaa->education[0]->school);
     }
 
     public function writeprojectdetailAction(){
@@ -463,10 +390,10 @@ class PmController extends Base
     }
 
     /*
-    传入参数：模块name
-    动作：查询Module表,找出选定的指标
-    返回参数：指标name
-    */
+     *传入参数：模块name
+     *动作：查询Module表,找出选定的指标
+     *返回参数：指标name
+     */
     public function getIndex($module_name){
         $index_name = array();
         for ($i=0; $i < sizeof($module_name); $i++) { 
@@ -483,10 +410,10 @@ class PmController extends Base
     }
 
     /*
-    传入参数：指标name
-    动作：查询Index表,找出选定的因子
-    返回参数：因子name
-    */
+     *传入参数：指标name
+     *动作：查询Index表,找出选定的因子
+     *返回参数：因子name
+     */
     public function getFactor($index_name){
         $factor_names = array();
         for ($i=0; $i <sizeof($index_name) ; $i++) {
@@ -519,10 +446,10 @@ class PmController extends Base
     }
 
     /*
-    传入参数：因子name
-    动作：查询Factor表,找出选定的问卷名和题目序号
-    返回参数：json格式的问卷name和题目number
-    */
+     *传入参数：因子name
+     *动作：查询Factor表,找出选定的问卷名和题目序号
+     *返回参数：json格式的问卷name和题目number
+     */
     public function getNumber($factor_name){
         $questions_number = array();
         for ($i=0; $i <sizeof($factor_name) ; $i++) {         
@@ -717,7 +644,44 @@ class PmController extends Base
     }
 
     public function interviewinfoAction($manager_id){
+        $this->view->disable();
         $interview = InterviewInfo::getInterviewResult($manager_id);
-        print_r($interview);
+    }
+
+    public function getDetail($project_id){
+        $examinees = Examinee::find(array(
+            'project_id=?1',
+            'bind'=>array(1=>$project_id)));
+        $examinee_all = count($examinees);
+        $examinee_com = 0;
+        $examinee_coms = array();
+        foreach ($examinees as $examinee) {
+            if ($examinee->state  > 0) {
+                $examinee_com ++;
+                $examinee_coms[] = $examinee->id;
+            }
+        }
+        $interview_com = 0;
+        for ($i=0; $i < $examinee_com; $i++) { 
+             $interview = Interview::findFirst($examinee_coms[$i]);
+             if (!empty($interview->advantage) && !empty($interview->disadvantage) &&!empty($interview->remark)){
+                 $interview_com++;
+             } 
+        }
+        if ($examinee_all == 0) {
+            $examinee_percent = 0;
+        }else{
+            $examinee_percent  = $examinee_com / $examinee_all;
+        }
+        if ($examinee_com == 0) {
+            $interview_percent = 0;
+        }else{
+            $interview_percent = $interview_com / $examinee_com;
+        }
+        $detail = array(
+            'examinee_percent'  => $examinee_percent,
+            'interview_percent' => $interview_percent
+        );
+        return json_encode($detail,true);
     }
 }
