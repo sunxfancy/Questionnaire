@@ -69,16 +69,7 @@
                 },
                 {name:'number',index:'number', sorttype:"int",width:100, editable: false,align:'center'},
                 {name:'name',index:'name', sortable:true, width:110,sorttype:"string", editable:true,align:'center'},
-                {name:'sex',index:'sex', sortable:true, width:100,sorttype:"string",  editable:true, align:'center',
-                    formatter:function(cellvalue){                      
-                        if(cellvalue == 1){
-                            temp = "男" ;
-                        }else if(cellvalue == 0){ 
-                            temp = "女";
-                        }
-                        return temp;
-                    }
-                },
+                {name:'sex',index:'sex', sortable:true, width:100,sorttype:"string",  editable:true, align:'center'},
                 {name:'password',index:'password', sortable:false,width:80, editable: true,align:'center'},
                 {name:'last_login',index:'last_login', sortable:true,width:160, editable: false,unformat:pickDate,align:'center'},
                 {name:'state',index:'state',width:135, sortable:false,editable:false,align:'center',

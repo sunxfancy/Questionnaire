@@ -42,19 +42,19 @@
 </div>
 
 <script type="text/javascript">
-    $("#degree_of_complete").click(function(){
-        $('.modal-body').html('');
-        if ($("#degree_of_complete").val == 0) {
-            $('.modal-body').html(
-                "<p class=\"bg-danger\" style='padding:20px;'>还未进行过分配！</p>"
-            );
-        }else{
-            $('.modal-body').html(
-                "<p class=\"bg-danger\" style='padding:20px;'>还未进行过分配！</p>"
-            );
-        }
-        $('#myModal').modal({keyboard:true,});
-    });
+    // $("#degree_of_complete").click(function(){
+    //     $('.modal-body').html('');
+    //     if ($("#degree_of_complete").val == 0) {
+    //         $('.modal-body').html(
+    //             "<p class=\"bg-danger\" style='padding:20px;'>还未进行过分配！</p>"
+    //         );
+    //     }else{
+    //         $('.modal-body').html(
+    //             "<p class=\"bg-danger\" style='padding:20px;'></p>"
+    //         );
+    //     }
+    //     $('#myModal').modal({keyboard:true,});
+    // });
 
     jQuery(function($) {
         var grid_selector = "#grid-table";
@@ -81,7 +81,7 @@
             shrinkToFit:true,
             forceFit:true,
             autowidth: true,
-            colNames:[' ', '专家编号','姓名', '密码', '最后登录时间', '面询完成情况', '配置面巡人员'],
+            colNames:[' ', '专家编号','姓名', '密码', '最后登录时间', '面询完成情况', '查看面巡情况','配置面巡人员'],
             colModel:[
                 {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
                     formatter:'actions', 
@@ -93,7 +93,8 @@
                 {name:'name',index:'name', sortable:true, width:80,sorttype:"string", editable:true,align:'center'},
                 {name:'password',index:'password',width:80, sortable:false, sorttype:"string", editable:true,align:'center'},
                 {name:'last_login',index:'last_login',width:100, sortable:true, sorttype:"string", editable:false,align:'center'},
-                {name:'degree_of_complete',index:'degree_of_complete', sortable:false,width:90, editable: false,align:'center',},
+                {name:'degree_of_complete',index:'degree_of_complete', sortable:false,width:90, editable: false,align:'center'},
+                {name:'check',index:'check', sortable:false,width:90, editable: false,align:'center'},
                 {name:'user_divide',index:'user_divide', width:90, sortable:false, resize:false,align:'center',
                     formatter:function(cellvalue,options,rowObject){
                         var temp = "<a href='/pm/userdivide/"+rowObject.id+"' >配置</a>";

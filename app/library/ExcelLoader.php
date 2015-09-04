@@ -39,6 +39,7 @@ class ExcelLoader
         $examinee = Examinee::find(array(
             'project_id = :project_id:',
             'bind' => array('project_id' => $project_id)));
+        $project = new Project();
         if(count($examinee) == 0){ 
                 $last_number = $project_id.'0001';
         }else{
