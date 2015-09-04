@@ -322,5 +322,12 @@ $kit.$(function() {
                 });     
 
 })
+//jqgrid控件
+
+
+
+
+
+
 
 </script> 
