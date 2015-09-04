@@ -27,7 +27,7 @@ class PmController extends Base
         $endtime = date('Y-m-d',strtotime($project->endtime));
         $now = date("Y-m-d");
         $width = 100*round(strtotime($now)-strtotime($begintime))/round(strtotime($endtime)-strtotime($begintime)).'%';
-        $detail = $this->getDetail($project->id);
+        $detail = $this->getDetail($project_id);
 
         $this->view->setVar('begintime',$begintime);
         $this->view->setVar('endtime',$endtime);
@@ -36,8 +36,7 @@ class PmController extends Base
         $this->view->setVar('detail',$detail);
     }
 	
-	public function getDetail(){
-		$project_id = $this->session->get('Manager')->project_id;
+	public function getDetail($project_id){
 		$examinees = Examinee::find(array(
 			'project_id=?1',
 			'bind'=>array(1=>$project_id)));
@@ -717,4 +716,8 @@ class PmController extends Base
         $this->view->disable();
     }
 
+    public function interviewinfoAction($manager_id){
+        $interview = InterviewInfo::getInterviewResult($manager_id);
+        print_r($interview);
+    }
 }

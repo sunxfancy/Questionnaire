@@ -26,19 +26,17 @@
     </div>
 </div>
 
+<!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">面询完成情况</h4>
-            </div>
-            <div class="modal-body" style="padding:40px;">
-                
-            </div>
-        <div class="modal-footer">
-            <button id="close" class="btn btn-default" data-dismiss="modal">关闭</button>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">提示信息</h4>
         </div>
+        <div class="modal-body"></div>
+        <div class="modal-footer"></div>
     </div>
+  </div>
 </div>
 
 <script type="text/javascript">
@@ -81,7 +79,7 @@
             shrinkToFit:true,
             forceFit:true,
             autowidth: true,
-            colNames:[' ', '专家编号','姓名', '密码', '最后登录时间', '面询完成情况', '查看面巡情况','配置面巡人员'],
+            colNames:[' ', '专家编号','姓名', '密码', '最后登录时间', '面询完成情况','配置面巡人员'],
             colModel:[
                 {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
                     formatter:'actions', 
@@ -93,10 +91,9 @@
                 {name:'name',index:'name', sortable:true, width:80,sorttype:"string", editable:true,align:'center'},
                 {name:'password',index:'password',width:80, sortable:false, sorttype:"string", editable:true,align:'center'},
                 {name:'last_login',index:'last_login',width:100, sortable:true, sorttype:"string", editable:false,align:'center'},
-                {name:'degree_of_complete',index:'degree_of_complete', sortable:false,width:90, editable: false,align:'center'},
-                {name:'check',index:'check', sortable:false,width:90, editable: false,align:'center',
+                {name:'degree_of_complete',index:'degree_of_complete', sortable:false,width:90, editable: false,align:'center',
                     formatter:function(cellvalue,options,rowObject){
-                        var temp = "<a href='/pm/interviewinfo/"+rowObject.id+"' >查看</a>";
+                        var temp = cellvalue+"&nbsp;&nbsp;"+"<a href='/pm/interviewinfo/"+rowObject.id+"' >查看</a>";
                         return temp;
                     }},
                 {name:'user_divide',index:'user_divide', width:90, sortable:false, resize:false,align:'center',
