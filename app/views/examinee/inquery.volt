@@ -408,7 +408,7 @@ function Leo_check(){
                      );
                  $('.modal-footer').html('');
                  $('.modal-footer').html(
-                    "<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">重新提交</button>"
+                    "<button type=\"button\" class=\"btn btn-primary\" click='Lea_check();'>重新提交</button>"
                     +"&nbsp;&nbsp;<a href='/'><button type=\"button\" class=\"btn btn-primary\">退出</button></a>"
                     );
                  

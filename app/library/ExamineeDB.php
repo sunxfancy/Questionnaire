@@ -9,7 +9,7 @@ class ExamineeDB {
 			$transaction = $manager->get();
 			$inquery = new InqueryAns();
 			$inquery->setTransaction($transaction);
-			$inquery->exmainee_id = $examinee_id;
+			$inquery->examinee_id = $examinee_id;
 			$inquery->project_id  = $project_id;
 			$inquery->option      = $inquery_ans;
 			if ($inquery->save() == false){
