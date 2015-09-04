@@ -4,7 +4,7 @@
 <div class="Leo_question_v2" id="Leo_question_v2">
     <!--这一部分是暂停时的下拉框-->
     <div id="Leo_hiden" class="Leo_hiden" style="top:-500px;" >
-        <table style="height:100%;width:100%;">
+        <table style="height:100%;width:100%;overflow:auto;">
             <tr><td id="Leo_hiden_td1" style="font-size:24px;vertical-align:bottom;"></td></tr>
             <tr><td id="Leo_hiden_td2" style="font-size:18px; padding:40px;"></td></tr>
             <tr><td id="Leo_hiden_td3" style="font-size:18px;"></td></tr>
