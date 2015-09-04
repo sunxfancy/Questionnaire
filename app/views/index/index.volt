@@ -23,9 +23,7 @@
         <div class="modal-header">
             <h4 class="modal-title" id="myModalLabel">提示信息</h4>
         </div>
-        <div class="modal-body">
-            
-        </div>
+        <div class="modal-body"></div>
         <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-dismiss="modal">关闭提示</button>
         </div>
@@ -40,7 +38,10 @@ $(document).ready(function() {
     $("body").keypress(function(event) {
       /* Act on the event */
       if(event.which==13){
-            if( $("#username").val() != '' && $("#password").val() != ''){
+      	    if( $('.modal-body').html() != '' ){
+      	    	$('.modal-body').html(''); 
+      	    	$('#myModal').modal('hide')
+      	    }else if ( $("#username").val() != '' && $("#password").val() != ''){
                 spinner = new Spinner().spin(target);
                 checkup_login(spinner);
             }else{

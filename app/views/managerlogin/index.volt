@@ -40,7 +40,10 @@ $(document).ready(function() {
     $("body").keypress(function(event) {
       /* Act on the event */
       if(event.which==13){
-            if( $("#username").val() != '' && $("#password").val() != ''){
+            if( $('.modal-body').html() != '' ){
+                $('.modal-body').html(''); 
+                $('#myModal').modal('hide')
+            }else if ( $("#username").val() != '' && $("#password").val() != ''){
                 spinner = new Spinner().spin(target);
                 checkup_login(spinner);
             }else{
