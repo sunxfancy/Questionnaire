@@ -26,7 +26,16 @@ class InterviewInfo{
         	$interview_not['number'][] = $number;
             $interview_not['name'][] = $name;
         }
-        $interview_not = array_diff($interview_sum,$interview_com);
+        foreach ($interview_sum as $key1 => $value1) {
+            foreach ($interview_com as $key2 => $value2) {
+                echo $key1;
+                echo $key2;
+                exit();
+                if ($key1 == $key2) {
+                    
+                }
+            }
+        }
         $interview = array(
         	'interview_com' => $interview_com,
         	'interview_not' => $interview_not);
