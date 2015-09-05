@@ -2,7 +2,9 @@
 
 class ExamineeController extends Base
 {
-
+	private static $paper_name_array = array(
+		'16PF','EPPS','SCL','EPQA','CPI','SPM'
+	);
 	public function initialize(){
         $this->view->setTemplateAfter('base3');
     }
@@ -94,70 +96,49 @@ class ExamineeController extends Base
     }
 
 	public function doexamAction(){
-		$this->leftRender("答题");
+		$exminee = $this->session->get('Examinee');
+		// $this->session->remove('Examinee');
+		if(empty($exminee)){
+			$this->response->redirect('/error/index/examinee');
+			$this->view->disable();
+		}else{
+			$this->leftRender("答题");
+		}
 	}
 
     public function getpaperAction(){
+        $paper_name = $this->request->getPost("paper_name","string");
         $examinee = $this->session->get('Examinee');
         $project_id = $examinee->project_id;
-        $paper_name = $this->request->getPost("paper_name","string");
-        $paper = Paper::findFirst(array(
-            'name=?1',
-            'bind'=>array(1=>$paper_name)));
-        $paper_id = $paper->id;
-        $questions = $this->getQuestions($project_id,$paper_name);
-        $data = $this->getExamination($questions,$paper_id);
-
-        $this->response->setHeader("Content-Type", "text/json; charset=utf-8");
-        if (empty($data)) {
-            $no_ques = "none";
-            $this->dataReturn(array("no_ques"=>$no_ques));
+        if(!in_array($paper_name, self::$paper_name_array)){
+        	$this->dataReturn(array('error'=>'不存在试卷-'.$paper_name));
+        	return ;
         }
-        else{
-            $this->dataReturn(array("question"=>$data,"description"=>Paper::findFirst($paper_id)->description,"order"=>$questions));
+        $paper_info = MemoryCache::getPaperDetail($paper_name);
+        $paper_id = $paper_info->id;
+        $project_detail_json = MemoryCache::getProjectDetail($project_id);
+        $project_detail_array = json_decode($project_detail_json->exam_json, true);
+        if(!isset($project_detail_array[$paper_name])){
+        	$this->dataReturn(array("no_ques"=>'none'));
+        	return;
         }
-    }
-
-    public function getQuestions($project_id,$paper_name){
-        $project_detail = ProjectDetail::findFirst(array(
-                "project_id=?1",
-                "bind"=>array(1=>$project_id)
-                ));
-        $question = json_decode($project_detail->exam_json,true);
-        $questions = array();
-        foreach ($question as $key => $value) {
-            if ($key == $paper_name) {
-                $questions = $value;
-            }
-            else
-                continue;
-        }
-        return $questions;
-    }
-
-    public function getExamination($questions,$paper_id){
-        $data = array();
-        for ($i=0;$i<sizeof($questions);$i++) {
-            $questionb = Question::findFirst(array(
-                'paper_id=?0 and number=?1',
-                'bind'=>array(0=>$paper_id,1=>$questions[$i])));
-            $title = '';
-            if (isset($questionb->topic) && !empty($questionb->topic)) {
-                $title = $questionb->topic;
-            }
-            $data[$i]=array(
-                'index'=>$i,
-                'title'=>$title,
-                'options'=>$questionb->options);
-        }
-        return $data;
+        $question_number_array = $project_detail_array[$paper_name];
+       	$rtn_data = array();
+       	foreach($question_number_array as $value){
+       		$question_data = MemoryCache::getQuestionDetail($value, $paper_id);
+       		$rtn_data[] = array(
+       				'index'=>$question_data->number,
+       				'title'=>$question_data->topic,
+       				'options'=>$question_data->options
+       		);
+       	}
+       	$this->dataReturn(array("question"=>$rtn_data,"description"=>$paper_info->description,"order"=> $question_number_array));
+        return ;
     }
     public function getExamAnswerAction(){
     	$id = $this->session->get('Examinee')->id;
     	$total_time=$this->request->getPost("total_time","int");
     	if($total_time){
-    		$time_start  =  Test4Controller::microtime_float ();
-    		$memory_start = memory_get_usage( true );
     		try{
     			QuestionIC::finishedExam($id, intval($total_time));
     			BasicScore::handlePapers($id);
@@ -167,31 +148,21 @@ class ExamineeController extends Base
     			IndexScore::handleIndexs($id);
     			IndexScore::finishedIndex($id);
     		}catch(Exception $e){
-    			$this->dataReturn(array("total_time"=>$e->getMessage()));
+    			$this->dataReturn(array('error'=>$e->getMessage()));
     			return ;
     		}
-    		$memory_end = memory_get_usage( true );
-    		$memory_consuming = ($memory_end - $memory_start)/1024/1024;
-    		$time_end = Test4Controller::microtime_float();
-    		$time_consuming = $time_end - $time_start;
-    		$this->dataReturn(array("total_time"=>$time_consuming .'-'. $memory_consuming));
+    		$this->dataReturn(array("flag"=>true));
     		return;
     	}
     	$option = $this->request->getPost("answer", "string");
     	$paper_name = $this->request->getPost("paper_name", "string");
     	$number = $this->request->getPost("order");
-    	$time_start  =  Test4Controller::microtime_float ();
-    	$memory_start = memory_get_usage( true );
     	try{
     		QuestionIC::insertQuestionAns($id, $paper_name, $option, $number);
     	}catch(Exception $e){
-    		$this->dataReturn(array("flag"=>false));
+    		$this->dataReturn(array("error"=>"提交失败:".$e->getMessage()));
     		return;
     	}
-    	$memory_end = memory_get_usage( true );
-    	$memory_consuming = ($memory_end - $memory_start)/1024/1024;
-    	$time_end = Test4Controller::microtime_float();
-    	$time_consuming = $time_end - $time_start;
     	$this->dataReturn(array("flag"=>true));
     	return;
     }
@@ -260,6 +231,12 @@ class ExamineeController extends Base
      	$info_array['team']         = $this->request->getPost("team", "string");
     	try{
     		ExamineeDB::insertExamineeInfo($examinee_info, $info_array);
+    		#如果用户更改name， 那么需要更新session数据
+    		if($info_array['name'] != $exminee->name){
+    			$examinee = Examinee::findfirst($exminee->id);
+    			$this->session->remove('Examinee');
+    			$this->session->set('Examinee', $examinee);
+    		}
     	}catch(Exception $e){
     		$this->dataReturn(array('error'=>$e->getMessage()));
     		return;
@@ -269,8 +246,6 @@ class ExamineeController extends Base
     }
 
     public function listeduAction(){
-        $this->response->setHeader("Content-Type", "text/json; charset=utf-8");
-        $this->view->disable();
         $id = $this->session->get('Examinee')->id;
         $examinee = Examinee::findFirst($id);
         $json = json_decode($examinee->other,true);
@@ -281,6 +256,7 @@ class ExamineeController extends Base
         }
         $array['rows'] = $json['education'];
         echo json_encode($array,JSON_UNESCAPED_UNICODE);
+        $this->view->disable();
     }
 
     public function updateeduAction(){
@@ -401,6 +377,13 @@ class ExamineeController extends Base
             $data = json_encode($data);
             echo $data;
         }
+    }
+
+    public function getPaperId($paper_name){
+        $paper = Paper::findFirst(array(
+            'name=?1',
+            'bind'=>array(1=>$paper_name)));
+        return $paper->id;
     }
 
     public function dataReturn($ans){
