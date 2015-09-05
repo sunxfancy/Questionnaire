@@ -98,10 +98,13 @@ class ExamineeController extends Base
 	}
 
     public function getpaperAction(){
-        $paper_name = $this->request->getPost("paper_name","string");
         $examinee = $this->session->get('Examinee');
         $project_id = $examinee->project_id;
-        $paper_id = $this->getPaperId($paper_name);
+        $paper_name = $this->request->getPost("paper_name","string");
+        $paper = Paper::findFirst(array(
+            'name=?1',
+            'bind'=>array(1=>$paper_name)));
+        $paper_id = $paper->id;
         $questions = $this->getQuestions($project_id,$paper_name);
         $data = $this->getExamination($questions,$paper_id);
 
@@ -398,13 +401,6 @@ class ExamineeController extends Base
             $data = json_encode($data);
             echo $data;
         }
-    }
-
-    public function getPaperId($paper_name){
-        $paper = Paper::findFirst(array(
-            'name=?1',
-            'bind'=>array(1=>$paper_name)));
-        return $paper->id;
     }
 
     public function dataReturn($ans){

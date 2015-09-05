@@ -26,34 +26,7 @@
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">面巡完成信息</h4>
-        </div>
-        <div class="modal-body"></div>
-        <div class="modal-footer"></div>
-    </div>
-  </div>
-</div>
-
 <script type="text/javascript">
-    $('#Interview').click(function(){
-        $('.modal-body').html('');
-        if ($("#degree_of_complete").val == 0) {
-            $('.modal-body').html(
-                "<p class=\"bg-danger\" style='padding:20px;'>还未进行过分配！</p>"
-            );
-        }else{
-            $('.modal-body').html(
-                "<p class=\"bg-danger\" style='padding:20px;'></p>"
-            );
-        }
-        $('#myModal').modal({keyboard:true,});
-    });
-
     jQuery(function($) {
         var grid_selector = "#grid-table";
         var pager_selector = "#grid-pager";
@@ -93,12 +66,12 @@
                 {name:'last_login',index:'last_login',width:100, sortable:true, sorttype:"string", editable:false,align:'center'},
                 {name:'degree_of_complete',index:'degree_of_complete', sortable:false,width:90, editable: false,align:'center',
                     formatter:function(cellvalue,options,rowObject){
-                        var temp = cellvalue+"&nbsp;&nbsp;"+"<button id='Interview'>查看</button>";
+                        var temp = cellvalue+"&nbsp;&nbsp;"+"<a href='/pm/interviewinfo/"+rowObject.id+"'>查看</a>";
                         return temp;
                     }},
                 {name:'user_divide',index:'user_divide', width:90, sortable:false, resize:false,align:'center',
                     formatter:function(cellvalue,options,rowObject){
-                        var temp = "<a href='/pm/userdivide/"+rowObject.id+"' >配置</a>";
+                        var temp = "<a href='/pm/userdivide/"+rowObject.id+"'>配置</a>";
                         return temp;
                     }}
             ], 

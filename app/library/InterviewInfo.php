@@ -11,7 +11,8 @@ class InterviewInfo{
         	$examinee = Examinee::findFirst($interviews->examinee_id);
         	$number = $examinee->number;
         	$name = $examinee->name;
-        	$interview_sum[$number] = $name;
+        	$interview_sum['number'][] = $number;
+            $interview_sum['name'][] = $name;
         }
         $term = "remark<>'' AND advantage<>'' AND disadvantage<>'' AND manager_id=:manager_id:";
         $interview = Interview::find(array(
@@ -22,7 +23,8 @@ class InterviewInfo{
         	$examinee = Examinee::findFirst($interviews->examinee_id);
         	$number = $examinee->number;
         	$name = $examinee->name;
-        	$interview_com[$number] = $name;
+        	$interview_not['number'][] = $number;
+            $interview_not['name'][] = $name;
         }
         $interview_not = array_diff($interview_sum,$interview_com);
         $interview = array(

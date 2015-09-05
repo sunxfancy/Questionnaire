@@ -98,6 +98,17 @@ class PmController extends Base
         }
     }
 
+    public function interviewinfoAction($manager_id){
+        $this->view->setTemplateAfter('base2');
+        $name = Manager::findFirst($manager_id)->name;
+        $this->leftRender($name.' 面 询 完 成 情 况');
+        $this->view->setVar('manager_id',$manager_id);
+        $interview = InterviewInfo::getInterviewResult($manager_id);
+        // $this->dataBack(array('data'=>$interview));
+        $interview = json_encode($interview,true);
+        $this->view->setVar('data',$interview);
+    }
+
     public function uploadexamineeAction(){
         $this->upload_base('LoadExaminee');
     }
@@ -569,8 +580,8 @@ class PmController extends Base
 
     function dataBack($ans){
         $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
-        echo json_encode($ans);
         $this->view->disable();
+        echo json_encode($ans);
     }
 
     /*
@@ -641,11 +652,6 @@ class PmController extends Base
         }
         echo json_encode($ans);
         $this->view->disable();
-    }
-
-    public function interviewinfoAction($manager_id){
-        $this->view->disable();
-        $interview = InterviewInfo::getInterviewResult($manager_id);
     }
 
     public function getDetail($project_id){
