@@ -69,9 +69,7 @@
                 <tr>
                     <td style=" width:120px;line-height:33px;">&nbsp;出生年月</td>
                     <td style="width:180px;">
-                        <div class="input-append date form_datetime">
                             <input id="birthday" type="text" style="width:178px;height:31px;color:black;" placeholder='格式:1970-8-18'>
-                        </div>
                     </td>
                     <td style=" width:120px;line-height:33px;">&nbsp;籍贯</td>
                     <td style="width:180px;">
@@ -149,15 +147,21 @@
                 </tr>
                 <tr>
                     <td style=" width:120px;line-height:33px;">&nbsp;班子/系统成员</td>
-                    <td colspan="3" style="font-size: 16px;"><input id="team" type="text"  style="width:478px;font-size:16px;color:black;"></td>
+                    <td colspan="3" style="font-size: 16px;">
+                    	 <select id="team" type="text"  style="width:178px;font-size:16px;color:black;line-height:28px;font-family:'微软雅黑'">
+                            <option value="">无</option>
+                            <option value="班子">班子</option>
+                            <option value="系统">系统</option>
+                        </select>
+                    </td>
                 </tr>
             </table>
 
             <div style="width:600px;margin:0 auto;overflow:hidden;padding:10px 0;">
-                <table id="grid-table1"></table>
+                <table id="grid-table_1"></table>
             </div>
             <div style="width:600px;margin:0 auto;overflow:hidden;">
-                <table id="grid-table2"></table>
+                <table id="grid-table_2"></table>
             </div>
             
             <div style="width:600px;margin:0 auto;padding:10px;">
@@ -220,10 +224,10 @@ function getInfo(url){
                  $('.Leo_question').css('width','860px');
                  //加载成功后获取jqgrid数据
                  renderring(data.question);    
+                 start_gqgrid();
             }
         });
 }
-
 function renderring(data){
     $('#name').val(data.name);
     $('#sex').val(data.sex);
@@ -238,9 +242,8 @@ function renderring(data){
     $("#duty").val(data.duty);
     $("#team").val(data.team);
 }
-
-
 $("#submit").click(function(){
+	 spinner = new Spinner().spin(target);
     var base_info ={
         "name"          :$("#name").val(),
         "sex"           :$("#sex").val(),
@@ -256,7 +259,9 @@ $("#submit").click(function(){
         "team"          :$("#team").val()
     }
     $.post('/examinee/submit', base_info, function(data){
+     
      if(data.error){
+     	  if(spinner){ spinner.stop(); }
      	         $('.Leo_question').css('width','843px')
                  $('.modal-body').html('');
                  $('.modal-body').html(
@@ -272,14 +277,16 @@ $("#submit").click(function(){
                     backdrop:'static'
                  })
      }else{
+     	  if(spinner){ spinner.stop(); }
      	        $('.Leo_question').css('width','843px')
                  $('.modal-body').html('');
                  $('.modal-body').html(
-                     "<p class=\"bg-success\" style='padding:20px;'>提交成功！点击确定跳转到答题页面！</p>"
+                     "<p class=\"bg-success\" style='padding:20px;'>提交成功！单击查看确认个人信息，或者点击确定跳转到答题页面！</p>"
                      );
                  $('.modal-footer').html('');
                  $('.modal-footer').html(
-                    "<a href='/examinee/doexam'><button type=\"button\" class=\"btn btn-success\">确认</button></a>"
+                 	"<a href='/examinee/editinfo'><button type=\"button\" class=\"btn btn-primary\">查看</button></a>"+
+                    "&nbsp;&nbsp;<a href='/examinee/doexam'><button type=\"button\" class=\"btn btn-success\">确认</button></a>"
                    
                  );
                  $('#myModal').modal({
@@ -291,21 +298,10 @@ $("#submit").click(function(){
 });
 // 时间控件
 $kit.$(function() {
-                //默认日历
-                var picker = new $kit.ui.DatePicker();
-                picker.init();
-                $kit.el('#birthday').appendChild(picker.picker);
-                picker.show();
-                picker.ev({
-                    ev : 'change',
-                    fn : function(e) {
-                        // alert(picker.getValue());
-                    }
-                })
                 //输入框下拉
                 $kit.ev({
                     el : '#birthday',
-                    ev : 'focus',
+                    ev : 'click',
                     fn : function(e) {
                         var d, ipt = e.target;
                         d = e.target[$kit.ui.DatePicker.defaultConfig.kitWidgetName];
@@ -315,19 +311,179 @@ $kit.$(function() {
                             d = new $kit.ui.DatePicker({
                                 date : ipt.value
                             }).init();
-                            d.adhere($kit.el('#birthday'));
+                            d.adhere($kit.el('#birthday'))
                             d.show();
                         }
                     }
-                });     
-
+                });  
 })
+//附带于时间控件，在点击其他地方时关闭时间显示
+$('input').not('#birthday').click(function(){
+	$('.datepicker').hide();
+});
+$('select').click(function(){
+	$('.datepicker').hide();
+})
+
 //jqgrid控件
 
+function start_gqgrid(){
+        var grid_selector = "#grid-table_1";
+        //resize to fit page size
+        $(window).on('resize.jqGrid', function () {
+            $(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
+        });
+        //resize on sidebar collapse/expand
+        var parent_column = $(grid_selector).closest('[class*="col-"]');
+        $(document).on('settings.ace.jqGrid' , function(ev, event_name, collapsed) {
+            if( event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed' ) {
+                $(grid_selector).jqGrid( 'setGridWidth', parent_column.width() );
+            }
+        })
+       jQuery(grid_selector).jqGrid({
+            subGrid : false,
+            url: "/examinee/listedu",
+            datatype: "json",
+            height: 'auto',
+            shrinkToFit:true,
+            forceFit:true,
+            autowidth: true,
+            colNames:[' ','毕业院校','专业','所获学位','起止时间'],
+            colModel:[
+                {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
+                    formatter:'actions', 
+                    formatoptions:{ 
+                        keys:true,                       
+                        delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
+                    }
+                },               
+                {name:'school', index:'school', width:140, editable: true, sortable:false, align:'center'},
+                {name:'profession', index:'profession', sortable:false, width:140, editable:true, align:'center'},
+                {name:'degree', index:'degree', width:80, sortable:false, editable:true, align:'center'},
+                {name:'date', index:'date', sortable:true, width:110, editable: true,edittype:'text',align:'center'}
+                ],
+            viewrecords : true, 
+            altRows: true,
+            toppager: false,
+            multiselect: true,
+            multiboxonly: true,
+            editurl: "/examinee/updateedu",
+            caption: "教育经历"
 
+        });
+        
+       var grid_selector = "#grid-table_2";
+        
+        //resize to fit page size
+        $(window).on('resize.jqGrid', function () {
+            $(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
+        });
+        //resize on sidebar collapse/expand
+        var parent_column = $(grid_selector).closest('[class*="col-"]');
+        $(document).on('settings.ace.jqGrid' , function(ev, event_name, collapsed) {
+            if( event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed' ) {
+                $(grid_selector).jqGrid( 'setGridWidth', parent_column.width() );
+            }
+        })
 
+        jQuery(grid_selector).jqGrid({
+            subGrid : false,
+            url: "/examinee/listwork",
+            datatype: "json",
+            height: 'auto',
+            shrinkToFit:true,
+            forceFit:true,
+            autowidth: true,
+            colNames:[' ','就职单位','部门','岗位/职务','起止时间'],
+            colModel:[
+                {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
+                    formatter:'actions', 
+                    formatoptions:{ 
+                        keys:true,
+                        delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
+                    }
+                },
+                {name:'employer', index:'employer', width:190, editable:true, sortable:false, align:'center'},
+                {name:'unit',index:'unit', sortable:false, width:80, editable:true,align:'center'},
+                {name:'duty', index:'duty', width:80, sortable:false, editable:true, align:'center'},
+                {name:'date',index:'date', sortable:true,width:140, editable: true,edittype:'text',align:'center'}
+                ], 
+            viewrecords : true, 
+            altRows: true,
+            toppager: false,
+            multiselect: true,
+            loadcomlplete: function(){
+            	alert('hhh');
+            },
+            //multikey: "ctrlKey",
+            multiboxonly: true,
+            editurl: "/examinee/updatework",//nothing is saved
+            caption: "工作经历",
+    
+        });
+    }
 
+function beforeDeleteCallback(e) {
+            var form = $(e[0]);
+            if(form.data('styled')) return false;
+            form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+            style_delete_form(form);
+            form.data('styled', true);
+        }
+function style_delete_form(form) {
+            var buttons = form.next().find('.EditButton .fm-button');
+            buttons.addClass('btn btn-sm btn-white btn-round').find('[class*="-icon"]').hide();//ui-icon, s-icon
+            buttons.eq(0).addClass('btn-danger').prepend('<i class="ace-icon fa fa-trash-o"></i>');
+            buttons.eq(1).addClass('btn-default').prepend('<i class="ace-icon fa fa-times"></i>')
+        }
+function beforeEditCallback(e) {
+            var form = $(e[0]);
+            form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+            style_edit_form(form);
+            alert('here');
+        }
+function styleCheckbox(table) {
 
+        }
+function updateActionIcons(table) {
 
-
+        }
+function updatePagerIcons(table) {
+            var replacement = 
+            {
+                'ui-icon-seek-first' : 'ace-icon fa fa-angle-double-left bigger-140',
+                'ui-icon-seek-prev' : 'ace-icon fa fa-angle-left bigger-140',
+                'ui-icon-seek-next' : 'ace-icon fa fa-angle-right bigger-140',
+                'ui-icon-seek-end' : 'ace-icon fa fa-angle-double-right bigger-140'
+            };
+            $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
+                var icon = $(this);
+                var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
+                
+                if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
+            })
+        }
+function enableTooltips(table) {
+            $('.navtable .ui-pg-button').tooltip({container:'body'});
+            $(table).find('.ui-pg-div').tooltip({container:'body'});
+        }    
+function style_edit_form(form) {
+            //enable datepicker on "sdate" field and switches for "stock" field
+            form.find('input[name=sdate]').datepicker({format:'yyyy-mm-dd' , autoclose:true})
+                .end().find('input[name=stock]')
+                    .addClass('ace ace-switch ace-switch-5').after('<span class="lbl"></span>');
+                       //don't wrap inside a label element, the checkbox value won't be submitted (POST'ed)
+                      //.addClass('ace ace-switch ace-switch-5').wrap('<label class="inline" />').after('<span class="lbl"></span>');
+    
+            //update buttons classes
+            var buttons = form.next().find('.EditButton .fm-button');
+            buttons.addClass('btn btn-sm').find('[class*="-icon"]').hide();//ui-icon, s-icon
+            buttons.eq(0).addClass('btn-primary').prepend('<i class="ace-icon fa fa-check"></i>');
+            buttons.eq(1).prepend('<i class="ace-icon fa fa-times"></i>')
+            
+            buttons = form.next().find('.navButton a');
+            buttons.find('.ui-icon').hide();
+            buttons.eq(0).append('<i class="ace-icon fa fa-chevron-left"></i>');
+            buttons.eq(1).append('<i class="ace-icon fa fa-chevron-right"></i>');       
+        }
 </script> 

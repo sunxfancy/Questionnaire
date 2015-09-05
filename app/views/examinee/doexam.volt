@@ -67,8 +67,30 @@
         <table style="width:92%;text-align:center;vertical-align:middle;table-layout:fixed;margin:0 auto;" id="Leo_question_table" cellspacing="0"></table>
     </div>
 </div>
-    
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">提示信息</h4>
+        </div>
+        <div class="modal-body"></div>
+        <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>
+   
 <script type="text/javascript">
+    var spinner = null;
+    var target = document.getElementById('Leo_question_v2');
+$('#myModal').on('hidden.bs.modal', function (e) {
+        $('.Leo_question_v2').css('width','600px')
+});
+$('#myModal').on('hide.bs.modal', function (e) {
+        $('.Leo_question_v2').css('width','600px')
+});
+
  /*定义重要的全局变量*/
     var Leo_index_now=0;
     var done_index=0;
@@ -82,6 +104,10 @@
     var total_time=0;//全局时间
 
     $(function(){
+        
+        Leo_initPaperId(); 
+        getpaper(paper_id_now);
+        Leo_timer_start();
         $("#Leo_All").click(function(){
             var ans=new Array();
             for(var i=0;i<questions.length;i++){
@@ -90,10 +116,6 @@
             $.cookie("exam_ans"+{{number}},ans.join("|"),{experies:7});
             initCookie(questions.length,"exam_ans"+{{number}});
         });
-       
-        Leo_initPaperId(); 
-        getpaper(paper_id_now);
-        Leo_timer_start();
         $('#do_announce').click(function(){
             if($("#announce_panel").css('display')=='none'){
                 $('#announce_panel').slideDown('fast', function() {});
@@ -249,9 +271,22 @@
                 $("#Leo_checkup").unbind("click");
                 $("#Leo_checkup").click(function(){
                     changepage(questions.length-1,true);
-                    if(confirm("您确定要提交吗?")){
-                       Leo_check();
-                    }
+                     if(spinner){ spinner.stop(); }
+                     $('.Leo_question_v2').css('width','573px')
+                     $('.modal-body').html('');
+                     $('.modal-body').html(
+                        "<p class=\"bg-danger\" style='padding:20px;'>您确认要提交吗?</p>"
+                     );
+                    $('.modal-footer').html('');
+                     $('.modal-footer').html(
+                        "<button type=\"button\" class=\"btn btn-primary\"  data-dismiss=\"modal\">返回修改</button></a>"+
+                        "&nbsp;&nbsp;<button type=\"button\" class=\"btn btn-primary\" onclick=\"Leo_check();\">确定</button></a>"
+                    );
+                    $('#myModal').modal({
+                        keyboard:true,
+                        backdrop:'static'
+                    })
+                    //if(confirm("您确定要提交吗?")){                   }
                 });
             } 
             changepage(Leo_index_now+1,true);
@@ -337,28 +372,74 @@
             $("#Leo_checkup").unbind("click");
             $("#Leo_checkup").click(function(){
                 changepage(questions.length-1,true);
-                if(confirm("您确定要提交吗?")){
-                    Leo_check();
-                }
+                if(spinner){ spinner.stop(); }
+                     $('.Leo_question_v2').css('width','573px')
+                     $('.modal-body').html('');
+                     $('.modal-body').html(
+                        "<p class=\"bg-danger\" style='padding:20px;'>您确认要提交吗?</p>"
+                     );
+                    $('.modal-footer').html('');
+                     $('.modal-footer').html(
+                        "<button type=\"button\" class=\"btn btn-primary\"  data-dismiss=\"modal\">返回修改</button></a>"+
+                        "&nbsp;&nbsp;<button type=\"button\" class=\"btn btn-primary\" onclick=\"Leo_check();\">确定</button></a>"
+                    );
+                    $('#myModal').modal({
+                        keyboard:true,
+                        backdrop:'static'
+                    })
+                // if(confirm("您确定要提交吗?")){
+                    // Leo_check();
+                // }
             })
             changepage(ans_array.length-1,false);
         }
     }
 
     function getpaper(paper_index){
+    	spinner = new Spinner().spin(target);
         $.post('/Examinee/getpaper', {'paper_name':paper_id_name[paper_index]}, function(data) {
-            console.log(data);
-            if(data.no_ques){
-                if(paper_id_now<5){
-                    paper_id_now++;
-                    $.cookie("paper_id"+{{number}},paper_id_now,{experies:7});
-                    getpaper(paper_id_now);
-                    return;
-                }else{
-                   ans_complete();
-                   return;
+            if(data.error){
+                 if(spinner){ spinner.stop(); }
+                 $('.Leo_question_v2').css('width','573px')
+                 $('.modal-body').html('');
+                 $('.modal-body').html(
+                     "<p class=\"bg-danger\" style='padding:20px;'>"+data.error+ "</p>"
+                     );
+                 $('.modal-footer').html('');
+                 $('.modal-footer').html(
+                    "<a href='/examinee/doexam'><button type=\"button\" class=\"btn btn-primary\">刷新</button></a>"+
+                    "&nbsp;&nbsp;<a href='/'><button type=\"button\" class=\"btn btn-primary\">退出</button></a>"
+                 );
+                 $('#myModal').modal({
+                    keyboard:true,
+                    backdrop:'static'
+                 })
+            }else{
+            	if(spinner){ spinner.stop(); }
+            	if(data.no_ques){
+                     if(paper_id_now<5){
+                        paper_id_now++;
+                        $.cookie("paper_id"+{{number}},paper_id_now,{experies:7});
+                        getpaper(paper_id_now);
+                        return;
+                        }else{
+		                     flag = false;
+		                     $('.Leo_question_v2').css('width','573px')
+		                     $('.modal-body').html('');
+		                     $('.modal-body').html(
+		                      "<p class=\"bg-success\" style='padding:20px;'>题目提交完毕,请点击确认,等待系统处理</p>"
+		                     );
+		                     $('.modal-footer').html('');
+		                     $('.modal-footer').html(
+		                     "<button type=\"button\" class=\"btn btn-success\"  onclick = \"ans_complete();\">确认</button>"
+		                    );
+		                    $('#myModal').modal({
+		                     keyboard:true,
+		                     backdrop:'static'
+		                   })
+		                   return;
+                    }
                 }
-            }
             questions=data.question;
             description=data.description;
             ques_order=data.order;
@@ -371,14 +452,47 @@
             Leo_initPanel(questions.length);
             initCookie(questions.length,"exam_ans"+{{number}});
             $('#announce_panel').children('p').replaceWith("<p>"+description+"</p>");
+            }
+           
         });
     }
 
     function Leo_check(){
+    	spinner = new Spinner().spin(target);
         $.post('/Examinee/getExamAnswer',{"answer":$.cookie("exam_ans"+{{number}}),"paper_name":paper_id_name[paper_id_now],"order":ques_order}, function(data) {
-            if(data.flag){
-                if(paper_id_now<5){
-                    alert("提交成功！");
+             if(data.error){
+             	 if(spinner){ spinner.stop(); }
+                 $('.Leo_question_v2').css('width','573px')
+                 $('.modal-body').html('');
+                 $('.modal-body').html(
+                     "<p class=\"bg-danger\" style='padding:20px;'>"+data.error+ "</p>"
+                     );
+                 $('.modal-footer').html('');
+                 $('.modal-footer').html(
+                    "<button type=\"button\" class=\"btn btn-primary\"  data-dismiss=\"modal\">返回重新提交</button></a>"+
+                    "&nbsp;&nbsp;&nbsp;&nbsp;<a href='/'><button type=\"button\" class=\"btn btn-primary\">退出</button></a>"
+                 );
+                 $('#myModal').modal({
+                    keyboard:true,
+                    backdrop:'static'
+                 })
+             }else{
+             	if(spinner){ spinner.stop(); }
+             	if(paper_id_now<5){
+             		 $('.Leo_question_v2').css('width','573px')
+                     $('.modal-body').html('');
+                     $('.modal-body').html(
+                      "<p class=\"bg-success\" style='padding:20px;'>提交成功,点击确认继续答题</p>"
+                     );
+                     $('.modal-footer').html('');
+                     $('.modal-footer').html(
+                     "<button type=\"button\" class=\"btn btn-success\"  data-dismiss=\"modal\">确认</button>"
+                    );
+                    $('#myModal').modal({
+                     keyboard:true,
+                     backdrop:'static'
+                   })
+                    //alert("提交成功！");
                     paper_id_now++;
                     done_index=0;
                     $("#Leo_checkup").css("display","none");
@@ -386,23 +500,73 @@
                     $.cookie("exam_ans"+{{number}},"",{expires:-1});
                     getpaper(paper_id_now);
                 }else{
-                    ans_complete();
-                    return;
+                	 flag = false;
+                	 $('.Leo_question_v2').css('width','573px')
+                     $('.modal-body').html('');
+                     $('.modal-body').html(
+                      "<p class=\"bg-success\" style='padding:20px;'>题目提交完毕,请点击确认,等待系统处理</p>"
+                     );
+                     $('.modal-footer').html('');
+                     $('.modal-footer').html(
+                     "<button type=\"button\" class=\"btn btn-success\"  onclick = \"ans_complete();\">确认</button>"
+                    );
+                    $('#myModal').modal({
+                     keyboard:true,
+                     backdrop:'static'
+                   })
                 }
-              }else{
-                    alert("提交出错，请联系管理员！");
-              }
+             }
         });
     }
-
-    function ans_complete(){
+function ans_complete(){
+    	$('.modal-body').html(
+                      "<p class=\"bg-success\" style='padding:20px;'>题目正在处理中，请勿关闭浏览器</p>"
+                     );
+        $('.modal-footer').html('');
+        $('#myModal').modal({
+                    keyboard:true,
+                    backdrop:'static'
+                 })
+        spinner = new Spinner().spin(target);
         $.post('/Examinee/getExamAnswer',{'total_time':total_time},function(data){
-            alert(data.total_time);
-            alert("提交成功!您已完成全部题目的作答，谢谢您的配合。\n点击‘确定’退出系统。");
-            $.cookie("paper_id"+{{number}},"",{experies:-1});
+        	if(data.error){
+        		 if(spinner){ spinner.stop(); }
+        		      $('.modal-body').html(
+                            "<p class=\"bg-danger\" style='padding:20px;'>处理失败：原因"+data.error+"</p>"
+                            +"<p class=\"bg-danger\"></p>"
+                        );
+                      $('.modal-footer').html('');
+                      $('.modal-footer').html(
+                        "<button type=\"button\" class=\"btn btn-primary\" onclick=\"ans_complete();\">再次处理</button></a>"+
+                        "&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"button\" class=\"btn btn-primary\" onclick=\"w_last();\">退出</button>"
+                    );
+                 $('#myModal').modal({
+                    keyboard:true,
+                    backdrop:'static'
+                 })
+        	
+        	}else{
+        		 if(spinner){ spinner.stop(); }
+        		  $('.modal-body').html('');
+                  $('.modal-body').html(
+                      "<p class=\"bg-success\" style='padding:20px;'>处理完毕，谢谢您的配合。点击‘确定’退出系统</p>"
+                     );
+                  $('.modal-footer').html('');
+                  $('.modal-footer').html(
+                        "<button type=\"button\" class=\"btn btn-success\" onclick = \"w_last();\">确定</button>"
+                    );
+                    $('#myModal').modal({
+                    keyboard:true,
+                    backdrop:'static'
+                 })
+        	}
+          
+        });        
+    }
+function w_last (){
+	        $.cookie("paper_id"+{{number}},"",{experies:-1});
             $.cookie("exam_ans"+{{number}},"",{expeires:-1});
             $.cookie("total_time","",{experies:-1});
             window.location.href="/";
-        });        
-    }
+}
 </script>

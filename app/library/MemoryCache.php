@@ -83,5 +83,22 @@ class MemoryCache {
 	}
 	
 	
+	/**
+	 * 将question表逐条缓存
+	 * @param int $qustion_number
+	 * @param int $paper_id
+	 */
+	public static function getQuestionDetail($qustion_number, $paper_id){
+		return Question::findFirst(
+			array(
+			"paper_id = :paper_id: AND number=:question_number:",
+			'bind' => array('paper_id'=>$paper_id, 'question_number'=>$qustion_number),
+			'hydration' => \Phalcon\Mvc\Model\Resultset\Simple::HYDRATE_ARRAYS,
+			'cache' => array ('key' => 'question_number_'.$qustion_number.'_paper_id_'.$paper_id)
+		)
+		);
+	}
+	
+	
 	
 }
