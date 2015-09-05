@@ -162,4 +162,6 @@ try {
 
 } catch(\Phalcon\Exception $e) {
      echo "PhalconException: ", $e->getMessage();
+} catch(PDOException $e){
+	die('数据库连接失败-'.$e->getMessage());
 }
