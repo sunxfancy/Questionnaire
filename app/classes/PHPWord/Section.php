@@ -109,8 +109,9 @@ class PHPWord_Section {
 	 * @return PHPWord_Section_Text
 	 */
 	public function addText($text, $styleFont = null, $styleParagraph = null) {
-		$givenText = utf8_encode($text);
-		$text = new PHPWord_Section_Text($givenText, $styleFont, $styleParagraph);
+		// $givenText = utf8_encode($text);
+		// $givenText = iconv('gbk', 'utf-8',$text);
+		$text = new PHPWord_Section_Text($text, $styleFont, $styleParagraph);
 		$this->_elementCollection[] = $text;
 		return $text;
 	}
@@ -125,9 +126,11 @@ class PHPWord_Section {
 	 * @return PHPWord_Section_Link
 	 */
 	public function addLink($linkSrc, $linkName = null, $styleFont = null, $styleParagraph = null) {
-		$linkSrc = utf8_encode($linkSrc);
+		// $linkSrc = utf8_encode($linkSrc);
+		// $linkSrc = iconv('gbk', 'utf-8',$linkSrc);
 		if(!is_null($linkName)) {
-			$linkName = utf8_encode($linkName);
+			// $linkName = utf8_encode($linkName);
+			// $linkName = iconv('gbk', 'utf-8',$linkName);
 		}
 		
 		$link = new PHPWord_Section_Link($linkSrc, $linkName, $styleFont, $styleParagraph);
@@ -179,7 +182,8 @@ class PHPWord_Section {
 	 * @return PHPWord_Section_ListItem
 	 */
 	public function addListItem($text, $depth = 0, $styleFont = null, $styleList = null, $styleParagraph = null) {
-		$text = utf8_encode($text);
+		// $text = utf8_encode($text);
+		// $text = iconv('gbk', 'utf-8',$text);
 		$listItem = new PHPWord_Section_ListItem($text, $depth, $styleFont, $styleList, $styleParagraph);
 		$this->_elementCollection[] = $listItem;
 		return $listItem;
@@ -287,7 +291,8 @@ class PHPWord_Section {
 	 * @return PHPWord_Section_Title
 	 */
 	public function addTitle($text, $depth = 1) {
-		$text = utf8_encode($text);
+		// $text = utf8_encode($text);
+		// $text = iconv('gbk', 'utf-8',$text);
 		$styles = PHPWord_Style::getStyles();
 		if(array_key_exists('Heading_'.$depth, $styles)) {
 			$style = 'Heading'.$depth;

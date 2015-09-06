@@ -69,10 +69,10 @@
                     }
             	},                
                 {name:'result',index:'result', sortable:false, width:130, resize:false,align:'center',
-                    formatter:function(){
-                        var temp = "<a href='/interviewer/result' >查看</a>";
+                    formatter:function(cellvalue,options,rowObject){
+                        var temp = "<a href='/pm/check/"+rowObject.id+"' >导出</a>";
                         return temp;
-                    }
+                    }   
                 },
                 {name:'point',index:'point', sortable:false,width:200, editable: false,align:'center',
             		formatter:function(cellvalue,options,rowObject){
