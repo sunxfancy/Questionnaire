@@ -104,10 +104,9 @@ $('#myModal').on('hide.bs.modal', function (e) {
     var total_time=0;//全局时间
 
     $(function(){
-        
+        Leo_timer_start();
         Leo_initPaperId(); 
         getpaper(paper_id_now);
-        Leo_timer_start();
         $("#Leo_All").click(function(){
             var ans=new Array();
             for(var i=0;i<questions.length;i++){
@@ -233,12 +232,12 @@ $('#myModal').on('hide.bs.modal', function (e) {
         var option_disp="<div>";
         var option1="<div class='Leo_ans_div'><div class='Leo_ans_checkdiv'><input name='ans_sel' type='radio' id='123' style='cursor:pointer;'/></div><div class='Leo_ans_checktext'>";
         var option2="</div></div>";
-        var title='<span>'+(questions[index].index+1)+"."+questions[index].title+'</span>';
+        var title='<span>'+(questions[index].index)+"."+questions[index].title+'</span>';
         if(paper_id_name[paper_id_now]=="SPM"){
             option_disp="<div>";
             option1="<div class='Leo_ans_div_spm'><div class='Leo_ans_checkdiv'><input name='ans_sel' type='radio' id='123' style='cursor:pointer;'/></div><div class='Leo_ans_checktext' style='width:140px;height:85px;text-align:center;'><img style='height:50px;margin-top:17px;' src='/spmimages/";
             option2=".jpg' /></div></div>";
-            title=(questions[index].index+1)+"."+"<img style='height:145px;' src='/spmimages/"+questions[index].title+".jpg' />";
+            title=(questions[index].index)+"."+"<img style='height:145px;' src='/spmimages/"+questions[index].title+".jpg' />";
         } 
 
         var options=questions[index].options.split("|");
@@ -275,12 +274,12 @@ $('#myModal').on('hide.bs.modal', function (e) {
                      $('.Leo_question_v2').css('width','573px')
                      $('.modal-body').html('');
                      $('.modal-body').html(
-                        "<p class=\"bg-danger\" style='padding:20px;'>您确认要提交吗?</p>"
+                        "<p class=\"bg-danger\" style='padding:20px;'>您确定要提交吗?</p>"
                      );
                     $('.modal-footer').html('');
                      $('.modal-footer').html(
                         "<button type=\"button\" class=\"btn btn-primary\"  data-dismiss=\"modal\">返回修改</button></a>"+
-                        "&nbsp;&nbsp;<button type=\"button\" class=\"btn btn-primary\" onclick=\"Leo_check();\">确定</button></a>"
+                        "&nbsp;&nbsp;&nbsp;<button type=\"button\" class=\"btn btn-primary\" onclick=\"Leo_check();\">确定</button></a>"
                     );
                     $('#myModal').modal({
                         keyboard:true,
@@ -376,12 +375,12 @@ $('#myModal').on('hide.bs.modal', function (e) {
                      $('.Leo_question_v2').css('width','573px')
                      $('.modal-body').html('');
                      $('.modal-body').html(
-                        "<p class=\"bg-danger\" style='padding:20px;'>您确认要提交吗?</p>"
+                        "<p class=\"bg-danger\" style='padding:20px;'>您确定要提交吗?</p>"
                      );
                     $('.modal-footer').html('');
                      $('.modal-footer').html(
                         "<button type=\"button\" class=\"btn btn-primary\"  data-dismiss=\"modal\">返回修改</button></a>"+
-                        "&nbsp;&nbsp;<button type=\"button\" class=\"btn btn-primary\" onclick=\"Leo_check();\">确定</button></a>"
+                        "&nbsp;&nbsp;&nbsp;<button type=\"button\" class=\"btn btn-primary\" onclick=\"Leo_check();\">确定</button></a>"
                     );
                     $('#myModal').modal({
                         keyboard:true,
@@ -408,7 +407,7 @@ $('#myModal').on('hide.bs.modal', function (e) {
                  $('.modal-footer').html('');
                  $('.modal-footer').html(
                     "<a href='/examinee/doexam'><button type=\"button\" class=\"btn btn-primary\">刷新</button></a>"+
-                    "&nbsp;&nbsp;<a href='/'><button type=\"button\" class=\"btn btn-primary\">退出</button></a>"
+                    "&nbsp;&nbsp;<button type=\"button\" class=\"btn btn-primary\" onclick=\"w_last();\">退出</button>"
                  );
                  $('#myModal').modal({
                     keyboard:true,
@@ -469,8 +468,8 @@ $('#myModal').on('hide.bs.modal', function (e) {
                      );
                  $('.modal-footer').html('');
                  $('.modal-footer').html(
-                    "<button type=\"button\" class=\"btn btn-primary\"  data-dismiss=\"modal\">返回重新提交</button></a>"+
-                    "&nbsp;&nbsp;&nbsp;&nbsp;<a href='/'><button type=\"button\" class=\"btn btn-primary\">退出</button></a>"
+                    "<button type=\"button\" class=\"btn btn-primary\"  data-dismiss=\"modal\">返回重新提交</button></a>"
+                    //+"&nbsp;&nbsp;&nbsp;&nbsp;<a href='/'><button type=\"button\" class=\"btn btn-primary\" onclick=\"w_last();\">退出</button></a>"
                  );
                  $('#myModal').modal({
                     keyboard:true,
@@ -518,9 +517,11 @@ $('#myModal').on('hide.bs.modal', function (e) {
              }
         });
     }
+
 function ans_complete(){
     	$('.modal-body').html(
-                      "<p class=\"bg-success\" style='padding:20px;'>题目正在处理中，请勿关闭浏览器</p>"
+                      "<p class=\"bg-success\" style='padding:20px;'>题目正在处理中，请勿关闭浏览器</p>"+
+                      "<div style='text-align:center; padding:5px 10px 10px 10px;'><img src='/image/loading.gif' style='width:300px' /></div>"
                      );
         $('.modal-footer').html('');
         $('#myModal').modal({
@@ -537,8 +538,8 @@ function ans_complete(){
                         );
                       $('.modal-footer').html('');
                       $('.modal-footer').html(
-                        "<button type=\"button\" class=\"btn btn-primary\" onclick=\"ans_complete();\">再次处理</button></a>"+
-                        "&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"button\" class=\"btn btn-primary\" onclick=\"w_last();\">退出</button>"
+                        "<button type=\"button\" class=\"btn btn-primary\" onclick=\"ans_complete();\">再次处理</button></a>"
+                        +"&nbsp;&nbsp;&nbsp;<button type=\"button\" class=\"btn btn-primary\" onclick=\"w_last();\">退出</button>"
                     );
                  $('#myModal').modal({
                     keyboard:true,
@@ -549,7 +550,9 @@ function ans_complete(){
         		 if(spinner){ spinner.stop(); }
         		  $('.modal-body').html('');
                   $('.modal-body').html(
-                      "<p class=\"bg-success\" style='padding:20px;'>处理完毕，谢谢您的配合。点击‘确定’退出系统</p>"
+                  	 "<p class=\"bg-success\" style='padding:20px;'>恭喜您,答题处理完毕,谢谢您的配合!"+
+                  	 "<br />答题耗时："+ time_cal(data.flag)+
+                     "<br />点击‘确定’退出系统</p>"
                      );
                   $('.modal-footer').html('');
                   $('.modal-footer').html(
@@ -568,5 +571,18 @@ function w_last (){
             $.cookie("exam_ans"+{{number}},"",{expeires:-1});
             $.cookie("total_time","",{experies:-1});
             window.location.href="/";
+}
+
+function time_cal(time_count){
+	var hours=Math.floor(time_count/3600);
+    var leave2=time_count%3600;        //计算小时数后剩余的毫秒数
+    var minutes=Math.floor(leave2/60);
+    var leave3=leave2%60;    //计算分钟数后剩余的毫秒数
+    var seconds=leave3;
+    var str = "";
+    if ( hours != 0 ) { str =hours+"小时"+ minutes+"分钟";}
+    else if (minutes != 0 ) { str =  minutes+"分钟 "+seconds+'秒';}
+    else{ str = seconds+"秒"; }
+    return str;
 }
 </script>
