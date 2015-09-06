@@ -11,8 +11,7 @@ class InterviewInfo{
         	$examinee = Examinee::findFirst($interviews->examinee_id);
         	$number = $examinee->number;
         	$name = $examinee->name;
-        	$interview_sum['number'][] = $number;
-            $interview_sum['name'][] = $name;
+        	$interview_sum[$number] = $name;
         }
         $term = "remark<>'' AND advantage<>'' AND disadvantage<>'' AND manager_id=:manager_id:";
         $interview = Interview::find(array(
@@ -23,22 +22,21 @@ class InterviewInfo{
         	$examinee = Examinee::findFirst($interviews->examinee_id);
         	$number = $examinee->number;
         	$name = $examinee->name;
-        	$interview_not['number'][] = $number;
-            $interview_not['name'][] = $name;
+        	$interview_com[$number] = $name;
         }
-        foreach ($interview_sum as $key1 => $value1) {
-            foreach ($interview_com as $key2 => $value2) {
-                echo $key1;
-                echo $key2;
-                exit();
-                if ($key1 == $key2) {
-                    
-                }
-            }
+        $interview_not = array();
+        $interview_not = array_diff_key($interview_sum, $interview_com);
+        foreach ($interview_com as $key => $value) {
+            $interview_coms['number'][] = $key;
+            $interview_coms['name'][] = $value;
+        }
+        foreach ($interview_not as $key => $value) {
+            $interview_nots['number'][] = $key;
+            $interview_nots['name'][] = $value;
         }
         $interview = array(
-        	'interview_com' => $interview_com,
-        	'interview_not' => $interview_not);
+        	'interview_com' => $interview_coms,
+        	'interview_not' => $interview_nots);
         return $interview;
     }
 }

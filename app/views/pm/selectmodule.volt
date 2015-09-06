@@ -1,5 +1,3 @@
-<link rel="stylesheet" type="text/css" href="css/progress_styles.css">
-<script src="js/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap.js"></script>
 <div class="Leo_question" style="overflow:hidden;padding:10px;">
     <div style="width:100%;height:400px;">
@@ -37,26 +35,17 @@
     </div> 
 </div>
 
+<!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">正在存储选择模块...</h4>
+                <h4 class="modal-title" id="myModalLabel">提示信息</h4>
             </div>
-            <div class="modal-body" style="padding:40px;">
-                <div class="progress" style="height:20px;width:90%;margin:auto;">
-                    <b class="progress__bar">
-                        <span class="progress__text"><em>0%</em></span>
-                    </b>
-                </div>
-            </div>
-        <div class="modal-footer">
-            <button id="close" class="btn btn-default" data-dismiss="modal">Close</button>
+            <div class="modal-body"></div>
+            <div class="modal-footer"></div>
         </div>
     </div>
-</div>
-
 </div>
 
 <script type="text/javascript">    
@@ -91,9 +80,18 @@
 
         $('#unsel_all').click(function(){ $(":checkbox").prop('checked',false);});
 
-        $("#submit").click(function(){
-            // $('.Leo_question').css('width','843px');
-            // $('#myModal').modal({backdrop: 'static'});
+        $('#myModal').on('hidden.bs.modal', function (e) {
+            $('.Leo_question').css('width','860px')
+        });
+        $('#myModal').on('hide.bs.modal', function (e) {
+            $('.Leo_question').css('width','860px')
+        });  
+        $("#submit").click(function(){    
+            $('.Leo_question').css('width','843px');    
+            $('.modal-body').html("<p class=\"bg-success\" style='padding:20px;'>正在处理中，请勿关闭浏览器</p>");
+            $('.modal-footer').html('');
+            $('#myModal').modal({keyboard:true, backdrop:'static'});
+
             var checks=$(":checkbox");
             var checkeds=new Array();
             var values=new Array();
@@ -102,51 +100,27 @@
                 values[i]=checks[i].value;
             }          
             $.post('/pm/writeprojectdetail',{'checkeds':checkeds,'values':values}, function(data) {
-                 /*optional stuff to do after success */
                 if(data.error){
-                    alert(data.error);
-                    return;
+                    $('.modal-body').html("<p class=\"bg-danger\" style='padding:20px;'>处理失败：原因"+data.error+"</p>"+"<p class=\"bg-danger\"></p>");
+                    $('.modal-footer').html('');
+                    $('.modal-footer').html("<button type=\"button\" class=\"btn btn-primary\" onclick='click2();'>返回处理</button>");
+                    $('#myModal').modal({keyboard:true, backdrop:'static'});
                 }else{
-                    // alert("提交成功!")
-                    window.location.href=data.url;
+                    $('.modal-body').html('');
+                    $('.modal-body').html( "<p class=\"bg-success\" style='padding:20px;'>处理完毕，谢谢您的配合。点击‘确定’回到主页面</p>");
+                    $('.modal-footer').html('');
+                    $('.modal-footer').html("<button type=\"button\" class=\"btn btn-success\" onclick ='click1()'>确定</button>");
+                    $('#myModal').modal({keyboard:true, backdrop:'static'});
                 }
             });
-        })
+        });
     });
-
-    var $progress = $('.progress'), $bar = $('.progress__bar'), $text = $('.progress__text'), percent = 0, update, resetColors, speed = 400, orange = 30, yellow = 55, green = 85, timer;
-    resetColors = function () {
-        $bar.removeClass('progress__bar--green').removeClass('progress__bar--yellow').removeClass('progress__bar--orange').removeClass('progress__bar--blue');
-        $progress.removeClass('progress--complete');
-    };
-    update = function () {
-        timer = setTimeout(function () {
-            percent += Math.random() * 1.5;
-            percent = parseFloat(percent.toFixed(1));
-            $text.find('em').text(percent + '%');
-            if (percent >= 100) {
-                percent = 100;
-                $progress.addClass('progress--complete');
-                $bar.addClass('progress__bar--blue');
-                $text.find('em').text('Complete');
-            } else {
-                if (percent >= green) {
-                    $bar.addClass('progress__bar--green');
-                } else if (percent >= yellow) {
-                    $bar.addClass('progress__bar--yellow');
-                } else if (percent >= orange) {
-                    $bar.addClass('progress__bar--orange');
-                }
-                speed = Math.floor(Math.random() * 90);
-                update();
-            }
-            $bar.css({ width: percent + '%' });
-        }, speed);
-    };
-    setTimeout(function () {
-        $progress.addClass('progress--active');
-        update();
-    }, 1000);
+function click1(){
+    window.location.href = '/pm/index';
+}
+function click2(){
+    window.location.href = '/pm/selectmodule';
+}
 </script>
 
    

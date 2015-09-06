@@ -104,9 +104,8 @@ class PmController extends Base
         $this->leftRender($name.' 面 询 完 成 情 况');
         $this->view->setVar('manager_id',$manager_id);
         $interview = InterviewInfo::getInterviewResult($manager_id);
-        // $this->dataBack(array('data'=>$interview));
-        $interview = json_encode($interview,true);
-        $this->view->setVar('data',$interview);
+        $data = json_encode($interview,true);
+        $this->view->setVar('data',$data);
     }
 
     public function uploadexamineeAction(){
@@ -304,6 +303,15 @@ class PmController extends Base
         $project_id = $this->session->get('Manager')->project_id;
         $examinee = Examinee::findFirst($examinee_id);
         CheckoutExcel::checkoutExcel11($examinee,$project_id);
+    }
+
+    //以word形式，导出被试人员个人报告
+    public function resultReportAction($examinee_id){        
+        $this->view->disable();
+        $project_id = $this->session->get('Manager')->project_id;
+        $examinee = Examinee::findFirst($examinee_id);
+        $wordExport = new WordExport();
+        $wordExport->examineeReport($examinee,$project_id);
     }
 
     public function writeprojectdetailAction(){
