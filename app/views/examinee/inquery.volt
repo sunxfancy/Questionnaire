@@ -381,7 +381,7 @@ function getpaper(url){
                  $('.modal-footer').html('');
                  $('.modal-footer').html(
                  	"<a href='/examinee/inquery'><button type=\"button\" class=\"btn btn-primary\">刷新</button></a>"+
-                 	"&nbsp;&nbsp;<a href='/'><button type=\"button\" class=\"btn btn-primary\">退出</button></a>"
+                 	"&nbsp;&nbsp;&nbsp;<button type=\"button\" class=\"btn btn-primary\" onclick=\"w_last();\">退出</button>"
                  );
                  $('#myModal').modal({
                     keyboard:true,
@@ -399,8 +399,10 @@ function getpaper(url){
 }
 
 function Leo_check(){
+	spinner = new Spinner().spin(target);
     $.post('/Examinee/getInqueryAns',{"answer":$.cookie("ans_cookie"+{{number}})}, function(data) {
             if(data.error){
+            	 if(spinner){ spinner.stop(); }
                  $('.Leo_question_v2').css('width','573px');
                  $('.modal-body').html('');
                  $('.modal-body').html(
@@ -409,15 +411,14 @@ function Leo_check(){
                  $('.modal-footer').html('');
                  $('.modal-footer').html(
                     "<button type=\"button\" class=\"btn btn-primary\" click='Lea_check();'>重新提交</button>"
-                    +"&nbsp;&nbsp;<a href='/'><button type=\"button\" class=\"btn btn-primary\">退出</button></a>"
-                    );
+                    // +"&nbsp;&nbsp;&nbsp;<button type=\"button\" class=\"btn btn-primary\" onclick=\"w_last();\">退出</button>"                  );
                  
                  $('#myModal').modal({
                         keyboard:true,
                         backdrop:'static'
                  })
             }else{
-            	
+            	if(spinner){ spinner.stop(); }
             	$('.Leo_question_v2').css('width','573px');
                  $('.modal-body').html('');
                  $('.modal-body').html(
@@ -435,7 +436,10 @@ function Leo_check(){
             }
         });
 }
-
+function w_last(){
+	 $.cookie("ans_cookie"+{{number}},"",{expires:-1});
+     window.location.href='/';
+}
 function wang_click(){
 	   $.cookie("ans_cookie"+{{number}},"",{expires:-1});
 	   window.location.href='/Examinee/editinfo';

@@ -48,10 +48,12 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 // 		echo $time_consuming .'-'. $memory_consuming;
 	}
 	public function gettestAction(){
-		
-		$time=$this->request->getPost("time","int");
-		sleep(5);
-		echo $time;
+		echo ceil(0);
+	}
+	public function dataReturn($ans){
+		$this->response->setHeader("Content-Type", "text/json; charset=utf-8");
+		echo json_encode($ans);
+		$this->view->disable();
 	}
 	public static function clearAction(){
 		// 		清空memcache缓存

@@ -128,7 +128,7 @@ class ExamineeController extends Base
        		$question_data = MemoryCache::getQuestionDetail($value, $paper_id);
        		$rtn_data[] = array(
        				'index'=>$question_data->number,
-       				'title'=>$question_data->topic,
+       				'title'=>empty($question_data->topic)?'':$question_data->topic,
        				'options'=>$question_data->options
        		);
        	}
@@ -151,7 +151,8 @@ class ExamineeController extends Base
     			$this->dataReturn(array('error'=>$e->getMessage()));
     			return ;
     		}
-    		$this->dataReturn(array("flag"=>true));
+    		
+    		$this->dataReturn(array("flag"=>$total_time));
     		return;
     	}
     	$option = $this->request->getPost("answer", "string");
@@ -163,6 +164,7 @@ class ExamineeController extends Base
     		$this->dataReturn(array("error"=>"提交失败:".$e->getMessage()));
     		return;
     	}
+//     	$this->dataReturn(array("error"=>"提交失败:"));
     	$this->dataReturn(array("flag"=>true));
     	return;
     }
@@ -246,29 +248,58 @@ class ExamineeController extends Base
     }
 
     public function listeduAction(){
-        $id = $this->session->get('Examinee')->id;
-        $examinee = Examinee::findFirst($id);
-        $json = json_decode($examinee->other,true);
-        $array = array();
-        $array['records'] = count($json['education']);
-        for($i = 0;$i<$array['records'] + 1;$i++){
-            $json['education'][$i]['id'] = $i;
-        }
-        $array['rows'] = $json['education'];
-        echo json_encode($array,JSON_UNESCAPED_UNICODE);
-        $this->view->disable();
+    	$this->view->disable();
+    	$page = $this->request->get('page');
+    	$rows = $this->request->get('rows');
+    	$examinee = $this->session->get('Examinee');
+    	if(empty($examinee)){
+    		throw new Exception('用户信息获取失败');
+    	}
+    	$examinee_info = Examinee::findFirst($examinee->id);
+    	$json = json_decode($examinee_info->other,true);
+    	$rtn_array = array();
+    	$rtn_array['records'] = 0;
+    	if(isset($json['education'])){
+    		$count = count($json['education']);
+    		$rtn_array['total']   = ceil($count/$rows);
+    		$rtn_array['page'] = $page;
+    		$line_start = $rows*($page-1);
+    		$line_end = $line_start+$rows;
+    		$tmp_array = array();
+    		for( $i = $line_start; $i <= $line_end; $i++ ){
+    				if(isset($json['education'][$i])){
+    					 $json['education'][$i]['id'] = $i+1;
+    					 $tmp_array[] = $json['education'][$i];
+    				}else{
+    					break;
+    				}
+    		}
+    		$rtn_array['records'] = count($tmp_array);
+    		$rtn_array['rows'] = $tmp_array;
+    		echo json_encode($rtn_array,JSON_UNESCAPED_UNICODE);
+    		return;
+    	}else{
+    		$rtn_array['total'] = 0;
+    		$rtn_array['page'] = 0;
+    		$rtn_array['rows'] = null;
+    		echo json_encode($rtn_array,JSON_UNESCAPED_UNICODE);
+    		return;
+    	}        
     }
 
     public function updateeduAction(){
         $this->view->disable();
         $oper = $this->request->getPost('oper', 'string');
-        $id = $this->session->get('Examinee')->id;
-        $examinee = Examinee::findFirst($id);
-        // print_r($examinee);
-        $json = json_decode($examinee->other,true);
+        $examinee= $this->session->get('Examinee');
+        if(empty($examinee)){
+        	throw new Exception('用户信息获取失败');
+        }
+        $examinee_info = Examinee::findFirst($examinee->id);
+        $json = json_decode($examinee_info->other,true);
         $array = array();
         $array['rows'] = $json['education'];
         if ($oper == 'edit') {
+        	//edit 
             $id = $this->request->getPost('id', 'int');
             $json['education'][$id]['school']     = $this->request->getPost('school', 'string');
             $json['education'][$id]['profession'] = $this->request->getPost('profession', 'string');
@@ -276,13 +307,13 @@ class ExamineeController extends Base
             $json['education'][$id]['date']       = $this->request->getPost('date', 'string');
             $array ['rows'][$id] = $json['education'][$id];
             $json['education'] = $array['rows'];
-        } 
-        if ($oper == 'del') {
+        }else if ($oper == 'del') {
+        	//del 
             $id = $this->request->getPost('id', 'int');
             array_splice($array['rows'],$id,1);
             $json['education'] = $array['rows'];
-        }
-        if ($oper == 'add') {
+        }else{
+			//add 
             $id = count($json['education']) + 1;
             $json['education'][$id]['school']     = $this->request->getPost('school', 'string');
             $json['education'][$id]['profession'] = $this->request->getPost('profession', 'string');
@@ -346,44 +377,6 @@ class ExamineeController extends Base
                 echo $msg."\n";
             }
         }
-    }
-
-    public function dividepeoAction($manager_id){
-        $project_id = $this->session->get('Manager')->project_id;
-        $this->view->disable();
-        $interview = Interview::find();
-        $term = '(';
-        foreach($interview as $key => $item){
-            $term .= ' id<>'.$item->examinee_id.' AND ';
-        }
-        if($term == '('){
-            $phql = 'SELECT * FROM Examinee WHERE project_id='.$project_id;
-            $row = $this->modelsManager->executeQuery($phql);
-            $data = array();
-            foreach($row as $key => $value){
-                $data[$key] = $value;
-            }
-            $data = json_encode($data);
-            echo $data;
-        }else{
-            $term = substr($term,0,strlen($term)-4);
-            $term .= ')';
-            $phql = 'SELECT * FROM Examinee WHERE '.$term.' AND project_id='.$project_id;
-            $row = $this->modelsManager->executeQuery($phql);
-            $data = array();
-            foreach($row as $key => $value){
-                $data[$key] = $value;
-            }
-            $data = json_encode($data);
-            echo $data;
-        }
-    }
-
-    public function getPaperId($paper_name){
-        $paper = Paper::findFirst(array(
-            'name=?1',
-            'bind'=>array(1=>$paper_name)));
-        return $paper->id;
     }
 
     public function dataReturn($ans){

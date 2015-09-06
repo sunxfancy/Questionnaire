@@ -17,11 +17,11 @@
                 s.parentNode.insertBefore(ga, s);
             })();
 
-        </script>
-        <script src="/datepicker/js/array.js"></script>
-        <script src="/datepicker/js/date.js"></script>
-        <script src="/datepicker/js/dom.js"></script>
-        <script src="/datepicker/js/selector.js"></script>
+</script>
+<script src="/datepicker/js/array.js"></script>
+<script src="/datepicker/js/date.js"></script>
+<script src="/datepicker/js/dom.js"></script>
+<script src="/datepicker/js/selector.js"></script>
 <!--widget-->
 <script src="/datepicker/js/datepicker.js"></script>
 <link rel="stylesheet" href="/datepicker/css/datepicker.css" />
@@ -156,15 +156,17 @@
                     </td>
                 </tr>
             </table>
-
-            <div style="width:600px;margin:0 auto;overflow:hidden;padding:10px 0;">
-                <table id="grid-table_1"></table>
+            
+            <div style="width:602px; margin:10px auto; overflow:auto;">
+                <table id="grid_table_1"></table>
+                <div id="grid_paper_1"></div>
             </div>
-            <div style="width:600px;margin:0 auto;overflow:hidden;">
-                <table id="grid-table_2"></table>
+            <div style="width:602px; margin:10px auto; overflow:auto;">
+                <table id="grid_table_2"></table>
+                <div id='grid_paper_2'></div>
             </div>
             
-            <div style="width:600px;margin:0 auto;padding:10px;">
+            <div style="width:600px;margin:0 auto;padding:10px 10px 60px 0px;">
                 <table style="width:600px; text-align:center;">                
                 <tr><td><button class="btn btn-primary" id="submit">保存</button></td></tr>
                 </table>
@@ -213,7 +215,7 @@ function getInfo(url){
                  $('.modal-footer').html('');
                  $('.modal-footer').html(
                     "<a href='/examinee/editinfo'><button type=\"button\" class=\"btn btn-primary\">刷新</button></a>"+
-                    "&nbsp;&nbsp;<a href='/'><button type=\"button\" class=\"btn btn-primary\">退出</button></a>"
+                    "&nbsp;&nbsp;&nbsp;<a href='/'><button type=\"button\" class=\"btn btn-primary\">退出</button></a>"
                  );
                  $('#myModal').modal({
                     keyboard:true,
@@ -269,8 +271,8 @@ $("#submit").click(function(){
                      );
                  $('.modal-footer').html('');
                  $('.modal-footer').html(
-                    "<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">返回修改</button>"+
-                    "&nbsp;&nbsp;<a href='/'><button type=\"button\" class=\"btn btn-primary\">退出</button></a>"
+                    "<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">返回修改</button>"
+                    //+"&nbsp;&nbsp;&nbsp;<a href='/'><button type=\"button\" class=\"btn btn-primary\">退出</button></a>"
                  );
                  $('#myModal').modal({
                     keyboard:true,
@@ -286,7 +288,7 @@ $("#submit").click(function(){
                  $('.modal-footer').html('');
                  $('.modal-footer').html(
                  	"<a href='/examinee/editinfo'><button type=\"button\" class=\"btn btn-primary\">查看</button></a>"+
-                    "&nbsp;&nbsp;<a href='/examinee/doexam'><button type=\"button\" class=\"btn btn-success\">确认</button></a>"
+                    "&nbsp;&nbsp;&nbsp;<a href='/examinee/doexam'><button type=\"button\" class=\"btn btn-success\">确认</button></a>"
                    
                  );
                  $('#myModal').modal({
@@ -328,162 +330,155 @@ $('select').click(function(){
 //jqgrid控件
 
 function start_gqgrid(){
-        var grid_selector = "#grid-table_1";
-        //resize to fit page size
-        $(window).on('resize.jqGrid', function () {
-            $(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
-        });
-        //resize on sidebar collapse/expand
-        var parent_column = $(grid_selector).closest('[class*="col-"]');
-        $(document).on('settings.ace.jqGrid' , function(ev, event_name, collapsed) {
-            if( event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed' ) {
-                $(grid_selector).jqGrid( 'setGridWidth', parent_column.width() );
-            }
-        })
-       jQuery(grid_selector).jqGrid({
-            subGrid : false,
+        jQuery('#grid_table_1').jqGrid({
             url: "/examinee/listedu",
             datatype: "json",
             height: 'auto',
-            shrinkToFit:true,
-            forceFit:true,
             autowidth: true,
-            colNames:[' ','毕业院校','专业','所获学位','起止时间'],
+            colNames:['序号','毕业院校','专业','所获学位','起止时间'],
             colModel:[
-                {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
-                    formatter:'actions', 
-                    formatoptions:{ 
-                        keys:true,                       
-                        delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
-                    }
-                },               
-                {name:'school', index:'school', width:140, editable: true, sortable:false, align:'center'},
-                {name:'profession', index:'profession', sortable:false, width:140, editable:true, align:'center'},
-                {name:'degree', index:'degree', width:80, sortable:false, editable:true, align:'center'},
-                {name:'date', index:'date', sortable:true, width:110, editable: true,edittype:'text',align:'center'}
+                {   name:'id',          
+                    index:'id', 
+                    width:60, 
+                    sortable:false, 
+                    editable:false,
+                    resize:false, 
+                    align:'center',
+                }               
+                ,{  name:'school',      
+                    index:'school',
+                    width:140,  
+                    sortable:false, 
+                    editable: true, 
+                    align:'center'
+                }
+                ,{  name:'profession',  
+                    index:'profession', 
+                    width:140, 
+                    sortable:false,  
+                    editable:true, 
+                    align:'center'
+                }
+                ,{  name:'degree', 
+                    index:'degree', 
+                    width:80, 
+                    sortable:false, 
+                    editable:true, 
+                    align:'center'
+                }
+                ,{  name:'date', 
+                    index:'date', 
+                    width:110, 
+                    sortable:true, 
+                    editable: true,
+                    edittype:'text',
+                    align:'center'
+                }
                 ],
             viewrecords : true, 
             altRows: true,
             toppager: false,
-            multiselect: true,
-            multiboxonly: true,
+            hidegrid:false,
+            rowNum:10,
+            rowList : [ 10, 20, 30 ],
+            pager : '#grid_paper_1',
+            emptyrecords: "<span style='color:red'>还未添加记录</span>", 
+            loadError: function(xhr,status,error){  
+                      $('.Leo_question').css('width','843px')
+                      $('.modal-body').html('');
+                    $('.modal-body').html(
+                     "<p class=\"bg-danger\" style='padding:20px;'>获取教育经历失败，请重新获取</p>"
+                     );
+                 $('.modal-footer').html('');
+                 $('.modal-footer').html(
+                    "<a href='/examinee/editinfo'><button type=\"button\" class=\"btn btn-primary\">重新获取</button></a>"
+                 );
+                 $('#myModal').modal({
+                    keyboard:true,
+                    backdrop:'static'
+                 })
+                     
+                      }, 
             editurl: "/examinee/updateedu",
             caption: "教育经历"
-
-        });
-        
-       var grid_selector = "#grid-table_2";
-        
-        //resize to fit page size
-        $(window).on('resize.jqGrid', function () {
-            $(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
-        });
-        //resize on sidebar collapse/expand
-        var parent_column = $(grid_selector).closest('[class*="col-"]');
-        $(document).on('settings.ace.jqGrid' , function(ev, event_name, collapsed) {
-            if( event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed' ) {
-                $(grid_selector).jqGrid( 'setGridWidth', parent_column.width() );
-            }
-        })
-
-        jQuery(grid_selector).jqGrid({
-            subGrid : false,
+        }).navGrid('#grid_paper_1',
+        {  add: true,
+           addicon : 'ace-icon fa fa-plus-circle purple',
+           addtext:'添加',
+           edit: true,
+           editicon : 'ace-icon fa fa-pencil blue',
+           edittext:'编辑',
+           del: true,
+           delicon : 'ace-icon fa fa-trash-o red',
+           deltext:'删除',
+           refresh: false,
+           search: false,
+           view: false,
+        }
+        ,{ //add 添加时
+        top : 100,  //位置
+        left: 300, //位置
+        }
+        ,{ //edit 添加时
+        top : 100,  //位置
+        left: 300, //位置
+        }
+        ,{ //del 添加时
+        top : 100,  //位置
+        left: 300, //位置
+        }
+        );
+         
+        jQuery('#grid_table_2').jqGrid({
             url: "/examinee/listwork",
             datatype: "json",
             height: 'auto',
-            shrinkToFit:true,
-            forceFit:true,
             autowidth: true,
-            colNames:[' ','就职单位','部门','岗位/职务','起止时间'],
+            colNames:['序号','就职单位','部门','岗位/职务','起止时间'],
             colModel:[
-                {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
-                    formatter:'actions', 
-                    formatoptions:{ 
-                        keys:true,
-                        delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
-                    }
-                },
-                {name:'employer', index:'employer', width:190, editable:true, sortable:false, align:'center'},
+                {name:'id',index:'id', width:60, fixed:true, sortable:false, resize:false, align:'center',  },
+                {name:'employer', index:'employer', width:170, editable:true, sortable:false, align:'center'},
                 {name:'unit',index:'unit', sortable:false, width:80, editable:true,align:'center'},
                 {name:'duty', index:'duty', width:80, sortable:false, editable:true, align:'center'},
                 {name:'date',index:'date', sortable:true,width:140, editable: true,edittype:'text',align:'center'}
                 ], 
             viewrecords : true, 
             altRows: true,
-            toppager: false,
-            multiselect: true,
-            loadcomlplete: function(){
-            	alert('hhh');
-            },
-            //multikey: "ctrlKey",
-            multiboxonly: true,
-            editurl: "/examinee/updatework",//nothing is saved
+            hidegrid:false,
+            rowNum:1,
+            rowList : [ 1, 2, 3],
+            pager : '#grid_paper_2',
+            emptyrecords: '还未添加记录', 
+            editurl: "/examinee/updatework",
             caption: "工作经历",
     
-        });
+        }).navGrid('#grid_paper_2',
+          {  add: true,
+           addicon : 'ace-icon fa fa-plus-circle purple',
+           addtext:'添加',
+           edit: true,
+           editicon : 'ace-icon fa fa-pencil blue',
+           edittext:'编辑',
+           del: true,
+           delicon : 'ace-icon fa fa-trash-o red',
+           deltext:'删除',
+           refresh: false,
+           search: false,
+           view: false,
+        }
+        ,{ //add 添加时
+        top : 100,  //位置
+        left: 300, //位置
+        }
+        ,{ //edit 添加时
+        top : 100,  //位置
+        left: 300, //位置
+        }
+        ,{ //del 添加时
+        top : 100,  //位置
+        left: 300, //位置
+        }
+        );
+ 
     }
-
-function beforeDeleteCallback(e) {
-            var form = $(e[0]);
-            if(form.data('styled')) return false;
-            form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-            style_delete_form(form);
-            form.data('styled', true);
-        }
-function style_delete_form(form) {
-            var buttons = form.next().find('.EditButton .fm-button');
-            buttons.addClass('btn btn-sm btn-white btn-round').find('[class*="-icon"]').hide();//ui-icon, s-icon
-            buttons.eq(0).addClass('btn-danger').prepend('<i class="ace-icon fa fa-trash-o"></i>');
-            buttons.eq(1).addClass('btn-default').prepend('<i class="ace-icon fa fa-times"></i>')
-        }
-function beforeEditCallback(e) {
-            var form = $(e[0]);
-            form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-            style_edit_form(form);
-            alert('here');
-        }
-function styleCheckbox(table) {
-
-        }
-function updateActionIcons(table) {
-
-        }
-function updatePagerIcons(table) {
-            var replacement = 
-            {
-                'ui-icon-seek-first' : 'ace-icon fa fa-angle-double-left bigger-140',
-                'ui-icon-seek-prev' : 'ace-icon fa fa-angle-left bigger-140',
-                'ui-icon-seek-next' : 'ace-icon fa fa-angle-right bigger-140',
-                'ui-icon-seek-end' : 'ace-icon fa fa-angle-double-right bigger-140'
-            };
-            $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
-                var icon = $(this);
-                var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
-                
-                if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
-            })
-        }
-function enableTooltips(table) {
-            $('.navtable .ui-pg-button').tooltip({container:'body'});
-            $(table).find('.ui-pg-div').tooltip({container:'body'});
-        }    
-function style_edit_form(form) {
-            //enable datepicker on "sdate" field and switches for "stock" field
-            form.find('input[name=sdate]').datepicker({format:'yyyy-mm-dd' , autoclose:true})
-                .end().find('input[name=stock]')
-                    .addClass('ace ace-switch ace-switch-5').after('<span class="lbl"></span>');
-                       //don't wrap inside a label element, the checkbox value won't be submitted (POST'ed)
-                      //.addClass('ace ace-switch ace-switch-5').wrap('<label class="inline" />').after('<span class="lbl"></span>');
-    
-            //update buttons classes
-            var buttons = form.next().find('.EditButton .fm-button');
-            buttons.addClass('btn btn-sm').find('[class*="-icon"]').hide();//ui-icon, s-icon
-            buttons.eq(0).addClass('btn-primary').prepend('<i class="ace-icon fa fa-check"></i>');
-            buttons.eq(1).prepend('<i class="ace-icon fa fa-times"></i>')
-            
-            buttons = form.next().find('.navButton a');
-            buttons.find('.ui-icon').hide();
-            buttons.eq(0).append('<i class="ace-icon fa fa-chevron-left"></i>');
-            buttons.eq(1).append('<i class="ace-icon fa fa-chevron-right"></i>');       
-        }
 </script> 
