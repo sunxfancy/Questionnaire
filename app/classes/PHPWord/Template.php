@@ -86,7 +86,8 @@ class PHPWord_Template {
         }
         
         if(!is_array($replace)) {
-            $replace = utf8_encode($replace);
+            // $replace = utf8_encode($replace);
+            $replace = iconv('gbk', 'utf-8',$replace);
         }
         
         $this->_documentXML = str_replace($search, $replace, $this->_documentXML);

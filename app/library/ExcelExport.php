@@ -11,14 +11,8 @@ include("../app/classes/PHPExcel.php");
 /**
  *
  */
-class ExcelExport {
-    /*
-     * 领导导出
-     */
-    public function LeaderExport($arr){
-        $this->managerExport($arr,'L');
-    }
-
+class ExcelExport 
+{
     /*
      * 测试人员导出
      */
@@ -69,8 +63,8 @@ class ExcelExport {
             $objActSheet->setCellValue('M' . $key, $item->unit);
             $objActSheet->setCellValue('N' . $key, $item->duty);
             $other = json_decode($item->other, true);
-//            $education = json_encode($other['education'], JSON_UNESCAPED_UNICODE);
-//            $work = json_encode($other['work'], JSON_UNESCAPED_UNICODE);
+           // $education = json_encode($other['education'], JSON_UNESCAPED_UNICODE);
+           // $work = json_encode($other['work'], JSON_UNESCAPED_UNICODE);
             $education = $other['education'];
             $education_string = '[';
             $work_string = '[';
@@ -102,29 +96,22 @@ class ExcelExport {
             $objActSheet->setCellValue('O' . $key, $education_string);
             $objActSheet->setCellValue('P' . $key, $work_string);
         }
-
-//            header("Pragma: public");
-//            header("Expires: 0");
-//            header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
-//            header("Content-Type:application/force-download");
-//            header("Content-Type:application/vnd.ms-execl");
-//            header("Content-Type:application/octet-stream");
-//            header('Content-Disposition:attachment;filename="测试人员.xls"');
-//            header("Content-Type:application/download");;
-//            header("Content-Transfer-Encoding:binary");
-//            $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
-//            $objWriter->save('php://output');
         header('Content-Disposition:attachment;filename="测试人员.xls"');
         $this->commonMsg($objPHPExcel);
-
     }
 
     /*
      *面询专家导出
      */
-
     public function InterviewerExport($arr){
         $this->managerExport($arr,'I');
+    }
+
+    /*
+     * 领导导出
+     */
+    public function LeaderExport($arr){
+        $this->managerExport($arr,'L');
     }
 
     public function managerExport($arr,$role){
@@ -164,16 +151,6 @@ class ExcelExport {
         $objActSheet->getColumnDimension('B')->setAutoSize(true);
         $objActSheet->getColumnDimension('C')->setAutoSize(true);
         $objActSheet->getColumnDimension('D')->setAutoSize(true);
-//        header("Pragma: public");
-//        header("Expires: 0");
-//        header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
-//        header("Content-Type:application/force-download");
-//        header("Content-Type:application/vnd.ms-execl");
-//        header("Content-Type:application/octet-stream");
-//        header("Content-Type:application/download");;
-//        header("Content-Transfer-Encoding:binary");
-//        $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
-//        $objWriter->save('php://output');
         $this->commonMsg($objPHPExcel);
     }
 
@@ -189,6 +166,5 @@ class ExcelExport {
         $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
         $objWriter->save('php://output');
     }
-
 
 }

@@ -102,8 +102,8 @@
                         return temp;
                     }},
                 {name:'result',index:'result', sortable:false, width:100, resize:false,align:'center',
-                    formatter:function(){
-                        var temp = "<a href='/pm/result' >查看</a>";
+                    formatter:function(cellvalue,options,rowObject){
+                        var temp = "<a href='/pm/resultReport/"+rowObject.id+"'>查看</a>";
                         return temp;
                     }
                 }

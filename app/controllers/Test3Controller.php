@@ -5,10 +5,9 @@
 class Test3Controller extends Base
 {		
 	public function indexAction(){
-		$this->view->disable();    
-    	$project_num = Project::count()+1;
-        $date = date('y');
-        $project_id = $date.substr(strval($project_num+100),1,2);
-        echo $project_id;  
+        $project_id = 1502;
+        $examinee = Examinee::findFirst(19);
+        $wordExport = new WordExport();
+        $wordExport->examineeReport($examinee,$project_id);
 	}
 }
