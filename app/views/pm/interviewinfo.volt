@@ -22,13 +22,12 @@
 
 <script type="text/javascript">
     data = {{ data }};
-    console.log(data);
     var length = data.length;
-    if (data.interview_com.length == 0 && data.interview_not.length == 0) {
+    if ((data.interview_com == undefined || data.interview_com == null) && (data.interview_not == undefined || data.interview_not == null)) {
         var li_dom = $("<li style='padding:3px;font-size:18px;'><span>"+"还未进行过分配！！"+"</span></li>");
         $('#not_list').append(li_dom);
     }else{
-        if (data.interview_com.length == 0) {
+        if (data.interview_com == undefined || data.interview_com == null) {
             var li_dom = $("<li style='padding:3px;font-size:18px;'><span>"+"还没有人完成面询！"+"</span></li>");
             $('#com_list').append(li_dom);
         }else{
@@ -37,12 +36,11 @@
                 $('#com_list').append(li_dom);       
             }
         }
-        if (data.interview_not.length == 0) {
+        if (data.interview_not == undefined || data.interview_not == null) {
             var li_dom = $("<li style='padding:3px;font-size:18px;'><span>"+"全部人员完成面询！"+"</span></li>");
             $('#not_list').append(li_dom); 
         }else{
             for (var i = 0; i < data.interview_not.number.length; i++) {
-                console.log(data.interview_not[i]);
                 var li_dom = $("<li style='padding:3px;font-size:18px;'><span>"+data.interview_not.number[i]+'：'+data.interview_not.name[i]+"</span></li>");
                 $('#not_list').append(li_dom);       
             }

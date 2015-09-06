@@ -1,8 +1,8 @@
 <div class="Leo_question" style="overflow:hidden;">
-    <div style="margin:0 auto;text-align:center;font-size:26px;">分配人员</div>
+    <div style="padding:10px;text-align:center;font-size:26px;">分配人员</div>
     <div style="width:95%;height:3px;background-color:red;margin:0 auto;"></div>
 
-    <div style="width:50%;height:450px;float:left;">
+    <div style="width:50%;height:450px;float:left;overflow:auto;">
         <ul style="list-style:none;margin-left:150px;" id="examinee_list"></ul>
     </div>
 
@@ -33,13 +33,13 @@
                 var min_number = data[i*10].number;
                 var max_number = data[10*i+9].number;
                 var li_value = min_number+'~'+max_number;
-                var li_dom = $("<li><input type='checkbox' name='items' value="+li_value+"><span>"+li_value+"</span></li>");
+                var li_dom = $("<li style='padding:3px;font-size:18px;'><input type='checkbox' name='items' value="+li_value+"><span>"+li_value+"</span></li>");
                 $('ul').append(li_dom);
             }
             var min = data[(count-1)*10].number;
             var max = data[jsonLength-1].number;
             var li_value = min + '~' + max;
-            var li_dom = $("<li><input type='checkbox' name='items' value="+li_value+"><span>"+li_value+"</span></li>");
+            var li_dom = $("<li style='padding:3px;font-size:18px;'><input type='checkbox' name='items' value="+li_value+"><span>"+li_value+"</span></li>");
             $('ul').append(li_dom);
         }
 

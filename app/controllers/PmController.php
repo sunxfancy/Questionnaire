@@ -302,7 +302,24 @@ class PmController extends Base
         $this->view->disable();
         $project_id = $this->session->get('Manager')->project_id;
         $examinee = Examinee::findFirst($examinee_id);
-        CheckoutExcel::checkoutExcel11($examinee,$project_id);
+        if ($examinee->state > 3) {
+            CheckoutExcel::checkoutExcel11($examinee,$project_id);
+        }else{
+            try{
+                $id = $examinee->id;
+                BasicScore::handlePapers($id);
+                BasicScore::finishedBasic($id);
+                FactorScore::handleFactors($id);
+                FactorScore::finishedFactor($id);
+                IndexScore::handleIndexs($id);
+                IndexScore::finishedIndex($id);
+                CheckoutExcel::checkoutExcel11($examinee,$project_id);
+            }catch(Exception $e){
+                $this->dataReturn(array('error'=>$e->getMessage()));
+                return ;
+            }
+        }
+        
     }
 
     //以word形式，导出被试人员个人报告
