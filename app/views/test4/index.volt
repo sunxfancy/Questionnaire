@@ -1,82 +1,71 @@
+<script type="text/javascript" src="/jqGrid/js/jquery.jqGrid.min.js"></script>
+<script type="text/javascript" src="/jqGrid/js/i18n/grid.locale-cn.js"></script>
+<script type="text/javascript" src="/js/bootstrap.js"></script>
 
-<table id="list1"></table>
-<div id="pager1"></div>
-
-<script type="text/javascript"> 
-jQuery().ready(function (){
-jQuery("#list1").jqGrid({
-    url:'server.php?q=1',
-    datatype: "xml",
-    colNames:['Inv No','Date', 'Client', 'Amount','Tax','Total','Notes'],
-    colModel:[
-        {name:'id',index:'id', width:75},
-        {name:'invdate',index:'invdate', width:90},
-        {name:'name',index:'name', width:100},
-        {name:'amount',index:'amount', width:80, align:"right"},
-        {name:'tax',index:'tax', width:80, align:"right"},      
-        {name:'total',index:'total', width:80,align:"right"},       
-        {name:'note',index:'note', width:150, sortable:false}       
-    ],
-    rowNum:10,
-    autowidth: true,
-    rowList:[10,20,30],
-    pager: jQuery('#pager1'),
-    sortname: 'id',
-    viewrecords: true,
-    sortorder: "desc",
-    caption:"XML Example"
-}).navGrid('#pager1',{edit:false,add:false,del:false});                 
-</script> 
-PHP Code
-
-<?php
-$page = $_GET['page']; // get the requested page
-$limit = $_GET['rows']; // get how many rows we want to have into the grid
-$sidx = $_GET['sidx']; // get index row - i.e. user click to sort
-$sord = $_GET['sord']; // get the direction
-if(!$sidx) $sidx =1;
-// connect to the database
-$db = mysql_connect($dbhost, $dbuser, $dbpassword)
-or die("Connection Error: " . mysql_error());
-
-mysql_select_db($database) or die("Error conecting to db.");
-$result = mysql_query("SELECT COUNT(*) AS count FROM invheader a, clients b WHERE a.client_id=b.client_id");
-$row = mysql_fetch_array($result,MYSQL_ASSOC);
-$count = $row['count'];
-
-if( $count >0 ) {
-    $total_pages = ceil($count/$limit);
-} else {
-    $total_pages = 0;
+<div class="Leo_question">
+    <table id="list5"></table>
+    <div id="pager5"></div>
+</div>
+<script>
+$(function(){
+  pageInit();
+});
+function pageInit(){
+  jQuery("#list5").jqGrid(
+      {
+        url : '/examinee/listedu',
+        datatype : "json",
+        height:'auto',
+        autowidth:true,
+        colNames:['序号','毕业院校','专业','所获学位','起止时间'],
+            colModel:[
+                {name:'id',index:'', width:70, fixed:true, sortable:true, resize:false, align:'center' },               
+                {name:'school', index:'school', width:140, editable: true, sortable:false, align:'center'},
+                {name:'profession', index:'profession', sortable:false, width:140, editable:true, align:'center'},
+                {name:'degree', index:'degree', width:80, sortable:false, editable:true, align:'center'},
+                {name:'date', index:'date', sortable:true, width:110, editable: true,edittype:'text',align:'center'}
+                ],
+        rowNum : 10,
+        rowList : [ 10, 20, 30 ],
+        pager : '#pager5',
+        viewrecords : true,
+        sortorder : "asc",
+        caption : "教育经历",
+        editurl : "/examinee/updateedu"
+      }).navGrid('#pagerb',{
+ add: true,
+ addtext: "添加 ",
+ del: false,
+ edit: true,
+ edittext: "修改 ",
+ position: "left",
+ view: true,
+ viewtext: "查看 ",
+ search: false,
+ refreshtitle: "刷新",
+ refreshtext: "刷新 ",
+ alertcap: "提示信息"
+},{ //edit 编辑时
+ top : 10,  //位置
+ left: 200, //位置
+ height:480, //大小
+ width:750, //大小
+ 
+},{ //add 添加时
+ top : 10,
+ left: 200,
+ height:480,
+ width:750,
+ 
+},{ //del
+},{ //search
+},{ //view
 }
-if ($page > $total_pages) $page=$total_pages;
-$start = $limit*$page - $limit; // do not put $limit*($page - 1)
-$SQL = "SELECT a.id, a.invdate, b.name, a.amount,a.tax,a.total,a.note FROM invheader a, clients b WHERE "
-." a.client_id=b.client_id ORDER BY $sidx $sord LIMIT $start , $limit";
-$result = mysql_query( $SQL ) or die("Couldnt execute query.".mysql_error());
+);
+        
+
 
-if ( stristr($_SERVER["HTTP_ACCEPT"],"application/xhtml+xml") ) {
-header("Content-type: application/xhtml+xml;charset=utf-8"); } else {
-header("Content-type: text/xml;charset=utf-8");
+ 
 }
-$et = ">";
-
-echo "<?xml version='1.0' encoding='utf-8'?$et\n";
-echo "<rows>";
-echo "<page>".$page."</page>";
-echo "<total>".$total_pages."</total>";
-echo "<records>".$count."</records>";
-// be sure to put text data in CDATA
-while($row = mysql_fetch_array($result,MYSQL_ASSOC)) {
-    echo "<row id='". $row[id]."'>";            
-    echo "<cell>". $row[id]."</cell>";
-    echo "<cell>". $row[invdate]."</cell>";
-    echo "<cell><![CDATA[". $row[name]."]]></cell>";
-    echo "<cell>". $row[amount]."</cell>";
-    echo "<cell>". $row[tax]."</cell>";
-    echo "<cell>". $row[total]."</cell>";
-    echo "<cell><![CDATA[". $row[note]."]]></cell>";
-    echo "</row>";
-}
-echo "</rows>";     
-?>
+    
+</script>
