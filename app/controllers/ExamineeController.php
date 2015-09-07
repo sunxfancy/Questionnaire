@@ -2,9 +2,8 @@
 
 class ExamineeController extends Base
 {
-	private static $paper_name_array = array(
-		'16PF','EPPS','SCL','EPQA','CPI','SPM'
-	);
+	private static $paper_name_array = array('16PF','EPPS','SCL','EPQA','CPI','SPM');
+    
 	public function initialize(){
         $this->view->setTemplateAfter('base3');
     }
@@ -47,7 +46,7 @@ class ExamineeController extends Base
 	}
 
     public function getInqueryAction(){
-// 		$this->session->remove('Examinee');
+ 		// $this->session->remove('Examinee');
     	$exminee = $this->session->get('Examinee');
     	if(empty($exminee)){
     		$this->dataReturn(array('error'=>'用户信息获取失败'));
@@ -135,6 +134,7 @@ class ExamineeController extends Base
        	$this->dataReturn(array("question"=>$rtn_data,"description"=>$paper_info->description,"order"=> $question_number_array));
         return ;
     }
+
     public function getExamAnswerAction(){
     	$id = $this->session->get('Examinee')->id;
     	$total_time=$this->request->getPost("total_time","int");
@@ -164,7 +164,6 @@ class ExamineeController extends Base
     		$this->dataReturn(array("error"=>"提交失败:".$e->getMessage()));
     		return;
     	}
-//     	$this->dataReturn(array("error"=>"提交失败:"));
     	$this->dataReturn(array("flag"=>true));
     	return;
     }
@@ -177,7 +176,6 @@ class ExamineeController extends Base
         }else{
         	 $this->leftRender("个 人 信 息 填 写");
         } 
-
     }
     
     public function getexamineeinfoAction(){
@@ -243,8 +241,7 @@ class ExamineeController extends Base
     		$this->dataReturn(array('error'=>$e->getMessage()));
     		return;
     	}
-    	$this->dataReturn(array('flag'=>true));
-     
+    	$this->dataReturn(array('flag'=>true));    
     }
 
     public function listeduAction(){
@@ -325,8 +322,7 @@ class ExamineeController extends Base
 			$id = $this->request->getPost('id', 'int');
 			if(empty($id)){
 				//add
-				$education_array[] = $new_array;
-				
+				$education_array[] = $new_array;				
 			}else{
 				//edit
 				foreach($new_array as $key=>$value){
@@ -385,7 +381,7 @@ class ExamineeController extends Base
     }
 
     public function updateworkAction(){
-     $this->view->disable();
+        $this->view->disable();
         $oper = $this->request->getPost('oper', 'string');
         $examinee= $this->session->get('Examinee');
         if(empty($examinee)){
@@ -430,8 +426,28 @@ class ExamineeController extends Base
 		$rtn_array['work'] = $work_array;
 		$json = json_encode($rtn_array,JSON_UNESCAPED_UNICODE);
 		ExamineeDB::unpdateOther($json, $examinee_info);
-		return;
-       
+		return;      
+    }
+
+    public function dividepeoAction($manager_id){
+        $this->view->disable();
+        $project_id = $this->session->get('Manager')->project_id;
+        $interview = Interview::find();
+        $examinee_divd = array();
+        foreach ($interview as $interviews) {
+            $examinee_divd[] = Examinee::findFirst($interview->examinee_id)->number;
+
+        }
+        $examinee = Examinee::find(array(
+            'project_id =?1',
+            'bind'=>array(1=>$project_id)));
+        $examinee_all = array();
+        foreach ($examinee as $examinees) {
+            $examinee_all[] = $examinees->number;
+        }
+        $examinee_not = array();
+        $examinee_not = array_diff($examinee_all,$examinee_divd);
+        echo json_encode($examinee_not,true);
     }
 
     public function dataReturn($ans){

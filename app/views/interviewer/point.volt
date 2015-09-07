@@ -36,10 +36,10 @@
                 <td style="width:130px;padding:3px;">差</td>
             </tr>
             <tr>
-                <td style="width:130px;padding:3px;">{{level1}}</td>
-                <td style="width:130px;padding:3px;">{{level2}}</td>
-                <td style="width:130px;padding:3px;">{{level3}}</td>
-                <td style="width:130px;padding:3px;">{{level4}}</td>
+                <td id="level1" style="width:130px;padding:3px;color:red;"></td>
+                <td id="level2" style="width:130px;padding:3px;color:red;"></td>
+                <td id="level3" style="width:130px;padding:3px;color:red;"></td>
+                <td id="level4" style="width:130px;padding:3px;color:red;"></td>
             </tr>
             <tr>
                 <td style="width:100px;">评价</td>
@@ -54,32 +54,52 @@
             <a id="submit" class="btn btn-success">保存</a>
         </div>
     </div>
-
 </div>
 <script type="text/javascript">
+    $(function(){
+        $.post('/interviewer/getPoint/'+{{examinee_id}}, function(data){
+            if (data.error) {
+                alert('获取信息失败，请刷新。');
+            }else{
+                $('#advantage1').val(data.point.advantage1);
+                $('#advantage2').val(data.point.advantage2);
+                $('#advantage3').val(data.point.advantage3);
+                $('#advantage4').val(data.point.advantage4);
+                $('#advantage5').val(data.point.advantage5);
+                $('#disadvantage1').val(data.point.disadvantage1);
+                $('#disadvantage2').val(data.point.disadvantage2);
+                $('#disadvantage3').val(data.point.disadvantage3);
+                $('#remark').val(data.point.remark);
+                if (data.point.level == "优") {
+                    document.getElementById('level1').innerHTML = "&radic;";
+                }else if (data.point.level == "良") {
+                    document.getElementById('level2').innerHTML = "&radic;";
+                }else if (data.point.level == "中") {
+                    document.getElementById('level3').innerHTML = "&radic;";
+                }else{
+                    document.getElementById('level4').innerHTML = "&radic;";
+                }
+            }
+        });
+    });
+
     $(document).ready(function(){
         $("#submit").click(function(){
             var comment = {
                 "advantage" : $("#advantage1").val()+"|"+$("#advantage2").val()+"|"+$("#advantage3").val()+"|"+$("#advantage4").val()+"|"+$("#advantage5").val(),
                 "disadvantage" : $("#disadvantage1").val()+"|"+$("#disadvantage2").val()+"|"+$("#disadvantage3").val(),
-                "remark" : $("#remark").val()
+                "remark" : $("#remark").val(),
             };
             $.post('/interviewer/interview/'+{{examinee_id}},comment,callbk);
         });
-
         function callbk(data){
             data = eval("("+data+")");
             if(data['status'] == 'success'){
-                // alert("评论提交成功！点击“确定”返回主页面。");
-                // window.location.href = '/interviewer/index'
+                alert("评论提交成功！点击“确定”返回主页面。");
+                window.location.href = '/interviewer/index'
             }else{
                 alert("评论提交失败，请重新提交！");
             }
         }
     });
-
-    function check(){
-        var ad1 = document.getElementById("advantage1").innerHTML;
-        console.log(ad1);
-    }
 </script>

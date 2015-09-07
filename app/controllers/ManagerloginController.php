@@ -5,18 +5,15 @@
  */
 class ManagerloginController extends Base
 {
-    public function initialize()
-    {
+    public function initialize(){
         $this->view->setTemplateAfter('base1');
     }
 
-    public function indexAction()
-    {
+    public function indexAction(){
 			
     }
 
-    public function loginAction()
-    {
+    public function loginAction(){
         $username = $this->request->getPost("username", "string");
         $password = $this->request->getPost("password", "string");
         $manager = Manager::checkLogin($username, $password);
@@ -54,14 +51,12 @@ class ManagerloginController extends Base
         }
     }
 
-    public function logoutAction()
-    {
+    public function logoutAction(){
         $this->session->remove('Manager');
     	$this->response->redirect('managerlogin');
     }
 
-    public function dataReturn($ans)
-    {
+    public function dataReturn($ans){
         $this->response->setHeader("Content-Type", "text/json; charset=utf-8");
         echo json_encode($ans);
         $this->view->disable();

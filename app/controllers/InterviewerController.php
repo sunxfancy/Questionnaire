@@ -103,4 +103,46 @@ class InterviewerController extends Base
     	echo json_encode($returnMessage);
     }
 
+    public function getPointAction($examinee_id){
+        $interviewer = $this->session->get('Manager');
+        if(empty($interviewer)){
+            $this->dataReturn(array('error'=>'用户信息获取失败'));
+            return;
+        }else{
+            $level = ReportData::getLevel($examinee_id);
+            $interview = Interview::findFirst(array(
+                'examinee_id =?0 and manager_id =?1',
+                'bind'=>array(0=>$examinee_id,1=>$interviewer->id)));
+            if (empty($interview->advantage)) {
+                $advantage = array('1. ','2. ','3. ','4. ','5. ',);
+            }else{
+                $advantage = explode('|',$interview->advantage);
+            }
+            if (empty($interview->disadvantage)) {
+                $disadvantage = array('1. ','2. ','3. ');
+            }else{
+                $disadvantage = explode('|',$interview->disadvantage);
+            }
+            $point = array();
+            $point['advantage1'] = $advantage[0];
+            $point['advantage2'] = $advantage[1];
+            $point['advantage3'] = $advantage[2];
+            $point['advantage4'] = $advantage[3];
+            $point['advantage5'] = $advantage[4];
+            $point['disadvantage1'] = $disadvantage[0];
+            $point['disadvantage2'] = $disadvantage[1];
+            $point['disadvantage3'] = $disadvantage[2];
+            $point['level'] = $level;
+            $point['remark'] = $interview->remark;
+            $this->dataReturn(array('point'=>$point));
+            return;
+        }
+    }
+
+    public function dataReturn($ans){
+        $this->response->setHeader("Content-Type", "text/json; charset=utf-8");
+        echo json_encode($ans);
+        $this->view->disable();
+    }
+
 }

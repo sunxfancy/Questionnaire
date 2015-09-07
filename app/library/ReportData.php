@@ -14,17 +14,16 @@ class ReportData
 			$count++;
 		}
 		$score_avg = $score / $count;
-		$level ='';
 		if ($score_avg > 5.8) {
-			$level = '优';
+			$level = "优";
 		}else if ($score_avg > 5.3) {
-			$level = '良';
+			$level = "良";
 		}else if ($score_avg > 5.0) {
-			$level = '中';
+			$level = "中";
 		}else{
-			$level = '差';
+			$level = "差";
 		}
-		return json_encode($level,true);
+		return $level;
 	}
 	
 }
