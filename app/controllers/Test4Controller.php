@@ -48,7 +48,16 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 // 		echo $time_consuming .'-'. $memory_consuming;
 	}
 	public function gettestAction(){
-		echo ceil(0);
+		$oper = $this->request->getPost('oper', 'string');
+        $examinee= $this->session->get('Examinee');
+        if(empty($examinee)){
+        	throw new Exception('用户信息获取失败');
+        }
+        $examinee_info = Examinee::findFirst($examinee->id);
+        $json = json_decode($examinee_info->other,true);
+        $array = array();
+       print_r ($json['education']);
+       exit();
 	}
 	public function dataReturn($ans){
 		$this->response->setHeader("Content-Type", "text/json; charset=utf-8");

@@ -328,7 +328,14 @@ $('select').click(function(){
 })
 
 //jqgrid控件
-
+function datecheck (value,colName) {
+	var pattern = new RegExp("^[1-9][0-9]{3}[/](0?[1-9]|1[012])[-][1-9][0-9]{3}[/](0?[1-9]|1[012])$");
+    if (value.match(pattern) ) {
+        return [true, ""];
+    }else{
+    	return [false, colName+"格式如:2014/4-2015/10"];
+    }
+}
 function start_gqgrid(){
         jQuery('#grid_table_1').jqGrid({
             url: "/examinee/listedu",
@@ -337,68 +344,53 @@ function start_gqgrid(){
             autowidth: true,
             colNames:['序号','毕业院校','专业','所获学位','起止时间'],
             colModel:[
-                {   name:'id',          
-                    index:'id', 
-                    width:60, 
-                    sortable:false, 
-                    editable:false,
-                    resize:false, 
-                    align:'center',
-                }               
-                ,{  name:'school',      
-                    index:'school',
-                    width:140,  
-                    sortable:false, 
-                    editable: true, 
-                    align:'center'
-                }
-                ,{  name:'profession',  
-                    index:'profession', 
-                    width:140, 
-                    sortable:false,  
-                    editable:true, 
-                    align:'center'
-                }
-                ,{  name:'degree', 
-                    index:'degree', 
-                    width:80, 
-                    sortable:false, 
-                    editable:true, 
-                    align:'center'
-                }
-                ,{  name:'date', 
-                    index:'date', 
-                    width:110, 
-                    sortable:true, 
-                    editable: true,
-                    edittype:'text',
-                    align:'center'
-                }
-                ],
+                { name:'id',         index:'id',         width:60,  fixed:true, sortable:false, editable:false,  resize:false, align:'center', 
+                  editrules:{required : true} ,
+                },
+                { name:'school',     index:'school',     width:160, fixed:true, sortable:false, editable:true,   resize:false, align:'center', 
+                  editrules:{required : true} ,
+                },
+                { name:'profession', index:'profession', width:160, fixed:true, sortable:false, editable:true,   resize:false, align:'center', 
+                  editrules:{required : true} ,
+                },
+                { name:'degree',     index:'degree',     width:80,  fixed:true, sortable:false, editable:true,   resize:false, align:'center', 
+                  editrules:{required : true} ,
+                },
+                { name:'date',       index:'date',       width:140, fixed:true, sortable:false, editable:true,   resize:false, align:'center', 
+                  editrules:{required : true, custom:true, custom_func:datecheck, } ,
+                },
+            ],
             viewrecords : true, 
             altRows: true,
-            toppager: false,
             hidegrid:false,
             rowNum:10,
             rowList : [ 10, 20, 30 ],
             pager : '#grid_paper_1',
             emptyrecords: "<span style='color:red'>还未添加记录</span>", 
-            loadError: function(xhr,status,error){  
+            loadComplete: function(){  
+            	//ajax数据返回失败
+            	   if( $(this).getGridParam('userdata') != null ){
                       $('.Leo_question').css('width','843px')
                       $('.modal-body').html('');
-                    $('.modal-body').html(
-                     "<p class=\"bg-danger\" style='padding:20px;'>获取教育经历失败，请重新获取</p>"
-                     );
-                 $('.modal-footer').html('');
-                 $('.modal-footer').html(
-                    "<a href='/examinee/editinfo'><button type=\"button\" class=\"btn btn-primary\">重新获取</button></a>"
-                 );
-                 $('#myModal').modal({
-                    keyboard:true,
-                    backdrop:'static'
-                 })
-                     
-                      }, 
+                      $('.modal-body').html(
+                        "<p class=\"bg-danger\" style='padding:20px;'>"+$(this).getGridParam('userdata')+"</p>"
+                      );
+                      $('.modal-footer').html('');
+                      $('.modal-footer').html(
+                        "<a href='/examinee/editinfo'><button type=\"button\" class=\"btn btn-primary\">重新获取</button></a>"
+                      );
+                      $('#myModal').modal({
+                        keyboard:true,
+                        backdrop:'static'
+                      })
+                    }else{
+                    //加载页面翻转的按钮
+                    updatePagerIcons(this);
+                    }
+            }, 
+            setGridWidth: function(){ 
+                $(".page-content").width();
+            }, 
             editurl: "/examinee/updateedu",
             caption: "教育经历"
         }).navGrid('#grid_paper_1',
@@ -436,19 +428,29 @@ function start_gqgrid(){
             autowidth: true,
             colNames:['序号','就职单位','部门','岗位/职务','起止时间'],
             colModel:[
-                {name:'id',index:'id', width:60, fixed:true, sortable:false, resize:false, align:'center',  },
-                {name:'employer', index:'employer', width:170, editable:true, sortable:false, align:'center'},
-                {name:'unit',index:'unit', sortable:false, width:80, editable:true,align:'center'},
-                {name:'duty', index:'duty', width:80, sortable:false, editable:true, align:'center'},
-                {name:'date',index:'date', sortable:true,width:140, editable: true,edittype:'text',align:'center'}
+                { name:'id',       index:'id',       width:60,   fixed:true, editable:false, sortable:false, resize:false, align:'center', 
+                  editrules:{required : true} ,
+                },
+                { name:'employer', index:'employer', width:160,  fixed:true, editable:true,  sortable:false, resize:false, align:'center', 
+                  editrules:{required : true} ,
+                },
+                { name:'unit',     index:'unit',     width:160,  fixed:true, editable:true,  sortable:false, resize:false, align:'center', 
+                  editrules:{required : true} ,
+                },
+                { name:'duty',     index:'duty',     width:80,   fixed:true, editable:true,  sortable:false, resize:false, align:'center', 
+                  editrules:{required : true} ,
+                },
+                { name:'date',     index:'date',     width:140,  fixed:true, editable:true,  sortable:false, resize:false, align:'center', 
+                  editrules:{required : true, custom:true, custom_func:datecheck,}
+                },
                 ], 
             viewrecords : true, 
             altRows: true,
             hidegrid:false,
-            rowNum:1,
-            rowList : [ 1, 2, 3],
+            rowNum:10,
+            rowList : [ 10, 20, 30],
             pager : '#grid_paper_2',
-            emptyrecords: '还未添加记录', 
+            emptyrecords: "<span style='color:red'>还未添加记录</span>", 
             editurl: "/examinee/updatework",
             caption: "工作经历",
     
@@ -481,4 +483,19 @@ function start_gqgrid(){
         );
  
     }
+function updatePagerIcons(table) {
+            var replacement = 
+            {
+                'ui-icon-seek-first' : 'ace-icon fa fa-angle-double-left bigger-140',
+                'ui-icon-seek-prev' : 'ace-icon fa fa-angle-left bigger-140',
+                'ui-icon-seek-next' : 'ace-icon fa fa-angle-right bigger-140',
+                'ui-icon-seek-end' : 'ace-icon fa fa-angle-double-right bigger-140'
+            };
+            $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
+                var icon = $(this);
+                var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
+                
+                if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
+            })
+        }
 </script> 
