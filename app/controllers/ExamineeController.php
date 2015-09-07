@@ -53,7 +53,12 @@ class ExamineeController extends Base
     		return;
     	}
         $project_id = $exminee->project_id;
-        $inquery_data = MemoryCache::getInqueryQuestion($project_id);
+        try{
+        	$inquery_data = MemoryCache::getInqueryQuestion($project_id);
+        }catch(Exception $e){
+        	$this->dataReturn(array('error'=>$e->getMessage()));
+        	return;
+        }
         if(count($inquery_data) == 0 ){
         	$this->dataReturn(array('error'=>'需求量表获取失败,返回数据为空'));
         	return ;
@@ -113,9 +118,15 @@ class ExamineeController extends Base
         	$this->dataReturn(array('error'=>'不存在试卷-'.$paper_name));
         	return ;
         }
+        try{
         $paper_info = MemoryCache::getPaperDetail($paper_name);
         $paper_id = $paper_info->id;
         $project_detail_json = MemoryCache::getProjectDetail($project_id);
+        }catch(Exception $e){
+        	$this->dataReturn(array('error'=>$e->getMessage()));
+        	return ;
+        }
+       
         $project_detail_array = json_decode($project_detail_json->exam_json, true);
         if(!isset($project_detail_array[$paper_name])){
         	$this->dataReturn(array("no_ques"=>'none'));
@@ -123,6 +134,7 @@ class ExamineeController extends Base
         }
         $question_number_array = $project_detail_array[$paper_name];
        	$rtn_data = array();
+       	try{
        	foreach($question_number_array as $value){
        		$question_data = MemoryCache::getQuestionDetail($value, $paper_id);
        		$rtn_data[] = array(
@@ -130,6 +142,10 @@ class ExamineeController extends Base
        				'title'=>empty($question_data->topic)?'':$question_data->topic,
        				'options'=>$question_data->options
        		);
+       	}
+       	}catch(Exception $e){
+       		$this->dataReturn(array('error'=>$e->getMessage()));
+       		return ;
        	}
        	$this->dataReturn(array("question"=>$rtn_data,"description"=>$paper_info->description,"order"=> $question_number_array));
         return ;
