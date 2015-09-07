@@ -49,6 +49,7 @@
 
     <div style="width:100%;height:40px;text-align:center;margin: 10px 10px;">
         <div class="form-group">
+            <a class="btn btn-success" href="/admin/index">返回</a>
             <a id="submit" class="btn btn-primary">提交</a>
         </div>
     </div>

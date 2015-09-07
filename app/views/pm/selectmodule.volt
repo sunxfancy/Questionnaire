@@ -88,7 +88,7 @@
         });  
         $("#submit").click(function(){    
             $('.Leo_question').css('width','843px');    
-            $('.modal-body').html("<p class=\"bg-success\" style='padding:20px;'>正在处理中，请勿关闭浏览器</p>");
+            $('.modal-body').html("<p class=\"bg-success\" style='padding:20px;'>正在处理中，请勿关闭浏览器</p>"+"<div style='text-align:center; padding:5px 10px 10px 10px;'><img src='/image/loading.gif' style='width:300px' /></div>");
             $('.modal-footer').html('');
             $('#myModal').modal({keyboard:true, backdrop:'static'});
 

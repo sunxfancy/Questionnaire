@@ -302,7 +302,10 @@ class PmController extends Base
         $this->view->disable();
         $project_id = $this->session->get('Manager')->project_id;
         $examinee = Examinee::findFirst($examinee_id);
-        if ($examinee->state > 3) {
+        if ($examinee->state == 0) {
+            $this->dataReturn(array('error'=>'被试还未答题'));
+            return ;
+        }else if ($examinee->state > 3) {
             CheckoutExcel::checkoutExcel11($examinee,$project_id);
         }else{
             try{
