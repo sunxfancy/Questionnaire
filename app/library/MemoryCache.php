@@ -6,6 +6,12 @@
 	 */
 class MemoryCache {
 	
+	public static function checkConnect(){
+		$test = @memcache_connect('127.0.0.1',11211);
+		if( $test===false ){
+  			throw new Exception('memcached is _probably_ not running');
+		}
+	}
 	/**
 	 * @method $rt->module_names, $rt->index_names, $rt->factor_names, $rt->exam_json;
 	 * @usage 用于缓存通过project_id获取到的ProjectDetail表中的数据
@@ -13,6 +19,7 @@ class MemoryCache {
 	 * @param int $project_id
 	 */
 	public static function getProjectDetail($project_id) {
+		self::checkConnect();
 		return ProjectDetail::findFirst(
 			  array (
 			  		"project_id = :project_id:",
@@ -27,6 +34,7 @@ class MemoryCache {
 	 * @param string $paper_name
 	 */
 	public static function getPaperDetail($paper_name){
+		self::checkConnect();
 		return Paper::findFirst(
 			  	array(
 					"name = :name:",
@@ -43,6 +51,7 @@ class MemoryCache {
 	 * @param string $factor_name
 	 */
 	public static function getFactorDetail($factor_name){
+		self::checkConnect();
 		return Factor::findFirst(
 			 array(
 			"name = :factor_name:",
@@ -58,6 +67,7 @@ class MemoryCache {
 	 * @param unknown $index_name
 	 */
 	public static function getIndexDetail($index_name){
+		self::checkConnect();
 		return Index::findFirst(
 			array(
 			"name = :index_name:",
@@ -72,6 +82,7 @@ class MemoryCache {
 	 * @param unknown $project_id
 	 */
 	public static function getInqueryQuestion($project_id){
+		self::checkConnect();
 		return InqueryQuestion::find(
 			array(
 				"project_id = :project_id:",
@@ -89,6 +100,7 @@ class MemoryCache {
 	 * @param int $paper_id
 	 */
 	public static function getQuestionDetail($qustion_number, $paper_id){
+		self::checkConnect();
 		return Question::findFirst(
 			array(
 			"paper_id = :paper_id: AND number=:question_number:",
