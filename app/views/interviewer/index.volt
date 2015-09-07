@@ -14,9 +14,7 @@
 
 <script type="text/javascript">
 	jQuery(function($) {
-		var grid_selector = "#grid-table";
-		var pager_selector = "#grid-pager";
-		
+		var grid_selector = "#grid-table";		
 		//resize to fit page size
 		$(window).on('resize.jqGrid', function () {
 			$(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
@@ -32,12 +30,12 @@
 		jQuery(grid_selector).jqGrid({
 			url: "/pm/examineeofmanager/{{manager_id}}",
 			datatype: "json",
-			height: '500px',
+			height: '420px',
 			autowidth: true,
 			colNames:['被试编号','姓名','性别', '最后登录时间','是否测试完毕','查看测试数据','增加面巡意见'],
             colModel:[
                 {name:'number',index:'number', sorttype:"int",width:100, editable: false,align:'center'},
-                {name:'name',index:'name', sortable:true, width:110,sorttype:"string", editable:true,align:'center'},
+                {name:'name',index:'name', sortable:true, width:100,sorttype:"string", editable:true,align:'center'},
                 {name:'sex',index:'sex',width:60, sortable:false, editable:false,align:'center',
                 	formatter:function(cellvalue){
                         var temp = "";
@@ -51,7 +49,7 @@
                     }
             	},
             	{name:'last_login',index:'last_login', sortable:true,width:200, editable: false,unformat:pickDate,align:'center'},
-                {name:'state',index:'state',width:135, sortable:false, editable:false,align:'center',
+                {name:'state',index:'state',width:90, sortable:false, editable:false,align:'center',
                 	formatter:function(cellvalue){
                         var temp = "";
                         if(cellvalue > 0){
@@ -63,13 +61,13 @@
                         return temp;
                     }
             	},                
-                {name:'result',index:'result', sortable:false, width:130, resize:false,align:'center',
+                {name:'result',index:'result', sortable:false, width:100, resize:false,align:'center',
                     formatter:function(cellvalue,options,rowObject){
                         var temp = "<a href='/pm/check/"+rowObject.id+"' >导出</a>";
                         return temp;
                     }   
                 },
-                {name:'point',index:'point', sortable:false,width:200, editable: false,align:'center',
+                {name:'point',index:'point', sortable:false,width:100, editable: false,align:'center',
             		formatter:function(cellvalue,options,rowObject){
                         var temp = "<a href='/interviewer/point/"+rowObject.id+"' >进入编辑</a>";
                         return temp;
@@ -77,9 +75,6 @@
             	}
             ], 
 			viewrecords : true,
-			rowNum:10,
-			rowList:[10,20,30],
-			pager : pager_selector,
 			altRows: true,
 			loadComplete : function() {
 				var table = this;
@@ -88,7 +83,6 @@
 					updatePagerIcons(table);
 				}, 0);
 			},
-
 			editurl: "/pm/update",//nothing is saved
 			caption: "被试人员列表",
 			autowidth: true
@@ -96,7 +90,7 @@
 		$(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
 
 		//navButtons
-		jQuery(grid_selector).jqGrid('navGrid',pager_selector,
+		jQuery(grid_selector).jqGrid('navGrid',
 			{
 				//view record form
 				recreateForm: true,

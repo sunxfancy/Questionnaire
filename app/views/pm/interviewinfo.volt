@@ -2,7 +2,7 @@
     <div style="width:49.5%;height:90%;float:left;">
         <div style="padding:10px;text-align:center;font-size:26px;">已完成名单</div>
         <div style="width:95%;height:3px;background-color:red;margin:0 auto;"></div>
-        <div style="overflow:auto;">
+        <div style="height:380px;overflow:auto;">
             <ul style="list-style:none;margin-left:150px;overflow:auto;" id="com_list"></ul>
         </div>
     </div>
@@ -10,7 +10,7 @@
     <div style="width:49.5%;height:90%;float:right;">
         <div style="padding:10px;text-align:center;font-size:26px;">未完成名单</div>
         <div style="width:95%;height:3px;background-color:red;margin:0 auto;"></div>
-        <div style="overflow:auto;">
+        <div style="height:380px;overflow:auto;">
             <ul style="list-style:none;margin-left:150px;overflow:auto;" id="not_list"></ul>
         </div>
     </div>
