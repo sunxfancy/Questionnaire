@@ -337,6 +337,20 @@ function datecheck (value,colName) {
     }
 }
 function start_gqgrid(){
+	  var edit_options={
+                    left:300,
+                    top:100,
+                    reloadAfterSubmit:true,
+                    closeAfterEdit:true
+ 
+        };
+    var add_options={
+                    left:300,
+                    top:100,
+                    reloadAfterSubmit:true,
+                    closeAfterAdd:true
+ 
+    };
         jQuery('#grid_table_1').jqGrid({
             url: "/examinee/listedu",
             datatype: "json",
@@ -390,7 +404,10 @@ function start_gqgrid(){
             }, 
             setGridWidth: function(){ 
                 $(".page-content").width();
-            }, 
+            },        
+            afterSubmit: function(){
+            	alert('ee');
+            },
             editurl: "/examinee/updateedu",
             caption: "教育经历"
         }).navGrid('#grid_paper_1',
@@ -406,16 +423,9 @@ function start_gqgrid(){
            refresh: false,
            search: false,
            view: false,
-        }
-        ,{ //add 添加时
-        top : 100,  //位置
-        left: 300, //位置
-        }
-        ,{ //edit 添加时
-        top : 100,  //位置
-        left: 300, //位置
-        }
-        ,{ //del 添加时
+        },
+        edit_options,add_options,
+        { //del 添加时
         top : 100,  //位置
         left: 300, //位置
         }
@@ -455,7 +465,8 @@ function start_gqgrid(){
             caption: "工作经历",
     
         }).navGrid('#grid_paper_2',
-          {  add: true,
+          {  
+           add: true,
            addicon : 'ace-icon fa fa-plus-circle purple',
            addtext:'添加',
            edit: true,
@@ -467,16 +478,9 @@ function start_gqgrid(){
            refresh: false,
            search: false,
            view: false,
-        }
-        ,{ //add 添加时
-        top : 100,  //位置
-        left: 300, //位置
-        }
-        ,{ //edit 添加时
-        top : 100,  //位置
-        left: 300, //位置
-        }
-        ,{ //del 添加时
+        },
+        edit_options,add_options,
+        { //del 添加时
         top : 100,  //位置
         left: 300, //位置
         }
