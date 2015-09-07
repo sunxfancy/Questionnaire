@@ -39,5 +39,28 @@ class ExamineeDB {
 		}
 	}
 	
+	/**
+	 * 更新Examinee表中的other选项
+	 * @param json $json
+	 * @param Examinee:findFirst(id); $examinee
+	 * @throws Exception
+	 * @return boolean
+	 */
+	public static function unpdateOther($json, $examinee){
+		try{
+			$manager     = new TxManager();
+			$transaction = $manager->get();
+			$examinee->setTransaction($transaction);
+			$examinee->other = $json;
+			if ($examinee->save() == false){
+				$transaction->rollback("插入数据库失败-".print_r($array,true));
+			}
+			$transaction->commit();
+			return true;
+		}catch (TxFailed $e) {
+			throw new Exception($e->getMessage());
+		}
+	}
+	
 	
 }

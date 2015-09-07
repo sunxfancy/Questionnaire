@@ -251,13 +251,16 @@ class ExamineeController extends Base
     	$this->view->disable();
     	$page = $this->request->get('page');
     	$rows = $this->request->get('rows');
+    	$rtn_array = array();
     	$examinee = $this->session->get('Examinee');
     	if(empty($examinee)){
-    		throw new Exception('用户信息获取失败');
+    		 #返回错误信息
+    		  $rtn_array['userdata'] = "用户信息获取失败";
+    		  echo json_encode($rtn_array,JSON_UNESCAPED_UNICODE);
+    		  return;
     	}
     	$examinee_info = Examinee::findFirst($examinee->id);
     	$json = json_decode($examinee_info->other,true);
-    	$rtn_array = array();
     	$rtn_array['records'] = 0;
     	if(isset($json['education'])){
     		$count = count($json['education']);
@@ -280,7 +283,7 @@ class ExamineeController extends Base
     		return;
     	}else{
     		$rtn_array['total'] = 0;
-    		$rtn_array['page'] = 0;
+    		$rtn_array['page'] = $page;
     		$rtn_array['rows'] = null;
     		echo json_encode($rtn_array,JSON_UNESCAPED_UNICODE);
     		return;
@@ -296,87 +299,139 @@ class ExamineeController extends Base
         }
         $examinee_info = Examinee::findFirst($examinee->id);
         $json = json_decode($examinee_info->other,true);
-        $array = array();
-        $array['rows'] = $json['education'];
-        if ($oper == 'edit') {
-        	//edit 
-            $id = $this->request->getPost('id', 'int');
-            $json['education'][$id]['school']     = $this->request->getPost('school', 'string');
-            $json['education'][$id]['profession'] = $this->request->getPost('profession', 'string');
-            $json['education'][$id]['degree']     = $this->request->getPost('degree', 'string');
-            $json['education'][$id]['date']       = $this->request->getPost('date', 'string');
-            $array ['rows'][$id] = $json['education'][$id];
-            $json['education'] = $array['rows'];
-        }else if ($oper == 'del') {
-        	//del 
-            $id = $this->request->getPost('id', 'int');
-            array_splice($array['rows'],$id,1);
-            $json['education'] = $array['rows'];
-        }else{
-			//add 
-            $id = count($json['education']) + 1;
-            $json['education'][$id]['school']     = $this->request->getPost('school', 'string');
-            $json['education'][$id]['profession'] = $this->request->getPost('profession', 'string');
-            $json['education'][$id]['degree']     = $this->request->getPost('degree', 'string');
-            $json['education'][$id]['date']       = $this->request->getPost('date', 'string');
-            $array ['rows'][$id] = $json['education'][$id];
-            $json['education'] = $array['rows'];
+        $rtn_array = array();
+        if(!isset($json['education'])){
+        	$json['education'] = array();
         }
-        $json = json_encode($json,JSON_UNESCAPED_UNICODE);
-        $examinee->other = $json;
-        if (!$examinee->save()) {
-            foreach ($examinee->getMessages() as $msg) {
-                echo $msg."\n";
-            }
+        if(!isset($json['work'])){
+        	$json['work'] = array();
         }
+        $work_array = $json['work'];
+		$education_array = $json['education'];
+		if($oper == 'del' ){
+			//del ok
+			$id = $this->request->getPost('id', 'int');
+			array_splice($education_array,$id-1,1);	
+		}else{
+			$new_array = array();
+			$new_array['school']     =  $this->request->getPost('school', 'string');
+			if(empty($new_array['school']  )){ return false; }
+			$new_array['profession'] = $this->request->getPost('profession', 'string');
+			if(empty($new_array['profession'] )){ return false; }
+			$new_array['degree']     = $this->request->getPost('degree', 'string');
+			if(empty($new_array['degree'])){ return false; }
+			$new_array['date']       = $this->request->getPost('date', 'string');
+			if(empty($new_array['date'])){ return false; }
+			$id = $this->request->getPost('id', 'int');
+			if(empty($id)){
+				//add
+				$education_array[] = $new_array;
+				
+			}else{
+				//edit
+				foreach($new_array as $key=>$value){
+					$education_array[$id-1][$key] = $value;
+				}
+			} 			
+		}
+		$rtn_array['education'] = $education_array;
+		$rtn_array['work'] = $work_array;
+		$json = json_encode($rtn_array,JSON_UNESCAPED_UNICODE);
+		ExamineeDB::unpdateOther($json, $examinee_info);
+		return;
     }
     
     public function listworkAction(){
-        $this->response->setHeader("Content-Type", "text/json; charset=utf-8");
-        $this->view->disable();
-        $id = $this->session->get('Examinee')->id;
-        $examinee = Examinee::findFirst($id);
-        $json = json_decode($examinee->other,true);
-        $array = array();
-        $array['records'] = count($json['work']);
-        for($i = 0;$i<$array['records'] + 1;$i++){
-            $json['work'][$i]['id'] = $i;
-        }
-        $array['rows'] = $json['work'];
-        echo json_encode($array,JSON_UNESCAPED_UNICODE);
+    	$this->view->disable();
+    	$page = $this->request->get('page');
+    	$rows = $this->request->get('rows');
+    	$rtn_array = array();
+    	$examinee = $this->session->get('Examinee');
+    	if(empty($examinee)){
+    		 #返回错误信息
+    		  $rtn_array['userdata'] = "用户信息获取失败";
+    		  echo json_encode($rtn_array,JSON_UNESCAPED_UNICODE);
+    		  return;
+    	}
+    	$examinee_info = Examinee::findFirst($examinee->id);
+    	$json = json_decode($examinee_info->other,true);
+    	$rtn_array['records'] = 0;
+    	if(isset($json['work'])){
+    		$count = count($json['work']);
+    		$rtn_array['total']   = ceil($count/$rows);
+    		$rtn_array['page'] = $page;
+    		$line_start = $rows*($page-1);
+    		$line_end = $line_start+$rows;
+    		$tmp_array = array();
+    		for( $i = $line_start; $i <= $line_end; $i++ ){
+    				if(isset($json['work'][$i])){
+    					 $json['work'][$i]['id'] = $i+1;
+    					 $tmp_array[] = $json['work'][$i];
+    				}else{
+    					break;
+    				}
+    		}
+    		$rtn_array['records'] = count($tmp_array);
+    		$rtn_array['rows'] = $tmp_array;
+    		echo json_encode($rtn_array,JSON_UNESCAPED_UNICODE);
+    		return;
+    	}else{
+    		$rtn_array['total'] = 0;
+    		$rtn_array['page'] = $page;
+    		$rtn_array['rows'] = null;
+    		echo json_encode($rtn_array,JSON_UNESCAPED_UNICODE);
+    		return;
+    	}        
     }
 
     public function updateworkAction(){
-        $this->view->disable();
+     $this->view->disable();
         $oper = $this->request->getPost('oper', 'string');
-        $id = $this->session->get('Examinee')->id;
-        $examinee = Examinee::findFirst($id);
-        // print_r($examinee);
-        $json = json_decode($examinee->other,true);
-        $array = array();
-        $array['rows'] = $json['work'];
-        if ($oper == 'edit') {
-            $id = $this->request->getPost('id', 'int');
-            $json['work'][$id]['employer']     = $this->request->getPost('employer', 'string');
-            $json['work'][$id]['unit'] = $this->request->getPost('unit', 'string');
-            $json['work'][$id]['duty']     = $this->request->getPost('duty', 'string');
-            $json['work'][$id]['date']       = $this->request->getPost('date', 'string');
-            $array ['rows'][$id] = $json['work'][$id];
-            $json['work'] = $array['rows'];
-        } 
-        if ($oper == 'del') {
-            $id = $this->request->getPost('id', 'int');
-            array_splice($array['rows'],$id,1);
-            $json['work'] = $array['rows'];
+        $examinee= $this->session->get('Examinee');
+        if(empty($examinee)){
+        	throw new Exception('用户信息获取失败');
         }
-        //print_r($json);
-        $json = json_encode($json,JSON_UNESCAPED_UNICODE);
-        $examinee->other = $json;
-        if (!$examinee->save()) {
-            foreach ($examinee->getMessages() as $msg) {
-                echo $msg."\n";
-            }
+        $examinee_info = Examinee::findFirst($examinee->id);
+        $json = json_decode($examinee_info->other,true);
+        $rtn_array = array();
+        if(!isset($json['work'])){
+        	$json['work'] = array();
         }
+        if(!isset($json['education'])){
+        	$json['education'] = array();
+        }
+        $work_array = $json['work'];
+		$education_array = $json['education'];
+		if ($oper == 'del'){
+			$id = $this->request->getPost('id', 'int');
+			array_splice($work_array,$id-1,1);
+		}else{
+			$new_array = array();
+			$new_array['employer']    = $this->request->getPost('employer', 'string');
+			if(empty($new_array['employer'])) { return false; }
+			$new_array['unit'] = $this->request->getPost('unit', 'string');
+			if(empty($new_array['unit'])) { return false; }
+			$new_array['duty']     = $this->request->getPost('duty', 'string');
+			if(empty($new_array['duty'])) { return false; }
+			$new_array['date']       = $this->request->getPost('date', 'string');
+			if(empty($new_array['date'])) { return false; }
+			$id = $this->request->getPost('id', 'int');
+			if(empty($id)){
+				//add
+				$work_array[] = $new_array;
+			}else{
+				//edit
+				foreach($new_array as $key=>$value){
+					$work_array[$id-1][$key] = $value;
+				}
+			}
+		}
+		$rtn_array['education'] = $education_array;
+		$rtn_array['work'] = $work_array;
+		$json = json_encode($rtn_array,JSON_UNESCAPED_UNICODE);
+		ExamineeDB::unpdateOther($json, $examinee_info);
+		return;
+       
     }
 
     public function dataReturn($ans){
