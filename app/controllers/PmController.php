@@ -229,7 +229,7 @@ class PmController extends Base
         if ($sord != null)
             $sort = $sort.' '.$sord;
         $builder = $builder->orderBy($sort);
-        $this->interviewData($builder);
+        $this->datareturn($builder);
     }
 
     public function updateinterviewerAction(){
@@ -570,42 +570,6 @@ class PmController extends Base
         $this->datareturn($builder);  
     }
 
-    public function getInterviewResult($manager_id){
-        $rows = Interview::find(array(
-                'manager_id = :manager_id:',
-                'bind' => array('manager_id' => $manager_id)));
-        $total = count($rows);
-        $term = "remark<>'' AND advantage<>'' AND disadvantage<>'' AND manager_id=:manager_id:";
-        $col = Interview::find(array(
-                $term,
-                'bind' => array('manager_id' => $manager_id)));
-        $part_num = count($col);
-        $msg = $part_num.'/'.$total;
-        return $msg;
-    }
-
-    public function interviewData($builder){
-        $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
-        $limit = $this->request->getQuery('rows', 'int');
-        $page = $this->request->getQuery('page', 'int');
-        if (is_null($limit)) $limit = 10;
-        if (is_null($page)) $page = 1;
-        $paginator = new Phalcon\Paginator\Adapter\QueryBuilder(array("builder" => $builder,
-            "limit" => $limit,
-            "page" => $page));
-        $page = $paginator->getPaginate();
-        $ans = array();
-        $ans['total'] = $page->total_pages;
-        $ans['page'] = $page->current;
-        $ans['records'] = $page->total_items;
-        foreach ($page->items as $key => $item){
-            $item->degree_of_complete = $this->getInterviewResult($item->id);
-            $ans['rows'][$key] = $item;
-        }
-        echo json_encode($ans);
-        $this->view->disable();
-    }
-
     function dataBack($ans){
         $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
         $this->view->disable();
@@ -656,30 +620,6 @@ class PmController extends Base
             $result[$key] = $item;
         }
         return $result;
-    }
-
-    public function datareturn($builder){
-        $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
-        $limit = $this->request->getQuery('rows', 'int');
-        $page = $this->request->getQuery('page', 'int');
-        if (is_null($limit)) $limit = 10;
-        if (is_null($page)) $page = 1;
-        $paginator = new Phalcon\Paginator\Adapter\QueryBuilder(array("builder" => $builder,
-                                                                      "limit" => $limit,
-                                                                      "page" => $page));
-        $page = $paginator->getPaginate();
-        $ans = array();
-        $ans['total'] = $page->total_pages;
-        $ans['page'] = $page->current;
-        $ans['records'] = $page->total_items;
-        foreach ($page->items as $key => $item){
-            if (isset($item->sex)) {
-                $item->sex = ($item->sex == 1)?'男':'女';
-            }
-            $ans['rows'][$key] = $item;
-        }
-        echo json_encode($ans);
-        $this->view->disable();
     }
 
     public function getDetail($project_id){
