@@ -49,6 +49,7 @@
 
     <div style="width:100%;height:40px;text-align:center;margin: 10px 10px;">
         <div class="form-group">
+            <a class="btn btn-success" href="/admin/index">返回</a>
             <a id="submit" class="btn btn-primary">提交</a>
         </div>
     </div>
@@ -70,7 +71,7 @@
                 $.post('/admin/newproject', project_info,callbk);
         }); 
         function callbk(){
-                window.location.href = "/admin/index";
+            window.location.href = "/admin/index";
         }
     });
 
@@ -97,7 +98,7 @@
         format: 'yyyy-mm-dd hh:ii',
         autoclose: true,
         todayBtn: true,
-        startDate: now,
+        startDate: $("#begintime").val(),
         pickerPosition: "bottom-left"
     });
 
