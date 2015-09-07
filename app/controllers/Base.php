@@ -79,10 +79,31 @@ class Base extends \Phalcon\Mvc\Controller
         $ans['records'] = $page->total_items;
         foreach ($page->items as $key => $item)
         {
+            if (isset($item->sex)) {
+                $item->sex = ($item->sex == 1)?'男':'女';
+            }
+            if (isset($item->degree_of_complete)) {
+                $item->degree_of_complete = $this->getInterviewResult($item->id);
+            }
             $ans['rows'][$key] = $item;
         }
         echo json_encode($ans);
         $this->view->disable();
+    }
+
+    public function getInterviewResult($manager_id){
+        $rows = Interview::find(array(
+                'manager_id = :manager_id:',
+                'bind' => array('manager_id' => $manager_id)));
+        $total = count($rows);
+        $term = "remark<>'' AND advantage<>'' AND disadvantage<>'' AND manager_id=:manager_id:";
+        $col = Interview::find(array(
+                $term,
+                'bind' => array('manager_id' => $manager_id)));
+        $part_num = count($col);
+        $msg = $part_num.'/'.$total;
+        echo "qqq";
+        return $msg;
     }
 }
 
