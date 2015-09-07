@@ -71,7 +71,7 @@
                 $.post('/admin/newproject', project_info,callbk);
         }); 
         function callbk(){
-                window.location.href = "/admin/index";
+            window.location.href = "/admin/index";
         }
     });
 
@@ -98,7 +98,7 @@
         format: 'yyyy-mm-dd hh:ii',
         autoclose: true,
         todayBtn: true,
-        startDate: now,
+        startDate: $("#begintime").val(),
         pickerPosition: "bottom-left"
     });
 

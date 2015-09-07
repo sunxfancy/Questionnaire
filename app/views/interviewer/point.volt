@@ -70,11 +70,16 @@
         function callbk(data){
             data = eval("("+data+")");
             if(data['status'] == 'success'){
-                alert("评论提交成功");
-                window.location.href = '/interviewer/index'
+                // alert("评论提交成功！点击“确定”返回主页面。");
+                // window.location.href = '/interviewer/index'
             }else{
-                alert("评论提交失败");
+                alert("评论提交失败，请重新提交！");
             }
         }
     });
+
+    function check(){
+        var ad1 = document.getElementById("advantage1").innerHTML;
+        console.log(ad1);
+    }
 </script>

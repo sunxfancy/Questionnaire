@@ -17,14 +17,22 @@ class AdminController extends Base
     public function newprojectAction(){
         $date = date('y');
         $project = Project::find();
-        $project_num = count($project)+1;
-        $project_last = $project->getLast();
-        if($project_num == 1){ 
-                $project_id = $date.substr(strval($project_num+100),1,2);
-        }else{           
-            $project_id = $project_last->id+1;
+        if (count($project)  == 0) {
+            $project_id = $date.'01';
+        }else{
+            $project_num1 = 0;$project_num2 = 0;
+            foreach ($project as $projects) {
+                if (intval($projects->id) - intval($date.'00') > 0) {
+                    $project_num1++;
+                }
+            }
+            if ($project_num1 > 0) {
+                $project_last = $project->getLast();
+                $project_id = $project_last->id+1;
+            }else{
+                $project_id = $date.'01';
+            }
         }
-
         $manager = new Manager();
         $this->getData($manager, array(
             'name'     => 'pm_name',
