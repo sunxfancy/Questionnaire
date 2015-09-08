@@ -1,3 +1,11 @@
+    <!--添加datepicker支持-->  
+    <script src="js/jquery.ui.core.js" src="js/jquery.ui.core.js" type="text/javascript"></script>  
+    <script src="js/jquery.ui.datepicker.js" src="js/jquery.ui.datepicker.js" type="text/javascript"></script>  
+    <!--引入样式css-->  
+    <link type="text/css" rel="stylesheet" href="css/jquery-ui-1.7.3.custom.css" href="css/jquery-ui-1.7.3.custom.css" />  
+    <!-- 添加中文支持-->  
+    <script src="js/jquery.ui.datepicker-zh-CN.js" src="js/jquery.ui.datepicker-zh-CN.js" type="text/javascript"></script>  
+
 <div class="Leo_question">
     <center><p style="margin-top:15px;font-size:28px;font-family:'Microsoft YaHei';">评测项目信息填写</p></center>
     <hr size="2" color="#FF0000" />

@@ -74,7 +74,7 @@ class Base extends \Phalcon\Mvc\Controller
                                                                       "page" => $page));
         $page = $paginator->getPaginate();
         $ans = array();
-        $ans['total'] = $page->total_pages;
+        $ans['total'] = $page->total_pages.'1111';
         $ans['page'] = $page->current;
         $ans['records'] = $page->total_items;
         foreach ($page->items as $key => $item)

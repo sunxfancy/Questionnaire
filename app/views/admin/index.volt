@@ -1,26 +1,21 @@
-
 <link rel="stylesheet" type="text/css" href="/css/css/Leo_projects_css.css" />
-
-
 <script type="text/javascript" src="/jqGrid/js/jquery.jqGrid.min.js"></script>
 <script type="text/javascript" src="/lib/bootstrap-datetimepicker.js"></script>
 <script type="text/javascript" src="/jqGrid/js/i18n/grid.locale-cn.js"></script>
 <script type="text/javascript" src="/js/bootstrap.js"></script>
 
-
 <div class="Leo_question">
-    <div class="Leo_project_manage"><div style="height:5px;"></div>
-    <input type="text" style="width:200px;height:25px;" />
-    <input type="button" value="搜索" style="width:50px;height:25px;"/>
-    <input type="button" class="Leo_project_addnew" onclick="window.location.href='/admin/addnew'" value="添加一个新项目" />
+	<div style="padding:10px 40px;text-align:right;">
+    <a href='/admin/addnew' type='button' class="btn btn-success" style='padding:5px 40px;'>添加新项目</a>
     </div>
-<div style="width:100%;height:450px;overflow:hidden;">
+<div style="text-align:center;height:448px;overflow:hidden;">
 		<table id="grid-table"></table>
-		<div id="grid-pager"></div>
+		<div id="grid-pager" style='height:80px;'></div>
 </div>
 </div>
 
 <script type="text/javascript">
+
 	jQuery(function($) {
 		var grid_selector = "#grid-table";
 		var pager_selector = "#grid-pager";
@@ -38,55 +33,58 @@
 	    })
 
 		jQuery(grid_selector).jqGrid({
-			subGrid : false,
-
 			url: "/admin/list",
 			datatype: "json",
-			height: '300px',
-			shrinkToFit:true,
-			forceFit:true,
-			autowidth: true,
-			colNames:[' ', ' ', '项目编号','项目名称','项目经理', '经理账号', '开始时间','结束时间','参与人数'],
+			height:'306px',
+			autowidth:true,
 			colModel:[
-				{name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
-					formatter:'actions', 
-					formatoptions:{ 
-						keys:true,
-						
-						delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
-					}
-				},
-				{name:'detail',index:'detail', sortable:false, width:40, resize:false,align:'center',
-                    formatter:function(cellvalue, options, rowObject){
-                        var temp = "<div class='ui-pg-div ui-inline-edit' data-original-title='查看详细信息''><a href='/admin/detail/"+rowObject.id+"' ><i class='fa fa-th-list'></i></a></div>";
-                        return temp;
-                    }
-                },
-				{name:'id',index:'id', sorttype:"int", width:70, editable: false,align:'center'},
-				{name:'name',index:'name', sortable:true, width:160,sorttype:"string", editable:true,align:'center'},
-				{name:'manager_name',index:'manager_name',width:80, sortable:false, sorttype:"string", editable:true,align:'center'},
-				{name:'manager_username',index:'manager_username',width:80, sortable:false, sorttype:"string", editable:true,align:'center'},
-				{name:'begintime',index:'begintime', sortable:true,width:160, editable: true,edittype:'text',unformat:pickDate,align:'center'},
-				{name:'endtime',index:'endtime', sortable:true,width:160, editable: true,unformat:pickDate,align:'center'},
-				{name:'user_count',index:'user_count', sortable:true,width:90, editable: false,align:'center'}
+			         {   name:'id',  label:'编号',  index:'id',    width:60, fixed:true, resize:false, editable:false, sortable:true,  sorttype:"int",  align:'center',
+			             formatter:function(cellvalue, options, rowObject){
+                            return "<div class='ui-pg-div ui-inline-edit' data-original-title='项目编号'>"+cellvalue+"</div>";
+                         },
+			         },
+				     {   name:'myac',label:' ',       index:'',      width:70, fixed:true, resize:false, editable:false, sortable:false, align:'center',
+					     formatter:'actions', 
+					     formatoptions:{ 
+						      keys:true,
+						      delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
+					     }
+				     },
+				     {   name:'detail',label:'详情', index:'detail', width:60, fixed:true, resize:false, editable:false, sortable:false, align:'center',
+                         formatter:function(cellvalue, options, rowObject){
+                         return "<div class='ui-pg-div ui-inline-edit' data-original-title='查看详细信息'><a href='/admin/detail/"+rowObject.id+"' ><i class='fa fa-th-list'></i></a></div>"
+                         }
+                     },
+				    {   name:'name', label:'名称',  index:'name', width:160, fiexed:true, resize:false, editable:true,sortable:true, sorttype:"string", align:'center',
+				         editrules:{required : true} ,
+				    },
+				    {   name:'manager_name', label:'经理', index:'manager_name', width:80, fixed:true, resize:false, sortable:false,  editable:true,align:'center',
+				         editrules:{required : true} ,
+				    },
+				    {   name:'manager_username', label:'账号', index:'manager_username', width:80, fixed:true, resize:false, sortable:false, editable:true, align:'center',
+				         editrules:{required : true} ,
+				    },
+				    {   name:'begintime', label:'开始时间', index:'begintime', width:160, fixed:true, resize:false, sortable:true, editable: true, edittype:'text',unformat:pickDate,align:'center',
+				         editrules:{required : true} ,
+				    },
+				    {   name:'endtime', label:'结束时间', index:'endtime', width:160, fixed:true, resize:false, sortable:true,editable: true, edittype:'text', unformat:pickDate,align:'center',
+				         editrules:{required : true} ,
+				    },
+				    {name:'user_count', label:'参与人数', index:'user_count', sortable:true,width:90, editable: false,align:'center',
+				         formatter:function(cellvalue, options, rowObject){
+                            return "<div class='ui-pg-div ui-inline-edit' data-original-title='项目参与人数'>"+cellvalue+"</div>";
+                        },
+				    }
 			], 
-	
 			viewrecords : true, 
 			rowNum:10,
 			rowList:[10,20,30],
 			pager : pager_selector,
 			altRows: true,
-			toppager: false,
-			
-			multiselect: true,
-			//multikey: "ctrlKey",
-	        multiboxonly: true,
-	
 			loadComplete : function() {
 				var table = this;
 				setTimeout(function(){
 					styleCheckbox(table);
-					
 					updateActionIcons(table);
 					updatePagerIcons(table);
 					enableTooltips(table);
@@ -95,11 +93,8 @@
 						
 
 			},
-	
 			editurl: "/admin/update",//nothing is saved
-			caption: "项目管理"
-	
-			,autowidth: true
+			caption: "项目管理",
 	
 		});
 		$(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
@@ -116,18 +111,16 @@
 		//navButtons
 		jQuery(grid_selector).jqGrid('navGrid',pager_selector,
 			{ 	//navbar options
-				edit: true,
-				editicon : 'ace-icon fa fa-pencil blue',
-				add: true,
-				addicon : 'ace-icon fa fa-plus-circle purple',
-				del: true,
-				delicon : 'ace-icon fa fa-trash-o red',
+				edit: false,
+				add: false,
+				del: false,
 				search: true,
 				searchicon : 'ace-icon fa fa-search orange',
+				searchtext:'搜索',
 				refresh: true,
 				refreshicon : 'ace-icon fa fa-refresh green',
-				view: true,
-				viewicon : 'ace-icon fa fa-search-plus grey',
+				refreshtext:'刷新',
+				view: false,
 			},
 			{
 				//edit record form
@@ -140,19 +133,7 @@
 					style_edit_form(form);
 				}
 			},
-			{
-				//new record form
-				//width: 700,
-				closeAfterAdd: true,
-				recreateForm: true,
-				viewPagerButtons: false,
-				beforeShowForm : function(e) {
-					var form = $(e[0]);
-					form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
-					.wrapInner('<div class="widget-header" />')
-					style_edit_form(form);
-				}
-			},
+			{},
 			{
 				//delete record form
 				recreateForm: true,
@@ -183,14 +164,8 @@
 				,
 				multipleSearch: true,
 			},
-			{
-				//view record form
-				recreateForm: true,
-				beforeShowForm: function(e){
-					var form = $(e[0]);
-					form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
-				}
-			}
+			{},
+			{}
 		)
 
 		function style_edit_form(form) {

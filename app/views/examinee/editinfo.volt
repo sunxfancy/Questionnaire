@@ -1,30 +1,12 @@
+<!--引入时间控件样式表-->
+<link rel="stylesheet" href="/datepicker/jquery.ui.datepicker.css" />
+<!--引入时间控件js-->
+<script type='text/javascript' src="/datepicker/jquery-ui-1.9.2.custom.min.js"></script>
+<script type="text/javascript" src="/datepicker/jquery.ui.datepicker.min.js"></script>
+<script type="text/javascript" src="/datepicker/jquery.ui.datepicker-zh-CN.min.js"></script>
+<!-- jqgrid 组件-->
 <script type="text/javascript" src="/jqGrid/js/jquery.jqGrid.min.js"></script>
 <script type="text/javascript" src="/jqGrid/js/i18n/grid.locale-cn.js"></script>
-<script type="text/javascript" src="/js/bootstrap.js"></script>
-<script type="text/javascript" src="/datepicker/js/kit.js"></script>
-        <!--[if IE]>
-        <script src="/datepicker/js/ieFix.js"></script>
-        <![endif]-->
-        <script type="text/javascript">
-            var _gaq = _gaq || [];
-            _gaq.push(['_setAccount', 'UA-30210234-1']);
-            _gaq.push(['_trackPageview']); (function() {
-                var ga = document.createElement('script');
-                ga.type = 'text/javascript';
-                ga.async = true;
-                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                var s = document.getElementsByTagName('script')[0];
-                s.parentNode.insertBefore(ga, s);
-            })();
-
-</script>
-<script src="/datepicker/js/array.js"></script>
-<script src="/datepicker/js/date.js"></script>
-<script src="/datepicker/js/dom.js"></script>
-<script src="/datepicker/js/selector.js"></script>
-<!--widget-->
-<script src="/datepicker/js/datepicker.js"></script>
-<link rel="stylesheet" href="/datepicker/css/datepicker.css" />
 
 
 <div class="Leo_question">
@@ -69,7 +51,7 @@
                 <tr>
                     <td style=" width:120px;line-height:33px;">&nbsp;出生年月</td>
                     <td style="width:180px;">
-                            <input id="birthday" type="text" style="width:178px;height:31px;color:black;" placeholder='格式:1970-8-18'>
+                            <input id="birthday" type="text" style="width:178px;height:31px;color:black;">
                     </td>
                     <td style=" width:120px;line-height:33px;">&nbsp;籍贯</td>
                     <td style="width:180px;">
@@ -201,6 +183,7 @@ $('#myModal').on('hide.bs.modal', function (e) {
 
 $(function(){
 	getInfo(url);
+	$("#birthday").datepicker();
 });
 function getInfo(url){
         spinner = new Spinner().spin(target);
@@ -298,34 +281,7 @@ $("#submit").click(function(){
      }     	
     });
 });
-// 时间控件
-$kit.$(function() {
-                //输入框下拉
-                $kit.ev({
-                    el : '#birthday',
-                    ev : 'click',
-                    fn : function(e) {
-                        var d, ipt = e.target;
-                        d = e.target[$kit.ui.DatePicker.defaultConfig.kitWidgetName];
-                        if(d) {
-                            d.show();
-                        } else {
-                            d = new $kit.ui.DatePicker({
-                                date : ipt.value
-                            }).init();
-                            d.adhere($kit.el('#birthday'))
-                            d.show();
-                        }
-                    }
-                });  
-})
-//附带于时间控件，在点击其他地方时关闭时间显示
-$('input').not('#birthday').click(function(){
-	$('.datepicker').hide();
-});
-$('select').click(function(){
-	$('.datepicker').hide();
-})
+
 
 //jqgrid控件
 function datecheck (value,colName) {

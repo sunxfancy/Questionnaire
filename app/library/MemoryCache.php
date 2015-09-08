@@ -13,7 +13,8 @@ class MemoryCache {
 		}
 	}
 	/**
-	 * @method $rt->module_names, $rt->index_names, $rt->factor_names, $rt->exam_json;
+	 * @type: 多次更改
+	 * @method $rt->module_names, $rt->index_names, $rt->factor_names, $rt->exam_json; ok
 	 * @usage 用于缓存通过project_id获取到的ProjectDetail表中的数据
 	 * @return \Phalcon\Mvc\Model\Resultset\Simple
 	 * @param int $project_id
@@ -30,7 +31,8 @@ class MemoryCache {
 		);
 	}
 	/**
-	 * @method $rt->id, $rt->description;
+	 * @type 不更改
+	 * @method $rt->id, $rt->description;  ok
 	 * @param string $paper_name
 	 */
 	public static function getPaperDetail($paper_name){
@@ -46,6 +48,7 @@ class MemoryCache {
 	}
 	
 	/**
+	 * @type 不更改
 	 * @method $rt->id $rt->name $rt->children
 	 * @usage 缓存根据因子名称查取到的因子详细记录
 	 * @param string $factor_name
@@ -63,6 +66,7 @@ class MemoryCache {
 	}
 	
 	/**
+	 * @type 不更改
 	 * @method $rt->id $rt->children $rt->name $rt->action
 	 * @param unknown $index_name
 	 */
@@ -78,7 +82,8 @@ class MemoryCache {
 		);
 	}
 	/**
-	 * @method foreach $rt['id'] $rt['options']
+	 * @type 多次更改需判断
+	 * @method foreach $rt['id'] $rt['options'] ok
 	 * @param unknown $project_id
 	 */
 	public static function getInqueryQuestion($project_id){
@@ -96,6 +101,7 @@ class MemoryCache {
 	
 	/**
 	 * 将question表逐条缓存
+	 * @type 不更改
 	 * @param int $qustion_number
 	 * @param int $paper_id
 	 */

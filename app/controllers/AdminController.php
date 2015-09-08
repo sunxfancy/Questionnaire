@@ -7,11 +7,23 @@ class AdminController extends Base
     }
 
     public function indexAction(){
-        $this->leftRender('项 目 管 理');
+    	$manager = $this->session->get('Manager');
+    	if(empty($manager)){
+    		$this->response->redirect('/error/index/manager');
+    		$this->view->disable();
+    	}else{
+    		$this->leftRender('项 目 管 理');
+    	}
     }
 
     public function addnewAction(){
-        $this->leftRender('新 建 项 目');
+    	$manager = $this->session->get('Manager');
+    	if(empty($manager)){
+    		$this->response->redirect('/error/index/manager');
+    		$this->view->disable();
+    	}else{
+    		$this->leftRender('新 建 项 目');
+    	}
     }
 
     public function newprojectAction(){
@@ -124,6 +136,8 @@ class AdminController extends Base
     }
 
     public function listAction(){
+    	
+    	
         $builder = $this->modelsManager->createBuilder()
                                        ->columns(array(
                                         'Project.id as id', 'Project.begintime as begintime',
@@ -178,7 +192,7 @@ class AdminController extends Base
         }
     }
 
-	public function datareturn($builder){
+	public function dataReturn($builder){
         $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
         $limit = $this->request->getQuery('rows', 'int');
         $page = $this->request->getQuery('page', 'int');
@@ -189,7 +203,7 @@ class AdminController extends Base
                                                                       "page" => $page));
         $page = $paginator->getPaginate();
         $ans = array();
-        $ans['total'] = $page->total_pages;
+        $ans['total'] = $page->total_pages.'33';
         $ans['page'] = $page->current;
         $ans['records'] = $page->total_items;
         foreach ($page->items as $key => $item){

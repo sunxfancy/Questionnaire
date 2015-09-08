@@ -55,6 +55,11 @@ class ExamineeController extends Base
         $project_id = $exminee->project_id;
         try{
         	$inquery_data = MemoryCache::getInqueryQuestion($project_id);
+        	#查询出缓存信息后，判断是否为空，为空则清空 -----只需要在需求量表处进行判断,其他的可以不进行判断，因为从数据库中读取不更改的数据，可默认为ok
+        	$test = $this->modelsCache->get( 'inquery_question_by_project_id_'.$project_id );
+        	if( count($test) == 0 ){
+        		$this->modelsCache->delete( 'inquery_question_by_project_id_'.$project_id );
+        	}
         }catch(Exception $e){
         	$this->dataReturn(array('error'=>$e->getMessage()));
         	return;
@@ -290,7 +295,7 @@ class ExamineeController extends Base
     					break;
     				}
     		}
-    		$rtn_array['records'] = count($tmp_array);
+    		$rtn_array['records'] = $count;
     		$rtn_array['rows'] = $tmp_array;
     		echo json_encode($rtn_array,JSON_UNESCAPED_UNICODE);
     		return;
@@ -370,8 +375,8 @@ class ExamineeController extends Base
     	$rtn_array['records'] = 0;
     	if(isset($json['work'])){
     		$count = count($json['work']);
-    		$rtn_array['total']   = ceil($count/$rows);
-    		$rtn_array['page'] = $page;
+    		$rtn_array['total']   = ceil($count/$rows);#总页码数
+    		$rtn_array['page'] = $page;#当前页
     		$line_start = $rows*($page-1);
     		$line_end = $line_start+$rows;
     		$tmp_array = array();
@@ -383,8 +388,8 @@ class ExamineeController extends Base
     					break;
     				}
     		}
-    		$rtn_array['records'] = count($tmp_array);
-    		$rtn_array['rows'] = $tmp_array;
+    		$rtn_array['records'] = $count;;#返回的记录数,改为记录的总数
+    		$rtn_array['rows'] = $tmp_array;#实际结果数组
     		echo json_encode($rtn_array,JSON_UNESCAPED_UNICODE);
     		return;
     	}else{
