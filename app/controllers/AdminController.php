@@ -7,11 +7,23 @@ class AdminController extends Base
     }
 
     public function indexAction(){
-        $this->leftRender('项 目 管 理');
+    	$manager = $this->session->get('Manager');
+    	if(empty($manager)){
+    		$this->response->redirect('/error/index/manager');
+    		$this->view->disable();
+    	}else{
+    		$this->leftRender('项 目 管 理');
+    	}
     }
 
     public function addnewAction(){
-        $this->leftRender('新 建 项 目');
+    	$manager = $this->session->get('Manager');
+    	if(empty($manager)){
+    		$this->response->redirect('/error/index/manager');
+    		$this->view->disable();
+    	}else{
+    		$this->leftRender('新 建 项 目');
+    	}
     }
 
     public function newprojectAction(){
@@ -124,6 +136,11 @@ class AdminController extends Base
     }
 
     public function listAction(){
+    	$this->view->disable();
+    	$page = $this->request->get('page');
+    	$rows = $this->request->get('rows');
+    	
+    	
         $builder = $this->modelsManager->createBuilder()
                                        ->columns(array(
                                         'Project.id as id', 'Project.begintime as begintime',
@@ -149,8 +166,11 @@ class AdminController extends Base
     }
 
     public function updateAction(){
+    	$this->view->disable();
         $oper = $this->request->getPost('oper', 'string');
         if ($oper == 'edit') {
+        	//edit
+        	//修改之前应该判断数据库中是否已经存在记录
             $id = $this->request->getPost('id', 'int');
             $project = Project::findFirst($id);
             $project->name      = $this->request->getPost('name', 'string');
@@ -161,24 +181,17 @@ class AdminController extends Base
                 'bind'=>array($id)));
             $manager->name     = $this->request->getPost('manager_name', 'string');
             $manager->username = $this->request->getPost('manager_username', 'string');
-            if (!$project->save()||!$manager->save()) {
-                foreach ($project->getMessages() as $message) {
-                    echo $message;
-                }
-            }
-        }
-        if ($oper == 'del') {
+            AdminDB::updateManager($manager);
+            AdminDB::updateProject($project);
+        }else{
+        	//del
+        	//需要添加判断是否能被删除
             $id = $this->request->getPost('id', 'int');
-            $manager = Project::findFirst($id);
-            if (!$manager->delete()) {
-                foreach ($manager->getMessages() as $message) {
-                    echo $message;
-                }
-            }
+            AdminDB::delproject($id);
         }
     }
 
-	public function datareturn($builder){
+	public function dataReturn($builder){
         $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
         $limit = $this->request->getQuery('rows', 'int');
         $page = $this->request->getQuery('page', 'int');

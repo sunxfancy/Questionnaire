@@ -4,12 +4,11 @@
     <meta charset="utf-8" />
     <title>政府评测系统</title>
     <link rel="stylesheet" type="text/css" href="/pagecss/admin.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap-datetimepicker.css" />
     <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/css/Leo_global_css.css" />
     <link rel="stylesheet" type="text/css" href="/css/css/Leo_normal_css.css" />
+    <!--引入jquery-->
     <script type='text/javascript' src='/js/jquery.js'></script>
-    <script type='text/javascript' src='/lib/bootstrap-datetimepicker.js'></script>
 </head>
 
 <body style="background-image:url(/image/fcbg_blur.png);">
