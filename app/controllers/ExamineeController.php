@@ -243,6 +243,12 @@ class ExamineeController extends Base
     		$this->dataReturn(array('error'=>'出生日期填写有误:'.$info_array['birthday'] ));
     		return ;
     	}
+    	#添加生日区间判断 去区间[16 , 110 )
+    	$age = FactorScore::calAge($info_array['birthday'],date('y-m-d H:i:s'));
+    	if($age >= 110 || $age < 16 ){
+    		$this->dataReturn(array('error'=>'出生日期不在系统的可测试范围[16,110)内:'.$info_array['birthday'] ));
+    		return ;
+    	}
     	$info_array['native']       = $this->request->getPost("native", "string");
     	$info_array['politics']     = $this->request->getPost("politics", "string");
      	$info_array['professional'] = $this->request->getPost("professional", "string");

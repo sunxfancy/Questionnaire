@@ -8,10 +8,10 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 	
 	public function indexAction(){		
 		$data = $this->modelsCache->queryKeys();
+		echo count($data);
+		echo "<hr />";
 		print_r($data);
 		
-		$d1 = $this->modelsCache->get('inquery_question_by_project_id_1513');
-		echo count($d1);
 		exit();
 	}
 }

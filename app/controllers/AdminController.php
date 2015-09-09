@@ -136,6 +136,9 @@ class AdminController extends Base
     }
 
     public function listAction(){
+    	$this->view->disable();
+    	$page = $this->request->get('page');
+    	$rows = $this->request->get('rows');
     	
     	
         $builder = $this->modelsManager->createBuilder()
@@ -163,8 +166,11 @@ class AdminController extends Base
     }
 
     public function updateAction(){
+    	$this->view->disable();
         $oper = $this->request->getPost('oper', 'string');
         if ($oper == 'edit') {
+        	//edit
+        	//修改之前应该判断数据库中是否已经存在记录
             $id = $this->request->getPost('id', 'int');
             $project = Project::findFirst($id);
             $project->name      = $this->request->getPost('name', 'string');
@@ -175,20 +181,13 @@ class AdminController extends Base
                 'bind'=>array($id)));
             $manager->name     = $this->request->getPost('manager_name', 'string');
             $manager->username = $this->request->getPost('manager_username', 'string');
-            if (!$project->save()||!$manager->save()) {
-                foreach ($project->getMessages() as $message) {
-                    echo $message;
-                }
-            }
-        }
-        if ($oper == 'del') {
+            AdminDB::updateManager($manager);
+            AdminDB::updateProject($project);
+        }else{
+        	//del
+        	//需要添加判断是否能被删除
             $id = $this->request->getPost('id', 'int');
-            $manager = Project::findFirst($id);
-            if (!$manager->delete()) {
-                foreach ($manager->getMessages() as $message) {
-                    echo $message;
-                }
-            }
+            AdminDB::delproject($id);
         }
     }
 
@@ -203,7 +202,7 @@ class AdminController extends Base
                                                                       "page" => $page));
         $page = $paginator->getPaginate();
         $ans = array();
-        $ans['total'] = $page->total_pages.'33';
+        $ans['total'] = $page->total_pages;
         $ans['page'] = $page->current;
         $ans['records'] = $page->total_items;
         foreach ($page->items as $key => $item){

@@ -1,4 +1,5 @@
 <!--引入时间控件样式表-->
+<!-- <link rel="stylesheet" href="/datepicker/jquery-ui-1.9.2.custom.min.css" /> -->
 <link rel="stylesheet" href="/datepicker/jquery.ui.datepicker.css" />
 <!--引入时间控件js-->
 <script type='text/javascript' src="/datepicker/jquery-ui-1.9.2.custom.min.js"></script>
@@ -361,9 +362,6 @@ function start_gqgrid(){
             setGridWidth: function(){ 
                 $(".page-content").width();
             },        
-            afterSubmit: function(){
-            	alert('ee');
-            },
             editurl: "/examinee/updateedu",
             caption: "教育经历"
         }).navGrid('#grid_paper_1',
