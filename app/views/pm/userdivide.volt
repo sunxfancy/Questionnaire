@@ -26,19 +26,24 @@
         function callbk(data){
             data = eval("("+data+")");
             jsonLength = getJsonLength(data);
-            var count = (jsonLength)%10 == 0 ? jsonLength/10 : Math.ceil(jsonLength/10);
-            for(var i=0;i<count-1;i++){
-                var min_number = data[i*10];
-                var max_number = data[10*i+9];
-                var li_value = min_number+'~'+max_number;
+            if (jsonLength == 0) {
+                var li_dom = $("<li style='padding:3px;font-size:18px;'><span>暂无人员可供分配！</span></li>");
+                $('ul').append(li_dom);
+            }else{
+                var count = (jsonLength)%10 == 0 ? jsonLength/10 : Math.ceil(jsonLength/10);
+                for(var i=0;i<count-1;i++){
+                    var min_number = data[i*10];
+                    var max_number = data[10*i+9];
+                    var li_value = min_number+'~'+max_number;
+                    var li_dom = $("<li style='padding:3px;font-size:18px;'><input type='checkbox' name='items' value="+li_value+"><span>"+li_value+"</span></li>");
+                    $('ul').append(li_dom);
+                }
+                var min = data[(count-1)*10];
+                var max = data[jsonLength-1];
+                var li_value = min + '~' + max;
                 var li_dom = $("<li style='padding:3px;font-size:18px;'><input type='checkbox' name='items' value="+li_value+"><span>"+li_value+"</span></li>");
                 $('ul').append(li_dom);
             }
-            var min = data[(count-1)*10];
-            var max = data[jsonLength-1];
-            var li_value = min + '~' + max;
-            var li_dom = $("<li style='padding:3px;font-size:18px;'><input type='checkbox' name='items' value="+li_value+"><span>"+li_value+"</span></li>");
-            $('ul').append(li_dom);
         }
 
         $('#submit').click(function(){

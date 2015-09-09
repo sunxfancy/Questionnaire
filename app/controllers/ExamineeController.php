@@ -451,8 +451,7 @@ class ExamineeController extends Base
         $interview = Interview::find();
         $examinee_divd = array();
         foreach ($interview as $interviews) {
-            $examinee_divd[] = Examinee::findFirst($interview->examinee_id)->number;
-
+            $examinee_divd[] = Examinee::findFirst($interviews->examinee_id)->number;
         }
         $examinee = Examinee::find(array(
             'project_id =?1',
