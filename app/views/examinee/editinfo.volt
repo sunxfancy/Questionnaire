@@ -286,11 +286,11 @@ $("#submit").click(function(){
 
 //jqgrid控件
 function datecheck (value,colName) {
-	var pattern = new RegExp("^[1-9][0-9]{3}[/](0?[1-9]|1[012])[-][1-9][0-9]{3}[/](0?[1-9]|1[012])$");
+	var pattern = new RegExp("^[1-9][0-9]{3}[.](0?[1-9]|1[012])[-][1-9][0-9]{3}[.](0?[1-9]|1[012])$");
     if (value.match(pattern) ) {
         return [true, ""];
     }else{
-    	return [false, colName+"格式如:2014/4-2015/10"];
+    	return [false, colName+"格式如:2014.4-2015.10"];
     }
 }
 function start_gqgrid(){
