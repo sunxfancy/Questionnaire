@@ -1,3 +1,10 @@
+<!--引入时间控件样式表-->
+<link rel="stylesheet" href="/datetimepicker/bootstrap-datetimepicker.min.css" />
+<!--引入时间控件js-->
+<script type='text/javascript' src='/datetimepicker/jquery-1.8.3.min.js'></script>
+<script type="text/javascript" src= '/datetimepicker/bootstrap.min.js'></script>
+<script type="text/javascript" src="/datetimepicker/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
 <div class="Leo_question">
     <center><p style="margin-top:15px;font-size:28px;font-family:'Microsoft YaHei';">评测项目信息填写</p></center>
     <hr size="2" color="#FF0000" />
@@ -9,19 +16,19 @@
         </tr>
         <tr>
             <td style=" width:150px;font-size:16px;line-height:28px; text-align:right;font-family:'Microsoft YaHei';">项目开始时间：</td>
-            <td><div class="input-append date form_datetime">
-                <input id="begintime" type="text" value="" readonly style="width:200px;height:26px;">
-                <span class="add-on"><i class="icon-th"></i></span>
+            <td>
+            	<div class="input-group date form_datetime" >
+                <input class="form-control" id="begintime" type="text" style="width:200px;height:26px;"/>
                 </div>
             </td>
         </tr>
         <tr>
             <td style=" width:150px;font-size:16px;line-height:28px; text-align:right;font-family:'Microsoft YaHei';">项目结束时间：</td>
-            <td><div class="input-append date form_datetime">
-                <input id="endtime" type="text" value="" readonly style="width:200px;height:26px;">
-                <span class="add-on"><i class="icon-th"></i></span>
-                </div></td>
-        </tr>
+            <td>
+                <div class="input-group date form_datetime" >
+                <input class="form-control" id="endtime" type="text" style="width:200px;height:26px;"/>
+                </div>
+           </td>
         <tr>
             <td style=" width:150px;font-size:16px;line-height:28px; text-align:right;font-family:'Microsoft YaHei';">项目经理姓名：</td>
             <td><input id="pm_name" type="text" style="height: 26px;width: 200px;"></td> 
@@ -84,22 +91,25 @@
             }
         }
     }
-
-    var date = new Date();
-    var now = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
-    $('#begintime').datetimepicker({
-        format: 'yyyy-mm-dd hh:ii',
-        autoclose: true,
-        todayBtn: true,
-        startDate: now,
-        pickerPosition: "bottom-left"
-    });
-    $('#endtime').datetimepicker({
-        format: 'yyyy-mm-dd hh:ii',
-        autoclose: true,
-        todayBtn: true,
-        startDate: $("#begintime").val(),
-        pickerPosition: "bottom-left"
-    });
-
+$(function(){
+	 $('#begintime').datetimepicker({
+                            language: 'zh-CN', //汉化 
+                            format:'yyyy-mm-dd hh:ii' , 
+                            autoclose:true,
+    }).on('changeDate',function(ev){
+    	if($('#endtime').val() != '' ){
+    		if($('#endtime').val() < $('#begintime').val()){
+    			$('#endtime').val('');
+    		}    		
+    	}
+    	var begintime = $('#begintime').val();
+    	$('#endtime').datetimepicker({
+                            language: 'zh-CN', //汉化 
+                            format:'yyyy-mm-dd hh:ii' , 
+                            autoclose:true,
+                            startDate:begintime,
+        });
+    
+    })
+});
 </script>

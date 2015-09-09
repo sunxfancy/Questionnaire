@@ -80,7 +80,7 @@ class FactorScore{
 	 * @return string
 	 * 有效的时间戳通常从 Fri, 13 Dec 1901 20:45:54 GMT 到 Tue, 19 Jan 2038 03:14:07 GMT（对应于 32 位有符号整数的最小值和最大值）
 	 */
-	private static function calAge($birthday, $today){
+	public static function calAge($birthday, $today){
 			$pattern = '/^\d{4}[-](0?[1-9]|1[012])[-](0?[1-9]|[12][0-9]|3[01])$/';
 			if( preg_match($pattern, $birthday) == 0 ){
 				throw new Exception(self::$error_state.'-生日有误-'.$birthday);
