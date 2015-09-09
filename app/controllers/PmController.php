@@ -628,19 +628,17 @@ class PmController extends Base
             'bind'=>array(1=>$project_id)));
         $examinee_all = count($examinees);
         $examinee_com = 0;
-        $examinee_coms = array();
+        $interview_com = 0;
         foreach ($examinees as $examinee) {
             if ($examinee->state  > 0) {
                 $examinee_com ++;
-                $examinee_coms[] = $examinee->id;
+                $interview = Interview::findFirst(array(
+                    'examinee_id=?1',
+                    'bind'=>array(1=>$examinee->id)));
+                if (!empty($interview->advantage) && !empty($interview->disadvantage) &&!empty($interview->remark)){
+                    $interview_com++;
+                }
             }
-        }
-        $interview_com = 0;
-        for ($i=0; $i < $examinee_com; $i++) { 
-             $interview = Interview::findFirst($examinee_coms[$i]);
-             if (!empty($interview->advantage) && !empty($interview->disadvantage) &&!empty($interview->remark)){
-                 $interview_com++;
-             } 
         }
         if ($examinee_all == 0) {
             $examinee_percent = 0;
