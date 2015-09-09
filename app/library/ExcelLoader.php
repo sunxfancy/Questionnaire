@@ -98,6 +98,7 @@ class ExcelLoader
             //教育经历
             if( self::filter($sheet->getCellByColumnAndRow($j,$i)->getValue()) == 'end'){
                 $flag = 1;
+                $j++;
             }
             if($flag == 0){
                 $judge = self::filter($sheet->getCellByColumnAndRow($j,$i)->getValue());
@@ -111,7 +112,6 @@ class ExcelLoader
             }
             //工作经历
             else{
-                $j++;
                 $judge = self::filter($sheet->getCellByColumnAndRow($j,$i)->getValue());
                 if(!empty($judge)){
                     $work[$n]['employer'] = self::filter($sheet->getCellByColumnAndRow($j,$i)->getValue());
@@ -282,7 +282,7 @@ class ExcelLoader
      */
     static function filter($data) {
         $str = (string)$data;
-        $str = preg_replace('/[^A-Za-z0-9\x{4e00}-\x{9fa5}\-_]/iu','',$str);
+        $str = preg_replace('/[^A-Za-z0-9\x{4e00}-\x{9fa5}\-_.]/iu','',$str);
         return $str;
     }
 

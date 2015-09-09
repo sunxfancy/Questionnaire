@@ -462,7 +462,11 @@ class ExamineeController extends Base
         }
         $examinee_not = array();
         $examinee_not = array_diff($examinee_all,$examinee_divd);
-        echo json_encode($examinee_not,true);
+        $not = array();
+        foreach ($examinee_not as $key => $value) {
+            $not[] = $value;
+        }
+        echo json_encode($not,true);
     }
 
     public function dataReturn($ans){

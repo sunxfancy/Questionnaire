@@ -88,7 +88,7 @@ class FactorScore{
 			$startdate=strtotime($birthday);
 			$enddate=strtotime($today);
 			if($enddate <= $startdate){
-				throw new Exception(self::$state."-The age is not avilable-".$birthday.'-'.$today);
+				throw new Exception(self::$error_state."-The age is not avilable-".$birthday.'-'.$today);
 			}
 			$days=($enddate-$startdate)/3600/24 ;
 			$age = sprintf("%.2f",$days/365);
