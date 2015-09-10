@@ -575,9 +575,9 @@ function w_last (){
 
 function time_cal(time_count){
 	var hours=Math.floor(time_count/3600);
-    var leave2=time_count%3600;        //计算小时数后剩余的毫秒数
+    var leave2=time_count%3600;        //计算小时数后剩余的秒数
     var minutes=Math.floor(leave2/60);
-    var leave3=leave2%60;    //计算分钟数后剩余的毫秒数
+    var leave3=leave2%60;    //计算分钟数后剩余的秒数
     var seconds=leave3;
     var str = "";
     if ( hours != 0 ) { str =hours+"小时"+ minutes+"分钟";}
@@ -585,4 +585,16 @@ function time_cal(time_count){
     else{ str = seconds+"秒"; }
     return str;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 </script>

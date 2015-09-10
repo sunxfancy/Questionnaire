@@ -4,6 +4,7 @@ class AdminController extends Base
 {
     public function initialize(){
         $this->view->setTemplateAfter('base2');
+       
     }
 
     public function indexAction(){
@@ -25,59 +26,126 @@ class AdminController extends Base
     		$this->leftRender('新 建 项 目');
     	}
     }
-
+    //project name check
+    public function namecheckAction(){
+    	$this->view->disable();
+    	$name = $this->request->getPost('name', 'string');
+    	$project_exits = Project::find(
+    			array(
+    					"name = :name:",
+    					'bind' => array('name'=>$name)
+    			)
+    	);
+    	if(count($project_exits) == 1){
+    		#存在
+    		$this->dataReturn(array('flag'=>true));
+    		return;
+    	}else{
+    		$this->dataReturn(array('flag'=>false));
+    		return;
+    	}
+    }
+    //manager username check
+    public function managerusernamecheckAction(){
+    	$this->view->disable();
+    	$username = $this->request->getPost('username', 'string');
+    	$manager_exits = Manager::find(
+			array(
+				"username = :username:",
+				'bind' => array('username'=>$username)
+			)
+		);
+    	if(count($manager_exits) == 1 ){
+    		#存在
+    		$this->dataReturn(array('flag'=>true));
+    		return;
+    	}else{
+    		$this->dataReturn(array('flag'=>false));
+    		return;
+    	}
+    }
+    
+    
+	/**
+	 * @usage 添加新项目
+	 */
     public function newprojectAction(){
+    	$this->view->disable();
+		$manager_info = array();
+		$manager_info['username'] = $this->request->getPost('pm_username', 'string');
+		#在manager表中寻找是否存在该账号的用户
+		$manager_exits = Manager::findFirst(
+			array(
+				"username = :username:",
+				'bind' => array('username'=>$manager_info['username'])
+			)
+		);
+		if(isset($manager_exits->username)){
+			#经理账号已存在
+			$this->dataReturn(array('error'=>'项目经理账号：\''.$manager_info['username'].'\'已存在'));
+			return;
+		}
+		$manager_info['password'] =  $this->request->getPost('pm_password', 'string');
+		$manager_info['name'] = $this->request->getPost('pm_name', 'string');
+		#添加角色项
+		$manager_info['role'] = 'P';
+    	$project_info = array(); 
+    	$project_info['name'] = $this->request->getPost('project_name', 'string');
+    	#2015-9-10目前数据库中没有对project name 做索引
+		$project_exits = Project::findFirst(
+    		array(
+    			"name = :name:",
+    			'bind' => array('name'=>$project_info['name'])
+    		)
+		);
+		if(isset($project_exits->name)){
+			#项目名称已经存在
+			$this->dataReturn(array('error'=>'项目名称：\''.$project_info['name'].'\'已存在'));
+			return;
+		}
+		$project_info['begintime'] = $this->request->getPost('begintime', 'string');
+		$project_info['endtime'] = $this->request->getPost('endtime', 'string');
+		$project_info['description'] = $this->request->getPost('description', 'string');
+		
+		#准备写入到库
+		#第一步：生成project_id;
         $date = date('y');
-        $project = Project::find();
-        if (count($project)  == 0) {
+        $projects = Project::find();
+        #项目表为空
+        if (count($projects)  == 0) {
             $project_id = $date.'01';
         }else{
-            $project_num1 = 0;$project_num2 = 0;
-            foreach ($project as $projects) {
-                if (intval($projects->id) - intval($date.'00') > 0) {
-                    $project_num1++;
+        	#项目表不为空
+            $project_already_number = 0;
+            foreach ($projects as $project_record) {
+                #取出今年的添加的项目
+                $project_record_id = intval($project_record->id);
+                #舍去小数部分取整,取出年份
+                $year = floor($project_record_id/100);
+                #求余 获取编号
+                $number = $project_record_id%100;
+                if($year == $date ){
+                	#获取当年份的最大编号
+                	$project_already_number = $project_already_number>=$number ? $project_already_number : $number;
                 }
             }
-            if ($project_num1 > 0) {
-                $project_last = $project->getLast();
-                $project_id = $project_last->id+1;
+            if ($project_already_number > 0) {
+                $project_id = $date.($project_already_number+1);
             }else{
                 $project_id = $date.'01';
             }
         }
-        $manager = new Manager();
-        $this->getData($manager, array(
-            'name'     => 'pm_name',
-            'username' => 'pm_username',
-            'password' => 'pm_password'));
-        $manager->role = 'P';
-
-        $project = new Project();
-        $this->getData($project, array(
-            'name'        => 'project_name', 
-            'description' => 'description',
-            'begintime'   => 'begintime',
-            'endtime'     => 'endtime'));
-        $project->id = $project_id;
-        try {
-            if (!$manager->save()) {
-                foreach ($manager->getMessages() as $message) {
-                    echo $message;
-                }
-            }
-            $project->manager_id = $manager->id;
-            if (!$project->save()) {
-                foreach ($project->getMessages() as $message) {
-                    echo $message;
-                }
-            }
-            $manager->project_id = $project->id;
-            $manager->save();
-        } catch( Exception $e ) {
-            echo $e->getMessage();
-            return;
+        $project_info['id'] = $project_id;
+        #获取到代码生成的project_id;
+        #确保manger表和project表都完成
+        try{
+        	AdminDB::addProject($project_info, $manager_info);
+        }catch(Exception $e){
+        	$this->dataReturn(array('error'=>'项目创建失败'));
+        	return;
         }
-        $this->response->redirect('admin');
+        $this->dataReturn(array('flag'=>true));
+        return ;
     }
 
     public function detailAction($project_id){
@@ -134,35 +202,56 @@ class AdminController extends Base
         );
         return json_encode($detail,true);
     }
-
+	/**
+	 * @usage jqgrid 显示
+	 */
     public function listAction(){
     	$this->view->disable();
     	$page = $this->request->get('page');
     	$rows = $this->request->get('rows');
-    	
-    	
-        $builder = $this->modelsManager->createBuilder()
+    	$offset = $rows*($page-1);
+    	$limit = $rows;
+    	$sidx = $this->request->getQuery('sidx','string');
+    	$sord = $this->request->getQuery('sord','string');
+    	if ($sidx != null)
+    		$sort = $sidx;
+    	else{
+    		$sort = 'id';
+    		$sord = 'desc';
+    	}
+    	if ($sord != null){
+    		$sort = $sort.' '.$sord;
+    	}
+        $result = $this->modelsManager->createBuilder()
                                        ->columns(array(
-                                        'Project.id as id', 'Project.begintime as begintime',
-                                        'Project.endtime as endtime', 'Project.description as description',
-                                        'Project.name as name', 'Manager.name as manager_name', 
-                                        'Manager.username as manager_username', 'COUNT(Examinee.id) as user_count' ))
+                                        'Project.id as id', 
+                                       	'Project.begintime as begintime',
+                                        'Project.endtime as endtime', 
+                                       	'Project.description as description',
+                                        'Project.name as name', 
+                                       	'Manager.name as manager_name', 
+                                        'Manager.username as manager_username', 
+                                       	'Manager.password as manager_password',
+                                        'COUNT(Examinee.id) as user_count' ))
                                        ->from('Project')
                                        ->join('Manager', 'Project.manager_id = Manager.id')
                                        ->leftJoin('Examinee', 'Project.id = Examinee.project_id')
-                                       ->groupBy('Examinee.id');
-        $sidx = $this->request->getQuery('sidx','string');
-        $sord = $this->request->getQuery('sord','string');
-        if ($sidx != null)
-            $sort = $sidx;
-        else{
-            $sort = 'id';
-            $sord = 'desc';
-        }
-        if ($sord != null)
-            $sort = $sort.' '.$sord;
-        $builder = $builder->orderBy($sort);
-        $this->datareturn($builder);
+                                       ->groupBy('Examinee.id')
+                                       ->limit($limit,$offset)
+                                       ->orderBy($sort)
+                                       ->getQuery()
+                                       ->execute();
+        $rtn_array = array();
+        $count = Project::count();
+        $rtn_array['total'] = ceil($count/$rows);
+        $rtn_array['records'] = $count;
+        $rtn_array['rows'] = array();
+        foreach($result as $value){
+        	$rtn_array['rows'][] = $value;
+        }    
+        $rtn_array['page'] = $page;  
+        $this->dataReturn($rtn_array);                
+        return;
     }
 
     public function updateAction(){
@@ -190,26 +279,14 @@ class AdminController extends Base
             AdminDB::delproject($id);
         }
     }
-
-	public function dataReturn($builder){
-        $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
-        $limit = $this->request->getQuery('rows', 'int');
-        $page = $this->request->getQuery('page', 'int');
-        if (is_null($limit)) $limit = 10;
-        if (is_null($page)) $page = 1;
-        $paginator = new Phalcon\Paginator\Adapter\QueryBuilder(array("builder" => $builder,
-                                                                      "limit" => $limit,
-                                                                      "page" => $page));
-        $page = $paginator->getPaginate();
-        $ans = array();
-        $ans['total'] = $page->total_pages;
-        $ans['page'] = $page->current;
-        $ans['records'] = $page->total_items;
-        foreach ($page->items as $key => $item){
-            $ans['rows'][$key] = $item;
-        }
-        echo json_encode($ans);
-        $this->view->disable();
+    
+    
+    
+    public function dataReturn($ans){
+    	$this->view->disable();
+    	$this->response->setHeader("Content-Type", "text/json; charset=utf-8");
+    	echo json_encode($ans);
+    	
     }
 
 }
