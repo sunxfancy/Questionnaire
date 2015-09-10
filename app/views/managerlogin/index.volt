@@ -81,6 +81,7 @@ function checkup_login(spinner){
     $.post('/Managerlogin/login', login_info, checkup_login_callbk);
 }
 function checkup_login_callbk(data){
+	   spinner.stop();
         if(data.url){
             window.location.href = data.url;
         }else{

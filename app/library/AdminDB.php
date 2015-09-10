@@ -55,4 +55,43 @@ class AdminDB {
 				throw new Exception($e->getMessage());
 		}
 	}
+	/**
+	 *@usage 项目创建涉及 project 及manager 
+	 */
+	public static function addProject($project_info, $manager_info){
+		try{
+			$manager     = new TxManager();
+			$transaction = $manager->get();
+			#先分别存储project 和 manager
+			$project = new Project();
+			$project->setTransaction($transaction);
+			foreach($project_info as $key => $value){
+				$project->$key = $value;
+			}
+			$manager = new Manager();
+			$manager->setTransaction($transaction);
+			foreach($manager_info as $key =>$value){
+				$manager->$key = $value;
+			}
+			$manager->project_id = $project_info['id'];
+			#先插入项目
+			if( $project->create() == false ){
+				$transaction->rollback("数据插入失败-".print_r($project,true));
+			}
+			#再插入项目经理
+			if($manager->create() == false ){
+				$transaction->rollback("数据删除失败-".print_r($manager,true));
+			}
+			#再更新项目
+			$project->manager_id = $manager->id;
+			if($project->save() == false ){
+				$transaction->rollback("数据删除失败-".print_r($project,true));
+			}
+			$transaction->commit();
+			return true;
+		}catch (TxFailed $e) {
+			throw new Exception($e->getMessage());
+		}
+	}
+
 }

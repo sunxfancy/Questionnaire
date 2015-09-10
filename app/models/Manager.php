@@ -46,7 +46,9 @@ class Manager extends \Phalcon\Mvc\Model
      */
     public $last_login;
 
-
+	public function initialize(){
+		$this->belongsTo('project_id', 'Project', 'id');
+	}
 
     public static function checkLogin($username,$password)
     {

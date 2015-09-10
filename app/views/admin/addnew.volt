@@ -5,20 +5,21 @@
 <script type="text/javascript" src= '/datetimepicker/bootstrap.min.js'></script>
 <script type="text/javascript" src="/datetimepicker/bootstrap-datetimepicker.js"></script>
 <script type="text/javascript" src="/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
-<div class="Leo_question">
-    <center><p style="margin-top:15px;font-size:28px;font-family:'Microsoft YaHei';">评测项目信息填写</p></center>
-    <hr size="2" color="#FF0000" />
 
+<div class="Leo_question">
+    <center><p style="margin:15px;font-size:30px;font-family:'Microsoft YaHei';">评测项目信息填写</p></center>
+    <hr size="2" color="#FF0000" />
     <table style="margin:0 auto;">
         <tr>
             <td style=" width:150px;font-size:16px;line-height:28px; text-align:right;font-family:'Microsoft YaHei';">项目名称：</td>
-            <td colspan="3"><input id="project_name" type="text" style="width:200px;height:26px;"></td>
+            <td colspan="3">
+            	<input id="project_name" type="text" style="width:200px;height:26px;"></td>
         </tr>
         <tr>
             <td style=" width:150px;font-size:16px;line-height:28px; text-align:right;font-family:'Microsoft YaHei';">项目开始时间：</td>
             <td>
-            	<div class="input-group date form_datetime" >
-                <input class="form-control" id="begintime" type="text" style="width:200px;height:26px;"/>
+            	<div class="input-group date form_datetime">
+                <input  class="form-control" id="begintime" type="text" style="width:200px;height:26px;"/>
                 </div>
             </td>
         </tr>
@@ -35,38 +36,97 @@
         </tr>
         <tr>
             <td style=" width:150px;font-size:16px;line-height:28px; text-align:right;font-family:'Microsoft YaHei';">项目经理账号：</td>
-            <td><input id="pm_username" type="text" style="height: 26px;width: 200px;font-family:'Microsoft YaHei';"></td>
+            <td><input id="pm_username" type="text" style="height: 26px;width: 200px;"></td>
         </tr>
         <tr>
             <td style=" width:150px;font-size:16px;line-height:28px; text-align:right;font-family:'Microsoft YaHei';">项目经理密码：</td>
-            <td><input id="pm_password" type="password" style="height:26px;width:200px;"></td>
-        </tr>
-        <tr>
-            <td style=" width:150px;font-size:16px;line-height:28px; text-align:right;font-family:'Microsoft YaHei';">确认项目经理密码：</td>
-            <td><input id="re_pm_password" type="password" style="height: 26px;width: 200px;" onblur="check()"></td>
+            <td><input id="pm_password" type="text" style="height:26px;width:200px;"></td>
         </tr>
     </table>
 
     <div style="margin-top:15px;"></div>
     <table style="margin:0 auto;">
     <tr><td>
-        <textarea type="text" id="description" style=" line-height: 28px;outline: none;height: 100px;width: 600px;font-size:16px;">更详细的信息描述...</textarea>
+        <textarea type="text" id="description" style=" line-height: 28px;outline: none;height: 100px;width: 600px;font-size:16px; font-family:'Microsoft YaHei';" placeholder='添加更详细的信息描述...'></textarea>
     </td></tr>
     </table>
 
     <div style="width:100%;height:40px;text-align:center;margin: 10px 10px;">
         <div class="form-group">
-            <a class="btn btn-success" href="/admin/index">返回</a>
-            <a id="submit" class="btn btn-primary">提交</a>
+            <button type='button' class="btn btn-success" style='padding:5px 40px; ' onclick='history.go(-1);'>返回</button>
+            &nbsp;&nbsp;<button id="submit" class="btn btn-primary" style='padding:5px 40px; ' >提交</button>
         </div>
     </div>
 
 </div>
-
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">提示信息</h4>
+        </div>
+        <div class="modal-body"></div>
+        <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>
 <script type='text/javascript'>
-    $(document).ready(function() {
-        $("#submit").click(function(){
-                var project_info ={
+$('#myModal').on('hidden.bs.modal', function (e) {
+        $('.Leo_question').css('width','860px')
+});
+$('#myModal').on('hide.bs.modal', function (e) {
+        $('.Leo_question').css('width','860px')
+});   
+var spinner = null;
+var target = document.getElementsByClassName('Leo_question')[0];
+$("#submit").click(function(){
+	            spinner = new Spinner().spin(target);
+        	    var msg = '';
+        	    var pattern_str = new RegExp('^[0-9a-zA-Z]*$'); //匹配字母数字串
+        	    var pattern_time = new RegExp("^[1-9][0-9]{3}[-](0?[1-9]|1[012])[-](0?[1-9]|[12][0-9]|3[01])[ ](0?[0-9]|1[0-9]|2[0-3])[:](0?[0-9]|[1-5][0-9])$");
+        	    if($("#project_name").val() == ''){ 
+        	    	msg += '项目名称不能为空<br />';
+        	    }else if ( $("#begintime").val() == '' ){ 
+        	    	msg+='项目开始时间不能为空<br />'; 
+        	    }else if ($("#endtime").val() == '' ){ 
+        	    	msg+='项目结束时间不能为空<br />'; 
+        	    }else if ( !$("#begintime").val().match(pattern_time) ){
+        	    	msg+= ('项目开始时间格式有误-'+ $("#begintime").val()+'-请按照日历选择');
+        	    }else if ( !$("#endtime").val().match(pattern_time) ){
+                    msg+= ('项目结束时间格式有误-'+ $("#begintime").val()+'-请按照日历选择');
+                }else if ( unix_time_stamp($("#endtime").val()) <= unix_time_stamp($("#begintime").val())){
+                	msg+='开始时间与结束时间冲突';
+                }else if ($("#pm_name").val() == ''){ 
+        	    	msg+='项目经理名称不能为空<br />';
+        	    }else if ($("#pm_username").val() == ''){ 
+        	    	msg+='项目经理账号不能为空<br />';
+        	    }else if( !($("#pm_username").val()).match(pattern_str)){
+                    msg+='项目经理账号格式：字母,数字,字母数字组合<br />';
+                }else if ($("#pm_password").val() == ''){
+                	msg+='项目经理密码不能为空';
+                }else if(!$("#pm_password").val().match(pattern_str)){
+                    msg+='项目经理密码格式：字母,数字,字母数字组合<br />';
+                }else{
+                	//
+                }
+                if(msg != ''){
+                	 if(spinner){ spinner.stop(); }
+                	 $('.Leo_question').css('width','843px')
+	                 $('.modal-body').html('');
+	                 $('.modal-body').html(
+	                     "<p class=\"bg-danger\" style='padding:20px;'>"+msg+ "</p>"
+	                     );
+	                 $('.modal-footer').html('');
+	                 $('.modal-footer').html(
+	                    "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">返回修改</button>"
+	                 );
+	                 $('#myModal').modal({
+	                    keyboard:true,
+	                    backdrop:'static'
+	                 })
+                }else{
+                 var project_info = {
                     "project_name" :$("#project_name").val(),
                     "description" :$("#description").val(),
                     "begintime" :$("#begintime").val(),
@@ -74,42 +134,68 @@
                     "pm_name" :$("#pm_name").val(),
                     "pm_username" :$("#pm_username").val(),
                     "pm_password" :$("#pm_password").val()
+                  };
+                  $.post('/admin/newproject', project_info,function(data){
+                        if(data.error){
+                        	 if(spinner){ spinner.stop(); }
+                             $('.Leo_question').css('width','843px')
+                             $('.modal-body').html('');
+                             $('.modal-body').html(
+                                "<p class=\"bg-danger\" style='padding:20px;'>"+data.error+"</p>"
+                             );
+                             $('.modal-footer').html('');
+                             $('.modal-footer').html(
+                                "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">返回修改</button>"   
+                             );
+                             $('#myModal').modal({
+                                keyboard:true,
+                                backdrop:'static'
+                             })
+                            
+                        }else{
+                        	 if(spinner){ spinner.stop(); }
+                             $('.Leo_question').css('width','843px')
+                             $('.modal-body').html('');
+                             $('.modal-body').html(
+                                "<p class=\"bg-success\" style='padding:20px;'>项目添加成功!</p>"
+                             );
+                             $('.modal-footer').html('');
+                             $('.modal-footer').html(
+                                "<a type='button' href='/admin/addnew' class=\"btn btn-primary\" style='padding:5px 20px;'>继续添加项目</a>"+
+                                "<a type='button' href='/admin/index' class=\"btn btn-success\" style='padding:5px 20px;'>回到首页</a>"
+                             );
+                             $('#myModal').modal({
+                                keyboard:true,
+                                backdrop:'static'
+                             })
+                        }
+                    });
                 }
-                $.post('/admin/newproject', project_info,callbk);
-        }); 
-        function callbk(){
-            window.location.href = "/admin/index";
-        }
-    });
-
-    function check(){ 
-        with(document.all){
-        if(pm_password.value!=re_pm_password.value){
-                alert("两次密码输入不一致！请重新输入...")
-                pm_password.value = "";
-                re_pm_password.value = "";
-            }
-        }
-    }
+                
+})
+    
 $(function(){
 	 $('#begintime').datetimepicker({
                             language: 'zh-CN', //汉化 
                             format:'yyyy-mm-dd hh:ii' , 
                             autoclose:true,
-    }).on('changeDate',function(ev){
-    	if($('#endtime').val() != '' ){
-    		if($('#endtime').val() < $('#begintime').val()){
-    			$('#endtime').val('');
-    		}    		
-    	}
-    	var begintime = $('#begintime').val();
-    	$('#endtime').datetimepicker({
+                            minuteStep: 10
+    }).on('changeDate', function(){
+    	 $('#endtime').datetimepicker('setStartDate',  $('#begintime').val())
+    });
+    $('#endtime').datetimepicker({
                             language: 'zh-CN', //汉化 
                             format:'yyyy-mm-dd hh:ii' , 
                             autoclose:true,
-                            startDate:begintime,
-        });
+                            minuteStep: 10
+    }).on('changeDate', function(){
+         $('#begintime').datetimepicker('setEndDate',  $('#endtime').val())
+    });
     
-    })
 });
+//yy-mm-dd h:i
+function unix_time_stamp( timestr ){
+	time_standard = timestr.replace(new RegExp("-","gm"),"/");
+    return (new Date(time_standard)).getTime();
+}
 </script>
