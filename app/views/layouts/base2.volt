@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/css/Leo_global_css.css" />
     <link rel="stylesheet" type="text/css" href="/css/css/Leo_normal_css.css" />
+    <script type='text/javascript' src='/js/spin.js'></script>
     <!--引入jquery-->
     <script type='text/javascript' src='/js/jquery.js'></script>
 </head>

@@ -293,6 +293,7 @@ function datecheck (value,colName) {
     	return [false, colName+"格式如:2014.4-2015.10"];
     }
 }
+
 function start_gqgrid(){
 	  var edit_options={
                     left:300,
@@ -328,7 +329,14 @@ function start_gqgrid(){
                   editrules:{required : true} ,
                 },
                 { name:'date',       index:'date',       width:140, fixed:true, sortable:false, editable:true,   resize:false, align:'center', 
-                  editrules:{required : true, custom:true, custom_func:datecheck, } ,
+                  editrules:{required : true, custom:true, custom_func:datecheck,}, 
+                  unformat:function(cellvalue, options, rowObject){
+                              setTimeout(function(){
+                                //设定初始时间
+                                $(rowObject).find('input[name=date]')
+                                              .datepicker(); 
+                                    }, 0);
+                         },
                 },
             ],
             viewrecords : true, 
