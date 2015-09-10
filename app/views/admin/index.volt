@@ -30,16 +30,14 @@ $(function(){
     if(spinner){ spinner.stop(); }
 });
 
-function name_check(rowid,cellname,value){
-	console.log(value);
-	console.log(cellname);
-	console.log(rowid);
+function name_check(value, colName){
+    var id = $("#grid-table").jqGrid('getGridParam','selrow');
 	var rt_array ;
 	$.ajax({
 		  type: 'POST',
 		  url: '/admin/namecheck',
 		  async: false,
-		  data:  {name:value},
+		  data:  {name:value,id:id},
 		  success: function(data){
 	             if(data.flag){
 	                rt_array = [false, colName+"列"+value+'已存在,请修改'];
@@ -51,12 +49,13 @@ function name_check(rowid,cellname,value){
 	 return rt_array;
 }
 function manager_username_check(value,colName){
+	var id = $("#grid-table").jqGrid('getGridParam','selrow');
 	var rt_array ;
 	$.ajax({
           type: 'POST',
           url: '/admin/managerusernamecheck',
           async: false,
-          data: {username:value},
+          data: {username:value, id:id},
           success: function(data){
 			        if(data.flag){
 			           rt_array = [false, colName+"列"+value+'已存在,请修改'];
@@ -95,14 +94,6 @@ function getInfo(){
                             return "<div class='ui-pg-div ui-inline-edit' data-original-title='项目编号'>"+cellvalue+"</div>";
                          },
 			         },
-				     {   name:'',label:' ',       index:'',      width:70, fixed:true, resize:false, editable:false, sortable:false, align:'center', 
-					     formatter:'actions', 
-					     formatoptions:{ 
-						      keys:true,
-						      delOptions:{recreateForm: true,},
-					     },
-					     search:false,
-				     },
 				     {   name:'',label:'详情', index:'', width:60, fixed:true, resize:false, editable:false, sortable:false, align:'center',
                          formatter:function(cellvalue, options, rowObject){
                          return "<div class='ui-pg-div ui-inline-edit' data-original-title='查看详细信息'><a href='/admin/detail/"+rowObject.id+"' ><i class='fa fa-th-list'></i></a></div>"
@@ -165,11 +156,11 @@ function getInfo(){
 			},
 			 onSelectRow: function(id){
      if(id && id!==lastsel){ 
-        jQuery('#grid_id').restoreRow(lastSel); 
+        jQuery(grid_selector).restoreRow(lastsel); 
         lastsel=id; 
-     }
-     jQuery('#grid_id').editRow(id, true); 
-   },
+        }
+        jQuery(grid_selector).editRow(id, true); 
+        },
 			caption: "项目管理",
 	
 		});
@@ -178,7 +169,9 @@ function getInfo(){
 			{ 	//navbar options
 				edit: false,
 				add: false,
-				del: false,
+				del: true,
+                delicon : 'ace-icon fa fa-trash-o red',
+                deltext:'删除',
 				search: true,
 				searchicon : 'ace-icon fa fa-search orange',
 				searchtext:'搜索',

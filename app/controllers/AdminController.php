@@ -30,6 +30,7 @@ class AdminController extends Base
     public function namecheckAction(){
     	$this->view->disable();
     	$name = $this->request->getPost('name', 'string');
+    	$id =  $this->request->getPost('id', 'int');
     	$project_exits = Project::find(
     			array(
     					"name = :name:",
@@ -38,6 +39,12 @@ class AdminController extends Base
     	);
     	if(count($project_exits) == 1){
     		#存在
+    		foreach($project_exits as $project){
+    			if($project->id == $id){
+    				$this->dataReturn(array('flag'=>false));
+    				return;
+    			}
+    		}
     		$this->dataReturn(array('flag'=>true));
     		return;
     	}else{
@@ -49,6 +56,7 @@ class AdminController extends Base
     public function managerusernamecheckAction(){
     	$this->view->disable();
     	$username = $this->request->getPost('username', 'string');
+    	$id =  $this->request->getPost('id', 'int');
     	$manager_exits = Manager::find(
 			array(
 				"username = :username:",
@@ -57,6 +65,12 @@ class AdminController extends Base
 		);
     	if(count($manager_exits) == 1 ){
     		#存在
+    		foreach($manager_exits as $manager){
+    			if($manager->project_id == $id){
+    				$this->dataReturn(array('flag'=>false));
+    				return;
+    			}
+    		}
     		$this->dataReturn(array('flag'=>true));
     		return;
     	}else{
@@ -130,7 +144,7 @@ class AdminController extends Base
                 }
             }
             if ($project_already_number > 0) {
-                $project_id = $date.($project_already_number+1);
+                $project_id = sprintf("%02d",$date.($project_already_number+1));
             }else{
                 $project_id = $date.'01';
             }
