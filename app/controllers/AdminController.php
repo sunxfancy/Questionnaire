@@ -3,8 +3,7 @@
 class AdminController extends Base
 {
     public function initialize(){
-        $this->view->setTemplateAfter('base2');
-       
+        $this->view->setTemplateAfter('base2');      
     }
 
     public function indexAction(){
@@ -30,12 +29,9 @@ class AdminController extends Base
     public function namecheckAction(){
     	$this->view->disable();
     	$name = $this->request->getPost('name', 'string');
-    	$project_exits = Project::find(
-    			array(
+    	$project_exits = Project::find(array(
     					"name = :name:",
-    					'bind' => array('name'=>$name)
-    			)
-    	);
+    					'bind' => array('name'=>$name)));
     	if(count($project_exits) == 1){
     		#存在
     		$this->dataReturn(array('flag'=>true));
@@ -49,12 +45,9 @@ class AdminController extends Base
     public function managerusernamecheckAction(){
     	$this->view->disable();
     	$username = $this->request->getPost('username', 'string');
-    	$manager_exits = Manager::find(
-			array(
+    	$manager_exits = Manager::find(array(
 				"username = :username:",
-				'bind' => array('username'=>$username)
-			)
-		);
+				'bind' => array('username'=>$username)));
     	if(count($manager_exits) == 1 ){
     		#存在
     		$this->dataReturn(array('flag'=>true));
@@ -64,8 +57,7 @@ class AdminController extends Base
     		return;
     	}
     }
-    
-    
+       
 	/**
 	 * @usage 添加新项目
 	 */
@@ -74,12 +66,9 @@ class AdminController extends Base
 		$manager_info = array();
 		$manager_info['username'] = $this->request->getPost('pm_username', 'string');
 		#在manager表中寻找是否存在该账号的用户
-		$manager_exits = Manager::findFirst(
-			array(
+		$manager_exits = Manager::findFirst(array(
 				"username = :username:",
-				'bind' => array('username'=>$manager_info['username'])
-			)
-		);
+				'bind' => array('username'=>$manager_info['username'])));
 		if(isset($manager_exits->username)){
 			#经理账号已存在
 			$this->dataReturn(array('error'=>'项目经理账号：\''.$manager_info['username'].'\'已存在'));
