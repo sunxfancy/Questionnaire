@@ -37,14 +37,14 @@ class AdminDB {
 		}
 	}
 	/**
-	 * @usage 删除项目, 删除project表
+	 * @usage 删除项目, 删除project
 	 * 由于数据库中采取使用外键级联与project相关的所有信息
 	 */
 	public static function delproject($project_id){
 		try{
 			$manager     = new TxManager();
 			$transaction = $manager->get();
-			$project_info = Project::findFirst($id);
+			$project_info = Project::findFirst($project_id);
 			$project_info->setTransaction($transaction);
 			if($project_info->delete() == false ){
 				 $transaction->rollback("数据删除失败-".print_r($project_info,true));

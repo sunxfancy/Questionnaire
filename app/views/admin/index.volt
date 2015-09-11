@@ -93,6 +93,7 @@ function getInfo(){
 			             formatter:function(cellvalue, options, rowObject){
                             return "<div class='ui-pg-div ui-inline-edit' data-original-title='项目编号'>"+cellvalue+"</div>";
                          },
+                         search:true,
 			         },
 				     {   name:'',label:'详情', index:'', width:60, fixed:true, resize:false, editable:false, sortable:false, align:'center',
                          formatter:function(cellvalue, options, rowObject){
@@ -102,18 +103,22 @@ function getInfo(){
                      },
 				    {   name:'name', label:'项目名称',  index:'name', width:200, fiexed:true, resize:false, editable:true,sortable:true, sorttype:"string", align:'center',
 				        editrules:{required : true, custom:true, custom_func:name_check}, 
+				        search:true,
 				    },
 				    {   name:'manager_name', label:'经理', index:'manager_name', width:100, fixed:true, resize:false, sortable:false,  editable:true,align:'center',
 				         editrules:{required : true} ,
+				        search:true,
 				    },
 				    {   name:'manager_username', label:'经理账号', index:'manager_username', width:120, fixed:true, resize:false, sortable:false, editable:true, align:'center',
-				          editrules:{required : true, custom:true, custom_func:manager_username_check}, 
+				        editrules:{required : true, custom:true, custom_func:manager_username_check}, 
+				        search:true,
 				    },
-				     {   name:'manager_password', label:'经理密码', index:'manager_password', width:120, fixed:true, resize:false, sortable:false, editable:true, align:'center',
-                         editrules:{required : true} ,
+				    {   name:'manager_password', label:'经理密码', index:'manager_password', width:120, fixed:true, resize:false, sortable:false, editable:true, align:'center',
+                        editrules:{required : true} ,
+                        search:false,
                     },
 				    {   name:'begintime', label:'开始时间', index:'begintime', width:160, fixed:true, resize:false, sortable:true, editable: false, align:'center',
-		
+		                search:true,
 				    },
 				    {   name:'endtime', label:'结束时间', index:'endtime', width:160, fixed:true, resize:false, sortable:true,editable: true,align:'center',
 				        editrules:{required : true, custom:true, custom_func:endtime_check}, 
@@ -127,17 +132,20 @@ function getInfo(){
                             format:'yyyy-mm-dd hh:ii:00' , 
                             autoclose:true,
                             minuteStep: 10,
-                            startDate: starttime,
+                            startDate: dateCon(starttime,60),
 				        	}) 
 				        	} 
 				        },
+				        search:true,
                    },
 				   {   name:'user_count', label:'参与人数', index:'user_count', sortable:true,width:90, fixed:true, resize:false,editable: false,align:'center',
 				         formatter:function(cellvalue, options, rowObject){
                             return "<div class='ui-pg-div ui-inline-edit' data-original-title='项目参与人数'>"+cellvalue+"</div>";
                          },
+                        search:true,
 				    },
 				    {   name:'description', label:'项目描述', index:'description', sortable:false,width:300,fixed:true, resize:false, editable: true,align:'left',
+                        search:false,
                     },
 				    
 			], 
@@ -154,13 +162,13 @@ function getInfo(){
 				}, 0);
 
 			},
-			 onSelectRow: function(id){
-     if(id && id!==lastsel){ 
-        jQuery(grid_selector).restoreRow(lastsel); 
-        lastsel=id; 
-        }
-        jQuery(grid_selector).editRow(id, true); 
-        },
+			ondblClickRow: function(id){
+                if(id && id!==lastsel){ 
+                     jQuery(grid_selector).restoreRow(lastsel); 
+                        lastsel=id; 
+                }
+                jQuery(grid_selector).editRow(id, true); 
+            },
 			caption: "项目管理",
 	
 		});
@@ -185,20 +193,13 @@ function getInfo(){
 			{//add
 				},
 			{//del
+			top : 80,  //位置
+            left: 300, //位置
 				},
 			{
-				// //search form
-				// recreateForm: true,
-				// afterShowSearch: function(e){
-					// var form = $(e[0]);
-					// form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
-					// style_search_form(form);
-				// },
-				// afterRedraw: function(){
-					// style_search_filters($(this));
-				// }
-				// ,
-				// multipleSearch: true,
+			top : 80,  //位置
+            left: 300, //位置	
+            multipleSearch: false,
 			},
 			{},
 			{}
@@ -222,4 +223,27 @@ function getInfo(){
 		
 	
 	}
+/**
+* d : 字符串时间，格式为 yyyy-MM-dd HH:mm:ss
+* num : 秒
+* return : 返回 字符串 ，格式跟传入的相同
+*/
+function dateCon(d,num){
+    var d = new Date(d.substring(0,4),
+    d.substring(5,7)-1,
+    d.substring(8,10),
+    d.substring(11,13),
+    d.substring(14,16),
+    d.substring(17,19)
+    );
+
+    d.setTime(d.getTime()+num*1000);
+    //alert(d.toLocaleString());
+    return d.getFullYear()+"-"
+    +(d.getMonth()+1)
+    +"-"+d.getDate()
+    +" "+d.getHours()
+    +":"+d.getMinutes()
+    +":"+d.getSeconds();
+}
 </script>

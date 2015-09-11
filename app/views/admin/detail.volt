@@ -24,9 +24,9 @@
             <table style="width:100%"><tr><td style="width:20%;text-align:left;">开始时间</td><td style="width:60%; text-align:center;">现在时间</td><td style="width:20%;text-align:right;">截止时间</td></tr></table>
         </div> 
     </div>
-    <div style="width:100%;padding:20px 40px;text-align:right;">
+    <div style="width:100%;padding:20px 60px;text-align:right; ">
         <div class="form-group">
-            <a class="btn btn-primary" href="/admin">返回</a>
+            <button class="btn btn-primary" style='padding:5px 20px;' onclick='history.go(-1);'>返回上一层</button>
         </div>
     </div>
 </div>
