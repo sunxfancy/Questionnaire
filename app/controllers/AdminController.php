@@ -30,6 +30,7 @@ class AdminController extends Base
     public function namecheckAction(){
     	$this->view->disable();
     	$name = $this->request->getPost('name', 'string');
+    	$id =  $this->request->getPost('id', 'int');
     	$project_exits = Project::find(
     			array(
     					"name = :name:",
@@ -38,6 +39,12 @@ class AdminController extends Base
     	);
     	if(count($project_exits) == 1){
     		#存在
+    		foreach($project_exits as $project){
+    			if($project->id == $id){
+    				$this->dataReturn(array('flag'=>false));
+    				return;
+    			}
+    		}
     		$this->dataReturn(array('flag'=>true));
     		return;
     	}else{
@@ -49,6 +56,7 @@ class AdminController extends Base
     public function managerusernamecheckAction(){
     	$this->view->disable();
     	$username = $this->request->getPost('username', 'string');
+    	$id =  $this->request->getPost('id', 'int');
     	$manager_exits = Manager::find(
 			array(
 				"username = :username:",
@@ -57,6 +65,12 @@ class AdminController extends Base
 		);
     	if(count($manager_exits) == 1 ){
     		#存在
+    		foreach($manager_exits as $manager){
+    			if($manager->project_id == $id){
+    				$this->dataReturn(array('flag'=>false));
+    				return;
+    			}
+    		}
     		$this->dataReturn(array('flag'=>true));
     		return;
     	}else{
@@ -89,6 +103,7 @@ class AdminController extends Base
 		$manager_info['name'] = $this->request->getPost('pm_name', 'string');
 		#添加角色项
 		$manager_info['role'] = 'P';
+		
     	$project_info = array(); 
     	$project_info['name'] = $this->request->getPost('project_name', 'string');
     	#2015-9-10目前数据库中没有对project name 做索引
@@ -130,12 +145,25 @@ class AdminController extends Base
                 }
             }
             if ($project_already_number > 0) {
-                $project_id = $date.($project_already_number+1);
+                $project_id = $date.sprintf("%02d",$project_already_number+1);
+                
             }else{
                 $project_id = $date.'01';
             }
         }
         $project_info['id'] = $project_id;
+        foreach($manager_info as $key=>$value){
+        	if(empty($value)){
+        		$this->dataReturn(array('error'=>'数据项不能为空'.print_r($manager_info, true)));
+        		return;
+        	}
+        }
+        foreach($project_info as $key=>$value){
+        	if(empty($value) && $key !='description'){
+        		$this->dataReturn(array('error'=>'数据项不能为空'.print_r($project_info, true)));
+        		return;
+        	}
+        }
         #获取到代码生成的project_id;
         #确保manger表和project表都完成
         try{
@@ -263,7 +291,8 @@ class AdminController extends Base
             $id = $this->request->getPost('id', 'int');
             $project = Project::findFirst($id);
             $project->name      = $this->request->getPost('name', 'string');
-            $project->begintime = $this->request->getPost('begintime', 'string');
+            #项目开始时间不可变更
+//             $project->begintime = $this->request->getPost('begintime', 'string');
             $project->endtime   = $this->request->getPost('endtime', 'string');
             $manager = Manager::findFirst(array(
                 'project_id=?0',
@@ -272,11 +301,13 @@ class AdminController extends Base
             $manager->username = $this->request->getPost('manager_username', 'string');
             AdminDB::updateManager($manager);
             AdminDB::updateProject($project);
-        }else{
+        }else if($oper == 'del' ){
         	//del
         	//需要添加判断是否能被删除
             $id = $this->request->getPost('id', 'int');
             AdminDB::delproject($id);
+        }else{
+        	
         }
     }
     

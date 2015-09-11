@@ -84,7 +84,7 @@ $("#submit").click(function(){
 	            spinner = new Spinner().spin(target);
         	    var msg = '';
         	    var pattern_str = new RegExp('^[0-9a-zA-Z]*$'); //匹配字母数字串
-        	    var pattern_time = new RegExp("^[1-9][0-9]{3}[-](0?[1-9]|1[012])[-](0?[1-9]|[12][0-9]|3[01])[ ](0?[0-9]|1[0-9]|2[0-3])[:](0?[0-9]|[1-5][0-9])$");
+        	    var pattern_time = new RegExp("^[1-9][0-9]{3}[-](0?[1-9]|1[012])[-](0?[1-9]|[12][0-9]|3[01])[ ](0?[0-9]|1[0-9]|2[0-3])[:](0?[0-9]|[1-5][0-9])[:][0][0]$");
         	    if($("#project_name").val() == ''){ 
         	    	msg += '项目名称不能为空<br />';
         	    }else if ( $("#begintime").val() == '' ){ 
@@ -177,19 +177,19 @@ $("#submit").click(function(){
 $(function(){
 	 $('#begintime').datetimepicker({
                             language: 'zh-CN', //汉化 
-                            format:'yyyy-mm-dd hh:ii' , 
+                            format:'yyyy-mm-dd hh:ii:00' , 
                             autoclose:true,
                             minuteStep: 10
     }).on('changeDate', function(){
-    	 $('#endtime').datetimepicker('setStartDate',  $('#begintime').val())
+    	 $('#endtime').datetimepicker('setStartDate',  dateCon($('#begintime').val(),60))
     });
     $('#endtime').datetimepicker({
                             language: 'zh-CN', //汉化 
-                            format:'yyyy-mm-dd hh:ii' , 
+                            format:'yyyy-mm-dd hh:ii:00' , 
                             autoclose:true,
                             minuteStep: 10
     }).on('changeDate', function(){
-         $('#begintime').datetimepicker('setEndDate',  $('#endtime').val())
+         $('#begintime').datetimepicker('setEndDate',  dateCon($('#endtime').val(), -60))
     });
     
 });
@@ -197,5 +197,28 @@ $(function(){
 function unix_time_stamp( timestr ){
 	time_standard = timestr.replace(new RegExp("-","gm"),"/");
     return (new Date(time_standard)).getTime();
+}
+/**
+* d : 字符串时间，格式为 yyyy-MM-dd HH:mm:ss
+* num : 秒
+* return : 返回 字符串 ，格式跟传入的相同
+*/
+function dateCon(d,num){
+    var d = new Date(d.substring(0,4),
+    d.substring(5,7)-1,
+    d.substring(8,10),
+    d.substring(11,13),
+    d.substring(14,16),
+    d.substring(17,19)
+    );
+
+    d.setTime(d.getTime()+num*1000);
+    //alert(d.toLocaleString());
+    return d.getFullYear()+"-"
+    +(d.getMonth()+1)
+    +"-"+d.getDate()
+    +" "+d.getHours()
+    +":"+d.getMinutes()
+    +":"+d.getSeconds();
 }
 </script>
