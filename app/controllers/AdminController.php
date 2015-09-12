@@ -250,6 +250,9 @@ class AdminController extends Base
     	if ($sord != null){
     		$sort = $sort.' '.$sord;
     	}
+    	//default get
+    	$search_state = $this->request->get('_search');
+    	if($search_state == 'false'){
         $result = $this->modelsManager->createBuilder()
                                        ->columns(array(
                                         'Project.id as id', 
@@ -263,7 +266,7 @@ class AdminController extends Base
                                         'COUNT(Examinee.id) as user_count' ))
                                        ->from('Project')
                                        ->join('Manager', 'Project.manager_id = Manager.id')
-                                       ->leftJoin('Examinee', 'Project.id = Examinee.project_id')
+                                       ->leftJoin('Examinee', 'Project.id = Examinee.project_id ')    
                                        ->groupBy('Examinee.id')
                                        ->limit($limit,$offset)
                                        ->orderBy($sort)
@@ -280,6 +283,143 @@ class AdminController extends Base
         $rtn_array['page'] = $page;  
         $this->dataReturn($rtn_array);                
         return;
+    	}else{
+    	//处理search情况
+    		$search_field =  $this->request->get('searchField');
+    		$search_string =  $this->request->get('searchString');
+    		$search_oper = $this->request->get('searchOper');
+    		#分情况讨论
+    		if( ($search_field == 'id' ||  $search_field == 'manager_username'  )&& $search_oper == 'eq'){
+    			//equal
+    			$oper = '=';
+    			if ($search_field == 'id'){
+    				$field = 'Project.'.$search_field;
+    			}else if ( $search_field == 'manager_username' ){
+    				$field = 'Manager.username';
+    			}else{
+    				
+    			}
+    			$result = $this->modelsManager->createBuilder()
+    					 ->columns(array(
+    					'Project.id as id',
+    					'Project.begintime as begintime',
+    					'Project.endtime as endtime',
+    					'Project.description as description',
+    					'Project.name as name',
+    					'Manager.name as manager_name',
+    					'Manager.username as manager_username',
+    					'Manager.password as manager_password',    					
+    					'COUNT(Examinee.id) as user_count' ))
+    					 ->from('Project')
+    			         ->join('Manager', "Project.manager_id = Manager.id AND $field $oper $search_string")
+    			         ->leftJoin('Examinee', 'Project.id = Examinee.project_id ')    
+    			         ->groupBy('Examinee.id')
+    			         ->limit($limit,$offset)
+    			         ->orderBy($sort)
+    			         ->getQuery()
+    			         ->execute();
+    			
+    		}else if ($search_oper == 'eq' && ($search_field == 'name' || $search_field=='manager_name' )){
+    			$oper = 'LIKE';
+    			$value = '%'.$search_string.'%';
+    			if( $search_field == 'name' ){
+    				$field = 'Project.'.$search_field;
+    			}else if ( $search_field =='manager_name' ){
+    				$field = 'Manager.name';
+    			}else {
+    				//
+    			}
+    			$result = $this->modelsManager->createBuilder()
+    					->columns(array(
+    					'Project.id as id',
+    					'Project.begintime as begintime',
+    					'Project.endtime as endtime',
+    					'Project.description as description',
+    					'Project.name as name',
+    					'Manager.name as manager_name',
+    					'Manager.username as manager_username',
+    					'Manager.password as manager_password',
+    					'COUNT(Examinee.id) as user_count' ))
+    					 ->from('Project')
+    			    	 ->join('Manager', "Project.manager_id = Manager.id AND $field $oper '$value'")
+    			         ->leftJoin('Examinee', 'Project.id = Examinee.project_id ')    
+    			         ->groupBy('Examinee.id')
+    			         ->limit($limit,$offset)
+    			    	 ->orderBy($sort)
+    			    	 ->getQuery()
+    			    	 ->execute();
+    		}else if ( $search_field == 'user_count'){
+    			$oper = '';
+    			switch($search_oper){
+    				case 'eq' : $oper = '='; break;
+    				case 'lt' : $oper = '<'; break;
+    				case 'le' : $oper = '<='; break;
+    				case 'gt' : $oper = '>'; break;
+    				case 'ge' : $oper = '>='; break;
+    			}
+    			$result = $this->modelsManager->createBuilder()
+    			->columns(array(
+    					'Project.id as id',
+    					'Project.begintime as begintime',
+    					'Project.endtime as endtime',
+    					'Project.description as description',
+    					'Project.name as name',
+    					'Manager.name as manager_name',
+    					'Manager.username as manager_username',
+    					'Manager.password as manager_password',
+    					'COUNT(Examinee.id) as user_count' ))
+    					->from('Project')
+    			    	->join('Manager', "Project.manager_id = Manager.id")
+    			    	->leftJoin('Examinee', 'Project.id = Examinee.project_id ')    
+    			    	->groupBy('Examinee.id')
+    			    	->having("$search_field $oper $search_string")	
+    			        ->limit($limit,$offset)
+    			    	->orderBy($sort)
+    			        ->getQuery()
+    			    	->execute();
+    			
+    		}else if ( $search_field == 'begintime' || $search_field == 'endtime'){
+    			$oper = '';
+    			if($search_oper == 'bw'){
+    				$oper = '>=';
+    			}else if ($search_oper == 'ew'){
+    				$oper = '<=';
+    			}
+    			$field = 'Project.'.$search_field;
+    			$result = $this->modelsManager->createBuilder()
+    					->columns(array(
+    					'Project.id as id',
+    					'Project.begintime as begintime',
+    					'Project.endtime as endtime',
+    					'Project.description as description',
+    					'Project.name as name',
+    					'Manager.name as manager_name',
+    					'Manager.username as manager_username',
+    					'Manager.password as manager_password',
+    					'COUNT(Examinee.id) as user_count' ))
+    					->from('Project')
+    			    	->join('Manager', "Project.manager_id = Manager.id AND $field $oper '$search_string'")
+    			    	->leftJoin('Examinee', 'Project.id = Examinee.project_id ')    
+    			    	->groupBy('Examinee.id')
+    			    	->limit($limit,$offset)
+    			    	->orderBy($sort)
+    			    	->getQuery()
+    			    	->execute();
+    		}else{
+    			//waiting add...
+    		}
+    		$rtn_array = array();
+    		$count = count($result);
+    		$rtn_array['total'] = ceil($count/$rows);
+    		$rtn_array['records'] = $count;
+    		$rtn_array['rows'] = array();
+    		foreach($result as $value){
+    			$rtn_array['rows'][] = $value;
+    		}
+    		$rtn_array['page'] = $page;
+    		$this->dataReturn($rtn_array);
+    		return;
+    	}
     }
 
     public function updateAction(){

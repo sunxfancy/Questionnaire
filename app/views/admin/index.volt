@@ -23,11 +23,7 @@
 
 <script type="text/javascript">
 $(function(){
-	var spinner = null;
-    var target = document.getElementsByClassName('Leo_question')[0];
-    spinner = new Spinner().spin(target);
     getInfo();
-    if(spinner){ spinner.stop(); }
 });
 
 function name_check(value, colName){
@@ -90,37 +86,51 @@ function getInfo(){
 		    autowidth:true,
 			colModel:[
 			         {   name:'id',  label:'编号',  index:'id',    width:100, fixed:true, resize:false, editable:false, sortable:true,  sorttype:"int",  align:'center',
-			             formatter:function(cellvalue, options, rowObject){
-                            return "<div class='ui-pg-div ui-inline-edit' data-original-title='项目编号'>"+cellvalue+"</div>";
-                         },
-                         search:true,
+                         search:true,searchoptions: { sopt: ['eq'], },
+                         searchrules:{ required: true, integer:true,},
 			         },
 				     {   name:'',label:'详情', index:'', width:60, fixed:true, resize:false, editable:false, sortable:false, align:'center',
-                         formatter:function(cellvalue, options, rowObject){
-                         return "<div class='ui-pg-div ui-inline-edit' data-original-title='查看详细信息'><a href='/admin/detail/"+rowObject.id+"' ><i class='fa fa-th-list'></i></a></div>"
-                         },
                          search:false,
+                         formatter:function(cellvalue, options, rowObject){
+                            return "<div class='ui-pg-div ui-inline-edit' data-original-title='查看详细信息'><a href='/admin/detail/"+rowObject.id+"' ><i class='fa fa-th-list'></i></a></div>"
+                         },
                      },
-				    {   name:'name', label:'项目名称',  index:'name', width:200, fiexed:true, resize:false, editable:true,sortable:true, sorttype:"string", align:'center',
+				    {   name:'name', label:'项目名称',  index:'name', width:200, fiexed:true, resize:false, editable:true,sortable:false, sorttype:"string", align:'center',
 				        editrules:{required : true, custom:true, custom_func:name_check}, 
-				        search:true,
+				        search:true, searchoptions: {  sopt: ['eq']  },
+				        searchrules:{ required: true, },
 				    },
 				    {   name:'manager_name', label:'经理', index:'manager_name', width:100, fixed:true, resize:false, sortable:false,  editable:true,align:'center',
-				         editrules:{required : true} ,
-				        search:true,
+				        editrules:{required : true} ,
+				        search:true, searchoptions: {  sopt: ['eq']  },
+				        searchrules:{ required: true, },
 				    },
 				    {   name:'manager_username', label:'经理账号', index:'manager_username', width:120, fixed:true, resize:false, sortable:false, editable:true, align:'center',
 				        editrules:{required : true, custom:true, custom_func:manager_username_check}, 
-				        search:true,
+				        search:true, searchoptions: {  sopt: ['eq']  },
+				        searchrules:{ required: true, },
 				    },
 				    {   name:'manager_password', label:'经理密码', index:'manager_password', width:120, fixed:true, resize:false, sortable:false, editable:true, align:'center',
                         editrules:{required : true} ,
                         search:false,
                     },
-				    {   name:'begintime', label:'开始时间', index:'begintime', width:160, fixed:true, resize:false, sortable:true, editable: false, align:'center',
-		                search:true,
+				    {   name:'begintime', label:'开始时间', index:'begintime', width:160, fixed:true, resize:false, sortable:true, sorttype:'date', editable: false, align:'center',
+		                search:true, searchoptions: {  sopt: ['bw', 'ew'],
+                        dataInit:function(element) { 
+                            $(element).wrap('<div class="input-group date form_datetime"></div>')
+                            $(element).addClass('form-control');
+                            $(element).datetimepicker({
+                                language: 'zh-CN', //汉化 
+                                format:'yyyy-mm-dd' , 
+                                autoclose:true,
+                                minView:2,
+                            }); 
+                            
+                            } 
+                        },
+                        searchrules:{ required: true, date:true, },
 				    },
-				    {   name:'endtime', label:'结束时间', index:'endtime', width:160, fixed:true, resize:false, sortable:true,editable: true,align:'center',
+				    {   name:'endtime', label:'结束时间', index:'endtime', width:160, fixed:true, resize:false, sortable:true, sorttype:'date',  editable: true,align:'center',
 				        editrules:{required : true, custom:true, custom_func:endtime_check}, 
 				        editoptions: { dataInit: function(element) { 
 				        	$(element).wrap('<div class="input-group date form_datetime"></div>')
@@ -136,18 +146,28 @@ function getInfo(){
 				        	}) 
 				        	} 
 				        },
-				        search:true,
-                   },
-				   {   name:'user_count', label:'参与人数', index:'user_count', sortable:true,width:90, fixed:true, resize:false,editable: false,align:'center',
-				         formatter:function(cellvalue, options, rowObject){
-                            return "<div class='ui-pg-div ui-inline-edit' data-original-title='项目参与人数'>"+cellvalue+"</div>";
-                         },
-                        search:true,
-				    },
+				        search:true, searchoptions: {  sopt: ['bw', 'ew'],
+				        dataInit:function(element) { 
+                            $(element).wrap('<div class="input-group date form_datetime"></div>')
+                            $(element).addClass('form-control');
+                            $(element).datetimepicker({
+                            	language: 'zh-CN', //汉化 
+                                format:'yyyy-mm-dd' , 
+                                autoclose:true,
+                                minView:2,
+                            }); 
+                            
+                            } 
+				        },
+				        searchrules:{ required: true, date:true, },
+                    },
+				    {   name:'user_count', label:'参与人数', index:'user_count', sortable:true,width:90, fixed:true, resize:false,editable: false,align:'center',
+                        search:true, searchoptions: {  sopt: ['eq','lt', 'le','gt','ge'] },
+                        searchrules:{ required: true, integer:true,},
+			        },
 				    {   name:'description', label:'项目描述', index:'description', sortable:false,width:300,fixed:true, resize:false, editable: true,align:'left',
                         search:false,
-                    },
-				    
+                    },   
 			], 
 			viewrecords : true, 
 			rowNum:10,
@@ -165,9 +185,10 @@ function getInfo(){
 			ondblClickRow: function(id){
                 if(id && id!==lastsel){ 
                      jQuery(grid_selector).restoreRow(lastsel); 
-                        lastsel=id; 
+                     lastsel=id; 
+                     
                 }
-                jQuery(grid_selector).editRow(id, true); 
+                jQuery(grid_selector).editRow(id, true);
             },
 			caption: "项目管理",
 	
@@ -200,6 +221,9 @@ function getInfo(){
 			top : 80,  //位置
             left: 300, //位置	
             multipleSearch: false,
+            caption:'搜索查询...',
+            Reset: '重置',
+            Find:'查询',
 			},
 			{},
 			{}
