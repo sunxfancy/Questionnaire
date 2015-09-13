@@ -20,8 +20,25 @@
 		<div id="grid-pager" style='height:80px;'></div>
 </div>
 </div>
-
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">提示信息</h4>
+        </div>
+        <div class="modal-body"></div>
+        <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>
 <script type="text/javascript">
+$('#myModal').on('hidden.bs.modal', function (e) {
+        $('.Leo_question').css('width','860px')
+});
+$('#myModal').on('hide.bs.modal', function (e) {
+        $('.Leo_question').css('width','860px')
+});  
 $(function(){
     getInfo();
 });
@@ -171,7 +188,7 @@ function getInfo(){
 			], 
 			viewrecords : true, 
 			rowNum:10,
-			rowList:[10,20,30],
+			rowList:[10,20,30,40,50,60,70,80,90,100],
 			pager : pager_selector,
 			altRows: true,
 			emptyrecords: "<span style='color:red'>还未添加项目</span>", 
@@ -188,47 +205,140 @@ function getInfo(){
                      lastsel=id; 
                      
                 }
-                jQuery(grid_selector).editRow(id, true);
+                //inline-edit config
+            var  editparameters = {
+			    "keys" : true,
+			    "oneditfunc" : null,
+			    "successfunc" : null,
+			    "url" : null,
+			    "extraparam" : {},
+			    "aftersavefunc" : function(rowid, res){ 
+			    	var result = eval('(' + res.responseText + ')');   
+			    	if(result.error) {
+			    		 $('.Leo_question').css('width','843px')
+                         $('.modal-body').html('');
+                         $('.modal-body').html(
+                         "<p class=\"bg-danger\" style='padding:20px;'>"+result.error+ "</p>"
+                         );
+                        $('.modal-footer').html('');
+                        $('.modal-footer').html(
+                         "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">返回修改</button>"
+                        );
+                        $('#myModal').modal({
+                         keyboard:true,
+                         backdrop:'static'
+                       })
+                       return [false, 'fail',0];
+			    		
+			    	}else{
+			    		$('.Leo_question').css('width','843px')
+                         $('.modal-body').html('');
+                         $('.modal-body').html(
+                         "<p class=\"bg-success\" style='padding:20px;'>编号"+rowid+"行更新成功</p>"
+                         );
+                        $('.modal-footer').html('');
+                        $('.modal-footer').html(
+                         "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">关闭提示</button>"
+                        );
+                        $('#myModal').modal({
+                         keyboard:true,
+                         backdrop:'static'
+                      })
+                      return [true, 'success'];
+			    	}
+			    },
+			    "errorfunc": null,
+			    "afterrestorefunc" : null,
+			    "restoreAfterError" : true, //失败之后的回滚
+			    "mtype" : "POST"
+            }
+            jQuery(grid_selector).jqGrid('editRow',id,  editparameters);  
             },
+            reloadAfterSubmit:true,
 			caption: "项目管理",
 	
 		});
+		
     	//navButtons
+    	var del_options = {
+    		    top : 80,  //位置
+                left: 300, //位置
+                reloadAfterSubmit: true,
+                closeAfterDelete: true,
+                afterSubmit : function(response, postdata){
+                    var result = eval('(' + response.responseText + ')');  
+                    if(result.error){
+                         $('.Leo_question').css('width','843px')
+                         $('.modal-body').html('');
+                         $('.modal-body').html(
+                         "<p class=\"bg-danger\" style='padding:20px;'>"+result.error+ "</p>"
+                         );
+                        $('.modal-footer').html('');
+                        $('.modal-footer').html(
+                         "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">返回修改</button>"
+                        );
+                        $('#myModal').modal({
+                         keyboard:true,
+                         backdrop:'static'
+                       })
+                       // return false; 返回jqgrid相关的数据格式                        
+                       return [false,"修改失败",0];
+                    }else{
+                        $('.Leo_question').css('width','843px')
+                         $('.modal-body').html('');
+                         $('.modal-body').html(
+                         "<p class=\"bg-success\" style='padding:20px;'>项目删除成功</p>"
+                         );
+                        $('.modal-footer').html('');
+                        $('.modal-footer').html(
+                         "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">关闭提示</button>"
+                        );
+                        $('#myModal').modal({
+                         keyboard:true,
+                         backdrop:'static'
+                      })
+                      // return true;
+                      return [true,""]
+                    }
+                 },
+    	}
 		jQuery(grid_selector).jqGrid('navGrid',pager_selector,
 			{ 	//navbar options
-				edit: false,
 				add: false,
-				del: true,
+                edit: false,
+                del: true,
                 delicon : 'ace-icon fa fa-trash-o red',
                 deltext:'删除',
-				search: true,
+				refresh: true,
+                refreshicon : 'ace-icon fa fa-refresh green',
+                refreshtext:'刷新',
+                search:true,
 				searchicon : 'ace-icon fa fa-search orange',
 				searchtext:'搜索',
-				refresh: true,
-				refreshicon : 'ace-icon fa fa-refresh green',
-				refreshtext:'刷新',
-				view: false,
+				
 			},
 			{//edit
 				},
 			{//add
 				},
-			{//del
-			top : 80,  //位置
-            left: 300, //位置
-				},
-			{
-			top : 80,  //位置
-            left: 300, //位置	
-            multipleSearch: false,
-            caption:'搜索查询...',
-            Reset: '重置',
-            Find:'查询',
-			},
-			{},
-			{}
+			del_options,
+            {//search
+                top : 80,  //位置
+                left: 300, //位置 
+                multipleSearch: false,
+                caption:'搜索查询...',
+                Reset: '重置',
+                Find:'查询',
+                closeAfterSearch:true,
+            },
+			{//view
+			    },
+			{//refresh
+			     }
+			
+			
+			
 		)
-
 		function updatePagerIcons(table) {
 			var replacement = 
 			{

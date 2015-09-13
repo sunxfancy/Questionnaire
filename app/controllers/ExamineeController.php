@@ -273,43 +273,45 @@ class ExamineeController extends Base
 
     public function listeduAction(){
     	$this->view->disable();
-    	$page = $this->request->get('page');
-    	$rows = $this->request->get('rows');
     	$rtn_array = array();
     	$examinee = $this->session->get('Examinee');
     	if(empty($examinee)){
     		 #返回错误信息
-    		  $rtn_array['userdata'] = "用户信息获取失败";
-    		  echo json_encode($rtn_array,JSON_UNESCAPED_UNICODE);
+    		  $this->dataReturn(array('error'=>"用户信息获取失败"));
     		  return;
     	}
     	$examinee_info = Examinee::findFirst($examinee->id);
     	$json = json_decode($examinee_info->other,true);
     	$rtn_array['records'] = 0;
     	if(isset($json['education'])){
-    		$count = count($json['education']);
-    		$rtn_array['total']   = ceil($count/$rows);
-    		$rtn_array['page'] = $page;
-    		$line_start = $rows*($page-1);
-    		$line_end = $line_start+$rows;
+    		$count  =  count($json['education']);
+    		$time_array = array();
+    		foreach($json['education'] as $key=>$value){
+    			$time_array[] = $value['date'];
+    		}
+    		array_multisort($time_array,SORT_DESC,$json['education']);
+    		$rtn_array['page'] = 1;
     		$tmp_array = array();
-    		for( $i = $line_start; $i <= $line_end; $i++ ){
+    		for( $i = 0; $i < $count; $i++ ){
     				if(isset($json['education'][$i])){
     					 $json['education'][$i]['id'] = $i+1;
-    					 $tmp_array[] = $json['education'][$i];
-    				}else{
-    					break;
+    					 $date_array = explode('-' ,$json['education'][$i]['date']);
+    					 $json['education'][$i]['begintime'] =  $date_array[0];
+    					 $json['education'][$i]['endtime'] = $date_array[1];
+    					 unset( $json['education'][$i]['date']);
+    					 $tmp_array[] = $json['education'][$i]; 
     				}
     		}
+    		$rtn_array['total'] = 1;
     		$rtn_array['records'] = $count;
     		$rtn_array['rows'] = $tmp_array;
-    		echo json_encode($rtn_array,JSON_UNESCAPED_UNICODE);
+    		$this->dataReturn($rtn_array);
     		return;
     	}else{
     		$rtn_array['total'] = 0;
-    		$rtn_array['page'] = $page;
+    		$rtn_array['page'] = 1;
     		$rtn_array['rows'] = null;
-    		echo json_encode($rtn_array,JSON_UNESCAPED_UNICODE);
+    		$this->dataReturn($rtn_array);
     		return;
     	}        
     }
@@ -318,9 +320,6 @@ class ExamineeController extends Base
         $this->view->disable();
         $oper = $this->request->getPost('oper', 'string');
         $examinee= $this->session->get('Examinee');
-        if(empty($examinee)){
-        	throw new Exception('用户信息获取失败');
-        }
         $examinee_info = Examinee::findFirst($examinee->id);
         $json = json_decode($examinee_info->other,true);
         $rtn_array = array();
@@ -332,6 +331,12 @@ class ExamineeController extends Base
         }
         $work_array = $json['work'];
 		$education_array = $json['education'];
+		//添加时间排序
+		$time_array = array();
+		foreach($education_array as $key=>$value){
+			$time_array[] = $value['date'];
+		}
+		array_multisort($time_array,SORT_DESC,$education_array);
 		if($oper == 'del' ){
 			//del ok
 			$id = $this->request->getPost('id', 'int');
@@ -339,17 +344,15 @@ class ExamineeController extends Base
 		}else{
 			$new_array = array();
 			$new_array['school']     =  $this->request->getPost('school', 'string');
-			if(empty($new_array['school']  )){ return false; }
 			$new_array['profession'] = $this->request->getPost('profession', 'string');
-			if(empty($new_array['profession'] )){ return false; }
 			$new_array['degree']     = $this->request->getPost('degree', 'string');
-			if(empty($new_array['degree'])){ return false; }
-			$new_array['date']       = $this->request->getPost('date', 'string');
-			if(empty($new_array['date'])){ return false; }
+			$begintime    = $this->request->getPost('begintime', 'string');
+			$endtime      = $this->request->getPost('endtime', 'string');
 			$id = $this->request->getPost('id', 'int');
+			$new_array['date'] = $begintime.'-'.$endtime;
 			if(empty($id)){
 				//add
-				$education_array[] = $new_array;				
+				$education_array[] = $new_array;					
 			}else{
 				//edit
 				foreach($new_array as $key=>$value){
@@ -357,23 +360,32 @@ class ExamineeController extends Base
 				}
 			} 			
 		}
+		//添加时间排序
+		$time_array = array();
+		foreach($education_array as $key=>$value){
+			$time_array[] = $value['date'];
+		}
+		array_multisort($time_array,SORT_DESC,$education_array);
 		$rtn_array['education'] = $education_array;
 		$rtn_array['work'] = $work_array;
 		$json = json_encode($rtn_array,JSON_UNESCAPED_UNICODE);
+		try{
 		ExamineeDB::unpdateOther($json, $examinee_info);
+		}catch (Exception $e){
+			$this->dataReturn(array('error'=>'教育经历更新失败'));
+			return;
+		}
+		$this->dataReturn(array('flag'=>'true'));
 		return;
     }
     
     public function listworkAction(){
     	$this->view->disable();
-    	$page = $this->request->get('page');
-    	$rows = $this->request->get('rows');
     	$rtn_array = array();
     	$examinee = $this->session->get('Examinee');
     	if(empty($examinee)){
-    		 #返回错误信息
-    		  $rtn_array['userdata'] = "用户信息获取失败";
-    		  echo json_encode($rtn_array,JSON_UNESCAPED_UNICODE);
+    		   #返回错误信息
+    		  $this->dataReturn(array('error'=>"用户信息获取失败"));
     		  return;
     	}
     	$examinee_info = Examinee::findFirst($examinee->id);
@@ -381,17 +393,23 @@ class ExamineeController extends Base
     	$rtn_array['records'] = 0;
     	if(isset($json['work'])){
     		$count = count($json['work']);
-    		$rtn_array['total']   = ceil($count/$rows);#总页码数
-    		$rtn_array['page'] = $page;#当前页
-    		$line_start = $rows*($page-1);
-    		$line_end = $line_start+$rows;
+    		//读出原有的数据，先排序
+    		$time_array = array();
+    		foreach($json['work'] as $key=>$value){
+    			$time_array[] = $value['date'];
+    		}
+    		array_multisort($time_array,SORT_DESC,$json['work']);
+    		$rtn_array['total']   = 1;
+    		$rtn_array['page'] = 1;#当前页
     		$tmp_array = array();
-    		for( $i = $line_start; $i <= $line_end; $i++ ){
+    		for( $i = 0; $i < $count; $i++ ){
     				if(isset($json['work'][$i])){
     					 $json['work'][$i]['id'] = $i+1;
+    					 $date_array = explode('-' ,$json['work'][$i]['date']);
+    					 $json['work'][$i]['begintime'] =  $date_array[0];
+    					 $json['work'][$i]['endtime'] = $date_array[1];
+    					 unset( $json['work'][$i]['date']);
     					 $tmp_array[] = $json['work'][$i];
-    				}else{
-    					break;
     				}
     		}
     		$rtn_array['records'] = $count;;#返回的记录数,改为记录的总数
@@ -400,7 +418,7 @@ class ExamineeController extends Base
     		return;
     	}else{
     		$rtn_array['total'] = 0;
-    		$rtn_array['page'] = $page;
+    		$rtn_array['page'] = 1;
     		$rtn_array['rows'] = null;
     		echo json_encode($rtn_array,JSON_UNESCAPED_UNICODE);
     		return;
@@ -411,9 +429,6 @@ class ExamineeController extends Base
         $this->view->disable();
         $oper = $this->request->getPost('oper', 'string');
         $examinee= $this->session->get('Examinee');
-        if(empty($examinee)){
-        	throw new Exception('用户信息获取失败');
-        }
         $examinee_info = Examinee::findFirst($examinee->id);
         $json = json_decode($examinee_info->other,true);
         $rtn_array = array();
@@ -425,20 +440,25 @@ class ExamineeController extends Base
         }
         $work_array = $json['work'];
 		$education_array = $json['education'];
+		#操作之前先排序
+		$time_array = array();
+		foreach($work_array as $key=>$value){
+			$time_array[] = $value['date'];
+		}
+		array_multisort($time_array,SORT_DESC,$work_array);
 		if ($oper == 'del'){
 			$id = $this->request->getPost('id', 'int');
 			array_splice($work_array,$id-1,1);
 		}else{
 			$new_array = array();
 			$new_array['employer']    = $this->request->getPost('employer', 'string');
-			if(empty($new_array['employer'])) { return false; }
 			$new_array['unit'] = $this->request->getPost('unit', 'string');
-			if(empty($new_array['unit'])) { return false; }
 			$new_array['duty']     = $this->request->getPost('duty', 'string');
-			if(empty($new_array['duty'])) { return false; }
 			$new_array['date']       = $this->request->getPost('date', 'string');
-			if(empty($new_array['date'])) { return false; }
+			$begintime    = $this->request->getPost('begintime', 'string');
+			$endtime      = $this->request->getPost('endtime', 'string');
 			$id = $this->request->getPost('id', 'int');
+			$new_array['date'] = $begintime.'-'.$endtime;
 			if(empty($id)){
 				//add
 				$work_array[] = $new_array;
@@ -449,10 +469,21 @@ class ExamineeController extends Base
 				}
 			}
 		}
+		//添加时间排序
+		$time_array = array();
+		foreach($work_array as $key=>$value){
+			$time_array[] = $value['date'];
+		}
+		array_multisort($time_array,SORT_DESC,$work_array);
 		$rtn_array['education'] = $education_array;
 		$rtn_array['work'] = $work_array;
 		$json = json_encode($rtn_array,JSON_UNESCAPED_UNICODE);
+		try{
 		ExamineeDB::unpdateOther($json, $examinee_info);
+		}catch (Exception $e){
+			$this->dataReturn(array('error'=>'教育经历更新失败'));
+		}
+		$this->dataReturn(array('flag'=>true));
 		return;      
     }
 
