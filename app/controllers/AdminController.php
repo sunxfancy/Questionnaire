@@ -152,6 +152,8 @@ class AdminController extends Base
             }
         }
         $project_info['id'] = $project_id;
+        //添加项目状态项
+        $project_info['state'] = 0;
         foreach($manager_info as $key=>$value){
         	if(empty($value)){
         		$this->dataReturn(array('error'=>'数据项不能为空'.print_r($manager_info, true)));
@@ -159,7 +161,10 @@ class AdminController extends Base
         	}
         }
         foreach($project_info as $key=>$value){
-        	if(empty($value) && $key !='description'){
+        	if($key == 'description' ||  $key == 'state'  ){
+        		continue;
+        	}
+        	if(empty($value) ) {
         		$this->dataReturn(array('error'=>'数据项不能为空'.print_r($project_info, true)));
         		return;
         	}
@@ -427,27 +432,58 @@ class AdminController extends Base
         $oper = $this->request->getPost('oper', 'string');
         if ($oper == 'edit') {
         	//edit
-        	//修改之前应该判断数据库中是否已经存在记录
+        	//修改之前应该判断数据库中是否已经存在记录 -- 目前在前端进行判定2015-9-12
             $id = $this->request->getPost('id', 'int');
             $project = Project::findFirst($id);
             $project->name      = $this->request->getPost('name', 'string');
             #项目开始时间不可变更
 //             $project->begintime = $this->request->getPost('begintime', 'string');
             $project->endtime   = $this->request->getPost('endtime', 'string');
+            $project->description = $this->request->getPost('description', 'string');
             $manager = Manager::findFirst(array(
                 'project_id=?0',
                 'bind'=>array($id)));
             $manager->name     = $this->request->getPost('manager_name', 'string');
             $manager->username = $this->request->getPost('manager_username', 'string');
-            AdminDB::updateManager($manager);
-            AdminDB::updateProject($project);
+           
+            try{
+            	AdminDB::updateManager($manager);
+            	AdminDB::updateProject($project);
+            }catch(Exception $e){
+            	$this->dataReturn( array('error'=>'项目信息更新失败') );
+            	return;
+            }
+            $this->dataReturn(array('flag'=>true));
+            return;
         }else if($oper == 'del' ){
         	//del
-        	//需要添加判断是否能被删除
+        	//需要添加判断是否能被删除 --目前还未添加相应的判定
+        
             $id = $this->request->getPost('id', 'int');
-            AdminDB::delproject($id);
+            $project_info = Project::findFirst($id);
+          	if ( !isset( $project_info -> id ) ) {
+          		$this->dataReturn(array('error'=>'项目编号不存在'));
+          		return;
+          	}else{
+          		if($project_info->state != 0 ){
+          			$this->dataReturn(array('error'=>'项目经理已经配置完成项目，不能被删除'));
+          			return;
+          		}else{
+          			try{
+          				AdminDB::delproject($id);
+          			}catch(Exception $e){
+          				$this->dataReturn(array('error'=>'项目删除失败'));
+          				return;
+          			}
+          			$this->dataReturn(array('flag'=>true));
+          			return;
+          		}
+          		
+          	}
+            
+         
         }else{
-        	
+        	//
         }
     }
     

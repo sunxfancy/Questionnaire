@@ -1,13 +1,14 @@
 <!--引入时间控件样式表-->
-<!-- <link rel="stylesheet" href="/datepicker/jquery-ui-1.9.2.custom.min.css" /> -->
-<link rel="stylesheet" href="/datepicker/jquery.ui.datepicker.css" />
+<link rel="stylesheet" href="/datetimepicker/bootstrap-datetimepicker.min.css" />
 <!--引入时间控件js-->
-<script type='text/javascript' src="/datepicker/jquery-ui-1.9.2.custom.min.js"></script>
-<script type="text/javascript" src="/datepicker/jquery.ui.datepicker.min.js"></script>
-<script type="text/javascript" src="/datepicker/jquery.ui.datepicker-zh-CN.min.js"></script>
+<script type='text/javascript' src='/datetimepicker/jquery-1.8.3.min.js'></script>
+<script type="text/javascript" src= '/datetimepicker/bootstrap.min.js'></script>
+<script type="text/javascript" src="/datetimepicker/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
 <!-- jqgrid 组件-->
 <script type="text/javascript" src="/jqGrid/js/jquery.jqGrid.min.js"></script>
 <script type="text/javascript" src="/jqGrid/js/i18n/grid.locale-cn.js"></script>
+
 
 
 <div class="Leo_question">
@@ -184,7 +185,14 @@ $('#myModal').on('hide.bs.modal', function (e) {
 
 $(function(){
 	getInfo(url);
-	$("#birthday").datepicker();
+	$("#birthday").wrap('<div class="input-group date form_datetime"></div>')
+    $("#birthday").addClass('form-control');
+	$("#birthday").datetimepicker({
+                                language: 'zh-CN', //汉化 
+                                format:'yyyy-mm-dd' , 
+                                autoclose:true,
+                                minView:2,
+                            }); 
 });
 function getInfo(url){
         spinner = new Spinner().spin(target);
@@ -285,19 +293,71 @@ $("#submit").click(function(){
 
 
 //jqgrid控件
-function datecheck (value,colName) {
-	var pattern = new RegExp("^[1-9][0-9]{3}[/](0?[1-9]|1[012])[-][1-9][0-9]{3}[/](0?[1-9]|1[012])$");
+function begin_datecheck (value,colName) {
+	var pattern = new RegExp("^[1-9][0-9]{3}[.](0?[1-9]|1[012])$");
     if (value.match(pattern) ) {
-        return [true, ""];
+        return [true, ''];
     }else{
-    	return [false, colName+"格式如:2014/4-2015/10"];
+    	return [false, colName+"格式如:2014.07"];
     }
 }
 
+function end_datecheck (value,colName) {
+	//表示至今
+	
+	if(value == null || value == ''){
+	return [true, ''];	
+	}
+    var pattern = new RegExp("^[1-9][0-9]{3}[.](0?[1-9]|1[012])$");
+    if (value.match(pattern) ) {
+        return [true, ''];
+    }else{
+        return [false, colName+"格式如:2014.07"];
+    }
+}
+
+function showmsgerror(data){
+	 $('.Leo_question').css('width','843px')
+                         $('.modal-body').html('');
+                         $('.modal-body').html(
+                         "<p class=\"bg-danger\" style='padding:20px;'>"+data+ "</p>"
+                         );
+                        $('.modal-footer').html('');
+                        $('.modal-footer').html(
+                         "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">返回修改</button>"
+                        );
+                        $('#myModal').modal({
+                         keyboard:true,
+                       })
+}
+function showmsgaccess(data){
+	 $('.Leo_question').css('width','843px')
+                         $('.modal-body').html('');
+                         $('.modal-body').html(
+                         "<p class=\"bg-success\" style='padding:20px;'>"+data+"</p>"
+                         );
+                        $('.modal-footer').html('');
+                        $('.modal-footer').html(
+                         "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">关闭提示</button>"
+                        );
+                        $('#myModal').modal({
+                         keyboard:true,
+                      })
+}
 function start_gqgrid(){
-	  var edit_options={
+	var edit_options={
                     left:300,
                     top:100,
+                    afterSubmit:function(res,rowid){
+                    	var result = eval('(' + res.responseText + ')');   
+                        if(result.error) {
+                        showmsgerror(result.error);
+                        return [false, 'fail',0];   
+                        }else{
+                        showmsgaccess("更新成功")
+                        return [true, 'success'];
+                        }
+                    },
                     reloadAfterSubmit:true,
                     closeAfterEdit:true
  
@@ -305,54 +365,118 @@ function start_gqgrid(){
     var add_options={
                     left:300,
                     top:100,
+                    afterSubmit:function(res,rowid){
+                        var result = eval('(' + res.responseText + ')');   
+                        if(result.error) {
+                        showmsgerror(result.error);
+                        return [false, 'fail',0];   
+                        }else{
+                        showmsgaccess("数据插入成功")
+                        return [true, 'success'];
+                        }
+                    },
                     reloadAfterSubmit:true,
                     closeAfterAdd:true
  
     };
+    
+    var del_options={
+    	            left:300,
+                    top:100,
+                    afterSubmit:function(res, rowid){
+                    	 var result = eval('(' + res.responseText + ')');   
+                        if(result.error) {
+                        showmsgerror(result.error);
+                        return [false, 'fail',0];   
+                        }else{
+                        showmsgaccess("数据删除成功")
+                        return [true, 'success'];
+                        }
+                    },
+                    reloadAfterSubmit:true,
+                    closeAfterAdd:true
+    }
         jQuery('#grid_table_1').jqGrid({
             url: "/examinee/listedu",
             datatype: "json",
             height: 'auto',
             autowidth: true,
-            colNames:['序号','毕业院校','专业','所获学位','起止时间'],
+            shrinkToFit:false,
             colModel:[
-                { name:'id',         index:'id',         width:60,  fixed:true, sortable:false, editable:false,  resize:false, align:'center', 
+                { name:'id', label:'序号',  index:'id',  width:40,  fixed:true,  resize:false,sortable:false, editable:false,  align:'center', 
                   editrules:{required : true} ,
+                  
                 },
-                { name:'school',     index:'school',     width:160, fixed:true, sortable:false, editable:true,   resize:false, align:'center', 
+                { name:'school', label:'毕业院校',     index:'school',     width:140, fixed:true, sortable:false, editable:true,   resize:false, align:'center', 
                   editrules:{required : true} ,
+                 
                 },
-                { name:'profession', index:'profession', width:160, fixed:true, sortable:false, editable:true,   resize:false, align:'center', 
+                { name:'profession', label:'专业', index:'profession', width:140, fixed:true, sortable:false, editable:true,   resize:false, align:'center', 
                   editrules:{required : true} ,
+                 
                 },
-                { name:'degree',     index:'degree',     width:80,  fixed:true, sortable:false, editable:true,   resize:false, align:'center', 
+                { name:'degree', label:'所获学位',  index:'degree',     width:80,  fixed:true, sortable:false, editable:true,   resize:false, align:'center', 
                   editrules:{required : true} ,
+                 
                 },
-                { name:'date',       index:'date',       width:140, fixed:true, sortable:false, editable:true,   resize:false, align:'center', 
-                  editrules:{required : true, custom:true, custom_func:datecheck,}, 
-                  unformat:function(cellvalue, options, rowObject){
-                              setTimeout(function(){
-                                //设定初始时间
-                                $(rowObject).find('input[name=date]')
-                                              .datepicker(); 
-                                    }, 0);
-                         },
+                { name:'begintime',  label:'开始时间', index:'begintime',  width:100, fixed:true, sortable:false, sorttype:'date' , editable:true,   resize:false, align:'center', 
+                  editrules:{required : true, custom:true, custom_func: begin_datecheck,}, 
+                  editoptions: { dataInit: function(element) { 
+                            $(element).parent().addClass("input-group date form_date");                            $(element).addClass('form-control')
+                            $(element).datetimepicker({
+                            language: 'zh-CN', //汉化 
+                            format:'yyyy.mm' , 
+                            autoclose:true,
+                            startView:3,
+                            minView:3,
+                            })
+                            .on('hide',function(el){
+                                  //$(element).unwrap('<div class="input-group date form_date"></div>')
+                                  //$(element).removeClass('form-control')
+                            }).on('changeDate',function(el){
+                            	$('#endtime').datetimepicker('setStartDate', $(element).val());
+                            })
+                            } 
+                           
+                        },
+                     
+                },
+                {
+                  name:'endtime',   label:'结束时间',  index:'endtime',  width:100, fixed:true, sortable:false, sorttype:'date', editable:true,   resize:false, align:'center', 
+                  editrules:{ custom:true, custom_func:end_datecheck,}, 
+                  editoptions: { dataInit: function(element) { 
+                            $(element).parent().addClass("input-group date form_date");                            $(element).addClass('form-control')                            $(element).datetimepicker({
+                            language: 'zh-CN', //汉化 
+                            format:'yyyy.mm' , 
+                            autoclose:true,
+                            startView:3,
+                            minView:3,
+                            }).on('hide',function(el){
+                            	  //$(element).unwrap('<div class="input-group date form_date"></div>')
+                                  //$(element).removeClass('form-control')
+                            }).on('changeDate',function(el){
+                                $('#begintime').datetimepicker('setEndDate', $(element).val());
+                            })
+                             
+                            } 
+                        },
+                	
                 },
             ],
             viewrecords : true, 
             altRows: true,
             hidegrid:false,
-            rowNum:10,
-            rowList : [ 10, 20, 30 ],
+            // rowNum:10,
+            // rowList : [ 10, 20, 30 ]
             pager : '#grid_paper_1',
             emptyrecords: "<span style='color:red'>还未添加记录</span>", 
-            loadComplete: function(){  
+            loadComplete: function(res){
             	//ajax数据返回失败
-            	   if( $(this).getGridParam('userdata') != null ){
+            	   if( res.error){
                       $('.Leo_question').css('width','843px')
                       $('.modal-body').html('');
                       $('.modal-body').html(
-                        "<p class=\"bg-danger\" style='padding:20px;'>"+$(this).getGridParam('userdata')+"</p>"
+                        "<p class=\"bg-danger\" style='padding:20px;'>"+ res.error+"</p>"
                       );
                       $('.modal-footer').html('');
                       $('.modal-footer').html(
@@ -367,9 +491,7 @@ function start_gqgrid(){
                     updatePagerIcons(this);
                     }
             }, 
-            setGridWidth: function(){ 
-                $(".page-content").width();
-            },        
+            reloadAfterSubmit:true,
             editurl: "/examinee/updateedu",
             caption: "教育经历"
         }).navGrid('#grid_paper_1',
@@ -382,45 +504,88 @@ function start_gqgrid(){
            del: true,
            delicon : 'ace-icon fa fa-trash-o red',
            deltext:'删除',
-           refresh: false,
+           refresh: true,
+           refreshicon : 'ace-icon fa fa-refresh green',
+           refreshtext:'刷新',
            search: false,
            view: false,
         },
-        edit_options,add_options,
-        { //del 添加时
-        top : 100,  //位置
-        left: 300, //位置
-        }
+        edit_options,add_options,del_options,
+        {}
         );
+         
          
         jQuery('#grid_table_2').jqGrid({
             url: "/examinee/listwork",
             datatype: "json",
             height: 'auto',
             autowidth: true,
-            colNames:['序号','就职单位','部门','岗位/职务','起止时间'],
             colModel:[
-                { name:'id',       index:'id',       width:60,   fixed:true, editable:false, sortable:false, resize:false, align:'center', 
+                { name:'id',   label:'序号',    index:'id',       width:40,   fixed:true, editable:false, sortable:false, resize:false, align:'center', 
                   editrules:{required : true} ,
                 },
-                { name:'employer', index:'employer', width:160,  fixed:true, editable:true,  sortable:false, resize:false, align:'center', 
+                { name:'employer',label:'就职单位', index:'employer', width:140,  fixed:true, editable:true,  sortable:false, resize:false, align:'center', 
                   editrules:{required : true} ,
                 },
-                { name:'unit',     index:'unit',     width:160,  fixed:true, editable:true,  sortable:false, resize:false, align:'center', 
+                { name:'unit',    label:'部门', index:'unit',     width:140,  fixed:true, editable:true,  sortable:false, resize:false, align:'center', 
                   editrules:{required : true} ,
                 },
-                { name:'duty',     index:'duty',     width:80,   fixed:true, editable:true,  sortable:false, resize:false, align:'center', 
+                { name:'duty',     label:'岗位/职务',index:'duty',     width:80,   fixed:true, editable:true,  sortable:false, resize:false, align:'center', 
                   editrules:{required : true} ,
                 },
-                { name:'date',     index:'date',     width:140,  fixed:true, editable:true,  sortable:false, resize:false, align:'center', 
-                  editrules:{required : true, custom:true, custom_func:datecheck,}
+                 { name:'begintime',  label:'开始时间', index:'begintime',  width:100, fixed:true, sortable:false, sorttype:'date' , editable:true,   resize:false, align:'center', 
+                  editrules:{required : true, custom:true, custom_func: begin_datecheck,}, 
+                  editoptions: { dataInit: function(element) { 
+                            $(element).parent().addClass("input-group date form_date");
+                            $(element).addClass('form-control')
+                            $(element).datetimepicker({
+                            language: 'zh-CN', //汉化 
+                            format:'yyyy.mm' , 
+                            autoclose:true,
+                            startView:3,
+                            minView:3,
+                            })
+                            .on('hide',function(el){
+                                  //$(element).unwrap('<div class="input-group date form_date"></div>')
+                                  //$(element).removeClass('form-control')
+                            }).on('changeDate',function(el){
+                                $('#endtime').datetimepicker('setStartDate', $(element).val());
+                            })
+                            } 
+                           
+                        },
+                     
+                },
+                {
+                  name:'endtime',   label:'结束时间',  index:'endtime',  width:100, fixed:true, sortable:false, sorttype:'date', editable:true,   resize:false, align:'center', 
+                  editrules:{ custom:true, custom_func:end_datecheck,}, 
+                  editoptions: { dataInit: function(element) { 
+                            $(element).parent().addClass("input-group date form_date");
+                            $(element).addClass('form-control')
+                            $(element).datetimepicker({
+                            language: 'zh-CN', //汉化 
+                            format:'yyyy.mm' , 
+                            autoclose:true,
+                            startView:3,
+                            minView:3,
+                            }).on('hide',function(el){
+                                  //$(element).unwrap('<div class="input-group date form_date"></div>')
+                                  //$(element).removeClass('form-control')
+
+                            }).on('changeDate',function(el){
+                                $('#begintime').datetimepicker('setEndDate', $(element).val());
+                            })
+                             
+                            } 
+                        },
+                    
                 },
                 ], 
             viewrecords : true, 
             altRows: true,
             hidegrid:false,
-            rowNum:10,
-            rowList : [ 10, 20, 30],
+            // rowNum:10,
+            // rowList : [ 10, 20, 30],
             pager : '#grid_paper_2',
             emptyrecords: "<span style='color:red'>还未添加记录</span>", 
             editurl: "/examinee/updatework",
@@ -437,15 +602,14 @@ function start_gqgrid(){
            del: true,
            delicon : 'ace-icon fa fa-trash-o red',
            deltext:'删除',
-           refresh: false,
+           refresh: true,
+           refreshicon : 'ace-icon fa fa-refresh green',
+           refreshtext:'刷新',
            search: false,
            view: false,
         },
-        edit_options,add_options,
-        { //del 添加时
-        top : 100,  //位置
-        left: 300, //位置
-        }
+        edit_options,add_options,del_options,
+        {}
         );
  
     }
@@ -460,8 +624,21 @@ function updatePagerIcons(table) {
             $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
                 var icon = $(this);
                 var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
-                
                 if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
             })
         }
+/**
+* d : 字符串时间，格式为 yyyy.MM
+* num : 月份差
+* return : 返回 字符串 ，格式跟传入的相同
+*/
+function dateCon(d,num){
+    var d = new Date(d.substring(0,4),
+    d.substring(5,7)-1
+    );
+    d.setTime(d.getTime()+num*1000*24*31*60*60);
+    //alert(d.toLocaleString());
+    return d.getFullYear()+"."
+    +(d.getMonth()+1)
+}
 </script> 
