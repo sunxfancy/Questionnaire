@@ -358,6 +358,12 @@ function start_gqgrid(){
                         return [true, 'success'];
                         }
                     },
+                    beforeShowForm : function(e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
+                    .wrapInner('<div class="widget-header" />')
+                    style_edit_form(form);
+                    },
                     reloadAfterSubmit:true,
                     closeAfterEdit:true
  
@@ -375,6 +381,13 @@ function start_gqgrid(){
                         return [true, 'success'];
                         }
                     },
+                    beforeShowForm : function(e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
+                    .wrapInner('<div class="widget-header" />')
+                    style_edit_form(form);
+                    },
+                    
                     reloadAfterSubmit:true,
                     closeAfterAdd:true
  
@@ -383,6 +396,15 @@ function start_gqgrid(){
     var del_options={
     	            left:300,
                     top:100,
+                    beforeShowForm : function(e) {
+                    var form = $(e[0]);
+                    if(form.data('styled')) return false;
+                    
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+                    style_delete_form(form);
+                    
+                    form.data('styled', true);
+                    },
                     afterSubmit:function(res, rowid){
                     	 var result = eval('(' + res.responseText + ')');   
                         if(result.error) {
@@ -626,6 +648,33 @@ function updatePagerIcons(table) {
                 var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
                 if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
             })
+        }
+        function style_edit_form(form) {
+            //update buttons classes
+            var buttons = form.next().find('.EditButton .fm-button');
+            buttons.addClass('btn btn-sm').find('[class*="-icon"]').hide();//ui-icon, s-icon
+            buttons.eq(0).addClass('btn-primary').prepend('<i class="ace-icon fa fa-check"></i>');
+            buttons.eq(1).prepend('<i class="ace-icon fa fa-times"></i>')
+            
+            buttons = form.next().find('.navButton a');
+            buttons.find('.ui-icon').hide();
+            buttons.eq(0).append('<i class="ace-icon fa fa-chevron-left"></i>');
+            buttons.eq(1).append('<i class="ace-icon fa fa-chevron-right"></i>');       
+        }
+    
+        function style_delete_form(form) {
+            var buttons = form.next().find('.EditButton .fm-button');
+            buttons.addClass('btn btn-sm btn-white btn-round').find('[class*="-icon"]').hide();//ui-icon, s-icon
+            buttons.eq(0).addClass('btn-danger').prepend('<i class="ace-icon fa fa-trash-o"></i>');
+            buttons.eq(1).addClass('btn-default').prepend('<i class="ace-icon fa fa-times"></i>')
+        }
+        
+        function style_search_form(form) {
+            var dialog = form.closest('.ui-jqdialog');
+            var buttons = dialog.find('.EditTable')
+            buttons.find('.EditButton a[id*="_reset"]').addClass('btn btn-sm btn-info').find('.ui-icon').attr('class', 'ace-icon fa fa-retweet');
+            buttons.find('.EditButton a[id*="_query"]').addClass('btn btn-sm btn-inverse').find('.ui-icon').attr('class', 'ace-icon fa fa-comment-o');
+            buttons.find('.EditButton a[id*="_search"]').addClass('btn btn-sm btn-purple').find('.ui-icon').attr('class', 'ace-icon fa fa-search');
         }
 /**
 * d : 字符串时间，格式为 yyyy.MM
