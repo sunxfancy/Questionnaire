@@ -264,6 +264,16 @@ function getInfo(){
     		    top : 80,  //位置
                 left: 300, //位置
                 reloadAfterSubmit: true,
+                recreateForm: true,
+                beforeShowForm : function(e) {
+                    var form = $(e[0]);
+                    if(form.data('styled')) return false;
+                    
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+                    style_delete_form(form);
+                    
+                    form.data('styled', true);
+                },
                 closeAfterDelete: true,
                 afterSubmit : function(response, postdata){
                     var result = eval('(' + response.responseText + ')');  
@@ -330,6 +340,11 @@ function getInfo(){
                 Reset: '重置',
                 Find:'查询',
                 closeAfterSearch:true,
+                afterShowSearch: function(e){
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
+                    style_search_form(form);
+                },
             },
 			{//view
 			    },
@@ -354,6 +369,21 @@ function getInfo(){
 				if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
 			})
 		}
+		
+		function style_delete_form(form) {
+            var buttons = form.next().find('.EditButton .fm-button');
+            buttons.addClass('btn btn-sm btn-white btn-round').find('[class*="-icon"]').hide();//ui-icon, s-icon
+            buttons.eq(0).addClass('btn-danger').prepend('<i class="ace-icon fa fa-trash-o"></i>');
+            buttons.eq(1).addClass('btn-default').prepend('<i class="ace-icon fa fa-times"></i>')
+        }
+        function style_search_form(form) {
+            var dialog = form.closest('.ui-jqdialog');
+            var buttons = dialog.find('.EditTable')
+            buttons.find('.EditButton a[id*="_reset"]').addClass('btn btn-sm btn-info').find('.ui-icon').attr('class', 'ace-icon fa fa-retweet');
+            buttons.find('.EditButton a[id*="_query"]').addClass('btn btn-sm btn-inverse').find('.ui-icon').attr('class', 'ace-icon fa fa-comment-o');
+            buttons.find('.EditButton a[id*="_search"]').addClass('btn btn-sm btn-purple').find('.ui-icon').attr('class', 'ace-icon fa fa-search');
+        }
+        
 		
 	
 	}

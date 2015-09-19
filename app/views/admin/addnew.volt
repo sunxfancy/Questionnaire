@@ -8,7 +8,7 @@
 
 <div class="Leo_question">
     <center><p style="margin:15px;font-size:30px;font-family:'Microsoft YaHei';">评测项目信息填写</p></center>
-    <hr size="2" color="#FF0000" />
+    <hr size="2" color="#FF0000" style="width:90%;"/>
     <table style="margin:0 auto;">
         <tr>
             <td style=" width:150px;font-size:16px;line-height:28px; text-align:right;font-family:'Microsoft YaHei';">项目名称：</td>
