@@ -3,7 +3,8 @@
 class AdminController extends Base
 {
     public function initialize(){
-        $this->view->setTemplateAfter('base2');      
+        $this->view->setTemplateAfter('base2');
+       
     }
 
     public function indexAction(){
@@ -29,11 +30,21 @@ class AdminController extends Base
     public function namecheckAction(){
     	$this->view->disable();
     	$name = $this->request->getPost('name', 'string');
-    	$project_exits = Project::find(array(
+    	$id =  $this->request->getPost('id', 'int');
+    	$project_exits = Project::find(
+    			array(
     					"name = :name:",
-    					'bind' => array('name'=>$name)));
+    					'bind' => array('name'=>$name)
+    			)
+    	);
     	if(count($project_exits) == 1){
     		#存在
+    		foreach($project_exits as $project){
+    			if($project->id == $id){
+    				$this->dataReturn(array('flag'=>false));
+    				return;
+    			}
+    		}
     		$this->dataReturn(array('flag'=>true));
     		return;
     	}else{
@@ -45,11 +56,21 @@ class AdminController extends Base
     public function managerusernamecheckAction(){
     	$this->view->disable();
     	$username = $this->request->getPost('username', 'string');
-    	$manager_exits = Manager::find(array(
+    	$id =  $this->request->getPost('id', 'int');
+    	$manager_exits = Manager::find(
+			array(
 				"username = :username:",
-				'bind' => array('username'=>$username)));
+				'bind' => array('username'=>$username)
+			)
+		);
     	if(count($manager_exits) == 1 ){
     		#存在
+    		foreach($manager_exits as $manager){
+    			if($manager->project_id == $id){
+    				$this->dataReturn(array('flag'=>false));
+    				return;
+    			}
+    		}
     		$this->dataReturn(array('flag'=>true));
     		return;
     	}else{
@@ -57,7 +78,8 @@ class AdminController extends Base
     		return;
     	}
     }
-       
+    
+    
 	/**
 	 * @usage 添加新项目
 	 */
@@ -66,9 +88,12 @@ class AdminController extends Base
 		$manager_info = array();
 		$manager_info['username'] = $this->request->getPost('pm_username', 'string');
 		#在manager表中寻找是否存在该账号的用户
-		$manager_exits = Manager::findFirst(array(
+		$manager_exits = Manager::findFirst(
+			array(
 				"username = :username:",
-				'bind' => array('username'=>$manager_info['username'])));
+				'bind' => array('username'=>$manager_info['username'])
+			)
+		);
 		if(isset($manager_exits->username)){
 			#经理账号已存在
 			$this->dataReturn(array('error'=>'项目经理账号：\''.$manager_info['username'].'\'已存在'));
@@ -78,6 +103,7 @@ class AdminController extends Base
 		$manager_info['name'] = $this->request->getPost('pm_name', 'string');
 		#添加角色项
 		$manager_info['role'] = 'P';
+		
     	$project_info = array(); 
     	$project_info['name'] = $this->request->getPost('project_name', 'string');
     	#2015-9-10目前数据库中没有对project name 做索引
@@ -119,12 +145,30 @@ class AdminController extends Base
                 }
             }
             if ($project_already_number > 0) {
-                $project_id = $date.($project_already_number+1);
+                $project_id = $date.sprintf("%02d",$project_already_number+1);
+                
             }else{
                 $project_id = $date.'01';
             }
         }
         $project_info['id'] = $project_id;
+        //添加项目状态项
+        $project_info['state'] = 0;
+        foreach($manager_info as $key=>$value){
+        	if(empty($value)){
+        		$this->dataReturn(array('error'=>'数据项不能为空'.print_r($manager_info, true)));
+        		return;
+        	}
+        }
+        foreach($project_info as $key=>$value){
+        	if($key == 'description' ||  $key == 'state'  ){
+        		continue;
+        	}
+        	if(empty($value) ) {
+        		$this->dataReturn(array('error'=>'数据项不能为空'.print_r($project_info, true)));
+        		return;
+        	}
+        }
         #获取到代码生成的project_id;
         #确保manger表和project表都完成
         try{
@@ -211,6 +255,9 @@ class AdminController extends Base
     	if ($sord != null){
     		$sort = $sort.' '.$sord;
     	}
+    	//default get
+    	$search_state = $this->request->get('_search');
+    	if($search_state == 'false'){
         $result = $this->modelsManager->createBuilder()
                                        ->columns(array(
                                         'Project.id as id', 
@@ -224,7 +271,7 @@ class AdminController extends Base
                                         'COUNT(Examinee.id) as user_count' ))
                                        ->from('Project')
                                        ->join('Manager', 'Project.manager_id = Manager.id')
-                                       ->leftJoin('Examinee', 'Project.id = Examinee.project_id')
+                                       ->leftJoin('Examinee', 'Project.id = Examinee.project_id ')    
                                        ->groupBy('Examinee.id')
                                        ->limit($limit,$offset)
                                        ->orderBy($sort)
@@ -241,6 +288,143 @@ class AdminController extends Base
         $rtn_array['page'] = $page;  
         $this->dataReturn($rtn_array);                
         return;
+    	}else{
+    	//处理search情况
+    		$search_field =  $this->request->get('searchField');
+    		$search_string =  $this->request->get('searchString');
+    		$search_oper = $this->request->get('searchOper');
+    		#分情况讨论
+    		if( ($search_field == 'id' ||  $search_field == 'manager_username'  )&& $search_oper == 'eq'){
+    			//equal
+    			$oper = '=';
+    			if ($search_field == 'id'){
+    				$field = 'Project.'.$search_field;
+    			}else if ( $search_field == 'manager_username' ){
+    				$field = 'Manager.username';
+    			}else{
+    				
+    			}
+    			$result = $this->modelsManager->createBuilder()
+    					 ->columns(array(
+    					'Project.id as id',
+    					'Project.begintime as begintime',
+    					'Project.endtime as endtime',
+    					'Project.description as description',
+    					'Project.name as name',
+    					'Manager.name as manager_name',
+    					'Manager.username as manager_username',
+    					'Manager.password as manager_password',    					
+    					'COUNT(Examinee.id) as user_count' ))
+    					 ->from('Project')
+    			         ->join('Manager', "Project.manager_id = Manager.id AND $field $oper $search_string")
+    			         ->leftJoin('Examinee', 'Project.id = Examinee.project_id ')    
+    			         ->groupBy('Examinee.id')
+    			         ->limit($limit,$offset)
+    			         ->orderBy($sort)
+    			         ->getQuery()
+    			         ->execute();
+    			
+    		}else if ($search_oper == 'eq' && ($search_field == 'name' || $search_field=='manager_name' )){
+    			$oper = 'LIKE';
+    			$value = '%'.$search_string.'%';
+    			if( $search_field == 'name' ){
+    				$field = 'Project.'.$search_field;
+    			}else if ( $search_field =='manager_name' ){
+    				$field = 'Manager.name';
+    			}else {
+    				//
+    			}
+    			$result = $this->modelsManager->createBuilder()
+    					->columns(array(
+    					'Project.id as id',
+    					'Project.begintime as begintime',
+    					'Project.endtime as endtime',
+    					'Project.description as description',
+    					'Project.name as name',
+    					'Manager.name as manager_name',
+    					'Manager.username as manager_username',
+    					'Manager.password as manager_password',
+    					'COUNT(Examinee.id) as user_count' ))
+    					 ->from('Project')
+    			    	 ->join('Manager', "Project.manager_id = Manager.id AND $field $oper '$value'")
+    			         ->leftJoin('Examinee', 'Project.id = Examinee.project_id ')    
+    			         ->groupBy('Examinee.id')
+    			         ->limit($limit,$offset)
+    			    	 ->orderBy($sort)
+    			    	 ->getQuery()
+    			    	 ->execute();
+    		}else if ( $search_field == 'user_count'){
+    			$oper = '';
+    			switch($search_oper){
+    				case 'eq' : $oper = '='; break;
+    				case 'lt' : $oper = '<'; break;
+    				case 'le' : $oper = '<='; break;
+    				case 'gt' : $oper = '>'; break;
+    				case 'ge' : $oper = '>='; break;
+    			}
+    			$result = $this->modelsManager->createBuilder()
+    			->columns(array(
+    					'Project.id as id',
+    					'Project.begintime as begintime',
+    					'Project.endtime as endtime',
+    					'Project.description as description',
+    					'Project.name as name',
+    					'Manager.name as manager_name',
+    					'Manager.username as manager_username',
+    					'Manager.password as manager_password',
+    					'COUNT(Examinee.id) as user_count' ))
+    					->from('Project')
+    			    	->join('Manager', "Project.manager_id = Manager.id")
+    			    	->leftJoin('Examinee', 'Project.id = Examinee.project_id ')    
+    			    	->groupBy('Examinee.id')
+    			    	->having("$search_field $oper $search_string")	
+    			        ->limit($limit,$offset)
+    			    	->orderBy($sort)
+    			        ->getQuery()
+    			    	->execute();
+    			
+    		}else if ( $search_field == 'begintime' || $search_field == 'endtime'){
+    			$oper = '';
+    			if($search_oper == 'bw'){
+    				$oper = '>=';
+    			}else if ($search_oper == 'ew'){
+    				$oper = '<=';
+    			}
+    			$field = 'Project.'.$search_field;
+    			$result = $this->modelsManager->createBuilder()
+    					->columns(array(
+    					'Project.id as id',
+    					'Project.begintime as begintime',
+    					'Project.endtime as endtime',
+    					'Project.description as description',
+    					'Project.name as name',
+    					'Manager.name as manager_name',
+    					'Manager.username as manager_username',
+    					'Manager.password as manager_password',
+    					'COUNT(Examinee.id) as user_count' ))
+    					->from('Project')
+    			    	->join('Manager', "Project.manager_id = Manager.id AND $field $oper '$search_string'")
+    			    	->leftJoin('Examinee', 'Project.id = Examinee.project_id ')    
+    			    	->groupBy('Examinee.id')
+    			    	->limit($limit,$offset)
+    			    	->orderBy($sort)
+    			    	->getQuery()
+    			    	->execute();
+    		}else{
+    			//waiting add...
+    		}
+    		$rtn_array = array();
+    		$count = count($result);
+    		$rtn_array['total'] = ceil($count/$rows);
+    		$rtn_array['records'] = $count;
+    		$rtn_array['rows'] = array();
+    		foreach($result as $value){
+    			$rtn_array['rows'][] = $value;
+    		}
+    		$rtn_array['page'] = $page;
+    		$this->dataReturn($rtn_array);
+    		return;
+    	}
     }
 
     public function updateAction(){
@@ -248,24 +432,58 @@ class AdminController extends Base
         $oper = $this->request->getPost('oper', 'string');
         if ($oper == 'edit') {
         	//edit
-        	//修改之前应该判断数据库中是否已经存在记录
+        	//修改之前应该判断数据库中是否已经存在记录 -- 目前在前端进行判定2015-9-12
             $id = $this->request->getPost('id', 'int');
             $project = Project::findFirst($id);
             $project->name      = $this->request->getPost('name', 'string');
-            $project->begintime = $this->request->getPost('begintime', 'string');
+            #项目开始时间不可变更
+//             $project->begintime = $this->request->getPost('begintime', 'string');
             $project->endtime   = $this->request->getPost('endtime', 'string');
+            $project->description = $this->request->getPost('description', 'string');
             $manager = Manager::findFirst(array(
                 'project_id=?0',
                 'bind'=>array($id)));
             $manager->name     = $this->request->getPost('manager_name', 'string');
             $manager->username = $this->request->getPost('manager_username', 'string');
-            AdminDB::updateManager($manager);
-            AdminDB::updateProject($project);
-        }else{
+           
+            try{
+            	AdminDB::updateManager($manager);
+            	AdminDB::updateProject($project);
+            }catch(Exception $e){
+            	$this->dataReturn( array('error'=>'项目信息更新失败') );
+            	return;
+            }
+            $this->dataReturn(array('flag'=>true));
+            return;
+        }else if($oper == 'del' ){
         	//del
-        	//需要添加判断是否能被删除
+        	//需要添加判断是否能被删除 --目前还未添加相应的判定
+        
             $id = $this->request->getPost('id', 'int');
-            AdminDB::delproject($id);
+            $project_info = Project::findFirst($id);
+          	if ( !isset( $project_info -> id ) ) {
+          		$this->dataReturn(array('error'=>'项目编号不存在'));
+          		return;
+          	}else{
+          		if($project_info->state != 0 ){
+          			$this->dataReturn(array('error'=>'项目经理已经配置完成项目，不能被删除'));
+          			return;
+          		}else{
+          			try{
+          				AdminDB::delproject($id);
+          			}catch(Exception $e){
+          				$this->dataReturn(array('error'=>'项目删除失败'));
+          				return;
+          			}
+          			$this->dataReturn(array('flag'=>true));
+          			return;
+          		}
+          		
+          	}
+            
+         
+        }else{
+        	//
         }
     }
     
