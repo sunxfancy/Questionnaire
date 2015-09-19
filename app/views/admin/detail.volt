@@ -1,17 +1,19 @@
+<script src='http://www.ichartjs.com/ichart.latest.min.js'></script>
 <div class="Leo_question">
     <div style="margin:0 auto;width:100%;padding:10px 10px 0 10px;text-align:center;"><span style="font-size:30px;font-family:'Microsoft YaHei UI'">{{project_name}}</span></div>
     <hr size="2" color="#FF0000" />
     <table style="width:90%;margin:0 auto;text-align:center;">
         <tr style="width:100%;margin:0 auto;">
             <td style="width:47.5%;">
-                <div id="project-completeness" style="height:200px;"></div>
+                <div id="ichart-render-ceping"></div>
             </td>
             <td style="width:5%;"></td>
             <td style="width:47.5%">
-                <div id="interviewer-completeness" style="height:200px;"></div>
+                <div id='ichart-render-mianxun'></div>
             </td>
         </tr>
     </table>
+
     <div style="width:100%;padding:10px;">
         <div style="margin-left:30px;padding:10px;font-size:26px;color:red;">项目时间计划</div>       
         <div style="width:90%; margin:0 auto;">
@@ -33,44 +35,68 @@
 </div>
 
 <script type="text/javascript" src="/lib/flotr2.min.js"></script>
-<script type="text/javascript">
-    var examinee = {{detail}}.examinee_percent;
-    var interview = {{detail}}.interview_percent;
-    project_pie(document.getElementById("project-completeness"),examinee,'测评');
-    project_pie(document.getElementById("interviewer-completeness"),interview,'面询');      
 
-    function project_pie(container,data,name) {
-        var graph = Flotr.draw(container, [{
-            data: [[0,data]],
-            label: '已完成'
-        }, {
-            data: [[0,1-data]],
-            label: '未完成'
-        }], {
-            title: name + '完成度',
-            resolution: 1,
-            HtmlText: true,
-            grid: {
-                verticalLines: false,
-                horizontalLines: false
-            },
-            xaxis: {
-                showLabels: false
-            },
-            yaxis: {
-                showLabels: false
-            },
-            pie: {
-                show: true,
-                explode: 6
-            },
-            mouse: {
-                track: false
-            },
-            legend: {
-                position: 'se',
-                backgroundColor: '#D2E8FF' 
-            } 
-        });
-    }
+<script type='text/javascript'>
+$(function(){
+	var examinee = {{detail}}.examinee_percent;
+    var interview = {{detail}}.interview_percent;
+            var data_ceping = [
+                 {
+                  name:"未完成",
+                  value:1-examinee,
+                  color:"#aa4643"
+            },{
+                  name:"已完成",
+                  value:examinee,
+                  color:"#89a54e"
+            }
+            ];
+             var data_mianxun= [
+                 {
+                  name:"未完成",
+                  value:1-interview,
+                  color:"#aa4643"
+            },{
+                  name:"已完成",
+                  value:interview,
+                  color:"#89a54e"
+            }
+            ];
+            ichartDraw('ichart-render-ceping', data_ceping, '测评完成度');    
+            ichartDraw('ichart-render-mianxun', data_mianxun,'面巡完成度');  
+            });
+function ichartDraw( container, data, title){
+	new iChart.Pie2D({
+                    render : container,
+                    data: data,
+                    title : title,
+                    legend : {
+                        enable : false,
+                    },
+                    sub_option : {
+                        label : {
+                            background_color:null,
+                            sign:true,//设置禁用label的小图标
+                            padding:'0 4',
+                            border:{
+                                enable:false,
+                                color:'#666666'
+                            },
+                            fontsize:12,
+                            fontweight:600,
+                            color : '#4572a7'
+                        },
+                        border : {
+                            width : 1,
+                            color : '#ffffff'
+                        }
+                    },
+                    animation:true,
+                    showpercent:true,
+                    decimalsnum:2,
+                    radius:50,
+                    height:200,
+                }).draw();
+	
+}        
 </script>
