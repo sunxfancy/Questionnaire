@@ -142,12 +142,12 @@ class WordExport
 		$table->addCell($interview->remark);
 		
 		// //命名
-		// $fileName = $examinee->number."+".$examinee->name."+"."综合素质测评报告";
+		$fileName = $examinee->number."+".$examinee->name."+"."综合素质测评报告";
 		// header("Content-Disposition:attachment;filename=".$fileName.".doc"); 
 		// $this->commonMsg($PHPWord);
 		// Save File
 		$objWriter = PHPWord_IOFactory::createWriter($PHPWord, 'Word2007');
-		$objWriter->save('Text.docx');
+		$objWriter->save($fileName.'.docx');
 	}
 
 	public function shengrenliReport($examinee){
@@ -291,12 +291,12 @@ class WordExport
 		$section->addText("针对集团管理层和领导方法等有待提升的空间，以本次中青年人才综合测评结果为契机，在不同层次、不同群体人才综合素质与需求动机进行对比分析基础上，建立与集团发展战略需求相匹配胜任力标准，让德才兼备，想干事、能干事、干成事的人才在集团平台上施展自己的才华，使XXX集团成为行业的标杆！",'myParagraphStyle');
 
 		//命名
-		$fileName = $project->name."+人才综合测评总体分析报告";
-		header("Content-Disposition:attachment;filename=".$fileName.".doc"); 
-		$this->commonMsg($PHPWord);
-		// // Save File
-		// $objWriter = PHPWord_IOFactory::createWriter($PHPWord, 'Word2007');
-		// $objWriter->save('Text.docx');
+		// $fileName = $project->name."+人才综合测评总体分析报告";
+		// header("Content-Disposition:attachment;filename=".$fileName.".doc"); 
+		// $this->commonMsg($PHPWord);
+		// Save File
+		$objWriter = PHPWord_IOFactory::createWriter($PHPWord, 'Word2007');
+		$objWriter->save($project->name.'+人才综合测评总体分析报告.docx');
 	}
 
 	public function classReport($project_id){
