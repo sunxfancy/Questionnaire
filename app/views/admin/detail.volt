@@ -1,19 +1,13 @@
 <script src='http://www.ichartjs.com/ichart.latest.min.js'></script>
 <div class="Leo_question">
-    <div style="margin:0 auto;width:100%;padding:10px 10px 0 10px;text-align:center;"><span style="font-size:30px;font-family:'Microsoft YaHei UI'">{{project_name}}</span></div>
-    <hr size="2" color="#FF0000" />
-    <table style="width:90%;margin:0 auto;text-align:center;">
-        <tr style="width:100%;margin:0 auto;">
-            <td style="width:47.5%;">
-                <div id="ichart-render-ceping"></div>
-            </td>
-            <td style="width:5%;"></td>
-            <td style="width:47.5%">
-                <div id='ichart-render-mianxun'></div>
-            </td>
-        </tr>
-    </table>
-
+    <div style="margin:0 auto;width:100%;padding:10px 10px 0 10px;text-align:center;">
+    	<span style="font-size:30px;font-family:'Microsoft YaHei UI'">{{project_name}}</span>
+    </div>
+    <hr size="2" color="#FF0000" style="width:90%;"/>
+    <div style='text-align:center;'>
+        <div id="ichart-render-ceping" style='display:inline-block;'></div>
+        <div id='ichart-render-mianxun' style='display:inline-block;'></div>
+    </div>
     <div style="width:100%;padding:10px;">
         <div style="margin-left:30px;padding:10px;font-size:26px;color:red;">项目时间计划</div>       
         <div style="width:90%; margin:0 auto;">
@@ -96,6 +90,7 @@ function ichartDraw( container, data, title){
                     decimalsnum:2,
                     radius:50,
                     height:200,
+                    width:380,
                 }).draw();
 	
 }        
