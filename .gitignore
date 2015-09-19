@@ -8,6 +8,8 @@ app/config/config.ini
 app/config/config.php
 public/upload/*
 public/template/*
+public/pcharts/*
+public/words/*
 .idea/
 .phpintel/
 question.sublime-project
@@ -15,3 +17,4 @@ question.sublime-workspace
 *.*~
 .fuse_hidden*
 *.bak
+memcached-win64/*
