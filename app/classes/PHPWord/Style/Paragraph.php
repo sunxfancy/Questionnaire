@@ -170,5 +170,50 @@ class PHPWord_Style_Paragraph {
 	   $this->_spacing = $pValue;
 	   return $this;
 	}
+
+	/** 
+     * 缩进 indentleft and indentright段落缩进值,单位为twips      *   
+     * 缩进indentFirstLine and indentFirstChars  首行缩进twips数      *   
+     * @var int                
+	*/
+
+// 	private $_indentLeft;
+// 	private $_indentRight;
+// 	private $_indentFirstLine;
+// 	private $_indentFirstLineChars;
+// 	public function getIndentLeft()
+// 	{
+//        return $this->_indentLeft;
+// 	}
+// 	// 获取右缩进值 
+//     public function getIndentRight()
+// 	{
+//         return $this->_indentRight;
+// 	}
+// 	// 设臵右缩进值 
+//     public function setIndentRight($pValue = null)      
+// 	{  
+//         $this->_indentRight = $pValue;          
+// 		return $this;      
+// 	}  
+//     // 首行缩进相关方法 
+//     public function setIndentFirstLine($pValue = null)      
+// 	{  
+//         $this->_indentFirstLine = $pValue;          
+// 		return $this;      
+// 	}  
+// 	public function getIndentFirstLine()      
+// 	{  
+//         return $this->_indentFirstLine;      
+// 	}       
+//     public function setIndentFirstLineChars($pValue = null)      
+// 	{  
+//         $this->_indentFirstLineChars = $pValue;          
+// 		return $this;      
+// 	}       
+//     public function getIndentFirstLineChars()      
+// 	{  
+//         return $this->_indentFirstLineChars;      
+// 	} 
 }
 ?>

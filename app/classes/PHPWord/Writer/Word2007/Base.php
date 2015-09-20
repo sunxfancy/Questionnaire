@@ -113,7 +113,10 @@ class PHPWord_Writer_Word2007_Base extends PHPWord_Writer_Word2007_WriterPart {
 		$spaceBefore = $style->getSpaceBefore();
 		$spaceAfter = $style->getSpaceAfter();
 		$spacing = $style->getSpacing();
-		
+		// $indentLeft = $style->getIndentLeft();   
+		// $indentRight = $style->getIndentRight();  
+		// $indentFirstLine = $style->getIndentFirstLine();   
+		// $indentFirstLineChars = $style->getIndentFirstLineChars(); 
         
 		if(!is_null($align) || !is_null($spacing) || !is_null($spaceBefore) || !is_null($spaceAfter)) {
 			
@@ -154,6 +157,26 @@ class PHPWord_Writer_Word2007_Base extends PHPWord_Writer_Word2007_WriterPart {
 	protected function _writeLink(PHPWord_Shared_XMLWriter $objWriter = null, PHPWord_Section_Link $link, $withoutP = false) {
 		$rID = $link->getRelationId();
 		$linkName = $link->getLinkName();
+	// 	if (!is_null($indentLeft) || !is_null($indentRight) || !is_null($indentFirstLine) || !is_null($indentFirstLineChars)) {   
+	//         $objWriter->startElement('w:ind');      
+	// 	    if (!is_null($indentLeft))   
+	// 	    {   
+	// 	        $objWriter->writeAttribute('w:left', $indentLeft);   
+	// 	    }   
+	// 	    if (!is_null($indentRight))   
+	// 	    {   
+	// 	        $objWriter->writeAttribute('w:right', $indentRight);   
+	// 	    } 
+	// 		if (!is_null($indentFirstLine))   
+	// 	    {   
+	// 	        $objWriter->writeAttribute('w:firstLine', $indentFirstLine);   
+	// 	    }   
+	// 	    if (!is_null($indentFirstLineChars))   
+	// 	    {   
+	// 	        $objWriter->writeAttribute('w:firstLineChars', $indentFirstLineChars);   
+	// 	    }   
+	// 	    $objWriter->endElement();   
+	// 	} 
 		if(is_null($linkName)) {
 			$linkName = $link->getLinkSrc();
 		}

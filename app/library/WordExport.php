@@ -1,7 +1,5 @@
 <?php
 
-
-
 class WordExport
 {	
 	const phpworddir = '../app/classes/';
@@ -169,37 +167,44 @@ class WordExport
 		$PHPWord->addTitleStyle(2,array('size'=>15,'bold'=>true));
 		$PHPWord->addTitleStyle(3,array('size'=>12,'bold'=>true));
 
-		$section->addText("北京XXX集团",array('size'=>21, 'color'=>'red','bold'=>true),array('align'=>'center'));
-		$section->addTextBreak(1);
-		$section->addText("中青年人才综合测评总体分析报告",array('size'=>21, 'color'=>'red','bold'=>true),array('align'=>'center'));
+		//封面
+		$project = Project::findFirst($project_id);
+		$section->addText($project->name."总体分析报告",array('size'=>21, 'color'=>'red','bold'=>true),array('align'=>'center'));
 		$section->addPageBreak();
 
-		$section->addText("北京XXX集团",array('size'=>18, 'color'=>'red','bold'=>true),array('align'=>'center'));
-		$section->addText("中青年人才综合测评总体分析报告",array('size'=>18, 'color'=>'red','bold'=>true),array('align'=>'center'));
+		//目录
+		$section->addText("目录",array('size'=>14),array('align'=>'center'));
+		$section->addTOC(array('tabLeader'=>PHPWord_Style_TOC::TABLEADER_DOT),array('spaceAfter'=>60,'size'=>12));
+		$section->addPageBreak();
+
+		//项目背景
+		$section->addText($project->name."总体分析报告",array('size'=>18, 'color'=>'red','bold'=>true),array('align'=>'center'));
 		$section->addTitle("一、项目背景",1);
-		$project = Project::findFirst($project_id);
 		$examinee = Examinee::find(array(
 			'project_id=?1',
+			// 'state > 1',
 			'bind'=>array(1=>$project_id)));
 		$examinee_num = count($examinee);
 		$time = array();
 		$score_avg = array();
 		foreach ($examinee as $examinees) {
-			$time[] = $examinees->exam_time;
-			$index_ans = IndexAns::find(array(
-				'examinee_id=?1',
-				'bind'=>array(1=>$examinees->id)));
-			$score = 0;
-			$num = 0;
-			foreach ($index_ans as $index) {
-				$score += $index->score;
-				$num++;
-			}
-			if ($num == 0) {
-				$score_avg[] = 0;
-			}else{
-				$score_avg[] = $score / $num;
-			}		
+			if ($examinees->state > 0) {
+				$time[] = $examinees->exam_time;
+				$index_ans = IndexAns::find(array(
+					'examinee_id=?1',
+					'bind'=>array(1=>$examinees->id)));
+				$score = 0;
+				$num = 0;
+				foreach ($index_ans as $index) {
+					$score += $index->score;
+					$num++;
+				}
+				if ($num == 0) {
+					$score_avg[] = 0;
+				}else{
+					$score_avg[] = $score / $num;
+				}	
+			}	
 		}
 		$level1_num = 0;$level2_num = 0;$level3_num = 0;$level4_num = 0;
 		foreach ($score_avg as $score) {
@@ -219,8 +224,9 @@ class WordExport
 			$level2 = sprintf("%d",$level2_num / $examinee_num).'%';
 			$level3 = sprintf("%d",$level3_num / $examinee_num).'%';
 			$level4 = sprintf("%d",$level4_num / $examinee_num).'%';
-			$min_time = min($time);
-			$avg_time = array_sum($time) / $examinee_num;
+			sort($time);
+			$min_time = $time[0].'秒';
+			$avg_time = intval(array_sum($time) / $examinee_num).'秒';
 		}
 
 		$section->addText("为了充分开发中青年人才资源，了解中青年人才水平、培养有潜力人才及科技骨干、选拔一批经验丰富，德才兼备的中青年高技能人才，北京XXX集团（后简称“集团”），采用第三方北京技术交流培训中心(以下简称“中心”)自主研发26年，通过上下、左右、前后六维（简称“6＋1”）测评技术，对集团".$examinee_num."名中青年人才进行了一次有针对性的测评。分别于".$project->begintime."到".$project->endtime."，在集团培训中心进行上机测试。规定测评时间为3小时，最短完成时间为".$min_time."，一般为".$avg_time."左右。 ",'myParagraphStyle');
@@ -240,11 +246,33 @@ class WordExport
 		$section->addText("五是汇报与反馈。向集团领导汇报总体与个体测评结果，反馈无记名满意度调查报告等，针对集团发展战略和现代人力资源管理提出针对性的建议与对策。",'myParagraphStyle');
 		$section->addTitle("3、技术路径",2);
 		$section->addText("“中心”的综合测评系统始于1988年博士研究成果，经历了26年实践检验，其过程（1）测评地域：北京、上海、天津、广东、山西、湖南、湖北、陕西、内蒙、海南、浙江、山东、辽宁、河南等省市；（2）年龄：20～68岁；（3）学历：大专～博士后；（4）职称：初级～两院士；（5）职务：初、中级～政府副部长、部队中将（陆海空）；（6）类型：跨国公司高管、各类企业高管与技术人才；（7）测评人数：3万多人；（8）测评数据：每人925个；（9）获得荣誉：7次获国家自然科学基金资助，2次获航空科学基金资助，4次获省部级科学技术进步二等奖和管理成果一等奖；在国内外核心刊物发表论文30多篇，专著一本；测评软件50多套；培养出3名博士、9名硕士；经调查，客户反映测评准确率高、效果明显，平均满意度达97.8%，受到被测评人才和用人单位的普遍欢迎和认可。",'myParagraphStyle');
+		
+		//基本情况分析
 		$section->addTitle("二、综合测评基本情况分析",1);
+		$inquery = Inquery::find(array(
+			'project_id=?1',
+			'bind'=>array(1=>$project_id)));
+		$option = array();
+		foreach ($inquery as $inquerys) {
+			$option[] = explode('|', $inquerys)
+		}
+		$inquery_ans = InqueryAns::find(array(
+			'project_id=?1',
+			'bind'=>array(1=>$project_id)));
+		$ans = array();
+		foreach ($inquery_ans as $inquery_anses) {
+			$ans[] = explode('|', $inquery_anses->option)
+		}
 		$section->addText("参加本次测评对象是集团的中青年人才（或简称“人才”），有五个重要定义：");
-		//$section->addText("");
-		//需求量表todo...
+		$section->addText("总体：参加测评的中青年人才,共".$examinee_num."人；");
+		for($i = 0;$i < $examinee_num;$i++) {
+			$section->addText($option[0][$i]."：".self::countNum($ans,0,$i)."人");
+		}
 
+
+
+
+		//结论与建议
 		$section->addTitle("五、结论与建议",1);
 		$section->addTitle("（一）本次综合测评的基本评价",2);
 		$section->addTitle("1、印证了集团对中青年人才培养前瞻性、系统性和实效性",3);
@@ -296,7 +324,7 @@ class WordExport
 		// $this->commonMsg($PHPWord);
 		// Save File
 		$objWriter = PHPWord_IOFactory::createWriter($PHPWord, 'Word2007');
-		$objWriter->save($project->name.'+人才综合测评总体分析报告.docx');
+		$objWriter->save($project->name.'+总体分析报告.docx');
 	}
 
 	public function classReport($project_id){
@@ -339,6 +367,16 @@ class WordExport
         header("Content-Transfer-Encoding:binary");
         $Writer= PHPWord_IOFactory::createWriter($PHPWord, 'Word2007');
         $Writer->save('php://output');
+    }
+
+    public static function countNum($array,$list,$option){
+    	$count = 0;
+    	for ($i=0; $i < count($array); $i++) { 
+    		if ($array[$i][$list] == chr($option+97)) {
+    			$count++;
+    		}
+    	}
+    	return $count;
     }
 
 }
