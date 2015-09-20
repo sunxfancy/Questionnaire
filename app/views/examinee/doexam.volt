@@ -233,14 +233,23 @@ $('#myModal').on('hide.bs.modal', function (e) {
         var option1="<div class='Leo_ans_div'><div class='Leo_ans_checkdiv'><input name='ans_sel' type='radio' id='123' style='cursor:pointer;'/></div><div class='Leo_ans_checktext'>";
         var option2="</div></div>";
         var title='<span>'+(questions[index].index)+"."+questions[index].title+'</span>';
+        var options=questions[index].options.split("|");
         if(paper_id_name[paper_id_now]=="SPM"){
             option_disp="<div>";
-            option1="<div class='Leo_ans_div_spm'><div class='Leo_ans_checkdiv'><input name='ans_sel' type='radio' id='123' style='cursor:pointer;'/></div><div class='Leo_ans_checktext' style='width:140px;height:85px;text-align:center;'><img style='height:50px;margin-top:17px;' src='/spmimages/";
+            var wid=105;
+            var wid_percent=140;
+            if(options.length==6){
+                wid=140;
+                wid_percent=170;
+            }
+            
+
+            option1="<div class='Leo_ans_div_spm' style='width:"+wid_percent+"px'><div class='Leo_ans_checkdiv'><input name='ans_sel' type='radio' id='123' style='cursor:pointer;'/></div><div class='Leo_ans_checktext' style='width:"+wid+"px;height:85px;text-align:center;'><img style='height:50px;margin-top:17px;' src='/spmimages/";
             option2=".jpg' /></div></div>";
             title=(questions[index].index)+"."+"<img style='height:145px;' src='/spmimages/"+questions[index].title+".jpg' />";
         } 
 
-        var options=questions[index].options.split("|");
+        
         for (var i = 0; i <options.length; i++) {
             option_disp+=option1+options[i]+option2;
         }
@@ -388,7 +397,8 @@ $('#myModal').on('hide.bs.modal', function (e) {
                     })
                 // if(confirm("您确定要提交吗?")){
                     // Leo_check();
-                // }
+                // }
+
             })
             changepage(ans_array.length-1,false);
         }
