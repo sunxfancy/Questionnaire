@@ -13,7 +13,11 @@
     <div class="Leo_scroll_panel" style="margin:0 auto;top:0px;" id="Leo_manager_home"></div>
 </div>
 <script type='text/javascript'>
-    Leo_switch(document.getElementById("label_detail"));
+    if (true) {
+
+    }else{
+        Leo_switch(document.getElementById("label_detail"));
+    }
 
     function Leo_switch(t) {                 
         switch (t.id) {

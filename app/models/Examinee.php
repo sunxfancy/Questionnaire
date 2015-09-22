@@ -130,6 +130,12 @@ class Examinee extends \Phalcon\Mvc\Model
      */
     public $exam_time;
 
+    /**
+     * @var string
+     *
+     */
+    public $init_data;
+
 
     public function initialize()
     {
