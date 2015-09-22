@@ -28,6 +28,14 @@ class ExamineeController extends Base
         if ($examinee)
         {
             $this->session->set('Examinee', $examinee);
+            if($this->check_ans(0,$examinee->id)){
+                if(!$this->check_ans(1,$examinee->id)){
+                    $this->dataReturn(array('url'=>'/examinee/editinfo'));return;
+                }else{
+                    $this->dataReturn(array('error'=>'您已经答完了全部的题目，不需要再登录了,感谢您的作答'));
+                    return;
+                }
+             }
             $this->dataReturn(array('url' =>'/examinee/inquery'));
             return;
         }
@@ -45,9 +53,44 @@ class ExamineeController extends Base
         //获得被试者的登陆信息      
 	}
 
+    //函数作者：Leo, 返回为布尔型，check_type为你要进行检验的项目，0-需求量表，1-答题，如果该项目已经答题完毕，则返回true
+    public function check_ans($check_type,$exam_id){
+        if(!$check_type){
+            $tmp=InqueryAns::findFirst(array(
+                    "examinee_id=?1",
+                    "bind"=>array(1=>$exam_id)
+                ));
+
+            if($tmp){
+                return true;
+            }
+            return false;
+           
+        }else{
+            $tmp=QuestionAns::find(array(
+                    "examinee_id=?1",
+                    "bind"=>array(1=>$exam_id)
+                ));
+            $i=0;
+            foreach ($tmp as $tmps) {
+                # code...
+
+                if($i==5){
+                    return true;
+                }
+                 $i++;
+            }
+            return false;
+            
+        }
+    }
     public function getInqueryAction(){
  		// $this->session->remove('Examinee');
     	$exminee = $this->session->get('Examinee');
+        if($this->check_ans(0,$exminee->id)){
+            $this->dataReturn(array('error'=>'您已经答完了全部的需求量表题目,不需要再进行答题,请退出重新登录'));
+            return;
+        }
     	if(empty($exminee)){
     		$this->dataReturn(array('error'=>'用户信息获取失败'));
     		return;
@@ -56,7 +99,8 @@ class ExamineeController extends Base
         try{
         	$inquery_data = MemoryCache::getInqueryQuestion($project_id);
         	#查询出缓存信息后，判断是否为空，为空则清空 -----只需要在需求量表处进行判断,其他的可以不进行判断，因为从数据库中读取不更改的数据，可默认为ok
-        	$test = $this->modelsCache->get( 'inquery_question_by_project_id_'.$project_id );
+        	
+            $test = $this->modelsCache->get( 'inquery_question_by_project_id_'.$project_id );
         	if( count($test) == 0 ){
         		$this->modelsCache->delete( 'inquery_question_by_project_id_'.$project_id );
         	}
@@ -68,6 +112,7 @@ class ExamineeController extends Base
         	$this->dataReturn(array('error'=>'需求量表获取失败,返回数据为空'));
         	return ;
         }else{
+
         	$question = array();
         	foreach($inquery_data as $record){
         		$question[] = array(
@@ -118,6 +163,13 @@ class ExamineeController extends Base
     public function getpaperAction(){
         $paper_name = $this->request->getPost("paper_name","string");
         $examinee = $this->session->get('Examinee');
+        if(!$this->check_ans(0,$examinee->id)){
+            $this->dataReturn(array('error'=>'您还未完成需求量表的作答，请退出重新登录。<br/>请不要尝试直接通过地址进入答题。'));return;
+        }
+        if($this->check_ans(1,$examinee->id)){
+            $this->dataReturn(array('error'=>'您已经答完了全部的题目，访问无效！'));
+            return;
+        }
         $project_id = $examinee->project_id;
         if(!in_array($paper_name, self::$paper_name_array)){
         	$this->dataReturn(array('error'=>'不存在试卷-'.$paper_name));
@@ -167,7 +219,7 @@ class ExamineeController extends Base
     			FactorScore::handleFactors($id);
     			FactorScore::finishedFactor($id);
     			IndexScore::handleIndexs($id);
-    			IndexScore::finishedIndex($id);
+    			IndexScore::finishedIndex($id); 
     		}catch(Exception $e){
     			$this->dataReturn(array('error'=>$e->getMessage()));
     			return ;
