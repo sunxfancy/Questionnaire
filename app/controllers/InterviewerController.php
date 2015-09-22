@@ -31,8 +31,6 @@ class InterviewerController extends Base
         }else if ($level == '差') {
             $level4 = '号&radic;';
         }
-        echo $level;
-        echo $level4;
         $this->view->setVar('level1',$level1);
         $this->view->setVar('level2',$level2);
         $this->view->setVar('level3',$level3);

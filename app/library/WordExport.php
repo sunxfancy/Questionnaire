@@ -29,46 +29,81 @@ class WordExport
 	
 	public function examineeReport($examinee,$project_id){
 		$PHPWord = new PHPWord();
-		// $PHPWord->setDefaultFontSize(14);
 		$section = $PHPWord->createSection();
+		$PHPWord->setDefaultFontSize(14);
+		$PHPWord->addParagraphStyle('myParagraphStyle',array('spacing'=>24));
+		$PHPWord->addTitleStyle(1,array('size'=>16,'bold'=>true,'color'=>'red'));
+		$PHPWord->addTitleStyle(2,array('size'=>15,'bold'=>true,'color'=>'blue'));
+		$PHPWord->addTitleStyle(3,array('size'=>14,'bold'=>true));
+		// Add footer
+		$footer = $section->createFooter();
+		$footer->addPreserveText('Page {PAGE} of {NUMPAGES}.', array('align'=>'center'));
 
+	//封面
 		$section->addTextBreak(6);
 		$section->addText('综合素质I 测评报告',array('size'=>36, 'color'=>'red','bold'=>true),array('align'=>'center'));
 		$section->addTextBreak(1);
-		$section->addText("测评对象：".$examinee->name,array('size'=>14));
+		$section->addText("测评对象：".$examinee->name,array('size'=>14,'bold'=>true));
 		$section->addTextBreak(1);
-		$section->addText("性    别：".$examinee->sex,array('size'=>14));
+		$sex = ($examinee->sex == 1) ? '男' : '女';
+		$section->addText("性    别：".$sex,array('size'=>14,'bold'=>true));
 		$section->addTextBreak(1);
-		$section->addText("出生年月：".$examinee->birthday,array('size'=>14));
+		$section->addText("出生年月：".$examinee->birthday,array('size'=>14,'bold'=>true));
 		$section->addTextBreak(1);
-		$section->addText("测试单位：北京国合点金管理咨询有限公司",array('size'=>14));
+		$section->addText("测试单位：北京国合点金管理咨询有限公司",array('size'=>14,'bold'=>true));
 		$section->addTextBreak(1);
-		$section->addText("测试时间：".$examinee->last_login,array('size'=>14));
+		$section->addText("测试时间：".$examinee->last_login,array('size'=>14,'bold'=>true));
 		$section->addTextBreak(1);
-
 		$section->addPageBreak();
-		$section->addText("目录",array('color'=>'red','size'=>14));
-		// $styleTOC = array('tabLeader'=>PHPWord_Style_TOC::TABLEADER_DOT); 
-		// $styleFont = array('spaceAfter'=>60, 'name'=>'Tahoma', 'size'=>12); 
-		// $section->addTOC($styleFont, $styleTOC);
 
+	//目录
+		$section->addText("目录",array('size'=>14),array('align'=>'center'));
+		$section->addTOC(array('tabLeader'=>PHPWord_Style_TOC::TABLEADER_DOT),array('spaceAfter'=>60,'size'=>12));
 		$section->addPageBreak();
-		// $PHPWord->addTitleStyle(1，array('color'=>'red','size'=>14));
+
+	//个人情况
+		$json = json_decode($examinee->other,true);
+		$education_array = $json['education'];
+		//对教育经历按逆序时间排序
+		$time1_array = array();
+		foreach($education_array as $key=>$value){
+			$time1_array[] = $value['date'];
+		}
+		array_multisort($time1_array,SORT_DESC,$education_array);
 		$section->addTitle("一、个人情况综述",1);
-		// $PHPWord->addTitleStyle(2，array('color'=>'red','size'=>14));
 		$section->addTitle("个人信息",2);
-		// $listStyle = array('listType' => PHPWord_Style_ListItem::TYPE_NUMBER);
-		$section->addListItem("姓名：".$examinee->name."(".$examinee->sex.")");
-		$section->addListItem("毕业院校：".$examinee->education);
+		$section->addListItem("姓名：".$examinee->name."(".$sex.")");
+		$section->addListItem("毕业院校：".$education_array[0]['school'].$education_array[0]['degree']);
 		$section->addListItem("规定测试时间：3小时");
-		$section->addListItem("实际完成时间：".$examinee->exam_time);
+		$time = '';
+		foreach (array(3600=>'小时', 60=>'分',1=>'秒') as $key => $value) {
+			if ($examinee->exam_time >= $key) {
+				$time .= floor($examinee->exam_time / $key).$value;
+				$examinee->exam_time %= $key;
+			}
+		}
+		$section->addListItem("实际完成时间：".$time);
+		$work_array = $json['work'];
+		//对工作经历按逆序时间排序
+		$time2_array = array();
+		foreach($work_array as $key=>$value){
+			$time2_array[] = $value['date'];
+		}
+		array_multisort($time2_array,SORT_DESC,$work_array);
 		$section->addTitle("工作经历",2);
 		$table = $section->addTable();
-		$table->addRow(400);
+		$table->addRow();
 		$table->addCell(20)->addText("就职单位");
 		$table->addCell(20)->addText("部门");
 		$table->addCell(20)->addText("职位");
 		$table->addCell(20)->addText("工作时间");
+		for($r = 1; $r <= count($work_array); $r++) { 
+			$table->addRow();
+			$table->addCell(100)->addText($work_array[$r-1]['employer']);
+			$table->addCell(100)->addText($work_array[$r-1]['unit']);
+			$table->addCell(100)->addText($work_array[$r-1]['duty']);
+			$table->addCell(100)->addText($work_array[$r-1]['date']);
+		}
 
 		if ($examinee->exam_time > 10800) {
 			$comOrnot = '未在规定时间内完成';
@@ -79,15 +114,9 @@ class WordExport
 		}else{
 			$comOrnot = '比正常快近二分之一';
 		}
-		foreach (array(3600=>'小时', 60=>'分') as $key => $value) {
-			if ($examinee->exam_time >= $key) {
-				$time .= floor($examinee->exam_time / $key).$value;
-				$examinee->exam_time %= $key;
-			}
-		}
-		// $section->addText("测试要求3小时，以".$time."完成，".$examinee->name.$comOrnot."，且回答"."真实（掩饰性系数低于平均水平）"."，说明其阅读"."不仅快而且准确。");
-
+		$section->addText("测试要求3小时，以".$time."完成，".$examinee->name.$comOrnot."，且回答"."真实（掩饰性系数低于平均水平）"."，说明其阅读"."不仅快而且准确。");
 		$section->addPageBreak();
+
 		$section->addTitle("二、测评结果",1);
 		$section->addTitle("1、突出优势",2);
 		$index_ans = IndexAns::find(array(
@@ -117,27 +146,62 @@ class WordExport
 			$section->addTitle($index['name'][$i],3);
 		}
 
+	//综合评价
 		$section->addTitle("三、综合评价",1);
+		$section->addText("综合评价分析包括对职业素质、职业心理、职业能力、三商与身体的分析。其中职业素质共有八项指标，职业心理共有七项指标，职业能力共有七项指标，三商与身体共有六项指标。由各指标的得分平均值得出职业素质、职业心理、职业能力、三商与身体的综合分。 ");
+		$section->addTitle("职业素质：",2);
+		$section->addText($examinee->name);
+		$section->addTitle("职业心理：",2);
+		$section->addText($examinee->name);
+		$section->addTitle("职业能力：",2);
+		$section->addText($examinee->name);
+		$section->addTitle("三商与身体：",2);
+		$section->addText($examinee->name);
 
+	//结论与建议
 		$section->addTitle("四、结论与建议",1);
 		$interview = Interview::findFirst(array(
 			'examinee_id=?1',
-			'bind'=>array(1=>$examinee_id)));
+			'bind'=>array(1=>$examinee->id)));
 		$advantage = explode('|',$interview->advantage);
 		$disadvantage = explode('|',$interview->disadvantage);
+		$level = ReportData::getLevel($examinee->id);
+        $level1 = '';$level2 = '';$level3 = '';$level4 = '';
+        if ($level == '优') {
+            $level1 = '&radic;';
+        }else if ($level == '良') {
+            $level2 = '&radic;';
+        }else if ($level == '中') {
+            $level3 = '&radic;';
+        }else if ($level == '差') {
+            $level4 = '号&radic;';
+        }
 		$table = $section->addTable(); 
 		for ($i=0; $i < 5; $i++) { 
 			$table->addRow();
-			$table->addCell()->addText($advantage[$i]);
+			$table->addCell(1000)->addText("优势");
+			$table->addCell(1000)->addText($advantage[$i]);
 		}
 		for ($i=0; $i < 3; $i++) { 
 			$table->addRow();
-			$table->addCell()->addText($disadvantage[$i]);
+			$table->addCell(1000)->addText("改进");
+			$table->addCell(1000)->addText($disadvantage[$i]);
 		}
 		$table->addRow();
-
+		$table->addCell(1000)->addText("潜质");
+		$table->addCell(1000)->addText("优");
+		$table->addCell(1000)->addText("良");
+		$table->addCell(1000)->addText("中");
+		$table->addCell(1000)->addText("差");
 		$table->addRow();
-		$table->addCell($interview->remark);
+		$table->addCell(1000)->addText("潜质");
+		$table->addCell(1000)->addText($level1);
+		$table->addCell(1000)->addText($level2);
+		$table->addCell(1000)->addText($level3);
+		$table->addCell(1000)->addText($level4);
+		$table->addRow();
+		$table->addCell(1000)->addText("评价");
+		$table->addCell(1000)->addText($interview->remark);
 		
 		// //命名
 		$fileName = $examinee->number."+".$examinee->name."+"."综合素质测评报告";
@@ -145,7 +209,7 @@ class WordExport
 		// $this->commonMsg($PHPWord);
 		// Save File
 		$objWriter = PHPWord_IOFactory::createWriter($PHPWord, 'Word2007');
-		$objWriter->save($fileName.'.docx');
+		$objWriter->save('wordexport/'.$fileName.'.docx');
 	}
 
 	public function shengrenliReport($examinee){
@@ -167,28 +231,29 @@ class WordExport
 		$PHPWord->addTitleStyle(2,array('size'=>15,'bold'=>true));
 		$PHPWord->addTitleStyle(3,array('size'=>12,'bold'=>true));
 
-		//封面
+	//封面
 		$project = Project::findFirst($project_id);
 		$section->addText($project->name."总体分析报告",array('size'=>21, 'color'=>'red','bold'=>true),array('align'=>'center'));
 		$section->addPageBreak();
 
-		//目录
+	//目录
 		$section->addText("目录",array('size'=>14),array('align'=>'center'));
 		$section->addTOC(array('tabLeader'=>PHPWord_Style_TOC::TABLEADER_DOT),array('spaceAfter'=>60,'size'=>12));
 		$section->addPageBreak();
 
-		//项目背景
+	//项目背景
 		$section->addText($project->name."总体分析报告",array('size'=>18, 'color'=>'red','bold'=>true),array('align'=>'center'));
 		$section->addTitle("一、项目背景",1);
 		$examinee = Examinee::find(array(
 			'project_id=?1',
 			// 'state > 1',
 			'bind'=>array(1=>$project_id)));
-		$examinee_num = count($examinee);
+		$examinee_num = 0;
 		$time = array();
 		$score_avg = array();
 		foreach ($examinee as $examinees) {
 			if ($examinees->state > 0) {
+				$examinee_num ++;
 				$time[] = $examinees->exam_time;
 				$index_ans = IndexAns::find(array(
 					'examinee_id=?1',
@@ -247,32 +312,60 @@ class WordExport
 		$section->addTitle("3、技术路径",2);
 		$section->addText("“中心”的综合测评系统始于1988年博士研究成果，经历了26年实践检验，其过程（1）测评地域：北京、上海、天津、广东、山西、湖南、湖北、陕西、内蒙、海南、浙江、山东、辽宁、河南等省市；（2）年龄：20～68岁；（3）学历：大专～博士后；（4）职称：初级～两院士；（5）职务：初、中级～政府副部长、部队中将（陆海空）；（6）类型：跨国公司高管、各类企业高管与技术人才；（7）测评人数：3万多人；（8）测评数据：每人925个；（9）获得荣誉：7次获国家自然科学基金资助，2次获航空科学基金资助，4次获省部级科学技术进步二等奖和管理成果一等奖；在国内外核心刊物发表论文30多篇，专著一本；测评软件50多套；培养出3名博士、9名硕士；经调查，客户反映测评准确率高、效果明显，平均满意度达97.8%，受到被测评人才和用人单位的普遍欢迎和认可。",'myParagraphStyle');
 		
-		//基本情况分析
+	//基本情况分析
 		$section->addTitle("二、综合测评基本情况分析",1);
-		$inquery = Inquery::find(array(
+		$inquery = InqueryQuestion::find(array(
 			'project_id=?1',
 			'bind'=>array(1=>$project_id)));
 		$option = array();
 		foreach ($inquery as $inquerys) {
-			$option[] = explode('|', $inquerys)
+			$option[] = explode('|', $inquerys->options);
 		}
 		$inquery_ans = InqueryAns::find(array(
 			'project_id=?1',
 			'bind'=>array(1=>$project_id)));
 		$ans = array();
 		foreach ($inquery_ans as $inquery_anses) {
-			$ans[] = explode('|', $inquery_anses->option)
+			$ans[] = explode('|', $inquery_anses->option);
 		}
-		$section->addText("参加本次测评对象是集团的中青年人才（或简称“人才”），有五个重要定义：");
-		$section->addText("总体：参加测评的中青年人才,共".$examinee_num."人；");
-		for($i = 0;$i < $examinee_num;$i++) {
+		$section->addText("参加本次测评对象是集团的中青年人才（或简称“人才”），有".(count($option[0])+1)."个重要定义：");
+		$section->addText("总体：参加测评的中青年人才，共".$examinee_num."人；");
+		for($i = 0;$i < count($option[0]);$i++) {
 			$section->addText($option[0][$i]."：".self::countNum($ans,0,$i)."人");
 		}
+		$section->addTitle("（一）	基本信息分析",2);
+		$sex_array = self::arrayTran($ans,1);
+		$job_array = self::arrayTran($ans,0);
+		$section->addTitle("1.总体男女比例",3);
+		$table = $section->addTable();
+		$table->addRow();
+		$table->addCell(1000)->addText("职务");
+		$table->addCell(1000)->addText("总人数");
+		$table->addCell(1000)->addText("男性人数");
+		$table->addCell(1000)->addText("女性人数");
+		for($r = 1; $r <= count($option[0]); $r++) { 
+			$table->addRow();
+			$table->addCell(100)->addText($option[0][$r-1]);
+			$table->addCell(100)->addText(self::countNum($ans,0,$r-1));
+			$table->addCell(100)->addText(self::combineNum($job_array,$sex_array,chr($r+96),'a'));
+			$table->addCell(100)->addText(self::combineNum($job_array,$sex_array,chr($r+96),'b'));
+		}
+		// $section->addText("如图1所示，".$examinee_num."位中青年人才中，男性有".."人，占总人数".."%；女性".."人，占总人数".."%");
+		$section->addText("相关分析：",array('color'=>'blue','blod'=>true));
 
 
+		$section->addTitle("（二）职业素质分析",2);
+
+		$section->addTitle("（三）工作满意度分析",2);
+
+		$section->addTitle("（四）培训现状及需求分析",2);
+
+	//测评结果
+		$section->addTitle("三、测评结果及特点分析",1);
+		$section->addTitle("1、五个突出优势的特征",2);
 
 
-		//结论与建议
+	//结论与建议
 		$section->addTitle("五、结论与建议",1);
 		$section->addTitle("（一）本次综合测评的基本评价",2);
 		$section->addTitle("1、印证了集团对中青年人才培养前瞻性、系统性和实效性",3);
@@ -318,13 +411,13 @@ class WordExport
 		$section->addTitle("6、建立不同层次人才综合素质体系，让优秀人才脱颖而出",3);
 		$section->addText("针对集团管理层和领导方法等有待提升的空间，以本次中青年人才综合测评结果为契机，在不同层次、不同群体人才综合素质与需求动机进行对比分析基础上，建立与集团发展战略需求相匹配胜任力标准，让德才兼备，想干事、能干事、干成事的人才在集团平台上施展自己的才华，使XXX集团成为行业的标杆！",'myParagraphStyle');
 
-		//命名
+	//命名
 		// $fileName = $project->name."+人才综合测评总体分析报告";
 		// header("Content-Disposition:attachment;filename=".$fileName.".doc"); 
 		// $this->commonMsg($PHPWord);
 		// Save File
 		$objWriter = PHPWord_IOFactory::createWriter($PHPWord, 'Word2007');
-		$objWriter->save($project->name.'+总体分析报告.docx');
+		$objWriter->save('wordexport/'.$project->name.'+总体分析报告.docx');
 	}
 
 	public function classReport($project_id){
@@ -369,6 +462,7 @@ class WordExport
         $Writer->save('php://output');
     }
 
+    //单个选项出现次数
     public static function countNum($array,$list,$option){
     	$count = 0;
     	for ($i=0; $i < count($array); $i++) { 
@@ -377,6 +471,34 @@ class WordExport
     		}
     	}
     	return $count;
+    }
+
+    //两个选项同时出现次数(不考虑多选)
+    public static function combineNum($array1,$array2,$option1,$option2){
+    	$count = 0;
+    	for ($i=0; $i < count($array1); $i++) { 
+    		if ($array1[$i] == $option1 && $array2[$i] == $option2) {
+    			$count ++;
+    		}
+    	}
+    	return $count;
+    }
+
+    //选取出某一道题的所有答案，$array:所有题目答案,$list:题目序号
+    public static function arrayTran($array,$list){
+    	$array1 = array();
+    	$temp = array();
+    	for ($i=0; $i < count($array); $i++) { 
+			if (strlen($array[$i][$list]) >1) {
+				$temp = str_split($array[$i][$list]);
+				for ($j=0; $j < count($temp); $j++) { 
+					$array1[] = $temp[$j];
+				}
+			}else{
+				$array1[] = $array[$i][$list];
+			}
+    	}
+    	return $array1;
     }
 
 }
