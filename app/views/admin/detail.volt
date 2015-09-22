@@ -1,4 +1,4 @@
-<script src='http://www.ichartjs.com/ichart.latest.min.js'></script>
+<script src='/ichart/ichart.latest.min.js'></script>
 <div class="Leo_question">
     <div style="margin:0 auto;width:100%;padding:10px 10px 0 10px;text-align:center;">
     	<span style="font-size:30px;font-family:'Microsoft YaHei UI'">{{project_name}}</span>
@@ -6,6 +6,7 @@
     <hr size="2" color="#FF0000" style="width:90%;"/>
     <div style='text-align:center;'>
         <div id="ichart-render-ceping" style='display:inline-block;'></div>
+        <div style='display:inline-block;width:10px;'></div>
         <div id='ichart-render-mianxun' style='display:inline-block;'></div>
     </div>
     <div style="width:100%;padding:10px;">
@@ -28,7 +29,6 @@
     </div>
 </div>
 
-<script type="text/javascript" src="/lib/flotr2.min.js"></script>
 
 <script type='text/javascript'>
 $(function(){
