@@ -10,6 +10,7 @@ public/upload/*
 public/template/*
 public/pcharts/*
 public/words/*
+public/wordexport/*
 .idea/
 .phpintel/
 question.sublime-project

@@ -45,11 +45,13 @@ class Project extends \Phalcon\Mvc\Model
      *
      */
     public $last_examinee_id;
-    
+
     /**
-     * @var state
+     * @var integer
+     *
      */
-	public $state;
+    public $state;
+
 
 
     public function initialize()

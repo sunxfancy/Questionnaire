@@ -31,7 +31,7 @@
             shrinkToFit:true,
             forceFit:true,
             autowidth: true,
-            colNames:[ '个人信息','被试编号','姓名','性别', '是否测试完毕','最后登录时间','查看报告'],
+            colNames:[ '个人信息','被试编号','姓名','性别', '是否测评结束','最后登录时间','查看报告'],
             colModel:[
                 {name:'info',index:'info', sortable:false, width:60, resize:false,align:'center',
                     formatter:function(cellvalue, options, rowObject){
@@ -41,22 +41,11 @@
                 },
                 {name:'number',      index:'number',     sortable:true,    width:100,sorttype:"int", editable: false,  align:'center'},
                 {name:'name',        index:'name',       sortable:true,    width:110,sorttype:"string", editable:false,align:'center'},
-                {name:'sex',         index:'sex',        sortable:true,    width:60,sorttype:"string", editable:false,align:'center',
-                    formatter:function(cellvalue){
-                        var temp = "";
-                        if(cellvalue == 1){
-                            temp = "男" ;
-                        } 
-                        else { 
-                            temp = "女";
-                        }
-                        return temp;
-                    }
-                },
+                {name:'sex',         index:'sex',        sortable:true,    width:60,sorttype:"string", editable:false,align:'center'},
                 {name:'state',       index:'state',       sortable:false,  width:135,editable:false,align:'center',
                     formatter:function(cellvalue){
                         var temp = "";
-                        if(cellvalue > 0){
+                        if(cellvalue > 5){
                             temp = "是" ;
                         } 
                         else { 
@@ -67,8 +56,11 @@
                 },
                 {name:'last_login',  index:'last_login',  sortable:false,  width:200, editable: false,unformat:pickDate,align:'center'},
                 {name:'result',      index:'result',      sortable:false,  width:130, resize:false,align:'center',
-                    formatter:function(){
-                        var temp = "<a href='/pm/result' >查看</a>";
+                    formatter:function(cellvalue, options, rowObject){
+                        var temp = '查看';
+                        if (rowObject.state > 5) {
+                            temp = "<a href='/pm/result' >查看</a>";
+                        }
                         return temp;
                     }
                 }

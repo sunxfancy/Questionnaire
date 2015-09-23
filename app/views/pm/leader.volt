@@ -144,6 +144,8 @@
                 //new record form
                 //width: 700,
                 closeAfterAdd: true,
+                closeAfterEdit:true,
+                closeAfterSearch:true,
                 recreateForm: true,
                 viewPagerButtons: false,
                 beforeShowForm : function(e) {

@@ -32,22 +32,11 @@
 			datatype: "json",
 			height: '420px',
 			autowidth: true,
-			colNames:['被试编号','姓名','性别', '最后登录时间','是否测试完毕','查看测试数据','增加面巡意见'],
+			colNames:['被试编号','姓名','性别', '最后登录时间','是否答题完毕','查看测试数据','增加面巡意见'],
             colModel:[
                 {name:'number',index:'number', sorttype:"int",width:100, editable: false,align:'center'},
                 {name:'name',index:'name', sortable:true, width:100,sorttype:"string", editable:true,align:'center'},
-                {name:'sex',index:'sex',width:60, sortable:false, editable:false,align:'center',
-                	formatter:function(cellvalue){
-                        var temp = "";
-                        if(cellvalue == 1){
-                            temp = "男" ;
-                        } 
-                        else { 
-                            temp = "女";
-                        }
-                        return temp;
-                    }
-            	},
+                {name:'sex',index:'sex',width:60, sortable:false, editable:false,align:'center'},
             	{name:'last_login',index:'last_login', sortable:true,width:200, editable: false,unformat:pickDate,align:'center'},
                 {name:'state',index:'state',width:90, sortable:false, editable:false,align:'center',
                 	formatter:function(cellvalue){
@@ -63,13 +52,19 @@
             	},                
                 {name:'result',index:'result', sortable:false, width:100, resize:false,align:'center',
                     formatter:function(cellvalue,options,rowObject){
-                        var temp = "<a href='/pm/check/"+rowObject.id+"' >导出</a>";
+                    	var temp = '导出';
+                    	if (rowObject.state > 0) {
+                        	temp = "<a href='/pm/check/"+rowObject.id+"' >导出</a>";
+                        }
                         return temp;
                     }   
                 },
                 {name:'point',index:'point', sortable:false,width:100, editable: false,align:'center',
             		formatter:function(cellvalue,options,rowObject){
-                        var temp = "<a href='/interviewer/point/"+rowObject.id+"' >进入编辑</a>";
+            			var temp = '进入编辑';
+            			if (rowObject.state > 0) {
+                        	temp = "<a href='/interviewer/point/"+rowObject.id+"'>进入编辑</a>";
+                        }
                         return temp;
                     }
             	}

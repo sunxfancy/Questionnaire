@@ -52,7 +52,7 @@
             shrinkToFit:true,
             forceFit:true,
             autowidth: true,
-            colNames:[' ', ' ','用户编号','姓名','性别','密码','最后登录时间','是否答题完毕', '查看结果','是否测试结束','查看报告'],
+            colNames:[' ', ' ','用户编号','姓名','性别','密码','最后登录时间','是否答题完毕', '查看结果','是否测评结束','查看报告'],
             colModel:[
                 {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
                     formatter:'actions', 
@@ -86,7 +86,10 @@
                 },
                 {name:'data',index:'data', sortable:false, width:100, resize:false,align:'center',
                     formatter:function(cellvalue,options,rowObject){
-                        var temp = "<a href='/pm/check/"+rowObject.id+"' >导出</a>";
+                        var temp = '导出';
+                        if (rowObject.state > 0) {
+                            temp = "<a href='/pm/check/"+rowObject.id+"'>导出</a>";
+                        }
                         return temp;
                     }                  
                 },
@@ -103,7 +106,10 @@
                     }},
                 {name:'result',index:'result', sortable:false, width:100, resize:false,align:'center',
                     formatter:function(cellvalue,options,rowObject){
-                        var temp = "<a href='/pm/resultReport/"+rowObject.id+"'>查看</a>";
+                        var temp = '查看';
+                        if (rowObject.state > 5) {
+                            temp = "<a href='/pm/resultReport/"+rowObject.id+"'>查看</a>";
+                        }
                         return temp;
                     }
                 }
@@ -317,6 +323,5 @@
             $('.navtable .ui-pg-button').tooltip({container:'body'});
             $(table).find('.ui-pg-div').tooltip({container:'body'});
         }
-
     });
 </script>

@@ -96,7 +96,7 @@ class ExcelExport
             $objActSheet->setCellValue('O' . $key, $education_string);
             $objActSheet->setCellValue('P' . $key, $work_string);
         }
-        header('Content-Disposition:attachment;filename="测试人员.xls"');
+        header('Content-Disposition:attachment;filename="被试人员.xls"');
         $this->commonMsg($objPHPExcel);
     }
 

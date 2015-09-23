@@ -5,7 +5,10 @@
 class Test3Controller extends Base
 {		
 	public function indexAction(){
-       $word = new WordExport();
-       $word->test();
+        $project_id = 1501;
+        $examinee = Examinee::findFirst(53);
+        $wordExport = new WordExport();
+        $wordExport->examineeReport($examinee,$project_id);
+        // $wordExport->allReport($project_id);
 	}
 }

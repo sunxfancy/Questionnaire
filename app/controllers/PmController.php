@@ -127,6 +127,7 @@ class PmController extends Base
                 'bind' => array('project_id' => $project_id)));
         $res = $delete_data->delete();
         $this->upload_base('LoadInquery');
+        PmDB::updateProjectState($project,1);     
     }
 
     public function upload_base($method){
@@ -229,7 +230,7 @@ class PmController extends Base
         if ($sord != null)
             $sort = $sort.' '.$sord;
         $builder = $builder->orderBy($sort);
-        $this->datareturn($builder);
+        $this->interviewData($builder);
     }
 
     public function updateinterviewerAction(){
@@ -303,7 +304,7 @@ class PmController extends Base
         $project_id = $this->session->get('Manager')->project_id;
         $examinee = Examinee::findFirst($examinee_id);
         if ($examinee->state == 0) {
-            $this->dataReturn(array('error'=>'被试还未答题'));
+            $this->dataBack(array('error'=>'被试还未答题'));
             return ;
         }else if ($examinee->state > 3) {
             CheckoutExcel::checkoutExcel11($examinee,$project_id);
@@ -318,11 +319,10 @@ class PmController extends Base
                 IndexScore::finishedIndex($id);
                 CheckoutExcel::checkoutExcel11($examinee,$project_id);
             }catch(Exception $e){
-                $this->dataReturn(array('error'=>$e->getMessage()));
+                $this->dataBack(array('error'=>$e->getMessage()));
                 return ;
             }
-        }
-        
+        }      
     }
 
     //以word形式，导出被试人员个人报告
@@ -363,11 +363,11 @@ class PmController extends Base
                     $paper_name = Paper::findFirst($questions->paper_id)->name;
                     $examination[$paper_name][] = $questions->number;
                 }
-                $exam_json = json_encode($examination,JSON_UNESCAPED_UNICODE);
+                $project_detail_info['exam_json'] = json_encode($examination,JSON_UNESCAPED_UNICODE);
             }else{
                 $index_names = $this->getIndex($module_names);
                 $factor_names = $this->getFactor($index_names);
-                $exam_json = $this->getNumber($factor_names);
+                $project_detail_info['exam_json'] = $this->getNumber($factor_names);
             }
             $factors = array();
             foreach ($factor_names as $factor_name) {
@@ -389,34 +389,14 @@ class PmController extends Base
                     }
                 }
             }
-            $factor_json = json_encode($factors,JSON_UNESCAPED_UNICODE);
-            $module_names = implode(',', $module_names);
-            $index_names = implode(',', $index_names);
-            try{
-                $manager     = new TxManager();
-                $transaction = $manager->get();
-
-                $project_detail = new ProjectDetail();
-                $project_detail->setTransaction($transaction);
-                $project_detail->project_id   = $project_id;
-                $project_detail->module_names = $module_names;
-                $project_detail->index_names  = $index_names;
-                $project_detail->factor_names = $factor_json;
-                $project_detail->exam_json    = $exam_json;
-                if( !$project_detail->save()){
-                    $transaction->rollback("Cannot insert ProjectDetail data");
-                    $this->dataBack(array('error' => "存储失败！请重新提交！!"));
-                    return false;
-                }else{  
-                    $this->dataBack(array('url' =>'/pm/index'));
-                    $transaction->commit();
-                    return true;
-                }
-            }catch (TxFailed $e) {
-                throw new Exception("Failed, reason: ".$e->getMessage());
-            }
+            $project_detail_info['factor_names'] = json_encode($factors,JSON_UNESCAPED_UNICODE);
+            $project_detail_info['module_names'] = implode(',', $module_names);
+            $project_detail_info['index_names'] = implode(',', $index_names);
+            $project_detail_info['project_id'] = $project_id;
+            PmDB::insertProjectDetail($project_detail_info);
+            PmDB::updateProjectState($project_id,2);
         }else{
-        $this->dataBack(array('error' => "您的身份验证出错!请重新登录!"));
+            $this->dataBack(array('error' => "您的身份验证出错!请重新登录!"));
         }
     }
 
@@ -628,19 +608,17 @@ class PmController extends Base
             'bind'=>array(1=>$project_id)));
         $examinee_all = count($examinees);
         $examinee_com = 0;
-        $examinee_coms = array();
+        $interview_com = 0;
         foreach ($examinees as $examinee) {
             if ($examinee->state  > 0) {
                 $examinee_com ++;
-                $examinee_coms[] = $examinee->id;
+                $interview = Interview::findFirst(array(
+                    'examinee_id=?1',
+                    'bind'=>array(1=>$examinee->id)));
+                if (!empty($interview->advantage) && !empty($interview->disadvantage) &&!empty($interview->remark)){
+                    $interview_com++;
+                }
             }
-        }
-        $interview_com = 0;
-        for ($i=0; $i < $examinee_com; $i++) { 
-             $interview = Interview::findFirst($examinee_coms[$i]);
-             if (!empty($interview->advantage) && !empty($interview->disadvantage) &&!empty($interview->remark)){
-                 $interview_com++;
-             } 
         }
         if ($examinee_all == 0) {
             $examinee_percent = 0;
@@ -657,5 +635,41 @@ class PmController extends Base
             'interview_percent' => $interview_percent
         );
         return json_encode($detail,true);
+    }
+
+    public function getInterviewResult($manager_id){
+        $rows = Interview::find(array(
+                'manager_id = :manager_id:',
+                'bind' => array('manager_id' => $manager_id)));
+        $total = count($rows);
+        $term = "remark<>'' AND advantage<>'' AND disadvantage<>'' AND manager_id=:manager_id:";
+        $col = Interview::find(array(
+                $term,
+                'bind' => array('manager_id' => $manager_id)));
+        $part_num = count($col);
+        $msg = $part_num.'/'.$total;
+        return $msg;
+    }
+
+    public function interviewData($builder){
+        $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
+        $limit = $this->request->getQuery('rows', 'int');
+        $page = $this->request->getQuery('page', 'int');
+        if (is_null($limit)) $limit = 10;
+        if (is_null($page)) $page = 1;
+        $paginator = new Phalcon\Paginator\Adapter\QueryBuilder(array("builder" => $builder,
+            "limit" => $limit,
+            "page" => $page));
+        $page = $paginator->getPaginate();
+        $ans = array();
+        $ans['total'] = $page->total_pages;
+        $ans['page'] = $page->current;
+        $ans['records'] = $page->total_items;
+        foreach ($page->items as $key => $item){
+            $item->degree_of_complete = $this->getInterviewResult($item->id);
+            $ans['rows'][$key] = $item;
+        }
+        echo json_encode($ans);
+        $this->view->disable();
     }
 }
