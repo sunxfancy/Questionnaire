@@ -16,8 +16,15 @@ class ManagerloginController extends Base
     public function loginAction(){
         $username = $this->request->getPost("username", "string");
         $password = $this->request->getPost("password", "string");
+        if (!LoginConfig::IsOnlyNumberAndLetter($username)) {
+            $this->dataReturn(array('error' => '账号输入需为字母或数字'));
+            return;
+        }
+        if (!LoginConfig::IsOnlyNumberAndLetter($password)) {
+            $this->dataReturn(array('error' => '密码输入需为字母或数字'));
+            return;
+        }
         $manager = Manager::checkLogin($username, $password);
-
         if ($manager === 0) {
             $this->dataReturn(array('error' => '密码不正确'));
             return;
@@ -37,7 +44,7 @@ class ManagerloginController extends Base
                     $this->dataReturn(array('url' => '/pm/index'));
 	        		break;
 	        	case 'L':  // 领导
-                    $this->dataReturn(array('url' => '/leader/index'));
+                    $this->dataReturn(array('error' => '请在领导登录页面登录<a href=\'/\'>点击跳转</a>'));
 	        		break;
 
 	        	case 'I': // 面询专家

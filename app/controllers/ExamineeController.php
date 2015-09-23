@@ -11,35 +11,6 @@ class ExamineeController extends Base
 	public function indexAction(){
         $this->response->redirect('/');
 	}
-	
-    public function loginAction(){
-        $username = $this->request->getPost("username", "string");
-        $password = $this->request->getPost("password", "string");
-        $examinee = Examinee::checkLogin($username, $password);
-
-        if ($examinee === 0) {
-            $this->dataReturn(array('error' => '密码不正确'));
-            return;
-        }
-        if ($examinee === -1) {
-            $this->dataReturn(array('error' => '用户不存在'));
-            return;
-        }
-        if ($examinee)
-        {
-            $this->session->set('Examinee', $examinee);
-            if($this->check_ans(0,$examinee->id)){
-                if(!$this->check_ans(1,$examinee->id)){
-                    $this->dataReturn(array('url'=>'/examinee/editinfo'));return;
-                }else{
-                    $this->dataReturn(array('error'=>'您已经答完了全部的题目，不需要再登录了,感谢您的作答'));
-                    return;
-                }
-             }
-            $this->dataReturn(array('url' =>'/examinee/inquery'));
-            return;
-        }
-    }
 
 	public function inqueryAction(){
 		$exminee = $this->session->get('Examinee');
@@ -54,35 +25,15 @@ class ExamineeController extends Base
 	}
 
     //函数作者：Leo, 返回为布尔型，check_type为你要进行检验的项目，0-需求量表，1-答题，如果该项目已经答题完毕，则返回true
-    public function check_ans($check_type,$exam_id){
-        if(!$check_type){
-            $tmp=InqueryAns::findFirst(array(
-                    "examinee_id=?1",
-                    "bind"=>array(1=>$exam_id)
-                ));
-
-            if($tmp){
-                return true;
-            }
-            return false;
-           
-        }else{
-            $tmp=QuestionAns::find(array(
-                    "examinee_id=?1",
-                    "bind"=>array(1=>$exam_id)
-                ));
-            $i=0;
-            foreach ($tmp as $tmps) {
-                # code...
-
-                if($i==5){
-                    return true;
-                }
-                 $i++;
-            }
-            return false;
-            
+    public function check_ans($exam_id){
+        $tmp=InqueryAns::findFirst(array(
+                "examinee_id=?1",
+                "bind"=>array(1=>$exam_id)
+            ));
+        if($tmp){
+            return true;
         }
+        return false;       
     }
     public function getInqueryAction(){
  		// $this->session->remove('Examinee');
@@ -545,7 +496,7 @@ class ExamineeController extends Base
         $interview = Interview::find();
         $examinee_divd = array();
         foreach ($interview as $interviews) {
-            $examinee_divd[] = Examinee::findFirst($interview->examinee_id)->number;
+            $examinee_divd[] = Examinee::findFirst($interviews->examinee_id)->number;
 
         }
         $examinee = Examinee::find(array(

@@ -68,12 +68,11 @@ class ExcelLoader
                 unlink($filename);
                 return $errors;
             }
-        }
-        $project->last_examinee_id = $last_number;
-        $project->save();
-        $db->commit();
-
-        $objexcel->disconnectWorksheets();
+            $project->last_examinee_id = $last_number;
+            $project->save();
+            $db->commit();
+            $objexcel->disconnectWorksheets();
+        }        
         unlink($filename);
         return 0;
     }

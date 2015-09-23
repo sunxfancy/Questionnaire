@@ -77,7 +77,7 @@ function checkup_login(spinner){
                 "password" :$("#password").val()
             }
             
-    $.post('/Examinee/login', login_info, checkup_login_callbk);
+    $.post('/Index/login', login_info, checkup_login_callbk);
 }
 function checkup_login_callbk(data){
         if(data.url){
@@ -91,7 +91,8 @@ function checkup_login_callbk(data){
         	$('#myModal').modal({
         		keyboard:true,
         	})
-            // alert(data.error);
+            // alert(data.error);
+
         }
 }
 </script>

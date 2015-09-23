@@ -127,6 +127,7 @@ class PmController extends Base
                 'bind' => array('project_id' => $project_id)));
         $res = $delete_data->delete();
         $this->upload_base('LoadInquery');
+        PmDB::updateProjectState($project,1);     
     }
 
     public function upload_base($method){
@@ -321,8 +322,7 @@ class PmController extends Base
                 $this->dataBack(array('error'=>$e->getMessage()));
                 return ;
             }
-        }
-        
+        }      
     }
 
     //以word形式，导出被试人员个人报告
@@ -363,11 +363,11 @@ class PmController extends Base
                     $paper_name = Paper::findFirst($questions->paper_id)->name;
                     $examination[$paper_name][] = $questions->number;
                 }
-                $exam_json = json_encode($examination,JSON_UNESCAPED_UNICODE);
+                $project_detail_info['exam_json'] = json_encode($examination,JSON_UNESCAPED_UNICODE);
             }else{
                 $index_names = $this->getIndex($module_names);
                 $factor_names = $this->getFactor($index_names);
-                $exam_json = $this->getNumber($factor_names);
+                $project_detail_info['exam_json'] = $this->getNumber($factor_names);
             }
             $factors = array();
             foreach ($factor_names as $factor_name) {
@@ -389,34 +389,14 @@ class PmController extends Base
                     }
                 }
             }
-            $factor_json = json_encode($factors,JSON_UNESCAPED_UNICODE);
-            $module_names = implode(',', $module_names);
-            $index_names = implode(',', $index_names);
-            try{
-                $manager     = new TxManager();
-                $transaction = $manager->get();
-
-                $project_detail = new ProjectDetail();
-                $project_detail->setTransaction($transaction);
-                $project_detail->project_id   = $project_id;
-                $project_detail->module_names = $module_names;
-                $project_detail->index_names  = $index_names;
-                $project_detail->factor_names = $factor_json;
-                $project_detail->exam_json    = $exam_json;
-                if( !$project_detail->save()){
-                    $transaction->rollback("Cannot insert ProjectDetail data");
-                    $this->dataBack(array('error' => "存储失败！请重新提交！!"));
-                    return false;
-                }else{  
-                    $this->dataBack(array('url' =>'/pm/index'));
-                    $transaction->commit();
-                    return true;
-                }
-            }catch (TxFailed $e) {
-                throw new Exception("Failed, reason: ".$e->getMessage());
-            }
+            $project_detail_info['factor_names'] = json_encode($factors,JSON_UNESCAPED_UNICODE);
+            $project_detail_info['module_names'] = implode(',', $module_names);
+            $project_detail_info['index_names'] = implode(',', $index_names);
+            $project_detail_info['project_id'] = $project_id;
+            PmDB::insertProjectDetail($project_detail_info);
+            PmDB::updateProjectState($project_id,2);
         }else{
-        $this->dataBack(array('error' => "您的身份验证出错!请重新登录!"));
+            $this->dataBack(array('error' => "您的身份验证出错!请重新登录!"));
         }
     }
 
