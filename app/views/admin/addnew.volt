@@ -19,11 +19,11 @@
     </div>
     <div style='text-align:center;margin-top:3px;'>
         <label for='begintime'><span style='font-size:16px;font-family: Microsoft YaHei UI; font-weight:normal;'>项目开始时间</span></label>
-        <input required type='date' class='form-control' id='begintime' style='display:inline-block;height:36px;font-size:16px;width:200px;'/>
+        <input required type='text' class='form-control' id='begintime' style='display:inline-block;height:36px;font-size:16px;width:200px;'/>
     </div>
     <div style='text-align:center;margin-top:3px;'>
         <label for='endtime'><span style='font-size:16px;font-family: Microsoft YaHei UI; font-weight:normal;'>项目结束时间</span></label>
-        <input required type='date' class='form-control' id='endtime' style='display:inline-block;height:36px;font-size:16px;width:200px;'/>
+        <input required type='text' class='form-control' id='endtime' style='display:inline-block;height:36px;font-size:16px;width:200px;'/>
     </div>
     <div style='text-align:center;margin-top:3px;'>
         <label for='pm_name'><span style='font-size:16px;font-family: Microsoft YaHei UI; font-weight:normal;'>项目经理名称</span></label>
