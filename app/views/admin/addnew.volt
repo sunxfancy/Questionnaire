@@ -1,5 +1,6 @@
 <!--引入时间控件样式表-->
 <link rel="stylesheet" href="/datetimepicker/bootstrap-datetimepicker.min.css" />
+<link rel='stylesheet' type='text/css' href='/bootstrap/css/bootstrap.min.css' />
 <!--引入时间控件js-->
 <script type='text/javascript' src='/datetimepicker/jquery-1.8.3.min.js'></script>
 <script type="text/javascript" src= '/datetimepicker/bootstrap.min.js'></script>
@@ -7,57 +8,45 @@
 <script type="text/javascript" src="/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
 
 <div class="Leo_question">
-    <center><p style="margin:15px;font-size:30px;font-family:'Microsoft YaHei';">评测项目信息填写</p></center>
+    <center>
+    	<p style="margin:15px;font-size:30px;font-family:'Microsoft YaHei';">评测项目信息填写</p>
+    </center>
     <hr size="2" color="#FF0000" style="width:90%;"/>
-    <table style="margin:0 auto;">
-        <tr>
-            <td style=" width:150px;font-size:16px;line-height:28px; text-align:right;font-family:'Microsoft YaHei';">项目名称：</td>
-            <td colspan="3">
-            	<input id="project_name" type="text" style="width:200px;height:26px;"></td>
-        </tr>
-        <tr>
-            <td style=" width:150px;font-size:16px;line-height:28px; text-align:right;font-family:'Microsoft YaHei';">项目开始时间：</td>
-            <td>
-            	<div class="input-group date form_datetime">
-                <input  class="form-control" id="begintime" type="text" style="width:200px;height:26px;"/>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td style=" width:150px;font-size:16px;line-height:28px; text-align:right;font-family:'Microsoft YaHei';">项目结束时间：</td>
-            <td>
-                <div class="input-group date form_datetime" >
-                <input class="form-control" id="endtime" type="text" style="width:200px;height:26px;"/>
-                </div>
-           </td>
-        <tr>
-            <td style=" width:150px;font-size:16px;line-height:28px; text-align:right;font-family:'Microsoft YaHei';">项目经理姓名：</td>
-            <td><input id="pm_name" type="text" style="height: 26px;width: 200px;"></td> 
-        </tr>
-        <tr>
-            <td style=" width:150px;font-size:16px;line-height:28px; text-align:right;font-family:'Microsoft YaHei';">项目经理账号：</td>
-            <td><input id="pm_username" type="text" style="height: 26px;width: 200px;"></td>
-        </tr>
-        <tr>
-            <td style=" width:150px;font-size:16px;line-height:28px; text-align:right;font-family:'Microsoft YaHei';">项目经理密码：</td>
-            <td><input id="pm_password" type="text" style="height:26px;width:200px;"></td>
-        </tr>
-    </table>
-
-    <div style="margin-top:15px;"></div>
-    <table style="margin:0 auto;">
-    <tr><td>
-        <textarea type="text" id="description" style=" line-height: 28px;outline: none;height: 100px;width: 600px;font-size:16px; font-family:'Microsoft YaHei';" placeholder='添加更详细的信息描述...'></textarea>
-    </td></tr>
-    </table>
-
-    <div style="width:100%;height:40px;text-align:center;margin: 10px 10px;">
+    <div style='text-align:center;'>
+    <div style='text-align:center;margin-top:10px;'>
+        <label for='project_name'><span style='font-size:16px;font-family: Microsoft YaHei UI; font-weight:normal;'><span style='color:white;'>占位</span>项目名称</span></label>
+        <input required type='text' class='form-control' id='project_name' style='display:inline-block;height:36px;font-size:16px;width:200px;'/>
+    </div>
+    <div style='text-align:center;margin-top:3px;'>
+        <label for='begintime'><span style='font-size:16px;font-family: Microsoft YaHei UI; font-weight:normal;'>项目开始时间</span></label>
+        <input required type='date' class='form-control' id='begintime' style='display:inline-block;height:36px;font-size:16px;width:200px;'/>
+    </div>
+    <div style='text-align:center;margin-top:3px;'>
+        <label for='endtime'><span style='font-size:16px;font-family: Microsoft YaHei UI; font-weight:normal;'>项目结束时间</span></label>
+        <input required type='date' class='form-control' id='endtime' style='display:inline-block;height:36px;font-size:16px;width:200px;'/>
+    </div>
+    <div style='text-align:center;margin-top:3px;'>
+        <label for='pm_name'><span style='font-size:16px;font-family: Microsoft YaHei UI; font-weight:normal;'>项目经理名称</span></label>
+        <input required type='text' class='form-control' id='pm_name' style='display:inline-block;height:36px;font-size:16px;width:200px;'/>
+    </div>
+    <div style='text-align:center;margin-top:3px;'>
+        <label for='pm_username'><span style='font-size:16px;font-family: Microsoft YaHei UI; font-weight:normal;'>项目经理账号</span></label>
+        <input required type='text' class='form-control' id='pm_username' style='display:inline-block;height:36px;font-size:16px;width:200px;'/>
+    </div>
+    <div style='text-align:center;margin-top:3px;'>
+        <label for='pm_password'><span style='font-size:16px;font-family: Microsoft YaHei UI; font-weight:normal;'>项目经理密码</span></label>
+        <input required type='text' class='form-control' id='pm_password' style='display:inline-block;height:36px;font-size:16px;width:200px;'/>
+    </div>
+    <div style='text-align:center;margin-top:3px;'>
+       <textarea type="text" id="description" style=" line-height: 28px;height: 100px;width: 600px;font-size:16px; font-family:'Microsoft YaHei';" placeholder='添加更详细的信息描述...'></textarea>
+    </div>
+    </div>
+    <div style="text-align:center;margin-top:5px;">
         <div class="form-group">
             <button type='button' class="btn btn-success" style='padding:5px 40px; ' onclick='history.go(-1);'>返回</button>
             &nbsp;&nbsp;<button id="submit" class="btn btn-primary" style='padding:5px 40px; ' >提交</button>
         </div>
     </div>
-
 </div>
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

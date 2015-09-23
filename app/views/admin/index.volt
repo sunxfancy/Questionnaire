@@ -9,7 +9,8 @@
 <!-- jqgrid 组件-->
 <script type="text/javascript" src="/jqGrid/js/jquery.jqGrid.min.js"></script>
 <script type="text/javascript" src="/jqGrid/js/i18n/grid.locale-cn.js"></script>
-
+<!--jqgrid 辅助-->
+<script type="text/javascript" src="/jqGrid/js/jqgrid.assist.js"></script>
 
 <div class="Leo_question">
 	<div style="padding:10px 40px;text-align:right;">
@@ -83,7 +84,14 @@ function manager_username_check(value,colName){
 function endtime_check (value,colName) {
     var pattern = new RegExp("^[1-9][0-9]{3}[-](0?[1-9]|1[012])[-](0?[1-9]|[12][0-9]|3[01])[ ](0?[0-9]|1[0-9]|2[0-3])[:](0?[0-9]|[1-5][0-9])[:](0?[0-9]|[1-5][0-9])$");
     if (value.match(pattern) ) {
-        return [true, ""];
+    	//判断开始时间
+    	  var id = $("#grid-table").jqGrid('getGridParam','selrow');
+          var starttime = $('#grid-table').getCell(id,'begintime');
+          if(value <= starttime){
+          	return [false, colName+"不得早于开始时间"];
+          }else{
+          	  return [true, ""];
+          }
     }else{
         return [false, colName+"时间设定不合理"];
     }
@@ -93,6 +101,18 @@ function getInfo(){
 	var lastsel;
 		var grid_selector = "#grid-table";
 		var pager_selector = "#grid-pager";
+		//resize to fit page size
+        $(window).on('resize.jqGrid', function () {
+            $(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
+        });
+        //resize on sidebar collapse/expand
+        var parent_column = $(grid_selector).closest('[class*="col-"]');
+        $(document).on('settings.ace.jqGrid' , function(ev, event_name, collapsed) {
+            if( event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed' ) {
+                $(grid_selector).jqGrid( 'setGridWidth', parent_column.width() );
+            }
+        })
+        
 		jQuery(grid_selector).jqGrid({
 			url: "/admin/list",
 			editurl:'/admin/update',
@@ -102,39 +122,53 @@ function getInfo(){
 			hidegrid:false,
 		    autowidth:true,
 			colModel:[
-			         {   name:'id',  label:'编号',  index:'id',    width:100, fixed:true, resize:false, editable:false, sortable:true,  sorttype:"int",  align:'center',
-                         search:true,searchoptions: { sopt: ['eq'], },
+			         {   name:'id',  label:'项目编号',  index:'id',  width:100, fixed:true, resizable:false, editable:false,sortable:false, sorttype:"int", align:'center',
+                         search:true, searchoptions: { sopt: ['eq'], },
                          searchrules:{ required: true, integer:true,},
-			         },
-				     {   name:'',label:'详情', index:'', width:60, fixed:true, resize:false, editable:false, sortable:false, align:'center',
+                         hidden:true,
+                     },
+			         {   name:'id',  label:'项目编号',  index:'id',  width:100, fixed:true, resizable:false, editable:true,sortable:false, sorttype:"int", align:'center',
+                         search:true, searchoptions: { sopt: ['eq'], },
+                         searchrules:{ required: true, integer:true,},
+                         //设为可编辑，显示时再设为不可变
+                         editoptions:{ 
+                            dataInit:function(element) { 
+                            $(element).attr('disabled', 'disabled');
+                            
+                            } 
+                         }
+                     },
+			         
+				     {   name:'',label:'详情', index:'', width:60, fixed:true, resizable:false, editable:false, sortable:false, align:'center',
                          search:false,
                          formatter:function(cellvalue, options, rowObject){
-                            return "<div class='ui-pg-div ui-inline-edit' data-original-title='查看详细信息'><a href='/admin/detail/"+rowObject.id+"' ><i class='fa fa-th-list'></i></a></div>"
+                            return "<div class='ui-pg-div ui-inline-edit' data-original-title='查看详细信息'><a href='/admin/detail/"+rowObject.id+"'><i class='fa fa-th-list'></i></a></div>"
                          },
+                         viewable:false,
                      },
-				    {   name:'name', label:'项目名称',  index:'name', width:200, fiexed:true, resize:false, editable:true,sortable:false, sorttype:"string", align:'center',
-				        editrules:{required : true, custom:true, custom_func:name_check}, 
-				        search:true, searchoptions: {  sopt: ['eq']  },
-				        searchrules:{ required: true, },
-				    },
-				    {   name:'manager_name', label:'经理', index:'manager_name', width:100, fixed:true, resize:false, sortable:false,  editable:true,align:'center',
-				        editrules:{required : true} ,
-				        search:true, searchoptions: {  sopt: ['eq']  },
-				        searchrules:{ required: true, },
-				    },
-				    {   name:'manager_username', label:'经理账号', index:'manager_username', width:120, fixed:true, resize:false, sortable:false, editable:true, align:'center',
-				        editrules:{required : true, custom:true, custom_func:manager_username_check}, 
-				        search:true, searchoptions: {  sopt: ['eq']  },
-				        searchrules:{ required: true, },
-				    },
-				    {   name:'manager_password', label:'经理密码', index:'manager_password', width:120, fixed:true, resize:false, sortable:false, editable:true, align:'center',
+                     {  name:'name', label:'项目名称',  index:'name', width:200, fixed:true, resizable:false,  editable:true,sortable:false, sorttype:"string", align:'center',
+                        editrules:{required : true, custom:true, custom_func:name_check}, 
+                        search:true, searchoptions: {  sopt: ['eq']  },
+                        searchrules:{ required: true, },
+                     },
+                     {  name:'manager_name', label:'经理', index:'manager_name', width:100, fixed:true, resizable:false, sortable:false,  editable:true,align:'center',
+                        editrules:{required : true} ,
+                        search:true, searchoptions: {  sopt: ['eq']  },
+                        searchrules:{ required: true, },
+                     },
+                     {  name:'manager_username', label:'经理账号', index:'manager_username', width:120, fixed:true, resizable:false, sortable:false, editable:true, align:'center',
+                        editrules:{required : true, custom:true, custom_func:manager_username_check}, 
+                        search:true, searchoptions: {  sopt: ['eq']  },
+                        searchrules:{ required: true, },
+                     },
+                     {  name:'manager_password', label:'经理密码', index:'manager_password', width:120, fixed:true, resizable:false,  sortable:false, editable:true, align:'center',
                         editrules:{required : true} ,
                         search:false,
-                    },
-				    {   name:'begintime', label:'开始时间', index:'begintime', width:160, fixed:true, resize:false, sortable:true, sorttype:'date', editable: false, align:'center',
-		                search:true, searchoptions: {  sopt: ['bw', 'ew'],
+                     },
+                     {  name:'begintime', label:'开始时间', index:'begintime', width:160, fixed:true,resizable:false, sortable:true, sorttype:'date', editable: true, align:'center',
+                        search:true, searchoptions: {  sopt: ['bw', 'ew'],
                         dataInit:function(element) { 
-                            $(element).wrap('<div class="input-group date form_datetime"></div>')
+                            $(element).parent().addClass("input-group date form_date");
                             $(element).addClass('form-control');
                             $(element).datetimepicker({
                                 language: 'zh-CN', //汉化 
@@ -146,48 +180,61 @@ function getInfo(){
                             } 
                         },
                         searchrules:{ required: true, date:true, },
-				    },
-				    {   name:'endtime', label:'结束时间', index:'endtime', width:160, fixed:true, resize:false, sortable:true, sorttype:'date',  editable: true,align:'center',
-				        editrules:{required : true, custom:true, custom_func:endtime_check}, 
-				        editoptions: { dataInit: function(element) { 
-				        	$(element).wrap('<div class="input-group date form_datetime"></div>')
-				        	$(element).addClass('form-control');
-				        	var id = element.id.substring(0,4);
-				        	var starttime = $('#grid-table').getCell(id,'begintime');
-				        	$(element).datetimepicker({
-				            language: 'zh-CN', //汉化 
+                        editoptions:{ 
+                            dataInit:function(element) { 
+                            $(element).attr('disabled', 'disabled');
+                            
+                            } 
+                         }
+                    },
+                    {   name:'endtime', label:'结束时间', index:'endtime', width:160, fixed:true, resizable:false,  sortable:true, sorttype:'date',  editable: true,align:'center',
+                        editrules:{required : true, custom:true, custom_func:endtime_check}, 
+                        editoptions: { dataInit: function(element) { 
+                            // $(element).wrap('<div class="input-group date form_datetime"></div>')
+                            $(element).parent().addClass("input-group date form_date");
+                            $(element).addClass('form-control');
+                            //获取行的id值
+                            var id = $("#grid-table").jqGrid('getGridParam','selrow');
+                            var starttime = $('#grid-table').getCell(id,'begintime');
+                            $(element).datetimepicker({
+                            language: 'zh-CN', //汉化 
                             format:'yyyy-mm-dd hh:ii:00' , 
                             autoclose:true,
                             minuteStep: 10,
-                            startDate: dateCon(starttime,60),
-				        	}) 
-				        	} 
-				        },
-				        search:true, searchoptions: {  sopt: ['bw', 'ew'],
-				        dataInit:function(element) { 
-                            $(element).wrap('<div class="input-group date form_datetime"></div>')
+                            startDate: dateCon(starttime,60)
+                            }) 
+                            } 
+                        },
+                        search:true, searchoptions: {  sopt: ['bw', 'ew'],
+                        dataInit:function(element) { 
+                        	$(element).parent().addClass("input-group date form_date");
+                            //$(element).wrap('<div class="input-group date form_datetime"></div>')
                             $(element).addClass('form-control');
                             $(element).datetimepicker({
-                            	language: 'zh-CN', //汉化 
+                                language: 'zh-CN', //汉化 
                                 format:'yyyy-mm-dd' , 
                                 autoclose:true,
                                 minView:2,
                             }); 
                             
                             } 
-				        },
-				        searchrules:{ required: true, date:true, },
+                        },
+                        searchrules:{ required: true, date:true, },
                     },
-				    {   name:'user_count', label:'参与人数', index:'user_count', sortable:true,width:90, fixed:true, resize:false,editable: false,align:'center',
+                    {   name:'description', label:'项目描述', index:'description', sortable:false,width:300, fixed:true, resizable:false,  editable: true,align:'left',
+                        search:false,
+                        edittype:"textarea", editoptions: {rows:"4",cols:"20"},
+                         
+                    },
+                    {   name:'user_count', label:'参与人数', index:'user_count', sortable:true,width:90, fixed:true, resizable:false, editable: false,align:'center',
                         search:true, searchoptions: {  sopt: ['eq','lt', 'le','gt','ge'] },
                         searchrules:{ required: true, integer:true,},
-			        },
-				    {   name:'description', label:'项目描述', index:'description', sortable:false,width:300,fixed:true, resize:false, editable: true,align:'left',
-                        search:false,
-                    },   
+                    },  
+                    
 			], 
 			viewrecords : true, 
 			rowNum:10,
+			rowheight: '500px',
 			rowList:[10,20,30,40,50,60,70,80,90,100],
 			pager : pager_selector,
 			altRows: true,
@@ -196,26 +243,23 @@ function getInfo(){
 				var table = this;
 				setTimeout(function(){
 					updatePagerIcons(table);
+					enableTooltips(table);
 				}, 0);
-
 			},
-			ondblClickRow: function(id){
-                if(id && id!==lastsel){ 
-                     jQuery(grid_selector).restoreRow(lastsel); 
-                     lastsel=id; 
-                     
-                }
-                //inline-edit config
-            var  editparameters = {
-			    "keys" : true,
-			    "oneditfunc" : null,
-			    "successfunc" : null,
-			    "url" : null,
-			    "extraparam" : {},
-			    "aftersavefunc" : function(rowid, res){ 
-			    	var result = eval('(' + res.responseText + ')');   
-			    	if(result.error) {
-			    		 $('.Leo_question').css('width','843px')
+            reloadAfterSubmit:true,
+			caption: "项目管理",
+	
+		});
+		
+    	//navButtons
+    	var edit_options={
+                    left:10,
+                    top:10,
+                    afterSubmit:function(res,rowid){
+                        var result = eval('(' + res.responseText + ')');   
+                        console.log(res);
+                        if(result.error) {
+                        $('.Leo_question').css('width','843px')
                          $('.modal-body').html('');
                          $('.modal-body').html(
                          "<p class=\"bg-danger\" style='padding:20px;'>"+result.error+ "</p>"
@@ -228,13 +272,14 @@ function getInfo(){
                          keyboard:true,
                          backdrop:'static'
                        })
-                       return [false, 'fail',0];
-			    		
-			    	}else{
-			    		$('.Leo_question').css('width','843px')
+
+                       // return false; 返回jqgrid相关的数据格式
+                        return [false, 'fail',0];   
+                        }else{
+                        $('.Leo_question').css('width','843px')
                          $('.modal-body').html('');
                          $('.modal-body').html(
-                         "<p class=\"bg-success\" style='padding:20px;'>编号"+rowid+"行更新成功</p>"
+                         "<p class=\"bg-success\" style='padding:20px;'>项目更新成功</p>"
                          );
                         $('.modal-footer').html('');
                         $('.modal-footer').html(
@@ -244,22 +289,19 @@ function getInfo(){
                          keyboard:true,
                          backdrop:'static'
                       })
-                      return [true, 'success'];
-			    	}
-			    },
-			    "errorfunc": null,
-			    "afterrestorefunc" : null,
-			    "restoreAfterError" : true, //失败之后的回滚
-			    "mtype" : "POST"
-            }
-            jQuery(grid_selector).jqGrid('editRow',id,  editparameters);  
-            },
-            reloadAfterSubmit:true,
-			caption: "项目管理",
-	
-		});
-		
-    	//navButtons
+                        return [true, 'success'];
+                        }
+                    },
+                    beforeShowForm : function(e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
+                    .wrapInner('<div class="widget-header" />')
+                    style_edit_form(form);
+                    },
+                    reloadAfterSubmit:true,
+                    closeAfterEdit:true
+ 
+        };
     	var del_options = {
     		    top : 80,  //位置
                 left: 300, //位置
@@ -290,8 +332,10 @@ function getInfo(){
                         $('#myModal').modal({
                          keyboard:true,
                          backdrop:'static'
-                       })
-                       // return false; 返回jqgrid相关的数据格式                        
+                       })
+
+                       // return false; 返回jqgrid相关的数据格式
+                        
                        return [false,"修改失败",0];
                     }else{
                         $('.Leo_question').css('width','843px')
@@ -306,8 +350,10 @@ function getInfo(){
                         $('#myModal').modal({
                          keyboard:true,
                          backdrop:'static'
-                      })
-                      // return true;
+                      })
+
+                      // return true;
+
                       return [true,""]
                     }
                  },
@@ -315,7 +361,9 @@ function getInfo(){
 		jQuery(grid_selector).jqGrid('navGrid',pager_selector,
 			{ 	//navbar options
 				add: false,
-                edit: false,
+                edit: true,
+                editicon : 'ace-icon fa fa-pencil blue',
+                edittext:'编辑',
                 del: true,
                 delicon : 'ace-icon fa fa-trash-o red',
                 deltext:'删除',
@@ -325,12 +373,16 @@ function getInfo(){
                 search:true,
 				searchicon : 'ace-icon fa fa-search orange',
 				searchtext:'搜索',
+				view: true,
+                viewicon : 'ace-icon fa fa-search-plus grey',
+                viewtext:'查看',
 				
 			},
-			{//edit
-				},
+			//edit,
+			edit_options,
 			{//add
 				},
+			//del
 			del_options,
             {//search
                 top : 80,  //位置
@@ -347,28 +399,14 @@ function getInfo(){
                 },
             },
 			{//view
-			    },
-			{//refresh
-			     }
+				top : 10,  //位置
+                left: 10, //位置 
+			 },	
+			 {//refresh
+			 	
+			 }
 			
-			
-			
-		)
-		function updatePagerIcons(table) {
-			var replacement = 
-			{
-				'ui-icon-seek-first' : 'ace-icon fa fa-angle-double-left bigger-140',
-				'ui-icon-seek-prev' : 'ace-icon fa fa-angle-left bigger-140',
-				'ui-icon-seek-next' : 'ace-icon fa fa-angle-right bigger-140',
-				'ui-icon-seek-end' : 'ace-icon fa fa-angle-double-right bigger-140'
-			};
-			$('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
-				var icon = $(this);
-				var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
-				
-				if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
-			})
-		}
+		);
 		
 		function style_delete_form(form) {
             var buttons = form.next().find('.EditButton .fm-button');
@@ -383,8 +421,7 @@ function getInfo(){
             buttons.find('.EditButton a[id*="_query"]').addClass('btn btn-sm btn-inverse').find('.ui-icon').attr('class', 'ace-icon fa fa-comment-o');
             buttons.find('.EditButton a[id*="_search"]').addClass('btn btn-sm btn-purple').find('.ui-icon').attr('class', 'ace-icon fa fa-search');
         }
-        
-		
+
 	
 	}
 /**
