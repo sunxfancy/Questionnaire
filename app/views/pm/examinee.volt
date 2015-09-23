@@ -63,7 +63,7 @@
                 },
                 {name:'info',index:'info', sortable:false, width:40, resize:false,align:'center',
                     formatter:function(cellvalue, options, rowObject){
-                        var temp = "<div class='ui-pg-div ui-inline-edit' data-original-title='查看个人详细信息''><a href='/pm/info/"+rowObject.id+"' ><i class='fa fa-th-list'></i></a></div>";
+                        var temp = "<div class='ui-pg-div ui-inline-edit' data-original-title='查看个人详细信息'><a href='/pm/info/"+rowObject.id+"' ><i class='fa fa-th-list'></i></a></div>";
                         return temp;
                     }
                 },

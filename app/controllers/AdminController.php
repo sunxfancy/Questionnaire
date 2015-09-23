@@ -145,6 +145,11 @@ class AdminController extends Base
                 }
             }
             if ($project_already_number > 0) {
+            	#当年项目数不能超100，否则报错；；
+            	if($project_already_number == 99 ){
+            		$this->dataReturn(array('error'=>'本年度项目数量已达99个，请联系管理员！'));
+            		return;
+            	}
                 $project_id = $date.sprintf("%02d",$project_already_number+1);
                 
             }else{
@@ -181,7 +186,8 @@ class AdminController extends Base
         return ;
     }
 
-    public function detailAction($project_id){
+    public function detailAction($project_id) { 
+    	
         $this->view->setVar('project_id',$project_id);
         $this->leftRender('项 目 详 情');
         $project = Project::findFirst($project_id);
@@ -191,15 +197,16 @@ class AdminController extends Base
         $now = date("Y-m-d");
         $width = 100*round(strtotime($now)-strtotime($begintime))/round(strtotime($endtime)-strtotime($begintime)).'%'; 
         $detail = $this->getDetail($project_id);
-
         $this->view->setVar('begintime',$begintime);
         $this->view->setVar('endtime',$endtime);
         $this->view->setVar('now',$now);
         $this->view->setVar('width',$width);
-        $this->view->setVar('detail',$detail);
+        $this->view->setVar('detail',$detail);        
+    
     }
 
     public function getDetail($project_id){
+        
         $examinees = Examinee::find(array(
             'project_id=?1',
             'bind'=>array(1=>$project_id)));
@@ -445,6 +452,7 @@ class AdminController extends Base
                 'bind'=>array($id)));
             $manager->name     = $this->request->getPost('manager_name', 'string');
             $manager->username = $this->request->getPost('manager_username', 'string');
+            $manager->password = $this->request->getPost('manager_password', 'string');
            
             try{
             	AdminDB::updateManager($manager);
@@ -465,6 +473,7 @@ class AdminController extends Base
           		$this->dataReturn(array('error'=>'项目编号不存在'));
           		return;
           	}else{
+          		#判断项目状态，如果不是项目的初始状态则禁止删除
           		if($project_info->state != 0 ){
           			$this->dataReturn(array('error'=>'项目经理已经配置完成项目，不能被删除'));
           			return;
@@ -493,7 +502,6 @@ class AdminController extends Base
     	$this->view->disable();
     	$this->response->setHeader("Content-Type", "text/json; charset=utf-8");
     	echo json_encode($ans);
-    	
     }
 
 }
