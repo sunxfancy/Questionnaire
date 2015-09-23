@@ -524,13 +524,15 @@
       } else {
         top = offset.top + this.height;
       }
+      //2015-9-23 wangyaohui
+      // top = top - containerOffset.top
+      // left = left- containerOffset.left
+      top = top ;
+      left = left;
 
-      top = top - containerOffset.top;
-      left = left - containerOffset.left;
-
-            if( !elementOrParentIsFixed(this.element) ){
+      if( !elementOrParentIsFixed(this.element) ){
           top = top + document.body.scrollTop;
-            }
+      }
 
       this.picker.css({
         top:    top,
