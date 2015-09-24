@@ -23,13 +23,29 @@ class PmDB
         }
 	}
 
-    //更新项目状态
-    public static function updateProjectState($project_id,$state){
+    //更新项目模块选择结果
+    public static function updateProjectDetail($project_detail){
         try{
             $manager     = new TxManager();
             $transaction = $manager->get();
-            $project = Project::findFirst($project_id);
-            $project->state = $state; 
+            $project_detail->setTransaction($transaction);
+            if($project_detail->save() == false ){
+                $transaction->rollback("数据更新失败-".print_r($project_detail,true));
+            }
+            $transaction->commit();
+            return true;
+        }catch (TxFailed $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    //更新项目状态
+    public static function updateProjectState($project_id){
+        $project = Project::findFirst($project_id);         
+        $project->state = intval($project->state) + 1;
+        try{
+            $manager     = new TxManager();
+            $transaction = $manager->get();               
             $project->setTransaction($transaction);
             if($project->save() == false ){
                 $transaction->rollback("数据更新失败-".print_r($project,true));
@@ -39,5 +55,28 @@ class PmDB
         }catch (TxFailed $e) {
             throw new Exception($e->getMessage());
         }
+    }
+
+    //判断project->state是否已经更新
+    public static function isStateSet($project_id,$type){
+        $project = Project::findFirst($project_id);
+        if ($project->state < 2) {
+            switch($type){
+                case '1':   $inquery = InqueryQuestion::findFirst(array(
+                                'project_id=?1',
+                                'bind'=>array(1=>$project_id)));
+                            if (empty($inquery)) {return false;}
+                            else {return false;}
+                            break;
+                case '2':   $project_detail = ProjectDetail::findFirst(array(
+                                'project_id=?1',
+                                'bind'=>array(1=>$project_id)));
+                            if (empty($project_detail)) {return false;}
+                            else {return false;}
+                            break;
+                default:    return true;
+                            break;
+            }
+        }else{return true;}
     }
 }

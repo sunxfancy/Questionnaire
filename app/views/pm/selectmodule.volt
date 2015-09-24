@@ -116,7 +116,7 @@
         });
     });
 function click1(){
-    window.location.href = '/pm/index';
+    // window.location.href = '/pm/index';
 }
 function click2(){
     window.location.href = '/pm/selectmodule';

@@ -127,6 +127,21 @@ class ExcelLoader
         $examinee->number = $number;
         $examinee->password = $this->random_string();
         $examinee->project_id = $project_id;
+        $init_data = array();
+        $init_data['name'] = $examinee->name;
+        $init_data['native'] = $examinee->native;
+        $init_data['education'] = $examinee->education;
+        $init_data['politics'] = $examinee->politics;
+        $init_data['degree'] = $examinee->degree;
+        $init_data['professional'] = $examinee->professional;
+        $init_data['employer'] = $examinee->employer;
+        $init_data['unit'] = $examinee->unit;
+        $init_data['team'] = $examinee->team;
+        $init_data['duty'] = $examinee->duty;
+        $init_data['birthday'] = $examinee->birthday;
+        $init_data['sex'] = $examinee->sex;
+        $init_data['other'] = $examinee->other;
+        $examinee->init_data = json_encode($init_data,JSON_UNESCAPED_UNICODE);
 
         if (!$examinee->save()) {
             foreach ($examinee->getMessages() as $message) {

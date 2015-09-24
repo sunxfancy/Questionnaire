@@ -127,7 +127,8 @@ class PmController extends Base
                 'bind' => array('project_id' => $project_id)));
         $res = $delete_data->delete();
         $this->upload_base('LoadInquery');
-        PmDB::updateProjectState($project,1);     
+        $project = Project::findFirst($project_id);
+        PmDB::updateProjectState($project);
     }
 
     public function upload_base($method){
@@ -363,11 +364,11 @@ class PmController extends Base
                     $paper_name = Paper::findFirst($questions->paper_id)->name;
                     $examination[$paper_name][] = $questions->number;
                 }
-                $project_detail_info['exam_json'] = json_encode($examination,JSON_UNESCAPED_UNICODE);
+                $project_detail['exam_json'] = json_encode($examination,JSON_UNESCAPED_UNICODE);
             }else{
                 $index_names = $this->getIndex($module_names);
                 $factor_names = $this->getFactor($index_names);
-                $project_detail_info['exam_json'] = $this->getNumber($factor_names);
+                $project_detail['exam_json'] = $this->getNumber($factor_names);
             }
             $factors = array();
             foreach ($factor_names as $factor_name) {
@@ -389,12 +390,17 @@ class PmController extends Base
                     }
                 }
             }
-            $project_detail_info['factor_names'] = json_encode($factors,JSON_UNESCAPED_UNICODE);
-            $project_detail_info['module_names'] = implode(',', $module_names);
-            $project_detail_info['index_names'] = implode(',', $index_names);
-            $project_detail_info['project_id'] = $project_id;
-            PmDB::insertProjectDetail($project_detail_info);
-            PmDB::updateProjectState($project_id,2);
+            $project_detail['factor_names'] = json_encode($factors,JSON_UNESCAPED_UNICODE);
+            $project_detail['module_names'] = implode(',', $module_names);
+            $project_detail['index_names'] = implode(',', $index_names);
+            $project_detail['project_id'] = $project_id;
+            if (PmDB::isStateSet($project_id,2)) {
+                PmDB::insertProjectDetail($project_detail);
+                PmDB::updateProjectState($project_id);
+            }else{echo "1";
+                PmDB::updateProjectDetail($project_detail);
+            }
+            exit();
         }else{
             $this->dataBack(array('error' => "您的身份验证出错!请重新登录!"));
         }

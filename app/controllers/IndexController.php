@@ -43,12 +43,9 @@ class IndexController extends Base
 	            return;
 	        }
 	        if ($examinee){
-			    $examinees = Examinee::findFirst(array(
-			    	'number=?1',
-			    	'bind'=>array(1=>$username)));
-		        $project = Project::findFirst($examinees->project_id);
+		        $project = Project::findFirst($examinee->project_id);
 		        $now = date('y-m-d h:i:s');
-		        if (strtotime($now) < strtotime($project->begintime) && strtotime($now) < strtotime($project->endtime)) {
+		        if (strtotime($now) < strtotime($project->begintime)) {
 		            $this->dataReturn(array('error'=>'测评还未开启，请在测评开启后登录'));
 		            return;
 		        }if (strtotime($now) > strtotime($project->endtime)) {
@@ -63,6 +60,7 @@ class IndexController extends Base
 		            $this->dataReturn(array('error'=>'本次测评配置还未完成，请待配置完成后登录'));
 		            return;
 		        }
+		        $this->session->set('Examinee', $examinee);
 	            $this->dataReturn(array('url' =>'/examinee/inquery'));
 	        }
 	    }else if (strlen($username) == 7) {
@@ -76,8 +74,8 @@ class IndexController extends Base
 	            return;
 	        }
 	        if ($manager){
-	            $this->session->set('Manager', $manager);
 	            if ($manager->role == 'L') {
+	            	$this->session->set('Manager', $managers);
 	            	$this->dataReturn(array('url' => '/leader/index'));
 	            }else{
 	            	$this->dataReturn(array('error' => '请在后台登录入口登录<a href=\'/managerlogin\'>点击跳转</a>'));
