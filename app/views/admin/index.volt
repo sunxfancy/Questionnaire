@@ -336,7 +336,7 @@ function getInfo(){
 
                        // return false; 返回jqgrid相关的数据格式
                         
-                       return [false,"修改失败",0];
+                       return [true,"修改失败",0];
                     }else{
                         $('.Leo_question').css('width','843px')
                          $('.modal-body').html('');

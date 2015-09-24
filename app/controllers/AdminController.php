@@ -85,25 +85,6 @@ class AdminController extends Base
 	 */
     public function newprojectAction(){
     	$this->view->disable();
-		$manager_info = array();
-		$manager_info['username'] = $this->request->getPost('pm_username', 'string');
-		#在manager表中寻找是否存在该账号的用户
-		$manager_exits = Manager::findFirst(
-			array(
-				"username = :username:",
-				'bind' => array('username'=>$manager_info['username'])
-			)
-		);
-		if(isset($manager_exits->username)){
-			#经理账号已存在
-			$this->dataReturn(array('error'=>'项目经理账号：\''.$manager_info['username'].'\'已存在'));
-			return;
-		}
-		$manager_info['password'] =  $this->request->getPost('pm_password', 'string');
-		$manager_info['name'] = $this->request->getPost('pm_name', 'string');
-		#添加角色项
-		$manager_info['role'] = 'P';
-		
     	$project_info = array(); 
     	$project_info['name'] = $this->request->getPost('project_name', 'string');
     	#2015-9-10目前数据库中没有对project name 做索引
@@ -118,10 +99,32 @@ class AdminController extends Base
 			$this->dataReturn(array('error'=>'项目名称：\''.$project_info['name'].'\'已存在'));
 			return;
 		}
+		$manager_info = array();
+		$manager_info['username'] = $this->request->getPost('pm_username', 'string');
+		#在manager表中寻找是否存在该账号的用户
+		$manager_exits = Manager::findFirst(
+		array(
+		"username = :username:",
+		'bind' => array('username'=>$manager_info['username'])
+		)
+		);
+		if(isset($manager_exits->username)){
+			#经理账号已存在
+			$this->dataReturn(array('error'=>'项目经理账号：\''.$manager_info['username'].'\'已存在'));
+			return;
+		}
+		$manager_info['password'] =  $this->request->getPost('pm_password', 'string');
+		$manager_info['name'] = $this->request->getPost('pm_name', 'string');
+		#添加角色项
+		$manager_info['role'] = 'P';
 		$project_info['begintime'] = $this->request->getPost('begintime', 'string');
 		$project_info['endtime'] = $this->request->getPost('endtime', 'string');
 		$project_info['description'] = $this->request->getPost('description', 'string');
-		
+		#时间检查
+		if(strtotime($project_info['begintime']) >= strtotime($project_info['endtime']) ){
+			$this->dataReturn(array('error'=>'项目结束时间不得早于开始时间'));
+			return;
+		}
 		#准备写入到库
 		#第一步：生成project_id;
         $date = date('y');
@@ -187,60 +190,61 @@ class AdminController extends Base
     }
 
     public function detailAction($project_id) { 
-    	
-        $this->view->setVar('project_id',$project_id);
-        $this->leftRender('项 目 详 情');
-        $project = Project::findFirst($project_id);
-        $this->view->setVar('project_name',$project->name);
-        $begintime = date('Y-m-d',strtotime($project->begintime));
-        $endtime = date('Y-m-d',strtotime($project->endtime));
-        $now = date("Y-m-d");
-        $width = 100*round(strtotime($now)-strtotime($begintime))/round(strtotime($endtime)-strtotime($begintime)).'%'; 
-        $detail = $this->getDetail($project_id);
-        $this->view->setVar('begintime',$begintime);
-        $this->view->setVar('endtime',$endtime);
-        $this->view->setVar('now',$now);
-        $this->view->setVar('width',$width);
-        $this->view->setVar('detail',$detail);        
-    
+    	$manager = $this->session->get('Manager');
+    	if(empty($manager)){
+    		$this->response->redirect('/error/index/manager');
+    		$this->view->disable();
+    	}else{
+    		$this->leftRender('项 目 详 情');
+    	}  
     }
 
-    public function getDetail($project_id){
-        
+    public function getdetailAction(){
+    	$this->view->disable();
+    	$id = $this->request->getPost('id', 'int');	
+    	$project = Project::findFirst($id);
+    	if(!isset($project->id)){
+    		$this->dataReturn(array('error'=>'该编号下的项目不存在，请返回刷新!'));
+    		return ;
+    	}
+    	$ans_array = array();
+    	$ans_array['project_name'] = $project->name;
+    	$ans_array['begintime']    = $project->begintime;
+    	$ans_array['endtime']      = $project->endtime;    	
         $examinees = Examinee::find(array(
             'project_id=?1',
-            'bind'=>array(1=>$project_id)));
-        $examinee_all = count($examinees);
+            'bind'=>array(1=>$id)));
+        //获取该项目下答题的总人数
+        $ans_array['exam_count'] = count($examinees);
         $examinee_com = 0;
         $examinee_coms = array();
+        $examinee_not_coms = array();
         foreach ($examinees as $examinee) {
             if ($examinee->state > 0) {
                 $examinee_com ++;
-                $examinee_coms[] = $examinee->id;
+                $examinee_coms[ $examinee_com -1 ] = $examinee->id;
+            }else{
+            	$examinee_not_coms[] =$examinee->id;
             }
         }
+        //答题完成人数
+        $ans_array['exam_finish'] = $examinee_com;
         $interview_com = 0;
-        for ($i=0; $i < $examinee_com; $i++) { 
-            $interview = Interview::findFirst($examinee_coms[$i]);
-            if (!empty($interview->advantage) && !empty($interview->disadvantage) &&!empty($interview->remark)){
-                $interview_com++;
-            } 
-        }
-        if ($examinee_all == 0) {
-            $examinee_percent = 0;
-        }else{
-            $examinee_percent  = $examinee_com / $examinee_all;
-        }
-        if ($examinee_com == 0) {
-            $interview_percent = 0;
-        }else{
-            $interview_percent = $interview_com / $examinee_com;
-        }
-        $detail = array(
-            'examinee_percent'  => $examinee_percent,
-            'interview_percent' => $interview_percent
-        );
-        return json_encode($detail,true);
+       	for($i = 0; $i<$examinee_com; $i++){
+       		$interview = Interview::findFirst(
+       				array( "examinee_id =:id:",
+       						'bind'=>array('id'=>$examinee_coms[$i])
+       		
+       				));
+       		//判定条件
+       		if( !empty($interview->advantage) && !empty($interview->disadvantage) && !empty($interview->remark)){
+       			$interview_com ++;
+       		}
+       	}
+        $ans_array['interview_finish'] = $interview_com;
+        
+        $this->dataReturn(array('success'=>$ans_array));
+        return ;
     }
 	/**
 	 * @usage jqgrid 显示
@@ -444,7 +448,7 @@ class AdminController extends Base
             $project = Project::findFirst($id);
             $project->name      = $this->request->getPost('name', 'string');
             #项目开始时间不可变更
-//             $project->begintime = $this->request->getPost('begintime', 'string');
+            $project->begintime = $this->request->getPost('begintime', 'string');
             $project->endtime   = $this->request->getPost('endtime', 'string');
             $project->description = $this->request->getPost('description', 'string');
             $manager = Manager::findFirst(array(
@@ -453,7 +457,11 @@ class AdminController extends Base
             $manager->name     = $this->request->getPost('manager_name', 'string');
             $manager->username = $this->request->getPost('manager_username', 'string');
             $manager->password = $this->request->getPost('manager_password', 'string');
-           
+            #时间检查
+            if(strtotime( $project->begintime) >= strtotime( $project->endtime ) ){
+            	$this->dataReturn(array('error'=>'项目结束时间与开始时间冲突'));
+            	return;
+            }
             try{
             	AdminDB::updateManager($manager);
             	AdminDB::updateProject($project);
@@ -475,7 +483,7 @@ class AdminController extends Base
           	}else{
           		#判断项目状态，如果不是项目的初始状态则禁止删除
           		if($project_info->state != 0 ){
-          			$this->dataReturn(array('error'=>'项目经理已经配置完成项目，不能被删除'));
+          			$this->dataReturn(array('error'=>'项目经理已配置了项目，不能被删除'));
           			return;
           		}else{
           			try{
