@@ -38,10 +38,6 @@ class ExamineeController extends Base
     public function getInqueryAction(){
  		// $this->session->remove('Examinee');
     	$exminee = $this->session->get('Examinee');
-        if($this->check_ans(0,$exminee->id)){
-            $this->dataReturn(array('error'=>'您已经答完了全部的需求量表题目,不需要再进行答题,请退出重新登录'));
-            return;
-        }
     	if(empty($exminee)){
     		$this->dataReturn(array('error'=>'用户信息获取失败'));
     		return;
@@ -114,12 +110,8 @@ class ExamineeController extends Base
     public function getpaperAction(){
         $paper_name = $this->request->getPost("paper_name","string");
         $examinee = $this->session->get('Examinee');
-        if(!$this->check_ans(0,$examinee->id)){
+        if(!$this->check_ans($examinee->id)){
             $this->dataReturn(array('error'=>'您还未完成需求量表的作答，请退出重新登录。<br/>请不要尝试直接通过地址进入答题。'));return;
-        }
-        if($this->check_ans(1,$examinee->id)){
-            $this->dataReturn(array('error'=>'您已经答完了全部的题目，访问无效！'));
-            return;
         }
         $project_id = $examinee->project_id;
         if(!in_array($paper_name, self::$paper_name_array)){

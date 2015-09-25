@@ -122,13 +122,13 @@ class PmController extends Base
 
     public function uploadInqueryAction(){
         $project_id = $this->session->get('Manager')->project_id;
-        $delete_data = InqueryQuestion::find(array(
-                'project_id = :project_id:',
-                'bind' => array('project_id' => $project_id)));
-        $res = $delete_data->delete();
-        $this->upload_base('LoadInquery');
-        $project = Project::findFirst($project_id);
-        PmDB::updateProjectState($project);
+        if (!PmDB::isStateSet($project_id,1)) {
+            $this->upload_base('LoadInquery');
+            PmDB::updateProjectState($project_id);
+        }else{
+            PmDB::deleteInquery($project_id);
+            $this->upload_base('LoadInquery');
+        }
     }
 
     public function upload_base($method){
@@ -148,8 +148,7 @@ class PmController extends Base
                 $i++;
             }
         } else {
-            // echo json_encode(array('error' => '错误的接口访问'));
-            alert("请选择导入文件！");
+            echo json_encode(array('error' => '错误的接口访问'));
         }
         $this->response->redirect('pm');
     }
@@ -394,13 +393,12 @@ class PmController extends Base
             $project_detail['module_names'] = implode(',', $module_names);
             $project_detail['index_names'] = implode(',', $index_names);
             $project_detail['project_id'] = $project_id;
-            if (PmDB::isStateSet($project_id,2)) {
+            if (!PmDB::isStateSet($project_id,2)) {
                 PmDB::insertProjectDetail($project_detail);
                 PmDB::updateProjectState($project_id);
-            }else{echo "1";
+            }else{
                 PmDB::updateProjectDetail($project_detail);
             }
-            exit();
         }else{
             $this->dataBack(array('error' => "您的身份验证出错!请重新登录!"));
         }

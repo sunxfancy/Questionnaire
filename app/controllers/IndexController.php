@@ -61,7 +61,11 @@ class IndexController extends Base
 		            return;
 		        }
 		        $this->session->set('Examinee', $examinee);
-	            $this->dataReturn(array('url' =>'/examinee/inquery'));
+		        if (LoginConfig::IsInqueryFinish($examinee->id)) {
+		        	$this->dataReturn(array('url' =>'/examinee/inquery'));
+		        }else {
+		        	$this->dataReturn(array('url' =>'/examinee/editinfo'));
+		        }
 	        }
 	    }else if (strlen($username) == 7) {
 	    	$manager = Manager::checkLogin($username, $password);
