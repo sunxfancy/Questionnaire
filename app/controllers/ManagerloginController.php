@@ -33,8 +33,7 @@ class ManagerloginController extends Base
             $this->dataReturn(array('error' => '用户不存在'));
             return;
         }
-        if ($manager)
-        {
+        if ($manager){
             $this->session->set('Manager', $manager);
 	        switch ($manager->role) {
 	        	case 'M': // 管理员

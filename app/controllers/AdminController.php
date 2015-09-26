@@ -3,8 +3,7 @@
 class AdminController extends Base
 {
     public function initialize(){
-        $this->view->setTemplateAfter('base2');
-       
+        $this->view->setTemplateAfter('base2');     
     }
 
     public function indexAction(){

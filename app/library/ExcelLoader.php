@@ -127,6 +127,21 @@ class ExcelLoader
         $examinee->number = $number;
         $examinee->password = $this->random_string();
         $examinee->project_id = $project_id;
+        $init_data = array();
+        $init_data['name'] = $examinee->name;
+        $init_data['native'] = $examinee->native;
+        $init_data['education'] = $examinee->education;
+        $init_data['politics'] = $examinee->politics;
+        $init_data['degree'] = $examinee->degree;
+        $init_data['professional'] = $examinee->professional;
+        $init_data['employer'] = $examinee->employer;
+        $init_data['unit'] = $examinee->unit;
+        $init_data['team'] = $examinee->team;
+        $init_data['duty'] = $examinee->duty;
+        $init_data['birthday'] = $examinee->birthday;
+        $init_data['sex'] = $examinee->sex;
+        $init_data['other'] = $examinee->other;
+        $examinee->init_data = json_encode($init_data,JSON_UNESCAPED_UNICODE);
 
         if (!$examinee->save()) {
             foreach ($examinee->getMessages() as $message) {
@@ -153,17 +168,6 @@ class ExcelLoader
     }
 
     public function readline_inquery($sheet, $project_id, $i){
-        $inquery_question = new InqueryQuestion();
-
-        $inquery_question->id = $sheet->getCell('A'.$i)->getValue();
-        $inquery_question->topic = $sheet->getCell('B'.$i)->getValue();
-        $is_radio = self::filter($sheet->getCell('C'.$i)->getValue());
-        if($is_radio == '是'){
-            $inquery_question->is_radio = 1;
-        }else{
-            $inquery_question->is_radio = 0;
-        }
-        $inquery_question->project_id = $project_id;
         $options = '';
         $highest_column = PHPExcel_Cell::columnIndexFromString($sheet->getHighestColumn());
         for($j = 3;$j<$highest_column;$j++){
@@ -176,6 +180,13 @@ class ExcelLoader
             }
         }
         $options = substr($options,0,strlen($options)-1);
+        $radio = self::filter($sheet->getCell('C'.$i)->getValue());
+        $is_radio = ($radio == '是') ? 1 : 0;
+        $inquery_question = new InqueryQuestion();
+        $inquery_question->id = $sheet->getCell('A'.$i)->getValue();
+        $inquery_question->topic = $sheet->getCell('B'.$i)->getValue();
+        $inquery_question->is_radio = $is_radio;
+        $inquery_question->project_id = $project_id;
         $inquery_question->options = $options;
         if(!$inquery_question->save()){
             foreach($inquery_question->getMessage() as $message){
@@ -202,7 +213,7 @@ class ExcelLoader
             $last_number = $interviewer[$data_num-1]->username+1;
         }
         
-        $interviewer = new Manager();      
+        $interviewer = new Manager();
         $interviewer->name = self::filter($sheet->getCell('C'.$i)->getValue());
         $interviewer->username = $last_number;
         $interviewer->password = $this->random_string();
