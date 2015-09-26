@@ -39,12 +39,10 @@
     </div> 
 	  <div style="display:inline-block;font-size:26px;color:red;height:30px;margin: 0 0 0 40px;">项目配置
 	  </div>
-	  <div id='state' class="alert alert-dismissible fade in" style='display:inline-block;' role="alert" style='margin:0;'>
-         <button type="button" class="close" data-dismiss="alert" aria-label="Close" style='font-size:20px;'>
-         <span aria-hidden="true">&times;</span>
+	  <div id='state' role="alert" class="alert alert-dismissible fade in" style='display:inline-block; padding-top:5px; padding-bottom:5px; margin-top:0;margin-bottom:0;height:30px; ' >
          </button>
       </div>
-      <form class="form-inline" style='text-align:center;'>
+      <form class="form-inline" style='text-align:center;margin-top:10px;'>
       	 <div class="form-group">
                 <a href='/pm/inquery' type='button' class="btn btn-primary">需求量表配置</a>
                 <span class="label" id='inquery'></span>

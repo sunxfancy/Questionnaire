@@ -228,9 +228,9 @@ $('#search').click(function(){
             var str = '';
             for(var i = 0; i<len; i++ ){
             	str += ('<span style=\'color:red\'>题号</span>-'+ inquery_data[i].id+'-');
-            	str += ('<span style=\'color:green\'>类型</span>-'+ (inquery_data[i].is_radio == 1 ? '[单选]':'[多选]')+'-');
+            	str += ('<span style=\'color:green\'>类型</span>-'+ (inquery_data[i].is_radio == 1 ? '[单选]':'[多选]')+'<br />');
             	str += ('<span style=\'color:blue\'>题目</span>-'+ inquery_data[i].topic+'<br />');
-            	str += ('<span style=\'color:gray\'>选项</span>-'+ inquery_data[i].options+'<br />');
+            	str += ('<span style=\'color:gray\'>选项</span>-'+ inquery_data[i].options+'<br /><br />');
             	
             }
             $('.modal-body').html(str);
