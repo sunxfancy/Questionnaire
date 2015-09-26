@@ -150,7 +150,7 @@
                 <div id='grid_paper_2'></div>
             </div>
             
-            <div style="width:600px;margin:0 auto;padding:10px 10px 60px 0px;">
+            <div style="width:600px;margin:0 auto;padding:10px 10px 20px 0px;">
                 <table style="width:600px; text-align:center;">                
                 <tr><td><button class="btn btn-primary" id="submit">保存</button></td></tr>
                 </table>
@@ -444,7 +444,8 @@ function start_gqgrid(){
                 { name:'begintime',  label:'开始时间', index:'begintime',  width:100, fixed:true, sortable:false, sorttype:'date' , editable:true,   resize:false, align:'center', 
                   editrules:{required : true, custom:true, custom_func: begin_datecheck,}, 
                   editoptions: { dataInit: function(element) { 
-                            $(element).parent().addClass("input-group date form_date");                            $(element).addClass('form-control')
+                            $(element).parent().addClass("input-group date form_date");
+                            $(element).addClass('form-control')
                             $(element).datetimepicker({
                             language: 'zh-CN', //汉化 
                             format:'yyyy.mm' , 
@@ -467,7 +468,9 @@ function start_gqgrid(){
                   name:'endtime',   label:'结束时间',  index:'endtime',  width:100, fixed:true, sortable:false, sorttype:'date', editable:true,   resize:false, align:'center', 
                   editrules:{ custom:true, custom_func:end_datecheck,}, 
                   editoptions: { dataInit: function(element) { 
-                            $(element).parent().addClass("input-group date form_date");                            $(element).addClass('form-control')                            $(element).datetimepicker({
+                            $(element).parent().addClass("input-group date form_date");
+                            $(element).addClass('form-control')
+                            $(element).datetimepicker({
                             language: 'zh-CN', //汉化 
                             format:'yyyy.mm' , 
                             autoclose:true,
@@ -475,7 +478,8 @@ function start_gqgrid(){
                             minView:3,
                             }).on('hide',function(el){
                             	  //$(element).unwrap('<div class="input-group date form_date"></div>')
-                                  //$(element).removeClass('form-control')
+                                  //$(element).removeClass('form-control')
+
                             }).on('changeDate',function(el){
                                 $('#begintime').datetimepicker('setEndDate', $(element).val());
                             })
@@ -607,7 +611,8 @@ function start_gqgrid(){
             altRows: true,
             hidegrid:false,
             // rowNum:10,
-            // rowList : [ 10, 20, 30],
+            // rowList : [ 10, 20, 30],
+
             pager : '#grid_paper_2',
             emptyrecords: "<span style='color:red'>还未添加记录</span>", 
             editurl: "/examinee/updatework",
