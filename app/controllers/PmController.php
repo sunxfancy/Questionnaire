@@ -141,6 +141,17 @@ class PmController extends Base
     	try{
     	$manager=$this->session->get('Manager');
     	$project_id =$manager->project_id;
+    	#添加项目判断，是否有被试答题，若有答题则不能更新配置的模块
+//     	$record = InqueryAns::findFirst(
+//     			array(
+//     					'project_id=?1',
+//     					'bind'=>array(1=>$manager->project_id)
+//     			)
+//     	);
+//     	if(isset($record->project_id)){
+//     		$this->dataReturn(array('error'=>'已有被试答题，项目模块不可再修改！'));
+//     		return ;
+//     	}
     	if($manager){
     		$module_names = array();
     		$checkeds=$this->request->getpost('checkeds');
@@ -208,6 +219,7 @@ class PmController extends Base
 		$this->view->setTemplateAfter('base2');
 		$this->leftRender('需 求 量 表 配 置');
 	}
+	#获取需求量表
 	public function getinqueryAction(){
 		$manager=$this->session->get('Manager');
 		if($manager){
@@ -235,7 +247,7 @@ class PmController extends Base
 			return ;
 		}
 	}
-	#上传需求量表
+	#上传更新需求量表
 	public function uploadInqueryAction(){
 		#严格json格式{ '···' : '···'},json_encode 无法实现
 		try{
@@ -274,6 +286,17 @@ class PmController extends Base
 		    $project_id = $manager->project_id;
 		    #上传需求量表前先删除之前的信息
 		    #目前还没有加上项目进行时判断
+		    #判断项目状态是否更新需求量表，是否有人答题
+		    $record = InqueryAns::findFirst(
+		    array(
+		    'project_id=?1',
+		    'bind'=>array(1=>$manager->project_id)
+		    )
+		    );
+		    if(isset($record->project_id)){
+		    	echo "{'error':'已有被试答题，需求量表不可删除！'}";
+		    	return ;
+		    }
 		   PmDB::insertInquery($data, $project_id);
 		   echo "{'success':'true'}";
            return ;
