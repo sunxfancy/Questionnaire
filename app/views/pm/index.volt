@@ -5,16 +5,18 @@
                 <td id="label_detail" style=" width: 20%; height: 100%; background-image: url(../images/label5.png);font-size:20px; " onclick="Leo_switch(this)">项目详情</td>
                 <td id="label_users" style="width: 20%; height: 100%; background-image: url(../images/label1.png); font-size:20px;" onclick="Leo_switch(this)">被试人员</td>
                 <td id="label_experts" style="width: 20%; height: 100%; background-image: url(../images/label1.png); font-size:20px;" onclick="Leo_switch(this)">面询专家</td>
-				        <td id="label_leaders" style="width: 20%; height: 100%; background-image: url(../images/label1.png);font-size:20px;" onclick="Leo_switch(this)">领导列表</td>
+				<td id="label_leaders" style="width: 20%; height: 100%; background-image: url(../images/label1.png);font-size:20px;" onclick="Leo_switch(this)">领导列表</td>
                 <td id="label_results" style="width: 20%; height: 100%; background-image: url(../images/label1.png); font-size:20px;" onclick="Leo_switch(this)">查看结果</td>
             </tr>
         </table>
     </div>       
-    <div class="Leo_scroll_panel" style="margin:0 auto;top:0px;" id="Leo_manager_home"></div>
+    <div class="Leo_scroll_panel" style="margin:0 auto;top:0px;" id="Leo_manager_home">	
+    </div>
 </div>
-<script type='text/javascript'> 
-    Leo_switch(document.getElementById("label_detail"));
 
+<script type='text/javascript'> 
+    var def = document.getElementById("label_detail");
+	Leo_switch(def);
     function Leo_switch(t) {                 
         switch (t.id) {
             case "label_detail": sw(0); 

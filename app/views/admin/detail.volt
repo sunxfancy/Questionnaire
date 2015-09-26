@@ -14,15 +14,14 @@
     </div>
     <div style="width:100%;padding:10px;">
         <div style="margin-left:30px;padding:10px;font-size:26px;color:red;">项目时间计划
-        <span id='project_state' style='font-size:18px;'></span>	
         </div>       
         <div style="width:90%; margin:0 auto;">
         <table style="width:100%">
         	<tr>
         	<td id="begintime" style="width:20%;text-align:left;" > 	
                 </td>
-           <!--  <td id="nowtime" style="width:60%; text-align:center;">
-                </td> -->
+            <td id="project_state" style="width:60%; text-align:center;">
+                </td>
             <td id="endtime" style="width:20%;text-align:right;">
             </td>
             </tr>
@@ -161,6 +160,7 @@ function datadeal(data){
 	if(nowtime >= endtime){
 		$('#project_state').html('<span style=\'color:red\'>项目已结束</span>')
 		$('#progress').width('100%');
+		$('#progress').addClass('progress-bar-success');
 	}else if(nowtime<=begintime){
 		$('#project_state').html('<span style=\'color:red\'>项目未开始</span>')
 		$('#progress').width('0%');
@@ -177,6 +177,7 @@ function datadeal(data){
 		var t2 = nowtime-begintime;
 		if( t1 == 0 ){
 			 $('#progress').width('100%');
+			 $('#progress').addClass('progress-bar-success');
 		}else{
 			var bi = t2/t1;
 			bi=bi.toFixed(2);
