@@ -28,6 +28,40 @@ class PmDB
             throw new Exception($e->getMessage());
         }
 	}
+	#删除项目配置模块
+	public static function delModule($project_id){
+		try{
+			$delete_data = ProjectDetail::findFirst(array(
+			'project_id = :project_id:',
+			'bind' => array('project_id' => $project_id)));
+			if (isset($delete_data->project_id)){
+				$manager     = new TxManager();
+				$transaction = $manager->get();
+				$delete_data->setTransaction($transaction);
+				if($delete_data->delete()== false){
+					$transaction->rollback('数据更新失败-1');
+				}
+				#说明该项目下需求量表已导入过，则继续更新项目状态
+				$project = Project::findFirst(
+							array(
+									"id=?1",'bind'=>array(1=>$project_id))
+					);
+				$project->setTransaction($transaction);
+				$project->state = ($project->state - 1 >=0 )? $project->state-1 : 0 ;
+				if(  $project->save() == false ){
+						$transaction->rollback("数据插入失败-2");
+				}
+				$transaction->commit();
+				return true;
+			}else{
+				return true;
+			}
+			
+			
+		}catch (TxFailed $e) {
+		throw new Exception($e->getMessage());
+		}
+	}
 	#删除项目需求量表
 	public static function delInquery($project_id){
 		try{

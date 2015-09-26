@@ -186,8 +186,10 @@ $('#del').click(function(){
 })    
 
 function delinquery(){
+	$('button').attr('disabled', true);
 	 spinner = new Spinner().spin(target);
           $.post('/pm/delinquery', function(data) {
+          	$('button').attr('disabled', false);
             if(spinner){ spinner.stop(); }
             if(data.error){
             	showError(data.error);

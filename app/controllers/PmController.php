@@ -103,12 +103,15 @@ class PmController extends Base
     public function getmoduleAction(){
     	$manager=$this->session->get('Manager');
     	if($manager){
+    		$result = array();
+    		$result['state'] = false;
+    		$result['ans'] = null;
     		$project_detail = ProjectDetail::findFirst(array(
     				"project_id=?1",
     				"bind"=>array(1=>$manager->project_id)));
 
     		if(!isset($project_detail->project_id)){
-    			$this->dataReturn(array('success'=>''));
+    			$this->dataReturn(array('success'=>$result));
     			return ;
     		}
     		
@@ -116,7 +119,7 @@ class PmController extends Base
     		$module_names = $project_detail->module_names;
     		$module_name = explode(',', $module_names);
     		if (empty($module_name)){
-    			$this->dataReturn(array('success'=>''));
+    			$this->dataReturn(array('success'=>$result));
     			return ;
     		}
     		$ans= array();
@@ -129,7 +132,9 @@ class PmController extends Base
     			);
     			$ans[] = $module->chs_name;
     		}
-    		$this->dataReturn(array("success"=> implode('|', $ans)));
+    		$result['state'] = true;
+    		$result['ans'] = implode('|', $ans);
+    		$this->dataReturn(array("success"=>$result));
     		return ;
     	}else{
     		$this->dataReturn(array('error'=>"您的身份验证出错,请重新登录"));
@@ -142,16 +147,18 @@ class PmController extends Base
     	$manager=$this->session->get('Manager');
     	$project_id =$manager->project_id;
     	#添加项目判断，是否有被试答题，若有答题则不能更新配置的模块
-//     	$record = InqueryAns::findFirst(
-//     			array(
-//     					'project_id=?1',
-//     					'bind'=>array(1=>$manager->project_id)
-//     			)
-//     	);
-//     	if(isset($record->project_id)){
-//     		$this->dataReturn(array('error'=>'已有被试答题，项目模块不可再修改！'));
-//     		return ;
-//     	}
+    	$result = $this->modelsManager->createBuilder()
+                                       ->columns(array(
+                                        'COUNT(Examinee.id) as count' ))
+                                       ->from('Examinee')    
+                                       ->join('QuestionAns', 'Examinee.id = QuestionAns.examinee_id AND Examinee.project_id = '.$project_id)
+                                       ->getQuery()
+                                       ->execute();
+        $result = $result->toArray();
+        if($result[0]['count'] > 0 ){
+        	$this->dataReturn(array('error'=>'已有被试答题，项目模块不可再修改！')); 
+        	return ;
+        }
     	if($manager){
     		$module_names = array();
     		$checkeds=$this->request->getpost('checkeds');
@@ -214,6 +221,36 @@ class PmController extends Base
     		return ;
     	}
     }
+   	#删除题目配置
+   	public function delmoduleAction(){
+   		try{
+   			$manager=$this->session->get('Manager');
+   			if(empty($manager)){
+   				$this->dataReturn(array('error'=>'用户信息获取失败'));
+   				return ;
+   			}
+   			$project_id = $manager->project_id;
+	   		#添加项目判断，是否有被试答题，若有答题则不能更新配置的模块
+	    	$result = $this->modelsManager->createBuilder()
+	                                       ->columns(array(
+	                                        'COUNT(Examinee.id) as count' ))
+	                                       ->from('Examinee')    
+	                                       ->join('QuestionAns', 'Examinee.id = QuestionAns.examinee_id AND Examinee.project_id = '.$project_id)
+	                                       ->getQuery()
+	                                       ->execute();
+	        $result = $result->toArray();
+	        if($result[0]['count'] > 0 ){
+	        	$this->dataReturn(array('error'=>'已有被试答题，项目模块不可再修改！')); 
+	        	return ;
+	        }
+   			PmDB::delModule($manager->project_id);
+   			$this->dataReturn(array('success'=>'删除成功'));
+   			return ;
+   		}catch(Exception $e){
+   		$this->dataReturn(array('error'=>$e->getMessage()));
+   		return ;
+   		}
+   	}
 	#需求量表界面
 	public function inqueryAction(){
 		$this->view->setTemplateAfter('base2');
