@@ -4,17 +4,23 @@ use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
 
 class PmDB 
 {
-    //存储项目模块选择结果
+    //存储项目模块选择结果 并 修改项目状态
 	public static function insertProjectDetail($project_detail_info){
 		try{
             $manager     = new TxManager();
             $transaction = $manager->get();
             $project_detail = new ProjectDetail();
+            $project_detail->setTransaction($transaction);
             foreach($project_detail_info as $key => $value){
                 $project_detail->$key = $value;
             }
-            if( !$project_detail->create()){
-                $transaction->rollback("数据插入失败-".print_r($project_detail,true));
+            $project = Project::findFirst($project_detail_info['project_id']);
+            $project->setTransaction($transaction);
+            $type= true;
+            $state = self::getProjectStateNext($project, $type);
+            $project->state = $state ;
+            if( $project_detail->save() == false || $project->save() == false ){
+                $transaction->rollback("数据插入失败");
             }
             $transaction->commit();
             return true;
@@ -22,22 +28,241 @@ class PmDB
             throw new Exception($e->getMessage());
         }
 	}
-
-    //更新项目状态
-    public static function updateProjectState($project_id,$state){
+	#删除项目需求量表
+	public static function delInquery($project_id){
+		try{
+			$manager     = new TxManager();
+			$transaction = $manager->get();
+			#先删除已有的信息
+			$delete_data = InqueryQuestion::find(array(
+			'project_id = :project_id:',
+			'bind' => array('project_id' => $project_id)));
+			foreach($delete_data as $data_record){
+				$data_record->setTransaction($transaction);
+				if($data_record->delete()== false){
+					$transaction->rollback('数据更新失败-1');
+				}
+			}
+			#说明该项目下需求量表已导入过，则继续更新项目状态
+			if(count($delete_data) > 0 ){
+				$project = Project::findFirst(
+						array(
+								"id=?1",'bind'=>array(1=>$project_id))
+				);
+				$project->setTransaction($transaction);
+				$project->state = ($project->state - 1 >=0 )? $project->state-1 : 0 ;
+				if(  $project->save() == false ){
+					$transaction->rollback("数据插入失败-2");
+				}
+			}
+			$transaction->commit();
+			return true;
+		}catch (TxFailed $e) {
+            throw new Exception($e->getMessage());
+        }
+	}
+    //插入需求量表信息 并 修改项目状态
+    public static function insertInquery($data, $project_id){
         try{
-            $manager     = new TxManager();
-            $transaction = $manager->get();
-            $project = Project::findFirst($project_id);
-            $project->state = $state; 
-            $project->setTransaction($transaction);
-            if($project->save() == false ){
-                $transaction->rollback("数据更新失败-".print_r($project,true));
+        self::delInquery($project_id);
+        #插入新数据
+        $manager     = new TxManager();
+        $transaction = $manager->get();
+        foreach($data as $value){
+            $inquery = new InqueryQuestion();
+            $inquery->setTransaction($transaction);
+            foreach($value as $key=>$svalue){
+                $inquery->$key = $svalue;
             }
-            $transaction->commit();
-            return true;
-        }catch (TxFailed $e) {
+            $inquery->project_id = $project_id;
+            if($inquery->save() == false) {
+                 $transaction->rollback('数据更新失败-3');
+            }
+        }
+        $type= false;
+        #更新项目状态
+        $project = Project::findFirst(
+            array(
+                "id=?1",'bind'=>array(1=>$project_id))
+            );
+        $project->setTransaction($transaction);
+        $state = self::getProjectStateNext($project, $type);
+        $project->state = $state ;
+        if(  $project->save() == false ){
+                $transaction->rollback("数据插入失败-4");
+        }
+        $transaction->commit();
+        return true;
+    }catch (TxFailed $e) {
             throw new Exception($e->getMessage());
         }
     }
+
+    //更新项目状态
+	#模块配置的类型设为true
+	#需求量表的上传设为false
+    public static function getProjectStateNext($project, $type){
+		#项目状态更新前的判断
+    	if ($project->state == 2){
+    		$state = 2;
+    	}else if ($project->state == 0 ){
+    		$state = 1;
+    	}else {
+    		$inquery = InqueryQuestion::findFirst(
+    				array(
+    						'project_id=?1',
+    						'bind'=>array(1=>$project->id)));
+    		if(isset($inquery->project_id)){
+    			$state = $type ? 1:2;
+    		}else{
+    			$state = $type ? 1:2;
+    		}
+    	}
+    	return $state;
+      
+    }
+    
+    
+    /**
+     *@usage input 模块的中文名称string
+     *@return 模块的英文名称 string
+     */
+    public static function getModuleName($module_chs_name){
+    	$module = Module::findFirst(array(
+    			'chs_name=?1',
+    			'bind'=>array(1=>$module_chs_name)));
+    	if(!isset($module->name)){
+    		throw new Exception($module_chs_name.'-模块名称不存在');
+    	}
+    	$module_name = $module->name;
+    	return $module_name;
+    }
+    
+    /**
+     *@usage input 模块的英文名数组
+     *@return 模块下属指标的集合 array
+     */
+    public static function getIndexName($module_names){
+    	$index_names = array();
+    	foreach($module_names as $value){
+    		$module = Module::findFirst(
+    				array(
+    						'name=?1',
+    						'bind'=>array(1=>$value))
+    		);
+    		$children_str = $module->children;
+    		$children_array = explode(",", $children_str);
+    		foreach($children_array as $value){
+    			$index_names[] = $value;
+    		}
+    	}
+    	return array_unique($index_names);
+    }
+    
+    /**
+     * @usage input 指标名数组 array
+     * @return 因子名数组 array
+     */
+    public static function getFactorName($index_names){
+    	$factor_names = array();
+    	foreach($index_names as $value){
+    		$index = Index::findFirst(
+    				array(
+    						'name=?1',
+    						'bind'=>array(1=>$value))
+    		);
+    		$children_str = $index->children;
+    		$children_type_str = $index->children_type;
+    		$children_array = explode(",",$children_str );
+    		$children_type_array = explode(',', $children_type_str);
+    		$i = 0;
+    		#指标下有子指标
+    		foreach($children_type_array as $value){
+    			#子指标下属的肯定是因子
+    			if($value == '0'){
+    				$zi = Index::findFirst(array(
+    						'name=?1',
+    						'bind'=>array(1=>$children_array[$i])));
+    				$zi_child_str = $zi->children;
+    				$zi_child_array = explode(",",$zi_child_str );
+    				foreach($zi_child_array as $value){
+    					$factor_names[] = $value;
+    				}
+    			}else{
+    				$factor_names[] = $children_array[$i];
+    			}
+    			$i++;
+    		}
+    		 
+    	}
+    	return array_unique($factor_names);
+    }
+    
+    /**
+     * @usage input 因子数组名
+     * @return 试卷下的题号 array
+     */
+    public static function getQuestionName($factor_names){
+    	$questions_numbers = array();
+    	foreach ($factor_names as $value){
+    		$factor = Factor::findFirst(array(
+    				'name=?1',
+    				'bind'=>array(1=>$value)));
+    		$children_str = $factor->children;
+    		$children_type_str = $factor->children_type;
+    		$children_array = explode(",",$children_str );
+    		$children_type_array = explode(',', $children_type_str);
+    		#指标下有子指标
+    		$i = 0;
+    		foreach($children_type_array as $value){
+    			#子因子肯定是题目
+    			if($value == '0'){
+    				$zi = Factor::findFirst(array(
+    						'name=?1',
+    						'bind'=>array(1=>$children_array[$i])));
+    				$zi_child_str = $zi->children;
+    				$zi_child_array = explode(",",$zi_child_str );
+    				foreach($zi_child_array as $svalue){
+    					$paper_name = Paper::findFirst($zi->paper_id)->name;
+    					$questions_numbers[$paper_name][] =trim($svalue,' ');
+    				}
+    			}else{
+    				$paper_name = Paper::findFirst($factor->paper_id)->name;
+    				$questions_numbers[$paper_name][] =trim($children_array[$i],' ');
+    			}
+    			$i++;
+    		}
+    	}
+    	foreach($questions_numbers as $key=>$value){
+    		$questions_numbers[$key] = array_unique($value, SORT_NUMERIC);
+    	}
+    	return $questions_numbers;
+    }
+    /**
+     * @usage input 因子名数组
+     * @return 所有分类下的因子数组
+     */
+    public static function getAllDividedFactors($factor_names){
+    	$factors = array();
+    	foreach ($factor_names as $factor_name) {
+    		$factor = Factor::findFirst(array(
+    				'name=?1',
+    				'bind'=>array(1=>$factor_name)));
+    		$paper_name = Paper::findFirst($factor->paper_id)->name;
+    		$factors[$paper_name][$factor->id] = $factor_name;
+    		$children_type_array = explode(',',$factor->children_type);
+    		#因子至多两层
+    		if (in_array(0, $children_type_array)) {
+    			$factor = explode(',',$factor->children);
+    			foreach ($factor as $value) {
+    				$zi_factor = Factor::findFirst(array(
+    						'name=?1',
+    						'bind'=>array(1=>$value)));
+    				$factors[$paper_name][$zi_factor->id] = $value;
+    			}
+    		}
+    	}
+    	return $factors;
+    }
+    
 }

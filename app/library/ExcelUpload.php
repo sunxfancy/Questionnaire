@@ -118,6 +118,49 @@ class  ExcelUpload {
 			return $data;
 		}
 	}
+
+
+	/**
+	* 处理需求量表上传
+	* 此处需按照模板来改动
+	*/
+	public function handleInquery(){
+		$currentSheet = self::$objPHPExcel->getSheet(0);
+		$rowCount = $currentSheet->getHighestRow();
+		$columnMax = $currentSheet->getHighestColumn();
+		$start = 3;
+		$ans = array();
+		for( $currentRow = $start; $currentRow <= $rowCount; $currentRow ++ ){
+			 $record = array();
+			 $choices = array();
+			 for ($column = 'A'; $column <= $columnMax; $column++) {
+			 //列数是以A列开始
+             $value = $currentSheet->getCell($column.$currentRow)->getValue();
+             $value = trim($value);
+             if(empty($value)){
+             	//行结束
+             	break;
+             }
+             if( $column == 'A'){
+             	$record['id'] = $value;
+             	continue;
+             }
+             if( $column == 'B'){
+             	$record['topic'] = $value;
+             	continue;
+             }
+             if ( $column == 'C'){
+             	$record['is_radio'] = $value =='是'? 1 : 0;
+             	continue;
+             }
+             $choices[] = $value;
+    	}
+    	$record['options'] = implode('|', $choices);
+    	$ans[] = $record;
+	}
+		return $ans;
+	}
+
 	
 	
 }
