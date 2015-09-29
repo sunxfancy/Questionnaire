@@ -62,9 +62,9 @@ class IndexController extends Base
 		        }
 		        $this->session->set('Examinee', $examinee);
 		        if (LoginConfig::IsInqueryFinish($examinee->id)) {
-		        	$this->dataReturn(array('url' =>'/examinee/inquery'));
-		        }else {
 		        	$this->dataReturn(array('url' =>'/examinee/editinfo'));
+		        }else {
+		        	$this->dataReturn(array('url' =>'/examinee/inquery'));
 		        }
 	        }
 	    }else if (strlen($username) == 7) {
@@ -79,7 +79,7 @@ class IndexController extends Base
 	        }
 	        if ($manager){
 	            if ($manager->role == 'L') {
-	            	$this->session->set('Manager', $managers);
+	            	$this->session->set('Manager', $manager);
 	            	$this->dataReturn(array('url' => '/leader/index'));
 	            }else{
 	            	$this->dataReturn(array('error' => '请在后台登录入口登录<a href=\'/managerlogin\'>点击跳转</a>'));

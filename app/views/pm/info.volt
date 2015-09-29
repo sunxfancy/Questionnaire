@@ -43,17 +43,18 @@
         </table>
 
         <div style="width:80%;text-align:right;margin: 10px 10px;">
-            <form class="form-inline">
-                <div class="form-group">
-                    <a class="btn btn-default" href="/pm/index">返回</a>
+        	   <div style='display:inline-block;'>
+                <form action='/pm' class="form-inline" method='post'>
+                    <input id='page' value='1' name='page' type='hidden'/>
+                    <button type='submit' class='btn btn-success' style='width:80px;'>返回上层</button>
+                </form>
                 </div>
-                <div class="form-group">
+                <div style='display:inline-block;'>
                     <button class="btn btn-success">打印</button>
                 </div>
-                <div class="form-group">
+                <div style='display:inline-block;'>
                     <a class="btn btn-primary" href="#">导出</a>
                 </div>
-            </form>
         </div>
     </div>
 </div>

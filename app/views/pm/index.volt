@@ -2,11 +2,11 @@
     <div style="width:100%;height:50px;background-color:blue;">
         <table id="labels" style="text-align: center;width:100%; height: 100%;cursor:pointer;background-color:white; " cellspacing="0" cellpadding="0" border="0">
             <tr style="width:100%;height:inherit;margin:0px;">
-                <td id="label_detail" style=" width: 20%; height: 100%; background-image: url(../images/label5.png);font-size:20px; " onclick="Leo_switch(this)">项目详情</td>
-                <td id="label_users" style="width: 20%; height: 100%; background-image: url(../images/label1.png); font-size:20px;" onclick="Leo_switch(this)">被试人员</td>
-                <td id="label_experts" style="width: 20%; height: 100%; background-image: url(../images/label1.png); font-size:20px;" onclick="Leo_switch(this)">面询专家</td>
-				<td id="label_leaders" style="width: 20%; height: 100%; background-image: url(../images/label1.png);font-size:20px;" onclick="Leo_switch(this)">领导列表</td>
-                <td id="label_results" style="width: 20%; height: 100%; background-image: url(../images/label1.png); font-size:20px;" onclick="Leo_switch(this)">查看结果</td>
+                <td id="label_detail" style=" width: 20%; height: 100%; background-image: url(../images/label5.png);font-size:20px; " onclick="Leo_switch(0)">项目详情</td>
+                <td id="label_users" style="width: 20%; height: 100%; background-image: url(../images/label1.png); font-size:20px;" onclick="Leo_switch(1)">被试人员</td>
+                <td id="label_experts" style="width: 20%; height: 100%; background-image: url(../images/label1.png); font-size:20px;" onclick="Leo_switch(2)">面询专家</td>
+				<td id="label_leaders" style="width: 20%; height: 100%; background-image: url(../images/label1.png);font-size:20px;" onclick="Leo_switch(3)">领导列表</td>
+                <td id="label_results" style="width: 20%; height: 100%; background-image: url(../images/label1.png); font-size:20px;" onclick="Leo_switch(4)">查看结果</td>
             </tr>
         </table>
     </div>       
@@ -15,36 +15,38 @@
 </div>
 
 <script type='text/javascript'> 
-    var def = document.getElementById("label_detail");
-	Leo_switch(def);
+$(function(){
+    Leo_switch(<?php if(isset($page)){ echo $page; }else { echo 0; }?>);
+})
+    
     function Leo_switch(t) {                 
-        switch (t.id) {
-            case "label_detail": sw(0); 
+        switch (t) {
+            case 0: sw(0); 
                 //to first page
                 $.post('/pm/detail', function(data) {
                     /*optional stuff to do after success */
                     $("#Leo_manager_home").html(data);
                 });
                 break;
-            case "label_users": sw(1);
+            case 1: sw(1);
                 $.post('/pm/examinee', function(data) {
                     /*optional stuff to do after success */
                     $("#Leo_manager_home").html(data);
                 });
                 break;                 
-            case "label_experts": sw(2);
+            case 2: sw(2);
                 $.post('/pm/interviewer', function(data) {
                     /*optional stuff to do after success */
                     $("#Leo_manager_home").html(data);
                 });
                 break;
-            case "label_leaders": sw(3); 
+            case 3: sw(3); 
                 $.post('/pm/leader', function(data) {
                     /*optional stuff to do after success */
                     $("#Leo_manager_home").html(data);
                 });
                 break;
-            case "label_results": sw(4);
+            case 4: sw(4);
                 $.post('/pm/result', function(data) {
                     /*optional stuff to do after success */
                     $("#Leo_manager_home").html(data);

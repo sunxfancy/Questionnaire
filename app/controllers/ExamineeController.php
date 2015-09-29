@@ -110,8 +110,15 @@ class ExamineeController extends Base
     public function getpaperAction(){
         $paper_name = $this->request->getPost("paper_name","string");
         $examinee = $this->session->get('Examinee');
+        #添加如果用户已经答过题
+        if (empty($examinee)){
+        	$this->dataReturn(array('error'=>'获取用户信息失败，请重新登录！'));return;
+        }
+        if ($examinee->state > 0 ){
+        	$this->dataReturn(array('error'=>'您已答过题目，请退出登录！'));return;
+        }
         if(!$this->check_ans($examinee->id)){
-            $this->dataReturn(array('error'=>'您还未完成需求量表的作答，请退出重新登录。<br/>请不要尝试直接通过地址进入答题。'));return;
+            $this->dataReturn(array('error'=>'您还未完成需求量表的作答，请退出重新登录！'));return;
         }
         $project_id = $examinee->project_id;
         if(!in_array($paper_name, self::$paper_name_array)){
@@ -167,7 +174,8 @@ class ExamineeController extends Base
     			$this->dataReturn(array('error'=>$e->getMessage()));
     			return ;
     		}
-    		
+    		//正常计算完成后注销用户信息
+    		$this->session->remove('Examinee');
     		$this->dataReturn(array("flag"=>$total_time));
     		return;
     	}

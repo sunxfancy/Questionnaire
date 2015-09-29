@@ -2,47 +2,26 @@
 <script src='/fileupload/ajaxfileupload.js'></script>
 <div class="Leo_question" style="overflow:hidden;padding:10px;">
     <div class="form-group">
-            <div style="display:inline-block;margin-left:40px;font-size:26px;color:red;"> 需求量表配置状态</div>
-            <span class="label" id='inquery_state'></span>
+            <div style="display:inline-block;margin-left:40px;font-size:26px;color:red;">被试人员数据下载页</div>
     </div>  
     <hr size="2" color="#FF0000" style="width:90%;"/>
     <div class='form-group' style='margin-left:60px;'>
       <div class="row fileupload-buttonbar">
                 <!-- The fileinput-button span is used to style the file input field as button -->
-                <a class="btn btn-primary" style='width:200px;' href='/template/inquery.xls' type='button'>
+                <a class="btn btn-primary" style='width:200px;'  href="/pm/examineeExport"  type='button'>
                     <i class="glyphicon glyphicon-download"></i>
-                    需求量表模板下载
+                                                             被试信息列表导出
                 </a>
                 <br />
                 <br />
-                <span class="btn btn-success fileinput-button" style='width:200px;'>
-                    <i class="glyphicon glyphicon-plus"></i>
-                    <span>上传需求量表</span>
-                    <input accept="application/msexcel" type="file" id='file' name='file' style='opacity:0; position:absolute; top:0;left:0;cursor:pointer; width:200px;'>
-                </span>
-                <button id='submit' type='submit' class="btn btn-primary start">
-                    <i class="glyphicon glyphicon-upload"></i>
-                    <span>开始上传</span>
-                </button>
-                &nbsp;&nbsp;<span id='filename'></span>
-                <br />
-                <br />
-                <button id='search' class="btn btn-primary " style='width:200px;'>
-                    <i class="glyphicon glyphicon-zoom-in"></i>
-                    <span>查看需求量表</span>
-                </button>
-                <br />
-                <br />
-                <button id='del' class="btn btn-danger " style='width:200px;'>
-                    <i class="glyphicon glyphicon-delete"></i>
-                    <span>删除需求量表</span>
-                </button>
-                <!-- The global file processing state -->
       </div>
     </div> 
       <hr size="2" color="#FF0000" style="width:90%;"/>
     <div class="form-group" style='text-align:right;width:90%;'> 
-        <a href='/pm' type='button' class='btn btn-success' style='width:80px;'>返回首页</a>     
+    	<form action='/pm' method='post'>
+    		<input id='page' value='1' name='page' type='hidden'/>
+            <button type='submit' class='btn btn-success' style='width:80px;'>返回上层</button>
+       </form>
     </div> 
 </div>
 

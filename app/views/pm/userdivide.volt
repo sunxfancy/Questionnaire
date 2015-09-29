@@ -14,8 +14,10 @@
         </div>
         <div style="width:100%;height:50px;margin-top:100px;">
             <div style="width: 40%; height: 80%; text-align: center; font-size:26px; margin: 5px 50px; background-color: green; background-repeat: no-repeat; border-radius: 5px;cursor:pointer;" id="submit">提交</div>
-            <div style="width: 40%; height: 80%; text-align: center; font-size:26px; margin: 5px 50px; background-color: gray; background-repeat: no-repeat; border-radius: 5px;cursor:pointer;" onclick="window.location.href='/pm/index'">返回</div>
-
+            <form action='/pm' class="form-inline" method='post'>
+                    <input id='page' value='2' name='page' type='hidden'/>
+                    <button type='submit' class='btn btn-success' style='width:80px;'>返回上层</button>
+                </form>
         </div>
     </div>
 </div>

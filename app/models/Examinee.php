@@ -11,13 +11,13 @@ class Examinee extends \Phalcon\Mvc\Model
     public $id;
 
     /**
-     * @var string
+     * @var int
      *
      */
     public $number;
 
     /**
-     * @var string
+     * @var int
      *
      */
     public $password;

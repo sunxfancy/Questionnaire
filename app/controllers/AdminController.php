@@ -329,7 +329,7 @@ class AdminController extends Base
     			         ->join('Manager', "Project.manager_id = Manager.id AND $field $oper $search_string")
     			         ->leftJoin('Examinee', 'Project.id = Examinee.project_id ')    
     			         ->groupBy('Examinee.id')
-    			         ->limit($limit,$offset)
+    			         //->limit($limit,$offset)
     			         ->orderBy($sort)
     			         ->getQuery()
     			         ->execute();
@@ -359,7 +359,7 @@ class AdminController extends Base
     			    	 ->join('Manager', "Project.manager_id = Manager.id AND $field $oper '$value'")
     			         ->leftJoin('Examinee', 'Project.id = Examinee.project_id ')    
     			         ->groupBy('Examinee.id')
-    			         ->limit($limit,$offset)
+    			         //->limit($limit,$offset)
     			    	 ->orderBy($sort)
     			    	 ->getQuery()
     			    	 ->execute();
@@ -388,7 +388,7 @@ class AdminController extends Base
     			    	->leftJoin('Examinee', 'Project.id = Examinee.project_id ')    
     			    	->groupBy('Examinee.id')
     			    	->having("$search_field $oper $search_string")	
-    			        ->limit($limit,$offset)
+    			        //->limit($limit,$offset)
     			    	->orderBy($sort)
     			        ->getQuery()
     			    	->execute();
@@ -416,7 +416,7 @@ class AdminController extends Base
     			    	->join('Manager', "Project.manager_id = Manager.id AND $field $oper '$search_string'")
     			    	->leftJoin('Examinee', 'Project.id = Examinee.project_id ')    
     			    	->groupBy('Examinee.id')
-    			    	->limit($limit,$offset)
+    			    	//->limit($limit,$offset)
     			    	->orderBy($sort)
     			    	->getQuery()
     			    	->execute();
