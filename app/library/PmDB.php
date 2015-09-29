@@ -298,5 +298,215 @@ class PmDB
     	}
     	return $factors;
     }
+    /**
+     * pm更新被试信息
+     * @param object $examinee_info
+     */
+    public static function updateExaminee($examinee_info){
+    	try{
+    		$manager     = new TxManager();
+    		$transaction = $manager->get();
+			$examinee_info->setTransaction($transaction);
+    		if( $examinee_info->save() == false ){
+    			$transaction->rollback("数据插入失败");
+    		}
+    		$transaction->commit();
+    		return true;
+    	}catch (TxFailed $e) {
+    		throw new Exception($e->getMessage());
+    	}
+    }
+    /**
+     * 删除被试纪录
+     * @param array $id_array
+     */
+    public static function deleteExaminee($examinees){
+    		try{
+    			$manager     = new TxManager();
+    			$transaction = $manager->get();
+				foreach($examinees as $value){
+					$value->setTransaction($transaction);
+					if( $value->delete() == false ){
+							$transaction->rollback("数据删除失败");
+					}
+				}
+    			$transaction->commit();
+    			return true;
+    		}catch (TxFailed $e) {
+    			throw new Exception($e->getMessage());
+    		}
+    		
+    }
+    /**
+     * 导入被试信息列表
+     */
+    public static function 	insertExaminee($data, $project_id){
+    	//对原有数据进行整理
+    	$examinee = Examinee::find(array(
+    			'project_id = :project_id:',
+    			"order" => "number desc",
+    			'bind' => array('project_id' => $project_id)));
+    	$new_count =  count($data);
+    	//1501 0001 
+    	$already_number = 0;
+    	if (count($examinee) == 0 ){
+    		$already_number = 0;
+    	}else {
+    		$already_number = $examinee[0]->number-$project_id*10000;
+    	}
+    	#异常
+    	if ($new_count + $already_number > 9999 ){
+    		throw new Exception('项目人数超限-9999');
+    	}
+    	$start = $project_id*10000 + $already_number+1;
+    	try{
+    		$manager     = new TxManager();
+    		$transaction = $manager->get();
+    		foreach($data as $key=>$value){
+    			$examinee = new Examinee();
+    			$examinee->setTransaction($transaction);
+    			$examinee->project_id = $project_id;
+    			$examinee->state = 0;
+    			$examinee->number = $start++;
+    			$examinee->$key = $value;
+    			$examinee->password = self::getRandString();
+    			if( $examinee->save() == false ){
+    				$transaction->rollback("数据插入失败");
+    			}
+    		}
+    		$transaction->commit();
+    		return true;
+    	}catch (TxFailed $e) {
+    		throw new Exception($e->getMessage());
+    	}
+    	
+    }
+    /**
+     * 删除纪录--专家
+     * @param array $id_array
+     */
+    public static function deleteManagers($managers){
+    	try{
+    		$manager     = new TxManager();
+    		$transaction = $manager->get();
+    		foreach($managers as $value){
+    			$value->setTransaction($transaction);
+    			if( $value->delete() == false ){
+    				$transaction->rollback("数据删除失败");
+    			}
+    		}
+    		$transaction->commit();
+    		return true;
+    	}catch (TxFailed $e) {
+    		throw new Exception($e->getMessage());
+    	}
+    
+    }
+    /**
+     * 更新manager信息
+     */
+    public static function updateManager($data){
+    	try{
+    		$manager     = new TxManager();
+    		$transaction = $manager->get();
+    		$data->setTransaction($transaction);
+    		if( $data->save() == false ){
+    			$transaction->rollback("数据更新失败");
+    		}
+    		$transaction->commit();
+    		return true;
+    	}catch (TxFailed $e) {
+    		throw new Exception($e->getMessage());
+    	}
+    }
+    public static function insertLeader($data, $project_id){
+    	//对原有数据整理
+    	$leader = Manager::find(array(
+    			'project_id =?0 and role=?1',
+    			"order" => "username desc",
+    			'bind' => array(0=> $project_id,1=>'L')));
+    	$new_count =  count($data);
+    	//1501 101
+    	$already_number = 0;
+    	if (count($leader) == 0 ){
+    		$already_number = 0;
+    	}else {
+    		$already_number = $leader[0]->username-$project_id*1000 -200;
+    	}
+    	#异常
+    	if ($new_count + $already_number > 99 ){
+    	throw new Exception('项目人数超限-99');
+    	}
+    	$start = $project_id*1000 +200+ $already_number+1;
+    	try{
+    	$manager     = new TxManager();
+    	$transaction = $manager->get();
+    	foreach($data as $value){
+    	$manager = new Manager();
+    	$manager->setTransaction($transaction);
+    	$manager->project_id = $project_id;
+    	$manager->role= "L";
+    	$manager->username = $start++;
+    	$manager->password = self::getRandString();
+    			$manager->name = $value;
+    			if( $manager->save() == false ){
+    			$transaction->rollback("数据插入失败");
+    	}
+    	}
+    	$transaction->commit();
+    	return true;
+    	}catch (TxFailed $e) {
+    		throw new Exception($e->getMessage());
+    	}
+    }
+    public static function insertInterviewer($data, $project_id){
+    	//对原有数据整理
+    	$interviewer = Manager::find(array(
+    			'project_id =?0 and role=?1',
+    			"order" => "username desc",
+    			'bind' => array(0=> $project_id,1=>'I')));
+    	$new_count =  count($data);
+    	//1501 101
+    	$already_number = 0;
+    	if (count($interviewer) == 0 ){
+    		$already_number = 0;
+    	}else {
+    		$already_number = $interviewer[0]->username-$project_id*1000 -100;
+    	}
+    	#异常
+    	if ($new_count + $already_number > 99 ){
+    		throw new Exception('项目人数超限-99');
+    	}
+    	$start = $project_id*1000 + 100+ $already_number+1;
+    	try{
+    		$manager     = new TxManager();
+    		$transaction = $manager->get();
+    		foreach($data as $value){
+    			$manager = new Manager();
+    			$manager->setTransaction($transaction);
+    			$manager->project_id = $project_id;
+    			$manager->role= "I";
+    			$manager->username = $start++;
+    			$manager->password = self::getRandString();
+    			$manager->name = $value;
+    			if( $manager->save() == false ){
+    				$transaction->rollback("数据插入失败");
+    			}
+    		}
+    		$transaction->commit();
+    		return true;
+    	}catch (TxFailed $e) {
+    		throw new Exception($e->getMessage());
+    	}	
+    }
+    public static function getRandString($length = 6) {
+    	$characters = '0123456789';
+    	$charactersLength = strlen($characters);
+    	$randomString = '';
+    	for ($i = 0; $i < $length; $i++) {
+    		$randomString .= $characters[rand(0, $charactersLength - 1)];
+    	}
+    	return $randomString;
+    }
     
 }

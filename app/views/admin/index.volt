@@ -98,7 +98,7 @@ function endtime_check (value,colName) {
 }
 
 function getInfo(){
-	var lastsel;
+	    var lastsel;
 		var grid_selector = "#grid-table";
 		var pager_selector = "#grid-pager";
 		//resize to fit page size
@@ -234,7 +234,6 @@ function getInfo(){
 			], 
 			viewrecords : true, 
 			rowNum:10,
-			rowheight: '500px',
 			rowList:[10,20,30,40,50,60,70,80,90,100],
 			pager : pager_selector,
 			altRows: true,
