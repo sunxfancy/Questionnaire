@@ -520,6 +520,81 @@ class DBHandle {
     	}catch(Exception $e){
     		echo $e->getMessage();
     	}
-    	
+    }
+
+    //插入个体报告评语描述信息
+    public static function insertReportComment($data){
+        // print_r($data);
+        try{
+            self::delReportComment();
+            #插入新数据
+            $manager     = new TxManager();
+            $transaction = $manager->get();
+            foreach($data as $value){
+                $reportcomment = new ReportComment();
+                $reportcomment->setTransaction($transaction);
+                foreach($value as $key=>$svalue){
+                    $reportcomment->$key = $svalue;
+                    echo $key;echo "--:--";echo $svalue;echo "<br/>";
+                }
+                if($reportcomment->save() == false) {
+                     $transaction->rollback('数据更新失败-3');
+                }
+            }
+            $transaction->commit();
+            return true;
+        }catch (TxFailed $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public static function checkReportComment(){
+        $all = ReportComment::find();
+
+        foreach ($all as $key => $value) {
+             print_r($key);echo "--:--";print_r($value);echo "<br/>";
+        }
+    }
+    #删除个体报告评语描述信息
+    public static function delReportComment(){
+        try{
+            $manager     = new TxManager();
+            $transaction = $manager->get();
+            #先删除已有的信息
+            $delete_data = ReportComment::find();
+            foreach($delete_data as $data_record){
+                $data_record->setTransaction($transaction);
+                if($data_record->delete()== false){
+                    $transaction->rollback('数据更新失败-1');
+                }
+            }
+            $transaction->commit();
+            return true;
+        }catch (TxFailed $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+     //插入个体报告评语描述信息
+    public static function insertMiddle($data){
+        try{
+            $manager     = new TxManager();
+            $transaction = $manager->get();
+            foreach($data as $value){
+                $middle = new MiddleLayer();
+                $middle->setTransaction($transaction);
+                foreach($value as $key=>$svalue){
+                    $middle->$key = $svalue;
+                    echo $key;echo "--:--";echo $svalue;echo "<br/>";
+                }
+                if($middle->save() == false) {
+                     $transaction->rollback('数据更新失败-3');
+                }
+            }
+            $transaction->commit();
+            return true;
+        }catch (TxFailed $e) {
+            throw new Exception($e->getMessage());
+        }
     }
 }
