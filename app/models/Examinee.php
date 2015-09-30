@@ -17,7 +17,7 @@ class Examinee extends \Phalcon\Mvc\Model
     public $number;
 
     /**
-     * @var int
+     * @var string
      *
      */
     public $password;
