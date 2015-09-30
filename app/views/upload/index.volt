@@ -26,7 +26,7 @@
         <input class="form-control" type="file" name="inputExcel">
         <input class="form-control btn btn-primary" type="submit" value="导入SCL数据" >
         <a class="btn btn-success"  href="/upload/checkSCL" role="button">查看SCL数据</a>
-		<a class="btn btn-danger" href="/upload/deleteSCL" role="button">删除SCL数据</a>
+	<a class="btn btn-danger" href="/upload/deleteSCL" role="button">删除SCL数据</a>
 </form>
 </blockquote>
 
@@ -36,7 +36,7 @@
         <input class="form-control" type="file" name="inputExcel">
         <input class="form-control btn btn-primary" type="submit" value="导入CPI数据" >
         <a class="btn btn-success"  href="/upload/checkCPI" role="button">查看CPI数据</a>
-		<a class="btn btn-danger" href="/upload/deleteCPI" role="button">删除CPI数据</a>
+	<a class="btn btn-danger" href="/upload/deleteCPI" role="button">删除CPI数据</a>
 </form>
 </blockquote>
 
@@ -46,7 +46,7 @@
         <input class="form-control" type="file" name="inputExcel">
         <input class="form-control btn btn-primary" type="submit" value="导入EPPS数据" >
         <a class="btn btn-success"  href="/upload/checkEPPS" role="button">查看EPPS数据</a>
-		<a class="btn btn-danger" href="/upload/deleteEPPS" role="button">删除EPPS数据</a>
+	<a class="btn btn-danger" href="/upload/deleteEPPS" role="button">删除EPPS数据</a>
 </form>
 </blockquote>
 
@@ -56,7 +56,7 @@
         <input class="form-control" type="file" name="inputExcel">
         <input class="form-control btn btn-primary" type="submit" value="导入EPQA数据" >
         <a class="btn btn-success"  href="/upload/checkEPQA" role="button">查看EPQA数据</a>
-		<a class="btn btn-danger" href="/upload/deleteEPQA" role="button">删除EPQA数据</a>
+	<a class="btn btn-danger" href="/upload/deleteEPQA" role="button">删除EPQA数据</a>
 </form>
 </blockquote>
 
@@ -65,8 +65,8 @@
 <form class="form-inline" action="/upload/uploadTK/KS" method="post" enctype="multipart/form-data">
         <input class="form-control" type="file" name="inputExcel">
         <input class="form-control btn btn-primary" type="submit" value="导入16PF数据" >
-        <a class="btn btn-success"  href="/upload/checkKS" role="button">查16PF数据</a>
-		<a class="btn btn-danger" href="/upload/deleteKS" role="button">删除16PF数据</a>
+        <a class="btn btn-success"  href="/upload/checkKS" role="button">查看16PF数据</a>
+	<a class="btn btn-danger" href="/upload/deleteKS" role="button">删除16PF数据</a>
 </form>
 </blockquote>
 
@@ -80,6 +80,20 @@
 <h2>3.导入试题得分对照表</h2>
 <blockquote>按照名称,依次导入,得分对照表位置：<strong>/public/相关数据/得分对照表</strong></blockquote>
 <blockquote>该数据无外键约束到question表，因此由navicat导入</blockquote>
+
+<h2>4.导入个人报告指标评语描述</h2>
+<blockquote>
+<form class="form-inline" action="/upload/uploadReportComment" method="post" enctype="multipart/form-data">
+        <input class="form-control" type="file" name="inputExcel">
+        <input class="form-control btn btn-primary" type="submit" value="导入评语数据" >
+        <a class="btn btn-success" href="/upload/checkReportComment" role="button">查看评语数据</a>
+        <a class="btn btn-danger" href="/upload/deleteReportComment" role="button">删除评语数据</a>
+</form>
+</blockquote>
+<h2>5.存库</h2>
+<blockquote>
+<a class="btn btn-success" href="/upload/insertMiddle" role="button">存库</a>
+</blockquote>
 
 </div>
 <script src="/bootstrap/js/bootstrap.min.js"></script>
