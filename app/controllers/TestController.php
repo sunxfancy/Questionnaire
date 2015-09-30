@@ -14,15 +14,14 @@ class TestController extends Base
 	
 	public function indexAction()
 	{
-		$this->response->setHeader("Content-Type", "text/plain; charset=utf-8");
+		// $this->response->setHeader("Content-Type", "text/plain; charset=utf-8");
 		$factor_file = __DIR__ . "/../../app/config/factor.json";
 		$index_file = __DIR__ . "/../../app/config/index.json";
-		$factor_json = $this->loadJson($factor_file);
-		$index_json = $this->loadJson($index_file);
-		print_r($factor_json);
-		print_r($index_json);
-
-		
+		$middle_file = __DIR__ . "/../../app/config/middlelayer.json";
+		// $factor_json = $this->loadJson($factor_file);
+		// $index_json = $this->loadJson($index_file);
+		$middle_json = $this->loadJson($middle_file);echo "1";
+		print_r($middle_json);	
 	}
 
 

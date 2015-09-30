@@ -30,9 +30,7 @@ class UploadController extends \Phalcon\Mvc\Controller {
 			echo $e->getMessage();
 			echo "<br />failed<br />";
 			return false;
-		}
-		
-		
+		}		
 	}
 	/**
 	 * 查看试卷信息 
@@ -54,8 +52,7 @@ class UploadController extends \Phalcon\Mvc\Controller {
 			echo $e->getMessage();
 			echo "<br />failed<br />";
 			return ;
-		}
-		
+		}	
 	}
 	/**
 	 * 删除试卷
@@ -86,8 +83,7 @@ class UploadController extends \Phalcon\Mvc\Controller {
 			}
 		}catch(Exception $e){
 			echo $e->getMessage();
-		}
-		
+		}		
 	}
 	public function checkSPMAction(){
 		try{
@@ -391,8 +387,8 @@ class UploadController extends \Phalcon\Mvc\Controller {
 	 * 上传16PF
 	 */
 	public function uploadKSAction(){
-	$params = $this->dispatcher->getParams();
-	$state = self::uploadParamsCheck($params, 'KS');
+		$params = $this->dispatcher->getParams();
+		$state = self::uploadParamsCheck($params, 'KS');
 		if (!$state){
 			die("please check the Parameters transmission!");
 		}
@@ -418,21 +414,104 @@ class UploadController extends \Phalcon\Mvc\Controller {
 		}	
 	}	
 	public function checkKSAction(){	
-			try{
-				DBHandle::checkTKByName('16PF');
-			}catch(Exception $e){
-				echo $e->getMessage();
-			}
+		try{
+			DBHandle::checkTKByName('16PF');
+		}catch(Exception $e){
+			echo $e->getMessage();
 		}
+	}
 	public function deleteKSAction(){
 		//die("not allowed");		
-			try{
-				$delete_state = DBHandle::deleteTKByName('16PF');
-				if($delete_state){
-					echo "16PF删除成功";
+		try{
+			$delete_state = DBHandle::deleteTKByName('16PF');
+			if($delete_state){
+				echo "16PF删除成功";
+			}
+		}catch(Exception $e){
+			echo $e->getMessage();
+		}
+	}
+
+	/**
+	 * 上传报告评语
+	 */
+	#上传更新需求量表
+	public function uploadReportCommentAction(){
+		#严格json格式{ '···' : '···'},json_encode 无法实现
+		try{
+            $file_path = null;
+			if ($this->request->hasFiles()) {
+				foreach ($this->request->getUploadedFiles() as $file) {
+					if(empty($file->getName())){
+						echo "{'error':'上传文件不能为空'}";
+						return ;
+					}else{
+                        $file_name = null;
+                        $file_name .= date("Y_m_d_H_i_s_");
+                        $file_name .= rand(1,200)."_";
+                        $file_name .= $file->getName();
+                        $file_path = "./upload/";
+                        $file_path .= $file_name;
+                        $file->moveTo($file_path);
+                    }
 				}
+			}else{
+				echo "{'error':'wrong to here'}";
+				return ;
+			}
+            if(empty($file_path)){
+            	echo "{'error':'文件上传失败'}";
+                return ;
+            }
+			$excelHander = new ExcelUpload($file_path);
+            $data = $excelHander->handleReportComment();
+            if(file_exists($file_path)) unlink($file_path);
+		    DBHandle::insertReportComment($data);
+		    echo "{'success':'true'}";
+            return ;
+		}catch(Exception $e){
+            if( file_exists($file_path)){
+                unlink($file_path);
+            }
+            $msg = $e->getMessage();
+            echo "{'error':'$msg'}";
+			return ;
+		}
+	}	
+	public function checkReportCommentAction(){	
+			try{
+				DBHandle::checkReportComment();
 			}catch(Exception $e){
 				echo $e->getMessage();
 			}
 		}
+	public function deleteReportCommentAction(){
+		//die("not allowed");		
+		try{
+			$delete_state = DBHandle::deleteReportComment();
+			if($delete_state){
+				echo "个体报告评语描述数据删除成功";
+			}
+		}catch(Exception $e){
+			echo $e->getMessage();
+		}
+	}
+
+	public function insertMiddleAction(){
+		$middle_file = __DIR__ . "/../../app/config/middlelayer.json";
+		$middle_json = $this->loadJson($middle_file);
+		print_r($middle_json);
+		DBHandle::insertMiddle($middle_json);
+	}
+	public function loadJson($filename, $toarray = true)
+	{
+		$json_string = file_get_contents($filename);
+		$json_string = preg_replace('/[\r\n]/', '', $json_string);
+		$json = json_decode($json_string, $toarray);
+		if ($json == null) {
+			// echo json_last_error_msg();
+			// throw new Exception(json_last_error_msg());
+		} 
+		return $json;
+	}
 }
