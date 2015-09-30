@@ -21,7 +21,6 @@
             <div class="form-group" style='display:inline-block;'>
                 <a class="btn btn-info" href="/template/examinee.xls" style='width:150px;'>导入模板下载</a>
             </div>
-            &nbsp;&nbsp;
             <div class='form-group' style='display:inline-block;'>
             <span class="btn btn-success fileinput-button" style='width:150px;'>
                     <i class="glyphicon glyphicon-plus"></i>
@@ -30,19 +29,27 @@
             </span>
             <span class="label label-default" id='file_state'>未选择</span>
             </div>
-            &nbsp;&nbsp;
+          
             <div class='form-group' style='display:inline-block;'>
             <button id='submit' type='button' class="btn btn-danger start" style='width:150px;'>
                     <i class="glyphicon glyphicon-upload"></i>
                     <span>导入</span>
             </button>
             </div>
-            &nbsp;&nbsp;
+       
             <div class='form-group' style='display:inline-block;'>
-            <a href = '/pm/examineeDownload'>
+            <a href = '/pm/greenchannel'>
             <button id='submit' type='button' class="btn btn-primary start" style='width:150px;'>
                     <i class="glyphicon glyphicon-download"></i>
                     <span>相关数据导出</span>
+            </button>
+            </a>
+            </div>
+             <div class='form-group' style='display:inline-block;'>
+            <a href = '/pm/greenchannel'>
+            <button type='button' class="btn btn-success start" style='width:150px;'>
+                    <i class="glyphicon glyphicon-fast-forward"></i>
+                    <span>绿色通道</span>
             </button>
             </a>
             </div>

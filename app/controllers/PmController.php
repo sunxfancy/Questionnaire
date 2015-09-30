@@ -26,7 +26,7 @@ class PmController extends Base
         $this->view->setVar('page', $page);
     }
 	#detail 进入界面
-	public function detailAction(){
+    public function detailAction(){
 		//to detail.volt;	
     }	
     #detail 信息获取
@@ -678,6 +678,11 @@ class PmController extends Base
 		$wordExport = new WordExport();
 		$wordExport->examineeReport($examinee,$project_id);
 	}
+    #绿色通道人员
+    public function greenchannelAction(){
+        $this->view->setTemplateAfter('base2');
+        $this->leftRender('绿 色 通 道');
+    }
 	#面巡专家界面
 	public function interviewerAction(){
 		# code...
@@ -927,8 +932,9 @@ class PmController extends Base
 	public function userdivideAction($manager_id){
 		$this->view->setVar('manager_id',$manager_id);
 		$this->view->setTemplateAfter('base2');
-		$this->leftRender('测 试 人 员 分 配');
+		$this->leftRender('项 目 被 试 人 员 分 配');
 	}
+    
 	#领导界面
 	public function leaderAction(){
 		# code...
