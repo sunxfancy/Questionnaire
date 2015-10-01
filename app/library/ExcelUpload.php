@@ -168,12 +168,13 @@ class  ExcelUpload {
 	public function handleReportComment(){
 		$array1 = self::handleReportCommentsheet1();
 		$array2 = self::handleReportCommentsheet2();
-		// $array3 = self::handleReportCommentsheet3();
+		$array3 = self::handleReportCommentsheet3();
 		for ($i=0; $i < count($array1); $i++) { 
 			$array1[$i]['id'] = $i+1;
 			$array1[$i]['disadvantage'] = $array2[$i]['disadvantage'];
 		}
-		return $array1;
+		// return $array1;
+		// print_r($array1);echo "<br/>";echo "<br/>";echo "<br/>";echo "<br/>";
 		// print_r($array3);
 	}
 
@@ -239,15 +240,15 @@ class  ExcelUpload {
 
 	public function handleReportCommentsheet3(){
 		$currentSheet = self::$objPHPExcel->getSheet(2);
-		$rowCount = $currentSheet->getHighestRow();
-		$columnMax = $currentSheet->getHighestColumn();
+		$rowCount = $currentSheet->getHighestRow();echo $rowCount;echo "<br/>";
+		$columnMax = $currentSheet->getHighestColumn();echo $columnMax;echo "<br/>";
 		$ans = array();
 		for( $currentRow = 3; $currentRow <= $rowCount; $currentRow++ ){
 			$record = array();
-			echo $currentRow;echo "<br/>";
-			for ($column = 'A'; $column <= $columnMax; $column++) {echo $column;echo "<br/>";
+			for ($column = 'A'; $column <= $columnMax; $column++) {
 				//列数是以A列开始
 	            $value = $currentSheet->getCell($column.$currentRow)->getValue();
+	            echo $currentRow;echo $column;echo $value;echo "<br/>";
 	            $value = trim($value);
 	            if(empty($value)){
 	             	//行结束

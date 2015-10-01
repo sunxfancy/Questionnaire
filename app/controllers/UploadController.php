@@ -500,7 +500,6 @@ class UploadController extends \Phalcon\Mvc\Controller {
 	public function insertMiddleAction(){
 		$middle_file = __DIR__ . "/../../app/config/middlelayer.json";
 		$middle_json = $this->loadJson($middle_file);
-		print_r($middle_json);
 		DBHandle::insertMiddle($middle_json);
 	}
 	public function loadJson($filename, $toarray = true)
