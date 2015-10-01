@@ -20,7 +20,12 @@
 
     <div style="width:100%;height:40px;text-align:center; margin: 5px 10px;">
             <div class="form-group" style='display:inline-block;'>
-                <a class="btn btn-info" href="/template/leader.xls" style='width:150px;'>导入模板下载</a>
+                <a href='/template/leader.xls'>
+                    <button  class="btn btn-info" style='width:150px;'>
+                	<i class="glyphicon glyphicon-collapse-down"></i>
+                	导入模板下载
+                </button>
+                </a>
             </div>
             &nbsp;&nbsp;
             <div class='form-group' style='display:inline-block;'>
