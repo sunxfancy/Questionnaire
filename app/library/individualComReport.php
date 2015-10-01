@@ -1,6 +1,10 @@
 <?php
-
-class Report extends \Phalcon\Mvc\Controller{
+/**
+ * @usage  个人综合报告数据生成
+ * @author Wangyaohui
+ *
+ */
+class individualComReport extends \Phalcon\Mvc\Controller{
 	private function self_check($examinee_id){
 		//check 
 		$examinee =  Examinee::findFirst($examinee_id);
@@ -10,6 +14,7 @@ class Report extends \Phalcon\Mvc\Controller{
 		if ($examinee->state < 5 ) {
 			throw new Exception('被试基础算分未完成');
 		}
+		return $examinee->project_id;
 	}
 	public function getIndexdesc($examinee_id){
 		 $this->self_check($examinee_id);
@@ -152,4 +157,73 @@ class Report extends \Phalcon\Mvc\Controller{
 				
 		}	
 	}
+	public function getindividualComprehensive($examinee_id){
+		$project_id = $this->self_check($examinee_id);
+		$project_detail = MemoryCache::getProjectDetail($project_id);
+		if(empty($project_detail) || empty($project_detail->module_names)){
+			throw new Exception('项目配置信息有误');
+		}
+		$module_array = array("心理健康"=>'mk_xljk',"素质结构"=>'mk_szjg',"智体结构"=>'mk_ztjg',"能力结构"=>'mk_nljg');
+		$module_array_score = array();
+		foreach($module_array as $key => $value){
+			$module_record = MemoryCache::getModuleDetail($value);
+			$children = $module_record->children;
+			$children_array = explode(',', $children);
+			$result = $this->modelsManager->createBuilder()
+			->columns(array(
+					'avg(IndexAns.score) as avg',
+			))
+			->from('Index')
+			->inwhere('Index.name', $children_array)
+			->join('IndexAns', 'IndexAns.index_id = Index.id AND IndexAns.examinee_id = '.$examinee_id)
+			->orderBy('IndexAns.score desc')
+			->getQuery()
+			->execute();
+			$module_array_score[$key] = $result->toArray()[0]['avg'];
+		}
+		return $module_array_score;
+	}
+	
+	public function getSystemComprehensive($examinee_id){
+		$project_id = $this->self_check($examinee_id);
+		$result = $this->modelsManager->createBuilder()
+		->columns(array(
+				'avg(IndexAns.score) as score',
+		))
+		->from('Project')
+		->where('Project.id = '.$project_id)
+		->leftjoin('Examinee', 'Examinee.project_id = Project.id')
+		->leftjoin('IndexAns', 'Examinee.id = IndexAns.examinee_id')
+		->groupBy('Examinee.id')
+		->getQuery()
+		->execute();
+		$result = $result->toArray();
+		$count_all = count($result);
+		if ($count_all <= 0 ){
+			throw new Exception('参与的被试数据量为0');
+		}
+		//优秀（X>5.8）、良好(5.8≥X>5.3)、一般(5.3≥X>5.0)、较差（X≤5.0）
+		$rate = array(
+			1=>0,
+			2=>0,
+			3=>0,
+			4=>0
+		);
+		foreach($result as $value){
+			if( $value['score'] > 5.8 ){
+				$rate[1]++;
+			}else if ($value['score'] > 5.3 ) {
+				$rate[2]++;
+			}else if ($value['score'] > 5.0 ) {
+				$rate[3]++;
+			}else {
+				$rate[4]++;
+			}
+		}
+		foreach($rate as &$value){
+			$value = sprintf("%.2f",$value/$count_all);
+		}
+		return $rate;
+	}
+	
 }
