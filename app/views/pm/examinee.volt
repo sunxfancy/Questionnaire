@@ -19,7 +19,10 @@
 
     <div style="width:100%;height:40px;text-align:center; margin: 5px 10px;">
             <div class="form-group" style='display:inline-block;'>
-                <a class="btn btn-info" href="/template/examinee.xls" style='width:150px;'>导入模板下载</a>
+                
+                <a class="btn btn-info" href="/template/examinee.xls" style='width:150px;'>
+                	<i class="glyphicon glyphicon-collapse-down"></i>
+                	导入模板下载</a>
             </div>
             <div class='form-group' style='display:inline-block;'>
             <span class="btn btn-success fileinput-button" style='width:150px;'>
@@ -40,8 +43,8 @@
             <div class='form-group' style='display:inline-block;'>
             <a href = '/pm/greenchannel'>
             <button id='submit' type='button' class="btn btn-primary start" style='width:150px;'>
-                    <i class="glyphicon glyphicon-download"></i>
-                    <span>相关数据导出</span>
+                    <i class="glyphicon glyphicon-share"></i>
+                    <span>相关数据处理</span>
             </button>
             </a>
             </div>
@@ -104,7 +107,6 @@ $(function(){
             shrinkToFit:false,
             hidegrid:false,
             autowidth:true,
-            
             colModel:[
                      {   name:'id',  label:'用户id',  index:'id',  width:100, fixed:true, resizable:false, editable:false,sortable:false, sorttype:"int", align:'center',
                          hidden:true,
@@ -113,6 +115,7 @@ $(function(){
                          search:true, searchoptions: { sopt: ['eq'], },
                          searchrules:{ required: true, integer:true,},
                          //设为可编辑，显示时再设为不可变
+                         add:false,
                          editoptions:{ 
                             dataInit:function(element) { 
                             $(element).attr('disabled', 'disabled');
@@ -182,7 +185,7 @@ $(function(){
                      },
                      {  name:'state', label:'是否答题完毕', index:'exam_state', sortable:true,width:90, fixed:true, resizable:false, editable:false,align:'center',
                         search:true, 
-                        stype:'select', searchoptions:{ sopt: ['eq'], value:"true:完毕;false:未完毕", },
+                        stype:'select', searchoptions:{ sopt: ['eq'], value:"true:是;false:否", },
                         searchrules:{ required: true,},
                         formatter:function(cellvalue){
                             if(cellvalue >= 1 ){
@@ -198,7 +201,7 @@ $(function(){
                         viewable:true,
                         formatter:function(cellvalue,options,rowObject){
                             if (rowObject.state >= 4) {
-                                return "<div class='ui-pg-div' data-original-title='点击导出十项列表数据'><span style='visibility:hidden;'>&nbsp;</span><a href='/pm/check/"+rowObject.id+"'><i class=\"glyphicon glyphicon-download\"></i></a><span style='visibility:hidden;'>&nbsp;</span></div>"
+                                return "<div class='ui-pg-div' data-original-title='导出十项列表数据'><span style='visibility:hidden;'>&nbsp;</span><a href='/pm/check/"+rowObject.id+"'><i class=\"glyphicon glyphicon-download\"></i></a><span style='visibility:hidden;'>&nbsp;</span></div>"
                          
                             }else {
                                 return '';
@@ -208,7 +211,7 @@ $(function(){
                      }, 
                      {  name:'state', label:'是否测评结束', index:'interview_state', sortable:true,width:90, fixed:true, resizable:false, editable:false, align:'center',
                         search:true,
-                        stype:'select', searchoptions:{ sopt: ['eq'], value:"true:完毕;false:未完毕", },
+                        stype:'select', searchoptions:{ sopt: ['eq'], value:"true:是;false:否", },
                         searchrules:{ required: true,},
                         formatter:function(cellvalue){
                             if(cellvalue >= 4 ){
@@ -219,12 +222,25 @@ $(function(){
                         },   
                         
                      }, 
-                     {  name:'state', label:'导出报告', index:'state', sortable:true,width:90, fixed:true, resizable:false, editable: false,align:'center',
+                     {  name:'state', label:'导出胜任力报告', index:'state', sortable:true,width:120, fixed:true, resizable:false, editable: false,align:'center',
                         search:false,
                         viewable:true,
                         formatter:function(cellvalue,options,rowObject){
                             if (rowObject.state >= 4) {
-                                return "<div class='ui-pg-div ui-inline-edit' data-original-title='点击导出报告'><span style='visibility:hidden;'>&nbsp;</span><a href='/pm/resultReport/"+rowObject.id+"'><i class=\"glyphicon glyphicon-download\"></i></a><span style='visibility:hidden;'>&nbsp;</span></div>"
+                                return "<div class='ui-pg-div ui-inline-edit' data-original-title='导出胜任力报告'><span style='visibility:hidden;'>&nbsp;</span><a href='/pm/resultReport/"+rowObject.id+"'><i class=\"glyphicon glyphicon-download\"></i></a><span style='visibility:hidden;'>&nbsp;</span></div>"
+                         
+                            }else {
+                                return '';
+                            } 
+                            
+                        },
+                     }, 
+                      {  name:'state', label:'导出综合素质报告', index:'state', sortable:true,width:120, fixed:true, resizable:false, editable: false,align:'center',
+                        search:false,
+                        viewable:true,
+                        formatter:function(cellvalue,options,rowObject){
+                            if (rowObject.state >= 4) {
+                                return "<div class='ui-pg-div ui-inline-edit' data-original-title='导出综合素质报告'><span style='visibility:hidden;'>&nbsp;</span><a href='/pm/resultReport/"+rowObject.id+"'><i class=\"glyphicon glyphicon-download\"></i></a><span style='visibility:hidden;'>&nbsp;</span></div>"
                          
                             }else {
                                 return '';
@@ -273,6 +289,58 @@ $(function(){
         });
         
         //navButtons
+         var add_options={
+                    left:10,
+                    top:10,
+                    afterSubmit:function(res,rowid){
+                        var result = eval('(' + res.responseText + ')');   
+                        if(result.error) {
+                        $('.Leo_question').css('width','843px')
+                         $('.modal-body').html('');
+                         $('.modal-body').html(
+                         "<p class=\"bg-danger\" style='padding:20px;'>"+result.error+ "</p>"
+                         );
+                        $('.modal-footer').html('');
+                        $('.modal-footer').html(
+                         "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">返回修改</button>"
+                        );
+                        $('#myModal').modal({
+                         keyboard:true,
+                         backdrop:'static'
+                       })
+
+                       // return false; 返回jqgrid相关的数据格式
+                        return [false, 'fail',0];   
+                        }else{
+                        $('.Leo_question').css('width','843px')
+                         $('.modal-body').html('');
+                         $('.modal-body').html(
+                         "<p class=\"bg-success\" style='padding:20px;'>被试人员信息导入成功</p>"
+                         );
+                        $('.modal-footer').html('');
+                        $('.modal-footer').html(
+                         "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">关闭提示</button>"
+                        );
+                        $('#myModal').modal({
+                         keyboard:true,
+                         backdrop:'static'
+                      })
+                        return [true, 'success'];
+                        }
+                    },
+                    beforeShowForm : function(e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
+                    .wrapInner('<div class="widget-header" />')
+                    //password 不可编辑
+                    $('#password').attr('disabled', true);
+                    $('#password').val('**系统自动生成**');
+                    style_edit_form(form);
+                    },
+                    reloadAfterSubmit:true,
+                    closeAfterAdd:true
+ 
+        };
         var edit_options={
                     left:10,
                     top:10,
@@ -380,7 +448,9 @@ $(function(){
         }
         jQuery(grid_selector).jqGrid('navGrid',pager_selector,
             {   //navbar options
-                add: false,
+                add: true,
+                addicon : 'ace-icon fa fa-plus-circle purple',
+                addtext:'添加',
                 edit: true,
                 editicon : 'ace-icon fa fa-pencil blue',
                 edittext:'编辑',
@@ -400,8 +470,8 @@ $(function(){
             },
             //edit,
             edit_options,
-            {//add
-                },
+            //add,
+            add_options,
             //del
             del_options,
             {//search

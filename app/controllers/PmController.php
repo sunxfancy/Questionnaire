@@ -519,7 +519,26 @@ class PmController extends Base
 	public function updateexamineeAction(){
 		$this->view->disable();
 		$oper = $this->request->getPost('oper', 'string');
-		if ($oper == 'edit') {
+		if ( $oper == 'add'){
+			$manager=$this->session->get('Manager');
+			if(empty($manager)){
+				echo "{'error':'用户信息获取失败，请重新登陆'}";
+				return ;
+			}
+			$project_id = $manager->project_id;
+			$data = array();
+			$data[0]['name']       = $this->request->getPost('name', 'string');
+			$data[0]['sex']		   = $this->request->getPost('sex', 'int');
+			try{
+				PmDB::insertExaminee($data, $project_id);
+			}catch(Exception $e){
+				$this->dataReturn( array('error'=>'被试人员信息插入成功！'));
+				return;
+			}
+			$this->dataReturn(array('flag'=>true));
+			return;
+			
+		}else if ($oper == 'edit') {
 			//edit
             $id = $this->request->getPost('id', 'int');
             $examinee = Examinee::findFirst($id);
@@ -883,7 +902,18 @@ class PmController extends Base
 		}
 		$project_id = $manager->project_id;
 		$oper = $this->request->getPost('oper', 'string');
-		if ($oper == 'edit') {
+		if ($oper == 'add' ){
+			$data = array();
+			$data[0]['name'] = $this->request->getPost('name', 'string');
+			try{
+				PmDB::insertInterviewer($data, $project_id);
+			}catch(Exception $e){
+				$this->dataReturn( array('error'=>'专家信息插入失败') );
+				return;
+			}
+			$this->dataReturn(array('flag'=>true));
+			return;
+		}else if ($oper == 'edit') {
 			//edit
 			$id = $this->request->getPost('id', 'int');
 			$manager = Manager::findFirst($id);

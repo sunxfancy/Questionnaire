@@ -134,6 +134,11 @@ class Examinee extends \Phalcon\Mvc\Model
      */
 	public $init_data;
 	
+	/**
+	 * @var tinyint
+	 */
+	public $type;
+	
 
     public function initialize()
     {
