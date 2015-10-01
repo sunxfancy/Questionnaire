@@ -117,6 +117,21 @@ class MemoryCache {
 		);
 	}
 	
+	/**
+	 * 通过模块名称查询模块详情 $rt->children;
+	 */
+	public static function getModuleDetail($module_name){
+		self::checkConnect();
+		return Module::findFirst(
+				array(
+						"name = ?1",
+						'bind' => array(1=>$module_name),
+						'hydration' => \Phalcon\Mvc\Model\Resultset\Simple::HYDRATE_ARRAYS,
+						'cache' => array ('key' =>'module_detail_name_'.$module_name)
+				)
+		);
+	}
+	
 	
 	
 }
