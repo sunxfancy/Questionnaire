@@ -340,7 +340,7 @@ class PmDB
     /**
      * 导入被试信息列表
      */
-    public static function 	insertExaminee($data, $project_id){
+    public static function 	insertExaminee($data, $project_id, $type = 0 ){
     	//对原有数据进行整理
     	$examinee = Examinee::find(array(
     			'project_id = :project_id:',
@@ -370,6 +370,7 @@ class PmDB
     			$examinee->number = $start++;
     			$examinee->$key = $value;
     			$examinee->password = self::getRandString();
+    			$examinee->type = $type;
     			if( $examinee->save() == false ){
     				$transaction->rollback("数据插入失败");
     			}
