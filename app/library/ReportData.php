@@ -41,14 +41,13 @@ class ReportData
 				'name=?1',
 				'bind'=>array(1=>$value)))->children;
 			$index_array = explode(",", $index);
-			$score = array();
 			foreach ($index_array as $skey => $svalue) {
 				$index_id = MemoryCache::getIndexDetail($svalue)->id;
 				$score[$key][$svalue] = IndexAns::findFirst(array(
 					'examinee_id=?0 and index_id=?1',
 					'bind'=>array(0=>$examinee_id,1=>$index_id)))->score;
 			}
-			print_r($score[$key]);
+			print_r($score);
 			$index_score[$n]['sum'] = array_sum($score[$key]);
 			arsort($score[$key]);
 			$score= array_slice($score[$key], 0,3);
