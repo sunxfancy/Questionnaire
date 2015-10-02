@@ -30,7 +30,7 @@ class WordExport
 	public function examineeReport($examinee,$project_id){
 		$PHPWord = new PHPWord();
 		$section = $PHPWord->createSection();
-		$PHPWord->setDefaultFontSize(14);
+		$PHPWord->setDefaultFontSize(12);
 		$PHPWord->addParagraphStyle('myParagraphStyle',array('spacing'=>24));
 		$PHPWord->addTitleStyle(1,array('size'=>16,'bold'=>true,'color'=>'red'));
 		$PHPWord->addTitleStyle(2,array('size'=>15,'bold'=>true,'color'=>'blue'));
@@ -40,13 +40,15 @@ class WordExport
 		$footer->addPreserveText('Page {PAGE} of {NUMPAGES}.', array('align'=>'center'));
 
 	//封面
+		$section->addImage('reportimage/logo.png');
 		$section->addTextBreak(6);
-		$section->addText('综合素质I 测评报告',array('size'=>36, 'color'=>'red','bold'=>true),array('align'=>'center'));
+		$section->addImage('reportimage/fengmian.png');
+		$section->addText('综合素质测评报告',array('size'=>36, 'color'=>'red','bold'=>true),array('align'=>'center'));
 		$section->addTextBreak(1);
 		$section->addText("测评对象：".$examinee->name,array('size'=>14,'bold'=>true));
 		$section->addTextBreak(1);
 		$sex = ($examinee->sex == 1) ? '男' : '女';
-		$section->addText("性    别：".$sex,array('size'=>14,'bold'=>true));
+		$section->addText("性        别：".$sex,array('size'=>14,'bold'=>true));
 		$section->addTextBreak(1);
 		$section->addText("出生年月：".$examinee->birthday,array('size'=>14,'bold'=>true));
 		$section->addTextBreak(1);
@@ -92,18 +94,19 @@ class WordExport
 		array_multisort($time2_array,SORT_DESC,$work_array);
 		$section->addTitle("工作经历",2);
 		$table = $section->addTable();
-		$table->addRow();
-		$table->addCell(20)->addText("就职单位");
-		$table->addCell(20)->addText("部门");
-		$table->addCell(20)->addText("职位");
-		$table->addCell(20)->addText("工作时间");
-		for($r = 1; $r <= count($work_array); $r++) { 
-			$table->addRow();
-			$table->addCell(100)->addText($work_array[$r-1]['employer']);
-			$table->addCell(100)->addText($work_array[$r-1]['unit']);
-			$table->addCell(100)->addText($work_array[$r-1]['duty']);
-			$table->addCell(100)->addText($work_array[$r-1]['date']);
-		}
+		$table->addRow(400);
+		$table->addCell(1600)->addText(iconv('utf-8', 'gbk','中文'));
+		// $table->addCell(1600)->addText('部门');
+		// $table->addCell(1600)->addText('职位');
+		// $table->addCell(1600)->addText('工作时间');
+		// print_r($work_array);
+		// for($r = 1; $r <= count($work_array); $r++) { 
+		// 	$table->addRow();
+		// 	$table->addCell(100)->addText($work_array[$r-1]['employer']);
+		// 	$table->addCell(100)->addText($work_array[$r-1]['unit']);
+		// 	$table->addCell(100)->addText($work_array[$r-1]['duty']);
+		// 	$table->addCell(100)->addText($work_array[$r-1]['date']);
+		// }
 
 		if ($examinee->exam_time > 10800) {
 			$comOrnot = '未在规定时间内完成';
