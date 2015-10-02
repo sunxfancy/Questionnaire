@@ -209,9 +209,10 @@ class AdminController extends Base
     	$ans_array = array();
     	$ans_array['project_name'] = $project->name;
     	$ans_array['begintime']    = $project->begintime;
-    	$ans_array['endtime']      = $project->endtime;    	
+    	$ans_array['endtime']      = $project->endtime;    
+    	//添加绿色通道与正常被试判断	
         $examinees = Examinee::find(array(
-            'project_id=?1',
+            'project_id=?1 AND type= 0',
             'bind'=>array(1=>$id)));
         //获取该项目下答题的总人数
         $ans_array['exam_count'] = count($examinees);
@@ -280,9 +281,10 @@ class AdminController extends Base
                                        	'Manager.password as manager_password',
                                         'COUNT(Examinee.id) as user_count' ))
                                        ->from('Project')
-                                       ->join('Manager', 'Project.manager_id = Manager.id')
-                                       ->leftJoin('Examinee', 'Project.id = Examinee.project_id ')    
-                                       ->groupBy('Examinee.id')
+                                       ->join('Manager', 'Project.manager_id = Manager.id  ')
+                                       //添加被试与绿色通道判断
+                                       ->leftJoin('Examinee', 'Project.id = Examinee.project_id AND Examinee.type = 0')    
+                                       ->groupBy('Project.id')
                                        ->limit($limit,$offset)
                                        ->orderBy($sort)
                                        ->getQuery()
@@ -304,66 +306,8 @@ class AdminController extends Base
     		$search_string =  $this->request->get('searchString');
     		$search_oper = $this->request->get('searchOper');
     		#分情况讨论
-    		if( ($search_field == 'id' ||  $search_field == 'manager_username'  )&& $search_oper == 'eq'){
-    			//equal
-    			$oper = '=';
-    			if ($search_field == 'id'){
-    				$field = 'Project.'.$search_field;
-    			}else if ( $search_field == 'manager_username' ){
-    				$field = 'Manager.username';
-    			}else{
-    				
-    			}
-    			$result = $this->modelsManager->createBuilder()
-    					 ->columns(array(
-    					'Project.id as id',
-    					'Project.begintime as begintime',
-    					'Project.endtime as endtime',
-    					'Project.description as description',
-    					'Project.name as name',
-    					'Manager.name as manager_name',
-    					'Manager.username as manager_username',
-    					'Manager.password as manager_password',    					
-    					'COUNT(Examinee.id) as user_count' ))
-    					 ->from('Project')
-    			         ->join('Manager', "Project.manager_id = Manager.id AND $field $oper $search_string")
-    			         ->leftJoin('Examinee', 'Project.id = Examinee.project_id ')    
-    			         ->groupBy('Examinee.id')
-    			         //->limit($limit,$offset)
-    			         ->orderBy($sort)
-    			         ->getQuery()
-    			         ->execute();
-    			
-    		}else if ($search_oper == 'eq' && ($search_field == 'name' || $search_field=='manager_name' )){
-    			$oper = 'LIKE';
-    			$value = '%'.$search_string.'%';
-    			if( $search_field == 'name' ){
-    				$field = 'Project.'.$search_field;
-    			}else if ( $search_field =='manager_name' ){
-    				$field = 'Manager.name';
-    			}else {
-    				//
-    			}
-    			$result = $this->modelsManager->createBuilder()
-    					->columns(array(
-    					'Project.id as id',
-    					'Project.begintime as begintime',
-    					'Project.endtime as endtime',
-    					'Project.description as description',
-    					'Project.name as name',
-    					'Manager.name as manager_name',
-    					'Manager.username as manager_username',
-    					'Manager.password as manager_password',
-    					'COUNT(Examinee.id) as user_count' ))
-    					 ->from('Project')
-    			    	 ->join('Manager', "Project.manager_id = Manager.id AND $field $oper '$value'")
-    			         ->leftJoin('Examinee', 'Project.id = Examinee.project_id ')    
-    			         ->groupBy('Examinee.id')
-    			         //->limit($limit,$offset)
-    			    	 ->orderBy($sort)
-    			    	 ->getQuery()
-    			    	 ->execute();
-    		}else if ( $search_field == 'user_count'){
+    		#先取出最特殊情况
+    		if ( $search_field == 'user_count'){
     			$oper = '';
     			switch($search_oper){
     				case 'eq' : $oper = '='; break;
@@ -372,6 +316,8 @@ class AdminController extends Base
     				case 'gt' : $oper = '>'; break;
     				case 'ge' : $oper = '>='; break;
     			}
+    			$filed = 'COUNT(Examinee.id)';
+    			$value = $search_string;
     			$result = $this->modelsManager->createBuilder()
     			->columns(array(
     					'Project.id as id',
@@ -383,16 +329,52 @@ class AdminController extends Base
     					'Manager.username as manager_username',
     					'Manager.password as manager_password',
     					'COUNT(Examinee.id) as user_count' ))
-    					->from('Project')
-    			    	->join('Manager', "Project.manager_id = Manager.id")
-    			    	->leftJoin('Examinee', 'Project.id = Examinee.project_id ')    
-    			    	->groupBy('Examinee.id')
-    			    	->having("$search_field $oper $search_string")	
-    			        //->limit($limit,$offset)
-    			    	->orderBy($sort)
-    			        ->getQuery()
-    			    	->execute();
+    			->from('Project')
+    		    ->join('Manager', "Project.manager_id = Manager.id")
+    		    //添加被试与绿色通道判断
+                ->leftJoin('Examinee', 'Project.id = Examinee.project_id AND Examinee.type = 0')   
+    		    ->groupBy('Project.id')
+    		    ->having("$filed $oper $value")	
+    		    			        //->limit($limit,$offset)
+    		    ->orderBy($sort)
+    		    ->getQuery()
+    		    ->execute();
+    			$rtn_array = array();
+    			$count = count($result);
+    			$rtn_array['total'] = ceil($count/$rows);
+    			$rtn_array['records'] = $count;
+    			$rtn_array['rows'] = array();
+    			foreach($result as $value){
+    				$rtn_array['rows'][] = $value;
+    			}
+    			$rtn_array['page'] = $page;
+    			$this->dataReturn($rtn_array);
+    			return;
+    		    			
+    		}
+    		if( ($search_field == 'id' ||  $search_field == 'manager_username'  )){
+    			//equal
+    			$oper = '=';
+    			if ($search_field == 'id'){
+    				$field = 'Project.'.$search_field;
+    			}else if ( $search_field == 'manager_username' ){
+    				$field = 'Manager.username';
+    			}else{
+    				//
+    			}
+    			$value = "'$search_string'";
     			
+    		}else if ($search_field == 'name' || $search_field=='manager_name' ){
+    			$oper = 'LIKE';
+    			
+    			if( $search_field == 'name' ){
+    				$field = 'Project.'.$search_field;
+    			}else if ( $search_field =='manager_name' ){
+    				$field = 'Manager.name';
+    			}else {
+    				//
+    			}
+    			$value = "'%$search_string%'";
     		}else if ( $search_field == 'begintime' || $search_field == 'endtime'){
     			$oper = '';
     			if($search_oper == 'bw'){
@@ -401,28 +383,30 @@ class AdminController extends Base
     				$oper = '<=';
     			}
     			$field = 'Project.'.$search_field;
-    			$result = $this->modelsManager->createBuilder()
-    					->columns(array(
-    					'Project.id as id',
-    					'Project.begintime as begintime',
-    					'Project.endtime as endtime',
-    					'Project.description as description',
-    					'Project.name as name',
-    					'Manager.name as manager_name',
-    					'Manager.username as manager_username',
-    					'Manager.password as manager_password',
-    					'COUNT(Examinee.id) as user_count' ))
-    					->from('Project')
-    			    	->join('Manager', "Project.manager_id = Manager.id AND $field $oper '$search_string'")
-    			    	->leftJoin('Examinee', 'Project.id = Examinee.project_id ')    
-    			    	->groupBy('Examinee.id')
-    			    	//->limit($limit,$offset)
-    			    	->orderBy($sort)
-    			    	->getQuery()
-    			    	->execute();
+    			$value = "'$search_string'";	
     		}else{
     			//waiting add...
     		}
+    		$result = $this->modelsManager->createBuilder()
+    		->columns(array(
+    				'Project.id as id',
+    				'Project.begintime as begintime',
+    				'Project.endtime as endtime',
+    				'Project.description as description',
+    				'Project.name as name',
+    				'Manager.name as manager_name',
+    				'Manager.username as manager_username',
+    				'Manager.password as manager_password',
+    				'COUNT(Examinee.id) as user_count' ))
+    				->from('Project')
+    		    	->join('Manager', "Project.manager_id = Manager.id AND $field $oper $value")
+    		    	 //添加被试与绿色通道判断
+                    ->leftJoin('Examinee', 'Project.id = Examinee.project_id AND Examinee.type = 0')   
+    		    	->groupBy('Project.id')
+    		    			    	//->limit($limit,$offset)
+    		    	->orderBy($sort)
+    		    	->getQuery()
+    		    	->execute();
     		$rtn_array = array();
     		$count = count($result);
     		$rtn_array['total'] = ceil($count/$rows);

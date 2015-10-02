@@ -1,10 +1,4 @@
 <?php
-/**
- * @Author: sxf
- * @Date:   2015-08-01 16:18:46
- * @Last Modified by:   sxf
- * @Last Modified time: 2015-08-14 17:37:25
- */
 
 use Phalcon\Mvc\Model\Transaction\Failed as TxFailed;
 use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
@@ -65,8 +59,9 @@ class PmController extends Base
     		$ans_array['inquery'] = true;
     		$ans_array['exam'] = true;
     	}	
+    	//项目详情只显示被试
         $examinees = Examinee::find(array(
-            'project_id=?1',
+            'project_id=?1 AND type = 0',
             'bind'=>array(1=>$project_id)));
         //获取该项目下答题的总人数
         $ans_array['exam_count'] = count($examinees);
@@ -388,8 +383,8 @@ class PmController extends Base
 	public function examineeAction(){
 		# code...
 	}
-	#获取被试信息页面
-	public function listexamineeAction(){
+	#获取被试信息页面 & 绿色通道页面信息获取
+	public function listexamineeAction($type = 0 ){
 		$this->view->disable();
 		$manager = $this->session->get('Manager');
 		if (empty($manager)){
@@ -426,15 +421,16 @@ class PmController extends Base
 					'Examinee.state as state',
 					))
 				->from('Examinee')
-            	->where('Examinee.project_id = '.$project_id)
+				//添加类型判断
+            	->where('Examinee.project_id = '.$project_id.' AND Examinee.type = '.$type )
             	->limit($limit,$offset)
             	->orderBy($sort)
             	->getQuery()
             	->execute();
 		        $rtn_array = array();
 		         $examinees = Examinee::find(array(
-            	'project_id=?1',
-           		'bind'=>array(1=>$project_id)));
+            	'project_id=?1 AND type=?2',
+           		'bind'=>array(1=>$project_id, 2=>$type)));
         		//获取该项目下答题的总人数
         		$count =  count($examinees);
 		        $rtn_array['total'] = ceil($count/$rows);
@@ -456,7 +452,7 @@ class PmController extends Base
 			if ($search_oper == 'eq'){
 				if ($search_field == 'name'){
 					$oper = 'LIKE';
-					$value = "%'$search_string'%";
+					$value = "'%$search_string%'";
 				}else if ($search_field == 'number' || $search_field == 'sex' ){
 					$oper = '=';
 					$value = "'$search_string'";
@@ -496,7 +492,7 @@ class PmController extends Base
 					'Examinee.state as state',
 			))
 			->from('Examinee')
-			->where('Examinee.project_id = '.$project_id." AND $filed $oper $value")
+			->where('Examinee.project_id = '.$project_id.' AND Examinee.type = '.$type." AND $filed $oper $value")
 			//->limit($limit,$offset)
 			->orderBy($sort)
 			->getQuery()
@@ -516,7 +512,7 @@ class PmController extends Base
 		
 	}
 	#更新被试信息页面
-	public function updateexamineeAction(){
+	public function updateexamineeAction($type = 0 ){
 		$this->view->disable();
 		$oper = $this->request->getPost('oper', 'string');
 		if ( $oper == 'add'){
@@ -530,9 +526,9 @@ class PmController extends Base
 			$data[0]['name']       = $this->request->getPost('name', 'string');
 			$data[0]['sex']		   = $this->request->getPost('sex', 'int');
 			try{
-				PmDB::insertExaminee($data, $project_id);
+				PmDB::insertExaminee($data, $project_id, $type);
 			}catch(Exception $e){
-				$this->dataReturn( array('error'=>'被试人员信息插入成功！'));
+				$this->dataReturn( array('error'=>'记录插入成功！'));
 				return;
 			}
 			$this->dataReturn(array('flag'=>true));
@@ -548,7 +544,7 @@ class PmController extends Base
             try{
             	PmDB::updateExaminee($examinee);
             }catch(Exception $e){
-            	$this->dataReturn( array('error'=>'被试人员信息更新失败') );
+            	$this->dataReturn( array('error'=>'记录更新失败') );
             	return;
             }
             $this->dataReturn(array('flag'=>true));
@@ -567,7 +563,7 @@ class PmController extends Base
 			try{
 				PmDB::deleteExaminee($examinees);
 			}catch(Exception $e){
-				$this->dataReturn( array('error'=>'被试人员纪录失败') );
+				$this->dataReturn( array('error'=>'记录删除失败') );
 				return;
 			}
 			$this->dataReturn(array('flag'=>true));
@@ -576,8 +572,8 @@ class PmController extends Base
 			//add ...
 		}
 	}
-	#上传被试信息列表
-	public function uploadexamineeAction(){
+	#上传被试信息列表 & 绿色通道上传
+	public function uploadexamineeAction($type = 0){
 	#严格json格式{ '···' : '···'},json_encode 无法实现
 		try{
             $file_path = null;
@@ -612,8 +608,9 @@ class PmController extends Base
             	echo "{'error':'用户信息获取失败，请重新登陆'}";
             	return ;
             }
+           
             $project_id = $manager->project_id;
-		    PmDB::insertExaminee($data, $project_id);
+		    PmDB::insertExaminee($data, $project_id, $type);
 		    echo "{'success':'true'}";
             return ;
 		}catch(Exception $e){
@@ -626,24 +623,128 @@ class PmController extends Base
 		}
 	}
 	#个人信息查看页面
-	public function infoAction($examinee_id){
+	public function infoAction($examinee_id,$type){
 		$this->view->setTemplateAfter('base2');
-		$this->leftRender('个人信息查看');
-		$examinee = Examinee::findFirst($examinee_id);
-		$this->view->setVar('name',$examinee->name);
-		$sex = ($examinee->sex == "1") ? "男" : "女";
-		$this->view->setVar('sex',$sex);
-		$this->view->setVar('education',$examinee->education);
-		$this->view->setVar('degree',$examinee->degree);
-		$this->view->setVar('birthday',$examinee->birthday);
-		$this->view->setVar('native',$examinee->native);
-		$this->view->setVar('politics',$examinee->politics);
-		$this->view->setVar('professional',$examinee->professional);
-		$this->view->setVar('employer',$examinee->employer);
-		$this->view->setVar('unit',$examinee->unit);
-		$this->view->setVar('duty',$examinee->duty);
-		$this->view->setVar('team',$examinee->team);
-		$this->view->setVar('other',$examinee->other);
+		$this->leftRender('个 人 信 息 查 看');
+		$this->view->setVar('examinee_id' , $examinee_id);
+		$this->view->setVar('type', $type);
+	}
+	#个人信息显示页面详情
+	public function listinfoAction(){
+		$examinee_id = $this->request->getPost('examinee_id', 'int');
+		if (empty($examinee_id)){
+			$this->dataReturn(array('error'=>'查询的id号为空，请返回'));
+			return ;
+		}
+		$examinee_info = Examinee::findFirst($examinee_id);
+		if(!isset($examinee_info->id)){
+			$this->dataReturn(array('error'=>'不存在的用户id号，请返回'));
+			return ;
+		}
+			$question = array();
+    		$question['name'] 		 = $examinee_info->name;
+    		$question['sex']  		 = $examinee_info->sex == 1 ? '男' : '女';
+    		$question['education']    = $examinee_info->education;
+		 	$question['degree'] 	 = $examinee_info->degree;
+		 	$question['birthday']    = $examinee_info->birthday;
+			$question['politics']    = $examinee_info->politics;
+			$question['native']      = $examinee_info->native;
+			$question['professional']= $examinee_info->professional;
+			$question['employer']    = $examinee_info->employer;
+			$question['unit']        = $examinee_info->unit;
+			$question['duty']        = $examinee_info->duty;
+			$question['team']        = $examinee_info->team;
+			$others                  = json_decode($examinee_info->other, true);
+			$question['educations'] = $others['education'];
+			$question['works'] = $others['work'];
+//注释reason: 已在导入数据时进行排序完成
+// 			$count  =  count($educations);
+//     		$time_array = array();
+//     		if (!empty($educations)){
+//     		foreach($educations as $key=>$value){
+//     			$time_array[] = $value['date'];
+//     		}
+//     		array_multisort($time_array,SORT_DESC,$educations);
+//     		}
+//     		$count  =  count($works);
+//     		$time_array = array();
+//     		if (!empty($works)){
+//     		foreach($works as $key=>$value){
+//     			$time_array[] = $value['date'];
+//     		}
+//     		array_multisort($time_array,SORT_DESC,$works);
+//     		}
+    		//用户信息修改判断
+    		$init_data = json_decode($examinee_info->init_data, true);
+    		$diff_comm_array = array();
+    		$diff_other_array = array();
+    		$diff_other_array['education'] = array();
+    		$diff_other_array['work'] = array();
+    		if (!empty($init_data)){
+    			foreach($init_data as $key=>$svalue){	
+    				if ($key == 'other'){
+    					if (!isset($svalue['education'])){
+    						$svalue['education'] = array();
+    					}
+    					if (!isset($svalue['work'])){
+    						$svalue['work'] = array();
+    					}  
+    					$tmp_edu_init = array() ; 
+    					$tmp_wor_init = array() ;
+    					$this->foo($svalue['education'],$tmp_edu_init);
+    					$this->foo($svalue['work'], $tmp_wor_init);
+    					$tmp_edu_new = array();
+    					$tmp_wor_new = array();
+    					$this->foo($question['educations'] , $tmp_edu_new);
+    					$this->foo($question['works'] , $tmp_wor_new);
+    					$diff_1 = array_diff($tmp_edu_init, $tmp_edu_new) || array_diff($tmp_edu_new,$tmp_edu_init) ;
+    					$diff_2 = array_diff($tmp_wor_init, $tmp_wor_new) || array_diff($tmp_wor_new,$tmp_wor_init);
+    					if (!empty($diff_1)){
+    						$tmp = array();
+    						$tmp['id'] = 'eduactions';
+    						$tmp['value'] = $tmp_edu_init;
+    						$tmp['svalue'] = $tmp_edu_new;
+    						$diff_other_array['education'] = $tmp;
+    						
+    					}
+    					if (!empty($diff_2)){
+    						$tmp = array();
+    						$tmp['id'] = 'works';
+    						$tmp['value'] = $tmp_wor_init;
+    						$tmp['svalue'] = $tmp_wor_new;
+    						$diff_other_array['work']= $tmp;
+    					
+    					}
+    				}else {
+    					if ($init_data[$key] != $question[$key]){
+    						$tmp = array();
+    						$tmp['id'] = $key;
+    						$tmp['value'] = $init_data[$key];
+    						$tmp['svalue'] = $question[$key];
+    						$diff_comm_array[] = $tmp;
+    					}
+    				}
+    				
+    			}
+    		}
+    		$question['diff_comm'] = $diff_comm_array;
+    		$question['diff_other'] = $diff_other_array;
+    		#添加用户是否修改相应信息的判断以及修改的结果予以反馈
+			$this->dataReturn(array('success'=>$question));
+			return;
+	}
+	#辅助方法 --降维
+	private function foo($arr, &$rt) {
+		if (is_array($arr)) {
+			foreach ($arr as $v) {
+				if (is_array($v)) {
+					$this->foo($v, $rt);
+				} else {
+					$rt[] = $v;
+				}
+			}
+		}
+		return $rt;
 	}
 	#被试信息导出页面
 	public function examineeDownloadAction(){
@@ -706,7 +807,7 @@ class PmController extends Base
 	public function interviewerAction(){
 		# code...
 	}
-	#获取面巡专家列表
+	#获取面巡专家列表  ---- 面巡专家显示的面询人数为正常被试+绿色通道
 	public function listinterviewerAction(){		
 		$this->view->disable();
 		$manager = $this->session->get('Manager');
@@ -908,7 +1009,7 @@ class PmController extends Base
 			try{
 				PmDB::insertInterviewer($data, $project_id);
 			}catch(Exception $e){
-				$this->dataReturn( array('error'=>'专家信息插入失败') );
+				$this->dataReturn( array('error'=>'记录插入失败') );
 				return;
 			}
 			$this->dataReturn(array('flag'=>true));
@@ -923,7 +1024,7 @@ class PmController extends Base
 			try{
 				PmDB::updateManager($manager);
 			}catch(Exception $e){
-				$this->dataReturn( array('error'=>'被试人员信息更新失败') );
+				$this->dataReturn( array('error'=>'记录更新失败') );
 				return;
 			}
 			$this->dataReturn(array('flag'=>true));
@@ -943,7 +1044,7 @@ class PmController extends Base
 			try{
 				PmDB::deleteManagers($managers);
 			}catch(Exception $e){
-				$this->dataReturn( array('error'=>'被试人员纪录失败') );
+				$this->dataReturn( array('error'=>'记录添加失败') );
 				return;
 			}
 			$this->dataReturn(array('flag'=>true));
@@ -958,13 +1059,353 @@ class PmController extends Base
 		$excelExport = new ExcelExport();
 		$excelExport->InterviewerExport($result);
 	}
-	#分配面巡人员
+	#配置面巡人员
 	public function userdivideAction($manager_id){
-		$this->view->setVar('manager_id',$manager_id);
 		$this->view->setTemplateAfter('base2');
 		$this->leftRender('项 目 被 试 人 员 分 配');
+		$this->view->setVar('manager_id',$manager_id);
 	}
-    
+	#获取面询专家信息
+	public function getInterviewerAction(){
+		$this->view->disable();
+		$manager_id = $this->request->getPost('manager_id', 'int');
+		$manager = Manager::findFirst($manager_id);
+		if (empty($manager)){
+			$this->dataReturn(array('error'=>'获取用户信息失败，请重新登录'));
+			return ;
+		}
+		$this->dataReturn(array('success'=>$manager->name));
+		return ;
+	}
+	#配置人员为被试+绿色通道
+    #未配置人员获取
+    public function  listexamineesnointAction(){
+    	$this->view->disable();
+    	$manager = $this->session->get('Manager');
+    	if (empty($manager)){
+    		$this->dataReturn(array('error'=>'获取用户信息失败，请重新登陆'));
+    		return ;
+    	}
+    	$project_id = $manager->project_id;
+    	$page = $this->request->get('page');
+    	$rows = $this->request->get('rows');
+    	$offset = $rows*($page-1);
+    	$limit = $rows;
+    	$sidx = $this->request->getQuery('sidx','string');
+    	$sord = $this->request->getQuery('sord','string');
+    	if ($sidx != null)
+    		$sort = $sidx;
+    	else{
+    		$sort = 'id';
+    		$sord = 'desc';
+    	}
+    	if ($sord != null){
+    		$sort = $sort.' '.$sord;
+    	}
+    	//default get
+    	$search_state = $this->request->get('_search');
+    	if($search_state == 'false'){
+    		$result = $this->modelsManager->createQuery(
+    				 "SELECT Examinee.id as id, Examinee.number as number , Examinee.name as name, Examinee.type as type 
+    				  FROM Examinee     				 
+    				  WHERE Examinee.project_id = $manager->project_id AND Examinee.id NOT IN
+    				  (SELECT Interview.examinee_id  FROM Interview )
+    				  ORDER BY  $sort 
+    				  LIMIT $rows OFFSET $offset
+    				"
+    				 )
+    			     ->execute();
+    		$result = $result->toArray();
+    		$count_result = $this->modelsManager->createQuery(
+    				 "SELECT COUNT(Examinee.id) as count
+    				  FROM Examinee     				 
+    				  WHERE Examinee.project_id = $manager->project_id AND Examinee.id NOT IN
+    				  (SELECT Interview.examinee_id  FROM Interview )
+    				"
+    				 ) ->execute();
+    		$rtn_array = array();
+    		$count =  $count_result[0]['count'];
+    		$rtn_array['total'] = ceil($count/$rows);
+    		$rtn_array['records'] = $count;
+    		$rtn_array['rows'] =$result;
+    		$rtn_array['page'] = $page;
+    		$this->dataReturn($rtn_array);
+    		return;
+    	}else {
+    		//处理search情况
+    		$search_field =  $this->request->get('searchField');
+    		$search_string =  $this->request->get('searchString');
+    		$search_oper = $this->request->get('searchOper');
+    		$filed = 'Examinee.'.$search_field;
+    		if ($search_field == 'number'){
+    			$oper = '=';
+    			$value = $search_string;
+    		}else if ($search_field == 'name' ){
+    			$oper = 'LIKE';
+    			$value = '\'%'.trim($search_string).'%\'';
+    		}else if ($search_field == 'type'){
+    			$oper = '=';
+    			$value = intval($search_string);
+    		}else {
+    			//add ...
+    		}
+    		$result = $this->modelsManager->createQuery(
+    				"SELECT Examinee.id as id, Examinee.number as number , Examinee.name as name, Examinee.type as type
+    				FROM Examinee
+    				WHERE Examinee.project_id = $manager->project_id AND $filed $oper $value AND Examinee.id NOT IN
+    				(SELECT Interview.examinee_id  FROM Interview )
+    				ORDER BY  $sort
+    				"
+    		)
+    		->execute();
+    		$result = $result->toArray();
+    		$rtn_array = array();
+    		$count =  count($result);
+    		$rtn_array['total'] = ceil($count/$rows);
+    		$rtn_array['records'] = $count;
+    		$rtn_array['rows'] =$result;
+    		$rtn_array['page'] = $page;
+    		$this->dataReturn($rtn_array);
+    		return;
+    		return ;
+    	}
+    }
+    #未配置人员的分配
+    public function  updateexamineesnointAction($interviewer_id){
+    	//只对del反应   del的意思为分配
+    	//支持多删除
+    	$this->view->disable();
+    	$manager = $this->session->get('Manager');
+    	if (empty($manager)){
+    		$this->dataReturn(array('error'=>'获取用户信息失败，请重新登陆'));
+    		return ;
+    	}
+    	$interviewer = Manager::findFirst(
+    			array('id = ?1 AND role = ?2', 
+    			'bind'=>array(1=>$interviewer_id, 2=>'I'))
+    	);
+    	if (!isset($interviewer->id)){
+    		$this->dataReturn(array('error'=>'不存在面询专家账号，请返回'));
+    		return ;
+    	}
+    	$project_id = $manager->project_id;
+    	$oper = $this->request->getPost('oper', 'string');
+    	if ($oper == 'del') {
+    		#删除可选择多项
+    		$ids = $this->request->getPost('id', 'string');
+    		#删除未加限制
+    		$id_array =explode(',', $ids);
+    		$examinees = $this->modelsManager->createBuilder()
+    		->columns(array(
+    				'Examinee.id as id'
+    				))
+    		->from('Examinee')
+    		->inWhere('id', $id_array)
+    		->getQuery()
+    		->execute();
+    		$data = $examinees->toArray();
+    		try{
+    			PmDB::allocExaminees($data, $interviewer_id);
+    		}catch(Exception $e){
+    			$this->dataReturn( array('error'=>'分配失败') );
+    			return;
+    		}
+    		$this->dataReturn(array('flag'=>true));
+    		return;
+    	}else {
+    		//add ...
+    	}
+    }
+    #已配置人员获取
+    public function listexamineehadintAction($interviewer_id){
+    	$this->view->disable();
+    	$manager = $this->session->get('Manager');
+    	if (empty($manager)){
+    		$this->dataReturn(array('error'=>'获取用户信息失败，请重新登陆'));
+    		return ;
+    	}
+    	$manager_id = $manager->id;
+    	$interviewer = Manager::findFirst(
+    			array('id = ?1 AND role = ?2',
+    					'bind'=>array(1=>$interviewer_id, 2=>'I'))
+    	);
+    	if (!isset($interviewer->id)){
+    		$this->dataReturn(array('error'=>'不存在面询专家账号，请返回'));
+    		return ;
+    	}
+    	$page = $this->request->get('page');
+    	$rows = $this->request->get('rows');
+    	$offset = $rows*($page-1);
+    	$limit = $rows;
+    	$sidx = $this->request->getQuery('sidx','string');
+    	$sord = $this->request->getQuery('sord','string');
+    	if ($sidx != null)
+    		$sort = $sidx;
+    	else{
+    		$sort = 'id';
+    		$sord = 'desc';
+    	}
+    	if ($sord != null){
+    		$sort = $sort.' '.$sord;
+    	}
+    	//default get
+    	$search_state = $this->request->get('_search');
+    	if($search_state == 'false'){
+    		$result = $this->modelsManager->createBuilder()
+					  ->columns(array(
+						'Examinee.id as id',
+						'Examinee.number as number',
+						'Examinee.name as name',
+					  	'Examinee.type as type',
+					  	'Interview.advantage as advantage',
+					  	'Interview.disadvantage as disadvantage',
+					  	'Interview.remark as remark'
+					  ))
+			->from('Examinee')
+			->Join('Interview', 'Interview.manager_id ='.$interviewer_id.' AND Examinee.id = Interview.examinee_id')
+			->limit($limit,$offset)
+			->orderBy($sort)
+			->getQuery()
+			->execute();
+    		$result = $result->toArray();
+    		foreach($result as &$value ){
+    			$value['state'] = 1;
+    			if ( empty($value['advantage']) || empty($value['disadvantage']) || empty($value['remark']) ){
+    				$value['state'] = 0;
+    			}
+    		}
+    		$all_result = $this->modelsManager->createBuilder()
+    		->from('Examinee')
+    		->Join('Interview', 'Interview.manager_id ='.$interviewer_id.' AND Examinee.id = Interview.examinee_id')
+    		->getQuery()
+    		->execute();
+    				$rtn_array = array();
+    				$count =  count($all_result->toArray());
+    				$rtn_array['total'] = ceil($count/$rows);
+    				$rtn_array['records'] = $count;
+    				$rtn_array['rows'] =$result;
+    				$rtn_array['page'] = $page;
+    				$this->dataReturn($rtn_array);
+    						return;
+    	}else{
+    		//处理search情况
+    		$search_field =  $this->request->get('searchField');
+    		$search_string =  $this->request->get('searchString');
+    		$search_oper = $this->request->get('searchOper');
+    		$filed = 'Examinee.'.$search_field;
+    		if ($search_field == 'number'){
+    			$oper = '=';
+    			$value = $search_string;
+    		}else if ($search_field == 'name' ){
+    			$oper = 'LIKE';
+    			$value = '\'%'.trim($search_string).'%\'';
+    		}else if ($search_field == 'type'){
+    			$oper = '=';
+    			$value = intval($search_string);
+    		}else if ($search_field == 'state') {
+    			$result = $this->modelsManager->createBuilder()
+    			->columns(array(
+    					'Examinee.id as id',
+    					'Examinee.number as number',
+    					'Examinee.name as name',
+    					'Examinee.type as type',
+    					'Interview.advantage as advantage',
+    					'Interview.disadvantage as disadvantage',
+    					'Interview.remark as remark'
+    			))
+    			->from('Examinee')
+    			->Join('Interview', 'Interview.manager_id ='.$interviewer_id.' AND Examinee.id = Interview.examinee_id')
+//     			->limit($limit,$offset)
+    			->orderBy($sort)
+    			->getQuery()
+    			->execute();
+    			$result = $result->toArray();
+    			$rt_result = array();
+    			foreach($result as &$value ){
+    				$value['state'] = 1;
+    				if ( empty($value['advantage']) || empty($value['disadvantage']) || empty($value['remark']) ){
+    					$value['state'] = 0;
+    				}
+    				if ($value['state'] == intval($search_string)){
+    					$rt_result[] = $value;
+    				}
+    			}
+    			$rtn_array = array();
+    			$count =  count($rt_result);
+    			$rtn_array['total'] = ceil($count/$rows);
+    			$rtn_array['records'] = $count;
+    			$rtn_array['rows'] =$rt_result;
+    			$rtn_array['page'] = $page;
+    			$this->dataReturn($rtn_array);
+    			return;
+    		}else{
+    			//add...
+    		}
+    		$result = $this->modelsManager->createBuilder()
+					  ->columns(array(
+						'Examinee.id as id',
+						'Examinee.number as number',
+						'Examinee.name as name',
+					  	'Examinee.type as type',
+					  	'Interview.advantage as advantage',
+					  	'Interview.disadvantage as disadvantage',
+					  	'Interview.remark as remark'
+					  ))
+			->from('Examinee')
+			->Join('Interview', 'Interview.manager_id ='.$interviewer_id.' AND Examinee.id = Interview.examinee_id '." AND $filed $oper $value")
+// 			->limit($limit,$offset)
+			->orderBy($sort)
+			->getQuery()
+			->execute();
+    		$result = $result->toArray();
+    		$rtn_array = array();
+    		$count =  count($result);
+    		$rtn_array['total'] = ceil($count/$rows);
+    		$rtn_array['records'] = $count;
+    		$rtn_array['rows'] =$result;
+    		$rtn_array['page'] = $page;
+    		$this->dataReturn($rtn_array);
+    		return;
+    				return ;
+    	}
+    }
+    #删除已配置人员的分配
+    public function updateexamineehadintAction($interviewer_id){
+    	//只对del反应   del的意思为分配
+    	//支持多删除
+    	$this->view->disable();
+    	$manager = $this->session->get('Manager');
+    	if (empty($manager)){
+    		$this->dataReturn(array('error'=>'获取用户信息失败，请重新登陆'));
+    		return ;
+    	}
+    	$interviewer = Manager::findFirst(
+    			array('id = ?1 AND role = ?2',
+    					'bind'=>array(1=>$interviewer_id, 2=>'I'))
+    	);
+    	if (!isset($interviewer->id)){
+    		$this->dataReturn(array('error'=>'不存在面询专家账号，请返回'));
+    		return ;
+    	}
+    	$project_id = $manager->project_id;
+    	$oper = $this->request->getPost('oper', 'string');
+    	if ($oper == 'del') {
+    		#删除可选择多项
+    		$ids = $this->request->getPost('id', 'string');
+    		#删除未加限制
+    		$id_array =explode(',', $ids);
+    		try{
+    			PmDB::delallocExaminees($id_array, $interviewer_id);
+    		}catch(Exception $e){
+    			$this->dataReturn( array('error'=>'取消分配失败') );
+    			return;
+    		}
+    		$this->dataReturn(array('flag'=>true));
+    		return;
+    	}else {
+    		//add ...
+    	}
+    }
 	#领导界面
 	public function leaderAction(){
 		# code...

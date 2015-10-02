@@ -61,6 +61,11 @@ class IndexController extends Base
 		            return;
 		        }
 		        $this->session->set('Examinee', $examinee);
+		        #添加绿色通道人员直接到个人信息编辑页
+		        if ($examinee->type == 1){
+		        	$this->dataReturn(array('url' =>'/examinee/editinfo'));
+		        	return ;
+		        }
 		        if (LoginConfig::IsInqueryFinish($examinee->id)) {
 		        	$this->dataReturn(array('url' =>'/examinee/editinfo'));
 		        }else {

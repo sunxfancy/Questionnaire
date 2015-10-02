@@ -41,7 +41,7 @@
             </div>
        
             <div class='form-group' style='display:inline-block;'>
-            <a href = '/pm/greenchannel'>
+            <a href = '/pm/examineeDownload'>
             <button id='submit' type='button' class="btn btn-primary start" style='width:150px;'>
                     <i class="glyphicon glyphicon-share"></i>
                     <span>相关数据处理</span>
@@ -100,8 +100,8 @@ $(function(){
         })
         
         jQuery(grid_selector).jqGrid({
-            url: "/pm/listexaminee",
-            editurl: "/pm/updateexaminee",
+            url: "/pm/listexaminee/0",
+            editurl: "/pm/updateexaminee/0",
             datatype: "json",
             height: '270px',
             shrinkToFit:false,
@@ -126,12 +126,12 @@ $(function(){
                      {   name:'',label:'详情', index:'', width:60, fixed:true, resizable:false, editable:false, sortable:false, align:'center',
                          search:false,
                          formatter:function(cellvalue, options, rowObject){
-                            return "<div class='ui-pg-div ui-inline-edit' data-original-title='查看个人详细信息'><a href='/pm/info/"+rowObject.id+"'><i class='fa fa-th-list'></i></a></div>"
+                            return "<div class='ui-pg-div ui-inline-edit' data-original-title='查看个人详细信息'><a href='/pm/info/"+rowObject.id+"/0'><i class='fa fa-th-list'></i></a></div>"
                          },
                          viewable:false,
                      },
                      
-                     {  name:'name', label:'姓名',  index:'name', width:120, fixed:true, resizable:false,  editable:true,sortable:false, align:'center',
+                     {  name:'name', label:'姓名',  index:'name', width:120, fixed:true, resizable:false,  editable:true,sortable:true, align:'center',
                         editrules:{required : true, }, 
                         search:true, searchoptions: {  sopt: ['eq']  },
                         searchrules:{ required: true, },
@@ -167,7 +167,7 @@ $(function(){
                         editrules:{required : true, }, 
                         search:false, 
                      },
-                     {  name:'last_login', label:'最后登录时间', index:'last_login', width:240, fixed:true, resizable:false,  sortable:false, editable:false, align:'center',
+                     {  name:'last_login', label:'最后登录时间', index:'last_login', width:240, fixed:true, resizable:false,  sortable:true, sorttype:'date', editable:false, align:'center',
                         search:true, searchoptions: {  sopt: ['bw', 'ew'],
                         dataInit:function(element) { 
                             $(element).parent().addClass("input-group date form_date");
@@ -196,7 +196,7 @@ $(function(){
                         },   
                         
                      }, 
-                     {  name:'state', label:'导出结果', index:'state', sortable:true,width:90, fixed:true, resizable:false, editable: false,align:'center',
+                     {  name:'state', label:'导出结果', index:'state', sortable:false,width:90, fixed:true, resizable:false, editable: false,align:'center',
                         search:false,
                         viewable:true,
                         formatter:function(cellvalue,options,rowObject){
@@ -222,7 +222,7 @@ $(function(){
                         },   
                         
                      }, 
-                     {  name:'state', label:'导出胜任力报告', index:'state', sortable:true,width:120, fixed:true, resizable:false, editable: false,align:'center',
+                     {  name:'state', label:'导出胜任力报告', index:'state', sortable:false,width:120, fixed:true, resizable:false, editable: false,align:'center',
                         search:false,
                         viewable:true,
                         formatter:function(cellvalue,options,rowObject){
@@ -235,7 +235,7 @@ $(function(){
                             
                         },
                      }, 
-                      {  name:'state', label:'导出综合素质报告', index:'state', sortable:true,width:120, fixed:true, resizable:false, editable: false,align:'center',
+                      {  name:'state', label:'导出综合素质报告', index:'state', sortable:false,width:120, fixed:true, resizable:false, editable: false,align:'center',
                         search:false,
                         viewable:true,
                         formatter:function(cellvalue,options,rowObject){
@@ -315,7 +315,7 @@ $(function(){
                         $('.Leo_question').css('width','843px')
                          $('.modal-body').html('');
                          $('.modal-body').html(
-                         "<p class=\"bg-success\" style='padding:20px;'>被试人员信息导入成功</p>"
+                         "<p class=\"bg-success\" style='padding:20px;'>记录导入成功</p>"
                          );
                         $('.modal-footer').html('');
                         $('.modal-footer').html(
@@ -367,7 +367,7 @@ $(function(){
                         $('.Leo_question').css('width','843px')
                          $('.modal-body').html('');
                          $('.modal-body').html(
-                         "<p class=\"bg-success\" style='padding:20px;'>被试人员信息更新成功</p>"
+                         "<p class=\"bg-success\" style='padding:20px;'>记录更新成功</p>"
                          );
                         $('.modal-footer').html('');
                         $('.modal-footer').html(
@@ -429,7 +429,7 @@ $(function(){
                         $('.Leo_question').css('width','843px')
                          $('.modal-body').html('');
                          $('.modal-body').html(
-                         "<p class=\"bg-success\" style='padding:20px;'>被试人员纪录删除成功</p>"
+                         "<p class=\"bg-success\" style='padding:20px;'>纪录删除成功</p>"
                          );
                         $('.modal-footer').html('');
                         $('.modal-footer').html(
@@ -525,7 +525,7 @@ $('#submit').click(function(){
         $('.modal-footer').html('');
         $('#myModal').modal({keyboard:true, backdrop:'static'});
         $.ajaxFileUpload ({
-        url:'/pm/uploadExaminee', //你处理上传文件的服务端
+        url:'/pm/uploadExaminee/0', //你处理上传文件的服务端 
         secureuri:false, //与页面处理代码中file相对应的ID值
         fileElementId:'file',
         dataType: 'json', //返回数据类型:text，xml，json，html,scritp,jsonp五种

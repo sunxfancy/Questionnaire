@@ -510,4 +510,55 @@ class PmDB
     	return $randomString;
     }
     
+    /**
+     * 分配被试到面询专家
+     */
+    public static function allocExaminees($data, $interviewer_id){
+    	try{
+    		$manager     = new TxManager();
+    		$transaction = $manager->get();
+    		foreach($data as $value){
+    			$interview = new Interview();
+    			$interview->setTransaction($transaction);
+    			$interview->manager_id = $interviewer_id;
+    			$interview->examinee_id = $value['id'];
+    			if( $interview->save() == false ){
+    				$transaction->rollback("数据插入失败");
+    			}
+    		}
+    		$transaction->commit();
+    		return true;
+    	}catch (TxFailed $e) {
+    		throw new Exception($e->getMessage());
+    	}
+    }
+    /**
+     * 取消面询分配
+     */
+    public static function delallocExaminees($data, $interviewer_id){
+    	try{
+    		$manager     = new TxManager();
+    		$transaction = $manager->get();
+    		foreach($data as $value){
+    			$interview = Interview::findFirst(
+    			array('examinee_id = ?1 AND manager_id = ?2',
+    			'bind'=>array(
+    			1=>$value, 2=>$interviewer_id
+    			))
+    			);
+    			if (!isset($interview->examinee_id)){
+    				continue;
+    			}
+    			$interview->setTransaction($transaction);
+    			if( $interview->delete() == false ){
+    				$transaction->rollback("数据删除失败");
+    			}
+    		}
+    		$transaction->commit();
+    		return true;
+    	}catch (TxFailed $e) {
+    		throw new Exception($e->getMessage());
+    	}
+    }
+    
 }
