@@ -370,10 +370,35 @@ class  ExcelUpload {
 				}
 				
 			}
-			
+			//对输入的教育和工作经历进行时间上的规范排序
+			$educations = $tmp_array['education'];
+			$works =$tmp_array['work'];
+			$count  =  count($educations);
+			$time_array = array();
+			if (!empty($educations)){
+				foreach($educations as $key=>$value){
+					$time_array[] = $value['date'];
+				}
+				array_multisort($time_array,SORT_DESC,$educations);
+			}
+			$count  =  count($works);
+			$time_array = array();
+			if (!empty($works)){
+				foreach($works as $key=>$value){
+					$time_array[] = $value['date'];
+				}
+				array_multisort($time_array,SORT_DESC,$works);
+			}
+			$tmp_array = array();
+			$tmp_array['education'] = $educations;
+			$tmp_array['work'] = $works;
+			//end sort
 			$tmp_array_2 = array();
 			$record['other'] = $tmp_array;
 			foreach($record as $key=>$value){
+				if ($key == 'sex'){
+					$value = $value == 1 ?'男':'女';
+				}
 				$tmp_array_2[$key] = $value;
 			}
 			$record['init_data'] = json_encode($tmp_array_2, JSON_UNESCAPED_UNICODE);

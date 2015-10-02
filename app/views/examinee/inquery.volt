@@ -48,7 +48,7 @@
     var spinner = null;
     var target = document.getElementById('Leo_question_v2');
     var questions=new Array();
-    var url="/Examinee/getInquery";
+    var url="/examinee/getInquery";
     var Leo_now_index=0;
 $('#myModal').on('hidden.bs.modal', function (e) {
         $('.Leo_question_v2').css('width','600px')
@@ -400,7 +400,7 @@ function getpaper(url){
 
 function Leo_check(){
 	spinner = new Spinner().spin(target);
-    $.post('/Examinee/getInqueryAns',{"answer":$.cookie("ans_cookie"+{{number}})}, function(data) {
+    $.post('/examinee/getInqueryAns',{"answer":$.cookie("ans_cookie"+{{number}})}, function(data) {
             if(data.error){
             	 if(spinner){ spinner.stop(); }
                  $('.Leo_question_v2').css('width','573px');
@@ -442,6 +442,6 @@ function w_last(){
 }
 function wang_click(){
 	   $.cookie("ans_cookie"+{{number}},"",{expires:-1});
-	   window.location.href='/Examinee/editinfo';
+	   window.location.href='/examinee/editinfo';
 }
 </script>

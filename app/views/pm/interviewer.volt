@@ -48,10 +48,7 @@
                     <span>导出</span>
             </button>
             </a>
-            </div>
-            
-            
-                
+            </div>   
         </div>
 </div>
 <!-- Modal -->
@@ -116,7 +113,7 @@ $(function(){
                          }
                      },
                      
-                     {  name:'name', label:'姓名',  index:'name', width:120, fixed:true, resizable:false,  editable:true,sortable:false, align:'center',
+                     {  name:'name', label:'姓名',  index:'name', width:120, fixed:true, resizable:false,  editable:true,sortable:true, align:'center',
                         editrules:{required : true, }, 
                         search:true, searchoptions: {  sopt: ['eq']  },
                         searchrules:{ required: true, },
@@ -126,7 +123,7 @@ $(function(){
                         editrules:{required : true, }, 
                         search:false, 
                      },
-                     {  name:'last_login', label:'最后登录时间', index:'last_login', width:240, fixed:true, resizable:false,  sortable:false, editable:false, align:'center',
+                     {  name:'last_login', label:'最后登录时间', index:'last_login', width:240, fixed:true, resizable:false,  sortable:true, sorttype:'date',editable:false, align:'center',
                         search:true, searchoptions: {  sopt: ['bw', 'ew'],
                         dataInit:function(element) { 
                             $(element).parent().addClass("input-group date form_date");
@@ -146,12 +143,12 @@ $(function(){
                      {  name:'count', label:'面询完成情况', index:'count', sortable:false,width:110, fixed:true, resizable:false, editable:false,align:'center',
                         search:false, 
                      }, 
-                     {  name:'fenpei', label:'配置', index:'fenpei', sortable:true,width:110, fixed:true, resizable:false, editable: false,align:'center',
+                     {  name:'fenpei', label:'配置', index:'fenpei', sortable:false,width:110, fixed:true, resizable:false, editable: false,align:'center',
                         search:false,
                         sortable:false,
                         viewable:true,
                         formatter:function(cellvalue,options,rowObject){
-                            return "<div class='ui-pg-div' data-original-title='查看面询情况'><span style='visibility:hidden;'>&nbsp;</span><a href='/pm/userdivide/"+rowObject.id+"'><i class=\"glyphicon glyphicon-cog\"></i></a><span style='visibility:hidden;'>&nbsp;</span></div>"
+                            return "<div class='ui-pg-div' data-original-title='查看及配置面询情况'><span style='visibility:hidden;'>&nbsp;</span><a href='/pm/userdivide/"+rowObject.id+"'><i class=\"glyphicon glyphicon-cog\"></i></a><span style='visibility:hidden;'>&nbsp;</span></div>"
                         },
                      },                     
             ], 
@@ -218,7 +215,7 @@ $(function(){
                         $('.Leo_question').css('width','843px')
                          $('.modal-body').html('');
                          $('.modal-body').html(
-                         "<p class=\"bg-success\" style='padding:20px;'>专家信息导入成功</p>"
+                         "<p class=\"bg-success\" style='padding:20px;'>记录添加成功</p>"
                          );
                         $('.modal-footer').html('');
                         $('.modal-footer').html(
@@ -270,7 +267,7 @@ $(function(){
                         $('.Leo_question').css('width','843px')
                          $('.modal-body').html('');
                          $('.modal-body').html(
-                         "<p class=\"bg-success\" style='padding:20px;'>专家信息更新成功</p>"
+                         "<p class=\"bg-success\" style='padding:20px;'>记录更新成功</p>"
                          );
                         $('.modal-footer').html('');
                         $('.modal-footer').html(
@@ -332,7 +329,7 @@ $(function(){
                         $('.Leo_question').css('width','843px')
                          $('.modal-body').html('');
                          $('.modal-body').html(
-                         "<p class=\"bg-success\" style='padding:20px;'>被试人员纪录删除成功</p>"
+                         "<p class=\"bg-success\" style='padding:20px;'>记录删除成功</p>"
                          );
                         $('.modal-footer').html('');
                         $('.modal-footer').html(

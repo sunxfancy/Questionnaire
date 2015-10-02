@@ -32,8 +32,16 @@ class ExamineeController extends Base
             ));
         if($tmp){
             return true;
-        }
-        return false;       
+        }else{
+        	$examinee_info = Examinee::findFirst(
+        	$exam_id
+        	);
+        	if ($examinee_info->type == 1){
+        		return true;
+        	}else{
+        		return false;
+        	}
+        } 
     }
     public function getInqueryAction(){
  		// $this->session->remove('Examinee');
