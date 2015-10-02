@@ -1287,6 +1287,86 @@ class PmController extends Base
     				$rtn_array['page'] = $page;
     				$this->dataReturn($rtn_array);
     						return;
+    	}else{
+    		//处理search情况
+    		$search_field =  $this->request->get('searchField');
+    		$search_string =  $this->request->get('searchString');
+    		$search_oper = $this->request->get('searchOper');
+    		$filed = 'Examinee.'.$search_field;
+    		if ($search_field == 'number'){
+    			$oper = '=';
+    			$value = $search_string;
+    		}else if ($search_field == 'name' ){
+    			$oper = 'LIKE';
+    			$value = '\'%'.trim($search_string).'%\'';
+    		}else if ($search_field == 'type'){
+    			$oper = '=';
+    			$value = intval($search_string);
+    		}else if ($search_field == 'state') {
+    			$result = $this->modelsManager->createBuilder()
+    			->columns(array(
+    					'Examinee.id as id',
+    					'Examinee.number as number',
+    					'Examinee.name as name',
+    					'Examinee.type as type',
+    					'Interview.advantage as advantage',
+    					'Interview.disadvantage as disadvantage',
+    					'Interview.remark as remark'
+    			))
+    			->from('Examinee')
+    			->Join('Interview', 'Interview.manager_id ='.$interviewer_id.' AND Examinee.id = Interview.examinee_id')
+//     			->limit($limit,$offset)
+    			->orderBy($sort)
+    			->getQuery()
+    			->execute();
+    			$result = $result->toArray();
+    			$rt_result = array();
+    			foreach($result as &$value ){
+    				$value['state'] = 1;
+    				if ( empty($value['advantage']) || empty($value['disadvantage']) || empty($value['remark']) ){
+    					$value['state'] = 0;
+    				}
+    				if ($value['state'] == intval($search_string)){
+    					$rt_result[] = $value;
+    				}
+    			}
+    			$rtn_array = array();
+    			$count =  count($rt_result);
+    			$rtn_array['total'] = ceil($count/$rows);
+    			$rtn_array['records'] = $count;
+    			$rtn_array['rows'] =$rt_result;
+    			$rtn_array['page'] = $page;
+    			$this->dataReturn($rtn_array);
+    			return;
+    		}else{
+    			//add...
+    		}
+    		$result = $this->modelsManager->createBuilder()
+					  ->columns(array(
+						'Examinee.id as id',
+						'Examinee.number as number',
+						'Examinee.name as name',
+					  	'Examinee.type as type',
+					  	'Interview.advantage as advantage',
+					  	'Interview.disadvantage as disadvantage',
+					  	'Interview.remark as remark'
+					  ))
+			->from('Examinee')
+			->Join('Interview', 'Interview.manager_id ='.$interviewer_id.' AND Examinee.id = Interview.examinee_id '." AND $filed $oper $value")
+// 			->limit($limit,$offset)
+			->orderBy($sort)
+			->getQuery()
+			->execute();
+    		$result = $result->toArray();
+    		$rtn_array = array();
+    		$count =  count($result);
+    		$rtn_array['total'] = ceil($count/$rows);
+    		$rtn_array['records'] = $count;
+    		$rtn_array['rows'] =$result;
+    		$rtn_array['page'] = $page;
+    		$this->dataReturn($rtn_array);
+    		return;
+    				return ;
     	}
     }
     #删除已配置人员的分配
