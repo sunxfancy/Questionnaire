@@ -168,12 +168,12 @@ class  ExcelUpload {
 	public function handleReportComment(){
 		$array1 = self::handleReportCommentsheet1();
 		$array2 = self::handleReportCommentsheet2();
-		$array3 = self::handleReportCommentsheet3();
+		// $array3 = self::handleReportCommentsheet3();
 		for ($i=0; $i < count($array1); $i++) { 
 			$array1[$i]['id'] = $i+1;
 			$array1[$i]['disadvantage'] = $array2[$i]['disadvantage'];
 		}
-		// return $array1;
+		return $array1;
 		// print_r($array1);echo "<br/>";echo "<br/>";echo "<br/>";echo "<br/>";
 		// print_r($array3);
 	}

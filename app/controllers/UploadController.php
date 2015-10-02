@@ -435,7 +435,6 @@ class UploadController extends \Phalcon\Mvc\Controller {
 	/**
 	 * 上传报告评语
 	 */
-	#上传更新需求量表
 	public function uploadReportCommentAction(){
 		#严格json格式{ '···' : '···'},json_encode 无法实现
 		try{

@@ -108,9 +108,14 @@ class PHPWord_Section_Table_Cell {
 	 * @return PHPWord_Section_Text
 	 */
 	public function addText($text, $styleFont = null, $styleParagraph = null) {
-		$text = utf8_encode($text);
-		// $text = mb_convert_encoding($text, 'utf8','geoip_isp_by_name');
-		// $text = iconv('gbk', 'utf-8',$text);
+		// $text = utf8_encode($text);
+		$encoding = mb_detect_encoding($text, mb_detect_order(), false);
+	    if($encoding == "UTF-8")
+	    {
+	        $text = mb_convert_encoding($text, 'UTF-8', 'UTF-8');    
+	    }
+	    $text = iconv(mb_detect_encoding($text, mb_detect_order(), false), "UTF-8//IGNORE", $text);
+		
 		$text = new PHPWord_Section_Text($text, $styleFont, $styleParagraph);
 		$this->_elementCollection[] = $text;
 		return $text;
