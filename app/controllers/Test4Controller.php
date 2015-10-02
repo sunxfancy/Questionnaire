@@ -15,11 +15,14 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 // 		print_r($re->getDisadvantages(2662));
 // 		echo '</pre>';
 
-// 		$chart = new ChartLoader();
-// 		$chart->test();
+		$chart = new ChartLoader();
+		$chart->test();
 
-		$re = new individualComReport();
-		print_r($re->getSystemComprehensive(2662));
+		// $re = new individualComReport();
+		// // print_r($re->getSystemComprehensive(2662));
+		// echo "<pre>";
+		// print_r($re->getindividualComprehensive(31));
+		// echo "</pre>";
 	}
 
 }

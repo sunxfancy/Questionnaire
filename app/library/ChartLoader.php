@@ -73,7 +73,7 @@ class ChartLoader {
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 		// 打开做图开关
 		$objWriter->setIncludeCharts(TRUE);
-		$objWriter->save(str_replace('.php', '.xlsx', __FILE__));
-		echo date('H:i:s')." File written to ".str_replace('.php', '.xlsx', pathinfo(__FILE__, PATHINFO_BASENAME));
+		$objWriter->save(str_replace('.php', '.xls', __FILE__));
+		echo date('H:i:s')." File written to ".str_replace('.php', '.xls', pathinfo(__FILE__, PATHINFO_BASENAME));
 	}
 }

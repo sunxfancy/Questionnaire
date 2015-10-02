@@ -435,7 +435,6 @@ class UploadController extends \Phalcon\Mvc\Controller {
 	/**
 	 * 上传报告评语
 	 */
-	#上传更新需求量表
 	public function uploadReportCommentAction(){
 		#严格json格式{ '···' : '···'},json_encode 无法实现
 		try{
@@ -500,7 +499,6 @@ class UploadController extends \Phalcon\Mvc\Controller {
 	public function insertMiddleAction(){
 		$middle_file = __DIR__ . "/../../app/config/middlelayer.json";
 		$middle_json = $this->loadJson($middle_file);
-		print_r($middle_json);
 		DBHandle::insertMiddle($middle_json);
 	}
 	public function loadJson($filename, $toarray = true)

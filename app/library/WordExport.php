@@ -29,24 +29,31 @@ class WordExport
 	
 	public function examineeReport($examinee,$project_id){
 		$PHPWord = new PHPWord();
+		$report = new individualComReport();
+		$chart = new ChartLoader();
 		$section = $PHPWord->createSection();
-		$PHPWord->setDefaultFontSize(14);
+		$PHPWord->setDefaultFontSize(12);
 		$PHPWord->addParagraphStyle('myParagraphStyle',array('spacing'=>24));
 		$PHPWord->addTitleStyle(1,array('size'=>16,'bold'=>true,'color'=>'red'));
 		$PHPWord->addTitleStyle(2,array('size'=>15,'bold'=>true,'color'=>'blue'));
-		$PHPWord->addTitleStyle(3,array('size'=>14,'bold'=>true));
+		$PHPWord->addTitleStyle(3,array('size'=>14,'bold'=>true,'color'=>'blue'));
+
+		$styleTable = array('borderSize'=>6, 'borderColor'=>'black', 'cellMargin'=>80);
+		$PHPWord->addTableStyle('myOwnTableStyle', $styleTable);
 		// Add footer
 		$footer = $section->createFooter();
 		$footer->addPreserveText('Page {PAGE} of {NUMPAGES}.', array('align'=>'center'));
 
 	//封面
+		$section->addImage('reportimage/logo.png');
 		$section->addTextBreak(6);
-		$section->addText('综合素质I 测评报告',array('size'=>36, 'color'=>'red','bold'=>true),array('align'=>'center'));
+		$section->addImage('reportimage/fengmian.png');
+		$section->addText('综合素质测评报告',array('size'=>36, 'color'=>'red','bold'=>true),array('align'=>'center'));
 		$section->addTextBreak(1);
 		$section->addText("测评对象：".$examinee->name,array('size'=>14,'bold'=>true));
 		$section->addTextBreak(1);
 		$sex = ($examinee->sex == 1) ? '男' : '女';
-		$section->addText("性    别：".$sex,array('size'=>14,'bold'=>true));
+		$section->addText("性        别：".$sex,array('size'=>14,'bold'=>true));
 		$section->addTextBreak(1);
 		$section->addText("出生年月：".$examinee->birthday,array('size'=>14,'bold'=>true));
 		$section->addTextBreak(1);
@@ -91,14 +98,15 @@ class WordExport
 		}
 		array_multisort($time2_array,SORT_DESC,$work_array);
 		$section->addTitle("工作经历",2);
-		$table = $section->addTable();
-		$table->addRow();
-		$table->addCell(20)->addText("就职单位");
-		$table->addCell(20)->addText("部门");
-		$table->addCell(20)->addText("职位");
-		$table->addCell(20)->addText("工作时间");
+		$table = $section->addTable('myOwnTableStyle');
+		$table->addRow(400);
+		$styleCell = array('valign'=>'center');
+		$table->addCell(2700,$styleCell)->addText("工作单位");
+		$table->addCell(2700,$styleCell)->addText('部门');
+		$table->addCell(2700,$styleCell)->addText('职位');
+		$table->addCell(2700,$styleCell)->addText('工作时间');
 		for($r = 1; $r <= count($work_array); $r++) { 
-			$table->addRow();
+			$table->addRow(400);
 			$table->addCell(100)->addText($work_array[$r-1]['employer']);
 			$table->addCell(100)->addText($work_array[$r-1]['unit']);
 			$table->addCell(100)->addText($work_array[$r-1]['duty']);
@@ -114,41 +122,57 @@ class WordExport
 		}else{
 			$comOrnot = '比正常快近二分之一';
 		}
-		$section->addText("测试要求3小时，以".$time."完成，".$examinee->name.$comOrnot."，且回答"."真实（掩饰性系数低于平均水平）"."，说明其阅读"."不仅快而且准确。");
+		$section->addText("        测试要求3小时，以".$time."完成，".$examinee->name.$comOrnot."，且回答"."真实（掩饰性系数低于平均水平）"."，说明其阅读"."不仅快而且准确。");
+		$sc = $report->getSystemComprehensive($examinee->id);
+		$table = $section->addTable();
+		$table ->addRow();
+		$table ->addCell(6000)->addText("        根据测试结果和综合统计分析，分别从职业心理、职业素质、职业心智、职业能力等做出系统评价，按优、良、中、差四个等级评分。综合得分：优秀率".$sc[1]."%，良好率为".$sc[2]."%，中为".$sc[3]."%，差为".$sc[4]."%，综合发展潜质为，如右图所示。 ");
+		$table ->addCell(3500)->addObject('chart/ChartLoader.xls');
 		$section->addPageBreak();
 
 		$section->addTitle("二、测评结果",1);
 		$section->addTitle("1、突出优势",2);
-		$index_ans = IndexAns::find(array(
-			'examinee_id=?1',
-			//'order by score'未写
-			'bind'=>array(1=>$examinee->id)));
-		$index = array();
-		foreach ($index_ans as $indexs) {
-			$index['name'][]  = Index::findFirst($indexs->index_id)->chs_name;
-		}
-		$length = count($index);
-		if ($length < 4) {
-			$good = $length;
-			$bad = $length;
-		}else if ($length < 6) {
-			$good = $length;
-			$bad = 3;
-		}else{
-			$good = 5;
-			$bad = 3;
-		}
-		for ($i=0; $i < $good; $i++) { 
-			$section->addTitle($index['name'][$i],3);
+		$ga = $report->getAdvantages($examinee->id);
+		for ($i=0; $i < count($ga); $i++) { 
+			$section->addTitle($ga[$i]['chs_name'],3);
+			$children = explode(",", $ga[$i]['children']);
+			$consist = count($children);
+			$comments = '';
+			for ($j=0; $j < count($ga[$i]['detail']); $j++) { 
+				$advantages = ReportComment::findFirst(array(
+					'name=?1',
+					'bind'=>array(1=>$ga[$i]['detail'][$j]['chs_name'])))->advantage;
+				$advantage = explode("|", $advantages);
+				$rand_key = array_rand($advantage);
+				$convert_array = array('一','二','三');
+				$comments .= $convert_array[$j].$advantage[$rand_key].'；';
+			}
+			$section->addText("        本项内容共由".$consist."项指标构成，满分10分。根据得分的高低排序，分析张筱宇得分排在前三项具体特点为：".$comments."具体分布如右图所示： ");
 		}
 		$section->addTitle("2、需要改进方面",2);
-		for ($i=$length-1; $i > $length-$bad-1; $i--) { 
-			$section->addTitle($index['name'][$i],3);
+		$dga = $report->getDisadvantages($examinee->id);
+		for ($i=0; $i < count($dga); $i++) { 
+			$section->addTitle($dga[$i]['chs_name'],3);
+			$children = explode(",", $dga[$i]['children']);
+			$consist = count($children);
+			$comments = '';
+			for ($j=0; $j < count($dga[$i]['detail']); $j++) { 
+				$disadvantages = ReportComment::findFirst(array(
+					'name=?1',
+					'bind'=>array(1=>$dga[$i]['detail'][$j]['chs_name'])))->disadvantage;
+				$disadvantage = explode("|", $disadvantages);
+				$rand_key = array_rand($disadvantage);
+				$convert_array = array('一','二','三');
+				$comments .= $convert_array[$j].$disadvantage[$rand_key].'；';
+			}
+			$section->addText("        本项内容共由".$consist."项指标构成，满分10分。根据得分的高低排序，分析张筱宇得分排在前三项具体特点为：".$comments."具体分布如右图所示： ");
 		}
 
 	//综合评价
 		$section->addTitle("三、综合评价",1);
-		$section->addText("综合评价分析包括对职业素质、职业心理、职业能力、三商与身体的分析。其中职业素质共有八项指标，职业心理共有七项指标，职业能力共有七项指标，三商与身体共有六项指标。由各指标的得分平均值得出职业素质、职业心理、职业能力、三商与身体的综合分。 ");
+		$ic = $report->getindividualComprehensive($examinee->id);
+		print_r($ic);
+		// $section->addText("综合评价分析包括对".$ic_name."的分析。其中".$ic_consist."。由各指标的得分平均值得出".$ic_name."的综合分。 ");
 		$section->addTitle("职业素质：",2);
 		$section->addText($examinee->name);
 		$section->addTitle("职业心理：",2);
@@ -168,42 +192,54 @@ class WordExport
 		$level = ReportData::getLevel($examinee->id);
         $level1 = '';$level2 = '';$level3 = '';$level4 = '';
         if ($level == '优') {
-            $level1 = '&radic;';
+            $level1 = '***';
         }else if ($level == '良') {
-            $level2 = '&radic;';
+            $level2 = '***';
         }else if ($level == '中') {
-            $level3 = '&radic;';
+            $level3 = '***';
         }else if ($level == '差') {
-            $level4 = '号&radic;';
+            $level4 = '***';
         }
-		$table = $section->addTable(); 
+		$table = $section->addTable('myOwnTableStyle'); 
+		$table->addRow();
+		$table->addCell(1500,array('valign'=>'center'))->addText("优势",array('color'=>'blue'));
+		$ad = $table->addCell(2000,array('cellMerge'=>'restart'));
 		for ($i=0; $i < 5; $i++) { 
-			$table->addRow();
-			$table->addCell(1000)->addText("优势");
-			$table->addCell(1000)->addText($advantage[$i]);
+			$ad->addText($advantage[$i]);
 		}
+		$ad = $table->addCell(2000,array('cellMerge'=>'continue'));
+		$ad = $table->addCell(2000,array('cellMerge'=>'continue'));
+		$ad = $table->addCell(2000,array('cellMerge'=>'continue'));
+		$table->addRow();
+		$table->addCell(1500,array('valign'=>'center'))->addText("改进",array('color'=>'blue'));
+		$dad = $table->addCell(2000,array('cellMerge'=>'restart'));
 		for ($i=0; $i < 3; $i++) { 
-			$table->addRow();
-			$table->addCell(1000)->addText("改进");
-			$table->addCell(1000)->addText($disadvantage[$i]);
+			$dad->addText($disadvantage[$i]);
 		}
+		$dad = $table->addCell(2000,array('cellMerge'=>'continue'));
+		$dad = $table->addCell(2000,array('cellMerge'=>'continue'));
+		$dad = $table->addCell(2000,array('cellMerge'=>'continue'));
+		$table = $section->addTable('myOwnTableStyle');
 		$table->addRow();
-		$table->addCell(1000)->addText("潜质");
-		$table->addCell(1000)->addText("优");
-		$table->addCell(1000)->addText("良");
-		$table->addCell(1000)->addText("中");
-		$table->addCell(1000)->addText("差");
+		$table->addCell(1500,array('rowMerge'=>'restart','valign'=>'center'))->addText("潜质",array('color'=>'blue','align'=>'center'));
+		$table->addCell(2000)->addText("优");
+		$table->addCell(2000)->addText("良");
+		$table->addCell(2000)->addText("中");
+		$table->addCell(2000)->addText("差");
 		$table->addRow();
-		$table->addCell(1000)->addText("潜质");
-		$table->addCell(1000)->addText($level1);
-		$table->addCell(1000)->addText($level2);
-		$table->addCell(1000)->addText($level3);
-		$table->addCell(1000)->addText($level4);
+		$table->addCell(1500,array('rowMerge'=>'continue'));
+		$table->addCell(2000)->addText($level1);
+		$table->addCell(2000)->addText($level2);
+		$table->addCell(2000)->addText($level3);
+		$table->addCell(2000)->addText($level4);
+		$table = $section->addTable('myOwnTableStyle');
 		$table->addRow();
-		$table->addCell(1000)->addText("评价");
-		$table->addCell(1000)->addText($interview->remark);
-		
-		// //命名
+		$table->addCell(1500,array('valign'=>'center'))->addText("评价",array('color'=>'blue'));
+		$table->addCell(2000,array('cellMerge'=>'restart'))->addText($interview->remark);
+		$table->addCell(2000,array('cellMerge'=>'continue'));
+		$table->addCell(2000,array('cellMerge'=>'continue'));
+		$table->addCell(2000,array('cellMerge'=>'continue'));
+		//命名
 		$fileName = $examinee->number."+".$examinee->name."+"."综合素质测评报告";
 		// header("Content-Disposition:attachment;filename=".$fileName.".doc"); 
 		// $this->commonMsg($PHPWord);

@@ -11,7 +11,7 @@ class individualComReport extends \Phalcon\Mvc\Controller{
 		if (empty($examinee)){
 			throw new Exception('被试id不存在');
 		}
-		if ($examinee->state < 5 ) {
+		if ($examinee->state < 1 ) {
 			throw new Exception('被试基础算分未完成');
 		}
 		return $examinee->project_id;
@@ -57,7 +57,6 @@ class individualComReport extends \Phalcon\Mvc\Controller{
 			$result[$start]['detail'] = $top_detail;
 		}
 		return $result;
-		
 	}
 	public function getDisadvantages($examinee_id){
 		$result = $this->getIndexdesc($examinee_id);
@@ -84,8 +83,7 @@ class individualComReport extends \Phalcon\Mvc\Controller{
 		return $result;
 	}
 	//10 分制
-	public function getChildrenOfIndexDesc($index_name, $children, $examinee_id){
-				
+	public function getChildrenOfIndexDesc($index_name, $children, $examinee_id){				
 		$children_array = explode(',',$children);	
 		if ($index_name == 'zb_ldnl'){
 				//zb_ldnl 0,0,0,0,0
@@ -183,7 +181,6 @@ class individualComReport extends \Phalcon\Mvc\Controller{
 		}
 		return $module_array_score;
 	}
-	
 	public function getSystemComprehensive($examinee_id){
 		$project_id = $this->self_check($examinee_id);
 		$result = $this->modelsManager->createBuilder()
@@ -224,6 +221,23 @@ class individualComReport extends \Phalcon\Mvc\Controller{
 			$value = sprintf("%.2f",$value/$count_all);
 		}
 		return $rate;
+	}
+	public function IsHidden($examinee_id){
+		$factor_name = 'epqal';
+		$project_id = $this->self_check($examinee_id);
+		$result = $this->modelsManager->createBuilder()
+		->columns(array(
+				'avg(FactorAns.score) as score',
+		))
+		->from('Project')
+		->where('Project.id = '.$project_id)
+		->leftjoin('Examinee', 'Examinee.project_id = Project.id')
+		->leftjoin('Factor','Factor.name = '.$factor_name)
+		->leftjoin('FactorAns', 'Examinee.id = FactorAns.examinee_id and Factor.id = FactorAns.factor_id')
+		->getQuery()
+		->execute();
+		$result = $result->toArray();
+		return $result;
 	}
 	
 }
