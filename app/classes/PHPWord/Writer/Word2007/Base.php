@@ -529,6 +529,10 @@ class PHPWord_Writer_Word2007_Base extends PHPWord_Writer_Word2007_WriterPart {
 		$textDir = $style->getTextDirection();
 		$brdSz = $style->getBorderSize();
 		$brdCol = $style->getBorderColor();
+
+		$rowMerge = $style->getRowMerge();  
+        $cellMerge = $style->getCellMerge();
+
 		
 		$bTop = (!is_null($brdSz[0])) ? true : false;
 		$bLeft = (!is_null($brdSz[1])) ? true : false;
@@ -536,9 +540,30 @@ class PHPWord_Writer_Word2007_Base extends PHPWord_Writer_Word2007_WriterPart {
 		$bBottom = (!is_null($brdSz[3])) ? true : false;
 		$borders = ($bTop || $bLeft || $bRight || $bBottom) ? true : false;
 		
-		$styles = (!is_null($bgColor) || !is_null($valign) || !is_null($textDir) || $borders) ? true : false;
+		$styles = (!is_null($bgColor) || !is_null($valign) || !is_null($textDir) || $borders || !is_null($rowMerge) || !is_null($cellMerge)) ? true : false;
 		
 		if($styles) {
+			if (!is_null($cellMerge))
+			{
+			    //$objWriter->startElement('w:gridSpan');
+			    $objWriter->startElement('w:hMerge');
+			    if ((string)$cellMerge !== 'continue')
+			    { 
+                    $objWriter->writeAttribute('w:val', $cellMerge);
+			    }
+                $objWriter->endElement();
+			}
+			
+			if (!is_null($rowMerge))
+			{
+			    $objWriter->startElement('w:vMerge');
+			    if ((string)$rowMerge !== 'continue')
+			    {
+                    $objWriter->writeAttribute('w:val', $rowMerge);
+			    }
+                $objWriter->endElement();
+			}
+
 			if(!is_null($textDir)) {
 				$objWriter->startElement('w:textDirection');
 					$objWriter->writeAttribute('w:val', $textDir);

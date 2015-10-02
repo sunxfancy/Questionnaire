@@ -287,5 +287,30 @@ class PHPWord_Style_Cell {
 	public function getDefaultBorderColor() {
 		return $this->_defaultBorderColor;
 	}
+
+	private $_rowMerge = null;
+	private $_cellMerge = null;
+
+	public function getRowMerge()
+	{
+	    return $this->_rowMerge;
+	}
+	
+	public function setRowMerge($pValue = null)
+	{
+	    $this->_rowMerge = $pValue;
+	    return $this;
+	}
+	
+	public function getCellMerge()
+	{
+	    return $this->_cellMerge;
+	}
+	
+	public function setCellValue($pValue = null)
+	{
+	    $this->_cellMerge = $pValue;
+	    return $this;
+	}
 }
 ?>

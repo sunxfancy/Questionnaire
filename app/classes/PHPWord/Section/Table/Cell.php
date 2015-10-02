@@ -108,7 +108,14 @@ class PHPWord_Section_Table_Cell {
 	 * @return PHPWord_Section_Text
 	 */
 	public function addText($text, $styleFont = null, $styleParagraph = null) {
-		$text = utf8_encode($text);
+		// $text = utf8_encode($text);
+		$encoding = mb_detect_encoding($text, mb_detect_order(), false);
+	    if($encoding == "UTF-8")
+	    {
+	        $text = mb_convert_encoding($text, 'UTF-8', 'UTF-8');    
+	    }
+	    $text = iconv(mb_detect_encoding($text, mb_detect_order(), false), "UTF-8//IGNORE", $text);
+		
 		$text = new PHPWord_Section_Text($text, $styleFont, $styleParagraph);
 		$this->_elementCollection[] = $text;
 		return $text;
@@ -124,9 +131,11 @@ class PHPWord_Section_Table_Cell {
 	 */
 	public function addLink($linkSrc, $linkName = null, $style = null) {
 		if($this->_insideOf == 'section') {
-			$linkSrc = utf8_encode($linkSrc);
+			// $linkSrc = utf8_encode($linkSrc);
+			$linkSrc =iconv('gbk', 'utf-8', $linkSrc); 
 			if(!is_null($linkName)) {
-				$linkName = utf8_encode($linkName);
+				// $linkName = utf8_encode($linkName);
+				$linkName =iconv('gbk', 'utf-8', $linkName); 
 			}
 			
 			$link = new PHPWord_Section_Link($linkSrc, $linkName, $style);
@@ -160,7 +169,8 @@ class PHPWord_Section_Table_Cell {
 	 * @return PHPWord_Section_ListItem
 	 */
 	public function addListItem($text, $depth = 0, $styleText = null, $styleList = null) {
-		$text = utf8_encode($text);
+		// $text = utf8_encode($text);
+		$text =iconv('gbk', 'utf-8', $text);
 		$listItem = new PHPWord_Section_ListItem($text, $depth, $styleText, $styleList);
 		$this->_elementCollection[] = $listItem;
 		return $listItem;
@@ -269,7 +279,8 @@ class PHPWord_Section_Table_Cell {
 	 */
 	public function addPreserveText($text, $styleFont = null, $styleParagraph = null) {
 		if($this->_insideOf == 'footer' || $this->_insideOf == 'header') {
-			$text = utf8_encode($text);
+			// $text = utf8_encode($text);
+			$text =iconv('gbk', 'utf-8', $text);
 			$ptext = new PHPWord_Section_Footer_PreserveText($text, $styleFont, $styleParagraph);
 			$this->_elementCollection[] = $ptext;
 			return $ptext;
