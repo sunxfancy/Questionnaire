@@ -6,11 +6,24 @@ class Interview extends \Phalcon\Mvc\Model
      *
      */
     public $comments_incomplete;
+
     /**
      * @var string
      *
      */
-    public $comments;
+    public $advantage;
+
+     /**
+     * @var string
+     *
+     */
+    public $disadvantage;
+
+     /**
+     * @var string
+     *
+     */
+    public $remark;
 
     /**
      * @var integer
