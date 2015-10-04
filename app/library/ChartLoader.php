@@ -76,4 +76,23 @@ class ChartLoader {
 		$objWriter->save(str_replace('.php', '.xls', __FILE__));
 		echo date('H:i:s')." File written to ".str_replace('.php', '.xls', pathinfo(__FILE__, PATHINFO_BASENAME));
 	}
+
+	public function loadPic(){
+		require_once("../app/classes/PHPExcel.php");
+		$objPHPExcel = new PHPExcel();
+		$objReader = PHPExcel_IOFactory::createReader('Excel5');  //加载2003的
+		$objPHPExcel = $objReader->load("chart/ChartLoader.xls");  //载入文件
+		foreach ($objPHPExcel->getSheet(0)->getDrawingCollection() as $k => $drawing) {
+		        $codata = $drawing->getCoordinates(); //得到单元数据 比如G2单元
+		        $filename = $drawing->getIndexedFilename();  //文件名
+		        ob_start();
+		        call_user_func(
+		            $drawing->getRenderingFunction(),
+		            $drawing->getImageResource()
+		        );
+		        $imageContents = ob_get_contents();
+		        file_put_contents('chart/111.jpg',$imageContents); //把文件保存到本地echo
+		        ob_end_clean();
+		}
+	}
 }
