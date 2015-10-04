@@ -1542,7 +1542,7 @@ class PmController extends Base
 			try{
 				PmDB::updateManager($manager);
 			}catch(Exception $e){
-				$this->dataReturn( array('error'=>'信息更新失败') );
+				$this->dataReturn( array('error'=>'记录更新失败') );
 				return;
 			}
 			$this->dataReturn(array('flag'=>true));
@@ -1562,7 +1562,7 @@ class PmController extends Base
 			try{
 				PmDB::deleteManagers($managers);
 			}catch(Exception $e){
-				$this->dataReturn( array('error'=>'删除失败') );
+				$this->dataReturn( array('error'=>'记录删除失败') );
 				return;
 			}
 			$this->dataReturn(array('flag'=>true));

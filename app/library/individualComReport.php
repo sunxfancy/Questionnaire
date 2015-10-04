@@ -11,7 +11,7 @@ class individualComReport extends \Phalcon\Mvc\Controller{
 		if (empty($examinee)){
 			throw new Exception('被试id不存在');
 		}
-		if ($examinee->state < 1 ) {
+		if ($examinee->state < 5 ) {
 			throw new Exception('被试基础算分未完成');
 		}
 		return $examinee->project_id;
@@ -167,9 +167,9 @@ class individualComReport extends \Phalcon\Mvc\Controller{
 			$module_record = MemoryCache::getModuleDetail($value);
 			$children = $module_record->children;
 			$children_array = explode(',', $children);
-			$result = $this->modelsManager->createBuilder()
+			$result_1 = $this->modelsManager->createBuilder()
 			->columns(array(
-					'avg(IndexAns.score) as avg',
+					'Index.name as name',
 			))
 			->from('Index')
 			->inwhere('Index.name', $children_array)
@@ -177,7 +177,19 @@ class individualComReport extends \Phalcon\Mvc\Controller{
 			->orderBy('IndexAns.score desc')
 			->getQuery()
 			->execute();
-			$module_array_score[$key] = $result->toArray()[0]['avg'];
+			$result_2 = $this->modelsManager->createBuilder()
+			->columns(array(
+					'AVG(IndexAns.score) as avg',
+			))
+			->from('Index')
+			->inwhere('Index.name', $children_array)
+			->join('IndexAns', 'IndexAns.index_id = Index.id AND IndexAns.examinee_id = '.$examinee_id)
+			->getQuery()
+			->execute();
+			$result_2 = $result_2->toArray();
+			$module_array_score[$key][] = sprintf('%.2f',$result_2[0]['avg']);
+			$result_1 = $result_1->toArray();
+			$module_array_score[$key][] = array_splice($result_1, 0, 3);
 		}
 		return $module_array_score;
 	}
@@ -222,22 +234,44 @@ class individualComReport extends \Phalcon\Mvc\Controller{
 		}
 		return $rate;
 	}
+	
 	public function IsHidden($examinee_id){
 		$factor_name = 'epqal';
 		$project_id = $this->self_check($examinee_id);
+		//判断项目是否选中该因子
+		$factor_id = '';
+		$factor_names = json_decode(MemoryCache::getProjectDetail($project_id)->factor_names,true);
+		if (isset($factor_names['EPQA'])){
+			if (!in_array($factor_name, $factor_names['EPQA'])){
+				return true;
+			}else{
+				$new_array = array_flip( $factor_names['EPQA']);
+				$factor_id = $new_array[$factor_name];
+			}
+		}else{
+			return true;
+		}
+		//存在的情况下进行项目整体判断
 		$result = $this->modelsManager->createBuilder()
 		->columns(array(
-				'avg(FactorAns.score) as score',
+				'avg(FactorAns.score) as avg'
 		))
-		->from('Project')
-		->where('Project.id = '.$project_id)
-		->leftjoin('Examinee', 'Examinee.project_id = Project.id')
-		->leftjoin('Factor','Factor.name = '.$factor_name)
-		->leftjoin('FactorAns', 'Examinee.id = FactorAns.examinee_id and Factor.id = FactorAns.factor_id')
+		->from('Examinee')
+		->join('FactorAns', 'Examinee.id = FactorAns.examinee_id and  Examinee.project_id = '.$project_id)
+		->join('Factor', "Factor.id = FactorAns.factor_id AND Factor.name = '$factor_name'")
 		->getQuery()
 		->execute();
-		$result = $result->toArray();
-		return $result;
+		$average = $result->toArray()[0]['avg'];
+		$result = FactorAns::findFirst(
+			array('factor_id = ?1 AND examinee_id = ?2', 'bind'=>array(1=>$factor_id, 2=>$examinee_id))
+		);
+		$person_score = $result->score;
+		
+		if ($person_score <= $average){
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 }

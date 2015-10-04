@@ -142,14 +142,23 @@ class PmDB
     	}else if ($project->state == 0 ){
     		$state = 1;
     	}else {
+    		// 1 -- 表示二者必居其一
     		$inquery = InqueryQuestion::findFirst(
     				array(
     						'project_id=?1',
     						'bind'=>array(1=>$project->id)));
     		if(isset($inquery->project_id)){
-    			$state = $type ? 1:2;
+    			if ($type){
+    				$state = 2;
+    			}else{
+    				$state = 1;
+    			}
     		}else{
-    			$state = $type ? 1:2;
+    			if ($type){
+    				$state = 1;
+    			}else{
+    				$state = 2;
+    			}
     		}
     	}
     	return $state;
