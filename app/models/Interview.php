@@ -1,26 +1,16 @@
 <?php
-
-
 class Interview extends \Phalcon\Mvc\Model 
 {
-
+     /**
+     * @var string
+     *
+     */
+    public $comments_incomplete;
     /**
      * @var string
      *
      */
-    public $advantage;
-
-    /**
-     * @var string
-     *
-     */
-    public $disadvantage;
-
-    /**
-     * @var string
-     *
-     */
-    public $remark;
+    public $comments;
 
     /**
      * @var integer
@@ -32,22 +22,5 @@ class Interview extends \Phalcon\Mvc\Model
      * @var integer
      *
      */
-    public $examinee_id;
-    
-    
-    public static function commentSave($arr){
-    	$interview = new Interview();
-    	$interview->advantage = $arr['advantage'];
-    	$interview->disadvantage = $arr['disadvantage'];
-    	$interview->remark = $arr['remark'];
-    	$interview->examinee_id = $arr['examinee_id'];
-    	$interview->manager_id = $arr['manager_id'];
-    
-    	if($interview->save()){
-    		return true;
-    	}
-    	return false;
-    
-    }
-
+    public $examinee_id; 
 }

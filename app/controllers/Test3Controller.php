@@ -4,11 +4,11 @@
 	*/
 class Test3Controller extends Base
 {		
-	public function indexAction(){
-        $project_id = 1501;
-        $examinee = Examinee::findFirst(53);
+    public function indexAction(){
+        $examinee_id = 31;
         $wordExport = new WordExport();
-        $wordExport->examineeReport($examinee,$project_id);
+        $wordExport->individualComReport($examinee_id);
         // $wordExport->allReport($project_id);
-	}
+    }
+
 }

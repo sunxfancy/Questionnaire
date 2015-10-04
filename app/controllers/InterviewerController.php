@@ -44,20 +44,38 @@ class InterviewerController extends Base
     public function interviewAction($examinee_id){
         $returnMessage = array();
         $manager = $this->session->get('Manager');
+        $advantage = $this->request->getPost('advantage');
+        $disadvantage = $this->request->getPost('disadvantage');
+        $remark = $this->request->getPost('remark');
+        $advantages = explode("|", $advantage);
+        $disadvantages = explode("|", $disadvantage);
+        $flag = 0;
+        foreach ($advantages as $key => $value) {
+            if ($value == '') {
+                $flag = 1;
+            }
+        }
+        foreach ($disadvantages as $key => $value) {
+            if ($value == '') {
+                $flag = 1;
+            }
+        }
+        if ($remark == '') {
+            $flag = 1;
+        }
         $array = array(
-            'advantage' => $this->request->getPost('advantage'),
-            'disadvantage' => $this->request->getPost('disadvantage'),
-            'remark' => $this->request->getPost('remark'),
+            'advantage' => $advantage,
+            'disadvantage' => $disadvantage,
+            'remark' => $remark,
             'manager_id' => $manager->id,
             'examinee_id' => $examinee_id
-        );
-        if(Interview::commentSave($array) === true){
-            $returnMessage['status'] = "success";
+            );
+        if ($flag == 1) {
+            InterviewDB::insertInComments($array);
         }else{
-            $returnMessage['status'] = "failed";
+            InterviewDB::insertComments($array);
         }
-        $returnMessage = json_encode($returnMessage);
-        echo $returnMessage;
+        $this->dataReturn(array('status'=>true));
     }
     
     public function divideAction($manager_id){
@@ -101,10 +119,11 @@ class InterviewerController extends Base
     	echo json_encode($returnMessage);
     }
 
+    //进入添加意见页面时获取面询专家的意见
     public function getPointAction($examinee_id){
         $interviewer = $this->session->get('Manager');
         if(empty($interviewer)){
-            $this->dataReturn(array('error'=>'用户信息获取失败'));
+            $this->dataReturn(array('error'=>'用户信息获取失败,请重新登录'));
             return;
         }else{
             $level = ReportData::getLevel($examinee_id);
@@ -135,6 +154,131 @@ class InterviewerController extends Base
             $this->dataReturn(array('point'=>$point));
             return;
         }
+    }
+
+    #获取被试信息页面
+    public function listexamineeAction(){
+        $this->view->disable();
+        $manager = $this->session->get('Manager');
+        if (empty($manager)){
+            $this->dataReturn(array('error'=>'获取用户信息失败，请重新登陆'));
+            return ;
+        }
+        $manager_id = $manager->id;
+        $page = $this->request->get('page');
+        $rows = $this->request->get('rows');
+        $offset = $rows*($page-1);
+        $limit = $rows;
+        $sidx = $this->request->getQuery('sidx','string');
+        $sord = $this->request->getQuery('sord','string');
+        if ($sidx != null)
+            $sort = $sidx;
+        else{
+            $sort = 'id';
+            $sord = 'desc';
+        }
+        if ($sord != null){
+            $sort = $sort.' '.$sord;
+        }
+        //default get
+        $search_state = $this->request->get('_search');
+        if($search_state == 'false'){
+            $result = $this->modelsManager->createBuilder()
+                ->columns(array(
+                    'Examinee.id as id',
+                    'Examinee.number as number',
+                    'Examinee.name as name',
+                    'Examinee.sex as sex',
+                    'Examinee.last_login as last_login',
+                    'Examinee.state as state',
+                    ))
+                ->from('Examinee')
+                //添加类型判断
+                ->join('Interview','Interview.examinee_id = Examinee.id AND Interview.manager_id = '.$manager_id )
+                ->limit($limit,$offset)
+                ->orderBy($sort)
+                ->getQuery()
+                ->execute();
+            $rtn_array = array();
+            $examinees = Interview::find(array(
+                'manager_id=?1',
+                'bind'=>array(1=>$manager_id,)));
+            //获取该项目下答题的总人数
+            $count =  count($examinees);
+            $rtn_array['total'] = ceil($count/$rows);
+            $rtn_array['records'] = $count;
+            $rtn_array['rows'] = array();
+            foreach($result as $value){
+                $rtn_array['rows'][] = $value;
+            }    
+            $rtn_array['page'] = $page;  
+            $this->dataReturn($rtn_array);                
+            return;
+        }else{
+            //处理search情况
+            $search_field =  $this->request->get('searchField');
+            $search_string =  $this->request->get('searchString');
+            $search_oper = $this->request->get('searchOper');
+            #分情况讨论
+            $filed = 'Examinee.'.$search_field;
+            if ($search_oper == 'eq'){
+                if ($search_field == 'name'){
+                    $oper = 'LIKE';
+                    $value = "'%$search_string%'";
+                }else if ($search_field == 'number' || $search_field == 'sex' ){
+                    $oper = '=';
+                    $value = "'$search_string'";
+                }else if ( $search_field == 'exam_state' || $search_field == 'interview_state'){
+                    $filed = 'Examinee.state';
+                    if ($search_string == 'true'){
+                        $oper = '>=';
+                    }else{
+                        $oper = '<';
+                    }
+                    if ($search_field == 'exam_state'){
+                        $value = 1;
+                    }else {
+                        $value = 4;
+                    }
+            }
+            }else if ( $search_oper == 'bw' ||$search_oper == 'ew' ){
+                if (  $search_field == 'last_login' ){
+                    $value = "'$search_string'";
+                }
+                if($search_oper == 'bw'){
+                    $oper = '>=';
+                }else if ($search_oper == 'ew'){
+                    $oper = '<=';
+                }
+            }else {
+                //add ...
+            }
+            $result = $this->modelsManager->createBuilder()
+                ->columns(array(
+                        'Examinee.id as id',
+                        'Examinee.number as number',
+                        'Examinee.name as name',
+                        'Examinee.sex as sex',
+                        'Examinee.last_login as last_login',
+                        'Examinee.state as state',
+                ))
+                ->from('Examinee')
+                ->join('Interview','Interview.examinee_id = Examinee.id AND Interview.manager_id = '.$manager_id." AND $filed $oper $value" )
+                ->orderBy($sort)
+                ->getQuery()
+                ->execute();
+            $rtn_array = array();
+            $count = count($result);
+            $rtn_array['total'] = ceil($count/$rows);
+            $rtn_array['records'] = $count;
+            $rtn_array['rows'] = array();
+            foreach($result as $value){
+                $rtn_array['rows'][] = $value;
+            }
+            $rtn_array['page'] = $page;
+            $this->dataReturn($rtn_array);
+            return;
+        }     
     }
 
     public function dataReturn($ans){

@@ -1412,7 +1412,7 @@ class PmController extends Base
 	}
 	#获取leader信息
 	public function listleaderAction(){
-	$this->view->disable();
+	    $this->view->disable();
 		$manager = $this->session->get('Manager');
 		if (empty($manager)){
 			$this->dataReturn(array('error'=>'获取用户信息失败，请重新登陆'));
@@ -1665,6 +1665,7 @@ class PmController extends Base
         }else{
             $term = substr($term,0,strlen($term)-3);
         }
+        echo $term;
         $builder = $this->modelsManager->createBuilder()
                                       ->from('Examinee')
                                       ->where($term);
