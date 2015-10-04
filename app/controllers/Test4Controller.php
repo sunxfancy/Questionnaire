@@ -18,15 +18,8 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 		// $chart = new ChartLoader();
 		// $chart->test();
 
-		$re = new individualComReport();
-		
-		// // print_r($re->getSystemComprehensive(2662));
-		echo "<pre>";
-		$d = $re->IsHidden(2660);
-		var_dump($d);
-// 		print_r($re->getindividualComprehensive(2660));
-		echo "</pre>";
-	//	$this->excelloader();
+		$word = new WordExport();
+		$word->individualComReport(2660);
 
 	}
 

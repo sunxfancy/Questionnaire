@@ -5,7 +5,7 @@
  *
  */
 class individualComReport extends \Phalcon\Mvc\Controller{
-	private function self_check($examinee_id){
+	public function self_check($examinee_id){
 		//check 
 		$examinee =  Examinee::findFirst($examinee_id);
 		if (empty($examinee)){
