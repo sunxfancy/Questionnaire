@@ -70,11 +70,11 @@
                 $('#disadvantage2').val(data.point.disadvantage2);
                 $('#disadvantage3').val(data.point.disadvantage3);
                 $('#remark').val(data.point.remark);
-                if (data.point.level == "优") {
+                if (data.point.level == 1) {
                     document.getElementById('level1').innerHTML = "&radic;";
-                }else if (data.point.level == "良") {
+                }else if (data.point.level == 2) {
                     document.getElementById('level2').innerHTML = "&radic;";
-                }else if (data.point.level == "中") {
+                }else if (data.point.level == 3) {
                     document.getElementById('level3').innerHTML = "&radic;";
                 }else{
                     document.getElementById('level4').innerHTML = "&radic;";
@@ -86,15 +86,20 @@
     $(document).ready(function(){
         $("#submit").click(function(){
             var comment = {
-                "advantage" : $("#advantage1").val()+"|"+$("#advantage2").val()+"|"+$("#advantage3").val()+"|"+$("#advantage4").val()+"|"+$("#advantage5").val(),
-                "disadvantage" : $("#disadvantage1").val()+"|"+$("#disadvantage2").val()+"|"+$("#disadvantage3").val(),
+                "advantage1" : $("#advantage1").val(),
+                "advantage2" : $("#advantage2").val(),
+                "advantage3" : $("#advantage3").val(),
+                "advantage4" : $("#advantage4").val(),
+                "advantage5" : $("#advantage5").val(),
+                "disadvantage1" : $("#disadvantage1").val(),
+                "disadvantage2" : $("#disadvantage2").val(),
+                "disadvantage3" : $("#disadvantage3").val(),
                 "remark" : $("#remark").val(),
             };
             $.post('/interviewer/interview/'+{{examinee_id}},comment,callbk);
         });
         function callbk(data){
-            data = eval("("+data+")");
-            if(data['status'] == 'success'){
+            if(data.status){
                 alert("评论提交成功！点击“确定”返回主页面。");
                 window.location.href = '/interviewer/index'
             }else{
