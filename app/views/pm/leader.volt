@@ -210,7 +210,7 @@ $(function(){
                         $('.Leo_question').css('width','843px')
                          $('.modal-body').html('');
                          $('.modal-body').html(
-                         "<p class=\"bg-success\" style='padding:20px;'>专家信息更新成功</p>"
+                         "<p class=\"bg-success\" style='padding:20px;'>记录更新成功</p>"
                          );
                         $('.modal-footer').html('');
                         $('.modal-footer').html(
@@ -272,7 +272,7 @@ $(function(){
                         $('.Leo_question').css('width','843px')
                          $('.modal-body').html('');
                          $('.modal-body').html(
-                         "<p class=\"bg-success\" style='padding:20px;'>被试人员纪录删除成功</p>"
+                         "<p class=\"bg-success\" style='padding:20px;'>记录删除成功</p>"
                          );
                         $('.modal-footer').html('');
                         $('.modal-footer').html(
@@ -378,7 +378,7 @@ $('#submit2').click(function(){
             checkFile2();
             jQuery("#grid-table").trigger("reloadGrid");
             $('.modal-body').html('');
-            $('.modal-body').html( "<p class=\"bg-success\" style='padding:20px;'>专家信息导入完成!</p>");
+            $('.modal-body').html( "<p class=\"bg-success\" style='padding:20px;'>领导信息导入完成!</p>");
             $('.modal-footer').html('');
             $('.modal-footer').html("<button type=\"button\" class=\"btn btn-success\" data-dismiss=\"modal\">关闭提示</button>"
             );
