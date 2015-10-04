@@ -1,18 +1,52 @@
+<!--引入时间控件样式表-->
+<link rel="stylesheet" href="/datetimepicker/bootstrap-datetimepicker.min.css" />
+<!--引入时间控件js-->
+<script type="text/javascript" src= '/datetimepicker/bootstrap.min.js'></script>
+<script type="text/javascript" src="/datetimepicker/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
+<!-- jqgrid 组件-->
 <script type="text/javascript" src="/jqGrid/js/jquery.jqGrid.min.js"></script>
 <script type="text/javascript" src="/jqGrid/js/i18n/grid.locale-cn.js"></script>
-<script type="text/javascript" src="/js/bootstrap.js"></script>
-<script type="text/javascript" src="/lib/bootstrap-datepicker.js"></script>
-<script type="text/javascript" src="/lib/bootstrap-datetimepicker.js"></script>
+<!--jqgrid 辅助-->
+<script type="text/javascript" src="/jqGrid/js/jqgrid.assist.js"></script>
+<!--文件上传 -->
+<script src='/fileupload/ajaxfileupload.js'></script>
+<!--pm 页面公用函数库-->
+<script src='/js/pm.assit.js'></script>
 
-<div style="width:100%;height:500px;overflow:hidden;">
+<!-- jqgrid页面引用 -->
+<div style="width:100%;height:550px;overflow:hidden;">
     <table id="grid-table"></table>
     <div id="grid-pager"></div>   
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">提示信息</h4>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
-    jQuery(function($) {
+$('#myModal').on('hidden.bs.modal', function (e) {
+        $('.Leo_question').css('width','860px')
+});
+$('#myModal').on('hide.bs.modal', function (e) {
+        $('.Leo_question').css('width','860px')
+});  
+$(function(){
+    $('#submit').attr('disabled', true);
+    getInfo();
+    function getInfo(){
+        var lastsel;
         var grid_selector = "#grid-table";
-        var pager_selector = "#grid-pager";       
+        var pager_selector = "#grid-pager";
         //resize to fit page size
         $(window).on('resize.jqGrid', function () {
             $(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
@@ -24,131 +58,159 @@
                 $(grid_selector).jqGrid( 'setGridWidth', parent_column.width() );
             }
         })
+        
         jQuery(grid_selector).jqGrid({
-            url: "/pm/listexaminee",
+            url: "/leader/listexaminee/0",
             datatype: "json",
-            height: '310px',
-            shrinkToFit:true,
-            forceFit:true,
-            autowidth: true,
-            colNames:[ '个人信息','被试编号','姓名','性别', '是否测评结束','最后登录时间','查看报告'],
+            height: '311px',
+            shrinkToFit:false,
+            hidegrid:false,
+            autowidth:true,
             colModel:[
-                {name:'info',index:'info', sortable:false, width:60, resize:false,align:'center',
-                    formatter:function(cellvalue, options, rowObject){
-                        var temp = "<div class='ui-pg-div ui-inline-edit' data-original-title='查看个人详细信息''><a href='/leader/info/"+rowObject.id+"' ><i class='fa fa-th-list'></i></a></div>";
-                        return temp;
-                    }
-                },
-                {name:'number',      index:'number',     sortable:true,    width:100,sorttype:"int", editable: false,  align:'center'},
-                {name:'name',        index:'name',       sortable:true,    width:110,sorttype:"string", editable:false,align:'center'},
-                {name:'sex',         index:'sex',        sortable:true,    width:60,sorttype:"string", editable:false,align:'center'},
-                {name:'state',       index:'state',       sortable:false,  width:135,editable:false,align:'center',
-                    formatter:function(cellvalue){
-                        var temp = "";
-                        if(cellvalue > 5){
-                            temp = "是" ;
-                        } 
-                        else { 
-                            temp = "否";
-                        }
-                        return temp;
-                    }
-                },
-                {name:'last_login',  index:'last_login',  sortable:false,  width:200, editable: false,unformat:pickDate,align:'center'},
-                {name:'result',      index:'result',      sortable:false,  width:130, resize:false,align:'center',
-                    formatter:function(cellvalue, options, rowObject){
-                        var temp = '查看';
-                        if (rowObject.state > 5) {
-                            temp = "<a href='/pm/result' >查看</a>";
-                        }
-                        return temp;
-                    }
-                }
-            ],            
+                     {   name:'id',  label:'用户id',  index:'id',  width:100, fixed:true, resizable:false, sortable:false, sorttype:"int", align:'center',
+                         hidden:true,
+                     },
+                     {   name:'number',  label:'用户账号',  index:'number',  width:120, fixed:true, resizable:false, sortable:true, sorttype:"int", align:'center',
+                         search:true, searchoptions: { sopt: ['eq'], },
+                         searchrules:{ required: true, integer:true,},
+                     },
+                     {   name:'',label:'详情', index:'', width:60, fixed:true, resizable:false,sortable:false, align:'center',
+                         search:false,
+                         formatter:function(cellvalue, options, rowObject){
+                            return "<div class='ui-pg-div ui-inline-edit' data-original-title='查看个人详细信息'><a href='/pm/info/"+rowObject.id+"/0'><i class='fa fa-th-list'></i></a></div>"
+                         },
+                         viewable:false,
+                     },
+                     {  name:'name', label:'姓名',  index:'name', width:120, fixed:true, resizable:false, sortable:true, align:'center',
+                        search:true, searchoptions: {  sopt: ['eq']  },
+                        searchrules:{ required: true, },
+                     },
+                     {  name:'last_login', label:'最后登录时间', index:'last_login', width:200, fixed:true, resizable:false,  sortable:true, sorttype:'date', align:'center',
+                        search:true, searchoptions: {  sopt: ['bw', 'ew'],
+                        dataInit:function(element) { 
+                            $(element).parent().addClass("input-group date form_date");
+                            $(element).addClass('form-control');
+                            $(element).datetimepicker({
+                                language: 'zh-CN', //汉化 
+                                format:'yyyy-mm-dd' , 
+                                autoclose:true,
+                                minView:2,
+                            });    
+                            } 
+                         },  
+                     },
+                     {  name:'state', label:'是否测评结束', index:'interview_state', sortable:true,width:90, fixed:true, resizable:false, editable:false, align:'center',
+                        search:true,
+                        stype:'select', searchoptions:{ sopt: ['eq'], value:"true:是;false:否", },
+                        searchrules:{ required: true,},
+                        formatter:function(cellvalue){
+                            if(cellvalue >= 4 ){
+                                return '<span style=\'color:green\'>是</span>';
+                            }else{
+                                return '<span style=\'color:red\'>否</span>';
+                            }
+                        },      
+                     }, 
+                     {  name:'state', label:'导出胜任力报告', index:'state', sortable:false,width:120, fixed:true, resizable:false,align:'center',
+                        search:false,
+                        viewable:true,
+                        formatter:function(cellvalue,options,rowObject){
+                            if (rowObject.state >= 4) {
+                                return "<div class='ui-pg-div ui-inline-edit' data-original-title='导出胜任力报告'><span style='visibility:hidden;'>&nbsp;</span><a href='/pm/resultReport/"+rowObject.id+"'><i class=\"glyphicon glyphicon-download\"></i></a><span style='visibility:hidden;'>&nbsp;</span></div>"
+                         
+                            }else {
+                                return '';
+                            }      
+                        },
+                     }, 
+                      {  name:'state', label:'导出综合素质报告', index:'state', sortable:false,width:120, fixed:true, resizable:false, align:'center',
+                        search:false,
+                        viewable:true,
+                        formatter:function(cellvalue,options,rowObject){
+                            if (rowObject.state >= 4) {
+                                return "<div class='ui-pg-div ui-inline-edit' data-original-title='导出综合素质报告'><span style='visibility:hidden;'>&nbsp;</span><a href='/pm/resultReport/"+rowObject.id+"'><i class=\"glyphicon glyphicon-download\"></i></a><span style='visibility:hidden;'>&nbsp;</span></div>"
+                         
+                            }else {
+                                return '';
+                            }  
+                        },
+                     },     
+            ], 
             viewrecords : true, 
             rowNum:10,
-            rowList:[10,20,30],
+            rowList:[10,20,50,100,200],
             pager : pager_selector,
             altRows: true,
-            toppager: false,           
-            loadComplete : function() {           
-                    updatePagerIcons(this);
-            },   
-            editurl: "/pm/updateexaminee",//nothing is saved
-            caption: "被试人员列表",  
-            autowidth: true  
+            emptyrecords: "<span style='color:red'>还未有记录</span>", 
+            loadComplete : function(data) {
+                if(data.error){
+                         $('.Leo_question').css('width','843px')
+                         $('.modal-body').html('');
+                         $('.modal-body').html(
+                         "<p class=\"bg-danger\" style='padding:20px;'>"+data.error+ "</p>"
+                         );
+                        $('.modal-footer').html('');
+                        $('.modal-footer').html(
+                         "<a href='/managerlogin'><button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'>重新登录</button></a>"
+                        );
+                        $('#myModal').modal({
+                         keyboard:true,
+                         backdrop:'static'
+                       })
+                }
+                var table = this;
+                setTimeout(function(){
+                    updatePagerIcons(table);
+                    enableTooltips(table);
+                }, 0);
+            },
+            reloadAfterSubmit:true,
+            caption: "项目管理",
+            multiselect: true,
+            //multikey: "ctrlKey",
+            multiboxonly: true,
         });
-        $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
-    
+        
         //navButtons
         jQuery(grid_selector).jqGrid('navGrid',pager_selector,
             {   //navbar options
-                search: true,
-                searchicon : 'ace-icon fa fa-search orange',
+                add: false,
+                edit: false,
+                del: false,
                 refresh: true,
                 refreshicon : 'ace-icon fa fa-refresh green',
+                refreshtext:'刷新',
+                search:true,
+                searchicon : 'ace-icon fa fa-search orange',
+                searchtext:'搜索',
                 view: true,
                 viewicon : 'ace-icon fa fa-search-plus grey',
+                viewtext:'查看',
             },
-            {
-                //search form
-                recreateForm: true,
+            {},
+            {},
+            {},
+            {//search
+                top : 80,  //位置
+                left: 300, //位置 
+                multipleSearch: false,
+                caption:'搜索查询...',
+                Reset: '重置',
+                Find:'查询',
+                closeAfterSearch:true,
                 afterShowSearch: function(e){
                     var form = $(e[0]);
                     form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
                     style_search_form(form);
                 },
-                afterRedraw: function(){
-                    style_search_filters($(this));
-                }
-                ,
-                multipleSearch: true,
             },
-            {
-                //view record form
-                recreateForm: true,
-                beforeShowForm: function(e){
-                    var form = $(e[0]);
-                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
-                }
-            }
-        )
-        function style_search_filters(form) {
-            form.find('.delete-rule').val('X');
-            form.find('.add-rule').addClass('btn btn-xs btn-primary');
-            form.find('.add-group').addClass('btn btn-xs btn-success');
-            form.find('.delete-group').addClass('btn btn-xs btn-danger');
-        }
-        function style_search_form(form) {
-            var dialog = form.closest('.ui-jqdialog');
-            var buttons = dialog.find('.EditTable')
-            buttons.find('.EditButton a[id*="_reset"]').addClass('btn btn-sm btn-info').find('.ui-icon').attr('class', 'ace-icon fa fa-retweet');
-            buttons.find('.EditButton a[id*="_query"]').addClass('btn btn-sm btn-inverse').find('.ui-icon').attr('class', 'ace-icon fa fa-comment-o');
-            buttons.find('.EditButton a[id*="_search"]').addClass('btn btn-sm btn-purple').find('.ui-icon').attr('class', 'ace-icon fa fa-search');
-        }
-
-        //replace icons with FontAwesome icons like above
-        function updatePagerIcons(table) {
-            var replacement = 
-            {
-                'ui-icon-seek-first' : 'ace-icon fa fa-angle-double-left bigger-140',
-                'ui-icon-seek-prev' : 'ace-icon fa fa-angle-left bigger-140',
-                'ui-icon-seek-next' : 'ace-icon fa fa-angle-right bigger-140',
-                'ui-icon-seek-end' : 'ace-icon fa fa-angle-double-right bigger-140'
-            };
-            $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
-                var icon = $(this);
-                var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
-                
-                if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
-            })
-        }
-        
-        function pickDate( cellvalue, options, cell ) {
-            setTimeout(function(){
-                $(cell) .find('input[type=text]')
-                        .datetimepicker({format:'yyyy-mm-dd hh:ii' , autoclose:true}); 
-            }, 0);
-        }
-    });
+            {//view
+                top : 10,  //位置
+                left: 10, //位置 
+             }, 
+             {//refresh   
+             }
+        );     
+}
+});
 </script>

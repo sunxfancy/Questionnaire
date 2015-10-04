@@ -27,7 +27,9 @@ class WordExport
 		$document->save('words/Solarsystem.docx');
 	}
 	
-	public function examineeReport($examinee,$project_id){
+	public function individualComReport($examinee_id){
+		$examinee = Examinee::findFirst($examinee_id);
+		$project_id = $examinee->project_id;
 		$PHPWord = new PHPWord();
 		$report = new individualComReport();
 		$chart = new ChartLoader();
@@ -130,6 +132,7 @@ class WordExport
 		$table ->addCell(3500)->addObject('chart/ChartLoader.xls');
 		$section->addPageBreak();
 
+	//结果分析
 		$section->addTitle("二、测评结果",1);
 		$section->addTitle("1、突出优势",2);
 		$ga = $report->getAdvantages($examinee->id);
@@ -147,7 +150,11 @@ class WordExport
 				$convert_array = array('一','二','三');
 				$comments .= $convert_array[$j].$advantage[$rand_key].'；';
 			}
-			$section->addText("        本项内容共由".$consist."项指标构成，满分10分。根据得分的高低排序，分析张筱宇得分排在前三项具体特点为：".$comments."具体分布如右图所示： ");
+			$table = $section->addTable();
+			$table ->addRow();
+			$table ->addCell(6000)->addText("        本项内容共由".$consist."项指标构成，满分10分。根据得分的高低排序，分析张筱宇得分排在前三项具体特点为：".$comments."具体分布如右图所示： ");
+			$table ->addCell(3500)->addObject('chart/ChartLoader.xls');
+			$section->addTextBreak(1);
 		}
 		$section->addTitle("2、需要改进方面",2);
 		$dga = $report->getDisadvantages($examinee->id);
@@ -165,7 +172,11 @@ class WordExport
 				$convert_array = array('一','二','三');
 				$comments .= $convert_array[$j].$disadvantage[$rand_key].'；';
 			}
-			$section->addText("        本项内容共由".$consist."项指标构成，满分10分。根据得分的高低排序，分析张筱宇得分排在前三项具体特点为：".$comments."具体分布如右图所示： ");
+			$table = $section->addTable();
+			$table ->addRow();
+			$table ->addCell(6000)->addText("        本项内容共由".$consist."项指标构成，满分10分。根据得分的高低排序，分析张筱宇得分排在前三项具体特点为：".$comments."具体分布如右图所示： ");
+			$table ->addCell(3500)->addObject('chart/ChartLoader.xls');
+			$section->addTextBreak(1);
 		}
 
 	//综合评价
@@ -240,7 +251,7 @@ class WordExport
 		$table->addCell(2000,array('cellMerge'=>'continue'));
 		$table->addCell(2000,array('cellMerge'=>'continue'));
 		//命名
-		$fileName = $examinee->number."+".$examinee->name."+"."综合素质测评报告";
+		$fileName = $examinee->number."+individualComReport";
 		// header("Content-Disposition:attachment;filename=".$fileName.".doc"); 
 		// $this->commonMsg($PHPWord);
 		// Save File
@@ -253,7 +264,7 @@ class WordExport
 		$section = $PHPWord->createSection();
 
 		//命名
-		$fileName = $examinee->number."+".$examinee->name."+"."个人胜任力模型测评报告";
+		$fileName = $examinee->number."+individualComReport";
 		header("Content-Disposition:attachment;filename=".$fileName.".doc"); 
 		$this->commonMsg($PHPWord);
 	}
