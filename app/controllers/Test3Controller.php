@@ -9,10 +9,10 @@ class Test3Controller extends Base
         $examinee_id = 31;
         $wordExport = new WordExport();
         // $wordExport->individualComReport($examinee_id);
-        // $wordExport->individualCompetencyReport($examinee_id);
+        $wordExport->individualCompetencyReport($examinee_id);
         // $wordExport->comprehensiveReport($project_id);
         // $wordExport->teamReport($project_id);
-        $wordExport->systemReport($project_id);
+        // $wordExport->systemReport($project_id);
     }
 
 }

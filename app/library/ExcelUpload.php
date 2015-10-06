@@ -168,14 +168,11 @@ class  ExcelUpload {
 	public function handleReportComment(){
 		$array1 = self::handleReportCommentsheet1();
 		$array2 = self::handleReportCommentsheet2();
-		// $array3 = self::handleReportCommentsheet3();
 		for ($i=0; $i < count($array1); $i++) { 
 			$array1[$i]['id'] = $i+1;
 			$array1[$i]['disadvantage'] = $array2[$i]['disadvantage'];
 		}
 		return $array1;
-		// print_r($array1);echo "<br/>";echo "<br/>";echo "<br/>";echo "<br/>";
-		// print_r($array3);
 	}
 
 	public function handleReportCommentsheet1(){
@@ -237,76 +234,7 @@ class  ExcelUpload {
 		}
 		return $ans;
 	}
-
-	public function handleReportCommentsheet3(){
-		$currentSheet = self::$objPHPExcel->getSheet(2);
-		$rowCount = $currentSheet->getHighestRow();echo $rowCount;echo "<br/>";
-		$columnMax = $currentSheet->getHighestColumn();echo $columnMax;echo "<br/>";
-		$ans = array();
-		for( $currentRow = 3; $currentRow <= $rowCount; $currentRow++ ){
-			$record = array();
-			for ($column = 'A'; $column <= $columnMax; $column++) {
-				//列数是以A列开始
-	            $value = $currentSheet->getCell($column.$currentRow)->getValue();
-	            echo $currentRow;echo $column;echo $value;echo "<br/>";
-	            $value = trim($value);
-	            if(empty($value)){
-	             	//行结束
-	             	break;
-           		}
-	            if( $column == 'B'){
-	             	$record['name'] = $value;
-	             	echo $value;
-	             	continue;
-	            }
-	            if( $column == 'C'){
-	             	$record['comment'] = $value;
-	             	continue;
-	            }
-    		}
-    		if (!empty($record)) {
-	    		$ans[] = $record;
-    		}
-		}
-		return $ans;
-	}
 	
-	public function handleMiddleLayer(){
-		$currentSheet = self::$objPHPExcel->getSheet(1);
-		$rowCount = $currentSheet->getHighestRow();
-		$columnMax = $currentSheet->getHighestColumn();
-		$ans = array();
-		for( $currentRow = 1; $currentRow <= $rowCount; $currentRow ++ ){
-			$record = array();
-			$choices = array();
-			for ($column = 'A'; $column <= $columnMax; $column++) {
-				//列数是以A列开始
-	            $value = $currentSheet->getCell($column.$currentRow)->getValue();
-	            $value = trim($value);
-	            if(empty($value)){
-	             	//行结束
-	             	break;
-           		}
-	            if( $column == 'B'){
-	             	$record['index_name'] = $value;
-	             	echo $value;
-	             	continue;
-	            }
-	            if( $column == 'C'){
-	             	$record['factor_name'] = $value;
-	             	continue;
-	            }
-	            if( $column == 'E'){
-	             	$record['middle_name'] = $value;
-	             	continue;
-	            }
-    		}
-    		if (!empty($record)) {
-	    		$ans[] = $record;
-    		}
-		}
-		return $ans;
-	}
 	/**
 	 * 被试信息上传
 	 * 由于被试信息表数据量不定，因此采取逐条插入的方式
@@ -425,6 +353,79 @@ class  ExcelUpload {
 				$ans[] = $value;
 			}
 		
+		}
+		return $ans;
+	}
+
+	/**
+	 * 处理胜任力指标导入
+	 */
+	public function handleCompetency(){
+		$array1 = self::handleCompetencySheet1();
+		$array2 = self::handleCompetencySheet2();
+		for ($i=0; $i < count($array1); $i++) { 
+			$array1[$i]['id'] = $i+1;
+			$array1[$i]['disadvantage'] = $array2[$i]['disadvantage'];
+		}
+		return $array1;
+	}
+
+	public function handleCompetencySheet1(){
+		$currentSheet = self::$objPHPExcel->getSheet(0);
+		$rowCount = $currentSheet->getHighestRow();
+		$columnMax = $currentSheet->getHighestColumn();
+		$ans = array();
+		for( $currentRow = 1; $currentRow <= $rowCount; $currentRow ++ ){
+			$record = array();
+			$choices = array();
+			for ($column = 'A'; $column <= $columnMax; $column++) {
+				//列数是以A列开始
+	            $value = $currentSheet->getCell($column.$currentRow)->getValue();
+	            $value = trim($value);
+	            if(empty($value)){
+	             	//行结束
+	             	break;
+           		}
+	            if( $column == 'A'){
+	             	$record['name'] = $value;echo $record['name'];
+	             	continue;
+	            }
+	            $choices[] = $value;
+    		}
+    		if (!empty($choices)) {
+    			$record['advantage'] = implode('|', $choices);
+    			echo $record;
+	    		$ans[] = $record;
+    		}
+		}print_r($ans);exit();
+		return $ans;
+	}
+	public function handleCompetencySheet2(){
+		$currentSheet = self::$objPHPExcel->getSheet(1);
+		$rowCount = $currentSheet->getHighestRow();
+		$columnMax = $currentSheet->getHighestColumn();
+		$ans = array();
+		for( $currentRow = 1; $currentRow <= $rowCount; $currentRow ++ ){
+			$record = array();
+			$choices = array();
+			for ($column = 'A'; $column <= $columnMax; $column++) {
+				//列数是以A列开始
+	            $value = $currentSheet->getCell($column.$currentRow)->getValue();
+	            $value = trim($value);
+	            if(empty($value)){
+	             	//行结束
+	             	break;
+           		}
+	            if( $column == 'A'){
+	             	$record['name'] = $value;
+	             	continue;
+	            }
+	            $choices[] = $value;
+    		}
+    		if (!empty($choices)) {
+    			$record['disadvantage'] = implode('|', $choices);
+	    		$ans[] = $record;
+    		}
 		}
 		return $ans;
 	}

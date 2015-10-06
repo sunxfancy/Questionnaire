@@ -58,6 +58,7 @@ class ManagerloginController extends Base
     }
 
     public function logoutAction(){
+        $manager = $this->session->get('Manager');
         $this->session->remove('Manager');
     	$this->response->redirect('managerlogin');
     }

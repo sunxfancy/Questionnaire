@@ -445,13 +445,14 @@ class UploadController extends \Phalcon\Mvc\Controller {
 						echo "{'error':'上传文件不能为空'}";
 						return ;
 					}else{
-                        $file_name = null;
-                        $file_name .= date("Y_m_d_H_i_s_");
-                        $file_name .= rand(1,200)."_";
-                        $file_name .= $file->getName();
-                        $file_path = "./upload/";
-                        $file_path .= $file_name;
-                        $file->moveTo($file_path);
+						$file_name = null;
+				 		$file_name .= date("Y_m_d_H_i_s_");
+				 		$file_name .= rand(1,200)."_";
+				 		$file_name .= $file->getName();
+				 		$file_path = "./upload/";
+				 		$file_path .= $file_name;
+				 		$file->moveTo($file_path);
+                       
                     }
 				}
 			}else{
@@ -477,24 +478,53 @@ class UploadController extends \Phalcon\Mvc\Controller {
 			return ;
 		}
 	}	
-	public function checkReportCommentAction(){	
-			try{
-				DBHandle::checkReportComment();
-			}catch(Exception $e){
-				echo $e->getMessage();
-			}
-		}
-	public function deleteReportCommentAction(){
-		//die("not allowed");		
+
+	/**
+	 * 上传胜任力指标
+	 */
+	public function uploadCompetencyAction(){
 		try{
-			$delete_state = DBHandle::deleteReportComment();
-			if($delete_state){
-				echo "个体报告评语描述数据删除成功";
+            $file_path = null;
+			if ($this->request->hasFiles()) {
+				foreach ($this->request->getUploadedFiles() as $file) {
+					if(empty($file->getName())){
+						echo "{'error':'上传文件不能为空'}";
+						return ;
+					}else{
+                     $file_name = null;
+				 		$file_name .= date("Y_m_d_H_i_s_");
+				 		$file_name .= rand(1,200)."_";
+				 		$file_name .= $file->getName();
+				 		$file_path = "./upload/";
+				 		$file_path .= $file_name;
+				 		$file->moveTo($file_path);
+                    }
+				}
+			}else{
+				echo "{'error':'wrong to here'}";
+				return ;
 			}
+            if(empty($file_path)){
+            	echo "{'error':'文件上传失败'}";
+                return ;
+            }
+			$excelHander = new ExcelUpload($file_path);
+            $data = $excelHander->handleCompetency();
+            print_r($data);
+            exit();
+            if(file_exists($file_path)) unlink($file_path);
+		    DBHandle::insertCompetency($data);
+		    echo "{'success':'true'}";
+            return ;
 		}catch(Exception $e){
-			echo $e->getMessage();
+            if( file_exists($file_path)){
+                unlink($file_path);
+            }
+            $msg = $e->getMessage();
+            echo "{'error':'$msg'}";
+			return ;
 		}
-	}
+	}	
 
 	public function insertMiddleAction(){
 		$middle_file = __DIR__ . "/../../app/config/middlelayer.json";

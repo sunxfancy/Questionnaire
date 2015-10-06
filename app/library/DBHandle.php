@@ -524,10 +524,7 @@ class DBHandle {
 
     //插入个体报告评语描述信息
     public static function insertReportComment($data){
-        // print_r($data);
         try{
-            self::delReportComment();
-            #插入新数据
             $manager     = new TxManager();
             $transaction = $manager->get();
             foreach($data as $value){
@@ -535,7 +532,7 @@ class DBHandle {
                 $reportcomment->setTransaction($transaction);
                 foreach($value as $key=>$svalue){
                     $reportcomment->$key = $svalue;
-                    echo $key;echo "--:--";echo $svalue;echo "<br/>";
+                    echo $key;echo " :   ";echo $svalue;echo "<br/>";
                 }
                 if($reportcomment->save() == false) {
                      $transaction->rollback('数据更新失败-3');
@@ -547,25 +544,20 @@ class DBHandle {
             throw new Exception($e->getMessage());
         }
     }
-
-    public static function checkReportComment(){
-        $all = ReportComment::find();
-
-        foreach ($all as $key => $value) {
-             print_r($key);echo "--:--";print_r($value);echo "<br/>";
-        }
-    }
-    #删除个体报告评语描述信息
-    public static function delReportComment(){
+    //插入胜任力指标描述
+    public static function insertCompetency($data){
         try{
             $manager     = new TxManager();
             $transaction = $manager->get();
-            #先删除已有的信息
-            $delete_data = ReportComment::find();
-            foreach($delete_data as $data_record){
-                $data_record->setTransaction($transaction);
-                if($data_record->delete()== false){
-                    $transaction->rollback('数据更新失败-1');
+            foreach($data as $value){
+                $competencycomment = new CompetencyComment();
+                $competencycomment->setTransaction($transaction);
+                foreach($value as $key=>$svalue){
+                    $competencycomment->$key = $svalue;
+                    echo $key;echo " :   ";echo $svalue;echo "<br/>";
+                }
+                if($competencycomment->save() == false) {
+                     $transaction->rollback('数据更新失败-3');
                 }
             }
             $transaction->commit();
@@ -575,7 +567,7 @@ class DBHandle {
         }
     }
 
-     //插入个体报告评语描述信息
+     //插入指标与因子中间层
     public static function insertMiddle($data){
         try{
             $manager     = new TxManager();
