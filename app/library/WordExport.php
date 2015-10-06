@@ -9,229 +9,6 @@ class WordExport
 		$this->wordHandle =  new \PhpOffice\PhpWord\PhpWord();
 	}
 	/**
-	 * @usage 个体综合报告生成
-	 * @param
-	*/
-	public function individualComReport($examinee_id){
-		//check examinee_id;
-		$report = new individualComReport();
-		$project_id = $report->self_check($examinee_id);
-		//get basic info
-		$examinee = Examinee::findFirst($examinee_id);
-		//set fontStyle;
-		$captionFontStyleName =  'captionFontStyle';
-		$this->wordHandle->addFontStyle($captionFontStyleName, array('color'=>'red', 'size'=>36));
-		$fontStyle1 = array('size'=>14,'bold'=>true);
-		//set title style---TOC
-		$this->wordHandle->addTitleStyle(1,array('size'=>16,'bold'=>true,'color'=>'red'));
-		$this->wordHandle->addTitleStyle(2,array('size'=>15,'bold'=>true,'color'=>'blue'));
-		$this->wordHandle->addTitleStyle(3,array('size'=>14,'bold'=>true,'color'=>'blue'));
-		//set table style
-		$styleTable = array('borderSize'=>6, 'borderColor'=>'black', 'cellMargin'=>80);
-		$this->wordHandle->addTableStyle('myOwnTableStyle', $styleTable);
-		//set paragraphpStyle  标题段落格式
-		$captionParagraphStyleName = 'captionParagraphStyle';
-		$this->wordHandle->addParagraphStyle($captionParagraphStyleName, 
-				array()
-		);
-		$captionImageParagraphStyleName = 'captionImageParagraphStyle';
-		$this->wordHandle->addParagraphStyle($captionImageParagraphStyleName, 
-				array('alignment'=>'center', 'keepNext'=>true)
-		);
-		//set sectionStyle
-		$sectionStyle = array(
-				'border'=>1, 'borderColor'=>'000000'
-		);
-		//add section
-		$section = $this->wordHandle->addSection($sectionStyle);
-		//set page number
-		$section->getStyle()->setPageNumberingStart();
-		//cover part 
-		$section->addImage('reportimage/logo.png');
-	    $section->addTextBreak(6);
-		$section->addImage('reportimage/fengmian.png', $captionImageParagraphStyleName);
-		$section->addText('综合素质测评报告',$captionFontStyleName, $captionParagraphStyleName);		
-		$section->addTextBreak(1);
-/*耀辉修改节点*/
-		$section->addText("测评对象：".$examinee->name,$fontStyle1);
-		$section->addTextBreak(1);
-		$sex = ($examinee->sex == 1) ? '男' : '女';
-		$section->addText("性    别：".$sex,$fontStyle1);
-		$section->addTextBreak(1);
-		$section->addText("出生年月：".$examinee->birthday,$fontStyle1);
-		$section->addTextBreak(1);
-		$section->addText("测试单位：北京国合点金管理咨询有限公司",$fontStyle1);
-		$section->addTextBreak(1);
-		$section->addText("测试时间：".$examinee->last_login,$fontStyle1);
-		$section->addPageBreak();
-		//catalog part
-		$section->addText("目录",array('size' => 18,'color' => 'red'),array('align'=>'center'));
-		$section->addTOC(array('tabLeader'=>PhpOffice\PhpWord\Style\TOC::TABLEADER_DOT));
-		$section->addPageBreak();
-		//个人情况
-		$json = json_decode($examinee->other,true);
-		$education_array = $json['education'];
-		//对教育经历按逆序时间排序
-		$time1_array = array();
-		foreach($education_array as $key=>$value){
-			$time1_array[] = $value['date'];
-		}
-		array_multisort($time1_array,SORT_DESC,$education_array);
-		$section->addTitle("一、个人情况综述",1);
-		$section->addTitle("个人信息",2);
-		$section->addListItem("姓名：".$examinee->name."(".$sex.")");
-		$section->addListItem("毕业院校：".$education_array[0]['school'].$education_array[0]['degree']);
-		$section->addListItem("规定测试时间：3小时");
-		$time = '';
-		foreach (array(3600=>'小时', 60=>'分',1=>'秒') as $key => $value) {
-			if ($examinee->exam_time >= $key) {
-				$time .= floor($examinee->exam_time / $key).$value;
-				$examinee->exam_time %= $key;
-			}
-		}
-		$section->addListItem("实际完成时间：".$time);
-		$work_array = $json['work'];
-		//对工作经历按逆序时间排序
-		$time2_array = array();
-		foreach($work_array as $key=>$value){
-			$time2_array[] = $value['date'];
-		}
-		array_multisort($time2_array,SORT_DESC,$work_array);
-		$section->addTitle("工作经历",2);
-		$table = $section->addTable('myOwnTableStyle');
-		$table->addRow(400);
-		$styleCell = array('valign'=>'center');
-		$table->addCell(2700,$styleCell)->addText("工作单位");
-		$table->addCell(2700,$styleCell)->addText('部门');
-		$table->addCell(2700,$styleCell)->addText('职位');
-		$table->addCell(2700,$styleCell)->addText('工作时间');
-		for($r = 1; $r <= count($work_array); $r++) { 
-			$table->addRow(400);
-			$table->addCell(100)->addText($work_array[$r-1]['employer']);
-			$table->addCell(100)->addText($work_array[$r-1]['unit']);
-			$table->addCell(100)->addText($work_array[$r-1]['duty']);
-			$table->addCell(100)->addText($work_array[$r-1]['date']);
-		}
-
-		if ($examinee->exam_time > 10800) {
-			$comOrnot = '未在规定时间内完成';
-		}else if($examinee->exam_time > 8400){
-			$comOrnot = '在规定时间内完成';
-		}else if($examinee->exam_time > 5400){
-			$comOrnot = '比正常快近三分之一';
-		}else{
-			$comOrnot = '比正常快近二分之一';
-		}
-		$section->addText("    测试要求3小时，以".$time."完成，".$examinee->name.$comOrnot."，且回答"."真实（掩饰性系数低于平均水平）"."，说明其阅读"."不仅快而且准确。");
-		$sc = $report->getSystemComprehensive($examinee->id);
-		$table = $section->addTable();
-		$table ->addRow();
-		$table ->addCell(6000)->addText("    根据测试结果和综合统计分析，分别从职业心理、职业素质、职业心智、职业能力等做出系统评价，按优、良、中、差四个等级评分。综合得分：优秀率".$sc[1]."%，良好率为".$sc[2]."%，中为".$sc[3]."%，差为".$sc[4]."%，综合发展潜质为，如右图所示。 ");
-		$table ->addCell(3000);
-		$section->addPageBreak();
-		//结果分析
-		$section->addTitle("二、测评结果",1);
-		$section->addTitle("1、突出优势",2);
-		$ga = $report->getAdvantages($examinee->id);
-		for ($i=0; $i < count($ga); $i++) { 
-			$section->addTitle($ga[$i]['chs_name'],3);
-			$children = explode(",", $ga[$i]['children']);
-			$consist = count($children);
-			$comments = '';
-			for ($j=0; $j < count($ga[$i]['detail']); $j++) { 
-				$advantages = ReportComment::findFirst(array(
-					'name=?1',
-					'bind'=>array(1=>$ga[$i]['detail'][$j]['chs_name'])))->advantage;
-				$advantage = explode("|", $advantages);
-				$rand_key = array_rand($advantage);
-				$convert_array = array('一','二','三');
-				$comments .= $convert_array[$j].$advantage[$rand_key].'；';
-			}
-			$table = $section->addTable();
-			$table ->addRow();
-			$table ->addCell(6000)->addText("    本项内容共由".$consist."项指标构成，满分10分。根据得分的高低排序，分析张筱宇得分排在前三项具体特点为：".$comments."具体分布如右图所示： ");
-			$table ->addCell(3500);
-			$section->addTextBreak(1);
-		}
-		$section->addTitle("2、需要改进方面",2);
-		$dga = $report->getDisadvantages($examinee->id);
-		for ($i=0; $i < count($dga); $i++) { 
-			$section->addTitle($dga[$i]['chs_name'],3);
-			$children = explode(",", $dga[$i]['children']);
-			$consist = count($children);
-			$comments = '';
-			for ($j=0; $j < count($dga[$i]['detail']); $j++) { 
-				$disadvantages = ReportComment::findFirst(array(
-					'name=?1',
-					'bind'=>array(1=>$dga[$i]['detail'][$j]['chs_name'])))->disadvantage;
-				$disadvantage = explode("|", $disadvantages);
-				$rand_key = array_rand($disadvantage);
-				$convert_array = array('一','二','三');
-				$comments .= $convert_array[$j].$disadvantage[$rand_key].'；';
-			}
-			$table = $section->addTable();
-			$table ->addRow();
-			$table ->addCell(6000)->addText("    本项内容共由".$consist."项指标构成，满分10分。根据得分的高低排序，分析张筱宇得分排在前三项具体特点为：".$comments."具体分布如右图所示： ");
-			$table ->addCell(3500);
-			$section->addTextBreak(1);
-		}
-		//综合评价
-		$section->addTitle("三、综合评价",1);
-		$ic = $report->getindividualComprehensive($examinee->id);
-		// $section->addText("综合评价分析包括对".$ic_name."的分析。其中".$ic_consist."。由各指标的得分平均值得出".$ic_name."的综合分。 ");
-		$section->addTitle("职业素质：",2);
-		$section->addText($examinee->name);
-		$section->addTitle("职业心理：",2);
-		$section->addText($examinee->name);
-		$section->addTitle("职业能力：",2);
-		$section->addText($examinee->name);
-		$section->addTitle("三商与身体：",2);
-		$section->addText($examinee->name);
-		//结论与建议
-		$section->addTitle("四、结论与建议",1);
-		$comments = $report->getComments($examinee_id);
-		$table = $section->addTable('myOwnTableStyle'); 
-		$table->addRow();
-		$table->addCell(1800,array('valign'=>'center'))->addText("优势",array('color'=>'blue'));
-		$ad = $table->addCell(1800);
-		$ad->getStyle()->setGridSpan(4);
-		for ($i=0; $i < 5; $i++) { 
-			$ad->addText(($i+1).". ".$comments['advantage'][$i]);
-		}
-		$table->addRow();
-		$table->addCell(1800,array('valign'=>'center'))->addText("改进",array('color'=>'blue'));
-		$dad = $table->addCell(1800);
-		$dad->getStyle()->setGridSpan(4);
-		for ($i=0; $i < 3; $i++) { 
-			$dad->addText(($i+1).". ".$comments['disadvantage'][$i]);
-		}
-		$table->addRow();
-		$table->addCell(1800,array('valign'=>'center','vMerge' => 'restart'))->addText("潜质",array('color'=>'blue','align'=>'center'));
-		$table->addCell(1800)->addText("优");
-		$table->addCell(1800)->addText("良");
-		$table->addCell(1800)->addText("中");
-		$table->addCell(1800)->addText("差");
-		$table->addRow();
-		$table->addCell(1800,array('vMerge' => 'continue'));
-		for ($i=0; $i < 4; $i++) { 
-			if ($comments['level'] != $i + 1) {
-				$table->addCell(1800);
-			}else{
-				$table->addCell(1800)->addText($comments['level']);
-			}
-		}
-		$table->addRow();
-		$table->addCell(1800,array('valign'=>'center'))->addText("评价",array('color'=>'blue'));
-		$remarkCell = $table->addCell(1800);
-		$remarkCell->getStyle()->setGridSpan(4);
-		$remarkCell->addText($comments['remark']);
-		//命名
-		$fileName = $examinee->number."+individualComReport";
-		$objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($this->wordHandle, 'Word2007');
-		$objWriter->save('wordexport/'.$fileName.'.docx');
-	}
-	
-	/**
 	 * @usage 个体胜任力报告生成
 	 * @param
 	 */
@@ -241,6 +18,9 @@ class WordExport
 		$project_id = $report->self_check($examinee_id);
 		//get basic info
 		$examinee = Examinee::findFirst($examinee_id);
+		//set default style
+		$titleFontStyle = array('color' => 'blue','bold' => true);
+		$fontStyle2 = array('color' => 'blue');
 		//set table style
 		$styleTable = array('borderSize'=>6, 'borderColor'=>'black', 'cellMargin'=>80);
 		$this->wordHandle->addTableStyle('myOwnTableStyle', $styleTable);
@@ -265,7 +45,7 @@ class WordExport
 		$table->addRow();
 		$cell3_19 = $table->addCell(1000);
 		$cell3_19->getStyle()->setGridSpan(9);
-		$cell3_19->addText("胜任素质评分",array('color' => 'blue','bold' => true));
+		$cell3_19->addText("胜任素质评分",$titleFontStyle);
 		$table->addRow();
 		$table->addCell(1000)->addText("领导力");
 		$table->addCell(1000)->addText("独立工作能力");
@@ -288,9 +68,88 @@ class WordExport
 		$table->addCell(1000)->addText();
 		$table->addCell(1000)->addText();
 		$table->addRow();
-		$cell3_19 = $table->addCell(1000);
-		$cell3_19->getStyle()->setGridSpan(9);
-		$cell3_19->addText("胜任力模型+述职",array('color' => 'blue','bold' => true));
+		$cell6_19 = $table->addCell(1000);
+		$cell6_19->getStyle()->setGridSpan(9);
+		$cell6_19->addText("胜任力模型+述职",$titleFontStyle);
+		$table->addRow();
+		$cell7_19 = $table->addCell(1000);
+		$cell7_19->getStyle()->setGridSpan(9);
+		//两张图片
+		$cell7_19->addText();
+		$cell7_19->addText("主要优势有五点：",$fontStyle2);
+		$array1 = array('一','二','三','四','五');
+		for ($i=0; $i < 5; $i++) { 
+			$cell7_19->addText($array1[$i]);
+		}
+		$cell7_19->addText("有待改进有三点：",$fontStyle2);
+		$array2 = array('一','二','三');
+		for ($i=0; $i < 3; $i++) { 
+			$cell7_19->addText($array2[$i]);
+		}
+		$cell7_19->addText("述职报告结果：",$fontStyle2);
+
+		$table->addRow();
+		$cell8_19 = $table->addCell(1000);
+		$cell8_19->getStyle()->setGridSpan(9);
+		$cell8_19->addText("胜任力模型+民主生活会",$titleFontStyle);
+		$table->addRow();
+		$cell9_19 = $table->addCell(1000);
+		$cell9_19->getStyle()->setGridSpan(9);
+		//两张图片
+		$cell9_19->addText();
+		$cell9_19->addText("主要优势有五点：",$fontStyle2);
+		$array1 = array('一','二','三','四','五');
+		for ($i=0; $i < 5; $i++) { 
+			$cell9_19->addText($array1[$i]);
+		}
+		$cell9_19->addText("有待改进有三点：",$fontStyle2);
+		$array2 = array('一','二','三');
+		for ($i=0; $i < 3; $i++) { 
+			$cell9_19->addText($array2[$i]);
+		}
+		$cell9_19->addText("民主生活会指标描述：",$fontStyle2);
+
+		$table->addRow();
+		$cell10_19 = $table->addCell(1000);
+		$cell10_19->getStyle()->setGridSpan(9);
+		$cell10_19->addText("胜任力模型+民主集中制",$titleFontStyle);
+		$table->addRow();
+		$cell11_19 = $table->addCell(1000);
+		$cell11_19->getStyle()->setGridSpan(9);
+		//两张图片
+		$cell11_19->addText();
+		$cell11_19->addText("主要优势有五点：",$fontStyle2);
+		$array1 = array('一','二','三','四','五');
+		for ($i=0; $i < 5; $i++) { 
+			$cell11_19->addText($array1[$i]);
+		}
+		$cell11_19->addText("有待改进有三点：",$fontStyle2);
+		$array2 = array('一','二','三');
+		for ($i=0; $i < 3; $i++) { 
+			$cell11_19->addText($array2[$i]);
+		}
+		$cell11_19->addText("民主集中制指标描述：",$fontStyle2);
+
+		$table->addRow();
+		$cell12_19 = $table->addCell(1000);
+		$cell12_19->getStyle()->setGridSpan(9);
+		$cell12_19->addText("胜任力模型+四个全面",$titleFontStyle);
+		$table->addRow();
+		$cell13_19 = $table->addCell(1000);
+		$cell13_19->getStyle()->setGridSpan(9);
+		//两张图片
+		$cell13_19->addText();
+		$cell13_19->addText("主要优势有五点：",$fontStyle2);
+		$array1 = array('一','二','三','四','五');
+		for ($i=0; $i < 5; $i++) { 
+			$cell13_19->addText($array1[$i]);
+		}
+		$cell13_19->addText("有待改进有三点：",$fontStyle2);
+		$array2 = array('一','二','三');
+		for ($i=0; $i < 3; $i++) { 
+			$cell13_19->addText($array2[$i]);
+		}
+		$cell13_19->addText("四个全面指标描述：",$fontStyle2);
 
 		//命名
 		$fileName = $examinee->number."+individualCompetencyReport";

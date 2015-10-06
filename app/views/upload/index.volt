@@ -82,17 +82,25 @@
 <blockquote>该数据无外键约束到question表，因此由navicat导入</blockquote>
 
 <h2>4.导入个人报告指标评语描述</h2>
+<blockquote>个人报告指标评语描述表位置：<strong>/public/相关数据/个人指标描述</strong></blockquote>
 <blockquote>
 <form class="form-inline" action="/upload/uploadReportComment" method="post" enctype="multipart/form-data">
         <input class="form-control" type="file" name="inputExcel">
         <input class="form-control btn btn-primary" type="submit" value="导入评语数据" >
-        <a class="btn btn-success" href="/upload/checkReportComment" role="button">查看评语数据</a>
-        <a class="btn btn-danger" href="/upload/deleteReportComment" role="button">删除评语数据</a>
 </form>
 </blockquote>
-<h2>5.存库</h2>
+<h2>5.导入胜任力指标描述</h2>
+<blockquote>胜任力指标描述表位置：<strong>/public/相关数据/个人指标描述</strong></blockquote>
 <blockquote>
-<a class="btn btn-success" href="/upload/insertMiddle" role="button">存库</a>
+<form class="form-inline" action="/upload/uploadCompetency" method="post" enctype="multipart/form-data">
+        <input class="form-control" type="file" name="inputExcel">
+        <input class="form-control btn btn-primary" type="submit" value="导入胜任力指标" >
+</form>
+</blockquote>
+<h2>6.中间层json文件存入数据库</h2>
+<blockquote>所有中间层数据都存在MiddleLayer.json文件中，点击下面“存入数据库”按钮即将数据存入MiddleLayer表中</blockquote>
+<blockquote>
+<a class="btn btn-success" href="/upload/insertMiddle" role="button">存入数据库</a>
 </blockquote>
 
 </div>
