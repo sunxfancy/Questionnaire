@@ -19,8 +19,8 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 		// $chart = new ChartLoader();
 		// $chart->test();
 
-		$word = new WordExport();
-		$word->individualComReport(2660);
+		$word = new IndividualComExport();
+		$word->report(2660);
 
 	}
 	public function testAction(){

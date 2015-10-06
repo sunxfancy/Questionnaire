@@ -1,7 +1,7 @@
 <?php
 require_once '../app/classes/PhpWord/Autoloader.php';
 
-class WordExport extends \Phalcon\Mvc\Controller
+class IndividualComExport extends \Phalcon\Mvc\Controller
 {	public  $wordHandle = null;
 	/**
 	 * @usage 个体综合报告生成
@@ -70,8 +70,13 @@ class WordExport extends \Phalcon\Mvc\Controller
 		}		
 		$data['excellent_rate'] = $report->getSystemComprehensive($examinee_id);
 
-		$data['excellent_evaluate'] = ReportData::getLevel($examinee_id);
-		
+		$data['excellent_evaluate_key'] = ReportData::getLevel($examinee_id);
+		switch($data['excellent_evaluate_key']){
+			case 1: $data['excellent_evaluate'] = '优'; break; 
+			case 2: $data['excellent_evaluate'] = '良'; break;
+			case 3: $data['excellent_evaluate'] = '中'; break;
+			case 4: $data['excellent_evaluate'] = '差'; break;
+		}
 		$data['advantage'] = $report->getAdvantages($examinee_id);
 		$data['disadvantage'] = $report->getDisadvantages($examinee_id);
 		$data['com'] = $report->getindividualComprehensive($examinee_id);
@@ -95,7 +100,7 @@ class WordExport extends \Phalcon\Mvc\Controller
 		return $data;
 	}
 	
-	public function individualComReport($examinee_id){
+	public function report($examinee_id){
 		\PhpOffice\PhpWord\Autoloader::register();
 		$this->wordHandle =  new \PhpOffice\PhpWord\PhpWord();
 		$data = $this->getBasic($examinee_id);
@@ -376,43 +381,45 @@ class WordExport extends \Phalcon\Mvc\Controller
 	 	$table = $section->addTable(
 	 		array('borderSize'=>1, 
 	 			  'borderColor'=>'000000',
-	 			   'align'=>'center'
+	 			  'align'=>'center'
 	 	)
 	 	);
-	 	$row = $table->addRow();
+	 	$row = $table->addRow(600);
 	 	$firstCell = $row->addCell(2000, array('valign'=>'center'))->addText('优势',array('size'=>14,'color'=>'blue'),array('alignment'=>'center','lineHeight'=>1.5));
 	 	$secondCell = $row->addCell(2000);
 	 	$secondCell->getStyle()->setGridSpan(4);
 	 	$i  = 1 ;
 	 	foreach($data['advantages'] as $value){
-	 		$secondCell->addText(($i++).'.'.$value,array('size'=>14),array('lineHeight'=>1.5));
+	 		$secondCell->addText(($i++).'.'.$value,array('size'=>14),array('alignment'=>'left','lineHeight'=>1.5));
 	 	}
-	 	$row = $table->addRow();
-	 	$firstCell = $row->addCell(2000, array('valign'=>'center'))->addText('优势',array('size'=>14,'color'=>'blue'),array('alignment'=>'center','lineHeight'=>1.5));
+	 	$row = $table->addRow(600);
+	 	$firstCell = $row->addCell(2000, array('valign'=>'center'))->addText('改进',array('size'=>14,'color'=>'blue'),array('alignment'=>'center','lineHeight'=>1.5));
 	 	$secondCell = $row->addCell(2000);
 	 	$secondCell->getStyle()->setGridSpan(4);
 	 	$i  = 1 ;
 	 	foreach($data['disadvantages'] as $value){
-	 		$secondCell->addText(($i++).'.'.$value,array('size'=>14),array('lineHeight'=>1.5));
+	 		$secondCell->addText(($i++).'.'.$value,array('size'=>14),array('alignment'=>'left', 'lineHeight'=>1.5));
 	 	}
-	 	$row = $table->addRow();
+	 	$row = $table->addRow(600);
 	 	$row->addCell(2000, array('valign'=>'center','vMerge'=>'restart'))->addText('潜质',array('size'=>14,'color'=>'blue'),array('alignment'=>'center','lineHeight'=>1.5));
-	 	$row->addCell(2000)->addText("优");
- 		$row->addCell(2000)->addText("良");
- 		$row->addCell(2000)->addText("中");
- 		$row->addCell(2000)->addText("差");
- 		$row = $table->addRow();
+	 	$row->addCell(2000, array('valign'=>'center'))->addText("优",array('size'=>14),array('alignment'=>'center','lineHeight'=>1.5));
+ 		$row->addCell(2000, array('valign'=>'center'))->addText("良",array('size'=>14),array('alignment'=>'center','lineHeight'=>1.5));
+ 		$row->addCell(2000, array('valign'=>'center'))->addText("中",array('size'=>14),array('alignment'=>'center','lineHeight'=>1.5));
+ 		$row->addCell(2000, array('valign'=>'center'))->addText("差",array('size'=>14),array('alignment'=>'center','lineHeight'=>1.5));
+ 		$row = $table->addRow(600);
 		$row->addCell(2000,array('vMerge' => 'continue'));
 	 	for ($i=0; $i < 4; $i++) {
-	 		if ($i  < 3 ) {
-	 			$table->addCell(2000);
+	 		if ( $data['excellent_evaluate_key'] == $i+1 ) {
+	 			$table->addCell(2000)->addText('√',array('size'=>14,'color'=>'red'),array('alignment'=>'center','lineHeight'=>1.5));
 	 		}else{
-	 			$table->addCell(2000)->addText('hello');
+	 			$table->addCell(2000);
 	 		}
-	 	}
-	 	$row = $table->addRow();
-	 	$row->addCell(2000, array('valign'=>'center'))->addText('评价',array('size'=>14,'color'=>'blue'),array('alignment'=>'center','lineHeight'=>1.5));
-		
+	 	} 
+	 	$row = $table->addRow(600);
+	 	$firstCell = $row->addCell(2000, array('valign'=>'center'))->addText('评价',array('size'=>14,'color'=>'blue'),array('alignment'=>'center','lineHeight'=>1.5));
+		$secondCell = $row->addCell(2000);
+	 	$secondCell->getStyle()->setGridSpan(4);
+	 	$secondCell->addText($data['remark'],array('size'=>14),array('lineHeight'=>1.5));
 	 	$objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($this->wordHandle, 'Word2007');
 		$date = date('H-i-s');
 		$objWriter->save('words/'.$date.'test.docx');
