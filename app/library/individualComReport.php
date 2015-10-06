@@ -238,8 +238,7 @@ class individualComReport extends \Phalcon\Mvc\Controller{
 			$value = sprintf("%.2f",$value/$count_all)*100;
 		}
 		return $rate;
-	}
-	
+	}	
 	public function IsHidden($examinee_id){
 		$factor_name = 'epqal';
 		$project_id = $this->self_check($examinee_id);
@@ -278,5 +277,20 @@ class individualComReport extends \Phalcon\Mvc\Controller{
 			return false;
 		}
 	}
-	
+	public function getComments($examinee_id){
+		$level = ReportData::getLevel($examinee_id);
+		$interview = Interview::findFirst(array(
+			'examinee_id=?1',
+			'bind'=>array(1=>$examinee_id)));
+		$advantage = json_decode($interview->advantage,true);
+        $disadvantage = json_decode($interview->disadvantage,true);
+        $comments = array(
+            'advantage'    => $advantage,
+            'disadvantage' => $disadvantage,
+            'remark'       => $interview->remark,
+            'level'		   => $level
+            );
+        return $comments;
+	}
+
 }

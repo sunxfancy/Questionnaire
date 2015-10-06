@@ -110,12 +110,10 @@ class PmController extends Base
     		$project_detail = ProjectDetail::findFirst(array(
     				"project_id=?1",
     				"bind"=>array(1=>$manager->project_id)));
-
     		if(!isset($project_detail->project_id)){
     			$this->dataReturn(array('success'=>$result));
     			return ;
-    		}
-    		
+    		}  		
     		$module_name = array();
     		$module_names = $project_detail->module_names;
     		$module_name = explode(',', $module_names);
@@ -125,12 +123,9 @@ class PmController extends Base
     		}
     		$ans= array();
     		foreach($module_name as $name){
-    			$module = Module::findFirst(
-    					array(
+    			$module = Module::findFirst(array(
     							'name=?1',
-    							'bind'=>array(1=>$name)
-    					)
-    			);
+    							'bind'=>array(1=>$name)));
     			$ans[] = $module->chs_name;
     		}
     		$result['state'] = true;
@@ -261,12 +256,9 @@ class PmController extends Base
 	public function getinqueryAction(){
 		$manager=$this->session->get('Manager');
 		if($manager){
-			$inquery_detail = InqueryQuestion::find(
-    			array(
+			$inquery_detail = InqueryQuestion::find(array(
 				'project_id=?1',
-    			'bind'=>array(1=>$manager->project_id)
-			)
-			);
+    			'bind'=>array(1=>$manager->project_id)));
 			$ans = array();
 			if (count($inquery_detail) == 0 ){
 				$ans['state'] = false;
@@ -574,7 +566,7 @@ class PmController extends Base
 	}
 	#上传被试信息列表 & 绿色通道上传
 	public function uploadexamineeAction($type = 0){
-	#严格json格式{ '···' : '···'},json_encode 无法实现
+	   #严格json格式{ '···' : '···'},json_encode 无法实现
 		try{
             $file_path = null;
 			if ($this->request->hasFiles()) {
@@ -657,23 +649,6 @@ class PmController extends Base
 			$others                  = json_decode($examinee_info->other, true);
 			$question['educations'] = $others['education'];
 			$question['works'] = $others['work'];
-//注释reason: 已在导入数据时进行排序完成
-// 			$count  =  count($educations);
-//     		$time_array = array();
-//     		if (!empty($educations)){
-//     		foreach($educations as $key=>$value){
-//     			$time_array[] = $value['date'];
-//     		}
-//     		array_multisort($time_array,SORT_DESC,$educations);
-//     		}
-//     		$count  =  count($works);
-//     		$time_array = array();
-//     		if (!empty($works)){
-//     		foreach($works as $key=>$value){
-//     			$time_array[] = $value['date'];
-//     		}
-//     		array_multisort($time_array,SORT_DESC,$works);
-//     		}
     		//用户信息修改判断
     		$init_data = json_decode($examinee_info->init_data, true);
     		$diff_comm_array = array();
@@ -704,8 +679,7 @@ class PmController extends Base
     						$tmp['id'] = 'eduactions';
     						$tmp['value'] = $tmp_edu_init;
     						$tmp['svalue'] = $tmp_edu_new;
-    						$diff_other_array['education'] = $tmp;
-    						
+    						$diff_other_array['education'] = $tmp;	
     					}
     					if (!empty($diff_2)){
     						$tmp = array();
@@ -713,7 +687,6 @@ class PmController extends Base
     						$tmp['value'] = $tmp_wor_init;
     						$tmp['svalue'] = $tmp_wor_new;
     						$diff_other_array['work']= $tmp;
-    					
     					}
     				}else {
     					if ($init_data[$key] != $question[$key]){
@@ -723,8 +696,7 @@ class PmController extends Base
     						$tmp['svalue'] = $question[$key];
     						$diff_comm_array[] = $tmp;
     					}
-    				}
-    				
+    				}	
     			}
     		}
     		$question['diff_comm'] = $diff_comm_array;
@@ -869,9 +841,6 @@ class PmController extends Base
 			$rtn_array['total'] = ceil($count/$rows);
 			$rtn_array['records'] = $count;
 			$rtn_array['rows'] = $result;
-// 			foreach($result as $value){
-// 				$rtn_array['rows'][] = $value;
-// 			}
 			$rtn_array['page'] = $page;
 			$this->dataReturn($rtn_array);
 			return;
@@ -1315,7 +1284,6 @@ class PmController extends Base
     			))
     			->from('Examinee')
     			->Join('Interview', 'Interview.manager_id ='.$interviewer_id.' AND Examinee.id = Interview.examinee_id')
-//     			->limit($limit,$offset)
     			->orderBy($sort)
     			->getQuery()
     			->execute();
@@ -1353,7 +1321,6 @@ class PmController extends Base
 					  ))
 			->from('Examinee')
 			->Join('Interview', 'Interview.manager_id ='.$interviewer_id.' AND Examinee.id = Interview.examinee_id '." AND $filed $oper $value")
-// 			->limit($limit,$offset)
 			->orderBy($sort)
 			->getQuery()
 			->execute();

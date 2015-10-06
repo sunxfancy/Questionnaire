@@ -42,81 +42,38 @@ class InterviewerController extends Base
     }
 
     public function interviewAction($examinee_id){
-        $returnMessage = array();
         $manager = $this->session->get('Manager');
-        $advantage = $this->request->getPost('advantage');
-        $disadvantage = $this->request->getPost('disadvantage');
-        $remark = $this->request->getPost('remark');
-        $advantages = explode("|", $advantage);
-        $disadvantages = explode("|", $disadvantage);
+        $advantage1    = $this->request->getPost('advantage1');
+        $advantage2    = $this->request->getPost('advantage2');
+        $advantage3    = $this->request->getPost('advantage3');
+        $advantage4    = $this->request->getPost('advantage4');
+        $advantage5    = $this->request->getPost('advantage5');
+        $disadvantage1 = $this->request->getPost('disadvantage1');
+        $disadvantage2 = $this->request->getPost('disadvantage2');
+        $disadvantage3 = $this->request->getPost('disadvantage3');
+        $remark        = $this->request->getPost('remark');
         $flag = 0;
-        foreach ($advantages as $key => $value) {
-            if ($value == '') {
-                $flag = 1;
-            }
-        }
-        foreach ($disadvantages as $key => $value) {
-            if ($value == '') {
-                $flag = 1;
-            }
-        }
-        if ($remark == '') {
+        if ($advantage1 == '' || $advantage2 == '' || $advantage3 == '' ||
+            $advantage4 == '' || $advantage5 == '' || $disadvantage1 == '' ||
+            $disadvantage2 == '' || $disadvantage3 == '' || $remark == '') {
             $flag = 1;
         }
-        $array = array(
-            'advantage' => $advantage,
-            'disadvantage' => $disadvantage,
-            'remark' => $remark,
-            'manager_id' => $manager->id,
-            'examinee_id' => $examinee_id
-            );
+        $comment = array(
+            'advantage1' => $advantage1,
+            'advantage2' => $advantage2,
+            'advantage3' => $advantage3,
+            'advantage4' => $advantage4,
+            'advantage5' => $advantage5,
+            'disadvantage1' => $disadvantage1,
+            'disadvantage2' => $disadvantage2,
+            'disadvantage3' => $disadvantage3,
+            'remark' => $remark);
         if ($flag == 1) {
-            InterviewDB::insertInComments($array);
+            InterviewDB::insertInComment($comment,$examinee_id,$manager->id);
         }else{
-            InterviewDB::insertComments($array);
+            InterviewDB::insertComment($comment,$examinee_id,$manager->id);
         }
         $this->dataReturn(array('status'=>true));
-    }
-    
-    public function divideAction($manager_id){
-    	$json = $this->request->getPost('divide_examinee');
-    	$returnMessage = array('status' => 'success');
-    	$save_arr = explode('~', $json);
-    	$min = $save_arr[0];
-    	$max = $save_arr[1];
-    	for ($i = $min; $i <= $max; $i++) {
-    		$res = Examinee::findFirst(array(
-    				"number=:number:",
-    				"bind" => array("number" => $i)));
-    		if($res){
-                $examinee_id = $res->id;
-                /*
-                 * 判断interview表中是否存在记录
-                * 若存在，则无需更新
-                * 若不存在，则将数据插入到interview表中
-                */
-                $interview = Interview::findFirst(array(
-                        'manager_id =?0 AND examinee_id =?1',
-                        'bind' => array(0=> $manager_id,1=> $examinee_id,)));
-                $array = array(
-                        'manager_id' => $manager_id,
-                        'examinee_id' => $examinee_id,
-                        'advantage' => '',
-                        'disadvantage' => '',
-                        'remark' => ''
-                );
-                if (!$interview) {
-                    if (Interview::commentSave($array) === false) {
-                        $returnMessage['status'] = 'failed';
-                        break;
-                    }
-                }
-            }
-            else{
-                continue;
-            }
-    	}
-    	echo json_encode($returnMessage);
     }
 
     //进入添加意见页面时获取面询专家的意见
@@ -131,26 +88,24 @@ class InterviewerController extends Base
                 'examinee_id =?0 and manager_id =?1',
                 'bind'=>array(0=>$examinee_id,1=>$interviewer->id)));
             if (empty($interview->advantage)) {
-                $advantage = array('1. ','2. ','3. ','4. ','5. ',);
+                $point = json_decode($interview->comments_incomplete);
+                $point['level'] = $level;
             }else{
-                $advantage = explode('|',$interview->advantage);
+                $advantage = json_decode($interview->advantage,true);
+                $disadvantage = json_decode($interview->disadvantage,true);
+                $point = array(
+                    'advantage1'    => $advantage['advantage1'],
+                    'advantage2'    => $advantage['advantage2'],
+                    'advantage3'    => $advantage['advantage3'],
+                    'advantage4'    => $advantage['advantage4'],
+                    'advantage5'    => $advantage['advantage5'],
+                    'disadvantage1' => $disadvantage['disadvantage1'],
+                    'disadvantage2' => $disadvantage['disadvantage2'],
+                    'disadvantage3' => $disadvantage['disadvantage3'],
+                    'remark'        => $interview->remark,
+                    'level'         =>$level
+                    );
             }
-            if (empty($interview->disadvantage)) {
-                $disadvantage = array('1. ','2. ','3. ');
-            }else{
-                $disadvantage = explode('|',$interview->disadvantage);
-            }
-            $point = array();
-            $point['advantage1'] = $advantage[0];
-            $point['advantage2'] = $advantage[1];
-            $point['advantage3'] = $advantage[2];
-            $point['advantage4'] = $advantage[3];
-            $point['advantage5'] = $advantage[4];
-            $point['disadvantage1'] = $disadvantage[0];
-            $point['disadvantage2'] = $disadvantage[1];
-            $point['disadvantage3'] = $disadvantage[2];
-            $point['level'] = $level;
-            $point['remark'] = $interview->remark;
             $this->dataReturn(array('point'=>$point));
             return;
         }
@@ -193,7 +148,6 @@ class InterviewerController extends Base
                     'Examinee.state as state',
                     ))
                 ->from('Examinee')
-                //添加类型判断
                 ->join('Interview','Interview.examinee_id = Examinee.id AND Interview.manager_id = '.$manager_id )
                 ->limit($limit,$offset)
                 ->orderBy($sort)
