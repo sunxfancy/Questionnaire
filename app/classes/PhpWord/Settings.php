@@ -68,7 +68,7 @@ class Settings
      */
     #修改默认字体    Arial=>SimSun 10=>12 default=>eastAsia
     const DEFAULT_FONT_NAME = 'SimSun';
-    const DEFAULT_FONT_SIZE = 12;
+    const DEFAULT_FONT_SIZE = 10.5;
     const DEFAULT_FONT_COLOR = '000000';
     const DEFAULT_FONT_CONTENT_TYPE = 'eastAsia'; // default|eastAsia|cs
 

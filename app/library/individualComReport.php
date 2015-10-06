@@ -155,21 +155,26 @@ class individualComReport extends \Phalcon\Mvc\Controller{
 				
 		}	
 	}
+	
 	public function getindividualComprehensive($examinee_id){
 		$project_id = $this->self_check($examinee_id);
 		$project_detail = MemoryCache::getProjectDetail($project_id);
 		if(empty($project_detail) || empty($project_detail->module_names)){
 			throw new Exception('项目配置信息有误');
 		}
+		$exist_module_array = explode(',',$project_detail->module_names);
 		$module_array = array("心理健康"=>'mk_xljk',"素质结构"=>'mk_szjg',"智体结构"=>'mk_ztjg',"能力结构"=>'mk_nljg');
 		$module_array_score = array();
 		foreach($module_array as $key => $value){
+			if (!in_array($value, $exist_module_array)){
+				continue;
+			}
 			$module_record = MemoryCache::getModuleDetail($value);
 			$children = $module_record->children;
 			$children_array = explode(',', $children);
 			$result_1 = $this->modelsManager->createBuilder()
 			->columns(array(
-					'Index.name as name',
+					'Index.chs_name as name',
 			))
 			->from('Index')
 			->inwhere('Index.name', $children_array)
@@ -213,24 +218,24 @@ class individualComReport extends \Phalcon\Mvc\Controller{
 		}
 		//优秀（X>5.8）、良好(5.8≥X>5.3)、一般(5.3≥X>5.0)、较差（X≤5.0）
 		$rate = array(
+			0=>0,
 			1=>0,
 			2=>0,
-			3=>0,
-			4=>0
+			3=>0
 		);
 		foreach($result as $value){
 			if( $value['score'] > 5.8 ){
-				$rate[1]++;
+				$rate[0]++;
 			}else if ($value['score'] > 5.3 ) {
-				$rate[2]++;
+				$rate[1]++;
 			}else if ($value['score'] > 5.0 ) {
-				$rate[3]++;
+				$rate[2]++;
 			}else {
-				$rate[4]++;
+				$rate[3]++;
 			}
 		}
 		foreach($rate as &$value){
-			$value = sprintf("%.2f",$value/$count_all);
+			$value = sprintf("%.2f",$value/$count_all)*100;
 		}
 		return $rate;
 	}	

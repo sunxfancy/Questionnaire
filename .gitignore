@@ -11,6 +11,7 @@ public/template/*
 public/pcharts/*
 public/words/*
 public/wordexport/*
+public/pictmp/*
 .idea/
 .phpintel/
 question.sublime-project
