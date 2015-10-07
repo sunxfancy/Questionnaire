@@ -387,17 +387,16 @@ class  ExcelUpload {
 	             	break;
            		}
 	            if( $column == 'A'){
-	             	$record['name'] = $value;echo $record['name'];
+	             	$record['name'] = $value;
 	             	continue;
 	            }
 	            $choices[] = $value;
     		}
     		if (!empty($choices)) {
     			$record['advantage'] = implode('|', $choices);
-    			echo $record;
 	    		$ans[] = $record;
     		}
-		}print_r($ans);exit();
+		}
 		return $ans;
 	}
 	public function handleCompetencySheet2(){

@@ -88,7 +88,7 @@ class InterviewerController extends Base
                 'examinee_id =?0 and manager_id =?1',
                 'bind'=>array(0=>$examinee_id,1=>$interviewer->id)));
             if (empty($interview->advantage)) {
-                $point = json_decode($interview->comments_incomplete);
+                $point = json_decode($interview->comments_incomplete,true);
                 $point['level'] = $level;
             }else{
                 $advantage = json_decode($interview->advantage,true);
