@@ -1,8 +1,13 @@
 <?php
+	/**
+	 * @usage 个体综合报告导出word
+	 * @notice 该文件生成到系统临时目录中
+	 * @文件生成名称  $examinee_id_$date_rand(100,900).docx
+	 */
 require_once '../app/classes/PhpWord/Autoloader.php';
-
 class IndividualComExport extends \Phalcon\Mvc\Controller
-{	public  $wordHandle = null;
+{	
+	public  $wordHandle = null;
 	/**
 	 * @usage 个体综合报告生成
 	 * @param
@@ -11,7 +16,7 @@ class IndividualComExport extends \Phalcon\Mvc\Controller
 		//---------------------------------------------------
 		// basic
 		//check examinee_id;
-		$report = new individualComReport();
+		$report = new individualComData();
 		$project_id = $report->self_check($examinee_id);
 		//get basic info
 		$examinee = Examinee::findFirst($examinee_id);
@@ -421,8 +426,12 @@ class IndividualComExport extends \Phalcon\Mvc\Controller
 	 	$secondCell->getStyle()->setGridSpan(4);
 	 	$secondCell->addText($data['remark'],array('size'=>14),array('lineHeight'=>1.5));
 	 	$objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($this->wordHandle, 'Word2007');
-		$date = date('H-i-s');
-		$objWriter->save('words/'.$date.'test.docx');
+		//临时文件命名规范    $examinee_id_$date_rand(100,900)
+	 	$date = date('H_i_s');
+	 	$stamp = rand(100,900);
+		$fileName = 'tmp/'.$examinee_id.'_'.$date.'_'.$stamp.'.docx';
+		$objWriter->save($fileName);
+		return $fileName;
 	}
 }
 
