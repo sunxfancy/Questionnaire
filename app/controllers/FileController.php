@@ -35,8 +35,8 @@ class FileController extends \Phalcon\Mvc\Controller {
 		$year = floor($project_id / 100 );
 		$path = './project/'.$year.'/'.$project_id.'/geren/zonghe/';
 		$path_url = '/project/'.$year.'/'.$project_id.'/geren/zonghe/';
-		$name_1 = $examinee->number.'_gerenzonghebaogao.docx'; //原始
-		$name_2 = $examinee->number.'_gerenzonghebaogao_1.docx';//修改
+		$name_1 = $examinee->number.'_individual_comprehesive.docx'; //原始
+		$name_2 = $examinee->number.'_individual_comprehesive_1.docx';//修改
 		//先判断修改是否存在
 		if (file_exists($path.$name_2)){
 			//修改文件存在;
