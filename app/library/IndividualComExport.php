@@ -429,7 +429,7 @@ class IndividualComExport extends \Phalcon\Mvc\Controller
 		//临时文件命名规范    $examinee_id_$date_rand(100,900)
 	 	$date = date('H_i_s');
 	 	$stamp = rand(100,900);
-		$fileName = 'tmp/'.$examinee_id.'_'.$date.'_'.$stamp.'.docx';
+		$fileName = './tmp/'.$examinee_id.'_'.$date.'_'.$stamp.'.docx';
 		$objWriter->save($fileName);
 		return $fileName;
 	}

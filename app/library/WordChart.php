@@ -1,6 +1,7 @@
 <?php
 	/**
- 	  * 个体报告的数据图表生成
+ 	  * @usage 个体报告的数据图表生成
+ 	  * @名称 	//临时文件命名规范    $examinee_id_$date_rand(100,900)
 	  */
 require_once ('../app/classes/jpgraph/jpgraph.php');
 class WordChart {
@@ -31,7 +32,7 @@ class WordChart {
 		//临时文件命名规范    $examinee_id_$date_rand(100,900)
 		$date = date('H_i_s');
 		$stamp = rand(100,900);
-		$fileName = 'tmp/'.$examinee_id.'_'.$date.'_'.$stamp.'.jpeg';
+		$fileName = './tmp/'.$examinee_id.'_'.$date.'_'.$stamp.'.jpeg';
 		$graph->Stroke($fileName);
 		return $fileName;
 	}
@@ -67,7 +68,7 @@ class WordChart {
 		//临时文件命名规范    $examinee_id_$date_rand(100,900)
 		$date = date('H_i_s');
 		$stamp = rand(100,900);
-		$fileName = 'tmp/'.$examinee_id.'_'.$date.'_'.$stamp.'.jpeg';
+		$fileName = './tmp/'.$examinee_id.'_'.$date.'_'.$stamp.'.jpeg';
 		$graph->Stroke($fileName);
 		return $fileName;
 	
@@ -103,7 +104,7 @@ class WordChart {
 		//临时文件命名规范    $examinee_id_$date_rand(100,900)
 		$date = date('H_i_s');
 		$stamp = rand(100,900);
-		$fileName = 'tmp/'.$examinee_id.'_'.$date.'_'.$stamp.'.jpeg';
+		$fileName = './tmp/'.$examinee_id.'_'.$date.'_'.$stamp.'.jpeg';
 		$graph->Stroke($fileName);
 		return $fileName;
 	}

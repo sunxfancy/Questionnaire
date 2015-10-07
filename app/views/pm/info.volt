@@ -181,13 +181,14 @@ function showDiffOth(diff){
 	var data ='';
 	if (diff.education || diff.education.length > 0){
 	   if (diff.education['value']){
-	   	 var len = diff.education['value'].length;
+	   	 var len_1 = diff.education['value'].length;
 	   	 data += '<h4>修改前</h4>';
-         for (var i = 0; i < len; i+=4) {
+         for (var i = 0; i < len_1; i+=4) {
            data += ( (i+1) +".&nbsp;&nbsp;" +diff.education['value'][i] + '--'+ diff.education['value'][i+1] +'--'+diff.education['value'][i+2] +'--'+diff.education['value'][i+3]+'<br />');
          }
          data += '<h4>修改后</h4>';
-         for (var i = 0; i < len; i+=4) {
+         var len_2 = diff.education['svalue'].length;
+         for (var i = 0; i < len_2; i+=4) {
            data += ( (i+1) +".&nbsp;&nbsp;"+diff.education['svalue'][i] + '--'+ diff.education['svalue'][i+1] +'--'+diff.education['svalue'][i+2] +'--'+diff.education['svalue'][i+3]+'<br />');
          }
         }
@@ -197,14 +198,15 @@ function showDiffOth(diff){
 	if  (diff.work || diff.work.length > 0){
         console.log(diff.work);
         if (diff.work['value']){
-        	var len = diff.work['value'].length;
+        	var len_1 = diff.work['value'].length;
         	 data += '<h4>修改前</h4>';
-            for (var i = 0; i < len; i+=4) {
+            for (var i = 0; i < len_1; i+=4) {
                 data += ( (i+1) +".&nbsp;&nbsp;"+diff.work['value'][i] + '-'+ diff.work['value'][i+1] +'-'+diff.work['value'][i+2] +diff.work['value'][i+3]+'<br />');
                 
             }
+            var len_2= diff.work['svalue'].length;
              data += '<h4>修改后</h4>';
-            for (var i = 0; i < len; i+=4) {
+            for (var i = 0; i < len_2; i+=4) {
                 data += ( (i+1) +".&nbsp;&nbsp;"+diff.work['svalue'][i] + '-'+ diff.work['svalue'][i+1] +'-'+diff.work['svalue'][i+2] +diff.work['svalue'][i+3]+'<br />');
             }
             
