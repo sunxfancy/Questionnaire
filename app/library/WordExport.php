@@ -1,13 +1,13 @@
 <?php
 require_once '../app/classes/PhpWord/Autoloader.php';
 
-class WordExport
+class WordExport extends \Phalcon\Mvc\Controller
 {	
 	public  $wordHandle = null;
-	public function __construct(){
-		\PhpOffice\PhpWord\Autoloader::register();
-		$this->wordHandle =  new \PhpOffice\PhpWord\PhpWord();
-	}
+	// public function __construct(){
+	// 	\PhpOffice\PhpWord\Autoloader::register();
+	// 	$this->wordHandle =  new \PhpOffice\PhpWord\PhpWord();
+	// }
 	/**
 	 * @usage 个体胜任力报告生成
 	 * @param
@@ -373,25 +373,38 @@ class WordExport
 		/*
 		TODO...
 		*/
+		$sectionStyle = array(
+			  'orientation'=>'portrait',
+			  'marginLeft'   => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(1.59),
+			  'marginRight'  => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(1.25),
+			  'marginTop'    => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.25),
+			  'marginBottom' => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.25),
+			  'pageSizeW'=> \PhpOffice\PhpWord\Shared\Converter::cmToTwip(21),
+			  'pageSizeH'=> \PhpOffice\PhpWord\Shared\Converter::cmToTwip(29.7),
+			  'headerHeight'=>\PhpOffice\PhpWord\Shared\Converter::cmToTwip(1.5),
+			  'footerHeight'=> \PhpOffice\PhpWord\Shared\Converter::cmToTwip(1.75),	  
+		);
+		$section = $this->wordHandle->addSection($sectionStyle);
 		//set default style
 		$this->wordHandle->setDefaultFontName('Microsoft YaHei');
 		$this->wordHandle->setDefaultFontSize(12);
 		$captionFontStyle = array('color' => 'red','size' => 18);
 		$titleFontStyle = array('color' => 'blue','size' => 14,'bold' => true);
 		$fontStyle1 = array('bold' => true,'size' => 14);
-		$fontStyle2 = array('color' => 'blue');
+		$fontStyle2 = array('bold' => true,'color' => 'blue');
+		$paragraphStyle1 = array('lineHeight'=>1.5);
+		$paragraphStyle2 = array('alignment'=>'center');
 		//set table style
 		$styleTable = array('borderSize'=>6, 'borderColor'=>'black', 'cellMargin'=>80);
 		$this->wordHandle->addTableStyle('myOwnTableStyle', $styleTable);
-		$section = $this->wordHandle->createSection();
 		//report part
 		$table = $section->addTable('myOwnTableStyle');
 		$table->addRow();
-		$table->addCell(9000)->addText("个人与班子对比",$captionFontStyle);
+		$table->addCell(11000)->addText("个人与班子对比",$captionFontStyle,$paragraphStyle2);
 		$table->addRow();
-		$table->addCell(9000)->addText("班子名称",$fontStyle1);
+		$table->addCell(11000)->addText("班子名称",$fontStyle1,$paragraphStyle2);
 		$table->addRow();
-		$table->addCell(9000)->addText("胜任素质评分",$titleFontStyle);
+		$table->addCell(11000)->addText("胜任素质评分",$titleFontStyle,$paragraphStyle2);
 		$table->addRow();
 		$table->addCell(1000);
 		/*
@@ -399,21 +412,21 @@ class WordExport
 		addImage();
 		*/
 		$table->addRow();
-		$table->addCell(9000)->addText("胜任力评价 ",$titleFontStyle);
+		$table->addCell(11000)->addText("胜任力评价 ",$titleFontStyle,$paragraphStyle2);
 		/*
 		TODO...
 		优劣势评语获取
 		*/
 		$table->addRow();
-		$advantageCell = $table->addCell(9000);
-		$advantageCell->addText("主要优势有五点：",$fontStyle2);
+		$advantageCell = $table->addCell(11000);
+		$advantageCell->addText("主要优势有五点：",$fontStyle2,$paragraphStyle1);
 		$array1 = array('一','二','三','四','五');
 		for ($i=0; $i < 5; $i++) { 
 			$advantageCell->addText($array1[$i]);
 		}
 		$table->addRow();
-		$disadvantageCell = $table->addCell(9000);
-		$disadvantageCell->addText("有待改进有三点：",$fontStyle2);
+		$disadvantageCell = $table->addCell(11000);
+		$disadvantageCell->addText("有待改进有三点：",$fontStyle2,$paragraphStyle1);
 		$array2 = array('一','二','三');
 		for ($i=0; $i < 3; $i++) { 
 			$disadvantageCell->addText($array2[$i]);
@@ -429,91 +442,138 @@ class WordExport
 	 * @param
 	 */
 	public function systemReport($project_id){
+		\PhpOffice\PhpWord\Autoloader::register();
+		$this->wordHandle =  new \PhpOffice\PhpWord\PhpWord();
 		//get basic info
-		/*
-		TODO...
-		*/
+		$examinee = Examinee::find(array(
+			'project_id=?0 and team=?1 and state>4',
+			'bind'=>array(0=>$project_id,1=>'系统')));
+		if (count($examinee) == 0) {
+			throw new Exception('还未有人参与测试！');
+		}
+		foreach ($examinee as $examinees) {
+			$index_score = IndexAns::find(array(
+				'examinee_id=?1',
+				'bind'=>array(1=>$examinees->id)));
+			foreach ($index_score as $iscore) {
+				$score[$iscore->index_id][] = $iscore->score;
+			}
+		}
+		foreach ($score as $key => $value) {
+			$sum = array_sum($value);
+			$count = count($value);
+			$avg[$key] = $sum / $count;
+		}
+		arsort($avg);
+		if (count($avg) > 5) {
+			$advantage = array_slice($avg, 0, 5, true);
+		}else{
+			$advantage = $avg;
+		} 
+		$disadvantage = array_slice($avg, count($avg)-3, 3, true);
+		foreach ($advantage as $key => $value) {
+			$chs_name = Index::findFirst($key)->chs_name;
+			$advantages[$chs_name] = $value;
+			$comment = CompetencyComment::findFirst(array(
+				'name=?1',
+				'bind'=>array(1=>$chs_name)))->advantage;
+			$comment = explode("|", $comment);
+	 		$acomment[] = array_rand($comment);
+		}
+		foreach ($disadvantage as $key => $value) {
+			$chs_name = Index::findFirst($key)->chs_name;
+			$disadvantages[$chs_name] = $value;
+			$comment = CompetencyComment::findFirst(array(
+				'name=?1',
+				'bind'=>array(1=>$chs_name)))->disadvantage;
+			$comment = explode("|", $comment);
+	 		$dcomment[] = array_rand($comment);
+		}
+		//cell style
+		$CellNum = count($advantages) + count($disadvantages) + 1;
+		$CellLength = 11000 / $CellNum;
+		//set section style
+		$sectionStyle = array(
+			  'orientation'=>'portrait',
+			  'marginLeft'   => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(1.59),
+			  'marginRight'  => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(1.25),
+			  'marginTop'    => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.25),
+			  'marginBottom' => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.25),
+			  'pageSizeW'=> \PhpOffice\PhpWord\Shared\Converter::cmToTwip(21),
+			  'pageSizeH'=> \PhpOffice\PhpWord\Shared\Converter::cmToTwip(29.7),
+			  'headerHeight'=>\PhpOffice\PhpWord\Shared\Converter::cmToTwip(1.5),
+			  'footerHeight'=> \PhpOffice\PhpWord\Shared\Converter::cmToTwip(1.75),	  
+		);
+		$section = $this->wordHandle->addSection($sectionStyle);
 		//set default style
-		$this->wordHandle->setDefaultFontName('Microsoft YaHei');
+		$this->wordHandle->setDefaultFontName("Microsoft YaHei");
 		$this->wordHandle->setDefaultFontSize(12);
 		$captionFontStyle = array('color' => 'red','size' => 18,'bold' => true);
 		$titleFontStyle = array('color' => 'blue','size' => 14,'bold' => true);
 		$fontStyle1 = array('bold' => true,'size' => 14);
-		$fontStyle2 = array('color' => 'blue');
+		$fontStyle2 = array('color' => 'blue','bold' => true);
+		$paragraphStyle1 = array('lineHeight'=>1.5);
+		$paragraphStyle2 = array('alignment'=>'center');
 		//set table style
 		$styleTable = array('borderSize'=>6, 'borderColor'=>'black', 'cellMargin'=>80);
 		$this->wordHandle->addTableStyle('myOwnTableStyle', $styleTable);
-		$section = $this->wordHandle->createSection();
 		//report part
 		$table = $section->addTable('myOwnTableStyle');
 		$table->addRow();
-		$cell1_19 = $table->addCell(1000);
-		$cell1_19->getStyle()->setGridSpan(9);
-		$cell1_19->addText("系统胜任力测评结果",$captionFontStyle);
+		$cell1_19 = $table->addCell($CellLength);
+		$cell1_19->getStyle()->setGridSpan($CellNum);
+		$cell1_19->addText("系统胜任力测评结果",$captionFontStyle,$paragraphStyle2);
 		$table->addRow();
-		$cell2_13 = $table->addCell(1000);
-		$cell2_13->getStyle()->setGridSpan(3);
-		$cell2_13->addText("系统名称",$fontStyle1);
-		$cell2_49 = $table->addCell(1000);
-		$cell2_49->getStyle()->setGridSpan(6);
-		$cell2_49->addText("系统名称",$fontStyle1);
+		$cell2_13 = $table->addCell($CellLength);
+		$cell2_13->getStyle()->setGridSpan($CellNum);
+		$cell2_13->addText("系统名称",$fontStyle1,$paragraphStyle2);
 		$table->addRow();
-		$cell3_19 = $table->addCell(1000);
-		$cell3_19->getStyle()->setGridSpan(9);
-		$cell3_19->addText("胜任素质评分",$titleFontStyle);
+		$cell3_19 = $table->addCell($CellLength);
+		$cell3_19->getStyle()->setGridSpan($CellNum);
+		$cell3_19->addText("胜任素质评分",$titleFontStyle,$paragraphStyle2);
 		$table->addRow();
-		$table->addCell(1000)->addText("领导能力",$fontStyle1);
-		$table->addCell(1000)->addText("独立工作能力",$fontStyle1);
-		$table->addCell(1000)->addText("工作态度",$fontStyle1);
-		$table->addCell(1000)->addText("责任心",$fontStyle1);
-		$table->addCell(1000)->addText("体质精力",$fontStyle1);
-		$table->addCell(1000)->addText("工作作风",$fontStyle1);
-		$table->addCell(1000)->addText("分析能力",$fontStyle1);
-		$table->addCell(1000)->addText("执着",$fontStyle1);
-		$table->addCell(1000)->addText("总分",$fontStyle1);
-		/*
-		TODO...分数获取
-		*/
+		foreach ($advantages as $key => $value) {
+			$table->addCell($CellLength)->addText($key,$fontStyle1);
+		}
+		foreach ($disadvantages as $key => $value) {
+			$table->addCell($CellLength)->addText($key,$fontStyle1);
+		}
+		$table->addCell($CellLength)->addText("总分", $fontStyle1);
 		$table->addRow();
-		$table->addCell(1000)->addText();
-		$table->addCell(1000)->addText();
-		$table->addCell(1000)->addText();
-		$table->addCell(1000)->addText();
-		$table->addCell(1000)->addText();
-		$table->addCell(1000)->addText();
-		$table->addCell(1000)->addText();
-		$table->addCell(1000)->addText();
-		$table->addCell(1000)->addText();
+		foreach ($advantages as $key => $value) {
+			$table->addCell($CellLength)->addText($value,$fontStyle1);
+		}
+		foreach ($disadvantages as $key => $value) {
+			$table->addCell($CellLength)->addText($value,$fontStyle1);
+		}
+		$table->addCell($CellLength)->addText();
 		$table->addRow();
-		$cell6_19 = $table->addCell(1000);
-		$cell6_19->getStyle()->setGridSpan(9);
+		$cell6_19 = $table->addCell($CellLength);
+		$cell6_19->getStyle()->setGridSpan($CellNum);
 		/*
 		图表  TODO...
 		addImage();
 		*/
 		$table->addRow();
-		$cell7_19 = $table->addCell(1000);
-		$cell7_19->getStyle()->setGridSpan(9);
-		$cell7_19->addText("胜任力评价 ",$titleFontStyle);
-		/*
-		TODO...
-		优劣势评语获取
-		*/
+		$cell7_19 = $table->addCell($CellLength);
+		$cell7_19->getStyle()->setGridSpan($CellNum);
+		$cell7_19->addText("胜任力评价 ",$titleFontStyle,$paragraphStyle2);
+		
 		$table->addRow();
-		$cell8_19 = $table->addCell(1000);
-		$cell8_19->getStyle()->setGridSpan(9);
-		$cell8_19->addText("主要优势有五点：",$fontStyle2);
+		$cell8_19 = $table->addCell($CellLength);
+		$cell8_19->getStyle()->setGridSpan($CellNum);
+		$cell8_19->addText("主要优势有：",$fontStyle2,$paragraphStyle1);
 		$array1 = array('一','二','三','四','五');
 		for ($i=0; $i < 5; $i++) { 
-			$cell8_19->addText($array1[$i]);
+			$cell8_19->addText($array1[$i]."是".$acomment[$i]);
 		}
 		$table->addRow();
-		$cell9_19 = $table->addCell(1000);
-		$cell9_19->getStyle()->setGridSpan(9);
-		$cell9_19->addText("有待改进有三点：",$fontStyle2);
+		$cell9_19 = $table->addCell($CellLength);
+		$cell9_19->getStyle()->setGridSpan($CellNum);
+		$cell9_19->addText("有待改进有：",$fontStyle2,$paragraphStyle1);
 		$array2 = array('一','二','三');
 		for ($i=0; $i < 3; $i++) { 
-			$cell9_19->addText($array2[$i]);
+			$cell9_19->addText($array2[$i]."是".$dcomment[$i]);
 		}
 		//命名
 		$fileName = $project_id."+systemReport";
