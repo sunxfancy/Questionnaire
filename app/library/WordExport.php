@@ -445,52 +445,9 @@ class WordExport extends \Phalcon\Mvc\Controller
 		\PhpOffice\PhpWord\Autoloader::register();
 		$this->wordHandle =  new \PhpOffice\PhpWord\PhpWord();
 		//get basic info
-		$examinee = Examinee::find(array(
-			'project_id=?0 and team=?1 and state>4',
-			'bind'=>array(0=>$project_id,1=>'系统')));
-		if (count($examinee) == 0) {
-			throw new Exception('还未有人参与测试！');
-		}
-		foreach ($examinee as $examinees) {
-			$index_score = IndexAns::find(array(
-				'examinee_id=?1',
-				'bind'=>array(1=>$examinees->id)));
-			foreach ($index_score as $iscore) {
-				$score[$iscore->index_id][] = $iscore->score;
-			}
-		}
-		foreach ($score as $key => $value) {
-			$sum = array_sum($value);
-			$count = count($value);
-			$avg[$key] = $sum / $count;
-		}
-		arsort($avg);
-		if (count($avg) > 5) {
-			$advantage = array_slice($avg, 0, 5, true);
-		}else{
-			$advantage = $avg;
-		} 
-		$disadvantage = array_slice($avg, count($avg)-3, 3, true);
-		foreach ($advantage as $key => $value) {
-			$chs_name = Index::findFirst($key)->chs_name;
-			$advantages[$chs_name] = $value;
-			$comment = CompetencyComment::findFirst(array(
-				'name=?1',
-				'bind'=>array(1=>$chs_name)))->advantage;
-			$comment = explode("|", $comment);
-	 		$acomment[] = array_rand($comment);
-		}
-		foreach ($disadvantage as $key => $value) {
-			$chs_name = Index::findFirst($key)->chs_name;
-			$disadvantages[$chs_name] = $value;
-			$comment = CompetencyComment::findFirst(array(
-				'name=?1',
-				'bind'=>array(1=>$chs_name)))->disadvantage;
-			$comment = explode("|", $comment);
-	 		$dcomment[] = array_rand($comment);
-		}
+		$data = CompetencyData::getData($project_id,'系统');
 		//cell style
-		$CellNum = count($advantages) + count($disadvantages) + 1;
+		$CellNum = count($data['advantage']) + count($data['disadvantage']) + 1;
 		$CellLength = 11000 / $CellNum;
 		//set section style
 		$sectionStyle = array(
@@ -532,19 +489,19 @@ class WordExport extends \Phalcon\Mvc\Controller
 		$cell3_19->getStyle()->setGridSpan($CellNum);
 		$cell3_19->addText("胜任素质评分",$titleFontStyle,$paragraphStyle2);
 		$table->addRow();
-		foreach ($advantages as $key => $value) {
-			$table->addCell($CellLength)->addText($key,$fontStyle1);
+		foreach ($data['advantage'] as $key => $value) {
+			$table->addCell($CellLength)->addText($value['chs_name'],$fontStyle1);
 		}
-		foreach ($disadvantages as $key => $value) {
-			$table->addCell($CellLength)->addText($key,$fontStyle1);
+		foreach ($data['disadvantage'] as $key => $value) {
+			$table->addCell($CellLength)->addText($value['chs_name'],$fontStyle1);
 		}
 		$table->addCell($CellLength)->addText("总分", $fontStyle1);
 		$table->addRow();
-		foreach ($advantages as $key => $value) {
-			$table->addCell($CellLength)->addText($value,$fontStyle1);
+		foreach ($data['advantage'] as $key => $value) {
+			$table->addCell($CellLength)->addText($value['value'],$fontStyle1);
 		}
-		foreach ($disadvantages as $key => $value) {
-			$table->addCell($CellLength)->addText($value,$fontStyle1);
+		foreach ($data['disadvantage'] as $key => $value) {
+			$table->addCell($CellLength)->addText($value['value'],$fontStyle1);
 		}
 		$table->addCell($CellLength)->addText();
 		$table->addRow();
@@ -564,16 +521,18 @@ class WordExport extends \Phalcon\Mvc\Controller
 		$cell8_19->getStyle()->setGridSpan($CellNum);
 		$cell8_19->addText("主要优势有：",$fontStyle2,$paragraphStyle1);
 		$array1 = array('一','二','三','四','五');
-		for ($i=0; $i < 5; $i++) { 
-			$cell8_19->addText($array1[$i]."是".$acomment[$i]);
+		$i = 0;
+		foreach ($data['advantage'] as $key => $value) {
+			$cell8_19->addText($array1[$i++]."是".$value['comment']);
 		}
 		$table->addRow();
 		$cell9_19 = $table->addCell($CellLength);
 		$cell9_19->getStyle()->setGridSpan($CellNum);
 		$cell9_19->addText("有待改进有：",$fontStyle2,$paragraphStyle1);
 		$array2 = array('一','二','三');
-		for ($i=0; $i < 3; $i++) { 
-			$cell9_19->addText($array2[$i]."是".$dcomment[$i]);
+		$i = 0;
+		foreach ($data['disadvantage'] as $key => $value) {
+			$cell9_19->addText($array2[$i++]."是".$value['comment']);
 		}
 		//命名
 		$fileName = $project_id."+systemReport";
