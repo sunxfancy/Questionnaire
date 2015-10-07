@@ -1,10 +1,10 @@
 <?php
 /**
- * @usage  个人综合报告数据生成
+ * @usage  个人综合报告数据生成，该类为individualComExport.php所用
  * @author Wangyaohui
  *
  */
-class individualComReport extends \Phalcon\Mvc\Controller{
+class individualComData extends \Phalcon\Mvc\Controller{
 	public function self_check($examinee_id){
 		//check 
 		$examinee =  Examinee::findFirst($examinee_id);

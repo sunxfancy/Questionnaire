@@ -1,4 +1,8 @@
 <?php
+	/**
+ 	  * @usage 个体报告的数据图表生成
+ 	  * @名称 	//临时文件命名规范    $examinee_id_$date_rand(100,900)
+	  */
 require_once ('../app/classes/jpgraph/jpgraph.php');
 class WordChart {
 	public function barGraph_1($data, $examinee_id, $color='steelblue'){
@@ -25,7 +29,10 @@ class WordChart {
 ;
 		// Send back the HTML page which will call this script again
 		// to retrieve the image.
-		$fileName ='pictmp/'.$examinee_id.date('h-i-s').'test.jpeg';
+		//临时文件命名规范    $examinee_id_$date_rand(100,900)
+		$date = date('H_i_s');
+		$stamp = rand(100,900);
+		$fileName = './tmp/'.$examinee_id.'_'.$date.'_'.$stamp.'.jpeg';
 		$graph->Stroke($fileName);
 		return $fileName;
 	}
@@ -58,9 +65,10 @@ class WordChart {
 			
 		// Send back the HTML page which will call this script again
 		// to retrieve the image.
-		$data = rand(1,100000000);
-		$data .= rand(1000000,200000000);
-		$fileName ='pictmp/'.$examinee_id.date('h-i-s').$data.'test.jpeg';
+		//临时文件命名规范    $examinee_id_$date_rand(100,900)
+		$date = date('H_i_s');
+		$stamp = rand(100,900);
+		$fileName = './tmp/'.$examinee_id.'_'.$date.'_'.$stamp.'.jpeg';
 		$graph->Stroke($fileName);
 		return $fileName;
 	
@@ -93,7 +101,10 @@ class WordChart {
 		//$plot->mark->SetType(MARK_IMG_SBALL,'red');
 		 
 		$graph->Add($plot);
-		$fileName ='pictmp/'.$examinee_id.date('h-i-s').'test.jpeg';
+		//临时文件命名规范    $examinee_id_$date_rand(100,900)
+		$date = date('H_i_s');
+		$stamp = rand(100,900);
+		$fileName = './tmp/'.$examinee_id.'_'.$date.'_'.$stamp.'.jpeg';
 		$graph->Stroke($fileName);
 		return $fileName;
 	}
