@@ -13,7 +13,11 @@ class ReportData
 			$score += $index->score;
 			$count++;
 		}
-		$score_avg = $score / $count;
+		if ($count == 0) {
+			$score_avg =0;
+		}else{
+			$score_avg = $score / $count;
+		}
 		if ($score_avg > 5.8) {
 			$level = 1;
 		}else if ($score_avg > 5.3) {
