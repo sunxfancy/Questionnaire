@@ -17,7 +17,13 @@ class InterviewDB
 			$interview->setTransaction($transaction);
             $array = json_encode($array,JSON_UNESCAPED_UNICODE);
 			$interview->comments_incomplete = $array;
-			if( $interview->save() == false ){
+            $interview->advantage = '';
+            $interview->disadvantage = '';
+            $interview->remark = '';
+            $examinee = Examinee::findFirst($examinee_id);
+            $examinee->setTransaction($transaction);
+            $examinee->state = 4;
+			if( $interview->save() == false || $examinee->save() == false){
 				$transaction->rollback("数据插入失败");
 			}
     		$transaction->commit();
@@ -51,7 +57,10 @@ class InterviewDB
                 'disadvantage3' => $array['disadvantage3']);
             $interview->disadvantage = json_encode($disadvantage,JSON_UNESCAPED_UNICODE);
             $interview->remark = $array['remark'];
-            if( $interview->save() == false ){
+            $examinee = Examinee::findFirst($examinee_id);
+            $examinee->setTransaction($transaction);
+            $examinee->state = 5;
+            if( $interview->save() == false || $examinee->save() == false){
                 $transaction->rollback("数据插入失败");
             }
             $transaction->commit();

@@ -510,8 +510,6 @@ class UploadController extends \Phalcon\Mvc\Controller {
             }
 			$excelHander = new ExcelUpload($file_path);
             $data = $excelHander->handleCompetency();
-            print_r($data);
-            exit();
             if(file_exists($file_path)) unlink($file_path);
 		    DBHandle::insertCompetency($data);
 		    echo "{'success':'true'}";
