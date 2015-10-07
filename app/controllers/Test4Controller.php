@@ -1,4 +1,5 @@
 <?php
+use PhpOffice\PhpWord\Reader\Word2007;
 class Test4Controller extends \Phalcon\Mvc\Controller{
 	
 	public function initialize(){
@@ -18,11 +19,18 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 		// $chart = new ChartLoader();
 		// $chart->test();
 
-		$word = new WordExport();
-		$word->individualComReport(2660);
+		$word = new IndividualComExport();
+		$word->report(2660);
 
 	}
-
+	public function testAction(){
+		$word = new WordExport();
+		$word->test();
+	}
+	public function test1Action(){
+		$re = new WordChart();
+		$re->radarGraph_1();
+	}
 	public function excelloader(){
 		require_once("../app/classes/PHPExcel.php");
 		#将单元格序列化后再进行Gzip压缩，然后保存在内存中
