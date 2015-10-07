@@ -34,16 +34,17 @@ class FileController extends \Phalcon\Mvc\Controller {
 		$project_id = $examinee->project_id;
 		$year = floor($project_id / 100 );
 		$path = './project/'.$year.'/'.$project_id.'/geren/zonghe/';
+		$path_url = '/project/'.$year.'/'.$project_id.'/geren/zonghe/';
 		$name_1 = $examinee->number.'_gerenzonghebaogao.docx'; //原始
 		$name_2 = $examinee->number.'_gerenzonghebaogao_1.docx';//修改
 		//先判断修改是否存在
 		if (file_exists($path.$name_2)){
 			//修改文件存在;
-			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path.$name_2."' style='color:red;text-decoration:none;'>个体综合报告</a>"));
+			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_2."' style='color:red;text-decoration:none;'>个体综合报告</a>"));
 			return ;
 			// 返回 路径
 		}else if(file_exists($path.$name_1)){
-			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path.$name_1."' style='color:red;text-decoration:none;'>个体综合报告</a>"));
+			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_1."' style='color:red;text-decoration:none;'>个体综合报告</a>"));
 			return ;
 			//返回路径
 		}else{
@@ -58,7 +59,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 				//清空临时文件 主要在tmp中
 				$file->clearfiles('./tmp/', $examinee_id);
 				//返回路径
-				$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''. $report_name."' style='color:red;text-decoration:none;'>个体综合报告</a>"));
+				$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''. $path_url.$name_1."' style='color:red;text-decoration:none;'>个体综合报告</a>"));
 				return ;
 			}catch(Exception $e){
 				$this->dataReturn(array('error'=>$e->getMessage()));

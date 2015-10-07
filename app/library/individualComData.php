@@ -200,21 +200,13 @@ class individualComData extends \Phalcon\Mvc\Controller{
 	}
 	public function getSystemComprehensive($examinee_id){
 		$project_id = $this->self_check($examinee_id);
-		$result = $this->modelsManager->createBuilder()
-		->columns(array(
-				'avg(IndexAns.score) as score',
-		))
-		->from('Project')
-		->where('Project.id = '.$project_id)
-		->leftjoin('Examinee', 'Examinee.project_id = Project.id')
-		->leftjoin('IndexAns', 'Examinee.id = IndexAns.examinee_id')
-		->groupBy('Examinee.id')
-		->getQuery()
-		->execute();
+		$result =IndexAns::find(
+				array('examinee_id = ?1', 'bind'=>array(1=>$examinee_id))
+		);
 		$result = $result->toArray();
 		$count_all = count($result);
 		if ($count_all <= 0 ){
-			throw new Exception('参与的被试数据量为0');
+			throw new Exception('指标数量为0，请确认');
 		}
 		//优秀（X>5.8）、良好(5.8≥X>5.3)、一般(5.3≥X>5.0)、较差（X≤5.0）
 		$rate = array(
