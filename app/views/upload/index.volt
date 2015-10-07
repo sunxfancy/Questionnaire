@@ -90,7 +90,7 @@
 </form>
 </blockquote>
 <h2>5.导入胜任力指标描述</h2>
-<blockquote>胜任力指标描述表位置：<strong>/public/相关数据/个人指标描述</strong></blockquote>
+<blockquote>胜任力指标描述表位置：<strong>/public/相关数据/胜任力指标描述</strong></blockquote>
 <blockquote>
 <form class="form-inline" action="/upload/uploadCompetency" method="post" enctype="multipart/form-data">
         <input class="form-control" type="file" name="inputExcel">
