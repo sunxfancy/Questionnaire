@@ -579,7 +579,14 @@ function downloadTenSheet(examinee_id){
 }
 
 function downloadShengReport(examinee_id){
-	alert(examinee_id+'sheng');
+	downloadWait('正在生成个人综合报告！');
+    $.post('/file/getIndividualCompetencyReport', {'examinee_id':examinee_id}, function(data){
+        if (data.error){
+            downloadError(data.error);
+        }else{
+            downloadSuccess(data.success);
+        }
+    });
 }
 
 function downloadComReport(examinee_id){
