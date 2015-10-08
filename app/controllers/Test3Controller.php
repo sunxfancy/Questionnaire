@@ -1,5 +1,6 @@
 <?php
-	/**
+	use PhpOffice\PhpWord\Reader\Word2007;
+/**
 	* 
 	*/
 class Test3Controller extends Base
@@ -14,5 +15,20 @@ class Test3Controller extends Base
         // $wordExport->teamReport($project_id);
         $wordExport->systemReport($project_id);
     }
-
+    
+    public function testAction(){
+    	$re = new WordExport();
+    	$d = $re->systemReport(1518);
+    	echo '<pre>';
+    	print_r($d);
+    	echo '</pre>';	
+    }
+    
+    public function test1Action(){
+    	$com = new CompetencyData();
+    	$d = $com->getSystemData(1518);
+    	echo '<pre>';
+    	print_r($d);
+    	echo '</pre>';
+    }
 }
