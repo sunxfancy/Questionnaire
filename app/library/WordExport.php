@@ -371,20 +371,20 @@ class WordExport extends \Phalcon\Mvc\Controller
 
 	public function teamReport($project_id){
 		//get basic info
-		$systemCompetency = new CompetencyData();
-		$data = $systemCompetency->getTeamData($project_id);
-		echo '<pre>';
-		print_r($data);
-		echo '</pre>';
-		exit();
+		$teamCompetency = new CompetencyData();
+		$data = $teamCompetency->getTeamData($project_id);
 		\PhpOffice\PhpWord\Autoloader::register();
 		$this->wordHandle =  new \PhpOffice\PhpWord\PhpWord();
+		//cell style
+		$CellNum =3;
+		$CellLength = \PhpOffice\PhpWord\Shared\Converter::cmToTwip(23)/ $CellNum;
+		//set section style
 		$sectionStyle = array(
 			  'orientation'=>'portrait',
-			  'marginLeft'   => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(1.59),
-			  'marginRight'  => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(1.25),
-			  'marginTop'    => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.25),
-			  'marginBottom' => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.25),
+			  'marginLeft'   => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(3.17),
+			  'marginRight'  => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(3.17),
+			  'marginTop'    => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.54),
+			  'marginBottom' => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.54),
 			  'pageSizeW'=> \PhpOffice\PhpWord\Shared\Converter::cmToTwip(21),
 			  'pageSizeH'=> \PhpOffice\PhpWord\Shared\Converter::cmToTwip(29.7),
 			  'headerHeight'=>\PhpOffice\PhpWord\Shared\Converter::cmToTwip(1.5),
@@ -392,50 +392,108 @@ class WordExport extends \Phalcon\Mvc\Controller
 		);
 		$section = $this->wordHandle->addSection($sectionStyle);
 		//set default style
-		$this->wordHandle->setDefaultFontName('Microsoft YaHei');
-		$this->wordHandle->setDefaultFontSize(12);
-		$captionFontStyle = array('color' => 'red','size' => 18);
+		$this->wordHandle->setDefaultFontName("Microsoft YaHei");
+		$captionFontStyle = array('color' => 'red','size' => 18,'bold' => true);
 		$titleFontStyle = array('color' => 'blue','size' => 14,'bold' => true);
 		$fontStyle1 = array('bold' => true,'size' => 14);
-		$fontStyle2 = array('bold' => true,'color' => 'blue');
+		$fontStyle2 = array('color' => 'blue','size'=>14,'bold' => true);
 		$paragraphStyle1 = array('lineHeight'=>1.5);
-		$paragraphStyle2 = array('alignment'=>'center');
-		//set table style
-		$styleTable = array('borderSize'=>6, 'borderColor'=>'black', 'cellMargin'=>80);
-		$this->wordHandle->addTableStyle('myOwnTableStyle', $styleTable);
-		//report part
-		$table = $section->addTable('myOwnTableStyle');
+		$paragraphStyle2 = array('alignment'=>'center','lineHeight'=>1.5);
+		$paragraphStyle3 = array('alignment'=>'center');
+// 		//set table style
+		$styleTable = array('borderSize'=>6, 'borderColor'=>'black', 'cellMargin'=>80 );
+// 		//report part
+		$table = $section->addTable($styleTable);
 		$table->addRow();
-		$table->addCell(11000)->addText("个人与班子对比",$captionFontStyle,$paragraphStyle2);
+		$cell1_19 = $table->addCell($CellLength);
+		$cell1_19->getStyle()->setGridSpan($CellNum);
+		$cell1_19->addText("XX个人与班子对比",$captionFontStyle,$paragraphStyle3);
 		$table->addRow();
-		$table->addCell(11000)->addText("班子名称",$fontStyle1,$paragraphStyle2);
+		$cell2_13 = $table->addCell($CellLength);
+		$cell2_13->addText("班子名称",$fontStyle1,$paragraphStyle3);
+		$cell2_49 = $table->addCell($CellLength);
+		$cell2_49->getStyle()->setGridSpan($CellNum-1);
+		$cell2_49->addText("XX班子",$fontStyle1, $paragraphStyle3);
 		$table->addRow();
-		$table->addCell(11000)->addText("胜任素质评分",$titleFontStyle,$paragraphStyle2);
+		$cell3_19 = $table->addCell($CellLength);
+		$cell3_19->getStyle()->setGridSpan($CellNum);
+		$cell3_19->addText("胜任素质评分",$titleFontStyle,$paragraphStyle2);
 		$table->addRow();
-		$table->addCell(1000);
-		/*
-		图表  TODO...
-		addImage();
-		*/
+		$cell6_19 = $table->addCell($CellLength);
+		$cell6_19->getStyle()->setGridSpan($CellNum);
+		//add chart
+// 		$chart = new WordChart();
+// 		$fileName = $chart->radarGraph_2($data,$data_pro, $project_id);
+// 		if (file_exists($fileName)){
+// 			$cell6_19->addImage($fileName,
+// 					array(
+// 							'width'=>\PhpOffice\PhpWord\Shared\Converter::cmToPixel(13.76),
+// 							'height'=>\PhpOffice\PhpWord\Shared\Converter::cmToPixel(7.09),
+// 							'wrappingStyle'=>'square',
+// 					 ));
+// 		}
+		
 		$table->addRow();
-		$table->addCell(11000)->addText("胜任力评价 ",$titleFontStyle,$paragraphStyle2);
-		/*
-		TODO...
-		优劣势评语获取
-		*/
+		$cell7_19 = $table->addCell($CellLength);
+		$cell7_19->getStyle()->setGridSpan($CellNum);
+		$cell7_19->addText("胜任力评价 ",$titleFontStyle,$paragraphStyle3);
+		
 		$table->addRow();
-		$advantageCell = $table->addCell(11000);
-		$advantageCell->addText("主要优势有五点：",$fontStyle2,$paragraphStyle1);
+		$cell8_19 = $table->addCell($CellLength);
+		$cell8_19->getStyle()->setGridSpan($CellNum);
+		$cell8_19->addText("主要优势有：",array('color' => 'blue','size'=>12,'bold' => true),$paragraphStyle1);
 		$array1 = array('一','二','三','四','五');
-		for ($i=0; $i < 5; $i++) { 
-			$advantageCell->addText($array1[$i]);
+		$i = 0;
+		foreach ($data['advantage']['value'] as $key => $value) {
+			$cell8_19->addText($array1[$i++]."是".$value['comment'], array('size'=>12));
 		}
 		$table->addRow();
-		$disadvantageCell = $table->addCell(11000);
-		$disadvantageCell->addText("有待改进有三点：",$fontStyle2,$paragraphStyle1);
+		$cell9_19 = $table->addCell($CellLength);
+		$cell9_19->getStyle()->setGridSpan($CellNum);
+		$cell9_19->addText("有待改进有：",array('color' => 'blue','size'=>12,'bold' => true),$paragraphStyle1);
 		$array2 = array('一','二','三');
-		for ($i=0; $i < 3; $i++) { 
-			$disadvantageCell->addText($array2[$i]);
+		$i = 0;
+		foreach ($data['disadvantage']['value'] as $key => $value) {
+			$cell9_19->addText($array2[$i++]."是".$value['comment'], array('size'=>12));
+		}
+		//add table to save some data 
+		$position_names =  $teamCompetency->getTeamPositions($project_id);
+		$position_data  =  $teamCompetency->getPositionIndexs($project_id, $data);
+		$biaozhunzhi    =  $teamCompetency->getProjectIndexsByData($project_id, $data);
+		$index_names = array();
+		$banzi = array();
+		foreach ($data['advantage']['value'] as $key => $value) {
+			$index_names[] = $value['chs_name'];
+			$banzi[] = $value['score'];
+		}
+		foreach ($data['disadvantage']['value'] as $key => $value) {
+			$index_names[] = $value['chs_name'];
+			$banzi[] = $value['score'];
+		}
+		$table = $section->addTable($styleTable );
+		$table->addRow();
+		$table->addCell();
+		foreach ($index_names as $key=>$value){
+			$table->addCell()->addText($value);
+		}
+		$table->addRow();
+		$table->addCell()->addText("班子");
+		foreach ($banzi as $key=>$value){
+			$table->addCell()->addText($value);
+		}
+		$table->addRow();
+		$xitong = $teamCompetency->getProjectIndexsByData($project_id,$data);
+		$table->addCell()->addText("系统");
+		foreach ($xitong as $key=>$value){
+			$table->addCell()->addText($value);
+		}
+		$i = 0; 
+		foreach ($position_names as $key=>$value){
+			$table->addRow();
+			$table->addCell()->addText($value);
+			foreach ($position_data[$value] as $skey=>$svalue){
+				$table->addCell()->addText($svalue);
+			}
 		}
 		//命名
 		//临时文件命名规范    $project_id_$date_rand(100,900)

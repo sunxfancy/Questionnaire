@@ -84,6 +84,7 @@ class CompetencyData extends \Phalcon\Mvc\Controller
 			$sum += $value['score'];
 		}
 		foreach($rt['disadvantage']['value'] as &$value){
+			
 			$value['score'] =  sprintf("%.1f", $value['score']* 12) ;
 			$comment = CompetencyComment::findFirst(array(
 					'name=?1',
@@ -92,12 +93,17 @@ class CompetencyData extends \Phalcon\Mvc\Controller
 			$rand_key = array_rand($comment);
 			$value['comment'] = $comment[$rand_key];
 			$sum += $value['score'];
+			
 		}
+		//disadvantage 顺序排序
+		$rt['disadvantage']['value'] = array_reverse($rt['disadvantage']['value']);
 		$number = $rt['count'];
 		$rt['value'] =sprintf('%.1f',($sum / $number) ); 
 		return $rt;
 	}
-	
+	/**
+	 * 获取项目下所有人的各项指标的平均分****除去绿色通道****
+	 */
 	public function getProjectAvgIndex($project_id){
 		$team_members = Examinee::find(
 				array("project_id = ?1 AND type = 0",
@@ -237,7 +243,118 @@ class CompetencyData extends \Phalcon\Mvc\Controller
 			$rand_key = array_rand($comment);
 			$value['comment'] = $comment[$rand_key];
 		}
+		//disadvantage 顺序排序
+		$rt['disadvantage']['value'] = array_reverse($rt['disadvantage']['value']);
 		return $rt;
+	}
+	
+	/**
+	 *班子的职位分布
+	 */
+	public function getTeamPositions($project_id){
+		//get all positions 
+		$result = $this->modelsManager->createBuilder()
+		->columns(array(
+				'DISTINCT(Examinee.professional) as professional'
+		))
+		->from('Examinee')
+		->where('Examinee.type = 0 AND Examinee.team='."'班子' AND Examinee.project_id = $project_id")
+		->getQuery()
+		->execute();
+		$result = $result->toArray();
+		$tmp = null;
+		$result = $this->foo($result,$tmp);
+		return $result;
+	}
+	
+	/**
+	 * 获取各职称下的五优三劣分布
+	 */
+	public function getPositionIndexs($project_id, &$team_data){
+		$positions = $this->getTeamPositions($project_id);
+		$rt = array();
+		foreach( $positions as $position ){
+			$rt[$position] = $this->getProjectIndexsByDataAndPositon($project_id, $position, $team_data);
+		}
+		return $rt;
+	}
+	/**
+	 * @usage 根据班子的整体无忧三列数据获取某一职位下的五优三劣
+	 */
+	public function getProjectIndexsByDataAndPositon($project_id, $position, &$team_data){
+		$position_data = $this-> getProjectIndexsByPosition($project_id, $position);
+		$sys_array = array();
+		$pro_array = array();
+		$data_pro_tmp = array();
+		foreach($team_data['advantage']['value'] as $value){
+			$data_pro_tmp = $position_data;
+			$title_array[] = $value['chs_name'];
+			$sys_array[] = $value['score'];
+			$data_pro_tmp = array_flip($data_pro_tmp);
+			$key = $data_pro_tmp[trim($value['chs_name'])];
+			$pro_array[] = sprintf('%.1f',$position_data[$key+1]);
+		}
+		
+		foreach($team_data['disadvantage']['value'] as $value){
+			$data_pro_tmp = $position_data;
+			$title_array[] = $value['chs_name'];
+			$sys_array[] = $value['score'];
+			$data_pro_tmp = array_flip($data_pro_tmp);
+			$key = $data_pro_tmp[trim($value['chs_name'])];
+			$pro_array[] = sprintf('%.1f',$position_data[$key+1]);
+		}
+		return $pro_array;
+	}
+	
+	/**
+	 * @usage 在班子中找出职位一致的人的所有指标平均值数据
+	 * @ 此函数在获取班子的指标平均值后才会调用
+	 */
+	public function getProjectIndexsByPosition($project_id, $position){
+		$result = $this->modelsManager->createBuilder()
+		->columns(array(
+				//'Index.name as name',
+				'Index.chs_name as chs_name',
+				'avg(IndexAns.score)*12 as score'
+		))
+		->from('Examinee')
+		->join('IndexAns', 'IndexAns.examinee_id = Examinee.id AND Examinee.type = 0 AND Examinee.project_id='.$project_id." AND Examinee.team ='班子' AND Examinee.professional = '$position'")
+		->join('Index' , 'Index.id = IndexAns.index_id')
+		->groupBy('Index.id')
+		->orderBy('avg(IndexAns.score) desc')
+		->getQuery()
+		->execute();
+		$result = $result->toArray();
+		$tmp  = null;
+		return $this->foo($result, $tmp);
+	}
+	
+	/**
+	 * @usage 根据已有的五优三劣获取系统的五优三劣的平均值----即可得到标准值
+	 */
+	public function getProjectIndexsByData($project_id, &$team_data){
+		$data_pro= $this->getProjectAvgIndex($project_id);
+		$sys_array = array();		
+		$pro_array = array();
+		$data_pro_tmp = array();
+		foreach($team_data['advantage']['value'] as $value){
+			$data_pro_tmp = $data_pro;
+			$title_array[] = $value['chs_name'];
+			$sys_array[] = $value['score'];
+			$data_pro_tmp = array_flip($data_pro_tmp);
+			$key = $data_pro_tmp[trim($value['chs_name'])];
+			$pro_array[] = sprintf('%.1f',$data_pro[$key+1]);
+		}
+		
+		foreach($team_data['disadvantage']['value'] as $value){
+			$data_pro_tmp = $data_pro;
+			$title_array[] = $value['chs_name'];
+			$sys_array[] = $value['score'];
+			$data_pro_tmp = array_flip($data_pro_tmp);
+			$key = $data_pro_tmp[trim($value['chs_name'])];
+			$pro_array[] = sprintf('%.1f',$data_pro[$key+1]);
+		}
+		return $pro_array;
 	}
 	
 }
