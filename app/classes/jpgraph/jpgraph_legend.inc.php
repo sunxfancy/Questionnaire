@@ -21,7 +21,7 @@ DEFINE('_DEFAULT_LPM_SIZE',8); // Default Legend Plot Mark size
 
 class Legend {
     public $txtcol=array();
-    public $font_family=FF_DEFAULT,$font_style=FS_NORMAL,$font_size=8; // old. 12
+    public $font_family=FF_CHINESE,$font_style=FS_NORMAL,$font_size=8; // old. 12
     private $color=array(120,120,120); // Default frame color
     private $fill_color=array(245,245,245); // Default fill color
     private $shadow=false; // Shadow around legend "box"

@@ -974,7 +974,7 @@ class PmController extends Base
 		$oper = $this->request->getPost('oper', 'string');
 		if ($oper == 'add' ){
 			$data = array();
-			$data[0]['name'] = $this->request->getPost('name', 'string');
+			$data[] = $this->request->getPost('name', 'string');
 			try{
 				PmDB::insertInterviewer($data, $project_id);
 			}catch(Exception $e){
@@ -1499,7 +1499,18 @@ class PmController extends Base
 		}
 		$project_id = $manager->project_id;
 		$oper = $this->request->getPost('oper', 'string');
-		if ($oper == 'edit') {
+		if ($oper == 'add' ){
+			$data = array();
+			$data[]= $this->request->getPost('name', 'string');
+			try{
+				PmDB::insertLeader($data, $project_id);
+			}catch(Exception $e){
+				$this->dataReturn( array('error'=>'记录插入失败') );
+				return;
+			}
+			$this->dataReturn(array('flag'=>true));
+			return;
+		}else if ($oper == 'edit') {
 			//edit
 			$id = $this->request->getPost('id', 'int');
 			$manager = Manager::findFirst($id);

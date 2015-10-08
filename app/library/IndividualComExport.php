@@ -73,9 +73,10 @@ class IndividualComExport extends \Phalcon\Mvc\Controller
 		}else{
 			$data['exam_evalute'] = '不仅慢且不准确';
 		}		
-		$data['excellent_rate'] = $report->getSystemComprehensive($examinee_id);
+		$tmp_systemCom = $report->getSystemComprehensive($examinee_id);
+		$data['excellent_rate'] = $tmp_systemCom['value'];
 
-		$data['excellent_evaluate_key'] = ReportData::getLevel($examinee_id);
+		$data['excellent_evaluate_key'] = $tmp_systemCom['level'];
 		switch($data['excellent_evaluate_key']){
 			case 1: $data['excellent_evaluate'] = '优'; break; 
 			case 2: $data['excellent_evaluate'] = '良'; break;
@@ -93,15 +94,10 @@ class IndividualComExport extends \Phalcon\Mvc\Controller
 		 	case "能力结构" : $data['com'][$key]['name'] = '职业能力'; $data['com'][$key]['des']='职业能力共有七项指标'; break;
 		 }
 		}
-		$interview = Interview::findFirst(array(
-					'examinee_id=?1',
-					'bind'=>array(1=>$examinee->id)));
-		if (!isset($interview->examinee_id)){
-			throw new Exception('专家面询未完成');
-		}
-		$data['remark'] = $interview->remark;
-		$data['advantages'] = json_decode($interview->advantage,true);
-		$data['disadvantages'] = json_decode($interview->disadvantage, true);
+		$tmp_interview = $report->getComments($examinee_id);
+		$data['remark'] = $tmp_interview['remark'];
+		$data['advantages'] = $tmp_interview['advantage'];
+		$data['disadvantages'] = $tmp_interview['disadvantage'];
 		return $data;
 	}
 	

@@ -24,9 +24,32 @@ class Test3Controller extends Base
     	echo '</pre>';	
     }
     
+    public function tAction(){
+    	$re = new WordExport();
+    	$d = $re->teamReport(1518);
+    	echo '<pre>';
+    	print_r($d);
+    	echo '</pre>';
+    }
+    
     public function test1Action(){
     	$com = new CompetencyData();
+    	$d = $com->getTeamData(1518);
+    	echo '<pre>';
+    	print_r($d);
+    	echo '</pre>';
+    }
+    public function test11Action(){
+    	$com = new CompetencyData();
     	$d = $com->getSystemData(1518);
+    	echo '<pre>';
+    	print_r($d);
+    	echo '</pre>';
+    }
+    
+    public function test2Action(){
+    	$com = new CompetencyData();
+    	$d = $com->getProjectAvgIndex(1518);
     	echo '<pre>';
     	print_r($d);
     	echo '</pre>';
