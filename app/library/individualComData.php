@@ -204,6 +204,7 @@ class individualComData extends \Phalcon\Mvc\Controller{
 				array('examinee_id = ?1', 'bind'=>array(1=>$examinee_id))
 		);
 		$result = $result->toArray();
+		//指标总数
 		$count_all = count($result);
 		if ($count_all <= 0 ){
 			throw new Exception('指标数量为0，请确认');
@@ -215,7 +216,9 @@ class individualComData extends \Phalcon\Mvc\Controller{
 			2=>0,
 			3=>0
 		);
+		$sum = 0;
 		foreach($result as $value){
+			$sum += $value['score'];
 			if( $value['score'] > 5.8 ){
 				$rate[0]++;
 			}else if ($value['score'] > 5.3 ) {
@@ -229,7 +232,19 @@ class individualComData extends \Phalcon\Mvc\Controller{
 		foreach($rate as &$value){
 			$value = sprintf("%.2f",$value/$count_all)*100;
 		}
-		return $rate;
+		$rt['value'] = $rate;
+		//计算个人的指标平均成绩，得到评价等级
+		$average = $sum/$count_all;
+		if( $average > 5.8 ){
+						$rt['level'] = 1;
+			}else if ( $average > 5.3 ) {
+						$rt['level'] = 2;
+			}else if ( $average > 5.0 ) {
+						$rt['level'] = 3;
+			}else {
+						$rt['level'] = 4;
+			}
+		return $rt;
 	}	
 	public function IsHidden($examinee_id){
 		$factor_name = 'epqal';
@@ -270,17 +285,18 @@ class individualComData extends \Phalcon\Mvc\Controller{
 		}
 	}
 	public function getComments($examinee_id){
-		$level = ReportData::getLevel($examinee_id);
 		$interview = Interview::findFirst(array(
 			'examinee_id=?1',
 			'bind'=>array(1=>$examinee_id)));
+		if (!isset($interview->examinee_id)){
+			throw new Exception($examinee_id.'-专家面询未完成');
+		}
 		$advantage = json_decode($interview->advantage,true);
         $disadvantage = json_decode($interview->disadvantage,true);
         $comments = array(
             'advantage'    => $advantage,
             'disadvantage' => $disadvantage,
             'remark'       => $interview->remark,
-            'level'		   => $level
             );
         return $comments;
 	}

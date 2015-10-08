@@ -119,7 +119,7 @@ $(function(){
                          }
                      },
                      
-                     {  name:'name', label:'姓名',  index:'name', width:180, fixed:true, resizable:false,  editable:true,sortable:true, align:'center',
+                     {  name:'name', label:'姓名',  index:'name', width:180, fixed:true, resizable:false,  editable:true,sortable:false, align:'center',
                         editrules:{required : true, }, 
                         search:true, searchoptions: {  sopt: ['eq']  },
                         searchrules:{ required: true, },
@@ -129,7 +129,7 @@ $(function(){
                         editrules:{required : true, }, 
                         search:false, 
                      },
-                     {  name:'last_login', label:'最后登录时间', index:'last_login', width:300, fixed:true, resizable:false,  sortable:true, editable:false, align:'center',
+                     {  name:'last_login', label:'最后登录时间', index:'last_login', width:300, fixed:true, resizable:false,  sortable:false, editable:false, align:'center',
                         search:true, searchoptions: {  sopt: ['bw', 'ew'],
                         dataInit:function(element) { 
                             $(element).parent().addClass("input-group date form_date");
@@ -184,6 +184,58 @@ $(function(){
         });
         
         //navButtons
+        var add_options={
+                    left:10,
+                    top:10,
+                    afterSubmit:function(res,rowid){
+                        var result = eval('(' + res.responseText + ')');   
+                        if(result.error) {
+                        $('.Leo_question').css('width','843px')
+                         $('.modal-body').html('');
+                         $('.modal-body').html(
+                         "<p class=\"bg-danger\" style='padding:20px;'>"+result.error+ "</p>"
+                         );
+                        $('.modal-footer').html('');
+                        $('.modal-footer').html(
+                         "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">返回修改</button>"
+                        );
+                        $('#myModal').modal({
+                         keyboard:true,
+                         backdrop:'static'
+                       })
+
+                       // return false; 返回jqgrid相关的数据格式
+                        return [false, 'fail',0];   
+                        }else{
+                        $('.Leo_question').css('width','843px')
+                         $('.modal-body').html('');
+                         $('.modal-body').html(
+                         "<p class=\"bg-success\" style='padding:20px;'>记录添加成功</p>"
+                         );
+                        $('.modal-footer').html('');
+                        $('.modal-footer').html(
+                         "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">关闭提示</button>"
+                        );
+                        $('#myModal').modal({
+                         keyboard:true,
+                         backdrop:'static'
+                      })
+                        return [true, 'success'];
+                        }
+                    },
+                    beforeShowForm : function(e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
+                    .wrapInner('<div class="widget-header" />')
+                    //password 不可编辑
+                    $('#password').attr('disabled', true);
+                    $('#password').val('**系统自动生成**');
+                    style_edit_form(form);
+                    },
+                    reloadAfterSubmit:true,
+                    closeAfterAdd:true
+ 
+        };
         var edit_options={
                     left:10,
                     top:10,
@@ -291,7 +343,9 @@ $(function(){
         }
         jQuery(grid_selector).jqGrid('navGrid',pager_selector,
             {   //navbar options
-                add: false,
+                add: true,
+           addicon : 'ace-icon fa fa-plus-circle purple',
+           addtext:'添加',
                 edit: true,
                 editicon : 'ace-icon fa fa-pencil blue',
                 edittext:'编辑',
@@ -311,8 +365,8 @@ $(function(){
             },
             //edit,
             edit_options,
-            {//add
-                },
+            // {//add
+                // },            add_options,
             //del
             del_options,
             {//search

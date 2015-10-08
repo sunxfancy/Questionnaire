@@ -371,13 +371,16 @@ class PmDB
     	try{
     		$manager     = new TxManager();
     		$transaction = $manager->get();
-    		foreach($data as $key=>$value){
+    		
+    		foreach($data as $value){
     			$examinee = new Examinee();
     			$examinee->setTransaction($transaction);
     			$examinee->project_id = $project_id;
     			$examinee->state = 0;
     			$examinee->number = $start++;
-    			$examinee->$key = $value;
+    			foreach($value as $skey =>$svalue ){
+    				$examinee->$skey = $svalue;
+    			}
     			$examinee->password = self::getRandString();
     			$examinee->type = $type;
     			if( $examinee->save() == false ){
@@ -458,8 +461,8 @@ class PmDB
     	$manager->role= "L";
     	$manager->username = $start++;
     	$manager->password = self::getRandString();
-    			$manager->name = $value;
-    			if( $manager->save() == false ){
+    	$manager->name = $value;
+    	if( $manager->save() == false ){
     			$transaction->rollback("数据插入失败");
     	}
     	}
