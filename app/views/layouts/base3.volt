@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/css/Leo_global_css.css" />
     <link rel="stylesheet" type="text/css" href="/css/css/Leo_normal_css.css" />
-    <script type='text/javascript' src='/datepicker/jquery-1.8.3.js'></script>
+    <script type='text/javascript' src='/datetimepicker/jquery-1.8.3.min.js'></script>
     <script type='text/javascript' src='/lib/jquery.cookie.js'></script>
     <script type='text/javascript' src='/js/spin.js'></script>
     <script type='text/javascript'  src="/bootstrap/js/bootstrap.min.js"></script>

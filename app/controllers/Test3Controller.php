@@ -6,52 +6,44 @@
 class Test3Controller extends Base
 {		
     public function indexAction(){
-    	$project_id = 1501;
+    	$project_id = 1520;
         $examinee_id = 31;
         $wordExport = new WordExport();
         // $wordExport->individualComReport($examinee_id);
         // $wordExport->individualCompetencyReport($examinee_id);
         // $wordExport->comprehensiveReport($project_id);
         // $wordExport->teamReport($project_id);
-        $wordExport->systemReport($project_id);
+        $wordExport->teamReport($project_id);
     }
-    
-    public function testAction(){
-    	$re = new WordExport();
-    	$d = $re->systemReport(1518);
-    	echo '<pre>';
-    	print_r($d);
-    	echo '</pre>';	
+    public function index1Action(){
+    	$project_id = 1520;
+    	$examinee_id = 31;
+    	$wordExport = new WordExport();
+    	// $wordExport->individualComReport($examinee_id);
+    	// $wordExport->individualCompetencyReport($examinee_id);
+    	// $wordExport->comprehensiveReport($project_id);
+    	// $wordExport->teamReport($project_id);
+    	$wordExport->systemReport($project_id);
     }
-    
-    public function tAction(){
-    	$re = new WordExport();
-    	$d = $re->teamReport(1518);
-    	echo '<pre>';
-    	print_r($d);
-    	echo '</pre>';
-    }
-    
-    public function test1Action(){
+   
+    public function taAction(){
     	$com = new CompetencyData();
-    	$d = $com->getTeamData(1518);
+    	$d = $com->getTeamData(1520);
+    	echo '班子中的五优三劣'.'<br />';
     	echo '<pre>';
     	print_r($d);
     	echo '</pre>';
-    }
-    public function test11Action(){
-    	$com = new CompetencyData();
-    	$d = $com->getSystemData(1518);
+    	echo '获取班子中的五优三劣在系统中的情况'."<br />";
+    	$data = $com->getPositionIndexs(1520, $d);
     	echo '<pre>';
-    	print_r($d);
+    	print_r($data);
+    	echo '</pre>';
+    	echo '获取班子中的五优三劣在系统中的情况'."<br />";
+    	$data = $com->getProjectIndexsByData(1520, $d);
+    	echo '<pre>';
+    	print_r($data);
     	echo '</pre>';
     }
     
-    public function test2Action(){
-    	$com = new CompetencyData();
-    	$d = $com->getProjectAvgIndex(1518);
-    	echo '<pre>';
-    	print_r($d);
-    	echo '</pre>';
-    }
+
 }

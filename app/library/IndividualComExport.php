@@ -312,6 +312,7 @@ class IndividualComExport extends \Phalcon\Mvc\Controller
 	 	$section->addTitle('三、综合评价', 1);
 	 	if (empty($data['com'])){
 	 		$section->addText('素质测评模块没有被选中', array('size'=>14,'bold'=>true,), array('lineHeight'=>1.5));
+	 		$section->addTextBreak();
 	 	}else{
 	 		$table = $section->addTable();
 	 		$row = $table->addRow();
