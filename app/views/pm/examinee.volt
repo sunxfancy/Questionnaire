@@ -203,7 +203,7 @@ $(function(){
                             if (rowObject.state >= 4) {
                                 return "<div class='ui-pg-div' data-original-title='导出十项列表数据'>"+
                                 "<span style='visibility:hidden;'>&nbsp;</span>"+
-                                "<a href='#'><i class=\"glyphicon glyphicon-download\" onclick='downloadTenSheet("+rowObject.id+")'></i></a>"+
+                                "<a href='#'><i class=\"glyphicon glyphicon-download\" onclick='downloadPersonalResult("+rowObject.id+")'></i></a>"+
                                 "<span style='visibility:hidden;'>&nbsp;</span></div>"
                          
                             }else {
@@ -232,7 +232,7 @@ $(function(){
                             if (rowObject.state >= 5) {
                                 return "<div class='ui-pg-div ui-inline-edit' data-original-title='导出胜任力报告'>"+
                                 "<span style='visibility:hidden;'>&nbsp;</span>"+
-                                "<a href='#'><i class=\"glyphicon glyphicon-download\" onclick='downloadShengReport("+rowObject.id+")'></i></a>"+
+                                "<a href='#'><i class=\"glyphicon glyphicon-download\" onclick='downloadCompetencyReport("+rowObject.id+")'></i></a>"+
                                 "<span style='visibility:hidden;'>&nbsp;</span></div>";
                          
                             }else {
@@ -574,12 +574,19 @@ function checkFile0(){
 
 
 
-function downloadTenSheet(examinee_id){
-	alert(examinee_id+'10');
+function downloadPersonalResult(examinee_id){
+	downloadWait('正在生成个人测评十项报表！');
+    $.post('/file/getPersonalResult', {'examinee_id':examinee_id}, function(data){
+        if (data.error){
+            downloadError(data.error);
+        }else{
+            downloadSuccess(data.success);
+        }
+    });
 }
 
-function downloadShengReport(examinee_id){
-	downloadWait('正在生成个人综合报告！');
+function downloadCompetencyReport(examinee_id){
+	downloadWait('正在生成个人胜任力报告！');
     $.post('/file/getIndividualCompetencyReport', {'examinee_id':examinee_id}, function(data){
         if (data.error){
             downloadError(data.error);
