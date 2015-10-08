@@ -8,7 +8,7 @@
 
 <div class="form-group" style='text-align:left;font-size:0;margin-top:15px;'>
 <div style="display:inline-block;margin-left:40px;font-size:26px;color:red;width:30%;" id='manager'>
-	面巡专家:
+	面询专家:
 </div>
 <div class='form-group' style='width:60%;text-align:right;display:inline-block; '>
 <form action='/pm' class="form-inline" method='post'>
