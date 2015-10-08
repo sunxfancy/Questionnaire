@@ -1573,7 +1573,9 @@ class PmController extends Base
     }
 	#最终结果页面
 	public function resultAction(){
-		# code...
+		$manager = $this->session->get('Manager');
+        $project_id = $manager->project_id;
+        $this->view->setVar('project_id',$project_id);
 	}
 	
 	

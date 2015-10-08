@@ -5,7 +5,6 @@
 	 *
 	 */
 class FileController extends \Phalcon\Mvc\Controller {
-	
 	# 个人综合评价报告导出
 	public function getIndividualComReportAction(){
 		$this->view->disable();
@@ -203,15 +202,14 @@ class FileController extends \Phalcon\Mvc\Controller {
 		}
 	}
 	# 个人信息数据导出
-	public function getIndividualInfomationAction($examinee_id){
+	public function getIndividualInfomationAction(){
 		
 	}
-	
 	# 项目总体报告导出
-	public function getProjectComReport(){
+	public function getProjectComReportAction(){
 		$this->view->disable();
-		$examinee_id = $this->request->getPost('projrct_id', 'int');
-		if (empty($projrct_id)){
+		$project_id = $this->request->getPost('project_id', 'int');
+		if (empty($project_id)){
 			$this->dataReturn(array('error'=>'请求参数不完整!'));
 			return ;
 		}
@@ -241,12 +239,12 @@ class FileController extends \Phalcon\Mvc\Controller {
 			//生成文件，之后返回下载路径
 			try{
 				$report = new ProjectComExport();
-				$report_tmp_name = $report->report($projrct_id);
+				$report_tmp_name = $report->report($project_id);
 				$report_name = $path.$name_1;
 				$file = new FileHandle();
 				$file->movefile($report_tmp_name, $report_name);
 				//清空临时文件 主要在tmp中
-				$file->clearfiles('./tmp/', $projrct_id);
+				$file->clearfiles('./tmp/', $project_id);
 				//返回路径
 				$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''. $path_url.$name_1."' style='color:red;text-decoration:none;'>人才综合测评总体分析报告</a>"));
 				return ;
@@ -259,8 +257,8 @@ class FileController extends \Phalcon\Mvc\Controller {
 	# 项目班子胜任力报告导出
 	public function getTeamReportAction(){
 		$this->view->disable();
-		$examinee_id = $this->request->getPost('projrct_id', 'int');
-		if (empty($projrct_id)){
+		$project_id = $this->request->getPost('project_id', 'int');
+		if (empty($project_id)){
 			$this->dataReturn(array('error'=>'请求参数不完整!'));
 			return ;
 		}
@@ -289,13 +287,13 @@ class FileController extends \Phalcon\Mvc\Controller {
 		}else{
 			//生成文件，之后返回下载路径
 			try{
-				$report = new IndividualComExport();
-				$report_tmp_name = $report->report($projrct_id);
+				$report = new WordExport();
+				$report_tmp_name = $report->teamReport($project_id);
 				$report_name = $path.$name_1;
 				$file = new FileHandle();
 				$file->movefile($report_tmp_name, $report_name);
 				//清空临时文件 主要在tmp中
-				$file->clearfiles('./tmp/', $projrct_id);
+				$file->clearfiles('./tmp/', $project_id);
 				//返回路径
 				$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''. $path_url.$name_1."' style='color:red;text-decoration:none;'>班子胜任力报告</a>"));
 				return ;
@@ -308,7 +306,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 	# 项目系统胜任力报告导出
 	public function getSystemReportAction(){
 		$this->view->disable();
-		$examinee_id = $this->request->getPost('project_id', 'int');
+		$project_id = $this->request->getPost('project_id', 'int');
 		if (empty($project_id)){
 			$this->dataReturn(array('error'=>'请求参数不完整!'));
 			return ;
@@ -338,8 +336,8 @@ class FileController extends \Phalcon\Mvc\Controller {
 		}else{
 			//生成文件，之后返回下载路径
 			try{
-				$report = new IndividualComExport();
-				$report_tmp_name = $report->report($project_id);
+				$report = new WordExport();
+				$report_tmp_name = $report->systemReport($project_id);
 				$report_name = $path.$name_1;
 				$file = new FileHandle();
 				$file->movefile($report_tmp_name, $report_name);
