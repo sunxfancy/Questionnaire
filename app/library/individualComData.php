@@ -8,7 +8,7 @@ class individualComData extends \Phalcon\Mvc\Controller{
 	public function self_check($examinee_id){
 		//check 
 		$examinee =  Examinee::findFirst($examinee_id);
-		if (empty($examinee)){
+		if (!isset($examinee->id)){
 			throw new Exception('被试id不存在');
 		}
 		if ($examinee->state < 5 ) {
