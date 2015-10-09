@@ -722,6 +722,8 @@ class PmController extends Base
 	public function examineeDownloadAction(){
 		$this->view->setTemplateAfter('base2');
 		$this->leftRender('被 试 人 员 数 据 下 载');
+        $manager = $this->session->get('Manager');
+        $this->view->setVar('project_id',$manager->project_id);
 	}
 	#导出被试信息列表
 	public function examineeExportAction(){
