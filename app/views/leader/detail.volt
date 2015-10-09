@@ -77,7 +77,7 @@ $(function(){
                      {   name:'',label:'详情', index:'', width:60, fixed:true, resizable:false,sortable:false, align:'center',
                          search:false,
                          formatter:function(cellvalue, options, rowObject){
-                            return "<div class='ui-pg-div ui-inline-edit' data-original-title='查看个人详细信息'><a href='/pm/info/"+rowObject.id+"/0'><i class='fa fa-th-list'></i></a></div>"
+                            return "<div class='ui-pg-div ui-inline-edit' data-original-title='查看个人详细信息'><a href='/leader/info/"+rowObject.id+"/0'><i class='fa fa-th-list'></i></a></div>"
                          },
                          viewable:false,
                      },

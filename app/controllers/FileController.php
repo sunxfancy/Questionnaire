@@ -352,6 +352,71 @@ class FileController extends \Phalcon\Mvc\Controller {
 			}
 		}
 	}
+	#批量导出个人综合素质报告
+	public function getAllIndividualComprehesive(){
+		$this->view->disable();
+		$project_id = $this->request->getPost('project_id', 'int');
+		if (empty($project_id)){
+			$this->dataReturn(array('error'=>'请求参数不完整!'));
+			return ;
+		}
+		//个体报告的导出必须是manager
+		$manager = $this->session->get('Manager');
+		if(empty($manager)){
+			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!'));
+			return ;
+		}
+		//判断个人状态
+		$examinee = Examinee::find(array(
+			'project_id=?1 and type=0',
+			'bind'=>array(1=>$project_id)));
+		foreach ($examinee as $examinees) {
+			if ($examinees->state <5) {
+				$this->dataReturn('error'=>'还有人未完成测评流程！');
+				return;
+			}
+			$examinee_array[] = $examinees->id;
+		}
+		// 根据目录结构判断文件是否存在
+		$project_id = $examinee->project_id;
+		$year = floor($project_id / 100 );
+		$path = './project/'.$year.'/'.$project_id.'/individual/comprehesive/';
+		$path_url = '/project/'.$year.'/'.$project_id.'/individual/comprehesive/';
+		$name_1 = $examinee->number.'_individual_comprehesive.docx'; //原始
+		$name_2 = $examinee->number.'_individual_comprehesive_1.docx';//修改
+		//先判断修改是否存在
+		if (file_exists($path.$name_2)){
+			//修改文件存在;
+			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_2."' style='color:red;text-decoration:none;'>个体综合报告</a>"));
+			return ;
+			// 返回 路径
+		}else if(file_exists($path.$name_1)){
+			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_1."' style='color:red;text-decoration:none;'>个体综合报告</a>"));
+			return ;
+			//返回路径
+		}else{
+			//生成文件，之后返回下载路径
+			try{
+				$report = new IndividualComExport();
+				$report_tmp_name = $report->report($examinee_id);
+				$report_name = $path.$name_1;
+				$file = new FileHandle();
+				$file->movefile($report_tmp_name, $report_name);
+				//清空临时文件 主要在tmp中
+				$file->clearfiles('./tmp/', $examinee_id);
+				//返回路径
+				$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''. $path_url.$name_1."' style='color:red;text-decoration:none;'>个体综合报告</a>"));
+				return ;
+			}catch(Exception $e){
+				$this->dataReturn(array('error'=>$e->getMessage()));
+				return ;
+			}
+		}
+	}
+	#批量导出个人胜任力报告
+	public function getAllIndividualCompetency(){
+		
+	}
 	public function dataReturn($ans){
 		$this->response->setHeader("Content-Type", "text/json; charset=utf-8");
 		echo json_encode($ans);

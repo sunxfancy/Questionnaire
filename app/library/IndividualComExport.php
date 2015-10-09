@@ -270,7 +270,7 @@ class IndividualComExport extends \Phalcon\Mvc\Controller
  			
 	 	}
 
-	 	
+
 	 	$section->addTitle('2、需要改进方面',2);
 	 	foreach($data['disadvantage'] as $value){
 	 		$section->addTitle($value['chs_name'],3);

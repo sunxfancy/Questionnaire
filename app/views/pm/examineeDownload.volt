@@ -1,22 +1,39 @@
 <script type="text/javascript" src="/js/bootstrap.js"></script>
 <script src='/fileupload/ajaxfileupload.js'></script>
-<div class="Leo_question" style="overflow:hidden;padding:10px;">
+
+<div name='{{project_id}}' class="Leo_question" style="overflow:hidden;padding:10px;">
     <div class="form-group">
-            <div style="display:inline-block;margin-left:40px;font-size:26px;color:red;">被试人员数据下载页</div>
+        <div style="display:inline-block;margin-left:40px;font-size:26px;color:red;">被试信息</div>
     </div>  
     <hr size="2" color="#FF0000" style="width:90%;"/>
     <div class='form-group' style='margin-left:60px;'>
-      <div class="row fileupload-buttonbar">
-                <!-- The fileinput-button span is used to style the file input field as button -->
-                <a class="btn btn-primary" style='width:200px;'  href="/pm/examineeExport"  type='button'>
-                    <i class="glyphicon glyphicon-download"></i>
-                                                             被试信息列表导出
-                </a>
-                <br />
-                <br />
-      </div>
+        <div class="row fileupload-buttonbar">
+            <!-- The fileinput-button span is used to style the file input field as button -->
+            <a class="btn btn-primary" style='width:200px;'  href="/pm/examineeExport"  type='button'>
+                <i class="glyphicon glyphicon-download"></i>所有被试信息列表
+            </a>
+        </div>
     </div> 
-      <hr size="2" color="#FF0000" style="width:90%;"/>
+    <hr size="2" color="#FF0000" style="width:90%;"/>
+    <div class="form-group">
+        <div style="display:inline-block;margin-left:40px;font-size:26px;color:red;">批量下载</div>
+    </div>  
+    <hr size="2" color="#FF0000" style="width:90%;"/>
+    <div class='form-group' style='margin-left:60px;'>
+        <div class="row fileupload-buttonbar">
+            <a class="btn btn-primary" style='width:200px;' href="#" onclick="downloadAllComprehesive()" type='button'>
+                <i class="glyphicon glyphicon-download"></i>个人综合素质报告
+            </a>
+        </div>
+    </div> 
+    <div class='form-group' style='margin-left:60px;'>
+        <div class="row fileupload-buttonbar">
+            <a class="btn btn-primary" style='width:200px;' href="#" onclick="downloadAllCompetency()" type='button'>
+                <i class="glyphicon glyphicon-download"></i>个人胜任力报告
+            </a>
+        </div>
+    </div>
+    <hr size="2" color="#FF0000" style="width:90%;"/>
     <div class="form-group" style='text-align:right;width:90%;'> 
     	<form action='/pm' method='post'>
     		<input id='page' value='1' name='page' type='hidden'/>
@@ -39,215 +56,70 @@
 </div>
 
 <script type="text/javascript">    
-    var spinner = null;
-    var target = document.getElementsByClassName('Leo_question')[0];
-    var url="/pm/getinquery";
-    inquery_data = null;
-    $(function(){
-    	getData(url);
-    });
-    function getData(url){
-    	  $('button').attr('disabled',true);
-          spinner = new Spinner().spin(target);
-    	  $.post(url, function(data) {
-    	  	if(spinner){ spinner.stop(); }
-    	  	$('button').attr('disabled',false);
-    	  	if(data.error){
-    	  		 $('.Leo_question').css('width','843px')
-                 $('.modal-body').html('');
-                 $('.modal-body').html(
-                     "<p class=\"bg-danger\" style='padding:20px;'>"+data.error+ "</p>"
-                     );
-                 $('.modal-footer').html('');
-                 $('.modal-footer').html(
-                    "<a href='/managerlogin'><button type=\"button\" class=\"btn btn-primary\">重新登录</button></a>"
-                 );
-                 $('#myModal').modal({
-                    keyboard:true,
-                    backdrop:'static'
-                 })
-    	  	}else{
-    	  		 if(spinner){ spinner.stop(); }
-                 datadeal(data.success);
-    	  	}
-    	  
-    	  })
-    }
-
-function datadeal(data){
-    if(data.state == false){
-    	//项目需求量表没有
-    	$('#inquery_state').addClass('label-danger');
-        $('#inquery_state').html('未完成');
-        $('#search').attr('disabled',true);
-        $('#del').attr('disabled',true);
-        
-    }else{
-    	$('#inquery_state').addClass('label-success');
-        $('#inquery_state').html('已完成');
-        inquery_data = data.result;
-        $('#submit').attr('disabled',true);
-        $('#file').attr('disabled',true);
-    }
-    
-}
-
 $('#myModal').on('hidden.bs.modal', function (e) {
     $('.Leo_question').css('width','860px')
 });
 $('#myModal').on('hide.bs.modal', function (e) {
     $('.Leo_question').css('width','860px')
 });  
-
-$('#file').change(function(){
-	var path = $('#file').val();
-	path=path.replace('/','\\');
-	var path_arr = path.split('\\');
-    var filename = path_arr.pop();
-    $('#filename').html('&nbsp;'+"文件名:"+filename);
-}
-)   
-$("#submit").click(function(){   
-	   var path = $("#file").val();
-	   if(path == '' || path == undefined){
-	   	      showError('请先选择要上传的文件');
-	   	      return false;   
-	   }
-	   path=path.replace('/','\\');
-	   var path_arr = path.split('\\');
-       var filename = path_arr.pop();
-       if(!checkFiles(filename)){
-       	      showError('文件类型错误，请先下载模板！');
-              return false;   
-       }
-        $('.Leo_question').css('width','843px');    
-        $('.modal-body').html("<p class=\"bg-success\" style='padding:20px;'>系统正在导入需求量表，请勿关闭浏览器</p>"+"<div style='text-align:center; padding:5px 10px 10px 10px;'><img src='/image/loading.gif' style='width:300px' /></div>");
-        $('.modal-footer').html('');
-        $('#myModal').modal({keyboard:true, backdrop:'static'});
-        $.ajaxFileUpload ({
-        url:'/pm/uploadInquery', //你处理上传文件的服务端
-        secureuri:false, //与页面处理代码中file相对应的ID值
-        fileElementId:'file',
-        dataType: 'json', //返回数据类型:text，xml，json，html,scritp,jsonp五种
-        success: function (data) {
-            if(data.error){
-                showError(data.error);
-            }else{
-            $('.modal-body').html('');
-            $('.modal-body').html( "<p class=\"bg-success\" style='padding:20px;'>项目需求量表配置完成!</p>");
-            $('.modal-footer').html('');
-            $('.modal-footer').html("<a href='/pm/inquery' type=\"button\" class=\"btn btn-success\">留在本页</a>"+
-            "<a href='/pm/index' type=\"button\" class=\"btn btn-success\" >返回首页</button>"
-            );
-            
-            $('#myModal').modal({keyboard:true, backdrop:'static'});
-           }
+function downloadAllComprehesive(){
+    downloadWait('正在生成所有被试人员个人综合素质报告！');
+    $.post('/file/getAllIndividualComprehesive',{'project_id':{{project_id}}}, function(data){
+        if (data.error){
+            downloadError(data.error);
+        }else{
+            downloadSuccess(data.success);
         }
-
-        });
-});
-
-$('#del').click(function(){
-	$('.Leo_question').css('width','843px')
-                 $('.modal-body').html('');
-                 $('.modal-body').html(
-                     "<p class=\"bg-danger\" style='padding:20px;'>确定要删除项目需求量表吗?</p>"
-                     );
-                 $('.modal-footer').html('');
-                 $('.modal-footer').html(
-                 	 "<button type=\"button\" class=\"btn btn-danger\" onclick='delinquery();'>确定</button>"+
-                    "<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">返回</button>"
-                 );
-                 $('#myModal').modal({
-                    keyboard:true,
-                    backdrop:'static'
-                 })
-})    
-
-function delinquery(){
-	$('button').attr('disabled', true);
-	 spinner = new Spinner().spin(target);
-          $.post('/pm/delinquery', function(data) {
-          	$('button').attr('disabled', false);
-            if(spinner){ spinner.stop(); }
-            if(data.error){
-            	showError(data.error);
-            	$('#submit').attr('disabled',true);
-        $('#file').attr('disabled',true);
-            }else{
-            
-            $('.modal-body').html('');
-            $('.modal-body').html( "<p class=\"bg-success\" style='padding:20px;'>项目需求量表已删除!</p>");
-            $('.modal-footer').html('');
-            $('.modal-footer').html("<a href='/pm/inquery' type=\"button\" class=\"btn btn-success\">留在本页</a>"+
-            "<a href='/pm/index' type=\"button\" class=\"btn btn-success\" >返回首页</button>"
-            );
-            
-            $('#myModal').modal({keyboard:true, backdrop:'static'});
-            }
-        })
+    });
+}
+function downloadAllCompetency(){
+    downloadWait('正在生成所有被试人员个人胜任力报告！');
+    $.post('/file/getAllIndividualCompetency',{'project_id':{{project_id}}}, function(data){
+        if (data.error){
+            downloadError(data.error);
+        }else{
+            downloadSuccess(data.success);
+        }
+    });
 }
 
-$('#search').click(function(){
-	function count(o){
-    var t = typeof o;
-    if(t == 'string'){
-            return o.length;
-    }else if(t == 'object'){
-            var n = 0;
-            for(var i in o){
-                    n++;
-            }
-            return n;
-    }
-    return false;
-}; 
- 
- 
-	$('.Leo_question').css('width','843px')
-	        $('.modal-body').html('');
-            $('.modal-body').html()
-            var len = count(inquery_data);
-            var str = '';
-            for(var i = 0; i<len; i++ ){
-            	str += ('<span style=\'color:red\'>题号</span>-'+ inquery_data[i].id+'-');
-            	str += ('<span style=\'color:green\'>类型</span>-'+ (inquery_data[i].is_radio == 1 ? '[单选]':'[多选]')+'<br />');
-            	str += ('<span style=\'color:blue\'>题目</span>-'+ inquery_data[i].topic+'<br />');
-            	str += ('<span style=\'color:gray\'>选项</span>-'+ inquery_data[i].options+'<br /><br />');
-            	
-            }
-            $('.modal-body').html(str);
-            $('.modal-footer').html("<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">返回</button>"
-                 );
-            
-            $('#myModal').modal({keyboard:true, backdrop:'static'});
-})
-function showError(msg){
-	$('.Leo_question').css('width','843px')
-                 $('.modal-body').html('');
-                 $('.modal-body').html(
-                     "<p class=\"bg-danger\" style='padding:20px;'>"+msg+"</p>"
-                     );
-                 $('.modal-footer').html('');
-                 $('.modal-footer').html(
-                    "<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">返回修改</button>"
-                 );
-                 $('#myModal').modal({
-                    keyboard:true,
-                    backdrop:'static'
-                 })
+function downloadWait(msg){
+    $('.Leo_question').css('width','843px');    
+    $('.modal-body').html("<p class=\"bg-success\" style='padding:20px;'>"+msg+"</p>"+"<div style='text-align:center; padding:5px 10px 10px 10px;'><img src='/image/loading.gif' style='width:300px' /></div>");
+    $('.modal-footer').html('');
+    $('#myModal').modal({keyboard:true, backdrop:'static'});
 }
-function checkFiles(str)
-{
-     var strRegex = "(.xls|.xlsx)$";
-     var re=new RegExp(strRegex);
-     if (re.test(str.toLowerCase())){
-         return true;
-     }
-     else{
-         return false;
-     }
+function downloadError(msg){
+    $('.Leo_question').css('width','843px')
+    $('.modal-body').html('');
+    $('.modal-body').html(
+        "<p class=\"bg-danger\" style='padding:20px;'>"+msg+ "</p>"
+    );
+    $('.modal-footer').html('');
+    $('.modal-footer').html(
+        "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">返回</button>"
+    );
+    $('#myModal').modal({
+        keyboard:true,
+        backdrop:'static'
+    })
 }
+function downloadSuccess(msg){
+    $('.Leo_question').css('width','843px')
+    $('.modal-body').html('');
+    $('.modal-body').html(
+        "<p class=\"bg-success\" style='padding:20px;'>"+msg+ "</p>"
+    );
+    $('.modal-footer').html('');
+    $('.modal-footer').html(
+       "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">关闭</button>"
+    );
+    $('#myModal').modal({
+        keyboard:true,
+        backdrop:'static'
+    })
+}
+
 </script>
 
    

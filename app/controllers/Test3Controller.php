@@ -7,13 +7,13 @@ class Test3Controller extends Base
 {		
     public function indexAction(){
     	$project_id = 1520;
-        $examinee_id = 31;
-        $wordExport = new WordExport();
+        $examinee_id = 97;
+        $wordExport = new individualComExport();
         // $wordExport->individualComReport($examinee_id);
         // $wordExport->individualCompetencyReport($examinee_id);
         // $wordExport->comprehensiveReport($project_id);
         // $wordExport->teamReport($project_id);
-        $wordExport->teamReport($project_id);
+        $wordExport->report($examinee_id);
     }
     public function index1Action(){
     	$project_id = 1520;
