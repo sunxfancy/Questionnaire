@@ -1,10 +1,11 @@
 <?php
 	/**
- 	  * @usage 个体报告的数据图表生成
- 	  * @名称 	//临时文件命名规范    $examinee_id_$date_rand(100,900)
+ 	  * @usage 报告的数据图表生成
+ 	  * @名称 	//临时文件命名规范    $id_$date_rand(100,900)
 	  */
 require_once ('../app/classes/jpgraph/jpgraph.php');
 class WordChart {
+	#个体综合图表1
 	public function barGraph_1($data, $examinee_id, $color='steelblue'){
 		require_once ('../app/classes/jpgraph/jpgraph_bar.php');
 		$datay=$data;
@@ -36,6 +37,7 @@ class WordChart {
 		$graph->Stroke($fileName);
 		return $fileName;
 	}
+	#个体五优三劣图表
 	public function barGraph_2($data, $examinee_id, $color = 'green'){
 		require_once ('../app/classes/jpgraph/jpgraph_bar.php');
 		// Create the graph. These two calls are always required
@@ -73,7 +75,7 @@ class WordChart {
 		return $fileName;
 	
 	}
-	
+	#个体综合素质图表
 	public function radarGraph_1($data, $titles, $examinee_id){
 		require_once ('../app/classes/jpgraph/jpgraph_radar.php');		
 		require_once ('../app/classes/jpgraph/jpgraph_iconplot.php');
@@ -185,5 +187,84 @@ class WordChart {
 		$graph->Stroke($fileName);
 		return $fileName;
 		
+	}
+	
+	#个人胜任力报告
+	public function radarGraph_3(&$data, &$data_pro, $project_id){
+		require_once ('../app/classes/jpgraph/jpgraph_radar.php');
+		require_once ('../app/classes/jpgraph/jpgraph_iconplot.php');
+		//数组处理
+		$title_array = array();
+		$sys_array = array();
+		$pro_array = array();
+	
+		foreach($data['advantage']['value'] as $value){
+			$data_pro_tmp = $data_pro;
+			$title_array[] = $value['chs_name'];
+			$sys_array[] = $value['score'];
+			$data_pro_tmp = array_flip($data_pro_tmp);
+			$key = $data_pro_tmp[trim($value['chs_name'])];
+			$pro_array[] = $data_pro[$key+1];
+		}
+	
+		foreach($data['disadvantage']['value'] as $value){
+			$data_pro_tmp = $data_pro;
+			$title_array[] = $value['chs_name'];
+			$sys_array[] = $value['score'];
+			$data_pro_tmp = array_flip($data_pro_tmp);
+			$key = $data_pro_tmp[trim($value['chs_name'])];
+			$pro_array[] = $data_pro[$key+1];
+		}
+	
+		// Create the basic rtadar graph
+		$graph = new RadarGraph(600,450);
+	
+		// Set background color and shadow
+		$graph->SetColor("white");
+		// 		$graph->SetShadow();
+	
+		// Position the graph
+		$graph->SetCenter(0.45,0.5);
+		$graph->SetTitles($title_array);
+		// Setup the axis formatting
+		$graph->axis->title->SetFont(FF_CHINESE,FS_NORMAL,11);
+		$graph->axis->SetFont(FF_FONT1,FS_BOLD,11);
+		$graph->axis->SetWeight(1);
+	
+		// Setup the grid lines
+		$graph->grid->SetLineStyle("solid");
+		$graph->grid->SetColor("gray");
+		$graph->grid->Show();
+		$graph->SetGridDepth(DEPTH_BACK);
+		$graph->SetSize(0.6);
+		$graph->HideTickMarks();
+	
+		// Setup graph titles
+	
+		// Create the first radar plot
+		$plot = new RadarPlot($pro_array);
+		$plot->SetLegend("胜任标准");
+		$plot->SetColor("blue","lightblue");
+		$plot->SetFill(false);
+		$plot->SetLineWeight(3);
+	
+		// Create the second radar plot
+		$plot2 = new RadarPlot($sys_array);
+		$plot2->SetLegend("个人测评值");
+		$plot2->SetColor("red","lightred");
+		$plot2->mark->SetType(MARK_IMG_SBALL,'red');
+		$plot2->SetFill(false);
+		$plot2->SetLineWeight(3);
+	
+		// Add the plots to the graph
+		$graph->Add($plot);
+		$graph->Add($plot2);
+	
+		$date = date('H_i_s');
+		$stamp = rand(100,900);
+		$fileName = './tmp/_'.$project_id.$date.'_'.$stamp.'.jpeg';
+		$graph->Stroke($fileName);
+		return $fileName;
+	
 	}
 }
