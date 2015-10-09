@@ -15,16 +15,9 @@
 <script src='/js/pm.assit.js'></script>
 <div class="Leo_question" style="overflow:hidden;text-align:center;">
 	<div style='margin-bottom:25px;'>
-    <table id="grid-table"></table>
-    <div id="grid-pager"></div>  
+        <table id="grid-table"></table>
+        <div id="grid-pager"></div>  
     </div>
-    <div class="form-group" style='display:inline-block;'>
-                
-                <a class="btn btn-info" href="/template/greenexaminee.xls" style='width:150px;'>
-                    <i class="glyphicon glyphicon-collapse-down"></i>
-                    导入模板下载</a>
-            </div>
-    &nbsp;&nbsp;
     <div class='form-group' style='display:inline-block;'>
             <span class="btn btn-success fileinput-button" style='width:200px;'>
                     <i class="glyphicon glyphicon-plus"></i>

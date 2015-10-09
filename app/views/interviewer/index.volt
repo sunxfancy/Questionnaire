@@ -122,10 +122,15 @@ $(function(){
                         viewable:true,
                         formatter:function(cellvalue,options,rowObject){
                             if (rowObject.state >= 4) {
-                                return "<div class='ui-pg-div' data-original-title='导出十项列表数据'><span style='visibility:hidden;'>&nbsp;</span><a href='/pm/check/"+rowObject.id+"'><i class=\"glyphicon glyphicon-download\"></i></a><span style='visibility:hidden;'>&nbsp;</span></div>"
+                                return "<div class='ui-pg-div' data-original-title='导出十项列表数据'>"+
+                                "<span style='visibility:hidden;'>&nbsp;</span>"+
+                                "<a href='#'><i class=\"glyphicon glyphicon-download\" onclick='downloadPersonalResult("+rowObject.id+")'></i></a>"+
+                                "<span style='visibility:hidden;'>&nbsp;</span></div>"
+                         
                             }else {
                                 return '';
-                            }   
+                            } 
+                            
                         },
                      }, 
                       {  name:'state', label:'添加面询意见', index:'state', sortable:false,width:120, fixed:true, resizable:false, align:'center',
@@ -217,4 +222,51 @@ $(function(){
         );     
 }
 });
+
+function downloadPersonalResult(examinee_id){
+    downloadWait('正在生成个人测评十项报表！');
+    $.post('/file/getPersonalResult', {'examinee_id':examinee_id}, function(data){
+        if (data.error){
+            downloadError(data.error);
+        }else{
+            downloadSuccess(data.success);
+        }
+    });
+}
+function downloadWait(msg){
+        $('.Leo_question').css('width','843px');    
+        $('.modal-body').html("<p class=\"bg-success\" style='padding:20px;'>"+msg+"</p>"+"<div style='text-align:center; padding:5px 10px 10px 10px;'><img src='/image/loading.gif' style='width:300px' /></div>");
+        $('.modal-footer').html('');
+        $('#myModal').modal({keyboard:true, backdrop:'static'});
+}
+function downloadError(msg){
+         $('.Leo_question').css('width','843px')
+         $('.modal-body').html('');
+         $('.modal-body').html(
+                         "<p class=\"bg-danger\" style='padding:20px;'>"+msg+ "</p>"
+          );
+         $('.modal-footer').html('');
+         $('.modal-footer').html(
+           "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">返回</button>"
+             );
+         $('#myModal').modal({
+            keyboard:true,
+            backdrop:'static'
+         })
+}
+function downloadSuccess(msg){ 
+         $('.Leo_question').css('width','843px')
+         $('.modal-body').html('');
+         $('.modal-body').html(
+                         "<p class=\"bg-success\" style='padding:20px;'>"+msg+ "</p>"
+          );
+         $('.modal-footer').html('');
+         $('.modal-footer').html(
+           "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">关闭</button>"
+             );
+         $('#myModal').modal({
+            keyboard:true,
+            backdrop:'static'
+         })
+}
 </script>

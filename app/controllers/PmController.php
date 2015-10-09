@@ -736,40 +736,7 @@ class PmController extends Base
 		$excelExport = new ExcelExport();
 		$excelExport->ExamineeExport($result);
 	}
-	#以excel形式，导出被试人员信息和测试结果--十张表格
-	public function checkAction($examinee_id){
-		$this->view->disable();
-		$project_id = $this->session->get('Manager')->project_id;
-		$examinee = Examinee::findFirst($examinee_id);
-		if ($examinee->state == 0) {
-			$this->dataBack(array('error'=>'被试还未答题'));
-			return ;
-		}else if ($examinee->state > 3) {
-			CheckoutExcel::checkoutExcel11($examinee,$project_id);
-		}else{
-			try{
-				$id = $examinee->id;
-				BasicScore::handlePapers($id);
-				BasicScore::finishedBasic($id);
-				FactorScore::handleFactors($id);
-				FactorScore::finishedFactor($id);
-				IndexScore::handleIndexs($id);
-				IndexScore::finishedIndex($id);
-				CheckoutExcel::checkoutExcel11($examinee,$project_id);
-			}catch(Exception $e){
-				$this->dataBack(array('error'=>$e->getMessage()));
-				return ;
-			}
-		}
-	}
-	#以word形式，导出被试人员个人报告--个体报告
-	public function resultReportAction($examinee_id){
-		$this->view->disable();
-		$project_id = $this->session->get('Manager')->project_id;
-		$examinee = Examinee::findFirst($examinee_id);
-		$wordExport = new WordExport();
-		$wordExport->examineeReport($examinee,$project_id);
-	}
+
     #绿色通道人员
     public function greenchannelAction(){
         $this->view->setTemplateAfter('base2');
@@ -1606,7 +1573,9 @@ class PmController extends Base
     }
 	#最终结果页面
 	public function resultAction(){
-		# code...
+		$manager = $this->session->get('Manager');
+        $project_id = $manager->project_id;
+        $this->view->setVar('project_id',$project_id);
 	}
 	
 	
