@@ -722,8 +722,6 @@ class PmController extends Base
 	public function examineeDownloadAction(){
 		$this->view->setTemplateAfter('base2');
 		$this->leftRender('被 试 人 员 数 据 下 载');
-        $manager = $this->session->get('Manager');
-        $this->view->setVar('project_id',$manager->project_id);
 	}
     #获取报告生成状态
     public function getReportStateAction(){
@@ -755,18 +753,21 @@ class PmController extends Base
         $this->dataReturn(array('success'=>$array));
     }
     #一键算分
-    public function oneKeyScoreAction(){
+    public function oneKeyCalculateAction(){
         $this->view->disable();
         $manager = $this->session->get('Manager');
+        if (empty($manager)){
+            $this->dataReturn(array('error'=>'获取用户信息失败，请重新登陆'));
+            return ;
+        }
         $project_id = $manager->project_id;
         $examinee = Examinee::find(array(
             'project_id=?1 and type=0',
             'bind'=>array(1=>$project_id)));
         foreach ($examinee as $examinees) {
             if ($examinees->state == 0) {
-                $exam_not[$examinee->number] = $examinee->name;
-            }
-            if ($examinees->state < 4) {
+                $exam_not[$examinees->number] = $examinees->name;
+            }else if ($examinees->state < 4) {
                 try{
                     BasicScore::handlePapers($examinees->id);
                     BasicScore::finishedBasic($examinees->id);
@@ -780,7 +781,15 @@ class PmController extends Base
                 }
             }
         }
-        $this->dataReturn(array('exam_not'=>$exam_not));
+        if (!isset($exam_not)) {
+            $this->dataReturn(array('success'=>'所有被试算分完成！'));
+        }else{
+            $error = '部分人员还未参与测试：<br/>';
+            foreach ($exam_not as $key => $value) {
+                $error .=$key.'：'.$value.'<br/>';
+            }
+            $this->dataReturn(array('error'=>$error));
+        }
     }
 	#导出被试信息列表
 	public function examineeExportAction(){

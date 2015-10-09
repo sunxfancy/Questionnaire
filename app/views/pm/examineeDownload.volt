@@ -1,7 +1,7 @@
 <script type="text/javascript" src="/js/bootstrap.js"></script>
 <script src='/fileupload/ajaxfileupload.js'></script>
 
-<div name='{{project_id}}' class="Leo_question" style="overflow:hidden;padding:10px;">
+<div class="Leo_question" style="overflow:hidden;padding:10px;">
     <div class="form-group">
         <div style="display:inline-block;margin-left:40px;font-size:26px;color:red;">被试信息</div>
     </div>  
@@ -21,7 +21,7 @@
     <hr size="2" color="#FF0000" style="width:90%;"/>
 <div style="width:100%;height:40px;margin-left:40px;">
     <div class='form-group' style='display:inline-block;'>
-        <a href = '#' onclick="downloadProjectComReport()">
+        <a href = '#' onclick="oneKeyCalculate()">
             <button type='button' class="btn btn-primary start" style='width:100px;'>
                 <i class="glyphicon glyphicon-plane"></i>
                 <span>一键算分</span>
@@ -36,7 +36,7 @@
     </div>
     &nbsp;&nbsp;
     <div class='form-group' style='display:inline-block;'>
-        <a href = '#' onclick="downloadProjectComReport()">
+        <a href = '#' onclick="oneKeyComprehensive()">
             <button id="onekeys1" type='button' class="btn btn-primary start" style='width:100px;'>
                 <i class="glyphicon glyphicon-send"></i>
                 <span>一键生成</span>
@@ -60,7 +60,7 @@
     </div>
     &nbsp;&nbsp;
     <div class='form-group' style='display:inline-block;'>
-        <a href = '#' onclick="downloadProjectComReport()">
+        <a href = '#' onclick="oneKeyCompetency()">
             <button id="onekeys2" type='button' class="btn btn-primary start" style='width:100px;'>
                 <i class="glyphicon glyphicon-send"></i>
                 <span>一键生成</span>
@@ -157,9 +157,39 @@ function datadeal(data){
         $('#onekeyd2').attr('disabled',true);
     }
 }
-function downloadAllComprehesive(){
+function oneKeyCalculate(){
+    downloadWait('正在计算所有被试人员测评得分！');
+    $.post('/pm/oneKeyCalculate', function(data){
+        if (data.error){
+            downloadError(data.error);
+        }else{
+            downloadSuccess(data.success);
+        }
+    });
+}
+function oneKeyComprehensive(){
     downloadWait('正在生成所有被试人员个人综合素质报告！');
-    $.post('/file/getAllIndividualComprehesive',{'project_id':{{project_id}}}, function(data){
+    $.post('/file/getAllIndividualComprehesive', function(data){
+        if (data.error){
+            downloadError(data.error);
+        }else{
+            downloadSuccess(data.success);
+        }
+    });
+}
+function oneKeyCompetency(){
+    downloadWait('正在生成所有被试人员个人胜任力报告！');
+    $.post('/file/getAllIndividualCompetency',function(data){
+        if (data.error){
+            downloadError(data.error);
+        }else{
+            downloadSuccess(data.success);
+        }
+    });
+}
+function downloadAllComprehensive(){
+    downloadWait('正在生成所有被试人员个人综合素质报告！');
+    $.post('/file/getAllIndividualComprehesive', function(data){
         if (data.error){
             downloadError(data.error);
         }else{
@@ -169,7 +199,7 @@ function downloadAllComprehesive(){
 }
 function downloadAllCompetency(){
     downloadWait('正在生成所有被试人员个人胜任力报告！');
-    $.post('/file/getAllIndividualCompetency',{'project_id':{{project_id}}}, function(data){
+    $.post('/file/getAllIndividualCompetency', function(data){
         if (data.error){
             downloadError(data.error);
         }else{

@@ -1,7 +1,7 @@
 <script type="text/javascript" src="/js/bootstrap.js"></script>
 <script src='/fileupload/ajaxfileupload.js'></script>
 
-<div name='{{ project_id }}' class="form-group" style='text-align:center;font-size:26px;color:red;margin-top:10px;'> 综&nbsp;合&nbsp;素&nbsp;质
+<div class="form-group" style='text-align:center;font-size:26px;color:red;margin-top:10px;'> 综&nbsp;合&nbsp;素&nbsp;质
 </div>
 <hr size="2" color="#FF0000" style="width:90%;"/>
 <div style="width:100%;height:40px;text-align:center; margin: 5px 10px;">
@@ -121,7 +121,7 @@ $('#myModal').on('hide.bs.modal', function (e) {
 });  
 function downloadProjectComReport(){
     downloadWait('正在生成人才综合测评总体分析报告！');
-    $.post('/file/getProjectComReport',{'project_id':{{project_id}}}, function(data){
+    $.post('/file/getProjectComReport', function(data){
         if (data.error){
             downloadError(data.error);
         }else{
@@ -131,7 +131,7 @@ function downloadProjectComReport(){
 }
 function downloadTeamReport(){
     downloadWait('正在生成班子胜任力报告！');
-    $.post('/file/getTeamReport',{'project_id':{{project_id}}}, function(data){
+    $.post('/file/getTeamReport', function(data){
         if (data.error){
             downloadError(data.error);
         }else{
@@ -141,7 +141,7 @@ function downloadTeamReport(){
 }
 function downloadSystemReport(){
     downloadWait('正在生成系统胜任力报告！');
-    $.post('/file/getSystemReport',{'project_id':{{project_id}}}, function(data){
+    $.post('/file/getSystemReport',function(data){
         if (data.error){
             downloadError(data.error);
         }else{
