@@ -4,6 +4,7 @@ require_once '../app/classes/PhpWord/Autoloader.php';
 class CompetencyExport
 {	
 	public  $wordHandle = null;
+	
 	/**
 	 * @usage 个体胜任力报告生成
 	 * @param
@@ -194,19 +195,15 @@ class CompetencyExport
 		$objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($this->wordHandle, 'Word2007');
 	 	$date = date('H_i_s');
 	 	$stamp = rand(100,900);
-		$fileName = './tmp/'.$project_id.'_'.$date.'_'.$stamp.'.docx';
+		$fileName = './tmp/'.$examinee_id.'_'.$date.'_'.$stamp.'.docx';
 		$objWriter->save($fileName);
 		return $fileName;
-	
 	}
-
-
 
 	/**
 	 * @usage 班子胜任力报告生成
 	 * @param
 	 */
-
 	public function teamReport($project_id){
 		//get basic info
 		$teamCompetency = new CompetencyData();
@@ -238,9 +235,9 @@ class CompetencyExport
 		$paragraphStyle1 = array('lineHeight'=>1.5);
 		$paragraphStyle2 = array('alignment'=>'center','lineHeight'=>1.5);
 		$paragraphStyle3 = array('alignment'=>'center');
-// 		//set table style
+ 		//set table style
 		$styleTable = array('borderSize'=>6, 'borderColor'=>'black', 'cellMargin'=>80 );
-// 		//report part
+ 		//report part
 		$table = $section->addTable($styleTable);
 		$table->addRow();
 		$cell1_19 = $table->addCell($CellLength);
@@ -260,22 +257,20 @@ class CompetencyExport
 		$cell6_19 = $table->addCell($CellLength);
 		$cell6_19->getStyle()->setGridSpan($CellNum);
 		//add chart
-// 		$chart = new WordChart();
-// 		$fileName = $chart->radarGraph_2($data,$data_pro, $project_id);
-// 		if (file_exists($fileName)){
-// 			$cell6_19->addImage($fileName,
-// 					array(
-// 							'width'=>\PhpOffice\PhpWord\Shared\Converter::cmToPixel(13.76),
-// 							'height'=>\PhpOffice\PhpWord\Shared\Converter::cmToPixel(7.09),
-// 							'wrappingStyle'=>'square',
-// 					 ));
-// 		}
-		
+		// $chart = new WordChart();
+		// $fileName = $chart->radarGraph_2($data,$data_pro, $project_id);
+		// if (file_exists($fileName)){
+		// 	$cell6_19->addImage($fileName,
+		// 			array(
+		// 					'width'=>\PhpOffice\PhpWord\Shared\Converter::cmToPixel(13.76),
+		// 					'height'=>\PhpOffice\PhpWord\Shared\Converter::cmToPixel(7.09),
+		// 					'wrappingStyle'=>'square',
+		// 			 ));
+		// }
 		$table->addRow();
 		$cell7_19 = $table->addCell($CellLength);
 		$cell7_19->getStyle()->setGridSpan($CellNum);
 		$cell7_19->addText("胜任力评价 ",$titleFontStyle,$paragraphStyle3);
-		
 		$table->addRow();
 		$cell8_19 = $table->addCell($CellLength);
 		$cell8_19->getStyle()->setGridSpan($CellNum);
@@ -333,7 +328,6 @@ class CompetencyExport
 				$table->addCell()->addText($svalue);
 			}
 		}
-		//命名
 		//临时文件命名规范    $project_id_$date_rand(100,900)
 		$objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($this->wordHandle, 'Word2007');
 	 	$date = date('H_i_s');
@@ -379,9 +373,9 @@ class CompetencyExport
 		$paragraphStyle1 = array('lineHeight'=>1.5);
 		$paragraphStyle2 = array('alignment'=>'center','lineHeight'=>1.5);
 		$paragraphStyle3 = array('alignment'=>'center');
-// 		//set table style
+		//set table style
 		$styleTable = array('borderSize'=>6, 'borderColor'=>'black', 'cellMargin'=>80 );
-// 		//report part
+		//report part
 		$table = $section->addTable($styleTable);
 		$table->addRow();
 		$cell1_19 = $table->addCell($CellLength);

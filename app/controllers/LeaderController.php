@@ -20,8 +20,6 @@ class LeaderController extends Base
 
     public function resultAction(){
         $manager = $this->session->get('Manager');
-        $project_id = $manager->project_id;
-        $this->view->setVar('project_id',$project_id); 
     }
 
     public function infoAction($examinee_id){
