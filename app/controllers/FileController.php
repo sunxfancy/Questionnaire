@@ -110,8 +110,8 @@ class FileController extends \Phalcon\Mvc\Controller {
 			//生成文件，之后返回下载路径
 		
 			try{
-				$report = new IndividualCompetencyExport();
-				$report_tmp_name = $report->report($examinee_id);
+				$report = new CompetencyExport();
+				$report_tmp_name = $report->individualCompetencyReport($examinee_id);
 				$report_name = $path.$name_1;
 				$file = new FileHandle();
 				$file->movefile($report_tmp_name, $report_name);
@@ -208,11 +208,6 @@ class FileController extends \Phalcon\Mvc\Controller {
 	# 项目总体报告导出
 	public function getProjectComReportAction(){
 		$this->view->disable();
-		$project_id = $this->request->getPost('project_id', 'int');
-		if (empty($project_id)){
-			$this->dataReturn(array('error'=>'请求参数不完整!'));
-			return ;
-		}
 		//个体报告的导出必须是manager
 		$manager = $this->session->get('Manager');
 		if(empty($manager)){
@@ -220,11 +215,12 @@ class FileController extends \Phalcon\Mvc\Controller {
 			return ;
 		}
 		// 根据目录结构判断文件是否存在
+		$project_id = $manager->project_id;
 		$year = floor($project_id / 100 );
 		$path = './project/'.$year.'/'.$project_id.'/system/report/';
 		$path_url = '/project/'.$year.'/'.$project_id.'/system/report/';
-		$name_1 = $project_id.'_team_report.docx'; //原始
-		$name_2 = $project_id.'_team_report_1.docx';//修改
+		$name_1 = $project_id.'_comprehesive.docx'; //原始
+		$name_2 = $project_id.'_comprehesive_1.docx';//修改
 		//先判断修改是否存在
 		if (file_exists($path.$name_2)){
 			//修改文件存在;
@@ -257,11 +253,6 @@ class FileController extends \Phalcon\Mvc\Controller {
 	# 项目班子胜任力报告导出
 	public function getTeamReportAction(){
 		$this->view->disable();
-		$project_id = $this->request->getPost('project_id', 'int');
-		if (empty($project_id)){
-			$this->dataReturn(array('error'=>'请求参数不完整!'));
-			return ;
-		}
 		//个体报告的导出必须是manager
 		$manager = $this->session->get('Manager');
 		if(empty($manager)){
@@ -269,6 +260,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 			return ;
 		}
 		// 根据目录结构判断文件是否存在
+		$project_id = $manager->project_id;
 		$year = floor($project_id / 100 );
 		$path = './project/'.$year.'/'.$project_id.'/system/report/';
 		$path_url = '/project/'.$year.'/'.$project_id.'/system/report/';
@@ -287,7 +279,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 		}else{
 			//生成文件，之后返回下载路径
 			try{
-				$report = new WordExport();
+				$report = new CompetencyExport();
 				$report_tmp_name = $report->teamReport($project_id);
 				$report_name = $path.$name_1;
 				$file = new FileHandle();
@@ -306,11 +298,6 @@ class FileController extends \Phalcon\Mvc\Controller {
 	# 项目系统胜任力报告导出
 	public function getSystemReportAction(){
 		$this->view->disable();
-		$project_id = $this->request->getPost('project_id', 'int');
-		if (empty($project_id)){
-			$this->dataReturn(array('error'=>'请求参数不完整!'));
-			return ;
-		}
 		//个体报告的导出必须是manager
 		$manager = $this->session->get('Manager');
 		if(empty($manager)){
@@ -318,6 +305,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 			return ;
 		}
 		// 根据目录结构判断文件是否存在
+		$project_id = $manager->project_id;
 		$year = floor($project_id / 100 );
 		$path = './project/'.$year.'/'.$project_id.'/system/report/';
 		$path_url = '/project/'.$year.'/'.$project_id.'/system/report/';
@@ -336,7 +324,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 		}else{
 			//生成文件，之后返回下载路径
 			try{
-				$report = new WordExport();
+				$report = new CompetencyExport();
 				$report_tmp_name = $report->systemReport($project_id);
 				$report_name = $path.$name_1;
 				$file = new FileHandle();
@@ -353,13 +341,8 @@ class FileController extends \Phalcon\Mvc\Controller {
 		}
 	}
 	#批量导出个人综合素质报告
-	public function getAllIndividualComprehesive(){
+	public function getAllIndividualComprehesiveAction(){
 		$this->view->disable();
-		$project_id = $this->request->getPost('project_id', 'int');
-		if (empty($project_id)){
-			$this->dataReturn(array('error'=>'请求参数不完整!'));
-			return ;
-		}
 		//个体报告的导出必须是manager
 		$manager = $this->session->get('Manager');
 		if(empty($manager)){
@@ -367,55 +350,105 @@ class FileController extends \Phalcon\Mvc\Controller {
 			return ;
 		}
 		//判断个人状态
+		$project_id = $manager->project_id;
 		$examinee = Examinee::find(array(
 			'project_id=?1 and type=0',
 			'bind'=>array(1=>$project_id)));
 		foreach ($examinee as $examinees) {
 			if ($examinees->state <5) {
-				$this->dataReturn(array('error'=>'还有人未完成测评流程！'));
-				return;
+				$not_fished[$examinees->number] = $examinees->name;
+			}else{
+				$examinee_array[$examinees->number] = $examinees->id;
 			}
-			$examinee_array[] = $examinees->id;
+		}
+		if (isset($not_fished)) {
+			$error = '部分人员未完成测评流程！名单如下：<br/>';
+			foreach ($not_fished as $key => $value) {
+				$error .= $key.'：'.$value.'<br/>';
+			}
+			$this->dataReturn(array('error'=>$error));
+			return;
 		}
 		// 根据目录结构判断文件是否存在
-		$project_id = $examinee->project_id;
 		$year = floor($project_id / 100 );
 		$path = './project/'.$year.'/'.$project_id.'/individual/comprehesive/';
 		$path_url = '/project/'.$year.'/'.$project_id.'/individual/comprehesive/';
-		$name_1 = $examinee->number.'_individual_comprehesive.docx'; //原始
-		$name_2 = $examinee->number.'_individual_comprehesive_1.docx';//修改
-		//先判断修改是否存在
-		if (file_exists($path.$name_2)){
-			//修改文件存在;
-			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_2."' style='color:red;text-decoration:none;'>个体综合报告</a>"));
-			return ;
-			// 返回 路径
-		}else if(file_exists($path.$name_1)){
-			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_1."' style='color:red;text-decoration:none;'>个体综合报告</a>"));
-			return ;
-			//返回路径
-		}else{
-			//生成文件，之后返回下载路径
-			try{
-				$report = new IndividualComExport();
-				$report_tmp_name = $report->report($examinee_id);
-				$report_name = $path.$name_1;
-				$file = new FileHandle();
-				$file->movefile($report_tmp_name, $report_name);
-				//清空临时文件 主要在tmp中
-				$file->clearfiles('./tmp/', $examinee_id);
-				//返回路径
-				$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''. $path_url.$name_1."' style='color:red;text-decoration:none;'>个体综合报告</a>"));
-				return ;
-			}catch(Exception $e){
-				$this->dataReturn(array('error'=>$e->getMessage()));
-				return ;
+		foreach ($examinee_array as $key=> $value) {
+			$name = $key.'_individual_comprehesive.docx'; //原始
+			if(file_exists($path.$name)){
+				continue;
+			}else{
+				//生成文件，之后返回下载路径
+				try{
+					$report = new IndividualComExport();
+					$report_tmp_name = $report->report($value);
+					$report_name = $path.$name;
+					$file = new FileHandle();
+					$file->movefile($report_tmp_name, $report_name);
+					//清空临时文件 主要在tmp中
+					$file->clearfiles('./tmp/', $value);
+				}catch(Exception $e){
+					$this->dataReturn(array('error'=>$e->getMessage()));
+					return ;
+				}
 			}
 		}
+		$this->dataReturn(array('success'=>'已生成全部被试个人综合素质报告'));
 	}
 	#批量导出个人胜任力报告
-	public function getAllIndividualCompetency(){
-		
+	public function getAllIndividualCompetencyAction(){
+		$this->view->disable();
+		//个体报告的导出必须是manager
+		$manager = $this->session->get('Manager');
+		if(empty($manager)){
+			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!'));
+			return ;
+		}
+		//判断个人状态
+		$project_id = $manager->project_id;
+		$examinee = Examinee::find(array(
+			'project_id=?1 and type=0',
+			'bind'=>array(1=>$project_id)));
+		foreach ($examinee as $examinees) {
+			if ($examinees->state <5) {
+				$not_fished[$examinees->number] = $examinees->name;
+			}else{
+				$examinee_array[$examinees->number] = $examinees->id;
+			}
+		}
+		if (isset($not_fished)) {
+			$error = '部分人员未完成测评流程！名单如下：<br/>';
+			foreach ($not_fished as $key => $value) {
+				$error .= $key.'：'.$value.'<br/>';
+			}
+			$this->dataReturn(array('error'=>$error));
+			return;
+		}
+		// 根据目录结构判断文件是否存在
+		$year = floor($project_id / 100 );
+		$path = './project/'.$year.'/'.$project_id.'/individual/competency/';
+		$path_url = '/project/'.$year.'/'.$project_id.'/individual/competency/';
+		foreach ($examinee_array as $key=> $value) {
+			$name = $key.'_individual_competency.docx'; //原始
+			if(file_exists($path.$name)){
+				continue;
+			}else{
+				//生成文件，之后返回下载路径
+				try{
+					$report = new IndividualComExport();
+					$report_tmp_name = $report->report($value);
+					$report_name = $path.$name;
+					$file = new FileHandle();
+					$file->movefile($report_tmp_name, $report_name);
+					//清空临时文件 主要在tmp中
+					$file->clearfiles('./tmp/', $value);
+				}catch(Exception $e){
+					$this->dataReturn(array('error'=>$e->getMessage()));
+					return ;
+				}
+			}
+		}
+		$this->dataReturn(array('success'=>'已生成全部被试个人胜任力报告'));
 	}
 	public function dataReturn($ans){
 		$this->response->setHeader("Content-Type", "text/json; charset=utf-8");

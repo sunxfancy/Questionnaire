@@ -722,9 +722,75 @@ class PmController extends Base
 	public function examineeDownloadAction(){
 		$this->view->setTemplateAfter('base2');
 		$this->leftRender('被 试 人 员 数 据 下 载');
-        $manager = $this->session->get('Manager');
-        $this->view->setVar('project_id',$manager->project_id);
 	}
+    #获取报告生成状态
+    public function getReportStateAction(){
+        $this->view->disable();
+        $manager = $this->session->get('Manager');
+        if (empty($manager)){
+            $this->dataReturn(array('error'=>'获取用户信息失败，请重新登陆'));
+            return ;
+        }
+        $project_id = $manager->project_id;
+        $examinee = Examinee::find(array(
+            'project_id=?1 and type=0',
+            'bind'=>array(1=>$project_id)));
+        $year = floor($project_id / 100 );
+        $path1 = './project/'.$year.'/'.$project_id.'/individual/comprehesive/';
+        $path2 = './project/'.$year.'/'.$project_id.'/individual/competency/';
+        $array['comprehesive'] = true;
+        $array['competency'] = true;
+        foreach ($examinee as $examinees) {
+            $name1 = $examinees->number.'_individual_comprehesive.docx';
+            $name2 = $examinees->number.'_individual_competency.docx';
+            if (!file_exists($path1.$name1)) {
+                $array['comprehesive'] = false;
+            }
+            if (!file_exists($path2.$name2)) {
+                $array['competency'] = false;
+            }
+        }
+        $this->dataReturn(array('success'=>$array));
+    }
+    #一键算分
+    public function oneKeyCalculateAction(){
+        $this->view->disable();
+        $manager = $this->session->get('Manager');
+        if (empty($manager)){
+            $this->dataReturn(array('error'=>'获取用户信息失败，请重新登陆'));
+            return ;
+        }
+        $project_id = $manager->project_id;
+        $examinee = Examinee::find(array(
+            'project_id=?1 and type=0',
+            'bind'=>array(1=>$project_id)));
+        foreach ($examinee as $examinees) {
+            if ($examinees->state == 0) {
+                $exam_not[$examinees->number] = $examinees->name;
+            }else if ($examinees->state < 4) {
+                try{
+                    BasicScore::handlePapers($examinees->id);
+                    BasicScore::finishedBasic($examinees->id);
+                    FactorScore::handleFactors($examinees->id);
+                    FactorScore::finishedFactor($examinees->id);
+                    IndexScore::handleIndexs($examinees->id);
+                    IndexScore::finishedIndex($examinees->id);
+                }catch(Exception $e){
+                    $this->dataReturn(array('error'=>$e->getMessage()));
+                    return ;
+                }
+            }
+        }
+        if (!isset($exam_not)) {
+            $this->dataReturn(array('success'=>'所有被试算分完成！'));
+        }else{
+            $error = '部分人员还未参与测试：<br/>';
+            foreach ($exam_not as $key => $value) {
+                $error .=$key.'：'.$value.'<br/>';
+            }
+            $this->dataReturn(array('error'=>$error));
+        }
+    }
 	#导出被试信息列表
 	public function examineeExportAction(){
 		$project_id = $this->session->get('Manager')->project_id;
