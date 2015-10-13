@@ -372,7 +372,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 			'bind'=>array(1=>$project_id)));
 		foreach ($examinee as $examinees) {
 			if ($examinees->state <5) {
-				$this->dataReturn('error'=>'还有人未完成测评流程！');
+				$this->dataReturn(array('error'=>'还有人未完成测评流程！'));
 				return;
 			}
 			$examinee_array[] = $examinees->id;
