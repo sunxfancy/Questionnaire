@@ -5,8 +5,8 @@
 	 *
 	 */
 class FileController extends \Phalcon\Mvc\Controller {
-	# 个人综合评价报告导出
-	public function getIndividualComReportAction(){
+	# 个人综合评价报告导出(项目经理操作)
+	public function MgetIndividualComReportAction(){
 		$this->view->disable();
 		$examinee_id = $this->request->getPost('examinee_id', 'int');
 		if (empty($examinee_id)){
@@ -32,18 +32,19 @@ class FileController extends \Phalcon\Mvc\Controller {
 		// 根据目录结构判断文件是否存在
 		$project_id = $examinee->project_id;
 		$year = floor($project_id / 100 );
-		$path = './project/'.$year.'/'.$project_id.'/individual/comprehesive/';
-		$path_url = '/project/'.$year.'/'.$project_id.'/individual/comprehesive/';
-		$name_1 = $examinee->number.'_individual_comprehesive.docx'; //原始
-		$name_2 = $examinee->number.'_individual_comprehesive_1.docx';//修改
+		$path1 = './project/'.$year.'/'.$project_id.'/individual/comprehesive/v1/';
+		$path2 = './project/'.$year.'/'.$project_id.'/individual/comprehesive/v2/';
+		$path_url1 = '/project/'.$year.'/'.$project_id.'/individual/comprehesive/v1/';
+		$path_url2 = '/project/'.$year.'/'.$project_id.'/individual/comprehesive/v2/';
+		$name = $examinee->number.'_individual_comprehesive.docx';
 		//先判断修改是否存在
-		if (file_exists($path.$name_2)){
+		if (file_exists($path2.$name)){
 			//修改文件存在;
-			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_2."' style='color:red;text-decoration:none;'>个体综合报告</a>"));
+			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url2.$name."' style='color:blue;text-decoration:underline;'>个体综合报告</a>"));
 			return ;
 			// 返回 路径
-		}else if(file_exists($path.$name_1)){
-			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_1."' style='color:red;text-decoration:none;'>个体综合报告</a>"));
+		}else if(file_exists($path1.$name)){
+			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url1.$name."' style='color:blue;text-decoration:underline;'>个体综合报告</a>"));
 			return ;
 			//返回路径
 		}else{
@@ -51,13 +52,13 @@ class FileController extends \Phalcon\Mvc\Controller {
 			try{
 				$report = new IndividualComExport();
 				$report_tmp_name = $report->report($examinee_id);
-				$report_name = $path.$name_1;
+				$report_name = $path1.$name;
 				$file = new FileHandle();
 				$file->movefile($report_tmp_name, $report_name);
 				//清空临时文件 主要在tmp中
 				$file->clearfiles('./tmp/', $examinee_id);
 				//返回路径
-				$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''. $path_url.$name_1."' style='color:red;text-decoration:none;'>个体综合报告</a>"));
+				$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''. $path_url1.$name."' style='color:blue;text-decoration:underline;'>个体综合报告</a>"));
 				return ;
 			}catch(Exception $e){
 				$this->dataReturn(array('error'=>$e->getMessage()));
@@ -65,8 +66,45 @@ class FileController extends \Phalcon\Mvc\Controller {
 			}
 		}
 	}
-	# 个人胜任力报告导出  project/
-	public function getIndividualCompetencyReportAction(){
+	# 个人综合评价报告导出(领导操作)
+	public function LgetIndividualComReportAction(){
+		$this->view->disable();
+		$examinee_id = $this->request->getPost('examinee_id', 'int');
+		if (empty($examinee_id)){
+			$this->dataReturn(array('error'=>'请求参数不完整!'));
+			return ;
+		}
+		//个体报告的导出必须是manager
+		$manager = $this->session->get('Manager');
+		if(empty($manager)){
+			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!'));
+			return ;
+		}
+		//判断个人状态
+		$examinee = Examinee::findFirst($examinee_id);
+		if (!isset($examinee->id) ){
+			$this->dataReturn(array('error'=>'无效的用户编号'));
+			return ;
+		}
+		// 根据目录结构判断文件是否存在
+		$project_id = $examinee->project_id;
+		$year = floor($project_id / 100 );
+		$path2 = './project/'.$year.'/'.$project_id.'/individual/comprehesive/v2/';
+		$path_url2 = '/project/'.$year.'/'.$project_id.'/individual/comprehesive/v2/';
+		$name = $examinee->number.'_individual_comprehesive.docx';//修改
+		//先判断修改是否存在
+		if (file_exists($path2.$name)){
+			//修改文件存在;
+			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url2.$name."' style='color:blue;text-decoration:underline;'>个体综合报告</a>"));
+			return ;
+			// 返回 路径
+		}else{
+			$this->dataReturn(array('error'=>'当前您不能下载该报告！'));
+			return ;
+		}
+	}
+	# 个人胜任力报告导出(项目经理操作)  project/
+	public function MgetIndividualCompetencyReportAction(){
 		$this->view->disable();
 		$examinee_id = $this->request->getPost('examinee_id', 'int');
 		if (empty($examinee_id)){
@@ -92,38 +130,75 @@ class FileController extends \Phalcon\Mvc\Controller {
 		// 根据目录结构判断文件是否存在
 		$project_id = $examinee->project_id;
 		$year = floor($project_id / 100 );
-		$path = './project/'.$year.'/'.$project_id.'/individual/competency/';
-		$path_url = '/project/'.$year.'/'.$project_id.'/individual/competency/';
-		$name_1 = $examinee->number.'_individual_competency.docx'; //原始
-		$name_2 = $examinee->number.'_individual_competency_1.docx';//修改
+		$path1 = './project/'.$year.'/'.$project_id.'/individual/competency/v1/';
+		$path2 = './project/'.$year.'/'.$project_id.'/individual/competency/v2/';
+		$path_url1 = '/project/'.$year.'/'.$project_id.'/individual/competency/v1/';
+		$path_url2 = '/project/'.$year.'/'.$project_id.'/individual/competency/v2/';
+		$name = $examinee->number.'_individual_competency.docx'; //原始
 		//先判断修改是否存在
-		if (file_exists($path.$name_2)){
+		if (file_exists($path2.$name)){
 			//修改文件存在;
-			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_2."' style='color:red;text-decoration:none;'>个人胜任力报告</a>"));
+			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url2.$name."' style='color:blue;text-decoration:underline;'>个人胜任力报告</a>"));
 			return ;
 			// 返回 路径
-		}else if(file_exists($path.$name_1)){
-			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_1."' style='color:red;text-decoration:none;'>个人胜任力报告</a>"));
+		}else if(file_exists($path1.$name)){
+			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url1.$name."' style='color:blue;text-decoration:underline;'>个人胜任力报告</a>"));
 			return ;
 			//返回路径
 		}else{
-			//生成文件，之后返回下载路径
-		
+			//生成文件，之后返回下载路径	
 			try{
 				$report = new CompetencyExport();
 				$report_tmp_name = $report->individualCompetencyReport($examinee_id);
-				$report_name = $path.$name_1;
+				$report_name = $path1.$name;
 				$file = new FileHandle();
 				$file->movefile($report_tmp_name, $report_name);
 				//清空临时文件 主要在tmp中
 				$file->clearfiles('./tmp/', $examinee_id);
 				//返回路径
-				$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''. $path_url.$name_1."' style='color:red;text-decoration:none;'>个人胜任力报告</a>"));
+				$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''. $path_url1.$name."' style='color:blue;text-decoration:underline;'>个人胜任力报告</a>"));
 				return ;
 			}catch(Exception $e){
 				$this->dataReturn(array('error'=>$e->getMessage()));
 				return ;
 			}
+		}
+	}
+	# 个人胜任力报告导出(领导操作)  project/
+	public function LgetIndividualCompetencyReportAction(){
+		$this->view->disable();
+		$examinee_id = $this->request->getPost('examinee_id', 'int');
+		if (empty($examinee_id)){
+			$this->dataReturn(array('error'=>'请求参数不完整!'));
+			return ;
+		}
+		//个体报告的导出必须是manager
+		$manager = $this->session->get('Manager');
+		if(empty($manager)){
+			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!'));
+			return ;
+		}
+		//判断个人状态
+		$examinee = Examinee::findFirst($examinee_id);
+		if (!isset($examinee->id) ){
+			$this->dataReturn(array('error'=>'无效的用户编号'));
+			return ;
+		}
+		// 根据目录结构判断文件是否存在
+		$project_id = $examinee->project_id;
+		$year = floor($project_id / 100 );
+		$path2 = './project/'.$year.'/'.$project_id.'/individual/competency/v2/';
+		$path_url2 = '/project/'.$year.'/'.$project_id.'/individual/competency/v2/';
+		$name = $examinee->number.'_individual_competency.docx';
+		//先判断修改是否存在
+		if (file_exists($path2.$name)){
+			//修改文件存在;
+			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url2.$name."' style='color:blue;text-decoration:underline;'>个人胜任力报告</a>"));
+			return ;
+			// 返回 路径
+		}else{
+			$this->dataReturn(array('error'=>'当前您不能下载该报告！'));
+			return ;
 		}
 	}
 	# 个人十项报表数据导出
@@ -155,16 +230,9 @@ class FileController extends \Phalcon\Mvc\Controller {
 		$year = floor($project_id / 100 );
 		$path = './project/'.$year.'/'.$project_id.'/individual/personal_result/';
 		$path_url = '/project/'.$year.'/'.$project_id.'/individual/personal_result/';
-		$name_1 = $examinee->number.'_personal_result.xls'; //原始
-		$name_2 = $examinee->number.'_personal_result_1.xls';//修改
-		//先判断修改是否存在
-		if (file_exists($path.$name_2)){
-			//修改文件存在;
-			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_2."' style='color:red;text-decoration:none;'>个人测评十项报表</a>"));
-			return ;
-			// 返回 路径
-		}else if(file_exists($path.$name_1)){
-			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_1."' style='color:red;text-decoration:none;'>个人测评十项报表</a>"));
+		$name = $examinee->number.'_personal_result.xls';
+		if(file_exists($path.$name)){
+			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name."' style='color:blue;text-decoration:underline;'>个人测评十项报表</a>"));
 			return ;
 			//返回路径
 		}else{
@@ -187,13 +255,13 @@ class FileController extends \Phalcon\Mvc\Controller {
 				}
 			}
 			try{
-				$report_name = $path.$name_1;
+				$report_name = $path.$name;
 				$file = new FileHandle();
 				$file->movefile($report_tmp_name, $report_name);
 				//清空临时文件 主要在tmp中
 				$file->clearfiles('./tmp/', $examinee_id);
 				//返回路径
-				$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''. $path_url.$name_1."' style='color:red;text-decoration:none;'>个人测评十项报表</a>"));
+				$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''. $path_url.$name_1."' style='color:blue;text-decoration:underline;'>个人测评十项报表</a>"));
 				return ;
 			}catch(Exception $e){
 				$this->dataReturn(array('error'=>$e->getMessage()));
@@ -205,8 +273,8 @@ class FileController extends \Phalcon\Mvc\Controller {
 	public function getIndividualInfomationAction(){
 		
 	}
-	# 项目总体报告导出
-	public function getProjectComReportAction(){
+	# 项目总体报告导出(项目经理操作)
+	public function MgetProjectComReportAction(){
 		$this->view->disable();
 		//个体报告的导出必须是manager
 		$manager = $this->session->get('Manager');
@@ -224,11 +292,11 @@ class FileController extends \Phalcon\Mvc\Controller {
 		//先判断修改是否存在
 		if (file_exists($path.$name_2)){
 			//修改文件存在;
-			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_2."' style='color:red;text-decoration:none;'>人才综合测评总体分析报告</a>"));
+			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_2."' style='color:blue;text-decoration:underline;'>人才综合测评总体分析报告</a>"));
 			return ;
 			// 返回 路径
 		}else if(file_exists($path.$name_1)){
-			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_1."' style='color:red;text-decoration:none;'>人才综合测评总体分析报告</a>"));
+			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_1."' style='color:blue;text-decoration:underline;'>人才综合测评总体分析报告</a>"));
 			return ;
 			//返回路径
 		}else{
@@ -242,7 +310,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 				//清空临时文件 主要在tmp中
 				$file->clearfiles('./tmp/', $project_id);
 				//返回路径
-				$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''. $path_url.$name_1."' style='color:red;text-decoration:none;'>人才综合测评总体分析报告</a>"));
+				$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''. $path_url.$name_1."' style='color:blue;text-decoration:underline;'>人才综合测评总体分析报告</a>"));
 				return ;
 			}catch(Exception $e){
 				$this->dataReturn(array('error'=>$e->getMessage()));
@@ -250,8 +318,34 @@ class FileController extends \Phalcon\Mvc\Controller {
 			}
 		}
 	}
-	# 项目班子胜任力报告导出
-	public function getTeamReportAction(){
+	# 项目总体报告导出(领导操作)
+	public function LgetProjectComReportAction(){
+		$this->view->disable();
+		//个体报告的导出必须是manager
+		$manager = $this->session->get('Manager');
+		if(empty($manager)){
+			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!'));
+			return ;
+		}
+		// 根据目录结构判断文件是否存在
+		$project_id = $manager->project_id;
+		$year = floor($project_id / 100 );
+		$path = './project/'.$year.'/'.$project_id.'/system/report/';
+		$path_url = '/project/'.$year.'/'.$project_id.'/system/report/';
+		$name_2 = $project_id.'_comprehesive_1.docx';//修改
+		//先判断修改是否存在
+		if (file_exists($path.$name_2)){
+			//修改文件存在;
+			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_2."' style='color:blue;text-decoration:underline;'>人才综合测评总体分析报告</a>"));
+			return ;
+			// 返回 路径
+		}else {
+			$this->dataReturn(array('error'=>'当前您不能下载该报告！'));
+			return ;
+		}
+	}
+	# 项目班子胜任力报告导出(项目经理操作)
+	public function MgetTeamReportAction(){
 		$this->view->disable();
 		//个体报告的导出必须是manager
 		$manager = $this->session->get('Manager');
@@ -269,11 +363,11 @@ class FileController extends \Phalcon\Mvc\Controller {
 		//先判断修改是否存在
 		if (file_exists($path.$name_2)){
 			//修改文件存在;
-			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_2."' style='color:red;text-decoration:none;'>班子胜任力报告</a>"));
+			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_2."' style='color:blue;text-decoration:underline;'>班子胜任力报告</a>"));
 			return ;
 			// 返回 路径
 		}else if(file_exists($path.$name_1)){
-			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_1."' style='color:red;text-decoration:none;'>班子胜任力报告</a>"));
+			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_1."' style='color:blue;text-decoration:underline;'>班子胜任力报告</a>"));
 			return ;
 			//返回路径
 		}else{
@@ -287,7 +381,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 				//清空临时文件 主要在tmp中
 				$file->clearfiles('./tmp/', $project_id);
 				//返回路径
-				$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''. $path_url.$name_1."' style='color:red;text-decoration:none;'>班子胜任力报告</a>"));
+				$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''. $path_url.$name_1."' style='color:blue;text-decoration:underline;'>班子胜任力报告</a>"));
 				return ;
 			}catch(Exception $e){
 				$this->dataReturn(array('error'=>$e->getMessage()));
@@ -295,8 +389,34 @@ class FileController extends \Phalcon\Mvc\Controller {
 			}
 		}
 	}
-	# 项目系统胜任力报告导出
-	public function getSystemReportAction(){
+	# 项目班子胜任力报告导出(领导操作)
+	public function LgetTeamReportAction(){
+		$this->view->disable();
+		//个体报告的导出必须是manager
+		$manager = $this->session->get('Manager');
+		if(empty($manager)){
+			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!'));
+			return ;
+		}
+		// 根据目录结构判断文件是否存在
+		$project_id = $manager->project_id;
+		$year = floor($project_id / 100 );
+		$path = './project/'.$year.'/'.$project_id.'/system/report/';
+		$path_url = '/project/'.$year.'/'.$project_id.'/system/report/';
+		$name_2 = $project_id.'_team_report_1.docx';//修改
+		//先判断修改是否存在
+		if (file_exists($path.$name_2)){
+			//修改文件存在;
+			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_2."' style='color:blue;text-decoration:underline;'>班子胜任力报告</a>"));
+			return ;
+			// 返回 路径
+		}else{
+			$this->dataReturn(array('error'=>'当前您不能下载该报告！'));
+			return ;
+		}
+	}
+	# 项目系统胜任力报告导出(项目经理操作)
+	public function MgetSystemReportAction(){
 		$this->view->disable();
 		//个体报告的导出必须是manager
 		$manager = $this->session->get('Manager');
@@ -314,11 +434,11 @@ class FileController extends \Phalcon\Mvc\Controller {
 		//先判断修改是否存在
 		if (file_exists($path.$name_2)){
 			//修改文件存在;
-			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_2."' style='color:red;text-decoration:none;'>系统胜任力报告</a>"));
+			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_2."' style='color:blue;text-decoration:underline;'>系统胜任力报告</a>"));
 			return ;
 			// 返回 路径
 		}else if(file_exists($path.$name_1)){
-			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_1."' style='color:red;text-decoration:none;'>系统胜任力报告</a>"));
+			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_1."' style='color:blue;text-decoration:underline;'>系统胜任力报告</a>"));
 			return ;
 			//返回路径
 		}else{
@@ -332,12 +452,38 @@ class FileController extends \Phalcon\Mvc\Controller {
 				//清空临时文件 主要在tmp中
 				$file->clearfiles('./tmp/', $project_id);
 				//返回路径
-				$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''. $path_url.$name_1."' style='color:red;text-decoration:none;'>系统胜任力报告</a>"));
+				$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''. $path_url.$name_1."' style='color:blue;text-decoration:underline;'>系统胜任力报告</a>"));
 				return ;
 			}catch(Exception $e){
 				$this->dataReturn(array('error'=>$e->getMessage()));
 				return ;
 			}
+		}
+	}
+	# 项目系统胜任力报告导出(领导操作)
+	public function LgetSystemReportAction(){
+		$this->view->disable();
+		//个体报告的导出必须是manager
+		$manager = $this->session->get('Manager');
+		if(empty($manager)){
+			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!'));
+			return ;
+		}
+		// 根据目录结构判断文件是否存在
+		$project_id = $manager->project_id;
+		$year = floor($project_id / 100 );
+		$path = './project/'.$year.'/'.$project_id.'/system/report/';
+		$path_url = '/project/'.$year.'/'.$project_id.'/system/report/';
+		$name_2 = $project_id.'_system_report_1.docx';//修改
+		//先判断修改是否存在
+		if (file_exists($path.$name_2)){
+			//修改文件存在;
+			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_2."' style='color:blue;text-decoration:underline;'>系统胜任力报告</a>"));
+			return ;
+			// 返回 路径
+		}else{
+			$this->dataReturn(array('error'=>'当前您不能下载该报告！'));
+			return ;
 		}
 	}
 	#批量导出个人综合素质报告
@@ -455,5 +601,4 @@ class FileController extends \Phalcon\Mvc\Controller {
 		echo json_encode($ans);
 		$this->view->disable();
 	}
-	
 }

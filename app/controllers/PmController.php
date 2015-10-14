@@ -738,9 +738,16 @@ class PmController extends Base
         $year = floor($project_id / 100 );
         $path1 = './project/'.$year.'/'.$project_id.'/individual/comprehesive/';
         $path2 = './project/'.$year.'/'.$project_id.'/individual/competency/';
+        $array['score'] = true;
         $array['comprehesive'] = true;
         $array['competency'] = true;
         foreach ($examinee as $examinees) {
+            if ($examinees->state < 4) {
+                $array['score'] = false;
+                $array['comprehesive'] = false;
+                $array['competency'] = false;
+                break;
+            }
             $name1 = $examinees->number.'_individual_comprehesive.docx';
             $name2 = $examinees->number.'_individual_competency.docx';
             if (!file_exists($path1.$name1)) {

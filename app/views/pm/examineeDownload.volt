@@ -1,7 +1,7 @@
 <script type="text/javascript" src="/js/bootstrap.js"></script>
 <script src='/fileupload/ajaxfileupload.js'></script>
 
-<div class="Leo_question" style="overflow:hidden;padding:10px;">
+<div class="Leo_question" style="overflow:hidden;">
     <div class="form-group">
         <div style="display:inline-block;margin-left:40px;font-size:26px;color:red;">被试信息</div>
     </div>  
@@ -19,65 +19,65 @@
         <div style="display:inline-block;margin-left:40px;font-size:26px;color:red;">批量下载</div>
     </div>  
     <hr size="2" color="#FF0000" style="width:90%;"/>
-<div style="width:100%;height:40px;margin-left:40px;">
-    <div class='form-group' style='display:inline-block;'>
-        <a href = '#' onclick="oneKeyCalculate()">
-            <button type='button' class="btn btn-primary start" style='width:100px;'>
-                <i class="glyphicon glyphicon-plane"></i>
-                <span>一键算分</span>
-                <span class="label" id='score'></span>
-            </button>
-        </a>
+    <div style="width:100%;height:40px;margin-left:40px;">
+        <div class='form-group' style='display:inline-block;'>
+            <a href = '#' onclick="oneKeyCalculate()">
+                <button id="onekeycal" type='button' class="btn btn-primary start" style='width:100px;'>
+                    <i class="glyphicon glyphicon-plane"></i>
+                    <span>一键算分</span>
+                </button>
+            </a>
+            <span class="label" id='score'></span>
+        </div>
     </div>
-</div>
-<div style="width:100%;height:40px;margin-left:40px;">
-    <div class="form-group" style='display:inline-block;font-size:20px;'>
-        <span class="text-primary" ><i class='glyphicon glyphicon-tag' style='font-size:15px;'></i></span>个人综合素质报告
-    </div>
-    &nbsp;&nbsp;
-    <div class='form-group' style='display:inline-block;'>
-        <a href = '#' onclick="oneKeyComprehensive()">
-            <button id="onekeys1" type='button' class="btn btn-primary start" style='width:100px;'>
-                <i class="glyphicon glyphicon-send"></i>
-                <span>一键生成</span>
-            </button>
+    <div style="width:100%;height:40px;margin-left:40px;">
+        <div class="form-group" style='display:inline-block;font-size:20px;'>
+            <span class="text-primary" ><i class='glyphicon glyphicon-tag' style='font-size:15px;'></i></span>个人综合素质报告
+        </div>
+        &nbsp;&nbsp;
+        <div class='form-group' style='display:inline-block;'>
+            <a href = '#' onclick="oneKeyComprehensive()">
+                <button id="onekeys1" type='button' class="btn btn-primary start" style='width:100px;'>
+                    <i class="glyphicon glyphicon-send"></i>
+                    <span>一键生成</span>
+                </button>
+            </a>
             <span class="label" id='comprehesive'></span>
-        </a>
+        </div>
+         &emsp;
+        <div class='form-group' style='display:inline-block;'>
+            <a href = '#' onclick="downloadProjectComReport()">
+                <button id="onekeyd1" type='button' class="btn btn-primary start" style='width:100px;'>
+                    <i class="glyphicon glyphicon-download"></i>
+                    <span>一键导出</span>
+                </button>
+            </a>
+        </div>
     </div>
-     &emsp;
-    <div class='form-group' style='display:inline-block;'>
-        <a href = '#' onclick="downloadProjectComReport()">
-            <button id="onekeyd1" type='button' class="btn btn-primary start" style='width:100px;'>
-                <i class="glyphicon glyphicon-download"></i>
-                <span>一键导出</span>
-            </button>
-        </a>
-    </div>
-</div>
-<div style="width:100%;height:40px; margin-left:40px;">
-    <div class="form-group" style='display:inline-block;font-size:20px;'>
-        <span class="text-primary" ><i class='glyphicon glyphicon-tag' style='font-size:15px;'></i></span>个人胜任力报告<span style='visibility: hidden'>位</span>
-    </div>
-    &nbsp;&nbsp;
-    <div class='form-group' style='display:inline-block;'>
-        <a href = '#' onclick="oneKeyCompetency()">
-            <button id="onekeys2" type='button' class="btn btn-primary start" style='width:100px;'>
-                <i class="glyphicon glyphicon-send"></i>
-                <span>一键生成</span>
-            </button>
+    <div style="width:100%;height:40px; margin-left:40px;">
+        <div class="form-group" style='display:inline-block;font-size:20px;'>
+            <span class="text-primary" ><i class='glyphicon glyphicon-tag' style='font-size:15px;'></i></span>个人胜任力报告<span style='visibility: hidden'>位</span>
+        </div>
+        &nbsp;&nbsp;
+        <div class='form-group' style='display:inline-block;'>
+            <a href = '#' onclick="oneKeyCompetency()">
+                <button id="onekeys2" type='button' class="btn btn-primary start" style='width:100px;'>
+                    <i class="glyphicon glyphicon-send"></i>
+                    <span>一键生成</span>
+                </button>
+            </a>
             <span class="label" id='competency'></span>
-        </a>
+        </div>
+         &emsp;
+        <div class='form-group' style='display:inline-block;'>
+            <a href = '#' onclick="downloadProjectComReport()">
+                <button id="onekeyd2" type='button' class="btn btn-primary start" style='width:100px;'>
+                    <i class="glyphicon glyphicon-download"></i>
+                    <span>一键导出</span>
+                </button>
+            </a>
+        </div>
     </div>
-     &emsp;
-    <div class='form-group' style='display:inline-block;'>
-        <a href = '#' onclick="downloadProjectComReport()">
-            <button id="onekeyd2" type='button' class="btn btn-primary start" style='width:100px;'>
-                <i class="glyphicon glyphicon-download"></i>
-                <span>一键导出</span>
-            </button>
-        </a>
-    </div>
-</div>
     <hr size="2" color="#FF0000" style="width:90%;"/>
     <div class='form-group' style='display:inline-block;text-align:right;width:90%;'>
         <form action='/pm' class="form-inline" method='post'>
@@ -118,7 +118,7 @@ function getData(url){
     $.post(url,function(data) { 
         if(data.error){
             if(spinner){ spinner.stop(); }
-                 $('.Leo_question').css('width','843px')
+                 $('.Leo_question').css('width','840px')
                  $('.modal-body').html('');
                  $('.modal-body').html(
                      "<p class=\"bg-danger\" style='padding:20px;'>"+data.error+ "</p>"
@@ -138,6 +138,16 @@ function getData(url){
     })
 }
 function datadeal(data){
+    if (data.score) {
+        $('#score').addClass('label-success');
+        $('#score').html('已完成');
+        $('#onekeycal').attr('disabled',true);
+    }else{
+        $('#score').addClass('label-danger');
+        $('#score').html('未完成');
+        $('#onekeys1').attr('disabled',true);
+        $('#onekeys2').attr('disabled',true);
+    }
     if(data.comprehesive){
         $('#comprehesive').addClass('label-success');
         $('#comprehesive').html('已完成');
@@ -208,13 +218,13 @@ function downloadAllCompetency(){
     });
 }
 function downloadWait(msg){
-    $('.Leo_question').css('width','843px');    
+    $('.Leo_question').css('width','840px');    
     $('.modal-body').html("<p class=\"bg-success\" style='padding:20px;'>"+msg+"</p>"+"<div style='text-align:center; padding:5px 10px 10px 10px;'><img src='/image/loading.gif' style='width:300px' /></div>");
     $('.modal-footer').html('');
     $('#myModal').modal({keyboard:true, backdrop:'static'});
 }
 function downloadError(msg){
-    $('.Leo_question').css('width','843px')
+    $('.Leo_question').css('width','840px')
     $('.modal-body').html('');
     $('.modal-body').html(
         "<p class=\"bg-danger\" style='padding:20px;'>"+msg+ "</p>"
@@ -229,7 +239,7 @@ function downloadError(msg){
     })
 }
 function downloadSuccess(msg){
-    $('.Leo_question').css('width','843px')
+    $('.Leo_question').css('width','840px')
     $('.modal-body').html('');
     $('.modal-body').html(
         "<p class=\"bg-success\" style='padding:20px;'>"+msg+ "</p>"
