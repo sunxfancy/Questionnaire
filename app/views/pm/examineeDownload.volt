@@ -21,13 +21,11 @@
     <hr size="2" color="#FF0000" style="width:90%;"/>
 <div style="width:100%;height:40px;margin-left:40px;">
     <div class='form-group' style='display:inline-block;'>
-        <a href = '#' onclick="oneKeyCalculate()">
-            <button type='button' class="btn btn-primary start" style='width:100px;'>
+            <button type='button' onclick="oneKeyCalculate()" class="btn btn-primary start" style='width:100px;'>
                 <i class="glyphicon glyphicon-plane"></i>
                 <span>一键算分</span>
                 <span class="label" id='score'></span>
             </button>
-        </a>
     </div>
 </div>
 <div style="width:100%;height:40px;margin-left:40px;">
