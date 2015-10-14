@@ -41,7 +41,8 @@ class CompetencyExport
 		$table->addCell(1000)->addText("性别",$labelFontStyle,$labelParagraphStyle);
 		$table->addCell(1000)->addText(($examinee->sex == 1) ? '男' : '女',$valueFontStyle,$valuePragraphStyle);
 		$table->addCell(1000)->addText("年龄",$labelFontStyle,$labelParagraphStyle);
-		$age = FactorScore::calAge($examinee->birthday,$examinee->last_login);
+		//个体年龄取整
+		$age = floor(FactorScore::calAge($examinee->birthday,$examinee->last_login));
 		$table->addCell(1000)->addText($age,$valueFontStyle,$valuePragraphStyle);
 		$table->addCell(1000)->addText("职位",$labelFontStyle,$labelParagraphStyle);
 		$cell2_89 = $table->addCell(1000);

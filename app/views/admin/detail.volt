@@ -147,7 +147,7 @@ function datadeal(data){
             }
             ];
 	  ichartDraw('ichart-render-ceping', data_ceping, '测评完成度');    
-      ichartDraw('ichart-render-mianxun', data_mianxun,'面巡完成度');  
+      ichartDraw('ichart-render-mianxun', data_mianxun,'面询完成度');  
 	var begintime = data.begintime;
 	var endtime = data.endtime;
 	var begindate = begintime.split(' ')[0];
