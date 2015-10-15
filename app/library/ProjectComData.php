@@ -26,6 +26,7 @@ class ProjectComData extends \Phalcon\Mvc\Controller {
 		if (count($members_not_finished) > 0 ) {
 			throw new Exception('项目成员未完成测评过程-名单-'.print_r($members_not_finished,true));
 		}
+
 	}
 	#获取职业素质综合评价相关数据
 	public function getComprehensiveData($project_id){
@@ -37,6 +38,8 @@ class ProjectComData extends \Phalcon\Mvc\Controller {
 		}
 		$exist_module_array = explode(',',$project_detail->module_names);
 		$module_array = array("心理健康"=>'mk_xljk',"素质结构"=>'mk_szjg',"智体结构"=>'mk_ztjg',"能力结构"=>'mk_nljg');
+		$module_name_array = array("心理健康"=>'职业心理',"素质结构"=>'职业素质',"智体结构"=>'智体结构',"能力结构"=>'职业能力');
+
 		$module_array_score = array();
 		foreach($module_array as $key => $value){
 			if (!in_array($value, $exist_module_array)){
@@ -64,13 +67,15 @@ class ProjectComData extends \Phalcon\Mvc\Controller {
 			$tmp['children']= $result_1->toArray();
 			$count = count($result_1);
 			$sum = 0;
-			foreach($tmp['children'] as &$value){
-				$sum += sprintf('%.2f', $value['score'] );
+			foreach($tmp['children'] as &$svalue){
+				$sum += sprintf('%.2f', $svalue['score'] );
 			}
 			if ($count == 0 ){
 				throw new Exception('系统错误-模块下属指标的数量为0');
 			}
 			$tmp['value'] = sprintf('%.2f', $sum/$count);
+			$tmp['name'] =$module_name_array[$key];
+			$tmp['name_in_table'] = $value;
 			$module_array_score[] = $tmp;
 		}
 		return $module_array_score;
@@ -241,39 +246,61 @@ class ProjectComData extends \Phalcon\Mvc\Controller {
 	}
 	
 	##通过因子找到项目中各层群人数的因子得分情况
-	public function getFactorGrideByLevel($factor_id, $factor_chs_name, $level_examines,$project_id){
+	public function getFactorGrideByLevel($factor_chs_name = null, $factor_name = null, $level_examines,$project_id){
 		#判断因子是index还是factor
-		$factor_info = Factor::findFirst(
-			array("id = ?1 AND chs_name = ?2", 'bind'=>array(1=>$factor_id, 2=>$factor_chs_name))
-		);
+		//按照中文名搜索
+		if (empty($factor_chs_name)){
+			$factor_info = Factor::findFirst(
+					array("name = ?2", 'bind'=>array(2=>$factor_name))
+			);
+			$search = 'Factor.name = '."'$factor_name'";
+		//按照英文名搜索
+		}else{
+			$factor_info = Factor::findFirst(
+					array("chs_name = ?2", 'bind'=>array(2=>$factor_chs_name))
+			);
+			$search = 'Factor.chs_name = '."'$factor_chs_name'";
+		}
+
 		if (isset($factor_info->id)){
 			//对各层次人群进行得分计算后返回
 			$rtn_array = array();
 			foreach( $level_examines as $level_array ){
 				$result = $this->modelsManager->createBuilder()
-							->columns(array(
-								'AVG(FactorAns.ans_score) as score',
-							  ))
-							->from('Examinee')
-							->inwhere('Examinee.id', $level_array)
-							->join('FactorAns', 'FactorAns.examinee_id = Examinee.id AND Examinee.type =0 AND Examinee.project_id = '.$project_id)
-							->join('Factor', 'FactorAns.factor_id = Factor.id AND Factor.chs_name = '."'$factor_chs_name'")
-							->getQuery()
-							->execute()
-							->toArray();
-				
+				->columns(array(
+						'AVG(FactorAns.ans_score) as score',
+				))
+				->from('Examinee')
+				->inwhere('Examinee.id', $level_array)
+				->join('FactorAns', 'FactorAns.examinee_id = Examinee.id AND Examinee.type =0 AND Examinee.project_id = '.$project_id)
+				->join('Factor', 'FactorAns.factor_id = Factor.id AND '.$search )
+				->getQuery()
+				->execute()
+				->toArray();
+		
 				if (empty($result[0]['score'])){
 					$score = 0;
 				}else{
 					$score = sprintf('%.2f', $result[0]['score']);
 				}
-				$rtn_array[] = $score; 
+				$rtn_array[] = $score;
 			}
 			return $rtn_array;
 		}
-		$index_info = Index::findFirst(
-			array("id = ?1 AND chs_name = ?2", 'bind'=>array(1=>$factor_id, 2=>$factor_chs_name))
+		//按照中文名搜索
+		if (empty($factor_chs_name)){
+			$index_info = Index::findFirst(
+			array(" name = ?2", 'bind'=>array( 2=>$factor_name))
 		);
+			$search = 'Index.name = '."'$factor_name'";
+			//按照英文名搜索
+		}else{
+			$index_info = Index::findFirst(
+			array("chs_name = ?2", 'bind'=>array( 2=>$factor_chs_name))
+			);
+			$search = 'Index.chs_name = '."'$factor_chs_name'";
+		}
+		
 		if (isset($index_info->id)){
 			$rtn_array = array();
 			foreach( $level_examines as $level_array ){
@@ -284,7 +311,7 @@ class ProjectComData extends \Phalcon\Mvc\Controller {
 							->from('Examinee')
 							->inwhere('Examinee.id', $level_array)
 							->join('IndexAns', 'IndexAns.examinee_id = Examinee.id AND Examinee.type =0 AND Examinee.project_id = '.$project_id)
-							->join('Index', 'IndexAns.index_id = Index.id AND Index.chs_name = '."'$factor_chs_name'")
+							->join('Index', 'IndexAns.index_id = Index.id AND '.$search )
 							->getQuery()
 							->execute()
 							->toArray();
@@ -298,7 +325,7 @@ class ProjectComData extends \Phalcon\Mvc\Controller {
 			}
 			return $rtn_array;
 		}
-		throw new Exception('no this factor exist!'.print_r($factor_id.'-'.$factor_chs_name));
+		throw new Exception('no this factor exist!'.print_r($factor_name));
 	}
 	##通过因子来找评语(对应评语中的前三)
 	
@@ -306,9 +333,11 @@ class ProjectComData extends \Phalcon\Mvc\Controller {
 	#																				  #
 	#从需求量表答案结合被试信息表判断综合数据报表的基础点							  #
 	#   需求量表中第一个题（单选）													  #
+	#												  								  #
 	###################################################################################
 	
 	#获取各层级下的人员清单 --- key(level) => value(examinee_ids_array)
+	#结合上边的查询各层因子，结合下边的n-1项查询， n项查询由n-1项查询统计得出，因此直接进行n-1
 	public function getBaseLevels($project_id){
 		#获取基本项array
 		$level_str =  $this->modelsManager->createBuilder()
@@ -361,24 +390,96 @@ class ProjectComData extends \Phalcon\Mvc\Controller {
 		return $inquery_questions;
 	}
 
-	#全体人员需求量表的结果逐个分析
-	public function getInqueryAnsDetail($project_id){
-		  $option_array = $this->modelsManager->createBuilder()
-			->columns(array( 'InqueryAns.option as option' ))
-			->from('InqueryAns')
-			->where('InqueryAns.project_id = '.$project_id)
-			->getQuery()
-			->execute()
-			->toArray();
-			$tmp = null;
-		$inquery_total = array();
-		foreach( $option_array as $value ){
-			$option_value_array = explode('|', $value['option']);
-		    foreach($option_value_array as $key=>$value){
-
-		    }
+	#需求量表的n+n-1同时分析 遍历BaeLevel返回的结果集中的所有各层人员的各项题目的各项选项的统计结果
+	public function getInqueryAnsComDetail($project_id){
+		$level_examines = $this->getBaseLevels($project_id);
+		$level_count = count($level_examines);
+		$inquery_questions = $this->getInqueryDetail($project_id);
+		foreach($inquery_questions as &$inquery_question_value ){
+			$inquery_question_value['value'] = array();
+			$quetion_option_count = count($inquery_question_value['options']);
+			for($i = 0; $i < $quetion_option_count ;$i ++ ){
+				$tmp = array();
+				for($j = 0; $j < $level_count; $j++ ){
+					$tmp[] = 0;
+				}
+				$inquery_question_value['value'][] = $tmp;
+			}
 		}
-		print_r($option_array);
+		//storage array ok 
+		//遍历全体人员的inqueryAns并写入到storage array
+		$level = 0;  //首选项标识符
+		foreach($level_examines as $examinees_array ){
+			//获取各层下的人员
+			foreach($examinees_array as $examinee_id_in_level ){
+				//通过id去查询个人的inqueryAns
+				$option_array = $this->modelsManager->createBuilder()
+				->columns(array( 'InqueryAns.option as option' ))
+				->from('InqueryAns')
+				->where('InqueryAns.project_id = '.$project_id .' AND InqueryAns.examinee_id = '.$examinee_id_in_level )
+				->getQuery()
+				->execute()
+				->toArray();
+				//获取到个人的inqueryAns str
+				$option_str = $option_array[0]['option'];
+				$individual_ans_array = explode('|', $option_str);
+				$individual_ans_count = count($individual_ans_array);
+				for($number = 0; $number <$individual_ans_count ; $number++ ){
+					//每一道题先判定题号对应的需求量量内容is_radio
+					if ($inquery_questions[$number]['is_radio'] == 1 ){
+						$ans_level = ord($individual_ans_array[$number]) - ord('a');
+						$inquery_questions[$number]['value'][$ans_level][$level]++;
+					}else{
+						//is_radio == 0 
+						$ans_value_array = str_split($individual_ans_array[$number]);
+						foreach($ans_value_array as $ans_value) {
+							$ans_level = ord($ans_value)-ord('a');
+							$inquery_questions[$number]['value'][$ans_level][$level]++;
+						}
+						
+					}
+				}
+			}
+			$level ++;
+		}
+		return $inquery_questions;
+	}
+
+	#全体人员需求量表的结果逐个分析----------丢弃（有上方法替代与完善）
+	public function getInqueryAnsDetail($project_id){
+		$inquery_questions = $this->getInqueryDetail($project_id);
+		foreach($inquery_questions as &$value ){
+			$value['value'] = array();
+			$count = count($value['options']);
+			for($i = 0; $i < $count ;$i ++ ){
+				$value['value'][] = 0;
+			}
+		}
+		$option_array = $this->modelsManager->createBuilder()
+		->columns(array( 'InqueryAns.option as option' ))
+		->from('InqueryAns')
+		->where('InqueryAns.project_id = '.$project_id)
+		->getQuery()
+		->execute()
+		->toArray();
+		foreach( $option_array as $svalue ){
+			$option_value_array = explode('|', $svalue['option']);
+			$question_count = count($option_value_array);
+			for($i = 0; $i <$question_count; $i ++ ){
+				if ($inquery_questions[$i]['is_radio'] == 1){
+				    $level = ord($option_value_array[$i])-ord('a');
+					$inquery_questions[$i]['value'][$level]++;
+				}else{//is_radio == 0
+					$ans_array = str_split($option_value_array[$i]);
+					foreach($ans_array as $lsvalue){
+						$level = ord($option_value_array[$i])-ord('a');
+						$inquery_questions[$i]['value'][$level]++;
+					}
+				}
+			}
+		}
+		return $inquery_questions;
+		
 	}
 #辅助方法 --降维
 	private function foo($arr, &$rt) {

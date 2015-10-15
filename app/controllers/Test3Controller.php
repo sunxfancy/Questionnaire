@@ -5,7 +5,7 @@
 class Test3Controller extends Base
 {		
     public function indexAction(){
-    	$project_id = 1520;
+    	$project_id = 1521;
         $wordExport = new ProjectComExport();
         $wordExport->report($project_id);
     }
@@ -46,20 +46,20 @@ class Test3Controller extends Base
 
         $levels_array = $data->getBaseLevels($project_id);
     	print_r($levels_array);
-        echo '<hr />';
-        $factor_id = 160;
-        $factor_chs_name = '感情用事';
-        $rt = $data->getFactorGrideByLevel($factor_id, $factor_chs_name, $levels_array,$project_id);
+        // echo '<hr />';
+        // $factor_id = 160;
+        // $factor_chs_name = '感情用事';
+        // $rt = $data->getFactorGrideByLevel($factor_id, $factor_chs_name, $levels_array,$project_id);
 
-        print_r($rt);
-        echo '<hr />';
-         $factor_id = 2;
-        $factor_chs_name = '领导能力';
-        $rt = $data->getFactorGrideByLevel($factor_id, $factor_chs_name, $levels_array,$project_id);
-        print_r($rt);
-        asort($rt);
-        echo '<hr />';
-        print_r($rt);
+        // print_r($rt);
+        // echo '<hr />';
+        //  $factor_id = 2;
+        // $factor_chs_name = '领导能力';
+        // $rt = $data->getFactorGrideByLevel($factor_id, $factor_chs_name, $levels_array,$project_id);
+        // print_r($rt);
+        // asort($rt);
+        // echo '<hr />';
+        // print_r($rt);
     	echo '</pre>';
     }
 
@@ -70,13 +70,21 @@ class Test3Controller extends Base
         print_r($data->getInqueryAnsDetail($project_id));
         echo '</pre>';
     }
-    public function test4Action(){
-         $project_id = 1521;
+
+
+    public function test4Action() {
+        $project_id = 1521;
         $data = new ProjectComData();
         echo '<pre>';
         print_r($data->getInqueryDetail($project_id) );
         echo '</pre>';
     }
  
-
+	public function test5Action(){
+		$project_id = 1521;
+		$data = new ProjectComData();
+		echo '<pre>';
+		print_r($data->getInqueryAnsComDetail($project_id) );
+		echo '</pre>';
+	}
 }

@@ -267,4 +267,48 @@ class WordChart {
 		return $fileName;
 	
 	}
+	//综合报告 -- 饼状图 --- n项
+	
+	//综合报告 五优三劣
+	public static function lineGraph_1($level_data,  $level_name, $title, $project_id){
+		require_once ('../app/classes/jpgraph/jpgraph.php');
+		require_once ('../app/classes/jpgraph/jpgraph_line.php');
+		
+		// Setup the graph
+		$graph = new Graph(1500, 500);
+		$graph->SetMarginColor('white');
+		$graph->SetScale("textlin");
+		$graph->SetFrame(false);
+		$graph->SetMargin(30,50,30,30);
+		
+		$graph->title->Set($title);
+		$graph->title->SetFont(FF_CHINESE,FS_NORMAL,11);
+
+		$graph->yaxis->HideZeroLabel();
+		$graph->ygrid->SetFill(true,'#EFEFEF@0.5','#BBCCFF@0.5');
+		$graph->xgrid->Show();
+		
+		$graph->xaxis->SetTickLabels(array_keys($level_data[0]));
+		
+		$i = 0; 
+		foreach($level_data as $data ){
+			$p1 = new LinePlot(array_values($data));
+			$p1->SetLegend($level_name[$i++]);
+			$graph->Add($p1);
+		}
+		
+		$graph->legend->SetShadow('gray@0.4',5);
+		$graph->legend->SetPos(0.1,0.1,'right','top');
+		// Output line
+		
+		$date = date('H_i_s');
+		$stamp = rand(100,900);
+		$fileName = './tmp/_'.$project_id.$date.'_'.$stamp.'.jpeg';
+		$graph->Stroke($fileName);
+		return $fileName;
+	}
+	
+	
+	
+	
 }
