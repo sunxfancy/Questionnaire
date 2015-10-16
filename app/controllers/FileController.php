@@ -261,7 +261,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 				//清空临时文件 主要在tmp中
 				$file->clearfiles('./tmp/', $examinee_id);
 				//返回路径
-				$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''. $path_url.$name_1."' style='color:blue;text-decoration:underline;'>个人测评十项报表</a>"));
+				$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''. $path_url.$name."' style='color:blue;text-decoration:underline;'>个人测评十项报表</a>"));
 				return ;
 			}catch(Exception $e){
 				$this->dataReturn(array('error'=>$e->getMessage()));
