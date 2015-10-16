@@ -21,11 +21,11 @@
     <hr size="2" color="#FF0000" style="width:90%;"/>
 <div style="width:100%;height:40px;margin-left:40px;">
     <div class='form-group' style='display:inline-block;'>
-            <button type='button' onclick="oneKeyCalculate()" class="btn btn-primary start" style='width:100px;'>
-                <i class="glyphicon glyphicon-plane"></i>
-                <span>一键算分</span>
-                <span class="label" id='score'></span>
-            </button>
+        <button id="onekeyc" type='button' onclick="oneKeyCalculate()" class="btn btn-primary start" style='width:100px;'>
+            <i class="glyphicon glyphicon-plane"></i>
+            <span>一键算分</span>
+        </button>
+        <span class="label" id='score'></span>
     </div>
 </div>
 <div style="width:100%;height:40px;margin-left:40px;">
@@ -34,22 +34,18 @@
     </div>
     &nbsp;&nbsp;
     <div class='form-group' style='display:inline-block;'>
-        <a href = '#' onclick="oneKeyComprehensive()">
-            <button id="onekeys1" type='button' class="btn btn-primary start" style='width:100px;'>
-                <i class="glyphicon glyphicon-send"></i>
-                <span>一键生成</span>
-            </button>
-            <span class="label" id='comprehesive'></span>
-        </a>
+        <button id="onekeys1" onclick="oneKeyComprehensive()" type='button' class="btn btn-primary start" style='width:100px;'>
+            <i class="glyphicon glyphicon-send"></i>
+            <span>一键生成</span>
+        </button>
+        <span class="label" id='comprehesive'></span>
     </div>
      &emsp;
     <div class='form-group' style='display:inline-block;'>
-        <a href = '#' onclick="downloadProjectComReport()">
-            <button id="onekeyd1" type='button' class="btn btn-primary start" style='width:100px;'>
-                <i class="glyphicon glyphicon-download"></i>
-                <span>一键导出</span>
-            </button>
-        </a>
+        <button id="onekeyd1" onclick="downloadProjectComReport()" type='button' class="btn btn-primary start" style='width:100px;'>
+            <i class="glyphicon glyphicon-download"></i>
+            <span>一键导出</span>
+        </button>
     </div>
 </div>
 <div style="width:100%;height:40px; margin-left:40px;">
@@ -58,22 +54,18 @@
     </div>
     &nbsp;&nbsp;
     <div class='form-group' style='display:inline-block;'>
-        <a href = '#' onclick="oneKeyCompetency()">
-            <button id="onekeys2" type='button' class="btn btn-primary start" style='width:100px;'>
-                <i class="glyphicon glyphicon-send"></i>
-                <span>一键生成</span>
-            </button>
-            <span class="label" id='competency'></span>
-        </a>
+        <button id="onekeys2" onclick="oneKeyCompetency()" type='button' class="btn btn-primary start" style='width:100px;'>
+            <i class="glyphicon glyphicon-send"></i>
+            <span>一键生成</span>
+        </button>
+        <span class="label" id='competency'></span>
     </div>
      &emsp;
     <div class='form-group' style='display:inline-block;'>
-        <a href = '#' onclick="downloadProjectComReport()">
-            <button id="onekeyd2" type='button' class="btn btn-primary start" style='width:100px;'>
-                <i class="glyphicon glyphicon-download"></i>
-                <span>一键导出</span>
-            </button>
-        </a>
+        <button id="onekeyd2" onclick="downloadProjectComReport()" type='button' class="btn btn-primary start" style='width:100px;'>
+            <i class="glyphicon glyphicon-download"></i>
+            <span>一键导出</span>
+        </button>
     </div>
 </div>
     <hr size="2" color="#FF0000" style="width:90%;"/>
@@ -136,6 +128,16 @@ function getData(url){
     })
 }
 function datadeal(data){
+    if(data.score){
+        $('#score').addClass('label-success');
+        $('#score').html('已完成');
+        $('#onekeyc').attr('disabled',true);
+    }else{
+        $('#score').addClass('label-danger');
+        $('#score').html('未完成');
+        $('#onekeys1').attr('disabled',true);
+        $('#onekeys2').attr('disabled',true);
+    }
     if(data.comprehesive){
         $('#comprehesive').addClass('label-success');
         $('#comprehesive').html('已完成');

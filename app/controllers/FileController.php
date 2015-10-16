@@ -99,7 +99,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 			return ;
 			// 返回 路径
 		}else{
-			$this->dataReturn(array('error'=>'当前您不能下载该报告！'));
+			$this->dataReturn(array('error'=>'当前报告还未生成！'));
 			return ;
 		}
 	}
@@ -197,7 +197,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 			return ;
 			// 返回 路径
 		}else{
-			$this->dataReturn(array('error'=>'当前您不能下载该报告！'));
+			$this->dataReturn(array('error'=>'当前报告还未生成！'));
 			return ;
 		}
 	}
@@ -340,7 +340,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 			return ;
 			// 返回 路径
 		}else {
-			$this->dataReturn(array('error'=>'当前您不能下载该报告！'));
+			$this->dataReturn(array('error'=>'当前报告还未生成！'));
 			return ;
 		}
 	}
@@ -411,7 +411,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 			return ;
 			// 返回 路径
 		}else{
-			$this->dataReturn(array('error'=>'当前您不能下载该报告！'));
+			$this->dataReturn(array('error'=>'当前报告还未生成！'));
 			return ;
 		}
 	}
@@ -482,7 +482,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 			return ;
 			// 返回 路径
 		}else{
-			$this->dataReturn(array('error'=>'当前您不能下载该报告！'));
+			$this->dataReturn(array('error'=>'当前报告还未生成！'));
 			return ;
 		}
 	}
@@ -595,6 +595,66 @@ class FileController extends \Phalcon\Mvc\Controller {
 			}
 		}
 		$this->dataReturn(array('success'=>'已生成全部被试个人胜任力报告'));
+	}
+	#报告上传基本方法
+	public function baseUploadAction(){
+		if ($this->request->hasFiles()) {
+		foreach ($this->request->getUploadedFiles() as $file) {
+			if(empty($file->getName())){
+				echo "请先上传相应文件";
+				return false;
+			}else{
+				$params = $this->dispatcher->getParams();
+				if(count($params)!=1){
+				 	echo "Parameters number ERROR";
+				}else{
+			 		$file_name = null;
+			 		$file_name .= date("Y_m_d_H_i_s_");
+			 		$file_name .= rand(1,200)."_";
+			 		$file_name .= $file->getName();
+			 		$file_path = "./upload/";
+			 		$file_path .= $file_name;
+			 		$file->moveTo($file_path);
+			 		switch(strtoupper(trim($params[0]))){
+			 			case "SCL" : $this->dispatcher->forward(
+						array(
+							'action' => 'uploadSCL',
+							'params' => array('file_path'=>$file_path, 'type'=>'SCL')
+						)
+			 			); break;
+			 			
+			 			case "CPI" : $this->dispatcher->forward(
+						array(
+							'action' => 'uploadCPI',
+							'params' => array('file_path'=>$file_path, 'type'=>'CPI')
+						)
+			 			); break; 
+			 			case "KS" : $this->dispatcher->forward(
+						array(
+							'action' => 'uploadKS',
+							'params' => array('file_path'=>$file_path, 'type'=>'KS')
+						)
+			 			); break;
+			 			case "EPQA" : $this->dispatcher->forward(
+						array(
+							'action' => 'uploadEPQA',
+							'params' => array('file_path'=>$file_path, 'type'=>'EPQA')
+						)
+			 			);break;
+			 			case "EPPS" : $this->dispatcher->forward(
+						array(
+							'action' => 'uploadEPPS',
+							'params' => array('file_path'=>$file_path, 'type'=> 'EPPS')
+						)
+			 			); break;
+			 			default : if(file_exists($file_path)) { unlink($file_path); }; die("Parameters content ERROR"); 
+				 		}	
+				 	}
+				}
+			} 
+		}else{
+			echo "no allowed to get here, please return and upload some files!";
+		}
 	}
 	public function dataReturn($ans){
 		$this->response->setHeader("Content-Type", "text/json; charset=utf-8");

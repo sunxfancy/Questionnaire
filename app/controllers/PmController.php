@@ -325,8 +325,8 @@ class PmController extends Base
 			->execute();
 			$result = $result->toArray();
 			if($result[0]['count'] > 0 ){
-				$this->dataReturn(array('error'=>'已有被试答题，需求量表不可再修改！'));
-				return ;
+				echo "{'error':'已有被试答题，需求量表不可再修改！'}";
+                return ;
 			}
 		   PmDB::insertInquery($data, $project_id);
 		   echo "{'success':'true'}";
