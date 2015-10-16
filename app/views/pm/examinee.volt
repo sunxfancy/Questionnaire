@@ -183,7 +183,7 @@ $(function(){
                          },
                        
                      },
-                     {  name:'state', label:'是否答题完毕', index:'exam_state', sortable:true,width:90, fixed:true, resizable:false, editable:false,align:'center',
+                     {  name:'state', label:'是否答题完毕', index:'exam_state', sortable:true,sorttype:'string',width:90, fixed:true, resizable:false, editable:false,align:'center',
                         search:true, 
                         stype:'select', searchoptions:{ sopt: ['eq'], value:"true:是;false:否", },
                         searchrules:{ required: true,},
@@ -587,7 +587,7 @@ function downloadPersonalResult(examinee_id){
 
 function downloadCompetencyReport(examinee_id){
 	downloadWait('正在生成个人胜任力报告！');
-    $.post('/file/getIndividualCompetencyReport', {'examinee_id':examinee_id}, function(data){
+    $.post('/file/MgetIndividualCompetencyReport', {'examinee_id':examinee_id}, function(data){
         if (data.error){
             downloadError(data.error);
         }else{
@@ -598,7 +598,7 @@ function downloadCompetencyReport(examinee_id){
 
 function downloadComReport(examinee_id){
     downloadWait('正在生成个人综合报告！');
-    $.post('/file/getIndividualComReport', {'examinee_id':examinee_id}, function(data){
+    $.post('/file/MgetIndividualComReport', {'examinee_id':examinee_id}, function(data){
     	if (data.error){
     		downloadError(data.error);
     	}else{

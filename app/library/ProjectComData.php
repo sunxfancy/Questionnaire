@@ -14,17 +14,17 @@ class ProjectComData extends \Phalcon\Mvc\Controller {
 		if ($members_count == 0 ){
 			throw new Exception('项目的被试人数为0,无法进行项目综合报告生成');
 		}
-		$members_not_finished = array();
 		foreach($project_members as $value){
 			if ($value->state < 4 ){
-				$tmp = array();
-				$tmp['name'] = $value->name;
-				$tmp['number'] = $value->number;
-				$members_not_finished[] = $tmp;
+				$members_not_finished[$value->number] = $value->name;
 			}
 		}
-		if (count($members_not_finished) > 0 ) {
-			throw new Exception('项目成员未完成测评过程-名单-'.print_r($members_not_finished,true));
+		if (isset($members_not_finished)) {
+			$list = '系统中部分成员未完成测评过程，如下:<br/>';
+			foreach ($members_not_finished as $key => $value) {
+				$list .= $key.'：'.$value.'<br/>';
+			}
+			throw new Exception(print_r($list,true));
 		}
 
 	}
