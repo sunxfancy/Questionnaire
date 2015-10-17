@@ -66,17 +66,19 @@
                
             </div>
         </div>
-        <div style="width:80%;text-align:right;margin: 40px">
-        	   <div style='display:inline-block;'>
+        <div style="width:80%;text-align:right;margin: 40px">    
+                <div style='display:inline-block;'>
+                    <button class="btn btn-info" style='width:100px;'>
+                    <i class="glyphicon glyphicon-print"></i>&nbsp;打印</button>
+                </div>
+                &nbsp;&nbsp;
+                <div style='display:inline-block;'>
+                    <a class="btn btn-primary" href="#" style='width:100px;'>
+                    <i class="glyphicon glyphicon-download"></i>&nbsp;导出</a>
+                </div>
+                &nbsp;&nbsp;
+                <div style='display:inline-block;'>
                     <span id='page'></span>
-                </div>
-                &nbsp;&nbsp;
-                <div style='display:inline-block;'>
-                    <button class="btn btn-success" style='width:100px;'>打印</button>
-                </div>
-                &nbsp;&nbsp;
-                <div style='display:inline-block;'>
-                    <a class="btn btn-primary" href="#" style='width:100px;'>导出</a>
                 </div>
         </div>
     </div>
@@ -114,10 +116,10 @@ $(function(){
 function backChose(type){
 	//绿色通道
 	if (type == 1){
-		var data =  "<a href='/pm/greenchannel'><button type=\"button\" class=\"btn btn-primary\" style='width:100px;'>返回</button></a>"
+		var data =  "<a href='/pm/greenchannel'><button type=\"button\" class=\"btn btn-success\" style='width:100px;'><i class='glyphicon glyphicon-fast-backward'></i>&nbsp;返回</button></a>"
         return data;      
 	}else {
-		var data = "<form action='/pm' class='form-inline' method=\'post\'><input id='page' value='1' name='page' type='hidden'/><button type='submit' class='btn btn-primary' style='width:100px;'>返回</button></form>";
+		var data = "<form action='/pm' class='form-inline' method=\'post\'><input id='page' value='1' name='page' type='hidden'/><button type='submit' class='btn btn-success' style='width:100px;'><i class='glyphicon glyphicon-fast-backward'></i>&nbsp;返回</button></form>";
 	    return data;
 	}
 }

@@ -28,16 +28,16 @@
     </div>
     &nbsp;&nbsp;      
     <div class='form-group' style='display:inline-block;'>
-            <button id='submit' type='button' class="btn btn-danger start" style='width:150px;'>
-                    <i class="glyphicon glyphicon-upload"></i>
-                    <span>导入</span>
+            <button id='submit' type='button' class="btn btn-danger start" style='width:100px;'>
+                <i class="glyphicon glyphicon-upload"></i>&nbsp;导入
             </button>
     </div>
     &nbsp;&nbsp;
     <div class='form-group' style='display:inline-block;'>
     <form action='/pm' class="form-inline" method='post'>
         <input id='page' value='1' name='page' type='hidden'/>
-        <button type='submit' class='btn btn-primary' style='width:80px;'>返回上层</button>
+        <button type='submit' class='btn btn-success' style='width:100px;'>
+        <i class="glyphicon glyphicon-fast-backward"></i>&nbsp;返回上层</button>
     </form>
     </div>
 </div>

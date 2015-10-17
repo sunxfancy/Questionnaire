@@ -13,7 +13,8 @@
 <div class='form-group' style='width:60%;text-align:right;display:inline-block; '>
 <form action='/pm' class="form-inline" method='post'>
    <input id='page' value='2' name='page' type='hidden'/>
-   <button type='submit' class='btn btn-success' style='width:80px;'>返回上层</button>
+   <button type='submit' class='btn btn-success' style='width:100px;'>
+   <i class="glyphicon glyphicon-fast-backward"></i>&nbsp;返回上层</button>
 </form>
 </div>
 </div>

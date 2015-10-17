@@ -1,29 +1,31 @@
 <script type="text/javascript" src="/js/bootstrap.js"></script>
 <script src='/fileupload/ajaxfileupload.js'></script>
 
-<div class="Leo_question" style="overflow:hidden;padding:10px;">
-    <div class="form-group">
+<div class="Leo_question" style="overflow:hidden;padding-top:25px;">
+    <div class="form-group" style='display:inline-block;'>
         <div style="display:inline-block;margin-left:40px;font-size:26px;color:red;">被试信息</div>
-    </div>  
-    <hr size="2" color="#FF0000" style="width:90%;"/>
+    </div> 
+    <div class='form-group' style='display:inline-block;float:right;margin-right:40px;'>
+        <form action='/pm' class="form-inline" method='post'>
+            <input id='page' value='1' name='page' type='hidden'/>
+            <button type='submit' class='btn btn-success' style='width:100px;'>
+            <i class="glyphicon glyphicon-fast-backward"></i>&nbsp;返回上层</button>
+        </form>
+    </div> 
     <div class='form-group' style='margin-left:60px;'>
         <div class="row fileupload-buttonbar">
-            <!-- The fileinput-button span is used to style the file input field as button -->
             <a class="btn btn-primary" style='width:200px;'  href="/pm/examineeExport"  type='button'>
-                <i class="glyphicon glyphicon-download"></i>所有被试信息列表
+                <i class="glyphicon glyphicon-download"></i>&nbsp;所有被试信息列表
             </a>
         </div>
     </div> 
-    <hr size="2" color="#FF0000" style="width:90%;"/>
     <div class="form-group">
         <div style="display:inline-block;margin-left:40px;font-size:26px;color:red;">批量下载</div>
     </div>  
-    <hr size="2" color="#FF0000" style="width:90%;"/>
 <div style="width:100%;height:40px;margin-left:40px;">
     <div class='form-group' style='display:inline-block;'>
         <button id="onekeyc" type='button' onclick="oneKeyCalculate()" class="btn btn-primary start" style='width:100px;'>
-            <i class="glyphicon glyphicon-plane"></i>
-            <span>一键算分</span>
+            <i class="glyphicon glyphicon-send"></i>&nbsp;一键算分
         </button>
         <span class="label" id='score'></span>
     </div>
@@ -35,16 +37,13 @@
     &nbsp;&nbsp;
     <div class='form-group' style='display:inline-block;'>
         <button id="onekeys1" onclick="oneKeyComprehensive()" type='button' class="btn btn-primary start" style='width:100px;'>
-            <i class="glyphicon glyphicon-send"></i>
-            <span>一键生成</span>
+            <i class="glyphicon glyphicon-send"></i>&nbsp;一键生成
         </button>
         <span class="label" id='comprehesive'></span>
-    </div>
-     &emsp;
+    </div>&nbsp;&nbsp;
     <div class='form-group' style='display:inline-block;'>
         <button id="onekeyd1" onclick="downloadProjectComReport()" type='button' class="btn btn-primary start" style='width:100px;'>
-            <i class="glyphicon glyphicon-download"></i>
-            <span>一键导出</span>
+            <i class="glyphicon glyphicon-download"></i>&nbsp;一键导出
         </button>
     </div>
 </div>
@@ -55,26 +54,62 @@
     &nbsp;&nbsp;
     <div class='form-group' style='display:inline-block;'>
         <button id="onekeys2" onclick="oneKeyCompetency()" type='button' class="btn btn-primary start" style='width:100px;'>
-            <i class="glyphicon glyphicon-send"></i>
-            <span>一键生成</span>
+            <i class="glyphicon glyphicon-send"></i>&nbsp;一键生成
         </button>
         <span class="label" id='competency'></span>
-    </div>
-     &emsp;
+    </div>&nbsp;&nbsp;
     <div class='form-group' style='display:inline-block;'>
         <button id="onekeyd2" onclick="downloadProjectComReport()" type='button' class="btn btn-primary start" style='width:100px;'>
-            <i class="glyphicon glyphicon-download"></i>
-            <span>一键导出</span>
+            <i class="glyphicon glyphicon-download"></i>&nbsp;一键导出
         </button>
     </div>
 </div>
-    <hr size="2" color="#FF0000" style="width:90%;"/>
-    <div class='form-group' style='display:inline-block;text-align:right;width:90%;'>
-        <form action='/pm' class="form-inline" method='post'>
-            <input id='page' value='1' name='page' type='hidden'/>
-            <button type='submit' class='btn btn-primary' style='width:80px;'>返回上层</button>
-        </form>
+<div class="form-group">
+        <div style="display:inline-block;margin-left:40px;font-size:26px;color:red;">批量上传</div>
+    </div>  
+<div style="width:100%;height:40px;margin-left:40px;">
+    <div class="form-group" style='display:inline-block;font-size:20px;'>
+        <span class="text-primary" ><i class='glyphicon glyphicon-tag' style='font-size:15px;'></i></span>个人综合素质报告
     </div>
+    &nbsp;&nbsp;
+   <div class='form-group' style='display:inline-block;'>
+        <span class="btn btn-success fileinput-button" style='width:100px;'>
+            <i class="glyphicon glyphicon-plus"></i>
+            <span>上传</span>
+            <input onchange = 'checkFile3();' accept="application/msexcel" type="file" id='file1' name='file1' style='opacity:0; position:absolute; top:0;left:0;cursor:pointer; width:100px;'>
+        </span>
+        <span class="label label-default" id='file3_state'>未选择</span>
+    </div>
+    &nbsp;&nbsp;
+    <div class='form-group' style='display:inline-block;'>
+        <button id='submit1' type='button' class="btn btn-danger start" style='width:100px;'>
+            <i class="glyphicon glyphicon-upload"></i>
+            <span>导入</span>
+        </button>
+    </div>
+</div>
+<div style="width:100%;height:40px; margin-left:40px;">
+    <div class="form-group" style='display:inline-block;font-size:20px;'>
+        <span class="text-primary" ><i class='glyphicon glyphicon-tag' style='font-size:15px;'></i></span>个人胜任力报告<span style='visibility: hidden'>位</span>
+    </div>
+    &nbsp;&nbsp;
+    <div class='form-group' style='display:inline-block;'>
+        <span class="btn btn-success fileinput-button" style='width:100px;'>
+            <i class="glyphicon glyphicon-plus"></i>
+            <span>上传</span>
+            <input onchange = 'checkFile3();' accept="application/msexcel" type="file" id='file1' name='file1' style='opacity:0; position:absolute; top:0;left:0;cursor:pointer; width:100px;'>
+        </span>
+        <span class="label label-default" id='file3_state'>未选择</span>
+    </div>
+    &nbsp;&nbsp;
+    <div class='form-group' style='display:inline-block;'>
+        <button id='submit1' type='button' class="btn btn-danger start" style='width:100px;'>
+            <i class="glyphicon glyphicon-upload"></i>
+            <span>导入</span>
+        </button>
+    </div>
+</div>
+
 </div>
 
 <!-- Modal -->
@@ -133,7 +168,7 @@ function datadeal(data){
         $('#score').html('已完成');
         $('#onekeyc').attr('disabled',true);
     }else{
-        $('#score').addClass('label-danger');
+        $('#score').addClass('label-default');
         $('#score').html('未完成');
         $('#onekeys1').attr('disabled',true);
         $('#onekeys2').attr('disabled',true);
@@ -143,7 +178,7 @@ function datadeal(data){
         $('#comprehesive').html('已完成');
         $('#onekeys1').attr('disabled',true);
     }else{
-        $('#comprehesive').addClass('label-danger');
+        $('#comprehesive').addClass('label-default');
         $('#comprehesive').html('未完成');
         $('#onekeyd1').attr('disabled',true);
     }
@@ -152,7 +187,7 @@ function datadeal(data){
         $('#competency').html('已完成');
         $('#onekeys2').attr('disabled',true);
     }else{
-        $('#competency').addClass('label-danger');
+        $('#competency').addClass('label-default');
         $('#competency').html('未完成');
         $('#onekeyd2').attr('disabled',true);
     }
