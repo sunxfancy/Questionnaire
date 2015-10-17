@@ -119,7 +119,7 @@ $(function(){
                          }
                      },
                      
-                     {  name:'name', label:'姓名',  index:'name', width:180, fixed:true, resizable:false,  editable:true,sortable:false, align:'center',
+                     {  name:'name', label:'姓名',  index:'name', width:180, fixed:true, resizable:false,  editable:true,sortable:true, align:'center',
                         editrules:{required : true, }, 
                         search:true, searchoptions: {  sopt: ['eq']  },
                         searchrules:{ required: true, },
@@ -129,7 +129,7 @@ $(function(){
                         editrules:{required : true, }, 
                         search:false, 
                      },
-                     {  name:'last_login', label:'最后登录时间', index:'last_login', width:300, fixed:true, resizable:false,  sortable:false, editable:false, align:'center',
+                     {  name:'last_login', label:'最后登录时间', index:'last_login', width:300, fixed:true, resizable:false,  sortable:true, editable:false, align:'center',
                         search:true, searchoptions: {  sopt: ['bw', 'ew'],
                         dataInit:function(element) { 
                             $(element).parent().addClass("input-group date form_date");
@@ -366,7 +366,8 @@ $(function(){
             //edit,
             edit_options,
             // {//add
-                // },            add_options,
+                // },
+            add_options,
             //del
             del_options,
             {//search

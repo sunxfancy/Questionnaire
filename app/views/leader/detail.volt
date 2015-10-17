@@ -219,8 +219,7 @@ $(function(){
 });
 
 function downloadCompetencyReport(examinee_id){
-  downloadWait('正在生成个人胜任力报告！');
-    $.post('/file/getIndividualCompetencyReport', {'examinee_id':examinee_id}, function(data){
+    $.post('/file/LgetIndividualCompetencyReport', {'examinee_id':examinee_id}, function(data){
         if (data.error){
             downloadError(data.error);
         }else{
@@ -230,20 +229,13 @@ function downloadCompetencyReport(examinee_id){
 }
 
 function downloadComReport(examinee_id){
-    downloadWait('正在生成个人综合报告！');
-    $.post('/file/getIndividualComReport', {'examinee_id':examinee_id}, function(data){
+    $.post('/file/LgetIndividualComReport', {'examinee_id':examinee_id}, function(data){
       if (data.error){
         downloadError(data.error);
       }else{
         downloadSuccess(data.success);
       }
     });
-}
-function downloadWait(msg){
-      $('.Leo_question').css('width','843px');    
-        $('.modal-body').html("<p class=\"bg-success\" style='padding:20px;'>"+msg+"</p>"+"<div style='text-align:center; padding:5px 10px 10px 10px;'><img src='/image/loading.gif' style='width:300px' /></div>");
-        $('.modal-footer').html('');
-        $('#myModal').modal({keyboard:true, backdrop:'static'});
 }
 function downloadError(msg){
        $('.Leo_question').css('width','843px')

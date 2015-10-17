@@ -68,8 +68,7 @@ $('#myModal').on('hide.bs.modal', function (e) {
         $('.Leo_question').css('width','860px')
 });  
 function downloadProjectComReport(){
-    downloadWait('正在生成人才综合测评总体分析报告！');
-    $.post('/file/getProjectComReport', function(data){
+    $.post('/file/LgetProjectComReport', function(data){
         if (data.error){
             downloadError(data.error);
         }else{
@@ -78,8 +77,7 @@ function downloadProjectComReport(){
     });
 }
 function downloadTeamReport(){
-    downloadWait('正在生成班子胜任力报告！');
-    $.post('/file/getTeamReport',function(data){
+    $.post('/file/LgetTeamReport',function(data){
         if (data.error){
             downloadError(data.error);
         }else{
@@ -88,8 +86,7 @@ function downloadTeamReport(){
     });
 }
 function downloadSystemReport(){
-    downloadWait('正在生成系统胜任力报告！');
-    $.post('/file/getSystemReport', function(data){
+    $.post('/file/LgetSystemReport', function(data){
         if (data.error){
             downloadError(data.error);
         }else{
@@ -97,14 +94,8 @@ function downloadSystemReport(){
         }
     });
 }
-function downloadWait(msg){
-    $('.Leo_question').css('width','843px');    
-    $('.modal-body').html("<p class=\"bg-success\" style='padding:20px;'>"+msg+"</p>"+"<div style='text-align:center; padding:5px 10px 10px 10px;'><img src='/image/loading.gif' style='width:300px' /></div>");
-    $('.modal-footer').html('');
-    $('#myModal').modal({keyboard:true, backdrop:'static'});
-}
 function downloadError(msg){
-    $('.Leo_question').css('width','843px')
+    $('.Leo_question').css('width','840px')
     $('.modal-body').html('');
     $('.modal-body').html(
         "<p class=\"bg-danger\" style='padding:20px;'>"+msg+ "</p>"
@@ -119,7 +110,7 @@ function downloadError(msg){
     })
 }
 function downloadSuccess(msg){
-    $('.Leo_question').css('width','843px')
+    $('.Leo_question').css('width','840px')
     $('.modal-body').html('');
     $('.modal-body').html(
         "<p class=\"bg-success\" style='padding:20px;'>"+msg+ "</p>"
