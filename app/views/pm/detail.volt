@@ -44,12 +44,16 @@
       </div>
       <form class="form-inline" style='text-align:center;margin-top:10px;'>
       	 <div class="form-group">
-                <a href='/pm/inquery' type='button' class="btn btn-primary">需求量表配置</a>
+                <a href='/pm/inquery' type='button' class="btn btn-primary">
+                <i class="glyphicon glyphicon-wrench"></i>&nbsp;
+                需求量表配置</a>
                 <span class="label" id='inquery'></span>
          </div>
          &emsp;&emsp;&emsp;
          <div class="form-group">
-                <a href='/pm/module' type= 'button' class="btn btn-primary">题目模块配置</a>
+                <a href='/pm/module' type= 'button' class="btn btn-primary">
+                <i class="glyphicon glyphicon-wrench"></i>&nbsp;
+                题目模块配置</a>
                 <span class="label" id='exam'></span>
          </div>
       </form>

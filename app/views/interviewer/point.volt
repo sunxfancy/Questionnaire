@@ -1,3 +1,5 @@
+<script type="text/javascript" src= '/datetimepicker/bootstrap.min.js'></script>
+
 <div class="Leo_question"  style="overflow:auto;">
     <div class="title" style="text-align:center;padding:8px;font-size:26px;">您对&nbsp;{{ name }}&nbsp;的意见及建议</div>
     <div class="point" style="text-align:center;">
@@ -50,16 +52,51 @@
 
     <div style="width:100%;height:40px;text-align:center;padding:10px;">
         <div class="form-group">
-            <a class="btn btn-primary" href="/interviewer/index">返回</a>
-            <a id="submit" class="btn btn-success">保存</a>
+            <a class="btn btn-primary" href="/interviewer/index">
+            <i class="glyphicon glyphicon-home"></i>&nbsp;返回</a>
+            <a id="submit" class="btn btn-success">
+            <i class="glyphicon glyphicon-pencil"></i>&nbsp;保存</a>
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">提示信息</h4>
+        </div>
+        <div class="modal-body"></div>
+        <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
+    $('#myModal').on('hidden.bs.modal', function (e) {
+        $('.Leo_question').css('width','860px')
+    });
+    $('#myModal').on('hide.bs.modal', function (e) {
+        $('.Leo_question').css('width','860px')
+    });
+
     $(function(){
         $.post('/interviewer/getPoint/'+{{examinee_id}}, function(data){
             if (data.error) {
-                alert('获取信息失败，请刷新。');
+                 $('.Leo_question').css('width','843px')
+                 $('.modal-body').html('');
+                 $('.modal-body').html(
+                     "<p class=\"bg-danger\" style='padding:20px;'>"+data.error+ "</p>"
+                     );
+                 $('.modal-footer').html('');
+                 $('.modal-footer').html(
+                    "<a href='/managerlogin'><button type=\"button\" class=\"btn btn-primary\">重新登录</button></a>"
+                 );
+                 $('#myModal').modal({
+                    keyboard:true,
+                    backdrop:'static'
+                 })
             }else{
                 $('#advantage1').val(data.point.advantage1);
                 $('#advantage2').val(data.point.advantage2);
@@ -99,11 +136,36 @@
             $.post('/interviewer/interview/'+{{examinee_id}},comment,callbk);
         });
         function callbk(data){
-            if(data.status){
-                alert("评论提交成功！点击“确定”返回主页面。");
-                window.location.href = '/interviewer/index'
+            if(data.success){
+                $('.Leo_question').css('width','843px')
+                 $('.modal-body').html('');
+                 $('.modal-body').html(
+                     "<p class=\"bg-success\" style='padding:20px;'>"+"评论提交成功！"+ "</p>"
+                     );
+                 $('.modal-footer').html('');
+                 $('.modal-footer').html(
+                    "<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">关闭提示</button>"
+                 );
+                 $('#myModal').modal({
+                    keyboard:true,
+                    backdrop:'static'
+                 })
+                // alert("评论提交成功！点击“确定”返回主页面。");
+                // window.location.href = '/interviewer/index'
             }else{
-                alert("评论提交失败，请重新提交！");
+                $('.Leo_question').css('width','843px')
+                 $('.modal-body').html('');
+                 $('.modal-body').html(
+                     "<p class=\"bg-danger\" style='padding:20px;'>"+data.error+ "</p>"
+                     );
+                 $('.modal-footer').html('');
+                 $('.modal-footer').html(
+                    "<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">关闭提示</button>"
+                 );
+                 $('#myModal').modal({
+                    keyboard:true,
+                    backdrop:'static'
+                 })
             }
         }
     });
