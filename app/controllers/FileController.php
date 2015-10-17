@@ -404,26 +404,6 @@ class FileController extends \Phalcon\Mvc\Controller {
 			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!'));
 			return ;
 		}
-		//判断个人状态
-		$project_id = $manager->project_id;
-		$examinee = Examinee::find(array(
-			'project_id=?1 and type=0',
-			'bind'=>array(1=>$project_id)));
-		foreach ($examinee as $examinees) {
-			if ($examinees->state <5) {
-				$not_fished[$examinees->number] = $examinees->name;
-			}else{
-				$examinee_array[$examinees->number] = $examinees->id;
-			}
-		}
-		if (isset($not_fished)) {
-			$error = '部分人员未完成测评流程！名单如下：<br/>';
-			foreach ($not_fished as $key => $value) {
-				$error .= $key.'：'.$value.'<br/>';
-			}
-			$this->dataReturn(array('error'=>$error));
-			return;
-		}
 		// 根据目录结构判断文件是否存在
 		$year = floor($project_id / 100 );
 		$path = './project/'.$year.'/'.$project_id.'/individual/competency/';

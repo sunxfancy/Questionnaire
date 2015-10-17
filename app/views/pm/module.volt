@@ -33,11 +33,16 @@
     </div>
 
     <div style="width:100%;height:40px;text-align:center;margin-top:20px;">   
-    	<button class='btn btn-danger' id='del' style='width:120px'>删除项目配置</button>&nbsp;&nbsp;    
-        <button class="btn btn-primary" id='sel_all' style='width:80px;'>全选</button>&nbsp;&nbsp;    
-        <button class="btn btn-primary" id='unsel_all' style='width:80px;'>全不选</button>&nbsp;&nbsp; 
-        <button class="btn btn-danger" id="submit" style='width:80px;'>提交</button> &nbsp;&nbsp;     
-        <a href='/pm'type='button' class='btn btn-success' style='width:80px;'>返回首页</a>     
+    	<button class='btn btn-danger' id='del' style='width:120px'>
+        <i class="glyphicon glyphicon-trash"></i>&nbsp;删除项目配置</button>&nbsp;&nbsp;    
+        <button class="btn btn-primary" id='sel_all' style='width:80px;'>
+        <i class="glyphicon glyphicon-ok-circle"></i>&nbsp;全选</button>&nbsp;&nbsp;    
+        <button class="btn btn-primary" id='unsel_all' style='width:80px;'>
+        <i class="glyphicon glyphicon-ban-circle"></i>&nbsp;全不选</button>&nbsp;&nbsp; 
+        <button class="btn btn-danger" id="submit" style='width:80px;'>
+        <i class="glyphicon glyphicon-pencil"></i>&nbsp;提交</button> &nbsp;&nbsp;     
+        <a href='/pm'type='button' class='btn btn-success' style='width:100px;'>
+        <i class="glyphicon glyphicon-home"></i>&nbsp;返回首页</a>     
     </div> 
 </div>
 

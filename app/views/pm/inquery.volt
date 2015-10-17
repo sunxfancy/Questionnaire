@@ -34,7 +34,7 @@
                 <br />
                 <br />
                 <button id='del' class="btn btn-danger " style='width:200px;'>
-                    <i class="glyphicon glyphicon-delete"></i>
+                    <i class="glyphicon glyphicon-trash"></i>
                     <span>删除需求量表</span>
                 </button>
                 <!-- The global file processing state -->
@@ -42,7 +42,8 @@
     </div> 
       <hr size="2" color="#FF0000" style="width:90%;"/>
     <div class="form-group" style='text-align:right;width:90%;'> 
-        <a href='/pm' type='button' class='btn btn-success' style='width:80px;'>返回首页</a>     
+        <a href='/pm' type='button' class='btn btn-success' style='width:100px;'>
+        <i class="glyphicon glyphicon-home"></i>&nbsp;返回首页</a>     
     </div> 
 </div>
 

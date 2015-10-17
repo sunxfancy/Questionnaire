@@ -43,6 +43,17 @@ class InterviewerController extends Base
 
     public function interviewAction($examinee_id){
         $manager = $this->session->get('Manager');
+        $interview_record = Interview::findFirst(array(
+            'examinee_id=?1',
+            'bind'=>array(1=>$examinee_id)));
+        if (!isset($interview_record->examinee_id)) {
+            $this->dataReturn(array('error'=>'被试id错误！'));
+            return;
+        }
+        if(!empty($interview_record->advantage)){
+            $this->dataReturn(array('error'=>'面巡意见已填写完整，不可再更改！'));
+            return;
+        }
         $advantage1    = $this->request->getPost('advantage1');
         $advantage2    = $this->request->getPost('advantage2');
         $advantage3    = $this->request->getPost('advantage3');
@@ -73,7 +84,7 @@ class InterviewerController extends Base
         }else{
             InterviewDB::insertComment($comment,$examinee_id,$manager->id);
         }
-        $this->dataReturn(array('status'=>true));
+        $this->dataReturn(array('success'=>true));
     }
 
     //进入添加意见页面时获取面询专家的意见
