@@ -456,4 +456,156 @@ class FileController extends \Phalcon\Mvc\Controller {
 		$this->view->disable();
 	}
 	
+	#单一文件上传
+	#（1）综合报告上传 __1 #（2）系统胜任力报告 __2 （3）	班子胜任力报告 __3 
+	public function fileUploadv1Action($file_type){
+		#严格json格式{ '···' : '···'},json_encode 无法实现
+		try{
+			$file_path = null;
+			if ($this->request->hasFiles()) {
+				foreach ($this->request->getUploadedFiles() as $file) {
+					if(empty($file->getName())){
+						echo "{'error':'上传文件不能为空'}";
+						return ;
+					}else{
+						//判断有相应文件上传
+						//报告上传必须是manager
+						$manager = $this->session->get('Manager');
+						if(empty($manager)) {
+							echo "{'error':'用户信息失效，请重新登录!'}";
+							return ;
+						}
+						//判断报告的类型确定报告的应该的名称
+						$file_name  = '';
+						$file_name  .= $manager->project_id;
+						switch ($file_type){
+							case 1: $file_name .= '_comprehensive.docx'; break;
+							case 2: $file_name .= '_system.docx'; break;
+							case 3: $file_name .= '_team.docx';break;
+							default: echo "{'error':'不存在该类型上传！'}"; return ;
+						}//文件应该的名称确定
+						if ($file->getName() != $file_name){
+							$tmp_name = $file->getName();
+							echo "{'error':'不能识别的文件名！-'$tmp_name}"; 
+							return ;
+						}
+						//移动文件到目标目录下
+						$year = floor( $manager->project_id / 100 );
+						$path = './project/'.$year.'/'.$manager->project_id.'/report/v2/'.$file_name;
+						$file->moveTo($path);
+						echo "{'success':'文件上传成功！'}"; 
+						return ;
+					}
+				}
+			}else{
+				echo "{'error':'wrong to here'}";
+				return ;
+			}
+		}catch(Exception $e){
+			$msg = $e->getMessage();
+			echo "{'error':'$msg'}";
+			return ;
+		}
+	}
+	#多文件上传
+	#（1）个体综合报告 __1 （2）个体胜任力报告 __2 
+	public function fileUploadv2Action($file_type){
+		#严格json格式{ '···' : '···'},json_encode 无法实现
+		try{
+			$file_path = null;
+			$file_ok = array();
+			$file_not_ok = array();
+			$file_flag = true;
+			switch($file_type){
+				case 1: $file_flag = true; break;
+				case 2: $file_flag = false; break;
+				default: echo "{'error':'不存在该类型上传！'}"; return ;
+			}
+			$manager = $this->session->get('Manager');
+			if(empty($manager)) {
+				echo "{'error':'用户信息失效，请重新登录!'}";
+				return ;
+			}
+			if ($this->request->hasFiles()) {
+				foreach ($this->request->getUploadedFiles() as $file) {
+					if(empty($file->getName())){
+						echo "{'error':'上传文件不能为空'}";
+						return ;
+					}else{
+						//判断有相应文件上传
+						//报告上传必须是manager
+						//判断报告的类型确定报告的应该的名称
+						$file_name  = '';
+						$file_name  .= $manager->project_id;
+						if ( $file_flag ){
+							//个体综合
+							$tmp_file_name = $file->getName();
+							$tmp_file_name_array = explode('_', $tmp_file_name);
+							$examinee_number =  $tmp_file_name_array[0];
+							$file_type_name  =  $tmp_file_name_array[1].$tmp_file_name_array[2];
+							if ($file_type_name != 'individualcomprehensive.docx'){
+								$file_no_ok[] = $tmp_file_name.'-不能识别的文件名';
+								continue;
+							}
+							$examinee_info = Examinee::findFirst(
+							array('number=?1','bind'=>array(1=>$examinee_number))
+							);
+							if (!isset($examinee_info->id)){
+								$file_no_ok[] = $tmp_file_name.'-不存在的被试编号';
+								continue;
+							}
+							//移动文件到目标目录下
+							$year = floor( $manager->project_id / 100 );
+							$path = './project/'.$year.'/'.$manager->project_id.'/individual/comprehensive/v2/'.$tmp_file_name;
+							$file->moveTo($path);
+							$file_ok[] = $tmp_file_name;
+							
+						}else{
+							//个体胜任力
+							$tmp_file_name = $file->getName();
+							$tmp_file_name_array = explode('_', $tmp_file_name);
+							$examinee_number =  $tmp_file_name_array[0];
+							$file_type_name  =  $tmp_file_name_array[1].$tmp_file_name_array[2];
+							if ($file_type_name != 'individualcompetency.docx'){
+								$file_no_ok[] = $tmp_file_name.'-不能识别的文件名';
+								continue;
+							}
+							$examinee_info = Examinee::findFirst(
+									array('number=?1','bind'=>array(1=>$examinee_number))
+							);
+							if (!isset($examinee_info->id)){
+								$file_no_ok[] = $tmp_file_name.'-不存在的被试编号';
+								continue;
+							}
+							//移动文件到目标目录下
+							$year = floor( $manager->project_id / 100 );
+							$path = './project/'.$year.'/'.$manager->project_id.'/individual/competency/v2/'.$tmp_file_name;
+							$file->moveTo($path);
+							$file_ok[] = $tmp_file_name;
+						}
+					}
+				}
+				//判断文件中是否存在未ok 的
+				if(empty($file_not_ok)){
+					$list = '';
+					$i = 1; 
+					foreach($file_not_ok as $value){
+						$list.= $i++.'-'.$value.'<br />';
+					}
+					echo "{'error':'文件上传失败清单<br />'}";
+					return ;
+				}else{
+					echo "{'success':'文件上传成功'}";
+					return ;
+				}
+				}else{
+				echo "{'error':'wrong to here'}";
+				return ;
+				}
+		}catch(Exception $e){
+		$msg = $e->getMessage();
+		echo "{'error':'$msg'}";
+		return ;
+		}
+	}
 }
