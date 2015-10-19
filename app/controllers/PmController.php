@@ -797,7 +797,7 @@ class PmController extends Base
             }
             $this->dataReturn(array('error'=>$error));
         }
-    }
+    }    
 	#导出被试信息列表
 	public function examineeExportAction(){
 		$project_id = $this->session->get('Manager')->project_id;
