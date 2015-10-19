@@ -1,7 +1,12 @@
 <script type="text/javascript" src="/js/bootstrap.js"></script>
-<script src='/fileupload/ajaxfileupload.js'></script>
+<!-- multi file upload  -->
+<script type="text/javascript" src='/fileupload/plupload-2.1.8/js/plupload.full.min.js'></script>
 
-<div class="Leo_question" style="overflow:hidden;padding-top:25px;">
+<!-- debug 
+<script type="text/javascript" src="/fileupload/plupload-2.1.8/js/moxie.js"></script>
+<script type="text/javascript" src="/fileupload/plupload-2.1.8/js/plupload.dev.js"></script>
+-->
+<div class="Leo_question" style="overflow:auto;padding-top:25px;">
     <div class="form-group" style='display:inline-block;'>
         <div style="display:inline-block;margin-left:40px;font-size:26px;color:red;">被试信息</div>
     </div> 
@@ -13,16 +18,14 @@
         </form>
     </div> 
     <div class='form-group' style='margin-left:60px;'>
-        <div class="row fileupload-buttonbar">
             <a class="btn btn-primary" style='width:200px;'  href="/pm/examineeExport"  type='button'>
                 <i class="glyphicon glyphicon-download"></i>&nbsp;所有被试信息列表
             </a>
-        </div>
     </div> 
     <div class="form-group">
         <div style="display:inline-block;margin-left:40px;font-size:26px;color:red;">批量下载</div>
     </div>  
-<div style="width:100%;height:40px;margin-left:40px;">
+<div style="height:40px;margin-left:40px;">
     <div class='form-group' style='display:inline-block;'>
         <button id="onekeyc" type='button' onclick="oneKeyCalculate()" class="btn btn-primary start" style='width:100px;'>
             <i class="glyphicon glyphicon-send"></i>&nbsp;一键算分
@@ -30,7 +33,7 @@
         <span class="label" id='score'></span>
     </div>
 </div>
-<div style="width:100%;height:40px;margin-left:40px;">
+<div style="height:40px;margin-left:40px;">
     <div class="form-group" style='display:inline-block;font-size:20px;'>
         <span class="text-primary" ><i class='glyphicon glyphicon-tag' style='font-size:15px;'></i></span>个人综合素质报告
     </div>
@@ -47,7 +50,7 @@
         </button>
     </div>
 </div>
-<div style="width:100%;height:40px; margin-left:40px;">
+<div style="height:40px; margin-left:40px;">
     <div class="form-group" style='display:inline-block;font-size:20px;'>
         <span class="text-primary" ><i class='glyphicon glyphicon-tag' style='font-size:15px;'></i></span>个人胜任力报告<span style='visibility: hidden'>位</span>
     </div>
@@ -66,52 +69,81 @@
 </div>
 <div class="form-group">
         <div style="display:inline-block;margin-left:40px;font-size:26px;color:red;">批量上传</div>
-    </div>  
-<div style="width:100%;height:40px;margin-left:40px;">
+</div>  
+<div id = 'container_1' style="height:40px;margin-left:40px;">
     <div class="form-group" style='display:inline-block;font-size:20px;'>
-        <span class="text-primary" ><i class='glyphicon glyphicon-tag' style='font-size:15px;'></i></span>个人综合素质报告
-    </div>
-    &nbsp;&nbsp;
-   <div class='form-group' style='display:inline-block;'>
-        <span class="btn btn-success fileinput-button" style='width:100px;'>
-            <i class="glyphicon glyphicon-plus"></i>
-            <span>上传</span>
-            <input onchange = 'checkFile3();' accept="application/msexcel" type="file" id='file1' name='file1' style='opacity:0; position:absolute; top:0;left:0;cursor:pointer; width:100px;'>
+        <span class="text-primary" >
+        	<i class='glyphicon glyphicon-tag' style='font-size:15px;'></i>
         </span>
-        <span class="label label-default" id='file3_state'>未选择</span>
+                      个人综合素质报告
     </div>
     &nbsp;&nbsp;
     <div class='form-group' style='display:inline-block;'>
-        <button id='submit1' type='button' class="btn btn-danger start" style='width:100px;'>
-            <i class="glyphicon glyphicon-upload"></i>
-            <span>导入</span>
-        </button>
-    </div>
-</div>
-<div style="width:100%;height:40px; margin-left:40px;">
-    <div class="form-group" style='display:inline-block;font-size:20px;'>
-        <span class="text-primary" ><i class='glyphicon glyphicon-tag' style='font-size:15px;'></i></span>个人胜任力报告<span style='visibility: hidden'>位</span>
-    </div>
-    &nbsp;&nbsp;
-    <div class='form-group' style='display:inline-block;'>
-        <span class="btn btn-success fileinput-button" style='width:100px;'>
+        <a id="pickfile_1" href="javascript:;">
+        	<span class="btn btn-success " style='width:100px;'>
             <i class="glyphicon glyphicon-plus"></i>
-            <span>上传</span>
-            <input onchange = 'checkFile3();' accept="application/msexcel" type="file" id='file1' name='file1' style='opacity:0; position:absolute; top:0;left:0;cursor:pointer; width:100px;'>
-        </span>
-        <span class="label label-default" id='file3_state'>未选择</span>
+            <span>选择文件</span>
+            </span>
+        </a> 
     </div>
     &nbsp;&nbsp;
     <div class='form-group' style='display:inline-block;'>
-        <button id='submit1' type='button' class="btn btn-danger start" style='width:100px;'>
+         <a id="uploadfile_1" href="javascript:;">
+         <span  class="btn btn-primary start" style='width:100px;'>
             <i class="glyphicon glyphicon-upload"></i>
-            <span>导入</span>
-        </button>
+            <span>开始上传</span>
+         </span>
+        </a>
+    </div>
+      &nbsp;&nbsp;
+     <div class='form-group' style='display:inline-block;'>
+         <button onclick='checkUploaded(this)' id = 'check_1' class="btn btn-warning start" style='width:100px;'>
+            <i class="glyphicon glyphicon-search"></i>
+            <span>查看</span>
+         </button>
     </div>
 </div>
 
+<div id = 'container_2' style="height:40px;margin-left:40px;">
+    <div class="form-group" style='display:inline-block;font-size:20px;'>
+        <span class="text-primary" >
+            <i class='glyphicon glyphicon-tag' style='font-size:15px;'></i>
+        </span>
+                      个人胜任力报告<span style='visibility: hidden;'>占</span>
+    </div>
+    &nbsp;&nbsp;
+    <div class='form-group' style='display:inline-block;'>
+        <a id="pickfile_2" href="javascript:;">
+            <span class="btn btn-success" style='width:100px;'>
+            <i class="glyphicon glyphicon-plus"></i>
+            <span>选择文件</span>
+            </span>
+        </a> 
+    </div>
+    &nbsp;&nbsp;
+    <div class='form-group' style='display:inline-block;'>
+         <a id="uploadfile_2" href="javascript:;">
+         <span  class="btn btn-primary start" style='width:100px;'>
+            <i class="glyphicon glyphicon-upload"></i>
+            <span>开始上传</span>
+         </span>
+        </a>
+    </div>
+      &nbsp;&nbsp;
+    <div class='form-group' style='display:inline-block;'>
+         <button onclick='checkUploaded(this)' id = 'check_2' class="btn btn-warning start" style='width:100px;'>
+            <i class="glyphicon glyphicon-search"></i>
+            <span>查看</span>
+         </button>
+    </div>
+    
 </div>
+    <div  class='form-group' id="filelist" style="height:40px;margin: 10px 40px;text-align:center;">       
+    </div>
+    <div  class='form-group' id="console"  style="height:40px;margin: 10px 40px;text-align:center;">    
+    </div>
 
+</div>
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -135,6 +167,148 @@ $('#myModal').on('hidden.bs.modal', function (e) {
 $('#myModal').on('hide.bs.modal', function (e) {
         $('.Leo_question').css('width','860px')
 });
+ 
+// plupload 
+
+var uploader_1 = new plupload.Uploader({
+    runtimes : 'html5,flash,silverlight,html4',
+    browse_button : 'pickfile_1', // you can pass an id...
+    container: document.getElementById('container_1'), // ... or DOM Element itself
+    url : '/file/fileUploadv2/1',
+    flash_swf_url : '/fileupload/plupload-2.1.8/js/Moxie.swf',
+    silverlight_xap_url : '/fileupload/plupload-2.1.8/js/Moxie.xap',
+    
+    filters : {
+        max_file_size : '40mb',
+        mime_types: [
+            // {title : "word files", extensions : "docx"},
+        ]
+    },
+
+    init: {
+        PostInit: function() {
+            document.getElementById('filelist').innerHTML = '';
+            document.getElementById('uploadfile_1').onclick = function() {
+                uploader_1.start();
+                return false;
+            };
+        },
+
+        FilesAdded: function(up, files) {
+            plupload.each(files, function(file) {
+                document.getElementById('filelist').innerHTML += 
+                "<table class=\"table table-hover\" style='margin-bottom:0;' ><tr><td style='width:100px;'>综合</td><td style='width:480px;'>"+file.name+'(' + plupload.formatSize(file.size) + ')' + "</td><td style='width:200px;'><b  id = "+file.id+"></b></td></tr></table>"
+            });
+        },
+
+        UploadProgress: function(up, file) {
+            //document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+        },
+        FileUploaded:function(up,file,result){
+        	result = eval('('+result.response+')');
+        	if (result.error){
+        		 document.getElementById(file.id).innerHTML = '<span style=\'color:red;\'>' + result.error+'</span>';
+        	}else{
+        		  document.getElementById(file.id).innerHTML = '<span style=\'color:green;\'>上传成功</span>';
+        	}
+      
+        },
+        // Error: function(up, err) {
+            // document.getElementById('console').appendChild(document.createTextNode("\nError #" + err.code + ": " + err.message));
+        // }
+    }
+});
+
+uploader_1.init();
+
+var uploader_2 = new plupload.Uploader({
+    runtimes : 'html5,flash,silverlight,html4',
+    browse_button : 'pickfile_2', // you can pass an id...
+    container: document.getElementById('container_2'), // ... or DOM Element itself
+    url : '/file/fileUploadv2/2',
+    flash_swf_url : '/fileupload/plupload-2.1.8/js/Moxie.swf',
+    silverlight_xap_url : '/fileupload/plupload-2.1.8/js/Moxie.xap',
+    
+    filters : {
+        max_file_size : '40mb',
+        mime_types: [
+            // {title : "word files", extensions : "docx"},
+        ]
+    },
+
+    init: {
+        PostInit: function() {
+            document.getElementById('filelist').innerHTML = '';
+            document.getElementById('uploadfile_2').onclick = function() {
+                uploader_2.start();
+                return false;
+            };
+        },
+
+        FilesAdded: function(up, files) {
+             plupload.each(files, function(file) {
+                document.getElementById('filelist').innerHTML += 
+                "<table class=\"table table-hover\"  style='margin-bottom:0;'><tr><td style='width:100px;'>胜任力</td><td style='width:480px;'>"+file.name+'(' + plupload.formatSize(file.size) + ')' + "</td><td style='width:200px;'><b  id = "+file.id+"></b></td></tr></table>"
+             });
+        },
+
+        UploadProgress: function(up, file) {
+            //document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+        },
+        FileUploaded:function(up,file,result){
+        	result = eval('('+result.response+')');
+            if (result.error){
+                 document.getElementById(file.id).innerHTML = '<span style=\'color:red;\'>' + result.error+'</span>';
+            }else{
+                  document.getElementById(file.id).innerHTML = '<span style=\'color:green;\'>上传成功</span>';
+            }
+      
+       
+},
+        // Error: function(up, err) {
+            // document.getElementById('console').innerHTML +=
+            	 // "<table class=\"table table-hover\"><tr><td>Error:"+err.message+ "</td><td><b>文件类型错误</b></td></tr></table>"
+            // ;
+        // }
+    }
+});
+
+uploader_2.init();
+//已上传文件的情况查询
+function checkUploaded(args){
+	 var number = args.id.substr( args.id.length-1, 1);
+	  $.post('/file/getIndividualReportState/'+number,function(data) { 
+	  	if (data.error){
+	  		downloadError(data.error);
+	  	}else{
+	  		var msg ='';
+	  		if (number == 1 ){
+	  			msg +='个体综合报告修改结果统计';
+	  		}else{
+	  			msg +='个体胜任力报告修改结果统计';
+	  		}
+            msg += "<table class=\"table table-hover\"  style='margin-bottom:0;margin-top:0;'>";
+            msg +='<caption><b style=\'color:red;\'>未修改名单</b></caption>';
+	  		var not = data.success.not;
+	  		for(var i = 0, len = not.length; i < len; i++ ){
+	  			msg+=('<tr><td>'+not[i]+'</td></tr>');
+	  		}
+	  		msg +='</table>';
+	  		msg +='<br />';
+	  		msg += "<table class=\"table table-hover\"  style='margin-bottom:0;'>";
+            msg +='<caption><b style=\'color:green;\'>已修改名单</b></caption>';
+	  		var ok = data.success.ok;
+	  		console.log(ok.length);
+	  		for(var i =0, len = ok.length; i <len; i ++ ){
+	  			msg+=('<tr><td>'+ok[i]+'</td></tr>');
+	  		}
+	  		msg +='</table>';
+	  		downloadSuccess(msg);
+	  	}
+	  })
+}
+
+
 $(function(){
     getData(url);
 });
@@ -150,7 +324,7 @@ function getData(url){
                      );
                  $('.modal-footer').html('');
                  $('.modal-footer').html(
-                    "<a href='/managerlogin'><button type=\"button\" class=\"btn btn-primary\">重新登录</button></a>"
+                    "<a href='/managerlogin'><button type=\"button\" class=\"btn btn-primary\" >重新登录</button></a>"
                  );
                  $('#myModal').modal({
                     keyboard:true,

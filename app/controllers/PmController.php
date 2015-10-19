@@ -721,7 +721,7 @@ class PmController extends Base
 	#被试信息导出页面
 	public function examineeDownloadAction(){
 		$this->view->setTemplateAfter('base2');
-		$this->leftRender('被 试 人 员 数 据 下 载');
+		$this->leftRender('相 关 数 据 处 理');
 	}
     #获取报告生成状态
     public function getReportStateAction(){
@@ -797,7 +797,7 @@ class PmController extends Base
             }
             $this->dataReturn(array('error'=>$error));
         }
-    }
+    }    
 	#导出被试信息列表
 	public function examineeExportAction(){
 		$project_id = $this->session->get('Manager')->project_id;
@@ -1653,67 +1653,6 @@ class PmController extends Base
         $this->view->setVar('project_id',$project_id);
 	}
 	
-	
-	
-	
-	 
-	
-    
-
-
-
-   
-
-    public function interviewinfoAction($manager_id){
-        $this->view->setTemplateAfter('base2');
-        $name = Manager::findFirst($manager_id)->name;
-        $this->leftRender($name.' 面 询 完 成 情 况');
-        $this->view->setVar('manager_id',$manager_id);
-        $interview = InterviewInfo::getInterviewResult($manager_id);
-        $data = json_encode($interview,true);
-        $this->view->setVar('data',$data);
-    }  
-    
-    public function examineeofmanagerAction($manager_id){
-        $row = Interview::find(array(
-           'manager_id = :manager_id:',
-           'bind' => array('manager_id' => $manager_id)));
-        $term = '';
-        foreach($row as $key => $item){
-            $term .= ' id='.$item->examinee_id.' OR ';
-        }
-        if(empty($term)){
-            $term = 0;
-        }else{
-            $term = substr($term,0,strlen($term)-3);
-        }
-        echo $term;
-        $builder = $this->modelsManager->createBuilder()
-                                      ->from('Examinee')
-                                      ->where($term);
-        $sidx = $this->request->getQuery('sidx','string');
-        $sord = $this->request->getQuery('sord','string');
-        if ($sidx != null)
-            $sort = $sidx;
-        else
-            $sort = 'number';
-        if ($sord != null)
-            $sort = $sort.' '.$sord;
-        $builder = $builder->orderBy($sort);
-        $this->datareturn($builder);  
-    }
-    public function roleInfo($role){
-        $project_id = $this->session->get('Manager')->project_id;
-        $interviewer = Manager::find(array(
-            'role = :role: AND project_id = :project_id:',
-            'bind' => array('role' => $role,'project_id' => $project_id)));
-        $result = array();
-        foreach($interviewer as $key => $item){
-            $result[$key] = $item;
-        }
-        return $result;
-    }
-
     function dataReturn($ans){
     	$this->response->setHeader("Content-Type", "application/json; charset=utf-8");
     	$this->view->disable();
