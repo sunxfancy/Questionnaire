@@ -63,22 +63,10 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $excel->setActiveSheetIndex(9);
         self::checkoutModuleResult($examinee,$excel,$project_id);
 
-        $write = new PHPExcel_Writer_Excel5($excel);
-        //临时文件命名规范    $examinee_id_$date_rand(100,900)
-        $date = date('H_i_s');
-        $stamp = rand(100,900);
-        $fileName = './tmp/'.$examinee->id.'_'.$date.'_'.$stamp.'.xls';
-        header("Pragma: public");
-        header("Expires: 0");
-        header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
-        header("Content-Type:application/force-download");
-        header("Content-Type:application/vnd.ms-execl");
-        header("Content-Type:application/octet-stream");
-        header("Content-Type:application/download");
-        header('Content-Disposition:attachment;filename=\'$fileName\'');
-        header("Content-Transfer-Encoding:binary");
-        $write->save($fileName);
-        return $fileName;
+        $objWriter = new PHPExcel_Writer_Excel5($excel);
+        $file_name = './tmp/'.$project_id.'_examinees.xls';
+        $objWriter->save($file_name);
+        return $file_name;
     }
 
     //导出个人信息

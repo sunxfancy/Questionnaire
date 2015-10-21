@@ -723,7 +723,7 @@ class PmController extends Base
 		$this->view->setTemplateAfter('base2');
 		$this->leftRender('相 关 数 据 处 理');
 	}
-    #获取报告生成状态
+    #获取被试算分的状态
     public function getReportStateAction(){
         $this->view->disable();
         $manager = $this->session->get('Manager');
@@ -731,35 +731,29 @@ class PmController extends Base
             $this->dataReturn(array('error'=>'获取用户信息失败，请重新登陆'));
             return ;
         }
-        $project_id = $manager->project_id;
-        $examinee = Examinee::find(array(
-            'project_id=?1 and type=0',
-            'bind'=>array(1=>$project_id)));
-        $year = floor($project_id / 100 );
-        $path1 = './project/'.$year.'/'.$project_id.'/individual/comprehesive/';
-        $path2 = './project/'.$year.'/'.$project_id.'/individual/competency/';
-        $array['score'] = true;
-        $array['comprehesive'] = true;
-        $array['competency'] = true;
-        foreach ($examinee as $examinees) {
-            if ($examinees->state < 4) {
-                $array['score'] = false;
-                $array['comprehesive'] = false;
-                $array['competency'] = false;
-                break;
-            }
-            $name1 = $examinees->number.'_individual_comprehesive.docx';
-            $name2 = $examinees->number.'_individual_competency.docx';
-            if (!file_exists($path1.$name1)) {
-                $array['comprehesive'] = false;
-            }
-            if (!file_exists($path2.$name2)) {
-                $array['competency'] = false;
-            }
+        // 获取项目下的未完成基础算分的人员名单 ---- 未完成
+        $examinees = $this->modelsManager->createBuilder()
+        ->columns(array(
+        		'id'
+        ))
+        ->from('Examinee')
+        ->where('Examinee.project_id = '.$manager->project_id .' AND Examinee.type = 0 AND Examinee.state < 4 ')
+        ->getQuery()
+        ->execute()
+        ->toArray();
+        $not_finish_calculate = array();
+        foreach($examinees as $examinee_record){
+        	$not_finish_calculate[] = $examinee_record['id'];
         }
-        $this->dataReturn(array('success'=>$array));
+        if (empty($not_finish_calculate)){
+        	$this->dataReturn(array('success'=>'true'));
+        	return ;
+        }else {
+        	$this->dataReturn(array('success'=>'false'));
+        	return ;
+        }
     }
-    #一键算分
+    #所有被试人员进行算分处理 ----一键算分
     public function oneKeyCalculateAction(){
         $this->view->disable();
         $manager = $this->session->get('Manager');
@@ -767,36 +761,47 @@ class PmController extends Base
             $this->dataReturn(array('error'=>'获取用户信息失败，请重新登陆'));
             return ;
         }
-        $project_id = $manager->project_id;
-        $examinee = Examinee::find(array(
-            'project_id=?1 and type=0',
-            'bind'=>array(1=>$project_id)));
-        foreach ($examinee as $examinees) {
-            if ($examinees->state == 0) {
-                $exam_not[$examinees->number] = $examinees->name;
-            }else if ($examinees->state < 4) {
-                try{
-                    BasicScore::handlePapers($examinees->id);
-                    BasicScore::finishedBasic($examinees->id);
-                    FactorScore::handleFactors($examinees->id);
-                    FactorScore::finishedFactor($examinees->id);
-                    IndexScore::handleIndexs($examinees->id);
-                    IndexScore::finishedIndex($examinees->id);
-                }catch(Exception $e){
-                    $this->dataReturn(array('error'=>$e->getMessage()));
-                    return ;
-                }
-            }
+        // 获取项目下的人员名单 ----所有
+        $examinees = $this->modelsManager->createBuilder()
+        ->columns(array(
+        		'id', 'state', 'number', 'name'
+        ))
+        ->from('Examinee')
+        ->where('Examinee.project_id = '.$manager->project_id .' AND Examinee.type = 0 ')
+        ->getQuery()
+        ->execute()
+        ->toArray();
+        $not_exam = array(); //未参加考试人员
+//         $not_finish_calculate = array(); //未算分完成人员
+        $calcual_error = array(); // 在算分过程中出现错误的人员
+        foreach ( $examinees as $examinee_record ){
+        	if ($examinee_record['state'] == 0 ){
+        		$not_exam = $examinee_record['number'].'-'.$examinee_record['name'].'-还未参加测评';
+        	}else if ($examinee_record['state'] < 4 ){
+        		try{
+        			BasicScore::handlePapers($examinee_record['id']);
+        			BasicScore::finishedBasic($examinee_record['id']);
+        			FactorScore::handleFactors($examinee_record['id']);
+        			FactorScore::finishedFactor($examinee_record['id']);
+        			IndexScore::handleIndexs($examinee_record['id']);
+        			IndexScore::finishedIndex($examinee_record['id']);
+        		}catch(Exception $e){
+        			$calcual_error[] =  $examinee_record['number'].'-'.$examinee_record['name'].'-算分过程中失败，原因：'.$e->getMessage();
+        		}
+        	}else{
+        		//...
+        	}
         }
-        if (!isset($exam_not)) {
-            $this->dataReturn(array('success'=>'所有被试算分完成！'));
-        }else{
-            $error = '部分人员还未参与测试：<br/>';
-            foreach ($exam_not as $key => $value) {
-                $error .=$key.'：'.$value.'<br/>';
-            }
-            $this->dataReturn(array('error'=>$error));
+        if (!empty($not_exam)){
+        	$this->dataReturn(array('error'=>$not_exam));
+        	return ;
         }
+        if (!empty($calcual_error)){
+        	$this->dataReturn(array('error'=>$calcual_error));
+        	return ;
+        }
+        $this->dataReturn(array('success'=>'true'));
+        return ;
     }    
 	#导出被试信息列表
 	public function examineeExportAction(){

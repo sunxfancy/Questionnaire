@@ -45,16 +45,11 @@
             </div>
             &nbsp;&nbsp;
             <div class='form-group' style='display:inline-block;'>
-            <a href = '/pm/leaderExport'>
-            <button type='button' class="btn btn-primary start" style='width:150px;'>
+            <button type='button' onclick='exportLeaders()' class="btn btn-primary start" style='width:150px;'>
                     <i class="glyphicon glyphicon-download"></i>
                     <span>导出</span>
             </button>
-            </a>
-            </div>
-            
-            
-                
+            </div>    
         </div>
 </div>
 <!-- Modal -->
@@ -458,5 +453,51 @@ function checkFile2(){
         $('#submit2').attr('disabled', true);
    }
 } 
-
+function exportLeaders(){
+    downloadWait('正在生成领导列表');
+    $.post('/file/exportRole/3', function(data){
+        if (data.error){
+            downloadError(data.error);
+        }else {
+            var msg = "<a href='"+data.success.substr( 1, data.success.length-1)+"'>领导列表</a>";
+            downloadSuccess(msg);
+        }
+    });
+}
+function downloadWait(msg){
+    $('.Leo_question').css('width','843px');    
+    $('.modal-body').html("<p class=\"bg-success\" style='padding:20px;'>"+msg+"</p>"+"<div style='text-align:center; padding:5px 10px 10px 10px;'><img src='/image/loading.gif' style='width:300px' /></div>");
+    $('.modal-footer').html('');
+    $('#myModal').modal({keyboard:true, backdrop:'static'});
+}
+function downloadError(msg){
+    $('.Leo_question').css('width','843px')
+    $('.modal-body').html('');
+    $('.modal-body').html(
+        "<p class=\"bg-danger\" style='padding:20px;'>"+msg+ "</p>"
+    );
+    $('.modal-footer').html('');
+    $('.modal-footer').html(
+        "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">返回</button>"
+    );
+    $('#myModal').modal({
+        keyboard:true,
+        backdrop:'static'
+    })
+}
+function downloadSuccess(msg){
+    $('.Leo_question').css('width','843px')
+    $('.modal-body').html('');
+    $('.modal-body').html(
+        "<p class=\"bg-success\" style='padding:20px;'>"+msg+ "</p>"
+    );
+    $('.modal-footer').html('');
+    $('.modal-footer').html(
+       "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">关闭</button>"
+    );
+    $('#myModal').modal({
+        keyboard:true,
+        backdrop:'static'
+    })
+}
 </script>

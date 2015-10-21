@@ -67,16 +67,17 @@
             </div>
         </div>
         <div style="width:80%;text-align:right;margin: 40px">    
-                <div style='display:inline-block;'>
+              <!--   <div style='display:inline-block;'>
                     <button class="btn btn-info" style='width:100px;'>
                     <i class="glyphicon glyphicon-print"></i>&nbsp;打印</button>
                 </div>
                 &nbsp;&nbsp;
                 <div style='display:inline-block;'>
-                    <a class="btn btn-primary" href="#" style='width:100px;'>
-                    <i class="glyphicon glyphicon-download"></i>&nbsp;导出</a>
+                    <button class="btn btn-primary"  style='width:100px;'>
+                    <i class="glyphicon glyphicon-download"></i>&nbsp;导出
+                    </button>
                 </div>
-                &nbsp;&nbsp;
+                &nbsp;&nbsp; -->
                 <div style='display:inline-block;'>
                     <span id='page'></span>
                 </div>
