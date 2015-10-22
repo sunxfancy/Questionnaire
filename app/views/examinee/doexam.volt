@@ -2,19 +2,27 @@
 <script type="text/javascript" src="/js/demand.js"></script>
 
 <div class="Leo_question_v2" id="Leo_question_v2">
-    <!--这一部分是暂停时的下拉框-->
-    <div id="Leo_hiden" class="Leo_hiden" style="top:-500px;" >
+    <!--这一部分是初始页面-->
+    <div id="Leo_begin" class="Leo_begin" style="top:-500px;">
         <table style="height:100%;width:100%;overflow:auto;">
-            <tr><td id="Leo_hiden_td1" style="font-size:24px;vertical-align:bottom;"></td></tr>
-            <tr><td id="Leo_hiden_td2" style="font-size:18px; padding:40px;"></td></tr>
-            <tr><td id="Leo_hiden_td3" style="font-size:18px;"></td></tr>
+            <tr><td id="Leo_begin_td1" style="font-size:24px; padding:20px;"></td></tr>
+            <tr><td id="Leo_begin_td2" style="font-size:18px; padding:0 40px 0 40px;"></td></tr>
+            <tr><td id="Leo_begin_td3" style="font-size:18px;"></td></tr>
+            <tr><td style="font-size:18px;"><center>点击图标开始本套试卷答题</center></td></tr>
+            <tr><td id="Leo_begin_td4"><div id="Leo_begin_ctrl" style="cursor:pointer;margin-left:45%;width:0;height:0;border-top: 30px solid transparent;border-bottom:30px solid transparent;border-left:50px solid green;" onclick="$('#Leo_begin').slideUp('fast', function() {});"></div><br /></td></tr>
+        </table>
+    </div>
+    <!--这一部分是暂停时的下拉框-->
+    <div id="Leo_hiden" class="Leo_hiden" style="top:-500px;">
+        <table style="height:100%;width:100%;overflow:auto;">
+            <tr><td id="Leo_hiden_td1" style="font-size:24px;"></td></tr>
+            <tr><td style="font-size:18px;"><center>点击图标开始本套试卷答题</center></td></tr>
             <tr><td id="Leo_hiden_td4"><div id="Leo_hiden_ctrl" style="cursor:pointer;margin-left:45%;width:0;height:0;border-top: 30px solid transparent;border-bottom:30px solid transparent;border-left:50px solid green;" onclick="$('#Leo_hiden').slideUp('fast', function() {});"></div><br /></td></tr>
         </table>
     </div>
-
     <!--这一部分是指导语部分-->
     <div style="overflow:hidden;width:600px;height:440px;">
-        <div style="width:95%;height:410px;margin:0 auto;display:none;font-size:22px;font-family:'微软雅黑';overflow:auto;" id='announce_panel'><p></p></div>
+        <div style="width:100%;height:410px;margin:0 auto;display:none;font-size:22px;font-family:'微软雅黑';overflow:auto;" id='announce_panel'><p></p></div>
         <div id='do_announce' style="width:100%;height:30px;background-color:#eeed6a;cursor:pointer;text-align:center;font-size:22px;">
             <div style="margin:0 auto;"></div>
         </div>
@@ -51,7 +59,7 @@
 <div class="Leo_Timer_v2">
     <div id="time_panel" style="width:100%;height:30px;background-color:#eeed6a;text-align:center;font-size:25px;"></div>
     <div class="clock">
-        <ul><li style="font-size:25px;" id="used">已用时</li></ul>
+        <ul><li style="font-size:24px;" id="used">已用时</li></ul>
         <ul>
             <li id="hours">00</li>
             <li id="point">:</li>
@@ -59,6 +67,7 @@
             <li id="point">:</li>
             <li id="sec">00</li>
         </ul>
+        <ul><li style="font-size:24px;" id="notice"></li></ul>
     </div>   
 </div>
 
@@ -84,12 +93,12 @@
 <script type="text/javascript">
     var spinner = null;
     var target = document.getElementById('Leo_question_v2');
-$('#myModal').on('hidden.bs.modal', function (e) {
+    $('#myModal').on('hidden.bs.modal', function (e) {
         $('.Leo_question_v2').css('width','600px')
-});
-$('#myModal').on('hide.bs.modal', function (e) {
+    });
+    $('#myModal').on('hide.bs.modal', function (e) {
         $('.Leo_question_v2').css('width','600px')
-});
+    });
 
  /*定义重要的全局变量*/
     var Leo_index_now=0;
@@ -142,7 +151,7 @@ $('#myModal').on('hide.bs.modal', function (e) {
         }
     }
 
-    function Leo_initPanel(questionlength) {
+    function Leo_initPanel(questionlength){
         $("#time_panel").html(paper_id_name[paper_id_now]);
         $("#do_announce").children("div").html(paper_name[paper_id_now]);
         $("#Leo_question_table").replaceWith("<table style='width:92%;text-align:center;vertical-align:middle;table-layout:fixed;margin:0 auto;' id='Leo_question_table' cellspacing='0'></table>");
@@ -211,6 +220,11 @@ $('#myModal').on('hide.bs.modal', function (e) {
                     //if(seconds==10){
                     $.cookie("total_time",total_time,{experies:7});
                     //}
+                    if (total_time > 7200) {
+                        $("#notice").html("您还有一个小时！");
+                    }else if (total_time > 9000) {
+                        $("#notice").html("你还有半个小时！");
+                    }
                 }
                 time_play();
             },1000)
@@ -220,8 +234,12 @@ $('#myModal').on('hide.bs.modal', function (e) {
             $("#used").html("暂停");
             flag=false;
         });
-
         $("#Leo_hiden_ctrl").click(function() {
+            /* Act on the event */
+             $("#used").html("已用时");
+            flag=true;
+        });
+        $("#Leo_begin_ctrl").click(function() {
             /* Act on the event */
              $("#used").html("已用时");
             flag=true;
@@ -452,23 +470,24 @@ $('#myModal').on('hide.bs.modal', function (e) {
             questions=data.question;
             description=data.description;
             ques_order=data.order;
+            remain_time_str = time_cal(10800 - total_time);
+            $("#Leo_begin_td1").html("<center>"+paper_name[paper_id_now]+"</center>");
             $("#Leo_hiden_td1").html("<center>"+paper_name[paper_id_now]+"</center>");
-            $("#Leo_hiden_td2").html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+description+"<br/><br/>");
-            $("#Leo_hiden_td3").html("<center>"+"点击图标开始本套试卷答题"+"</center>");
-            $('#Leo_hiden').slideDown('fast', function() {});    
+            $("#Leo_begin_td2").html("<span style='visibility: hidden'>缩进</span>"+description);
+            $("#Leo_begin_td3").html("<center>您还有"+remain_time_str+"的答题时间！</center>");
+            $('#Leo_begin').slideDown('fast', function() {});
             flag=false;
              //默认设定是题目间的跳转不暂停计时，这个过程被认为是正常的答题过程！！！
             Leo_initPanel(questions.length);
             initCookie(questions.length,"exam_ans"+{{number}});
-            $('#announce_panel').children('p').replaceWith("<p>"+description+"</p>");
+            $('#announce_panel').children('p').replaceWith("<p style='padding:40px;'><br/><span style='visibility: hidden'>缩进</span>"+description)+"</p>";
             }
-           
         });
     }
 
     function Leo_check(){
     	spinner = new Spinner().spin(target);
-        $.post('/Examinee/getExamAnswer',{"answer":$.cookie("exam_ans"+{{number}}),"paper_name":paper_id_name[paper_id_now],"order":ques_order}, function(data) {
+        $.post('/Examinee/getExamAnswer',{"answer":$.cookie("exam_ans"+{{number}}),"paper_name":paper_id_name[paper_id_now],"order":ques_order,"time":total_time}, function(data) {
              if(data.error){
              	 if(spinner){ spinner.stop(); }
                  $('.Leo_question_v2').css('width','573px')
@@ -528,7 +547,7 @@ $('#myModal').on('hide.bs.modal', function (e) {
         });
     }
 
-function ans_complete(){
+    function ans_complete(){
     	$('.modal-body').html(
                       "<p class=\"bg-success\" style='padding:20px;'>题目正在处理中，请勿关闭浏览器</p>"+
                       "<div style='text-align:center; padding:5px 10px 10px 10px;'><img src='/image/loading.gif' style='width:300px' /></div>"
@@ -576,35 +595,22 @@ function ans_complete(){
           
         });        
     }
-function w_last (){
-	        $.cookie("paper_id"+{{number}},"",{experies:-1});
-            $.cookie("exam_ans"+{{number}},"",{expeires:-1});
-            $.cookie("total_time","",{experies:-1});
-            window.location.href="/";
-}
-
-function time_cal(time_count){
-	var hours=Math.floor(time_count/3600);
-    var leave2=time_count%3600;        //计算小时数后剩余的秒数
-    var minutes=Math.floor(leave2/60);
-    var leave3=leave2%60;    //计算分钟数后剩余的秒数
-    var seconds=leave3;
-    var str = "";
-    if ( hours != 0 ) { str =hours+"小时"+ minutes+"分钟";}
-    else if (minutes != 0 ) { str =  minutes+"分钟 "+seconds+'秒';}
-    else{ str = seconds+"秒"; }
-    return str;
-}
-
-
-
-
-
-
-
-
-
-
-
-
+    function w_last (){
+        $.cookie("paper_id"+{{number}},"",{experies:-1});
+        $.cookie("exam_ans"+{{number}},"",{expeires:-1});
+        $.cookie("total_time","",{experies:-1});
+        window.location.href="/";
+    }
+    function time_cal(time_count){
+    	var hours=Math.floor(time_count/3600);
+        var leave2=time_count%3600;        //计算小时数后剩余的秒数
+        var minutes=Math.floor(leave2/60);
+        var leave3=leave2%60;    //计算分钟数后剩余的秒数
+        var seconds=leave3;
+        var str = "";
+        if ( hours != 0 ) { str =hours+"小时"+ minutes+"分钟";}
+        else if (minutes != 0 ) { str =  minutes+"分钟 "+seconds+'秒';}
+        else{ str = seconds+"秒"; }
+        return str;
+    }
 </script>

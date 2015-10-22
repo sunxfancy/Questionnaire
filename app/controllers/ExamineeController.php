@@ -190,8 +190,9 @@ class ExamineeController extends Base
     	$option = $this->request->getPost("answer", "string");
     	$paper_name = $this->request->getPost("paper_name", "string");
     	$number = $this->request->getPost("order");
+        $time = $this->request->getPost("time");
     	try{
-    		QuestionIC::insertQuestionAns($id, $paper_name, $option, $number);
+    		QuestionIC::insertQuestionAns($id, $paper_name, $option, $number,$time);
     	}catch(Exception $e){
     		$this->dataReturn(array("error"=>"提交失败:".$e->getMessage()));
     		return;
