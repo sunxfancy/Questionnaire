@@ -13,53 +13,48 @@
 <script src='/fileupload/ajaxfileupload.js'></script>
 <!--pm 页面公用函数库-->
 <script src='/js/pm.assit.js'></script>
+
 <div style="width:100%;height:460px;overflow:hidden;">
     <table id="grid-table"></table>
     <div id="grid-pager"></div>   
 
     <div style="width:100%;height:40px;text-align:center; margin: 5px 10px;">
-            <div class="form-group" style='display:inline-block;'>
-                
-                <a class="btn btn-info" href="/template/examinee.xls" style='width:150px;'>
-                	<i class="glyphicon glyphicon-collapse-down"></i>
-                	导入模板下载</a>
-            </div>
-            <div class='form-group' style='display:inline-block;'>
+        <div class="form-group" style='display:inline-block;'>        
+            <a class="btn btn-info" href="/template/examinee.xls" style='width:150px;'>
+                <i class="glyphicon glyphicon-collapse-down"></i>
+                导入模板下载</a>
+        </div>
+        <div class='form-group' style='display:inline-block;'>
             <span class="btn btn-success fileinput-button" style='width:150px;'>
-                    <i class="glyphicon glyphicon-plus"></i>
-                    <span>上传被试信息列表</span>
-                    <input onchange='checkFile0()' accept="application/msexcel" type="file" id='file' name='file' style='opacity:0; position:absolute; top:0;left:0;cursor:pointer; width:150px;'>
+                <i class="glyphicon glyphicon-plus"></i>
+                <span>上传被试信息列表</span>
+                <input onchange='checkFile0()' accept="application/msexcel" type="file" id='file' name='file' style='opacity:0; position:absolute; top:0;left:0;cursor:pointer; width:150px;'>
             </span>
             <span class="label label-default" id='file_state'>未选择</span>
-            </div>
-          
-            <div class='form-group' style='display:inline-block;'>
+        </div>
+        <div class='form-group' style='display:inline-block;'>
             <button id='submit' type='button' class="btn btn-danger start" style='width:150px;'>
-                    <i class="glyphicon glyphicon-upload"></i>
-                    <span>导入</span>
+                <i class="glyphicon glyphicon-upload"></i>
+                <span>导入</span>
             </button>
-            </div>
-       
-            <div class='form-group' style='display:inline-block;'>
+        </div>
+        <div class='form-group' style='display:inline-block;'>
             <a href = '/pm/examineeDownload'>
-            <button id='submit' type='button' class="btn btn-primary start" style='width:150px;'>
+                <button type='button' class="btn btn-primary start" style='width:150px;'>
                     <i class="glyphicon glyphicon-share"></i>
                     <span>相关数据处理</span>
-            </button>
+                </button>
             </a>
-            </div>
-             <div class='form-group' style='display:inline-block;'>
+        </div>
+        <div class='form-group' style='display:inline-block;'>
             <a href = '/pm/greenchannel'>
-            <button type='button' class="btn btn-success start" style='width:150px;'>
+                <button type='button' class="btn btn-success start" style='width:150px;'>
                     <i class="glyphicon glyphicon-fast-forward"></i>
                     <span>绿色通道</span>
-            </button>
+                </button>
             </a>
-            </div>
-            
-            
-                
-        </div>
+        </div>       
+    </div>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -501,20 +496,11 @@ $(function(){
                 top : 10,  //位置
                 left: 10, //位置 
              }, 
-             {//refresh
-                
+             {//refresh   
              }
-            
-        );
-           
+        );      
 }
 });
-
-//$('#file').change(function(){
-//	console.log('hrer');
-//	checkFile0();
-//}) 
-
 
 $('#submit').click(function(){
 	  var path = $("#file").val();
@@ -534,7 +520,7 @@ $('#submit').click(function(){
         $('.modal-footer').html('');
         $('#myModal').modal({keyboard:true, backdrop:'static'});
         $.ajaxFileUpload ({
-        url:'/pm/uploadExaminee/0', //你处理上传文件的服务端 
+        url:'/pm/uploadexaminee/0', //你处理上传文件的服务端 
         secureuri:false, //与页面处理代码中file相对应的ID值
         fileElementId:'file',
         dataType: 'json', //返回数据类型:text，xml，json，html,scritp,jsonp五种
@@ -553,11 +539,9 @@ $('#submit').click(function(){
             $('#myModal').modal({keyboard:true, backdrop:'static'});
             //成功返回后的操作
            }
-
         }
         });
 })
-
 function checkFile0(){
 	if($('#file').val() != ''){
 	    $('#file_state').removeClass('label-default');
@@ -571,9 +555,6 @@ function checkFile0(){
 	    $('#submit').attr('disabled', true);
    }
 } 
-
-
-
 function downloadPersonalResult(examinee_id){
 	downloadWait('正在生成个人测评十项报表！');
     $.post('/file/getPersonalResult', {'examinee_id':examinee_id}, function(data){
@@ -584,7 +565,6 @@ function downloadPersonalResult(examinee_id){
         }
     });
 }
-
 function downloadCompetencyReport(examinee_id){
 	downloadWait('正在生成个人胜任力报告！');
     $.post('/file/MgetIndividualCompetencyReport', {'examinee_id':examinee_id}, function(data){
@@ -595,7 +575,6 @@ function downloadCompetencyReport(examinee_id){
         }
     });
 }
-
 function downloadComReport(examinee_id){
     downloadWait('正在生成个人综合报告！');
     $.post('/file/MgetIndividualComReport', {'examinee_id':examinee_id}, function(data){

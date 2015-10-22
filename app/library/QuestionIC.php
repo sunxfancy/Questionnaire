@@ -131,7 +131,7 @@ class QuestionIC {
 	 * @throws Exception
 	 * @return boolean
 	 */
-	public static function insertQuestionAns($examinee_id, $paper_name, $option_str, $number_array){
+	public static function insertQuestionAns($examinee_id, $paper_name, $option_str, $number_array,$time){
 		$project_id = self::getProjectId($examinee_id);
 		if(!$project_id){
 			return false;
@@ -160,6 +160,7 @@ class QuestionIC {
 			$question_ans->paper_id = $paper_id;
 			$question_ans->examinee_id = $examinee_id;
 			$question_ans->question_number_list =implode("|",$number_array);
+			$question_ans->time = $time;
 			if( $question_ans->save() == false ){
 				$transaction->rollback(self::$error_state.'-数据库插入失败-'.print_r($question_ans,true));
 			}
