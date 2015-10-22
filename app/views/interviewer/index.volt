@@ -124,8 +124,8 @@ $(function(){
                             if (rowObject.state >= 4) {
                                 return "<div class='ui-pg-div' data-original-title='导出十项列表数据'>"+
                                 "<span style='visibility:hidden;'>&nbsp;</span>"+
-                                "<a href='#'><i class=\"glyphicon glyphicon-download\" onclick='downloadPersonalResult("+rowObject.id+")'></i></a>"+
-                                "<span style='visibility:hidden;'>&nbsp;</span></div>"
+                                "<span class=\"text-primary\" style='cursor:pointer'><i class=\"glyphicon glyphicon-download\" onclick='downloadPersonalResult("+rowObject.id+")'></i>"+
+                                "</span><span style='visibility:hidden;'>&nbsp;</span></div>"
                          
                             }else {
                                 return '';

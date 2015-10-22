@@ -203,8 +203,8 @@ $(function(){
                             if (rowObject.state >= 4) {
                                 return "<div class='ui-pg-div' data-original-title='导出十项列表数据'>"+
                                 "<span style='visibility:hidden;'>&nbsp;</span>"+
-                                "<a href='#'><i class=\"glyphicon glyphicon-download\" onclick='downloadPersonalResult("+rowObject.id+")'></i></a>"+
-                                "<span style='visibility:hidden;'>&nbsp;</span></div>"
+                                "<span class=\"text-primary\" style='cursor:pointer'><i class=\"glyphicon glyphicon-download\" onclick='downloadPersonalResult("+rowObject.id+")'></i>"+
+                                "</span><span style='visibility:hidden;'>&nbsp;</span></div>"
                          
                             }else {
                                 return '';
@@ -232,7 +232,7 @@ $(function(){
                             if (rowObject.state >= 5) {
                                 return "<div class='ui-pg-div ui-inline-edit' data-original-title='导出胜任力报告'>"+
                                 "<span style='visibility:hidden;'>&nbsp;</span>"+
-                                "<a href='#'><i class=\"glyphicon glyphicon-download\" onclick='downloadCompetencyReport("+rowObject.id+")'></i></a>"+
+                                "<span class=\"text-primary\" style='cursor:pointer'><i class=\"glyphicon glyphicon-download\" onclick='downloadCompetencyReport("+rowObject.id+")'></i></span>"+
                                 "<span style='visibility:hidden;'>&nbsp;</span></div>";
                          
                             }else {
@@ -248,7 +248,7 @@ $(function(){
                             if (rowObject.state >= 5) {
                                 return "<div class='ui-pg-div ui-inline-edit' data-original-title='导出综合素质报告'>"+
                                 "<span style='visibility:hidden;'>&nbsp;</span>"+
-                                "<a href='#'><i class=\"glyphicon glyphicon-download\" onclick='downloadComReport("+rowObject.id+")'></i></a>"+
+                                "<span class=\"text-primary\" style='cursor:pointer'><i class=\"glyphicon glyphicon-download\" onclick='downloadComReport("+rowObject.id+")'></i></span>"+
                                 "<span style='visibility:hidden;'>&nbsp;</span></div>"
                          
                             }else {

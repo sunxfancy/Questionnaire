@@ -199,78 +199,70 @@ class FileController extends \Phalcon\Mvc\Controller {
 			return ;
 		}
 	}
-	# 个人十项报表数据导出
+	# 个人十项报表数据导出 ---- pm &  interviewer 
 	public function getPersonalResultAction(){
 		$this->view->disable();
 		$examinee_id = $this->request->getPost('examinee_id', 'int');
-		if (empty($examinee_id)){
-			$this->dataReturn(array('error'=>'请求参数不完整!'));
+		$examinee_info = Examinee::findFirst(array('id=?1','bind'=>array(1=>$examinee_id)));
+		if (!isset($examinee_info->id)){
+			$this->dataReturn(array('error'=>'不存在的被试编号-'.$examinee_id));
 			return ;
 		}
-		//个体报告的导出必须是manager
+		//个体报告的导出必须是manager pm & interviwer
 		$manager = $this->session->get('Manager');
 		if(empty($manager)){
 			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!'));
 			return ;
 		}
 		//判断个人状态
-		$examinee = Examinee::findFirst($examinee_id);
-		if (!isset($examinee->id) ){
-			$this->dataReturn(array('error'=>'无效的用户编号'));
+		if ($examinee_info->state == 0 ){
+			//还未开始答题
+			$this->dataReturn(array('error'=>'被试还未答题'));
 			return ;
-		}
-		if ($examinee->state < 1 ){
-			$this->dataReturn(array('error'=>'用户还未完成答题！'));
-			return ;
+		}else if ($examinee_info -> state < 4 ){
+			//算分流程未完成
+			try{
+			BasicScore::handlePapers($examinee_info->id);
+			BasicScore::finishedBasic($examinee_info->id);
+			FactorScore::handleFactors($examinee_info->id);
+			FactorScore::finishedFactor($examinee_info->id);
+			IndexScore::handleIndexs($examinee_info->id);
+			IndexScore::finishedIndex($examinee_info->id);
+			}catch(Exception $e){
+				$this->dataReturn(array('error'=>'被试算分流程未完成，原因：'.$e->getMessage()));
+				return ;
+			}
+		}else{
+			//算分流程已完成
+			//add nothing 
 		}
 		// 根据目录结构判断文件是否存在
-		$project_id = $examinee->project_id;
-		$year = floor($project_id / 100 );
-		$path = './project/'.$year.'/'.$project_id.'/individual/personal_result/';
-		$path_url = '/project/'.$year.'/'.$project_id.'/individual/personal_result/';
-		$name = $examinee->number.'_personal_result.xls';
+		$year = floor($examinee_info->project_id/ 100 );
+		$path = './project/'.$year.'/'.$examinee_info->project_id.'/individual/personal_result/';
+		$path_url = '/project/'.$year.'/'.$examinee_info->project_id.'/individual/personal_result/';
+		$name = $examinee_info->number.'_personal_result.xls';
 		if(file_exists($path.$name)){
 			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name."' style='color:blue;text-decoration:underline;'>个人测评十项报表</a>"));
 			return ;
-			//返回路径
 		}else{
-			//生成文件，之后返回下载路径
-			if ($examinee->state > 3) {
-				$report_tmp_name = CheckoutExcel::checkoutExcel11($examinee,$project_id);
-			}else{
-				try{
-					$id = $examinee->id;
-					BasicScore::handlePapers($id);
-					BasicScore::finishedBasic($id);
-					FactorScore::handleFactors($id);
-					FactorScore::finishedFactor($id);
-					IndexScore::handleIndexs($id);
-					IndexScore::finishedIndex($id);
-					$report_tmp_name = CheckoutExcel::checkoutExcel11($examinee,$project_id);
-				}catch(Exception $e){
-					$this->dataBack(array('error'=>$e->getMessage()));
-					return ;
-				}
-			}
 			try{
+				$checkout_excel = new CheckoutExcel();
+				$report_tmp_name = $checkout_excel->excelExport($examinee_info);
 				$report_name = $path.$name;
 				$file = new FileHandle();
 				$file->movefile($report_tmp_name, $report_name);
 				//清空临时文件 主要在tmp中
-				$file->clearfiles('./tmp/', $examinee_id);
+				$file->clearfiles('./tmp/', $examinee_info->id);
 				//返回路径
 				$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''. $path_url.$name."' style='color:blue;text-decoration:underline;'>个人测评十项报表</a>"));
 				return ;
 			}catch(Exception $e){
-				$this->dataReturn(array('error'=>$e->getMessage()));
+				$this->dataReturn(array('error'=>'个人测评十项报表生成失败，原因：'.$e->getMessage()));
 				return ;
 			}
 		}
 	}
-	# 个人信息数据导出
-	public function getIndividualInfomationAction(){
-		
-	}
+
 	# 项目总体报告导出(项目经理操作)
 	public function MgetProjectComReportAction(){
 		$this->view->disable();
@@ -473,13 +465,13 @@ class FileController extends \Phalcon\Mvc\Controller {
 		// 根据目录结构判断文件是否存在
 		$project_id = $manager->project_id;
 		$year = floor($project_id / 100 );
-		$path = './project/'.$year.'/'.$project_id.'/system/report/';
-		$path_url = '/project/'.$year.'/'.$project_id.'/system/report/';
-		$name_2 = $project_id.'_system_report_1.docx';//修改
+		$path_2 = './project/'.$year.'/'.$project_id.'/system/report/v2/';
+		$path_url_2 = '/project/'.$year.'/'.$project_id.'/system/report/v2/';
+		$name = $project_id.'_system.docx'; //name
 		//先判断修改是否存在
-		if (file_exists($path.$name_2)){
+		if (file_exists($path_2.$name)){
 			//修改文件存在;
-			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_2."' style='color:blue;text-decoration:underline;'>系统胜任力报告</a>"));
+			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url_2.$name."' style='color:blue;text-decoration:underline;'>系统胜任力报告</a>"));
 			return ;
 			// 返回 路径
 		}else{
