@@ -20,13 +20,28 @@ class ProjectDataExport  extends \Phalcon\Mvc\Controller
 	 	$examinee = $this->modelsManager->createBuilder()
 			    ->columns(array(
 			    'number',
-				'id'
+				'id',
+			    'state',
 				))
 			   ->from( 'Examinee' )
 			   ->where( 'Examinee.type = 0 AND Examinee.project_id =  '.$project_id )
 		       ->getQuery()
 		       ->execute()
 			   ->toArray();
+		//异常处理 
+		$members_not_finished = array();
+		foreach($examinee as $value){
+			if ($value->state < 4 ){
+				$members_not_finished[$value['number']] = $value['name'];
+			}
+		}
+		if (!empty($members_not_finished)) {
+			$list = '项目中部分成员未完成测评过程，如下:<br/>';
+			foreach ($members_not_finished as $key => $value) {
+				$list .= $key.'：'.$value.'<br/>';
+			}
+			throw new Exception(print_r($list,true));
+		}
 	 	$i = 0; 
 	 	$result = new ProjectData();
 	 	$start_column = 'F';
