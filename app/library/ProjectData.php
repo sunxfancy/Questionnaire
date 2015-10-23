@@ -118,7 +118,6 @@ class ProjectData extends \Phalcon\Mvc\Controller {
 			->orderBy('IndexAns.score desc')
 			->getQuery()
 			->execute();
-			echo '<pre>';
 			$result = array_merge($result_1->toArray(), $result_2->toArray());
 				
 			$scores = array();
