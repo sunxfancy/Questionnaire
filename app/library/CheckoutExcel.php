@@ -1317,6 +1317,25 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         	);
         
         	}
+            //指标得分
+            $start_column = 'A';
+            $row_merge_count = 0;
+            $this->_nextRow($current_row, $end_row, $row_merge_count);
+            $column_merge_count = 1;
+            $end_column = $this->_endColumn($start_column, $column_merge_count);
+            $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'',null,12,null,'left', null, true);  
+            $column_merge_count = 1;
+            $this->_nextColumn($start_column, $end_column, $column_merge_count);
+            $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'',null,12,null,null, null, false);
+            $column_merge_count = 0;
+            $this->_nextColumn($start_column, $end_column, $column_merge_count);
+            $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'' ,null,12,null,'right', null, false);
+            $column_merge_count = 0;
+            $this->_nextColumn($start_column, $end_column, $column_merge_count);
+            $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$eight['score'],null,12,null,'right', null, true);
+            $column_merge_count = 0;
+            $this->_nextColumn($start_column, $end_column, $column_merge_count);
+            $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'',null,12,null,null, null, false);    
         	$objActSheet->getStyle("A$start_row:G$end_row")->applyFromArray($styleBorderArray);
         	
         }
@@ -1375,6 +1394,24 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         			),
         	);
         	}
+            $start_column = 'A';
+            $row_merge_count = 0;
+            $this->_nextRow($current_row, $end_row, $row_merge_count);
+            $column_merge_count = 1;
+            $end_column = $this->_endColumn($start_column, $column_merge_count);
+            $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'',null,12,null,'left', null, true);  
+            $column_merge_count = 1;
+            $this->_nextColumn($start_column, $end_column, $column_merge_count);
+            $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'',null,12,null,null, null, false);
+            $column_merge_count = 0;
+            $this->_nextColumn($start_column, $end_column, $column_merge_count);
+            $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'' ,null,12,null,'right', null, false);
+            $column_merge_count = 0;
+            $this->_nextColumn($start_column, $end_column, $column_merge_count);
+            $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$eight['score'],null,12,null,'right', null, true);
+            $column_merge_count = 0;
+            $this->_nextColumn($start_column, $end_column, $column_merge_count);
+            $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'',null,12,null,null, null, false);    
         	$objActSheet->getStyle("A$start_row:G$end_row")->applyFromArray($styleBorderArray);
         }
     }

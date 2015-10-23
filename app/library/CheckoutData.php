@@ -47,11 +47,18 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 				$outter_tmp = array();
 				$middle_children = explode(',',$middle_info['children']);
 				$outter_tmp_score = 0;
+
 				foreach ($middle_children as $children_name){
+					// if ($children_name == '组织能力' || $children_name == '判断与决策能力'){
+					// 	echo "<pre>";
+					// 	print_r($middle_children);
+					// 	print_r($children);
+					// 	exit();
+					// }
 					$inner_tmp = array();
 					$key = array_search($children_name, $children);
-					$number = ($key+4)/4;
-					if ($number > 3 ){
+					$number = (intval($key)+4)/4;
+					if ( $number > 3 ){
 						$number = null;
 					}
 					$inner_tmp['name'] = $children_name;
@@ -94,8 +101,8 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 				foreach ($middle_children as $children_name){
 					$inner_tmp = array();
 					$key = array_search($children_name, $children);
-					$number = ($key+4)/4;
-					if ($number > 3 ){
+					$number = (intval($key)+4)/4;
+					if ( $number > 3 ){
 						$number = null;
 					}
 					$inner_tmp['name'] = $children_name;

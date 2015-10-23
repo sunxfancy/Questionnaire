@@ -33,11 +33,12 @@ class ProjectDataExport  extends \Phalcon\Mvc\Controller
 	 	$result = new ProjectData();
 	 	foreach ($examinee as $examinee_id ){
 	 		$data  = array();
+	 		$column = 'F';
 	 		$data  = $result->getindividualComprehensive($examinee_id);
 	 		if ($i === 0 ){
 	 			$this->makeTable($data, $objActSheet);
 	 		}else{
-	 			//add...
+	 
 	 		}
 	 		$i ++;
 	 	}
@@ -62,69 +63,69 @@ class ProjectDataExport  extends \Phalcon\Mvc\Controller
 		$current_row   = 1;
 		$row_merge_count = 0;
 		$i = 0;
-// 		foreach ($data as $module_name =>$module_detail ){
-// 			$start_column = 'B';
-// 			$end_row = $this->_endRow($current_row, $row_merge_count);
-// 			$column_merge_count = 6;
-// 			$end_column = $this->_endColumn($start_column, $column_merge_count);
-// 			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, $name_array[$i++].'、'.$module_name.'评价指标',null,12,18, null, null, true);
+		foreach ($data as $module_name =>$module_detail ){
+			$start_column = 'B';
+			$end_row = $this->_endRow($current_row, $row_merge_count);
+			$column_merge_count = 6;
+			$end_column = $this->_endColumn($start_column, $column_merge_count);
+			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, $name_array[$i++].'、'.$module_name.'评价指标',null,12,18, null, null, true);
 			
-// 			$this->_nextRow($current_row, $end_row, $row_merge_count);
-// 			$start_column = 'A';
-// 			$column_merge_count = 1;
-// 			$end_column = $this->_endColumn($start_column, $column_merge_count);
-// 			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, '被试编号',null,12,null, null, null, true);
-// 			$this->_nextColumn($start_column, $end_column, $column_merge_count);
-// 			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, '',null,12,null, null, null, true);
+			$this->_nextRow($current_row, $end_row, $row_merge_count);
+			$start_column = 'A';
+			$column_merge_count = 1;
+			$end_column = $this->_endColumn($start_column, $column_merge_count);
+			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, '被试编号',null,12,null, null, null, true);
+			$this->_nextColumn($start_column, $end_column, $column_merge_count);
+			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, '',null,12,null, null, null, true);
 			
-// 			$this->_nextRow($current_row, $end_row, $row_merge_count);
-// 			$start_column = 'A';
-// 			$column_merge_count = 1;
-// 			$end_column = $this->_endColumn($start_column, $column_merge_count);
-// 			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, '',null,12,null, null, null, true);
-// 			$this->_nextColumn($start_column, $end_column, $column_merge_count);
-// 			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, '组合因素',null,12,null, null, null, true);
-// 			$index_count = count($module_detail);
-// 			for ($current_index_number = 0; $current_index_number < $index_count; $current_index_number ++ ){
-// 				$index_chosed_detail = $module_detail[$current_index_number];
-// 				$this->_nextRow($current_row, $end_row, $row_merge_count);
-// 				$current_row_flag = $current_row;
-// 				$start_column = 'A';
-// 				$column_merge_count  = 1; 
-// 				$end_column = $this->_endColumn($start_column, $column_merge_count);
-// 				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, $index_chosed_detail['chs_name'],null,12,null, null, null, false);
-// 				$this->_nextRow($current_row, $end_row, $row_merge_count);
-// 				$start_column = 'A';
-// 				$column_merge_count  = 1;
-// 				$end_column = $this->_endColumn($start_column, $column_merge_count);
-// 				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,  count($index_chosed_detail['detail']),null,12,null, 'left', null, false);
-// 				$inner_count = 0;
-// 				$current_row = $current_row_flag;
-// 				$row_merge_count = 0;
-// 				$end_row = $this->_endRow($current_row, $row_merge_count);
-// 				foreach ($index_chosed_detail['detail'] as $index_name){
-// 					if ($inner_count == 0 || $inner_count == 1){
-// 						$start_column = 'C';
-// 						$column_merge_count  = 1;
-// 						$end_column = $this->_endColumn($start_column, $column_merge_count);
-// 						$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$index_name['name'],null,12,null, null, null, false);
-// 					}else {
-// 						$start_column = 'A';
-// 						$column_merge_count  = 1;
-// 						$end_column = $this->_endColumn($start_column, $column_merge_count);
-// 						$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'',null,12,null, null, null, false);
-// 						$column_merge_count  = 1;
-// 						$this->_nextColumn($start_column, $end_column, $column_merge_count);
-// 						$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$index_name['name'],null,12,null, null, null, false);
-// 					}
-// 					$inner_count++;
-// 					$this->_nextRow($current_row, $end_row, $row_merge_count);	
-// 				}
-// 				$this->_nextRow($current_row, $end_row, $row_merge_count);
-// 			}
-// 			$this->_nextRow($current_row, $end_row, $row_merge_count);
-// 			$this->_nextRow($current_row, $end_row, $row_merge_count);	
-// 		}
+			$this->_nextRow($current_row, $end_row, $row_merge_count);
+			$start_column = 'A';
+			$column_merge_count = 1;
+			$end_column = $this->_endColumn($start_column, $column_merge_count);
+			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, '',null,12,null, null, null, true);
+			$this->_nextColumn($start_column, $end_column, $column_merge_count);
+			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, '组合因素',null,12,null, null, null, true);
+			$index_count = count($module_detail);
+			for ($current_index_number = 0; $current_index_number < $index_count; $current_index_number ++ ){
+				$index_chosed_detail = $module_detail[$current_index_number];
+				$this->_nextRow($current_row, $end_row, $row_merge_count);
+				$current_row_flag = $current_row;
+				$start_column = 'A';
+				$column_merge_count  = 1; 
+				$end_column = $this->_endColumn($start_column, $column_merge_count);
+				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, $index_chosed_detail['chs_name'],null,12,null, null, null, false);
+				$this->_nextRow($current_row, $end_row, $row_merge_count);
+				$start_column = 'A';
+				$column_merge_count  = 1;
+				$end_column = $this->_endColumn($start_column, $column_merge_count);
+				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,  count($index_chosed_detail['detail']),null,12,null, 'left', null, false);
+				$inner_count = 0;
+				$current_row = $current_row_flag;
+				$row_merge_count = 0;
+				$end_row = $this->_endRow($current_row, $row_merge_count);
+				foreach ($index_chosed_detail['detail'] as $index_name){
+					if ($inner_count == 0 || $inner_count == 1){
+						$start_column = 'C';
+						$column_merge_count  = 1;
+						$end_column = $this->_endColumn($start_column, $column_merge_count);
+						$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$index_name['name'],null,12,null, null, null, false);
+					}else {
+						$start_column = 'A';
+						$column_merge_count  = 1;
+						$end_column = $this->_endColumn($start_column, $column_merge_count);
+						$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'',null,12,null, null, null, false);
+						$column_merge_count  = 1;
+						$this->_nextColumn($start_column, $end_column, $column_merge_count);
+						$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$index_name['name'],null,12,null, null, null, false);
+					}
+					$inner_count++;
+					$this->_nextRow($current_row, $end_row, $row_merge_count);	
+				}
+				$this->_nextRow($current_row, $end_row, $row_merge_count);
+			}
+			$this->_nextRow($current_row, $end_row, $row_merge_count);
+			$this->_nextRow($current_row, $end_row, $row_merge_count);	
+		}
 		$i = 0;
 		foreach ($data as $module_name =>$module_detail ){
 			$start_column = 'B';
