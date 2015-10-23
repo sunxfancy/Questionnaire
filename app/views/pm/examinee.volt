@@ -520,7 +520,7 @@ $('#submit').click(function(){
         $('.modal-footer').html('');
         $('#myModal').modal({keyboard:true, backdrop:'static'});
         $.ajaxFileUpload ({
-        url:'/pm/uploadexaminee/0', //你处理上传文件的服务端 
+        url:'/pm/uploadExaminee/0', //你处理上传文件的服务端 
         secureuri:false, //与页面处理代码中file相对应的ID值
         fileElementId:'file',
         dataType: 'json', //返回数据类型:text，xml，json，html,scritp,jsonp五种
