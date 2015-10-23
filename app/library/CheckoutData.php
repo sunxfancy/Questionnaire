@@ -6,7 +6,7 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 		$result = $this->modelsManager->createBuilder()
 			    ->columns(array(
 				'IndexAns.index_id as id',
-// 			   	'IndexAns.score as score'
+			   	'IndexAns.score as score'
 				))
 			   ->from('IndexAns')
 			   ->where('IndexAns.examinee_id = '.$examinee_info->id)
@@ -68,6 +68,7 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 				$strong_value['children'][] = $outter_tmp;
 			}
 		}
+		//进行逆向重排列
 		foreach($rtn_array['weak'] as &$strong_value){
 			$index = Index::findFirst(array('id=?1','bind'=>array(1=>$strong_value['id'])));
 			$strong_value['chs_name'] = $index->chs_name;
@@ -75,6 +76,7 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 			$middle = MiddleLayer::find(array('father=?1', 'bind'=>array(1=>$strong_value['chs_name'])))->toArray();
 			$children = array();
 			$children = $this->getChildrenOfIndexDesc($index->name, $index->children, $examinee_info->id);
+			$children = array_reverse($children);
 			foreach($children as &$children_info){
 				if(!isset($children_info['raw_score'])){
 					$children_info['raw_score'] = null;
@@ -110,6 +112,7 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 				$strong_value['children'][] = $outter_tmp;
 			}
 		}
+	
 		return $rtn_array;
 		
 	}
@@ -204,4 +207,72 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 		}
 	}
 	
+	#10 结构数据
+	
+	public function getindividualComprehensive($examinee_id){
+		$project_id = Examinee::findFirst($examinee_id)->project_id;
+		$project_detail = MemoryCache::getProjectDetail($project_id);
+		if(empty($project_detail) || empty($project_detail->module_names)){
+			throw new Exception('项目配置信息有误');
+		}
+		$exist_module_array = explode(',',$project_detail->module_names);
+		$module_array = array("心理健康"=>'mk_xljk',"素质结构"=>'mk_szjg',"智体结构"=>'mk_ztjg',"能力结构"=>'mk_nljg');
+		$module_array_score = array();
+		foreach($module_array as $key => $value){
+			if (!in_array($value, $exist_module_array)){
+				continue;
+			}
+			$module_record = MemoryCache::getModuleDetail($value);
+			$children = $module_record->children;
+			$children_array = explode(',', $children);
+			$result_1 = $this->modelsManager->createBuilder()
+			->columns(array(
+					'Index.chs_name as chs_name',
+					'Index.name as name',
+					'IndexAns.score as score',
+					'Index.children as children'
+			))
+			->from('Index')
+			->inwhere('Index.name', $children_array)
+			->join('IndexAns', 'IndexAns.index_id = Index.id AND IndexAns.examinee_id = '.$examinee_id)
+			->orderBy('IndexAns.score desc')
+			->getQuery()
+			->execute()
+			->toArray();
+			//进行规范排序
+			$module_array_score[$key] = array();
+			foreach($result_1 as &$result_1_record){
+				$skey = array_search($result_1_record['name'], $children_array);
+				$module_array_score[$key][$skey] = $result_1_record;
+			}
+		}
+		return $module_array_score;
+	}
+	#28 项指标排序
+	public function getIndexdesc($examinee_id){
+		$result = $this->modelsManager->createBuilder()
+		->columns(array(
+				'Index.chs_name as chs_name',
+				'IndexAns.score as score',
+		))
+		->from('Index')
+		->join('IndexAns', 'IndexAns.index_id = Index.id AND IndexAns.examinee_id = '.$examinee_id)
+		->orderBy('IndexAns.score desc')
+		->getQuery()
+		->execute()
+		->toArray();
+		$count = count($result);
+		$i = 0;
+		foreach ($result as & $value ){
+			$value['rank'] = '';
+			if ($i < 8 ){
+				$value['rank'] = '★';
+			}
+			if ( $count - $i <= 5 ){
+				$value['rank'] = '●';
+			}
+			$i++;
+		}
+		return $result;
+	}
 }

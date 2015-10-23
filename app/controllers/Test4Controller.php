@@ -15,9 +15,11 @@ class Test4Controller extends \Phalcon\Mvc\Controller{
 
 	}
 	public function testAction(){
-		$check_data = new CheckoutData();
-		$examinee = Examinee::findFirst(2660);
-		$rt = $check_data->getEightAddFive($examinee);
+// 		$check_data = new CheckoutData();
+// 		$examinee = Examinee::findFirst(2660);
+// 		$rt = $check_data->getEightAddFive($examinee);
+		$da = new CheckoutData();
+		$rt = $da->getIndexdesc(2998);
 		echo '<pre>';
 		print_r($rt);
 // 		$check_data->getChildrenOfIndexDesc('zb_gzzf', 'X4,zb_rjgxtjsp,chg,Y3,Q3,spmabc,aff',2660);
