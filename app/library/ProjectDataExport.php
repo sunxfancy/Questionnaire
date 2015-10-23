@@ -48,7 +48,7 @@ class ProjectDataExport  extends \Phalcon\Mvc\Controller
 	 	//循环写入每个人的成绩
 	 	
 	 	$objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
-	 	$file_name = './tmp/'.$project_id.rand(100,999).'_project_data.xls';
+	 	$file_name = './tmp/'.$project_id.'_project_data.xls';
 	 	$objWriter->save($file_name);
 	 	return $file_name;
 	}
