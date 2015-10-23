@@ -279,7 +279,8 @@ class PmDB
     	foreach($questions_numbers as $key=>$value){
     		$questions_numbers[$key] = array_unique($value, SORT_NUMERIC);
     	}
-    	return $questions_numbers;
+    	sort($questions_numbers);
+        return $question_numbers;
     }
     /**
      * @usage input 因子名数组
