@@ -1,289 +1,478 @@
 <?php
-
+	/**
+	 * @usage 十项报表数据统计
+	 *
+	 */
+require_once("../app/classes/PHPExcel.php");
 
 class CheckoutExcel extends \Phalcon\Mvc\Controller{
-    //以excel形式，导出被试人员信息和测试结果
 
-    public static function checkoutExcel11($examinee,$project_id){
-        //导出个人信息表
-        require_once("../app/classes/PHPExcel.php");
+    public function excelExport($examinee){
+
         PHPExcel_CachedObjectStorageFactory::cache_in_memory_serialized;
-        $cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip;
-        $cacheSettings = array('memoryCacheSize'=>'256MB');
-        PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
+		
+        $objPHPExcel = new PHPExcel();
+        #1 -- finish
+        $objPHPExcel->createSheet(0);
+        $objPHPExcel->setActiveSheetIndex(0); //设置第一个内置表
+        $objActSheet = $objPHPExcel->getActiveSheet(); // 获取当前活动的表
+        $objActSheet->setTitle('1.个人信息表');
+        $this->checkoutPerson($examinee,$objActSheet);//个人信息
+		#2 -- finish 
+        $objPHPExcel->createSheet(1);	//添加一个表
+        $objPHPExcel->setActiveSheetIndex(1);   //设置第2个表为活动表，提供操作句柄
+        $objActSheet = $objPHPExcel->getActiveSheet(); // 获取当前活动的表
+        $objActSheet->setTitle('2.TQT人才测评系统');
+        $this->checkoutIndex($examinee, $objActSheet); 
+		#3 -- check
+        $objPHPExcel->createSheet(2);
+        $objPHPExcel->setActiveSheetIndex(2);   
+        $objActSheet = $objPHPExcel->getActiveSheet(); 
+        $objActSheet->setTitle('3.16pf');
+        $this->checkout16pf($examinee, $objActSheet);
+		#4 -- check 
+        $objPHPExcel->createSheet(3);
+        $objPHPExcel->setActiveSheetIndex(3);   
+        $objActSheet = $objPHPExcel->getActiveSheet(); 
+        $objActSheet->setTitle( '4.epps');
+        $this->checkoutEpps($examinee,$objActSheet);
+		#5 -- check 
+        $objPHPExcel->createSheet(4);
+        $objPHPExcel->setActiveSheetIndex(4);  
+        $objActSheet = $objPHPExcel->getActiveSheet(); 
+        $objActSheet->setTitle( '5.scl90' );
+        $this->checkoutScl($examinee,$objActSheet);
+		#6 -- check 
+        $objPHPExcel->createSheet(5);
+        $objPHPExcel->setActiveSheetIndex(5); 
+        $objActSheet = $objPHPExcel->getActiveSheet(); 
+        $objActSheet->setTitle( '6.epqa');
+     	$this->checkoutEpqa($examinee,$objActSheet);
+		#7 
+        $objPHPExcel->createSheet(6);
+        $objPHPExcel->setActiveSheetIndex(6);  
+        $objActSheet = $objPHPExcel->getActiveSheet();
+        $objActSheet->setTitle('7.cpi');
+        $this->checkoutCpi($examinee, $objActSheet);
+		#8 -- check 
+        $objPHPExcel->createSheet(7);
+        $objPHPExcel->setActiveSheetIndex(7); 
+        $objActSheet = $objPHPExcel->getActiveSheet(); 
+        $objActSheet->setTitle( '8.spm');
+        $this->checkoutSpm($examinee,$objActSheet);
+		#9 --finish
+        $objPHPExcel->createSheet(8);
+        $objPHPExcel->setActiveSheetIndex(8);  
+        $objActSheet = $objPHPExcel->getActiveSheet();
+        $objActSheet->setTitle('9.8+5');
+        $this->checkoutEightAddFive($examinee,$objActSheet);
+		#10 --finish 
+        $objPHPExcel->createSheet(9);
+        $objPHPExcel->setActiveSheetIndex(9);
+        $objActSheet = $objPHPExcel->getActiveSheet(); 
+        $objActSheet->setTitle('10.结构');
+        $this->checkoutModuleResult($examinee,$objActSheet);
 
-        $excel = new PHPExcel();
-        $excel->getActiveSheet()->setTitle('1.个人信息表');
-        
-        self::checkoutPerson($examinee,$excel);//个人信息
-
-        $msgWorkSheet = new PHPExcel_Worksheet($excel, '2.TQT人才测评系统'); //创建指标排序表
-        $excel->addSheet($msgWorkSheet); 
-        $excel->setActiveSheetIndex(1);
-        self::checkoutIndex($examinee,$excel,$project_id); 
-
-        $pf16 = new PHPExcel_Worksheet($excel, '3.16pf'); //创建16pf表
-        $excel->addSheet($pf16); 
-        $excel->setActiveSheetIndex(2);
-        self::checkout16pf($examinee,$excel,$project_id);
-
-        $epps = new PHPExcel_Worksheet($excel, '4.epps'); //创建epps表
-        $excel->addSheet($epps); 
-        $excel->setActiveSheetIndex(3);
-        self::checkoutEpps($examinee,$excel,$project_id);
-
-        $scl = new PHPExcel_Worksheet($excel, '5.scl90'); //创建SCL表
-        $excel->addSheet($scl); 
-        $excel->setActiveSheetIndex(4);
-        self::checkoutScl($examinee,$excel,$project_id);
-
-        $epqa = new PHPExcel_Worksheet($excel, '6.epqa'); //创建epqa表
-        $excel->addSheet($epqa); 
-        $excel->setActiveSheetIndex(5);
-        self::checkoutEpqa($examinee,$excel,$project_id);
-
-        $cpi = new PHPExcel_Worksheet($excel, '7.cpi'); //创建cpi表
-        $excel->addSheet($cpi); 
-        $excel->setActiveSheetIndex(6);
-        self::checkoutCpi($examinee,$excel,$project_id);
-
-        $spm = new PHPExcel_Worksheet($excel, '8.spm'); //创建spm表
-        $excel->addSheet($spm); 
-        $excel->setActiveSheetIndex(7);
-        self::checkoutSpm($examinee,$excel,$project_id);
-
-        $indexarray = new PHPExcel_Worksheet($excel, '9.8+5'); //创建8+5表
-        $excel->addSheet($indexarray);
-        $excel->setActiveSheetIndex(8);
-        self::checkoutEightAddFive($examinee,$excel,$project_id);
-
-
-        $structure = new PHPExcel_Worksheet($excel,'结构');//创建结构表
-        $excel->addSheet($structure);
-        $excel->setActiveSheetIndex(9);
-        self::checkoutModuleResult($examinee,$excel,$project_id);
-
-        $write = new PHPExcel_Writer_Excel5($excel);
-        //临时文件命名规范    $examinee_id_$date_rand(100,900)
-        $date = date('H_i_s');
-        $stamp = rand(100,900);
-        $fileName = './tmp/'.$examinee->id.'_'.$date.'_'.$stamp.'.xls';
-        header("Pragma: public");
-        header("Expires: 0");
-        header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
-        header("Content-Type:application/force-download");
-        header("Content-Type:application/vnd.ms-execl");
-        header("Content-Type:application/octet-stream");
-        header("Content-Type:application/download");
-        header('Content-Disposition:attachment;filename=\'$fileName\'');
-        header("Content-Transfer-Encoding:binary");
-        $write->save($fileName);
-        return $fileName;
+        $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
+        $file_name = './tmp/'.$examinee->id.'_checkout.xls';
+        $objWriter->save($file_name);
+        return $file_name;
     }
-
+	/**
+	 * @usage 表格填写
+	 * @param $objActSheet 当前活动表
+	 * @param $start_column 起始列
+	 * @param $current_row 起始行 
+	 * @param $end_column 结束列
+	 * @param $end_row 结束行
+	 * @param $value 值
+	 * @param $rowHeight 行高    默认 21 
+	 * @param $colWidth 列宽    默认8.38
+	 * @param $fontSize 字号  默认 14 
+	 * @param $h_alignment 水平对齐方式
+	 * @param $v_alignment 竖直对齐方式
+	 * @param $bold 是否为粗体 默认为false 
+	 */
+    private function _setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, $value, $rowHeight = null, $colWidth = null, $fontSize = null, $h_alignment = null, $v_alignment = null, $bold = false){
+    	if (!empty($rowHeight)){
+    		$objActSheet->getRowDimension($current_row)->setRowHeight($rowHeight);
+    	}else{
+    		$objActSheet->getRowDimension($current_row)->setRowHeight(21);
+    	}
+    	if (!empty($colWidth)){
+    		$objActSheet->getColumnDimension($start_column)->setWidth($colWidth);
+    	}else{
+    		$objActSheet->getColumnDimension($start_column)->setWidth(8.38);
+    	}
+    	if (!empty($fontSize)){
+    		$objActSheet->getStyle("$start_column$current_row")->getFont()->setSize($fontSize);
+    	}else{
+    		$objActSheet->getStyle("$start_column$current_row")->getFont()->setSize(14);
+    	}
+    	if (!empty($v_alignment)){
+    		$objActSheet->getStyle("$start_column$current_row")->getAlignment()->setVertical($v_alignment);	 
+    	}else{
+    		//默认垂直居中
+    		$objActSheet->getStyle("$start_column$current_row")->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+    	}
+    	if (!empty($h_alignment)){
+    		$objActSheet->getStyle("$start_column$current_row")->getAlignment()->setHorizontal($h_alignment);
+    	}else{
+    		// 默认为水平居中
+    		$objActSheet->getStyle("$start_column$current_row")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    	}
+    	if ($bold){
+    		$objActSheet->getStyle("$start_column$current_row")->getFont()->setBold(true);
+    	}
+    	$objActSheet->getStyle("$start_column$current_row")->getAlignment()->setWrapText(true);//自动换行
+    	$objActSheet->mergeCells("$start_column$current_row:$end_column$end_row");
+    	$objActSheet->setCellValue("$start_column$current_row",$value);
+    }
+    /**
+     * @usage 下一行
+     * @param 当前开始行  $current_row
+     * @param 当前结束行  $end_row
+     * @param 下一行的合并行数  $row_merge_count
+     * @return 下一行的开始  $current_row 下一行的结束  $end_row
+     */
+    private function _nextRow(&$current_row, &$end_row, $row_merge_count){
+    	$this->_nextColumn($current_row, $end_row, $row_merge_count);
+    }
+    /**
+     * @usage 获取表格结束行
+     * @param 开始行  $current_row
+     * @param 合并行数  $row_merge_count
+     * @return 结束行  $end_column
+     */
+    private function _endRow($current_row, $row_merge_count){
+    	return $this->_endColumn($current_row, $row_merge_count);
+    }
+    /**
+     * 
+     * @param 当前开始列 $start_column
+     * @param 当前结束列 $end_column
+     * @param 下一格的合并列数 $column_merge_count
+     * @return 下一格的开始列 $start_column, 下一格的结束列 $end_column
+     */
+    private function _nextColumn(&$start_column, &$end_column, $column_merge_count){
+    	$start_column = ++ $end_column;
+    	$end_column = $this->_endColumn($start_column, $column_merge_count);
+    }
+    /**
+     * @usage 获取表格结束列
+     * @param 开始列  $start_column
+     * @param 合并格数  $column_merge_count
+     * @return 结束列  $end_column 
+     */
+    private function _endColumn($start_column, $column_merge_count){
+    	$end_column = $start_column;
+    	while($column_merge_count--){
+    		++$end_column;
+    	}
+    	return $end_column;
+    }
     //导出个人信息
-    public static function checkoutPerson($examinee,$excel){
-        $objActSheet = $excel->getActiveSheet();
-        $objActSheet->getDefaultRowDimension()->setRowHeight(25);
-        $objActSheet->getDefaultColumnDimension()->setWidth(20);
-
-        $objActSheet->getRowDimension(1)->setRowHeight(50);
-        $objActSheet->mergeCells('A1:F1');
-        $objActSheet->setCellValue('A1','测评人员个人基本情况');
-        $objActSheet->getStyle('A1')->getFont()->setSize(20);
-        $objActSheet->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $objActSheet->setCellValue('A2','姓名');
-        $objActSheet->setCellValue('B2',$examinee->name);
-        $objActSheet->setCellValue('C2','性别');
-        $sex = ($examinee->sex == "1") ? "男" : "女";
-        $objActSheet->setCellValue('D2',$sex);
-        $objActSheet->setCellValue('E2','生日');
-        $objActSheet->setCellValue('F2',$examinee->birthday);
-
-        $objActSheet->setCellValue('A3','籍贯');
-        $objActSheet->setCellValue('B3',$examinee->native);
-        $objActSheet->setCellValue('C3','学历');
-        $objActSheet->setCellValue('D3',$examinee->education);
-        $objActSheet->setCellValue('E3','学位');
-        $objActSheet->setCellValue('F3',$examinee->degree);
-        
-        $objActSheet->setCellValue('A4','政治面貌');
-        $objActSheet->mergeCells('B4:C4');
-        $objActSheet->setCellValue('B4',$examinee->politics);
-        $objActSheet->setCellValue('D4','职称');
-        $objActSheet->mergeCells('E4:F4');
-        $objActSheet->setCellValue('F4',$examinee->professional);
-
-        $objActSheet->setCellValue('A5','工作单位');
-        $objActSheet->mergeCells('B5:C5');
-        $objActSheet->setCellValue('B5',$examinee->employer);
-        $objActSheet->setCellValue('D5','班子/系统成员');
-        $objActSheet->mergeCells('E5:F5');
-        $objActSheet->setCellValue('E5',$examinee->team);
-
-        $objActSheet->setCellValue('A6','部门');
-        $objActSheet->mergeCells('B6:C6');
-        $objActSheet->setCellValue('B6',$examinee->unit);
-        $objActSheet->setCellValue('D6','岗位/职务');
-        $objActSheet->mergeCells('E6:F6');
-        $objActSheet->setCellValue('E6',$examinee->duty);
-
-        $education = json_decode($examinee->other)->education;
-        $letter = array('A','B','C','D','E','F');
+    public function checkoutPerson($examinee,$objActSheet){
+		//settings 
+    	$objActSheet->getDefaultRowDimension()->setRowHeight(21);
+    	$objActSheet->getDefaultColumnDimension()->setWidth(8.38);
+		//----------------------------------------------------------------
+    	$current_row   = 1;
+    	$start_column = 'A';
+    	$column_merge_count = 11;$row_merge_count = 0;  //合并注意L: 合并的数量是减1的
+    	$end_row = $this->_endRow($current_row, $row_merge_count);
+    	$end_column = $this->_endColumn($start_column, $column_merge_count);
+		$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'测评人员个人基本情况',30, null, 22);
+        //-----------------------------------------------------------------
+		$this->_nextRow($current_row, $end_row, $row_merge_count);
+		$start_column = 'A';
+		$column_merge_count = 2;
+		$end_column = $this->_endColumn($start_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'人员编号');
+        $column_merge_count = 8;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$examinee->number,null,null,null,PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+		//------------------------------------------------------------------
+		$row_merge_count = 1;
+        $this->_nextRow($current_row, $end_row, $row_merge_count);
+        $start_column = 'A'; 
+        $column_merge_count = 0;
+        $end_column = $this->_endColumn($start_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'姓名');
+        $column_merge_count = 1;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$examinee->name);
+        $column_merge_count = 0;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'性别');
+        $column_merge_count = 1;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$examinee->sex == 0 ? '女':'男');
+        $column_merge_count = 0;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'籍贯');
+        $column_merge_count = 1;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$examinee->native);
+        $column_merge_count = 1;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'文化程度');
+        $column_merge_count = 0;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$examinee->degree);
+        //--------------------------------------------
+        $row_merge_count = 1;
+        $this->_nextRow($current_row, $end_row, $row_merge_count);
+        $start_column = 'A';
+        $column_merge_count = 0;
+        $end_column = $this->_endColumn($start_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,"出生日期");
+        $column_merge_count = 1;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$examinee->birthday);
+        $column_merge_count = 0;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'年龄');
+        $column_merge_count = 1;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        //年龄
+        $age = floor(FactorScore::calAge($examinee->birthday,$examinee->last_login));
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$age);
+        $column_merge_count = 0;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,"政治面貌");
+        $column_merge_count = 1;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$examinee->politics);
+        $column_merge_count = 1;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'技术职称');
+        $column_merge_count = 0;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$examinee->professional);
+        //--------------------------------------
+        $row_merge_count = 1;
+        $this->_nextRow($current_row, $end_row, $row_merge_count);
+        $start_column = 'A';
+        $column_merge_count = 0;
+        $end_column = $this->_endColumn($start_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'工作单位');
+        $column_merge_count = 10;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$examinee->employer,null,null,null,PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+        //------------------------------------------
+        $row_merge_count = 0;
+        $this->_nextRow($current_row, $end_row, $row_merge_count);
+        $start_column = 'A';
+        $column_merge_count = 0;
+        $end_column = $this->_endColumn($start_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'部门');
+        $column_merge_count = 2;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$examinee->unit);
+        $column_merge_count = 2; 
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'职务');
+        $column_merge_count = 4;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$examinee->duty);
+        //-----------------------------------------
+        //教育经历数据处理
+        $education = json_decode($examinee->other, true)['education'];
         $sumEducation = count($education);
-        if($sumEducation<4)
-            $row1 = 4;
-        else
-            $row1 = $sumEducation+1;
-        $row1 +=7;
-
-
-        $objActSheet->mergeCells("A7:A$row1");
-        $objActSheet->getStyle('A7')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $objActSheet->getStyle('A7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
-        $objActSheet->getStyle('A1:F30')->getAlignment()->setWrapText(TRUE);
-        $objActSheet->setCellValue('A7','教育经历（自高中毕业后起，含在职教育经历）');
-        
-        $objActSheet->setCellValue('B7','毕业院校');
-        $objActSheet->setCellValue('C7','专业');
-        $objActSheet->setCellValue('D7','所获学位');
-        $objActSheet->setCellValue('E7','起止时间');
-        // print_r($education);exit;
-        for($i = 0;$i<$sumEducation;$i++){
-            $j = 1;
-            $k = $i +8;
-            $education[$i] = (array)$education[$i];
-            foreach ((array)$education[$i] as $key => $value) {
-                $objActSheet->setCellValue("$letter[$j]$k","$value");
-                $j++;
-            }
+        $row_merge_count = $sumEducation;
+        if ($sumEducation < 5 ){
+            $row_merge_count = 5;  //6 rows
         }
-
-        $work = json_decode($examinee->other)->work;
-        $sumWork = count($work);
-        $row1++;
-        if($sumWork<4)
-            $row2 = 4;
-        else
-            $row2 = $sumWork+1;
-        $row2 +=$row1;
-
-        $objActSheet->mergeCells("A$row1:A$row2");
-        $objActSheet->getStyle("A$row1")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $objActSheet->getStyle("A$row1")->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
-        $objActSheet->setCellValue("A$row1",'工作经历');        
-        
-        $objActSheet->setCellValue("B$row1",'就职单位');
-        $objActSheet->setCellValue("C$row1",'部门');
-        $objActSheet->setCellValue("D$row1",'职位');
-        $objActSheet->setCellValue("E$row1",'工作时间');
-        $num = 1;
-        for($i = 0;$i<$sumWork;$i++){
-            $j = 1;
-            $work[$i] = (array)$work[$i];
-            $k = $row1+$num;
-            foreach ((array)$work[$i] as $key => $value) {
-                $objActSheet->setCellValue("$letter[$j]$k","$value");
-                $j++;
-            }
-            $num++;
-        }
-        $styleArray = array(
-            'borders' => array(
-                'allborders' => array(
-                    // 'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
-                    'style' => PHPExcel_Style_Border::BORDER_THIN,//细边框
-                    //'color' => array('argb' => 'FFFF0000'),
-                ),
-            ),
-        );
-        $styleArray1 = array(
-            'borders' => array(
-                'outline' => array(
-                    'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
-                ),
-            ),
-        );
-        $objActSheet->getStyle("A2:F$row2")->applyFromArray($styleArray);
-        $objActSheet->getStyle("A2:F$row2")->applyFromArray($styleArray1);
-
+        $rows_merge_record = $row_merge_count; //记录所占用的行数
+        /////////////////data end 
+        $this->_nextRow($current_row, $end_row, $row_merge_count);
+        $start_column = 'A';
+        $column_merge_count = 0;
+        $end_column = $this->_endColumn($start_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'教育经历');
+        $row_merge_count = 0; //修改endRow
+        $end_row = $this->_endRow($current_row,$row_merge_count);
+        $start_column = 'B';
+        $column_merge_count = 2;
+        $end_column = $this->_endRow($start_column,$column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'毕业院校');
+        $column_merge_count = 2; 
+        $this->_nextColumn($start_column, $end_column,$column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'专业');
+        $column_merge_count = 1; 
+        $this->_nextColumn($start_column, $end_column,$column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'所获学位');
+        $column_merge_count = 2; 
+        $this->_nextColumn($start_column, $end_column,$column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'时间');
+		//根据最左边的合并格来写入
+		for($i = 0 ; $i < $rows_merge_record; $i ++ ){
+			$this->_nextRow($current_row, $end_row, $row_merge_count);
+			$start_column = 'B';
+			$column_merge_count = 2;
+			if ($i < $sumEducation){
+				$end_column = $this->_endRow($start_column,$column_merge_count);
+				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$education[$i]['school']);
+				$column_merge_count = 2;
+				$this->_nextColumn($start_column, $end_column,$column_merge_count);
+				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$education[$i]['profession']);
+				$column_merge_count = 1;
+				$this->_nextColumn($start_column, $end_column,$column_merge_count);
+				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$education[$i]['degree']);
+				$column_merge_count = 2;
+				$this->_nextColumn($start_column, $end_column,$column_merge_count);
+				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$education[$i]['date']);
+			}else{
+				$end_column = $this->_endRow($start_column,$column_merge_count);
+				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'');
+				$column_merge_count = 2;
+				$this->_nextColumn($start_column, $end_column,$column_merge_count);
+				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'');
+				$column_merge_count = 1;
+				$this->_nextColumn($start_column, $end_column,$column_merge_count);
+				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'');
+				$column_merge_count = 2;
+				$this->_nextColumn($start_column, $end_column,$column_merge_count);
+				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'');
+			}
+		}
+		//-------------------------------
+		//工作经历数据处理
+		$work = json_decode($examinee->other, true)['work'];
+		$sumWork= count($work);
+		$row_merge_count = $sumWork;
+		if ($sumWork < 5 ){
+			$row_merge_count = 5;  //6 rows
+		}
+		$rows_merge_record = $row_merge_count; //记录所占用的行数
+		/////////////////data end
+		$this->_nextRow($current_row, $end_row, $row_merge_count);
+		$start_column = 'A';
+		$column_merge_count = 0;
+		$end_column = $this->_endColumn($start_column, $column_merge_count);
+		$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'工作经历');
+		$row_merge_count = 0; //修改endRow
+		$end_row = $this->_endRow($current_row,$row_merge_count);
+		$start_column = 'B';
+		$column_merge_count = 2;
+		$end_column = $this->_endRow($start_column,$column_merge_count);
+		$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'就职单位');
+		$column_merge_count = 2;
+		$this->_nextColumn($start_column, $end_column,$column_merge_count);
+		$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'部门');
+		$column_merge_count = 1;
+		$this->_nextColumn($start_column, $end_column,$column_merge_count);
+		$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'职位');
+		$column_merge_count = 2;
+		$this->_nextColumn($start_column, $end_column,$column_merge_count);
+		$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'工作时间');
+		//根据最左边的合并格来写入
+		for($i = 0 ; $i < $rows_merge_record; $i ++ ){
+			$this->_nextRow($current_row, $end_row, $row_merge_count);
+			$start_column = 'B';
+			$column_merge_count = 2;
+			if ($i < $sumEducation){
+				$end_column = $this->_endRow($start_column,$column_merge_count);
+				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$work[$i]['employer']);
+				$column_merge_count = 2;
+				$this->_nextColumn($start_column, $end_column,$column_merge_count);
+				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$work[$i]['unit']);
+				$column_merge_count = 1;
+				$this->_nextColumn($start_column, $end_column,$column_merge_count);
+				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$work[$i]['duty']);
+				$column_merge_count = 2;
+				$this->_nextColumn($start_column, $end_column,$column_merge_count);
+				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$work[$i]['date']);
+			}else{
+				$end_column = $this->_endRow($start_column,$column_merge_count);
+				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'');
+				$column_merge_count = 2;
+				$this->_nextColumn($start_column, $end_column,$column_merge_count);
+				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'');
+				$column_merge_count = 1;
+				$this->_nextColumn($start_column, $end_column,$column_merge_count);
+				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'');
+				$column_merge_count = 2;
+				$this->_nextColumn($start_column, $end_column,$column_merge_count);
+				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'');
+			}
+		}
+		$styleBorderArray = array(
+		            'borders' => array(
+				                'allborders' => array(
+						                    'style' => PHPExcel_Style_Border::BORDER_THIN,//细边框
+						                ),
+				            ),
+		);
+		$objActSheet->getStyle("A3:L$end_row")->applyFromArray($styleBorderArray);
     }
 
-    //导出指标排序
-    public static function checkoutIndex($examinee,$excel,$project_id){
-        $objActSheet = $excel->getActiveSheet();
-        $objActSheet->getDefaultRowDimension()->setRowHeight(25);
-        $objActSheet->getDefaultColumnDimension()->setWidth(20);
-
-        $objActSheet->getRowDimension(1)->setRowHeight(50);
-        $objActSheet->mergeCells('A1:E1');
-        $objActSheet->setCellValue('A1','TQT人才测评系统  28项指标排序');
-        $objActSheet->getStyle('A1')->getFont()->setSize(20);
-        $objActSheet->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $objActSheet->setCellValue('A2','编号');
-        $objActSheet->setCellValue('B2',$examinee->number);
-        $objActSheet->setCellValue('C2','姓名');
-        $objActSheet->setCellValue('D2',$examinee->name);
-        /*
-        *通过$examinee->id在index_ans表中找到index_id 和 score
-        *通过index_id 在index表中找到指标名称（chs_name）
-        */
-        $examinee_id = $examinee->id;
-        $index = self::getIndexScore($project_id,$examinee_id);
-        $i = 1;
-        $k = 0;
-        $sum = count($index);
-        foreach($index as $key => $value ){
-            $k = $i + 2;
-            $index_ans_info = Index::find(
-                    array('name = :name:','bind'=>array(
-                        'name' => $key))
-                );
-            $chs_name = $index_ans_info[0]->chs_name;
-
-            $objActSheet->getStyle("A$k")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $objActSheet->getStyle("C$k")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $objActSheet->getStyle("A$k")->getFont()->setBold(true);
-            $objActSheet->getStyle("C$k")->getFont()->setBold(true);
-            $objActSheet->setCellValue("A$k","$i");
-            $objActSheet->setCellValue("B$k","$chs_name");
-            $objActSheet->setCellValue("C$k","$value");            
-            if($i<=8){
-                $objActSheet->setCellValue("D$k","#");
-                $objActSheet->getStyle("D$k")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            }
-            if($sum - $i<5){
-                $objActSheet->setCellValue("D$k","*");
-                $objActSheet->getStyle("D$k")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            }
-            $i++;
-        }
-        $objActSheet->setCellValue('A1',"TQT人才测评系统  ".$sum."项指标排序"); 
-        $styleArray = array(
-            'borders' => array(
-                'allborders' => array(
-                    // 'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
-                    'style' => PHPExcel_Style_Border::BORDER_THIN,//细边框
-                    //'color' => array('argb' => 'FFFF0000'),
-                ),
-            ),
-        );
-        $styleArray1 = array(
-            'borders' => array(
-                'outline' => array(
-                    'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
-                ),
-            ),
-        );
-        $objActSheet->getStyle("A3:E$k")->applyFromArray($styleArray);
-        $objActSheet->getStyle("A3:E$k")->applyFromArray($styleArray1);     
-
+   # 2 TQT 
+    public function checkoutIndex($examinee,$objActSheet){
+    	//settings
+    	$objActSheet->getDefaultRowDimension()->setRowHeight(21);
+    	$objActSheet->getDefaultColumnDimension()->setWidth(12);
+    	//----------------------------------------------------------------
+    	$current_row   = 1;
+    	$start_column = 'A';
+    	$column_merge_count = 7;$row_merge_count = 1;  //合并注意L: 合并的数量是减1的
+    	$end_row = $this->_endRow($current_row, $row_merge_count);
+    	$end_column = $this->_endColumn($start_column, $column_merge_count);
+    	$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'TQT人才测评系统  28项指标排序',null, 12, 22);
+    	//----------------------------------------------------------------
+    	$row_merge_count = 0 ;
+    	$this->_nextRow($current_row, $end_row, $row_merge_count);
+    	$column_merge_count = 1;
+    	$end_column = $this->_endColumn($start_column, $column_merge_count);
+    	$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'被试编号',null, 12, null,null,null, true);
+    	$column_merge_count = 2;
+    	$this->_nextColumn($start_column, $end_column, $column_merge_count);
+    	$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$examinee->number,null, 12, null,null,null, false);
+    	$column_merge_count = 0;
+    	$this->_nextColumn($start_column, $end_column, $column_merge_count);
+    	$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'姓名',null, 12, null,null,null, true);
+    	$column_merge_count = 1;
+    	$this->_nextColumn($start_column, $end_column, $column_merge_count);
+    	$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$examinee->name,null,12, null,null,null, false);
+    	//-------------------------
+    	$data = new CheckoutData();
+    	$result = $data->getIndexdesc($examinee->id);
+    	$this->_nextRow($current_row, $end_row, $row_merge_count);
+    	$start_row = $current_row+1;
+    	$i = 1; 
+    	foreach ($result as $result_record){
+    		$this->_nextRow($current_row, $end_row, $row_merge_count);
+    		$start_column = 'A';
+    		$column_merge_count = 0;
+    		$end_column = $this->_endColumn($start_column, $column_merge_count);
+    		$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$i++,null, 12, null,null,null, false);
+    		$column_merge_count = 2;
+    		$this->_nextColumn($start_column, $end_column, $column_merge_count);
+    		$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$result_record['chs_name'],null, 12, null,null,null,false);
+    		$column_merge_count = 0;
+    		$this->_nextColumn($start_column, $end_column, $column_merge_count);
+    		$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$result_record['score'],null, 12, null,null,null,false);
+    		$column_merge_count = 0;
+    		$this->_nextColumn($start_column, $end_column, $column_merge_count);
+    		$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$result_record['rank'],null, 12, null,null,null,false);
+    		$column_merge_count = 1;
+    		$this->_nextColumn($start_column, $end_column, $column_merge_count);
+    		$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'',null,12, null,null,null, false);
+    		 
+    	} 
+    	$styleBorderArray = array(
+    			'borders' => array(
+    					'allborders' => array(
+    							'style' => PHPExcel_Style_Border::BORDER_THIN,//细边框
+    					),
+    			),
+    	);
+    	$objActSheet->getStyle("A$start_row:H$end_row")->applyFromArray($styleBorderArray);
     }
-
-    public static function checkout16pf($examinee,$excel,$project_id){
-        $objActSheet = $excel->getActiveSheet();
-        $objActSheet->getDefaultRowDimension()->setRowHeight(22);
-
+   # 3 16pf 
+    public function checkout16pf($examinee, $objActSheet){
+    	
         $objActSheet->getColumnDimension('B')->setWidth(5);
         $objActSheet->getColumnDimension('C')->setWidth(10);
         $objActSheet->getColumnDimension('D')->setWidth(20);
@@ -332,34 +521,54 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $objActSheet->mergeCells('K2:N2');
         $objActSheet->mergeCells('K3:N3');
         $objActSheet->setCellValue('A2','分类号');
+        $objActSheet->getStyle('A2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objActSheet->setCellValue('D2','编号');
+        $objActSheet->getStyle('D2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objActSheet->setCellValue('E2',$examinee->number);
+        $objActSheet->getStyle('E2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objActSheet->setCellValue('K2','姓名');
+        $objActSheet->getStyle('K2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objActSheet->setCellValue('O2',$examinee->name);
+        $objActSheet->getStyle('O2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objActSheet->setCellValue('A3','性别');
+        $objActSheet->getStyle('A3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $sex = ($examinee->sex == "1") ? "男" : "女";
         $objActSheet->setCellValue('B3',$sex);
+        $objActSheet->getStyle('B3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objActSheet->setCellValue('D3','年龄');
-        $birthday = $examinee->birthday;
-        $bir = explode('-',$birthday);
-        $age = date("Y") - $bir[0];
-        if((date("m")-$bir[1])>0 || ( (date("m")==$bir[1])&&(date("d")>$bir[2]) ))
-            $age++;
-        $objActSheet->getStyle('E3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+        $objActSheet->getStyle('D3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $age = floor(FactorScore::calAge($examinee->birthday,$examinee->last_login));
+        $objActSheet->getStyle('E3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objActSheet->setCellValue('E3',$age);
         $objActSheet->setCellValue('K3','职业');
+        $objActSheet->getStyle('K3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objActSheet->setCellValue('O3',$examinee->duty);
-
+        $objActSheet->getStyle('O3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+         
         $objActSheet->setCellValue('A4','日期');
-        $objActSheet->setCellValue('B4',date("Y-m-d"));
+        $objActSheet->getStyle('A4')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $date  = explode(' ',$examinee->last_login)[0]; 
+        $objActSheet->setCellValue('B4',$date);
+        $objActSheet->getStyle('B4')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+         
 
         $objActSheet->getRowDimension(5)->setRowHeight(8);
 
         $objActSheet->setCellValue('A6','因子名称');
+        $objActSheet->getStyle('A6')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        
         $objActSheet->setCellValue('B6','代号');
+        $objActSheet->getStyle('B6')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        
         $objActSheet->setCellValue('C6',' 标准分 ');
+        $objActSheet->getStyle('C6')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        
         $objActSheet->setCellValue('D6','低分者特征');
+        $objActSheet->getStyle('D6')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        
         $objActSheet->setCellValue('O6','高分者特征');
+        $objActSheet->getStyle('O6')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        
 
         $letter = array('E','F','G','H','I','J','K','L','M','N');
         for($i = 6;$i<16;$i++){
@@ -371,7 +580,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
 
         $factors = ProjectDetail::find(
             array(
-                 "project_id = :project_id:", 'bind' => array('project_id'=>$project_id)
+                 "project_id = :project_id:", 'bind' => array('project_id'=>$examinee->project_id)
                  )
             );
         $factor_name = json_decode($factors[0]->factor_names,true);
@@ -405,7 +614,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
             $objActSheet->setCellValue("C$i","$std_score");
             $objActSheet->getStyle("C$i")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $j = $std_score-1;
-            $objActSheet->setCellValue("$letter[$j]$i","*");
+            $objActSheet->setCellValue("$letter[$j]$i","●");
             $i++;
         }
         $objActSheet->getStyle('A6:O'.($i-1))->applyFromArray($styleArray1);
@@ -460,8 +669,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $objActSheet->getStyle("A$j:O".($i-1))->applyFromArray($styleArray1);
     }
 
-    public static function checkoutEpps($examinee,$excel,$project_id){
-        $objActSheet = $excel->getActiveSheet();
+    public function checkoutEpps($examinee,$objActSheet){
         $objActSheet->getDefaultRowDimension()->setRowHeight(22);
         $objActSheet->getDefaultColumnDimension()->setWidth(15);
         $objActSheet->getColumnDimension('B')->setWidth(20);
@@ -497,18 +705,15 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $sex = ($examinee->sex == "1") ? "男" : "女";
         $objActSheet->setCellValue('B3',$sex);
         $objActSheet->setCellValue('C3','年龄');
-        $birthday = $examinee->birthday;
-        $bir = explode('-',$birthday);
-        $age = date("Y") - $bir[0];
-        if((date("m")-$bir[1])>0 || ( (date("m")==$bir[1])&&(date("d")>$bir[2]) ))
-            $age++;
+       	$age = floor(FactorScore::calAge($examinee->birthday,$examinee->last_login));
         $objActSheet->getStyle('C3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
         $objActSheet->setCellValue('D3',$age);
         $objActSheet->setCellValue('E3','职业');
         $objActSheet->setCellValue('F3',$examinee->duty);
 
         $objActSheet->setCellValue('A4','日期');
-        $objActSheet->setCellValue('B4',date("Y-m-d"));
+        $date  = explode(' ',$examinee->last_login)[0];
+        $objActSheet->setCellValue('B4',$date);
 
         $objActSheet->getRowDimension(5)->setRowHeight(8);
 
@@ -521,7 +726,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
 
         $factors = ProjectDetail::find(
             array(
-                 "project_id = :project_id:", 'bind' => array('project_id'=>$project_id)
+                 "project_id = :project_id:", 'bind' => array('project_id'=>$examinee->project_id)
                  )
             );
         $factor_name = json_decode($factors[0]->factor_names,true);
@@ -589,8 +794,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         
     }
 
-    public static function checkoutScl($examinee ,$excel,$project_id){
-        $objActSheet = $excel->getActiveSheet();
+    public function checkoutScl($examinee , $objActSheet){
         $objActSheet->getDefaultRowDimension()->setRowHeight(22);
         $objActSheet->getDefaultColumnDimension()->setWidth(20);
 
@@ -609,15 +813,12 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $sex = ($examinee->sex == "1") ? "男" : "女";
         $objActSheet->setCellValue('B5',$sex);
         $objActSheet->setCellValue('A6','年龄');
-        $birthday = $examinee->birthday;
-        $bir = explode('-',$birthday);
-        $age = date("Y") - $bir[0];
-        if((date("m")-$bir[1])>0 || ( (date("m")==$bir[1])&&(date("d")>$bir[2]) ))
-            $age++;
+        $age = floor(FactorScore::calAge($examinee->birthday,$examinee->last_login));
         $objActSheet->getStyle('B6')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
         $objActSheet->setCellValue('B6',$age);
         $objActSheet->setCellValue('A7','日期');
-        $objActSheet->setCellValue('B7',date("Y-m-d"));
+        $date  = explode(' ',$examinee->last_login)[0];
+        $objActSheet->setCellValue('B7',$date);
         $objActSheet->setCellValue('A8','总分');
         $objActSheet->setCellValue('A9','总均分');
         $objActSheet->setCellValue('A10','阴性项目数');
@@ -628,7 +829,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $objActSheet->setCellValue('E2','因子分');
         $factors = ProjectDetail::find(
             array(
-                 "project_id = :project_id:", 'bind' => array('project_id'=>$project_id)
+                 "project_id = :project_id:", 'bind' => array('project_id'=>$examinee->project_id)
                  )
             );
         $factor_name = json_decode($factors[0]->factor_names,true);
@@ -673,8 +874,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $objActSheet->getStyle("D2:E".($i-1))->applyFromArray($styleArray1);
     }
 
-    public static function checkoutEpqa($examinee,$excel,$project_id){
-        $objActSheet = $excel->getActiveSheet();
+    public static function checkoutEpqa($examinee,$objActSheet){
         $objActSheet->getDefaultRowDimension()->setRowHeight(22);
         $objActSheet->getDefaultColumnDimension()->setWidth(15);
 
@@ -712,18 +912,15 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $sex = ($examinee->sex == "1") ? "男" : "女";
         $objActSheet->setCellValue('B3',$sex);
         $objActSheet->setCellValue('C3','年龄');
-        $birthday = $examinee->birthday;
-        $bir = explode('-',$birthday);
-        $age = date("Y") - $bir[0];
-        if((date("m")-$bir[1])>0 || ( (date("m")==$bir[1])&&(date("d")>$bir[2]) ))
-            $age++;
+        $age = floor(FactorScore::calAge($examinee->birthday,$examinee->last_login));
         $objActSheet->getStyle('C3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
         $objActSheet->setCellValue('D3',$age);
         $objActSheet->setCellValue('E3','职业');
         $objActSheet->setCellValue('F3',$examinee->duty);
 
         $objActSheet->setCellValue('A4','日期');
-        $objActSheet->setCellValue('B4',date("Y-m-d"));
+        $date  = explode(' ',$examinee->last_login)[0];
+        $objActSheet->setCellValue('B4',$date);
 
         $objActSheet->getRowDimension(5)->setRowHeight(8);
 
@@ -734,7 +931,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $objActSheet->getStyle("C6:E6")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $factors = ProjectDetail::find(
             array(
-                 "project_id = :project_id:", 'bind' => array('project_id'=>$project_id)
+                 "project_id = :project_id:", 'bind' => array('project_id'=>$examinee->project_id)
                  )
             );
         $factor_name = json_decode($factors[0]->factor_names,true);
@@ -768,8 +965,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $objActSheet->getStyle('B6:E'.($i-1))->applyFromArray($styleArray1);
     }
 
-    public static function checkoutCpi($examinee,$excel,$project_id){
-        $objActSheet = $excel->getActiveSheet();
+    public function checkoutCpi($examinee,$objActSheet){
         $objActSheet->getDefaultRowDimension()->setRowHeight(22);
         $objActSheet->getDefaultColumnDimension()->setWidth(15);
 
@@ -807,18 +1003,15 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $sex = ($examinee->sex == "1") ? "男" : "女";
         $objActSheet->setCellValue('B3',$sex);
         $objActSheet->setCellValue('C3','年龄');
-        $birthday = $examinee->birthday;
-        $bir = explode('-',$birthday);
-        $age = date("Y") - $bir[0];
-        if((date("m")-$bir[1])>0 || ( (date("m")==$bir[1])&&(date("d")>$bir[2]) ))
-            $age++;
+        $age = floor(FactorScore::calAge($examinee->birthday,$examinee->last_login));
         $objActSheet->getStyle('C3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
         $objActSheet->setCellValue('D3',$age);
         $objActSheet->setCellValue('E3','职业');
         $objActSheet->setCellValue('F3',$examinee->duty);
 
         $objActSheet->setCellValue('A4','日期');
-        $objActSheet->setCellValue('B4',date("Y-m-d"));
+        $date  = explode(' ',$examinee->last_login)[0];
+        $objActSheet->setCellValue('B4',$date);
         $objActSheet->getRowDimension(5)->setRowHeight(20);
 
         $objActSheet->setCellValue('A6','因子名称');
@@ -830,7 +1023,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
 
         $factors = ProjectDetail::find(
             array(
-                 "project_id = :project_id:", 'bind' => array('project_id'=>$project_id)
+                 "project_id = :project_id:", 'bind' => array('project_id'=>$examinee->project_id)
                  )
             );
         $factor_name = json_decode($factors[0]->factor_names,true);
@@ -910,8 +1103,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         }
     }
 
-    public static function checkoutSpm($examinee,$excel,$project_id){
-        $objActSheet = $excel->getActiveSheet();
+    public function checkoutSpm($examinee, $objActSheet){
         $objActSheet->getDefaultRowDimension()->setRowHeight(22);
         $objActSheet->getDefaultColumnDimension()->setWidth(15);
 
@@ -949,18 +1141,15 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $sex = ($examinee->sex == "1") ? "男" : "女";
         $objActSheet->setCellValue('B3',$sex);
         $objActSheet->setCellValue('C3','年龄');
-        $birthday = $examinee->birthday;
-        $bir = explode('-',$birthday);
-        $age = date("Y") - $bir[0];
-        if((date("m")-$bir[1])>0 || ( (date("m")==$bir[1])&&(date("d")>$bir[2]) ))
-            $age++;
+        $age = floor(FactorScore::calAge($examinee->birthday,$examinee->last_login));
         $objActSheet->getStyle('C3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
         $objActSheet->setCellValue('D3',$age);
         $objActSheet->setCellValue('E3','职业');
         $objActSheet->setCellValue('F3',$examinee->duty);
 
         $objActSheet->setCellValue('A4','日期');
-        $objActSheet->setCellValue('B4',date("Y-m-d"));
+        $date  = explode(' ',$examinee->last_login)[0];
+        $objActSheet->setCellValue('B4',$date);
 
         $objActSheet->setCellValue('A6','总分');
 
@@ -976,7 +1165,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
 
         $factors = ProjectDetail::find(
             array(
-                 "project_id = :project_id:", 'bind' => array('project_id'=>$project_id)
+                 "project_id = :project_id:", 'bind' => array('project_id'=>$examinee->project_id)
                  )
             );
         $factor_name = json_decode($factors[0]->factor_names,true);
@@ -1016,488 +1205,242 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $objActSheet->getStyle("A2:F9")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objActSheet->getStyle('A6:F9')->applyFromArray($styleArray);
     }
-
-     public static function checkoutEightAddFive($examinee,$excel,$project_id){
-//        $excel2 = new PHPExcel();
+	//9. 8+5 表
+     public function checkoutEightAddFive($examinee,$objActSheet){
         $strong = array(
-            '【强项指标1】【最优】','【强项指标2】【次优】','【强项指标3】【三优】',
-            '【强项指标4】【四优】','【强项指标5】【五优】','【强项指标6】【六优】',
-            '【强项指标7】【七优】','【强项指标8】【八优】'
+            '【强项指标1】【最优】','【强项指标2】【次优】','【强项指标3】【三优】','【强项指标4】【四优】','【强项指标5】【五优】','【强项指标6】【六优】','【强项指标7】【七优】','【强项指标8】【八优】'
         );
         $weak = array(
-            '【弱项指标1】【最弱】','【弱项指标2】【次弱】','【弱项指标3】【三弱】',
-            '【弱项指标4】【四弱】','【弱项指标5】【五弱】'
+            '【弱项指标1】【最弱】','【弱项指标2】【次弱】','【弱项指标3】【三弱】','【弱项指标4】【四弱】','【弱项指标5】【五弱】'
         );
-        $objActSheet = $excel->getActiveSheet();
-        $objActSheet->getDefaultColumnDimension()->setWidth(20);
-        $objActSheet->getDefaultRowDimension()->setRowHeight(20);
-        $examinee_id = $examinee->id;
-        $examinee_number = $examinee->number;
-        $examinee_name = $examinee->name;
-        $index_msg = self::getIndexMsg($project_id);
-        $index_score = self::getIndexScore($project_id,$examinee_id);//指标得分，由高到低排序
-        $index_num = count($index_score);
-        /*
-         * 8+5表表头
-         */
-        $objActSheet->setCellValue('A1','TQT人才测评系统    '.$index_num.'指标排序(8+5)');
-        $objActSheet->mergeCells('A1:E3');
-        $objActSheet->getStyle('A1')->getFont()->setSize(18);
-        $objActSheet->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $objActSheet->mergeCells('A4:B4');
-        $objActSheet->setCellValue('A4','被测编号:');
-        $objActSheet->getStyle('A4')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
-        $objActSheet->getStyle('A4:E4')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-        $objActSheet->getStyle('A4:E4')->getFill()->getStartColor()->setRGB('#BEBEBE');
-        $objActSheet->setCellValue('C4',$examinee_number );
-        $objActSheet->getStyle('C4')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-        $objActSheet->setCellValue('D4','姓名：');
-        $objActSheet->getStyle('D4')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
-        $objActSheet->setCellValue('E4',$examinee_name);
-        $objActSheet->setCellValue('B5','组合因素');
-        $objActSheet->setCellValue('C5','原始分');
-        $objActSheet->setCellValue('D5','综合分');
-        $objActSheet->setCellValue('E5','评价结果');
-        $styleArray = array(
-            'borders' => array(
-                'allborders' => array(
-                    // 'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
-                    'style' => PHPExcel_Style_Border::BORDER_THIN,//细边框
-                    //'color' => array('argb' => 'FFFF0000'),
-                ),
-            ),
-        );
-        $objActSheet->getStyle('A1:E5')->applyFromArray($styleArray);
-//        $objActSheet->mergeCells('A1:E5');
-        //数据导入
-        $index_factors = self::getIndexFactor($project_id);
-        $factor_ans = array();
-        $high = 0;
-        $low = 0;
-        $row = 6;
-        //强项导出
-        foreach($index_score as $key => $value){
-            if($high <= 7){
-                $index_factor = $index_factors[$key];
-                foreach($index_factor as $k => $v){
-                    $factor_chs_name = self::getFactorMsg($v)['chs_name'];
-                    $factor_ans[$value][$v]['answer'] = self::getFactorAnswer($examinee_id,$v);//指标测试答案
-                    $factor_ans[$value][$v]['chs_name'] = $factor_chs_name;
-                }
-                $index = self::getIndex($key);//测试指标
-                $objActSheet->setCellValue('A'.$row,$strong[$high]);
-                $headOne = $row+1;
-                $headTwo = $row+2;
-                $objActSheet->setCellValue('A'.$headOne,$index['chs_name']);
-                $objActSheet->setCellValue('A'.$headTwo,count($index_factors[$key]));
-                $objActSheet->getStyle('A'.$headTwo)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-                $start_row = $row;
-                $row = $row + 1;
-                foreach($index_factors[$key] as $i => $item){
-                    if(substr($item,0,3) != 'zb_'){
-                        $objActSheet->setCellValue('B'.$row,self::getFactorMsg($item)['chs_name']);
-                        $factor_answer = self::getFactorAnswer($examinee_id,$item);
-                        $objActSheet->setCellValue('C'.$row,$factor_answer['score']);
-                        $objActSheet->setCellValue('D'.$row,$factor_answer['std_score']);
-                        $row++;
-                    }else{
-                        $objActSheet->setCellValue('B'.$row,self::getIndex($item)['chs_name']);
-                        $index_answer = self::getIndexScore2($item,$examinee_id);
-                        $objActSheet->setCellValue('C'.$row,$index_answer['score']);
-                        $objActSheet->setCellValue('D'.$row,$index_answer['score']);
-                        $row++;
-                    }
-                }
-//                $row++;
-                if($value){
-                    $objActSheet->setCellValue('D'.$row,$value);
-                }else{
-                    $objActSheet->setCellValue('D'.$row,0);
-                }
-                $row++;
-                $objActSheet->getStyle('A'.$row.':E'.$row)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-                $objActSheet->getStyle('A'.$row.':E'.$row)->getFill()->getStartColor()->setRGB('#BEBEBE');
-//                $objActSheet->mergeCells('A'.$start_row.':E'.$row);
-                $styleArray = array(
-                    'borders' => array(
-                        'allborders' => array(
-                            // 'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
-                            'style' => PHPExcel_Style_Border::BORDER_THIN,//细边框
-                            //'color' => array('argb' => 'FFFF0000'),
-                        ),
-                    ),
-                );
-                $objActSheet->getStyle('A'.$start_row.':E'.$row)->applyFromArray($styleArray);
-                $row++;
-                $high++;
-            }else{
-                break;
-            }
+        //settings
+        $objActSheet->getDefaultRowDimension()->setRowHeight(21);
+        $objActSheet->getDefaultColumnDimension()->setWidth(12);
+        //----------------------------------------------------------------
+        $current_row   = 1;
+        $start_column = 'A';
+        $column_merge_count = 6;$row_merge_count = 2;  //合并注意L: 合并的数量是减1的
+        $end_row = $this->_endRow($current_row, $row_merge_count);
+        $end_column = $this->_endColumn($start_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'TQT人才测评系统    28指标排序（8+5）',30, 12, 18);
+        //-----------------------------------------------------------------
+        $row_merge_count = 0;
+        $this->_nextRow($current_row, $end_row, $row_merge_count);
+        $start_column = 'A';
+        $column_merge_count = 1;
+        $end_column = $this->_endColumn($start_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'被试编号',null,12,null,null, null, true);
+        $column_merge_count = 1;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$examinee->number,null,12);
+        $column_merge_count = 0;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'姓名' ,null,12,null,null, null, true);
+        $column_merge_count = 1;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$examinee->name ,null,12);
+        //-------------------------------------------------------------
+        $row_merge_count = 0;
+        $this->_nextRow($current_row, $end_row, $row_merge_count);
+        $start_column = 'A';
+        $column_merge_count = 1;
+        $end_column = $this->_endColumn($start_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'',null,12,null,null, null, true);
+        $column_merge_count = 1;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'组合因素',null,12,null,null, null, true);
+        $column_merge_count = 0;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'原始分' ,null,12,null,null, null, true);
+        $column_merge_count = 0;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'综合分',null,12,null,null, null, true);
+        $column_merge_count = 0;
+        $this->_nextColumn($start_column, $end_column, $column_merge_count);
+        $this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'评价结果',null,12,null,null, null, true);
+        //--------------------------------------------------------------
+        $checkout = new CheckoutData();
+        $eightAddFive = $checkout->getEightAddFive($examinee);
+        $i = 0;
+        foreach($eightAddFive['strong'] as $eight ){
+        	$row_merge_count = 0;
+        	$this->_nextRow($current_row, $end_row, $row_merge_count);
+        	$start_row  = $current_row; 
+        	$start_column = 'A';
+        	$column_merge_count = 6;
+        	$end_column = $this->_endColumn($start_column, $column_merge_count);
+        	$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$strong[$i++],null,12,null,'left', null, false);
+        	$this->_nextRow($current_row, $end_row, $row_merge_count);
+        	$start_row  = $current_row;
+        	$start_column = 'A';
+        	$column_merge_count = 1;
+        	$end_column = $this->_endColumn($start_column, $column_merge_count);
+        	$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$eight['chs_name'], null,12,null,'left', null, false);
+        	$inner_i  = 0;
+        	foreach ($eight['children'] as $record ){
+        		if ($inner_i == 1 ){
+        			$start_column = 'A';
+        			$row_merge_count = 0;
+        			$this->_nextRow($current_row, $end_row, $row_merge_count);
+        			$column_merge_count = 1;
+        			$end_column = $this->_endColumn($start_column, $column_merge_count);
+        			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$eight['count'],null,12,null,'left', null, false);	
+        		}else if ($inner_i == 0 ) {
+        			$start_column = 'C';
+        		}else{
+        			$start_column = 'A';
+        			$row_merge_count = 0;
+        			$this->_nextRow($current_row, $end_row, $row_merge_count);
+        			$column_merge_count = 1;
+        			$end_column = $this->_endColumn($start_column, $column_merge_count);
+        			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'',null,12,null,'left', null, true);	
+        		}
+        		$column_merge_count = 1;
+        		$this->_nextColumn($start_column, $end_column, $column_merge_count);
+        		$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$record['name'],null,12,null,null, null, false);
+        		$column_merge_count = 0;
+        		$this->_nextColumn($start_column, $end_column, $column_merge_count);
+        		$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$record['raw_score'] ,null,12,null,'right', null, false);
+        		$column_merge_count = 0;
+        		$this->_nextColumn($start_column, $end_column, $column_merge_count);
+        		$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$record['ans_score'],null,12,null,'right', null, true);
+        		$column_merge_count = 0;
+        		$this->_nextColumn($start_column, $end_column, $column_merge_count);
+        		$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$record['number'],null,12,null,null, null, false);
+        	$inner_i++;
+        	$styleBorderArray = array(
+        			'borders' => array(
+        					'allborders' => array(
+        							'style' => PHPExcel_Style_Border::BORDER_THIN,//细边框
+        					),
+        			),
+        	);
+        
+        	}
+        	$objActSheet->getStyle("A$start_row:G$end_row")->applyFromArray($styleBorderArray);
+        	
         }
-        // asort($index_score);
-        $index_score = array_reverse($index_score,true);
-        //弱项导出
-        foreach($index_score as $key => $value){
-            if($low <= 4){
-                $index_factor = $index_factors[$key];
-                foreach($index_factor as $k => $v){
-                    $factor_chs_name = self::getFactorMsg($v)['chs_name'];
-                    $factor_ans[$value][$v]['answer'] = self::getFactorAnswer($examinee_id,$v);//指标测试答案
-                    $factor_ans[$value][$v]['chs_name'] = $factor_chs_name;
-                }
-                $index = self::getIndex($key);//测试指标
-                $objActSheet->setCellValue('A'.$row,$weak[$low]);
-                $objActSheet->setCellValue('A'.($row+1),$index['chs_name']);
-                $objActSheet->setCellValue('A'.($row+2),count($index_factors[$key]));
-                $objActSheet->getStyle('A'.($row+2))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-                $start_row = $row;
-                $row = $row + 1;
-                foreach($index_factors[$key] as $i => $item){
-                    if(substr($item,0,3) != 'zb_'){
-                        $objActSheet->setCellValue('B'.$row,self::getFactorMsg($item)['chs_name']);
-                        $factor_answer = self::getFactorAnswer($examinee_id,$item);
-                        $objActSheet->setCellValue('C'.$row,$factor_answer['score']);
-                        $objActSheet->setCellValue('D'.$row,$factor_answer['std_score']);
-                        $row++;
-                    }else{
-                        $objActSheet->setCellValue('B'.$row,self::getIndex($item)['chs_name']);
-                        $index_answer = self::getIndexScore2($item,$examinee_id);
-                        $objActSheet->setCellValue('C'.$row,$index_answer['score']);
-                        $objActSheet->setCellValue('D'.$row,$index_answer['score']);
-                        $row++;
-                    }
-                }
-//                $row++;
-                if($value){
-                    $objActSheet->setCellValue('D'.$row,$value);
-                }else{
-                    $objActSheet->setCellValue('D'.$row,0);
-                }
-                $row++;
-                $objActSheet->getStyle('A'.$row.':E'.$row)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-                $objActSheet->getStyle('A'.$row.':E'.$row)->getFill()->getStartColor()->setRGB('#BEBEBE');
-//                $objActSheet->setCellValue('D'.$row,$value);
-//                $objActSheet->mergeCells('A'.$start_row.':E'.$row);
-                $styleArray = array(
-                    'borders' => array(
-                        'allborders' => array(
-                            // 'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
-                            'style' => PHPExcel_Style_Border::BORDER_THIN,//细边框
-                            //'color' => array('argb' => 'FFFF0000'),
-                        ),
-                    ),
-                );
-                $objActSheet->getStyle('A'.$start_row.':E'.$row)->applyFromArray($styleArray);
-                $row++;
-                $low++;
-            }else{
-                break;
-            }
+     	$i = 0;
+        foreach($eightAddFive['weak'] as $eight ){
+        	$row_merge_count = 0;
+        	$this->_nextRow($current_row, $end_row, $row_merge_count);
+        	$start_row  = $current_row; 
+        	$start_column = 'A';
+        	$column_merge_count = 6;
+        	$end_column = $this->_endColumn($start_column, $column_merge_count);
+        	$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$weak[$i++],null,12,null,'left', null, false);
+        	$this->_nextRow($current_row, $end_row, $row_merge_count);
+        	$start_row  = $current_row;
+        	$start_column = 'A';
+        	$column_merge_count = 1;
+        	$end_column = $this->_endColumn($start_column, $column_merge_count);
+        	$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$eight['chs_name'], null,12,null,'left', null, false);
+        	$inner_i  = 0;
+        	foreach ($eight['children'] as $record ){
+        		if ($inner_i == 1 ){
+        			$start_column = 'A';
+        			$row_merge_count = 0;
+        			$this->_nextRow($current_row, $end_row, $row_merge_count);
+        			$column_merge_count = 1;
+        			$end_column = $this->_endColumn($start_column, $column_merge_count);
+        			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$eight['count'],null,12,null,'left', null, false);	
+        		}else if ($inner_i == 0 ) {
+        			$start_column = 'C';
+        		}else{
+        			$start_column = 'A';
+        			$row_merge_count = 0;
+        			$this->_nextRow($current_row, $end_row, $row_merge_count);
+        			$column_merge_count = 1;
+        			$end_column = $this->_endColumn($start_column, $column_merge_count);
+        			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'',null,12,null,'left', null, true);	
+        		}
+        		$column_merge_count = 1;
+        		$this->_nextColumn($start_column, $end_column, $column_merge_count);
+        		$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$record['name'],null,12,null,null, null, false);
+        		$column_merge_count = 0;
+        		$this->_nextColumn($start_column, $end_column, $column_merge_count);
+        		$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$record['raw_score'] ,null,12,null,'right', null, false);
+        		$column_merge_count = 0;
+        		$this->_nextColumn($start_column, $end_column, $column_merge_count);
+        		$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$record['ans_score'],null,12,null,'right', null, true);
+        		$column_merge_count = 0;
+        		$this->_nextColumn($start_column, $end_column, $column_merge_count);
+        		$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$record['number'],null,12,null,null, null, false);
+        	$inner_i++;
+        	$styleBorderArray = array(
+        			'borders' => array(
+        					'allborders' => array(
+        							'style' => PHPExcel_Style_Border::BORDER_THIN,//细边框
+        					),
+        			),
+        	);
+        	}
+        	$objActSheet->getStyle("A$start_row:G$end_row")->applyFromArray($styleBorderArray);
         }
-
     }
-
-    public static function checkoutStruct($examinee,$excel){
-        //todo
-    }
-
-    public static function checkoutModuleResult($examinee,$excel,$project_id){
-//        $excel2 = new PHPExcel();
-        $objActSheet = $excel->getActiveSheet();
-        $objActSheet->getDefaultRowDimension()->setRowHeight(20);
-        $objActSheet->getDefaultColumnDimension()->setWidth(20);
-        $resultItem = self::testResultItem();
-        $examinee_id = $examinee->id;
-        $module = self::getScore($examinee_id,$project_id,$resultItem);
-//        var_dump($module);
-//        exit;
-        $k = 1;
-        $objActSheet->getRowDimension($k)->setRowHeight(40);
-        $objActSheet->mergeCells('B'.$k.':F'.$k);
-        foreach($module as $key => $item){
-            if(!empty($item)){
-                if($key == 'mk_xljk'){
-//                    $objActSheet->getRowDimension($k+2)->set
-                    self::structureExcelHead($k,'心理健康评价指标',$objActSheet);
-                    //心理健康水平行
-                    self::structureExcelCommon($k+2,'mk_xljk','zb_xljksp',$resultItem,$objActSheet,$item);
-                    //情绪控制水平行
-                    self::structureExcelCommon($k+3,'mk_xljk','zb_qxkzsp',$resultItem,$objActSheet,$item);
-                    //适应环境水平
-                    self::structureExcelCommon($k+4,'mk_xljk','zb_syhjsp',$resultItem,$objActSheet,$item);
-                    //人际关系调节水平
-                    self::structureExcelCommon($k+5,'mk_xljk','zb_rjgxtjsp',$resultItem,$objActSheet,$item);
-                    //性格
-                    self::structureExcelCommon($k+6,'mk_xljk','zb_xg',$resultItem,$objActSheet,$item);
-                    //执着
-                    self::structureExcelCommon($k+7,'mk_xljk','zb_zz',$resultItem,$objActSheet,$item);
-                    //风险性
-                    self::structureExcelCommon($k+8,'mk_xljk','zb_fxx',$resultItem,$objActSheet,$item);
-                    $objActSheet->mergeCells('B'.($k+9).':C'.($k+9));
-                    $objActSheet->mergeCells('E'.($k+9).':F'.($k+9));
-                    $k += 9;
-
-                }
-                elseif($key == 'mk_szjg'){
-//                    $objActSheet->setCellValue('B'.$k,'素质结构评价指标');
-                    self::structureExcelHead($k,'素质结构评价指标',$objActSheet);
-                    //责任心
-                    self::structureExcelCommon($k+2,'mk_szjg','zb_zrx',$resultItem,$objActSheet,$item);
-                    //诚信度
-                    self::structureExcelCommon($k+3,'mk_szjg','zb_cxd',$resultItem,$objActSheet,$item);
-                    //个人价值取向
-                    self::structureExcelCommon($k+4,'mk_szjg','zb_grjzqx',$resultItem,$objActSheet,$item);
-                    //团队精神
-                    self::structureExcelCommon($k+5,'mk_szjg','zb_tdjs',$resultItem,$objActSheet,$item);
-                    //工作态度
-                    self::structureExcelCommon($k+6,'mk_szjg','zb_gztd',$resultItem,$objActSheet,$item);
-                    //工作作风
-                    self::structureExcelCommon($k+7,'mk_szjg','zb_gzzf',$resultItem,$objActSheet,$item);
-                    //表现性
-                    self::structureExcelCommon($k+8,'mk_szjg','zb_bxx',$resultItem,$objActSheet,$item);
-                    //容纳性
-                    self::structureExcelCommon($k+9,'mk_szjg','zb_rnx',$resultItem,$objActSheet,$item);
-                    $objActSheet->mergeCells('B'.($k+10).':C'.($k+10));
-                    $objActSheet->mergeCells('E'.($k+10).':F'.($k+10));
-                    $k += 10;
-                }
-                elseif($key == 'mk_ztjg'){
-//                    $objActSheet->setCellValue('B'.$k,'智体结构评价指标');
-                    self::structureExcelHead($k,'智体结构评价指标',$objActSheet);
-                    //聪慧性
-                    self::structureExcelCommon($k+2,'mk_ztjg','zb_chd',$resultItem,$objActSheet,$item);
-                    //精明能干
-                    self::structureExcelCommon($k+3,'mk_ztjg','zb_jmng',$resultItem,$objActSheet,$item);
-                    //纪律性
-                    self::structureExcelCommon($k+4,'mk_ztjg','zb_jlx',$resultItem,$objActSheet,$item);
-                    //体质精力
-                    self::structureExcelCommon($k+5,'mk_ztjg','zb_tzjl',$resultItem,$objActSheet,$item);
-                    //分析能力
-                    self::structureExcelCommon($k+6,'mk_ztjg','zb_fxnl',$resultItem,$objActSheet,$item);
-                    //归纳能力
-                    self::structureExcelCommon($k+7,'mk_ztjg','zb_gnnl',$resultItem,$objActSheet,$item);
-
-                    $objActSheet->mergeCells('B'.($k+8).':C'.($k+8));
-                    $objActSheet->mergeCells('E'.($k+8).':F'.($k+8));
-                    $k += 8;
-                }
-                else{
-//                    $objActSheet->setCellValue('B'.$k,'能力结构评价指标');
-                    self::structureExcelHead($k,'能力结构评价指标',$objActSheet);
-                    //独立工作能力
-                    self::structureExcelCommon($k+2,'mk_nljg','zb_dlgznl',$resultItem,$objActSheet,$item);
-                    //创新能力
-                    self::structureExcelCommon($k+3,'mk_nljg','zb_cxnl',$resultItem,$objActSheet,$item);
-                    //应变能力
-                    self::structureExcelCommon($k+4,'mk_nljg','zb_ybnl',$resultItem,$objActSheet,$item);
-                    //判断与决策能力
-                    self::structureExcelCommon($k+5,'mk_nljg','zb_pdyjcnl',$resultItem,$objActSheet,$item);
-                    //组织管理能力
-                    self::structureExcelCommon($k+6,'mk_nljg','zb_zzglnl',$resultItem,$objActSheet,$item);
-                    //社交能力
-                    self::structureExcelCommon($k+7,'mk_nljg','zb_sjnl',$resultItem,$objActSheet,$item);
-                    //领导能力
-                    self::structureExcelCommon($k+8,'mk_nljg','zb_ldnl',$resultItem,$objActSheet,$item);
-                    $k += 7;
-                }
-
-            }
+    #10 结构
+    public function checkoutModuleResult($examinee,$objActSheet){
+		//settings 
+        $objActSheet->getDefaultRowDimension()->setRowHeight(21);
+        $objActSheet->getDefaultColumnDimension()->setWidth(12);
+        $data = new CheckoutData();
+        $result = $data->getindividualComprehensive($examinee->id);
+        $name_array = array('一','二','三','四');
+        $current_row   = 1;
+        $i = 0; 
+        foreach ($result as $module_name =>$module_detail ){
+        		$start_column = 'A';
+        		$start_row = $current_row;
+        		$row_merge_count = 1;
+        		$end_row = $this->_endRow($current_row, $row_merge_count);
+       			$column_merge_count = 6; 
+       			$end_column = $this->_endColumn($start_column, $column_merge_count);
+       			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, $name_array[$i++].'、'.$module_name.'评价指标',null,12,20, null, null, true);
+       			$row_merge_count = 0;
+       			$this->_nextRow($current_row, $end_row, $row_merge_count);
+       			$column_merge_count = 1;
+       			$end_column = $this->_endColumn($start_column, $column_merge_count);
+       			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, '评价指标',null,12,null,null, null, true);
+       			$column_merge_count = 1;
+       			$this->_nextColumn($start_column, $end_column, $column_merge_count);
+       			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, '组合因素（项）',null,12,null,null, null, true);
+       			$column_merge_count = 0;
+       			$this->_nextColumn($start_column, $end_column, $column_merge_count);
+       			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, '综合分',null,12,null,null, null, true);
+       			$column_merge_count = 1;
+       			$this->_nextColumn($start_column, $end_column, $column_merge_count);
+       			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, '评价结果',null,12,null,null, null, true);
+        		$inner_count = count($module_detail);
+        		for($loop_i = 0; $loop_i < $inner_count; $loop_i ++ ){
+        			$row_merge_count = 0;
+        			$this->_nextRow($current_row, $end_row, $row_merge_count);
+        			$start_column = 'A';
+        			$column_merge_count = 1;
+        			$end_column = $this->_endColumn($start_column, $column_merge_count);
+        			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, $module_detail[$loop_i]['chs_name'],null,12,null,null, null, false);
+        			$column_merge_count = 1;
+        			$this->_nextColumn($start_column, $end_column, $column_merge_count);
+        			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, count(explode(',',$module_detail[$loop_i]['children'])),null,12,null,null, null, false);
+        			$column_merge_count = 0;
+        			$this->_nextColumn($start_column, $end_column, $column_merge_count);
+        			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, $module_detail[$loop_i]['score'],null,12,null,null, null, false);
+        			$column_merge_count = 1;
+        			$this->_nextColumn($start_column, $end_column, $column_merge_count);
+        			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, '',null,12,null,null, null, false);
+        			
+        		}
+        		$styleBorderArray = array(
+        				'borders' => array(
+        						'allborders' => array(
+        								'style' => PHPExcel_Style_Border::BORDER_THIN,//细边框
+        						),
+        				),
+        		);
+           $objActSheet->getStyle("A$start_row:G$end_row")->applyFromArray($styleBorderArray);
+           $this->_nextRow($current_row, $end_row, $row_merge_count);
         }
-        $styleArray = array(
-            'borders' => array(
-                'allborders' => array(
-                    // 'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
-                    'style' => PHPExcel_Style_Border::BORDER_THIN,//细边框
-                    //'color' => array('argb' => 'FFFF0000'),
-                ),
-            ),
-        );
-        $objActSheet->getStyle('A1:F'.($k+1))->applyFromArray($styleArray);
-
-
-    }
-    /*
-     * 获取结构表信息
-     */
-    public static function testResultItem(){
-        $result = array();
-        //心理健康模块
-        $result['mk_xljk'] = array(
-            'zb_xljksp' => array(
-                'item' => '心理健康水平',
-                'combineFactor' => 19,
-                'name' => 'zb_xljksp'
-            ),
-            'zb_qxkzsp' => array(
-                'item' => '情绪控制水平',
-                'combineFactor' => 10,
-                'name' => 'zb_qxkzsp'
-            ),
-            'zb_syhjsp' => array(
-                'item' => '适应环境水平',
-                'combineFactor' => 8,
-                'name' => 'zb_syhjsp'
-            ),
-            'zb_rjgxtjsp' => array(
-                'item' => '人际关系调节水平',
-                'combineFactor' => 11,
-                'name' => 'zb_rjgxtjsp'
-            ),
-            'zb_xg' => array(
-                'item' => '性格',
-                'combineFactor' => 10,
-                'name' => 'zb_xg'
-            ),
-            'zb_zz' => array(
-                'item' => '执着',
-                'combineFactor' => 11,
-                'name' => 'zb_zz'
-            ),
-            'zb_fxx' => array(
-                'item' => '风险性',
-                'combineFactor' => 8,
-                'name' => 'zb_fxx'
-            )
-        );
-        //素质结构模块
-        $result['mk_szjg'] = array(
-            'zb_zrx' => array(
-                'item' => '责任心',
-                'combineFactor' => 12,
-                'name' => 'zb_zrx'
-            ),
-            'zb_cxd' => array(
-                'item' => '诚信度',
-                'combineFactor' => 7,
-                'name' => 'zb_cxd'
-            ),
-            'zb_grjzqx' => array(
-                'item' => '个人价值取向',
-                'combineFactor' => 11,
-                'name' => 'zb_grjzqx',
-            ),
-            'zb_tdjs' => array(
-                'item' => '团队精神',
-                'combineFactor' => 9,
-                'name' => 'zb_tdjs'
-            ),
-            'zb_gztd' => array(
-                'item' => '工作态度',
-                'combineFactor' => 7,
-                'name' => 'zb_gztd'
-            ),
-            'zb_gzzf' => array(
-                'item' => '工作作风',
-                'combineFactor' => 8,
-                'name' => 'zb_gzzf'
-            ),
-            'zb_bxx' => array(
-                'item' => '表现性',
-                'combineFactor' => 9,
-                'name' => 'zb_bxx'
-            ),
-            'zb_rnx' => array(
-                'item' => '容纳性',
-                'combineFactor' => 4,
-                'name' => 'zb_rnx'
-            )
-        );
-        //智体结构模块
-        $result['mk_ztjg'] = array(
-            'zb_chd' => array(
-                'item' => '聪慧性',
-                'combineFactor' => 10,
-                'name' => 'zb_chd'
-            ),
-            'zb_jmng' => array(
-                'item' => '精干性',
-                'combineFactor' => 7,
-                'name' => 'zb_jmng'
-            ),
-            'zb_jlx' => array(
-                'item' => '纪律性',
-                'combineFactor' => 8,
-                'name' => 'zb_jlx'
-            ),
-            'zb_tzjl' => array(
-                'item' => '体质精力',
-                'combineFactor' => 8,
-                'name' => 'zb_tzjl'
-            ),
-            'zb_fxnl' => array(
-                'item' => '分析能力',
-                'combineFactor' => 11,
-                'name' => 'zb_fxnl'
-            ),
-            'zb_gnnl' => array(
-                'item' => '归纳能力',
-                'combineFactor' => 12,
-                'name' => 'zb_gnnl'
-            )
-        );
-        //能力结构模块
-        $result['mk_nljg'] = array(
-            'zb_dlgznl' => array(
-                'item' => '独立工作能力',
-                'combineFactor' => 9,
-                'name' => 'zb_dlgznl'
-            ),
-            'zb_cxnl' => array(
-                'item' => '创新能力',
-                'combineFactor' => 12,
-                'name' => 'zb_cxnl'
-            ),
-            'zb_ybnl' => array(
-                'item' => '应变能力',
-                'combineFactor' => 9,
-                'name' => 'zb_ybnl'
-            ),
-            'zb_pdyjcnl' => array(
-                'item' => '判断与决策能力',
-                'combineFactor' => 9,
-                'name' => 'zb_pdyjcnl'
-            ),
-            'zb_zzglnl' => array(
-                'item' => '组织管理能力',
-                'combineFactor' => 8,
-                'name' => 'zb_zzglnl'
-            ),
-            'zb_sjnl' => array(
-                'item' => '社交能力',
-                'combineFactor' => 12,
-                'name' => 'zb_sjnl'
-            ),
-            'zb_ldnl' => array(
-                'item' => '领导能力',
-                'combineFactor' => 6,
-                'name' => 'zb_ldnl'
-            )
-        );
-
-        return $result;
     }
 
-    public static function getScore($examinee_id,$project_id,$result){
-//        $result = $this->testResultItem();
-        $project_detail = ProjectDetail::findFirst(array(
-            'project_id = :project_id:',
-            'bind' => array(
-                'project_id' => $project_id
-            )
-        ));
-        $module = array();
-        //心理健康模块
-        $module['mk_xljk'] = self::moduleDetailScore('mk_xljk',$project_detail,$result,$examinee_id);
-        //素质结构模块
-        $module['mk_szjg'] = self::moduleDetailScore('mk_szjg',$project_detail,$result,$examinee_id);
-        //智体结构模块
-        $module['mk_ztjg'] = self::moduleDetailScore('mk_ztjg',$project_detail,$result,$examinee_id);
-        //能力结构模块
-        $module['mk_nljg'] = self::moduleDetailScore('mk_nljg',$project_detail,$result,$examinee_id);
-//        var_dump($module);
-//        exit;
-        return $module;
-    }
     /*
      * 模块得分
      */
@@ -1715,116 +1658,4 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         return $index_ans;
     }
 
-
-    public function testexcel(){
-        require_once("../app/classes/PHPExcel.php");
-        $excel = new PHPExcel();
-        $excel->getActiveSheet()->setTitle('个人信息表');
-        $letter = array('A','B','C','D','E','F','G');
-        $tableheader = array('学号','姓名','性别','年龄','班级');
-        for($i = 0;$i<count($tableheader);$i++){
-            $excel->getActiveSheet()->setCellValue("$letter[$i]1","$tableheader[$i]");
-        }
-        $data = array(
-                        array('1','小王','男','20','100'),
-                        array('2','小王','女','20','100'),
-                        array('3','小王','男','20','100'),
-                        array('4','小王','女','20','100'),
-                        array('5','小王','女','20','100'),
-                        array('6','小王','男','20','100')
-                        );
-        for($i = 2;$i<=count($data)+1;$i++){
-            $j = 0;
-            foreach ($data[$i - 2] as $key => $value) {
-                $excel->getActiveSheet()->setCellValue("$letter[$j]$i","$value");
-                $j++;
-            }
-        }
-        //创建第二张表格
-        $msgWorkSheet = new PHPExcel_Worksheet($excel, 'card_message'); //创建一个工作表
-        $excel->addSheet($msgWorkSheet); //插入工作表
-        $excel->setActiveSheetIndex(1); //切换到新创建的工作表
-        
-        for($i = 0;$i<count($tableheader);$i++){
-            $excel->getActiveSheet()->setCellValue("$letter[$i]1","$tableheader[$i]");
-        }
-        
-        for($i = 2;$i<=count($data)+1;$i++){
-            $j = 0;
-            foreach ($data[$i - 2] as $key => $value) {
-                $excel->getActiveSheet()->setCellValue("$letter[$j]$i","$value");
-                $j++;
-            }
-        }
-        $styleArray1 = array(
-                    'font' => array(
-                            'bold' => true,
-                            'size'=>12,
-                            'color'=>array(
-                            'argb' => '00000000',
-                                ),
-                            ),
-                    'alignment' => array(
-                            'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                            ),
-                    'borders' => array (
-                            'outline' => array (
-                                        // 'style' => PHPExcel_Style_Border::BORDER_THIN,   //设置border样式
-                                        'style' => PHPExcel_Style_Border::BORDER_THICK,  另一种样式
-                                        // 'color' => array ('argb' => 'FF000000'),          //设置border颜色
-                                    ),
-                             ),
-                    );
-        // 将A1单元格设置为加粗，居中
-        $excel->getActiveSheet()->getStyle('C1:D3')->applyFromArray($styleArray1);
-        $excel->getActiveSheet()->getStyle('B1')->getFont()->setBold(true);
-        // $styleArray = array(
-        //                'borders' => array(
-        //                     'allborders' =>array(
-        //                             'style'=>PHPExcel_Style_Border::BORDER_THIN,
-        //                             ),
-        //                     ),
-        //                );
-        // $excel->getActiveSheet()->getStyle('C1:C3')->applyFormArray($styleArray);
-        // $msgWorkSheet->getActiveSheet()->getStyle('C3')->applyFormArray(
-        //             array(
-        //                     'font' => array('bold' =>true),
-        //                     'alignment'=>array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
-        //                     )
-        //             );
-        // $excel->getActiveSheet()->getStyle('B1')->getFont()->setBold(true);
-        // $excel->getActiveSheet()->getStyle('B1')->getFont()->setBold(false);
-
-
-        //创建第三张表格
-        $pf16 = new PHPExcel_Worksheet($excel,'16pf');
-        $excel->addSheet($pf16);
-        $excel->setActiveSheetIndex(2);
-
-        for($i = 0;$i<count($tableheader);$i++){
-            $excel->getActiveSheet()->setCellValue("$letter[$i]1","$tableheader[$i]");
-        }
-        for($i = 2;$i<=count($data)+1;$i++){
-            $j = 0;
-            foreach ($data[$i - 2] as $key => $value) {
-                $excel->getActiveSheet()->setCellValue("$letter[$j]$i","$value");
-                $j++;
-            }
-        }
-        $excel->getActiveSheet()->mergeCells('A1:E5');
-
-        
-
-        $write = new PHPExcel_Writer_Excel5($excel);
-        header("Pragma: public");
-        header("Expires: 0");
-        header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
-        header("Content-Type:application/force-download");
-        header("Content-Type:application/vnd.ms-execl");
-        header("Content-Type:application/octet-stream");
-        header("Content-Type:application/download");
-        header('Content-Disposition:attachment;filename="result.xls"');
-        header("Content-Transfer-Encoding:binary");
-        $write->save('php://output');
-    }
 }

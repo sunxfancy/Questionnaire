@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * @usage 文件下载的控制器类
+	 * @usage 文件下载上传的控制器类
 	 * @author Wangyaohui
 	 *
 	 */
@@ -102,7 +102,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 			return ;
 		}
 	}
-	# 个人胜任力报告导出(项目经理操作)  project/
+	# 个人胜任力报告导出(项目经理操作)  
 	public function MgetIndividualCompetencyReportAction(){
 		$this->view->disable();
 		$examinee_id = $this->request->getPost('examinee_id', 'int');
@@ -199,78 +199,70 @@ class FileController extends \Phalcon\Mvc\Controller {
 			return ;
 		}
 	}
-	# 个人十项报表数据导出
+	# 个人十项报表数据导出 ---- pm &  interviewer 
 	public function getPersonalResultAction(){
 		$this->view->disable();
 		$examinee_id = $this->request->getPost('examinee_id', 'int');
-		if (empty($examinee_id)){
-			$this->dataReturn(array('error'=>'请求参数不完整!'));
+		$examinee_info = Examinee::findFirst(array('id=?1','bind'=>array(1=>$examinee_id)));
+		if (!isset($examinee_info->id)){
+			$this->dataReturn(array('error'=>'不存在的被试编号-'.$examinee_id));
 			return ;
 		}
-		//个体报告的导出必须是manager
+		//个体报告的导出必须是manager pm & interviwer
 		$manager = $this->session->get('Manager');
 		if(empty($manager)){
 			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!'));
 			return ;
 		}
 		//判断个人状态
-		$examinee = Examinee::findFirst($examinee_id);
-		if (!isset($examinee->id) ){
-			$this->dataReturn(array('error'=>'无效的用户编号'));
+		if ($examinee_info->state == 0 ){
+			//还未开始答题
+			$this->dataReturn(array('error'=>'被试还未答题'));
 			return ;
-		}
-		if ($examinee->state < 1 ){
-			$this->dataReturn(array('error'=>'用户还未完成答题！'));
-			return ;
+		}else if ($examinee_info -> state < 4 ){
+			//算分流程未完成
+			try{
+			BasicScore::handlePapers($examinee_info->id);
+			BasicScore::finishedBasic($examinee_info->id);
+			FactorScore::handleFactors($examinee_info->id);
+			FactorScore::finishedFactor($examinee_info->id);
+			IndexScore::handleIndexs($examinee_info->id);
+			IndexScore::finishedIndex($examinee_info->id);
+			}catch(Exception $e){
+				$this->dataReturn(array('error'=>'被试算分流程未完成，原因：'.$e->getMessage()));
+				return ;
+			}
+		}else{
+			//算分流程已完成
+			//add nothing 
 		}
 		// 根据目录结构判断文件是否存在
-		$project_id = $examinee->project_id;
-		$year = floor($project_id / 100 );
-		$path = './project/'.$year.'/'.$project_id.'/individual/personal_result/';
-		$path_url = '/project/'.$year.'/'.$project_id.'/individual/personal_result/';
-		$name = $examinee->number.'_personal_result.xls';
+		$year = floor($examinee_info->project_id/ 100 );
+		$path = './project/'.$year.'/'.$examinee_info->project_id.'/individual/personal_result/';
+		$path_url = '/project/'.$year.'/'.$examinee_info->project_id.'/individual/personal_result/';
+		$name = $examinee_info->number.'_personal_result.xls';
 		if(file_exists($path.$name)){
 			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name."' style='color:blue;text-decoration:underline;'>个人测评十项报表</a>"));
 			return ;
-			//返回路径
 		}else{
-			//生成文件，之后返回下载路径
-			if ($examinee->state > 3) {
-				$report_tmp_name = CheckoutExcel::checkoutExcel11($examinee,$project_id);
-			}else{
-				try{
-					$id = $examinee->id;
-					BasicScore::handlePapers($id);
-					BasicScore::finishedBasic($id);
-					FactorScore::handleFactors($id);
-					FactorScore::finishedFactor($id);
-					IndexScore::handleIndexs($id);
-					IndexScore::finishedIndex($id);
-					$report_tmp_name = CheckoutExcel::checkoutExcel11($examinee,$project_id);
-				}catch(Exception $e){
-					$this->dataBack(array('error'=>$e->getMessage()));
-					return ;
-				}
-			}
 			try{
+				$checkout_excel = new CheckoutExcel();
+				$report_tmp_name = $checkout_excel->excelExport($examinee_info);
 				$report_name = $path.$name;
 				$file = new FileHandle();
 				$file->movefile($report_tmp_name, $report_name);
 				//清空临时文件 主要在tmp中
-				$file->clearfiles('./tmp/', $examinee_id);
+				$file->clearfiles('./tmp/', $examinee_info->id);
 				//返回路径
 				$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''. $path_url.$name."' style='color:blue;text-decoration:underline;'>个人测评十项报表</a>"));
 				return ;
 			}catch(Exception $e){
-				$this->dataReturn(array('error'=>$e->getMessage()));
+				$this->dataReturn(array('error'=>'个人测评十项报表生成失败，原因：'.$e->getMessage()));
 				return ;
 			}
 		}
 	}
-	# 个人信息数据导出
-	public function getIndividualInfomationAction(){
-		
-	}
+
 	# 项目总体报告导出(项目经理操作)
 	public function MgetProjectComReportAction(){
 		$this->view->disable();
@@ -473,13 +465,13 @@ class FileController extends \Phalcon\Mvc\Controller {
 		// 根据目录结构判断文件是否存在
 		$project_id = $manager->project_id;
 		$year = floor($project_id / 100 );
-		$path = './project/'.$year.'/'.$project_id.'/system/report/';
-		$path_url = '/project/'.$year.'/'.$project_id.'/system/report/';
-		$name_2 = $project_id.'_system_report_1.docx';//修改
+		$path_2 = './project/'.$year.'/'.$project_id.'/system/report/v2/';
+		$path_url_2 = '/project/'.$year.'/'.$project_id.'/system/report/v2/';
+		$name = $project_id.'_system.docx'; //name
 		//先判断修改是否存在
-		if (file_exists($path.$name_2)){
+		if (file_exists($path_2.$name)){
 			//修改文件存在;
-			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name_2."' style='color:blue;text-decoration:underline;'>系统胜任力报告</a>"));
+			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url_2.$name."' style='color:blue;text-decoration:underline;'>系统胜任力报告</a>"));
 			return ;
 			// 返回 路径
 		}else{
@@ -487,8 +479,10 @@ class FileController extends \Phalcon\Mvc\Controller {
 			return ;
 		}
 	}
-	#批量导出个人综合素质报告
-	public function getAllIndividualComprehesiveAction(){
+	
+	#一键生成所有人员的综合报告：  以及胜任力报告
+	# 先判断所有人的报告是否可以全部生成 如果可以生成则生成， 否则不生成，反馈回不能生成的编号以及原因
+	public function getAllIndividualComprehesiveAction($type){
 		$this->view->disable();
 		//个体报告的导出必须是manager
 		$manager = $this->session->get('Manager');
@@ -496,88 +490,75 @@ class FileController extends \Phalcon\Mvc\Controller {
 			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!'));
 			return ;
 		}
-		//判断个人状态
-		$project_id = $manager->project_id;
-		$examinee = Examinee::find(array(
-			'project_id=?1 and type=0',
-			'bind'=>array(1=>$project_id)));
-		foreach ($examinee as $examinees) {
-			if ($examinees->state <5) {
-				$not_fished[$examinees->number] = $examinees->name;
-			}else{
-				$examinee_array[$examinees->number] = $examinees->id;
-			}
+		$year = floor($manager->project_id/ 100 );
+		switch($type){
+			case 1 : $path = './project/'.$year.'/'.$manager->project_id .'/individual/comprehensive/v1/';//个体综合原始报告位置
+					 $suffix = '_individual_comprehensive.docx';
+			break;
+			case 2 : $path = './project/'.$year.'/'.$manager->project_id .'/individual/competency/v1/';//个体胜任力原始报告位置
+					 $suffix = '_individual_competency.docx';		 
+			break;
+			default : $this->dataReturn(array('error'=>'请求参数错误-'.$type)); return ;
 		}
-		if (isset($not_fished)) {
-			$error = '部分人员未完成测评流程！名单如下：<br/>';
-			foreach ($not_fished as $key => $value) {
-				$error .= $key.'：'.$value.'<br/>';
-			}
-			$this->dataReturn(array('error'=>$error));
-			return;
-		}
-		// 根据目录结构判断文件是否存在
-		$year = floor($project_id / 100 );
-		$path = './project/'.$year.'/'.$project_id.'/individual/comprehesive/';
-		$path_url = '/project/'.$year.'/'.$project_id.'/individual/comprehesive/';
-		foreach ($examinee_array as $key=> $value) {
-			$name = $key.'_individual_comprehesive.docx'; //原始
-			if(file_exists($path.$name)){
-				continue;
+		// 获取项目下的被试名单
+		$examinees = $this->modelsManager->createBuilder()
+		->columns(array(
+				'number', 'name', 'id','state'
+		))
+		->from('Examinee')
+		->where('Examinee.project_id = '.$manager->project_id .' AND Examinee.type = 0 ')
+		->getQuery()
+		->execute()
+		->toArray();
+		//分两个数组
+		$not_finished_exam = array();  // 测评还未完成的    state < 5 面询专家意见填写完成后 
+		$not_finished_report = array(); // 报告还未生成的       
+		
+		//$path = './project/'.$year.'/'.$manager->project_id .'/individual/comprehensive/v1/';//个体综合原始报告位置
+		foreach ($examinees as $examinee_info) {
+			if ( $examinee_info['state'] < 5 ) {
+				$not_finished_exam[] = $examinee_info['number'].'-'.$examinee_info['name'].'-测评流程未完成';
 			}else{
-				//生成文件，之后返回下载路径
-				try{
-					$report = new IndividualComExport();
-					$report_tmp_name = $report->report($value);
-					$report_name = $path.$name;
-					$file = new FileHandle();
-					$file->movefile($report_tmp_name, $report_name);
-					//清空临时文件 主要在tmp中
-					$file->clearfiles('./tmp/', $value);
-				}catch(Exception $e){
-					$this->dataReturn(array('error'=>$e->getMessage()));
-					return ;
+				//$name =  $examinee_info['number'].'_individual_comprehensive.docx';
+				$name = $examinee_info['number'].$suffix;
+				if (!file_exists($path.$name)){
+					$not_finished_report[] = $examinee_info;
 				}
 			}
 		}
-		$this->dataReturn(array('success'=>'已生成全部被试个人综合素质报告'));
-	}
-	#批量导出个人胜任力报告
-	public function getAllIndividualCompetencyAction(){
-		$this->view->disable();
-		//个体报告的导出必须是manager
-		$manager = $this->session->get('Manager');
-		if(empty($manager)){
-			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!'));
+		if (!empty($not_finished_exam)){
+			$this->dataReturn(array('error'=>$not_finished_exam));
 			return ;
 		}
-		// 根据目录结构判断文件是否存在
-		$year = floor($project_id / 100 );
-		$path = './project/'.$year.'/'.$project_id.'/individual/competency/';
-		$path_url = '/project/'.$year.'/'.$project_id.'/individual/competency/';
-		foreach ($examinee_array as $key=> $value) {
-			$name = $key.'_individual_competency.docx'; //原始
-			if(file_exists($path.$name)){
-				continue;
-			}else{
-				//生成文件，之后返回下载路径
+		if (!empty($not_finished_report)){
+			//完成个体综合报告的生成
+			//个体报告生成可能出现的exception
+			$report_generate_error = array();
+			foreach($not_finished_report as $examinee_info_1){
 				try{
 					$report = new IndividualComExport();
-					$report_tmp_name = $report->report($value);
+					$report_tmp_name = $report->report($examinee_info_1['id']);
+					//$name = $examinee_info_1['number'].'_individual_comprehensive.docx';
+					$name = $examinee_info_1['number'].$suffix;
 					$report_name = $path.$name;
 					$file = new FileHandle();
 					$file->movefile($report_tmp_name, $report_name);
 					//清空临时文件 主要在tmp中
-					$file->clearfiles('./tmp/', $value);
+					$file->clearfiles('./tmp/', $examinee_info_1['id']);
+					//个体综合报告生成完成
 				}catch(Exception $e){
-					$this->dataReturn(array('error'=>$e->getMessage()));
-					return ;
+					$report_generate_error[] = $examinee_info_1['number'].'-'.$examinee_info_1['name'].'-报告生成失败，原因：'.$e->getMessage();
 				}
 			}
+			if (!empty($report_generate_error)){
+				$this->dataReturn(array('error'=>$report_generate_error));
+				return ;
+			}
 		}
-		$this->dataReturn(array('success'=>'已生成全部被试个人胜任力报告'));
+		$this->dataReturn(array('success'=>'true'));
+		return ;
 	}
-
+	
 	public function dataReturn($ans){
 		$this->response->setHeader("Content-Type", "text/json; charset=utf-8");
 		echo json_encode($ans);
@@ -746,13 +727,9 @@ class FileController extends \Phalcon\Mvc\Controller {
 	}catch(Exception $e){
 		$this->dataReturn(array('error'=>$e->getMessage())) ;
 		return;
+	}	
 	}
-		
-	}
-	
-	/**
-	 * 文件查找模块
-	 */
+	#报告上传情况查看 report_type 1 综合  2 胜任力
 	function getIndividualReportStateAction($report_type){
 		$manager = $this->session->get('Manager');
 		if(empty($manager)) {
@@ -821,4 +798,149 @@ class FileController extends \Phalcon\Mvc\Controller {
 		}
 		return $rt;
 	}
+	
+	#报告打包下载-- file_type 1 2 | file_new 1 2 | 
+	#原版综合 1  1 ， 原版胜任力 1  2 ， 修改版综合2  1 ，修改版胜任力 2 2 
+	public function packageFilesAction($file_type, $file_new){
+		$manager = $this->session->get('Manager');
+		if(empty($manager)) {
+			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!')) ;
+			return ;
+		}
+		$examinees = $this->modelsManager->createBuilder()
+		->columns(array(
+				'number'
+		))
+		->from('Examinee')
+		->where('Examinee.project_id = '.$manager->project_id .' AND Examinee.type = 0 ')
+		->getQuery()
+		->execute()
+		->toArray();
+		$tmp =null;
+		$examinees = $this->foo($examinees, $tmp);
+		$year = floor( $manager->project_id / 100 );
+		// 查找所有的普通被试人员
+		$not_finished = array();
+		$path = '';
+		$file_name = '';
+		if ($file_type == 1 && $file_new == 1 ){
+			//综合原版
+			$path = './project/'.$year.'/'.$manager->project_id.'/individual/comprehensive/v1/';
+			foreach($examinees as $examinee_number){
+				$new_path = $path.$examinee_number.'_individual_comprehensive.docx';
+				if (!file_exists($new_path)){
+					$not_finished[] = $examinee_number;
+				}
+			}
+			//遍历完所有的人员是否有相应的文件生成
+			if(!empty($not_finished)){
+				//全部人员的文件已经生成; 未生成
+				$this->dataReturn(array('error'=>$not_finished));
+				return ;
+			}
+			$file_name = 'individual_comprehensive_v1';
+			
+		}else if ($file_type == 1 && $file_new == 2 ){
+			//胜任力原版
+			$path = './project/'.$year.'/'.$manager->project_id.'/individual/competency/v1/';
+			foreach($examinees as $examinee_number){
+				$new_path = $path.$examinee_number.'_individual_competency.docx';
+				if (!file_exists($new_path)){
+					$not_finished[] = $examinee_number;
+				}
+			}
+			//遍历完所有的人员是否有相应的文件生成
+			if(!empty($not_finished)){
+				//全部人员的文件已经生成; 未生成
+				$this->dataReturn(array('error'=>$not_finished));
+				return ;
+			}
+			$file_name = 'individual_competency_v1';
+		}else if ($file_type == 2 && $file_new == 1 ){
+			//综合修改
+			$path = './project/'.$year.'/'.$manager->project_id.'/individual/comprehensive/v2/';
+			foreach($examinees as $examinee_number){
+				$new_path = $path.$examinee_number.'_individual_comprehensive.docx';
+				if (!file_exists($new_path)){
+					$not_finished[] = $examinee_number;
+				}
+			}
+			//遍历完所有的人员是否有相应的文件生成
+			if(!empty($not_finished)){
+				//全部人员的文件已经生成; 未生成
+				$this->dataReturn(array('error'=>$not_finished));
+				return ;
+			}
+			$file_name = 'individual_comprehensive_v2';
+		}else if ($file_type == 2 && $file_new == 2 ){
+			//胜任力修改
+			$path = './project/'.$year.'/'.$manager->project_id.'/individual/competency/v2/';
+			foreach($examinees as $examinee_number){
+				$new_path = $path.$examinee_number.'_individual_competency.docx';
+				if (!file_exists($new_path)){
+					$not_finished[] = $examinee_number;
+				}
+			}
+			//遍历完所有的人员是否有相应的文件生成
+			if(!empty($not_finished)){
+				//全部人员的文件已经生成; 未生成
+				$this->dataReturn(array('error'=>$not_finished));
+				return ;
+			}
+			$file_name = 'individual_competency_v2';
+		}else{
+			$this->dataReturn(array('error'=>'参数错误-'.$file_type.'-'.$file_new));
+			return ;
+		}
+		//$path 存在
+		try{
+			$zipfile = new FileHandle();
+			$file_path = $zipfile->packageZip($path, $manager->project_id, $file_name);
+			$this->dataReturn(array('success'=>$file_path));
+			return ;
+			
+		}catch(Exception $e){
+			$this->dataReturn(array('error'=>$e->Message()));
+			return ;
+		}
+	}
+	#文件导出 xls-- -- 被试人员列表 1   专家人员列表2   领导人员列表3
+	public function exportRoleAction($type){
+		$manager = $this->session->get('Manager');
+		if(empty($manager)) {
+			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!')) ;
+			return ;
+		}
+		try{
+		$excelExport = new ExcelExport();
+		$file_name = '';
+		switch($type){
+			case 1 : 
+				$result = Examinee::find(array('project_id = ?1 AND type = 0 ', 'bind'=>array(1=>$manager->project_id)));
+				$file_name = $excelExport->ExamineeExport($result, $manager->project_id); 
+				$this->dataReturn(array('success'=>$file_name));
+				return ;
+				break;
+			case 2 : 
+				$result = Manager::find(array('project_id = ?1 AND role = \'I\'', 'bind'=>array(1=>$manager->project_id)));
+				$file_name = $excelExport->InterviewerExport($result, $manager->project_id); 
+				$this->dataReturn(array('success'=>$file_name));
+				return ;
+				break;
+			case 3 : 
+				$result = Manager::find(array('project_id = ?1 AND role = \'L\'', 'bind'=>array(1=>$manager->project_id))); 
+				$file_name = $excelExport->LeaderExport($result, $manager->project_id); 
+				$this->dataReturn(array('success'=>$file_name));
+				return ;
+				break;
+			default : $this->dataReturn(array('error'=>'参数错误-'.$type)) ;return ;
+		}
+		}catch(Exception $e){
+			$this->dataReturn(array('error'=>'列表生成失败')) ;
+			return ;
+		}
+		
+	}
+	
+	
 }

@@ -5,24 +5,19 @@
  * Date: 15/8/27
  * Time: 下午12:35
  */
-include("../app/classes/PHPExcel.php");
+require_once ("../app/classes/PHPExcel.php");
 
-
-/**
- *
- */
 class ExcelExport 
 {
-    /*
+    /**
      * 测试人员导出
      */
-    public function ExamineeExport($arr){
+    public function ExamineeExport($arr, $project_id){
         $objPHPExcel = new PHPExcel();
         $objActSheet = $objPHPExcel->getActiveSheet();
         $objPHPExcel->getProperties()->setTitle('测试人员excel');
         $objPHPExcel->getProperties()->setSubject('测试人员excel');
-        $objPHPExcel->getProperties()->setDescription('从数据库导出的领导表');
-        /*
+        /**
          * 设置单元格的值
          */
         $objActSheet->setCellValue('A1','用户名');
@@ -96,41 +91,43 @@ class ExcelExport
             $objActSheet->setCellValue('O' . $key, $education_string);
             $objActSheet->setCellValue('P' . $key, $work_string);
         }
-        header('Content-Disposition:attachment;filename="被试人员.xls"');
-        $this->commonMsg($objPHPExcel);
+        $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
+        $file_name = './tmp/'.$project_id.'_examinees.xls';
+        $objWriter->save($file_name);
+        return $file_name;
     }
 
     /*
      *面询专家导出
      */
-    public function InterviewerExport($arr){
-        $this->managerExport($arr,'I');
+    public function InterviewerExport($arr, $project_id){
+        return $this->managerExport($arr,'I', $project_id);
     }
 
     /*
      * 领导导出
      */
-    public function LeaderExport($arr){
-        $this->managerExport($arr,'L');
+    public function LeaderExport($arr, $project_id){
+       return  $this->managerExport($arr,'L', $project_id);
     }
 
-    public function managerExport($arr,$role){
+    public function managerExport($arr,$role, $project_id){
         $objPHPExcel = new PHPExcel();
         $objActSheet = $objPHPExcel->getActiveSheet();
         /*
          * excel属性
          */
+        $file_name = '';
         if($role == 'L'){
             $objPHPExcel->getProperties()->setTitle('领导excel');
             $objPHPExcel->getProperties()->setSubject('领导excel');
-            $objPHPExcel->getProperties()->setDescription('从数据库中导出的领导表');
-            header('Content-Disposition:attachment;filename="领导.xls"');
-        }
-        if($role == 'I'){
+            $file_name = './tmp/'.$project_id.'_leaders.xls';
+        }else if ($role == 'I'){
             $objPHPExcel->getProperties()->setTitle('面询专家excel');
             $objPHPExcel->getProperties()->setSubject('面询专家excel');
-            $objPHPExcel->getProperties()->setDescription('从数据库中导出的面询专家表');
-            header('Content-Disposition:attachment;filename="面询专家.xls"');
+            $file_name = './tmp/'.$project_id.'_interviewers.xls';
+        }else {
+        	throw new Exception('No this type-'.$role);
         }
         /*
          * 设置单元格的值
@@ -138,33 +135,22 @@ class ExcelExport
         $objActSheet->setCellValue('A1','用户名(编号)');
         $objActSheet->setCellValue('B1','密码');
         $objActSheet->setCellValue('C1','姓名');
-        $objActSheet->setCellValue('D1','项目');
+        $objActSheet->setCellValue('D1','项目编号');
 
         foreach($arr as $key => $item){
             $key = $key + 2;
             $objActSheet->setCellValue('A'.$key,$item->username);
             $objActSheet->setCellValue('B'.$key,$item->password);
             $objActSheet->setCellValue('C'.$key,$item->name);
-            $objActSheet->setCellValue('D'.$key,'项目'.$item->project_id);
+            $objActSheet->setCellValue('D'.$key,$item->project_id);
         }
         $objActSheet->getColumnDimension('A')->setAutoSize(true);
         $objActSheet->getColumnDimension('B')->setAutoSize(true);
         $objActSheet->getColumnDimension('C')->setAutoSize(true);
         $objActSheet->getColumnDimension('D')->setAutoSize(true);
-        $this->commonMsg($objPHPExcel);
-    }
-
-    public function commonMsg($objPHPExcel){
-        header("Pragma: public");
-        header("Expires: 0");
-        header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
-        header("Content-Type:application/force-download");
-        header("Content-Type:application/vnd.ms-execl");
-        header("Content-Type:application/octet-stream");
-        header("Content-Type:application/download");;
-        header("Content-Transfer-Encoding:binary");
         $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
-        $objWriter->save('php://output');
+        $objWriter->save($file_name);
+        return $file_name;
     }
 
 }

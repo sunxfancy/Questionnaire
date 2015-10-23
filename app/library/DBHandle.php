@@ -572,13 +572,13 @@ class DBHandle {
         try{
             $manager     = new TxManager();
             $transaction = $manager->get();
+
             foreach($data as $key=>$value){
                 $middle = new MiddleLayer();
                 $middle->setTransaction($transaction);
-                foreach($value as $skey=>$svalue){
-                    $middle->name = $key;
-                    $middle->$skey = $svalue;
-                }
+                $middle->name = $key;
+                $middle->children = $value['children'];
+                $middle->father   = $value['father'];
                 if($middle->save() == false) {
                      $transaction->rollback('数据更新失败-3');
                 }

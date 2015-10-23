@@ -8,7 +8,7 @@
 -->
 <div class="Leo_question" style="overflow:auto;padding-top:25px;">
     <div class="form-group" style='display:inline-block;'>
-        <div style="display:inline-block;margin-left:40px;font-size:26px;color:red;">被试信息</div>
+        <div style="display:inline-block;margin-left:40px;font-size:26px;color:red;">被试人员列表</div>
     </div> 
     <div class='form-group' style='display:inline-block;float:right;margin-right:40px;'>
         <form action='/pm' class="form-inline" method='post'>
@@ -17,36 +17,42 @@
             <i class="glyphicon glyphicon-fast-backward"></i>&nbsp;返回上层</button>
         </form>
     </div> 
-    <div class='form-group' style='margin-left:60px;'>
-            <a class="btn btn-primary" style='width:200px;'  href="/pm/examineeExport"  type='button'>
-                <i class="glyphicon glyphicon-download"></i>&nbsp;所有被试信息列表
-            </a>
+    <div class='form-group' style='margin-left:40px;'>
+            <button class="btn btn-primary" onclick='exportExaminees()' style='width:100px;' type='button'>
+                <i class="glyphicon glyphicon-download"></i>&nbsp;列表下载
+            </button>
     </div> 
     <div class="form-group">
         <div style="display:inline-block;margin-left:40px;font-size:26px;color:red;">批量下载</div>
     </div>  
 <div style="height:40px;margin-left:40px;">
     <div class='form-group' style='display:inline-block;'>
-        <button id="onekeyc" type='button' onclick="oneKeyCalculate()" class="btn btn-primary start" style='width:100px;'>
+        <button  type='button' onclick="oneKeyCalculate()" class="btn btn-primary start" style='width:100px;'>
             <i class="glyphicon glyphicon-send"></i>&nbsp;一键算分
         </button>
-        <span class="label" id='score'></span>
+        <span class="label label-default" id='score'>未完成</span>
     </div>
 </div>
 <div style="height:40px;margin-left:40px;">
     <div class="form-group" style='display:inline-block;font-size:20px;'>
         <span class="text-primary" ><i class='glyphicon glyphicon-tag' style='font-size:15px;'></i></span>个人综合素质报告
     </div>
+     &nbsp;&nbsp;
+    <div class='form-group' style='display:inline-block;'>
+        <button  onclick="oneKeyReport(1)" type='button' class="btn btn-primary start" style='width:100px;'>
+             <i class="glyphicon glyphicon-send"></i>&nbsp;一键生成
+        </button>
+    </div>
     &nbsp;&nbsp;
     <div class='form-group' style='display:inline-block;'>
-        <button id="onekeys1" onclick="oneKeyComprehensive()" type='button' class="btn btn-primary start" style='width:100px;'>
-            <i class="glyphicon glyphicon-send"></i>&nbsp;一键生成
+        <button id="onekeys1" onclick="downloadZip(1,1)" type='button' class="btn btn-primary start" style='width:150px;'>
+            <i class="glyphicon glyphicon-download"></i>&nbsp;原始版打包下载
         </button>
-        <span class="label" id='comprehesive'></span>
-    </div>&nbsp;&nbsp;
+    </div>
+    &nbsp;&nbsp;
     <div class='form-group' style='display:inline-block;'>
-        <button id="onekeyd1" onclick="downloadProjectComReport()" type='button' class="btn btn-primary start" style='width:100px;'>
-            <i class="glyphicon glyphicon-download"></i>&nbsp;一键导出
+        <button id="onekeyd1" onclick="downloadZip(2,1)" type='button' class="btn btn-primary start" style='width:150px;'>
+            <i class="glyphicon glyphicon-download"></i>&nbsp;修改版打包下载
         </button>
     </div>
 </div>
@@ -54,16 +60,22 @@
     <div class="form-group" style='display:inline-block;font-size:20px;'>
         <span class="text-primary" ><i class='glyphicon glyphicon-tag' style='font-size:15px;'></i></span>个人胜任力报告<span style='visibility: hidden'>位</span>
     </div>
+     &nbsp;&nbsp;
+    <div class='form-group' style='display:inline-block;'>
+        <button  onclick="oneKeyReport(2)" type='button' class="btn btn-primary start" style='width:100px;'>
+             <i class="glyphicon glyphicon-send"></i>&nbsp;一键生成
+        </button>
+    </div>
     &nbsp;&nbsp;
     <div class='form-group' style='display:inline-block;'>
-        <button id="onekeys2" onclick="oneKeyCompetency()" type='button' class="btn btn-primary start" style='width:100px;'>
-            <i class="glyphicon glyphicon-send"></i>&nbsp;一键生成
+        <button  onclick="downloadZip(1,2)" type='button' class="btn btn-primary start" style='width:150px;'>
+             <i class="glyphicon glyphicon-download"></i>&nbsp;原始版打包下载
         </button>
-        <span class="label" id='competency'></span>
-    </div>&nbsp;&nbsp;
+    </div>
+    &nbsp;&nbsp;
     <div class='form-group' style='display:inline-block;'>
-        <button id="onekeyd2" onclick="downloadProjectComReport()" type='button' class="btn btn-primary start" style='width:100px;'>
-            <i class="glyphicon glyphicon-download"></i>&nbsp;一键导出
+        <button  onclick="downloadZip(2,2)"type='button' class="btn btn-primary start" style='width:150px;'>
+            <i class="glyphicon glyphicon-download"></i>&nbsp;修改版打包下载
         </button>
     </div>
 </div>
@@ -283,12 +295,12 @@ function checkUploaded(args){
 	  	}else{
 	  		var msg ='';
 	  		if (number == 1 ){
-	  			msg +='个体综合报告修改结果统计';
+	  			msg +='个体综合报告上传结果统计';
 	  		}else{
-	  			msg +='个体胜任力报告修改结果统计';
+	  			msg +='个体胜任力报告上传结果统计';
 	  		}
             msg += "<table class=\"table table-hover\"  style='margin-bottom:0;margin-top:0;'>";
-            msg +='<caption><b style=\'color:red;\'>未修改名单</b></caption>';
+            msg +='<caption><b style=\'color:red;\'>未上传名单</b></caption>';
 	  		var not = data.success.not;
 	  		for(var i = 0, len = not.length; i < len; i++ ){
 	  			msg+=('<tr><td>'+not[i]+'</td></tr>');
@@ -296,7 +308,7 @@ function checkUploaded(args){
 	  		msg +='</table>';
 	  		msg +='<br />';
 	  		msg += "<table class=\"table table-hover\"  style='margin-bottom:0;'>";
-            msg +='<caption><b style=\'color:green;\'>已修改名单</b></caption>';
+            msg +='<caption><b style=\'color:green;\'>已上传名单</b></caption>';
 	  		var ok = data.success.ok;
 	  		console.log(ok.length);
 	  		for(var i =0, len = ok.length; i <len; i ++ ){
@@ -307,7 +319,53 @@ function checkUploaded(args){
 	  	}
 	  })
 }
-
+//打包下载控制
+function downloadZip(type, newold){
+    $.post('/file/packageFiles/'+type+'/'+newold, function(data){
+        if(data.error){
+        	if (isArray(data.error)){
+        		//打印未完成名单
+        	var msg ='';
+            if (type == 1 &&  newold  == 1 ){
+                msg +='如下人员个体综合报告未生成';
+            }else if(type == 1 &&  newold  == 2 ){
+                msg +='如下人员个体胜任力报告未生成';
+            }else if(type == 2 &&  newold  == 1 ){
+                msg +='如下人员个体综合报告修改版未上传';
+            }else if(type == 2 &&  newold  == 2 ){
+                msg +='如下人员个体胜任力报告修改版未上传';
+            }
+            msg += "<table class=\"table table-hover\"  style='margin-bottom:0;margin-top:0;'>";
+            msg +='<caption><b style=\'color:red;\'></b></caption>';
+            var not = data.error;
+            for(var i = 0, len = not.length; i < len; i++ ){
+                msg+=('<tr><td>'+not[i]+'</td></tr>');
+            }
+            msg +='</table>';
+            downloadError(msg);        		
+        	}else{
+        		//打印错误信息
+        		downloadError(data.error);
+        	}
+        }else{
+        	var msg ='';
+            if (type == 1 &&  newold  == 1 ){
+                msg ='个体综合报告打包下载';
+            }else if(type == 1 &&  newold  == 2 ){
+                msg ='个体胜任力报告打包下载';
+            }else if(type == 2 &&  newold  == 1 ){
+                msg ='个体综合报告修改版打包下载';
+            }else if(type == 2 &&  newold  == 2 ){
+                msg ='个体胜任力报告修改版打包下载';
+            }
+            msg = "<a href='"+data.success.substr( 1, data.success.length-1)+"'>"+msg+"</a>";
+            downloadSuccess(msg);
+        }
+    })
+}
+function isArray(o) {  
+  return Object.prototype.toString.call(o) === '[object Array]';   
+} 
 
 $(function(){
     getData(url);
@@ -332,87 +390,129 @@ function getData(url){
                  })
         }else{
             if(spinner){ spinner.stop(); }
-            datadeal(data.success);            
+            // datadeal(data.success);  
+            if (data.success == 'true'){
+            	  $('#score').removeClass('label-default');
+            	  $('#score').addClass('label-success');
+                  $('#score').html('已完成');
+                  
+            }else {
+            	  $('#score').removeClass('label-success');
+            	  $('#score').addClass('label-default');
+                  $('#score').html('未完成');
+            }     
+            
         }
     })
 }
-function datadeal(data){
-    if(data.score){
-        $('#score').addClass('label-success');
-        $('#score').html('已完成');
-        $('#onekeyc').attr('disabled',true);
-    }else{
-        $('#score').addClass('label-default');
-        $('#score').html('未完成');
-        $('#onekeys1').attr('disabled',true);
-        $('#onekeys2').attr('disabled',true);
-    }
-    if(data.comprehesive){
-        $('#comprehesive').addClass('label-success');
-        $('#comprehesive').html('已完成');
-        $('#onekeys1').attr('disabled',true);
-    }else{
-        $('#comprehesive').addClass('label-default');
-        $('#comprehesive').html('未完成');
-        $('#onekeyd1').attr('disabled',true);
-    }
-    if(data.competency){
-        $('#competency').addClass('label-success');
-        $('#competency').html('已完成');
-        $('#onekeys2').attr('disabled',true);
-    }else{
-        $('#competency').addClass('label-default');
-        $('#competency').html('未完成');
-        $('#onekeyd2').attr('disabled',true);
-    }
-}
+
 function oneKeyCalculate(){
     downloadWait('正在计算所有被试人员测评得分！');
     $.post('/pm/oneKeyCalculate', function(data){
         if (data.error){
-            downloadError(data.error);
+            if (isArray(data.error)){
+                //打印未完成名单
+            var msg ='一键算分失败';
+            msg += "<table class=\"table table-hover\"  style='margin-bottom:0;margin-top:0;'>";
+            msg +='<caption><b style=\'color:red;\'></b></caption>';
+            var not = data.error;
+            for(var i = 0, len = not.length; i < len; i++ ){
+                msg+=('<tr><td>'+not[i]+'</td></tr>');
+            }
+            msg +='</table>';
+            downloadError(msg);             
+            }else{
+                //打印错误信息
+                downloadError(data.error);
+            }
         }else{
-            downloadSuccess(data.success);
+            downloadSuccess('一键算分完成');
         }
     });
 }
-function oneKeyComprehensive(){
-    downloadWait('正在生成所有被试人员个人综合素质报告！');
-    $.post('/file/getAllIndividualComprehesive', function(data){
-        if (data.error){
-            downloadError(data.error);
+function oneKeyReport(number){
+	if (number == 1 ){
+		   downloadWait('正在生成所有被试人员个人综合素质报告！');
+	}else if ( number == 2 ){
+		  downloadWait('正在生成所有被试人员个人胜任力报告！');
+	}else{
+		alert('参数错误');
+	}
+    $.post('/file/getAllIndividualComprehesive/'+number, function(data){
+        if(data.error){
+            if (isArray(data.error)){
+                //打印失败原因
+            var msg ='一键生成失败：';
+            msg += "<table class=\"table table-hover\"  style='margin-bottom:0;margin-top:0;'>";
+            msg +='<caption><b style=\'color:red;\'></b></caption>';
+            var not = data.error;
+            for(var i = 0, len = not.length; i < len; i++ ){
+                msg+=('<tr><td>'+not[i]+'</td></tr>');
+            }
+            msg +='</table>';
+            downloadError(msg);             
+            }else{
+                //打印错误信息
+                downloadError(data.error);
+            }
         }else{
-            downloadSuccess(data.success);
-        }
+            downloadSuccess('一键生成成功');
+        }
     });
 }
-function oneKeyCompetency(){
-    downloadWait('正在生成所有被试人员个人胜任力报告！');
-    $.post('/file/getAllIndividualCompetency',function(data){
-        if (data.error){
-            downloadError(data.error);
-        }else{
-            downloadSuccess(data.success);
-        }
-    });
-}
+
 function downloadAllComprehensive(){
     downloadWait('正在生成所有被试人员个人综合素质报告！');
     $.post('/file/getAllIndividualComprehesive', function(data){
-        if (data.error){
-            downloadError(data.error);
+          if(data.error){
+            if (isArray(data.error)){
+                //打印失败 
+            var msg ='';
+            if (type == 1 &&  newold  == 1 ){
+                msg +='如下人员个体综合报告未生成';
+            }else if(type == 1 &&  newold  == 2 ){
+                msg +='如下人员个体胜任力报告未生成';
+            }else if(type == 2 &&  newold  == 1 ){
+                msg +='如下人员个体综合报告修改版未上传';
+            }else if(type == 2 &&  newold  == 2 ){
+                msg +='如下人员个体胜任力报告修改版未上传';
+            }
+            msg += "<table class=\"table table-hover\"  style='margin-bottom:0;margin-top:0;'>";
+            msg +='<caption><b style=\'color:red;\'></b></caption>';
+            var not = data.error;
+            for(var i = 0, len = not.length; i < len; i++ ){
+                msg+=('<tr><td>'+not[i]+'</td></tr>');
+            }
+            msg +='</table>';
+            downloadError(msg);             
+            }else{
+                //打印错误信息
+                downloadError(data.error);
+            }
         }else{
-            downloadSuccess(data.success);
+            var msg ='';
+            if (type == 1 &&  newold  == 1 ){
+                msg ='个体综合报告打包下载';
+            }else if(type == 1 &&  newold  == 2 ){
+                msg ='个体胜任力报告打包下载';
+            }else if(type == 2 &&  newold  == 1 ){
+                msg ='个体综合报告修改版打包下载';
+            }else if(type == 2 &&  newold  == 2 ){
+                msg ='个体胜任力报告修改版打包下载';
+            }
+            msg = "<a href='"+data.success.substr( 1, data.success.length-1)+"'>"+msg+"</a>";
+            downloadSuccess(msg);
         }
-    });
+    })
 }
-function downloadAllCompetency(){
-    downloadWait('正在生成所有被试人员个人胜任力报告！');
-    $.post('/file/getAllIndividualCompetency', function(data){
+function exportExaminees(){
+	downloadWait('正在生成被试人员列表');
+    $.post('/file/exportRole/1', function(data){
         if (data.error){
             downloadError(data.error);
-        }else{
-            downloadSuccess(data.success);
+        }else {
+        	var msg = "<a href='"+data.success.substr( 1, data.success.length-1)+"'>被试人员列表</a>";
+            downloadSuccess(msg);
         }
     });
 }

@@ -44,14 +44,14 @@
 
         <div style="width:80%;text-align:right;margin: 30px 0 50px 0;">
             <form class="form-inline">
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <button class="btn btn-info" style="width:100px;">
                     <i class="glyphicon glyphicon-print"></i>&nbsp;打印</button>
                 </div>&nbsp;&nbsp;
                 <div class="form-group">
                     <a class="btn btn-primary" href="#" style="width:100px;">
                     <i class="glyphicon glyphicon-download"></i>&nbsp;导出</a>
-                </div>&nbsp;&nbsp;
+                </div>&nbsp;&nbsp; -->
                 <div class="form-group">
                     <a class="btn btn-success" href="/leader/index" style="width:100px;">
                     <i class="glyphicon glyphicon-home"></i>&nbsp;返回首页</a>
