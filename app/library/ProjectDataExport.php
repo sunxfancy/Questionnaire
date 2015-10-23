@@ -22,6 +22,7 @@ class ProjectDataExport  extends \Phalcon\Mvc\Controller
 			    'number',
 				'id',
 			    'state',
+			    'name'
 				))
 			   ->from( 'Examinee' )
 			   ->where( 'Examinee.type = 0 AND Examinee.project_id =  '.$project_id )
@@ -31,7 +32,7 @@ class ProjectDataExport  extends \Phalcon\Mvc\Controller
 		//异常处理 
 		$members_not_finished = array();
 		foreach($examinee as $value){
-			if ($value->state < 4 ){
+			if ($value['state'] < 4 ){
 				$members_not_finished[$value['number']] = $value['name'];
 			}
 		}
