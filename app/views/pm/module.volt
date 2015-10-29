@@ -34,7 +34,7 @@
 
     <div style="width:100%;height:40px;text-align:center;margin-top:20px;">   
     	<button class='btn btn-danger' id='del' style='width:120px'>
-        <i class="glyphicon glyphicon-trash"></i>&nbsp;删除项目配置</button>&nbsp;&nbsp;    
+        <i class="glyphicon glyphicon-trash"></i>&nbsp;清空项目模块</button>&nbsp;&nbsp;    
         <button class="btn btn-primary" id='sel_all' style='width:80px;'>
         <i class="glyphicon glyphicon-ok-circle"></i>&nbsp;全选</button>&nbsp;&nbsp;    
         <button class="btn btn-primary" id='unsel_all' style='width:80px;'>

@@ -18,9 +18,9 @@
                 <img style="height: 40px;" id="Leo_pagedown" src="../images/right.png" />
             </td><td style="width:20%;">
                 <img style="height: 40px;" id="Leo_checkup" src="../images/signin.png"  />
-            </td><td style="width:20%;">
+            </td><!-- <td style="width:20%;">
                 <button style="height: 40px;;" id="Leo_All" value="全选A" />
-            </td></tr>            
+            </td> --></tr>            
         </table>
     </div>
 </div>  
@@ -171,7 +171,9 @@ function initTitle(index){
             $("#newdiv_"+Leo_now_index).css('background-color', '#48fffb');
             changepage(Leo_now_index+1,true);
         }
-    });
+    });
+
+
     function doclick(){
         checkcheckbox();
         var now_ans=get_ans_str();
@@ -411,7 +413,8 @@ function Leo_check(){
                  $('.modal-footer').html('');
                  $('.modal-footer').html(
                     "<button type=\"button\" class=\"btn btn-primary\" click='Lea_check();'>重新提交</button>"
-                    // +"&nbsp;&nbsp;&nbsp;<button type=\"button\" class=\"btn btn-primary\" onclick=\"w_last();\">退出</button>"                  );
+                    // +"&nbsp;&nbsp;&nbsp;<button type=\"button\" class=\"btn btn-primary\" onclick=\"w_last();\">退出</button>"
+                  );
                  
                  $('#myModal').modal({
                         keyboard:true,
