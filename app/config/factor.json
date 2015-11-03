@@ -1,0 +1,593 @@
+{
+	"16PF":{
+		    "A": {
+		        "question": "3, 26, 27, 51, 52, 76, 101, 126, 151, 176",
+		        "action": "sum",
+		        "chs_name": "乐群性",
+		        "ans_do": "$ans=$ans"
+		    },
+		    "B": {
+		        "question": "28, 53, 54, 77, 78, 102, 103, 127, 128, 152, 153, 177, 178",
+		        "action": "sum",
+		        "chs_name": "聪慧性",
+		        "ans_do": "$ans=$ans"
+		    },
+		    "C": {
+		        "question": "4, 5, 29, 30, 55, 79, 80, 104, 105, 129, 130, 154, 179",
+		        "action": "sum",
+		        "chs_name": "稳定性",
+		        "ans_do": "$ans=$ans"
+		    },
+		    "E": {
+		        "question": "6, 7, 31, 32, 56, 57, 81, 106, 131, 155, 156, 180, 181",
+		        "action": "sum",
+		        "chs_name": "恃强性",
+		        "ans_do": "$ans=$ans"
+		    },
+		    "F": {
+		        "question": "8, 33, 58, 82, 83, 107, 108, 132, 133, 157, 158, 182, 183",
+		        "action": "sum",
+		        "chs_name": "兴奋性",
+		        "ans_do": "$ans=$ans"
+		    },
+		    "G": {
+		        "question": "9, 34, 59, 84, 109, 134, 159, 160, 184, 185",
+		        "action": "sum",
+		        "chs_name": "有恒性",
+		        "ans_do": "$ans=$ans"
+		    },
+		    "H": {
+		        "question": "10, 35, 36, 60, 61, 85, 86, 110, 111, 135, 136, 161, 186",
+		        "action": "sum",
+		        "chs_name": "敢为性",
+		        "ans_do": "$ans=$ans"
+		    },
+		    "I": {
+		        "question": "11, 12, 37, 62, 87, 112, 137, 138, 162, 163",
+		        "action": "sum",
+		        "chs_name": "敏感性",
+		        "ans_do": "$ans=$ans"
+		    },
+		    "L": {
+		        "question": "13, 38, 63, 64, 88, 89, 113, 114, 139, 164",
+		        "action": "sum",
+		        "chs_name": "怀疑性",
+		        "ans_do": "$ans=$ans"
+		    },
+		    "M": {
+		        "question": "14, 15, 39, 40, 65, 90, 91, 115, 116, 140, 141, 165, 166",
+		        "action": "sum",
+		        "chs_name": "幻想性",
+		        "ans_do": "$ans=$ans"
+		    },
+		    "N": {
+		        "question": "16, 17, 41, 42, 66, 67, 92, 117, 142, 167",
+		        "action": "sum",
+		        "chs_name": "世故性",
+		        "ans_do": "$ans=$ans"
+		    },
+		    "O": {
+		        "question": "18, 19, 43, 44, 68, 69, 93, 94, 118, 119, 143, 144, 168",
+		        "action": "sum",
+		        "chs_name": "忧虑性",
+		        "ans_do": "$ans=$ans"
+		    },
+		    "Q1": {
+		        "question": "20, 21, 45, 46, 70, 95, 120, 145, 169, 170",
+		        "action": "sum",
+		        "chs_name": "实验性",
+		        "ans_do": "$ans=$ans"
+		    },
+		    "Q2": {
+		        "question": "22, 47, 71, 72, 96, 97, 121, 122, 146, 171",
+		        "action": "sum",
+		        "chs_name": "独立性",
+		        "ans_do": "$ans=$ans"
+		    },
+		    "Q3": {
+		        "question": "23, 24, 48, 73, 98, 123, 147, 148, 172, 173",
+		        "action": "sum",
+		        "chs_name": "自律性",
+		        "ans_do": "$ans=$ans"
+		    },
+		    "Q4": {
+		        "question": "25, 49, 50, 74, 75, 99, 100, 124, 125, 149, 150, 174, 175",
+		        "action": "sum",
+		        "chs_name": "紧张性",
+		        "ans_do": "$ans=10-$ans"
+		    },
+		    "X1": {
+		        "factor": "L,O,Q4,C,H,Q3",
+		        "action": "(38+2*L+3*O+4*Q4-(2*C+2*H+2*Q3))/10",
+		        "chs_name": "适应与焦虑",
+		        "ans_do": "$ans=10-$ans"
+		    },
+		    "X2": {
+		        "factor": "A,E,F,H,Q2",
+		        "action": "(2*A+3*E+4*F+5*H-(2*Q2+11))/10",
+		        "chs_name": "内向与外向",
+		        "ans_do": "$ans=$ans"
+		    },
+		    "X3": {
+		        "factor": "C,E,F,N,A,I,M",
+		        "action": "(77+2*C+2*E+2*F+2*N-(4*A+6*I+2*M))/10",
+		        "chs_name": "感情用事",
+		        "ans_do": "$ans=$ans"
+		    },
+		    "X4": {
+		        "factor": "E,M,Q1,Q2,A,G",
+		        "action": "(4*E+3*M+4*Q1+4*Q2-(3*A+2*G))/10",
+		        "chs_name": "怯懦与果断",
+		        "ans_do": "$ans=$ans"
+		    },
+		    "Y1": {
+		        "factor": "C,F,O,Q4",
+		        "action": "C+F+(11-O)+(11-Q4)",
+		        "chs_name": "心理健康",
+		        "ans_do": "$ans=$ans/4"
+		    },
+		    "Y2": {
+		        "factor": "Q3,G,C,E,N,Q1,Q2",
+		        "action": "2*Q3+2*G+2*C+E+N+Q1+Q2",
+		        "chs_name": "专业成就",
+		        "ans_do": "$ans=$ans/7.5"
+		    },
+		    "Y3": {
+		        "factor": "A,B,E,F,H,I,M,N,Q1,Q2",
+		        "action": "2*(11-A)+2*B+E+2*(11-F)+H+2*I+M+(11-N)+Q1+2*Q2",
+		        "chs_name": "创造力",
+		        "ans_do": "$ans=$ans"
+		    },
+		    "Y4": {
+		        "factor": "B,G,Q3,F",
+		        "action": "B+G+Q3+(11-F)",
+		        "chs_name": "成长能力",
+		        "ans_do": "$ans=$ans/4"
+		    }
+    },
+
+    "EPPS":{
+		    "end": {
+		        "questionA": "153,158,163,168,173,178,182,188,193,198,203,208,213,218,223",
+		        "questionB": "61,62,63,64,65,136,137,138,139,140,211,212,213,214,215",
+		        "action": "sum-1",
+		        "chs_name": "持久需要",
+		        "ans_do": "$ans=$ans/2.8"
+		    },
+		    "int": {
+		        "questionA": "77,82,87,92,97,102,107,112,117,122,127,132,137,142,147",
+		        "questionB": "31,32,33,34,35,106,107,108,109,110,181,182,183,184,185",
+		        "action": "sum-1",
+		        "chs_name": "省察需要",
+		        "ans_do": "$ans=$ans/2.8"
+		    },
+		    "ord": {
+		        "questionA": "3,8,13,18,23,28,33,38,43,48,53,58,63,68,73",
+		        "questionB": "11,12,13,14,15,86,87,88,89,90,161,162,163,164,165",
+		        "action": "sum-1",
+		        "chs_name": "秩序需要",
+		        "ans_do": "$ans=$ans/2.8"
+		    },
+		    "ach": {
+		        "questionA": "1,6,11,16,21,26,31,36,41,46,51,56,61,66,71",
+		        "questionB": "1,2,3,4,5,76,77,78,79,80,151,152,153,154,155",
+		        "action": "sum-1",
+		        "chs_name": "成就需要",
+		        "ans_do": "$ans=$ans/2.8"
+		    },
+		    "chg": {
+		        "questionA": "152,157,162,167,172,177,182,187,192,197,202,207,212,217,222",
+		        "questionB": "56,57,58,59,60,131,132,133,134,135,206,207,208,209,210",
+		        "action": "sum-1",
+		        "chs_name": "变异需要",
+		        "ans_do": "$ans=$ans/2.8"
+		    },
+		    "aba": {
+		        "questionA": "80,85,90,95,100,105,110,115,120,125,130,135,140,145,150",
+		        "questionB": "46,47,48,49,50,121,122,123,124,125,196,197,198,199,200",
+		        "action": "sum-1",
+		        "chs_name": "谦卑需要",
+		        "ans_do": "$ans=$ans/2.8"
+		    },
+		    "dom": {
+		        "questionA": "79,84,89,94,99,104,109,114,119,124,129,134,139,144,149",
+		        "questionB": "41,42,43,44,45,116,117,118,119,120,191,192,193,194,195",
+		        "action": "sum-1",
+		        "chs_name": "支配需要",
+		        "ans_do": "$ans=$ans/2.8"
+		    },
+		    "aff": {
+		        "questionA": "76,81,86,91,96,101,106,111,116,121,126,131,136,141,146",
+		        "questionB": "26,27,28,29,30,101,102,103,104,105,176,177,178,179,180",
+		        "action": "sum-1",
+		        "chs_name": "亲和需要",
+		        "ans_do": "$ans=$ans/2.8"
+		    },
+		    "def": {
+		        "questionA": "2,7,12,17,22,27,32,37,42,47,52,57,62,67,72",
+		        "questionB": "6,7,8,9,10,81,82,83,84,85,156,157,158,159,160",
+		        "action": "sum-1",
+		        "chs_name": "顺从需要",
+		        "ans_do": "$ans=$ans/2.8"
+		    },
+		    "agg": {
+		        "questionA": "155,160,165,170,175,180,185,190,195,200,205,210,215,220,225",
+		        "questionB": "71,72,73,74,75,146,147,148,149,150,221,222,223,224,225",
+		        "action": "sum-1",
+		        "chs_name": "攻击需要",
+		        "ans_do": "$ans=$ans/2.8"
+		    },
+		    "suc": {
+		        "questionA": "78,83,88,93,98,103,108,113,118,123,128,133,138,143,148",
+		        "questionB": "36,37,38,39,40,111,112,113,114,115,186,187,188,189,190",
+		        "action": "sum-1",
+		        "chs_name": "求助需要",
+		        "ans_do": "$ans=$ans/2.8"
+		    },
+		    "exh": {
+		        "questionA": "4,9,14,19,24,29,34,39,44,49,54,59,64,69,74",
+		        "questionB": "16,17,18,19,20,91,92,93,94,95,166,167,168,169,170",
+		        "action": "sum-1",
+		        "chs_name": "表现需要",
+		        "ans_do": "$ans=$ans/2.8"
+		    },
+		    "aut": {
+		        "questionA": "5,10,15,20,25,30,35,40,45,50,55,60,65,70,75",
+		        "questionB": "21,22,23,24,25,96,97,98,99,100,171,172,173,174,175",
+		        "action": "sum-1",
+		        "chs_name": "自主需要",
+		        "ans_do": "$ans=$ans/2.8"
+		    },
+		    "het": {
+		        "questionA": "154,159,164,169,174,179,184,189,194,199,204,209,214,219,224",
+		        "questionB": "66,67,68,69,70,141,142,143,144,145,216,217,218,219,220",
+		        "action": "sum-1",
+		        "chs_name": "异性恋需要",
+		        "ans_do": "$ans=$ans/2.8"
+		    },
+		    "nur": {
+		        "questionA": "151,156,161,166,171,176,181,186,191,196,201,206,211,216,221",
+		        "questionB": "51,52,53,54,55,126,127,128,129,130,201,202,203,204,205",
+		        "action": "sum-1",
+		        "chs_name": "慈善需要",
+		        "ans_do": "$ans=$ans/2.8"
+		    },
+		    "con":{
+		    	"question":"1,7,13,19,25,26,32,38,44,50,51,57,63,69,75,101,107,113,119,125,151,157,163,169,175,201,207,213,219,225",
+		        "chs_name": "稳定系数",
+		        "action":"sum",
+		         "ans_do": "if ($ans == 1) $ans = 9; else
+		                    if ($ans == 2) $ans = 8; else  
+		                    if ($ans == 3) $ans = 7; else
+		                    if ($ans == 4) $ans = 5; else 
+		                    if($ans ==6 ) $ans=2; else $ans = 1;"
+		    }
+    },
+
+    "SCL":{
+
+		    "soma": {
+		        "question": "1,4,12,27,40,42,48,49,52,53,56,58",
+		        "action": "avg",
+		        "chs_name": "躯体化",
+		        "ans_do":"if ($ans == 1) $ans = 9; else
+		                    if ($ans < 1.1) $ans = 8; else  
+		                    if ($ans < 1.3) $ans = 7; else
+		                    if ($ans < 1.4) $ans = 6; else 
+		                    if($ans <1.6 ) $ans=4;	else
+		                     if ($ans < 2) $ans = 3; else 
+		                     if ($ans < 4) $ans = 2; else $ans = 1;"
+		    },
+		    "obse": {
+		        "question": "3,9,10,28,38,45,46,51,55,65",
+		        "action": "avg",
+		        "chs_name": "强迫症状",
+		        "ans_do": "if ($ans == 1) $ans = 9; else
+		                    if ($ans < 1.1) $ans = 8; else  
+		                    if ($ans < 1.3) $ans = 7; else
+		                    if ($ans < 1.4) $ans = 6; else 
+		                    if($ans <1.6 ) $ans=4;	else
+		                     if ($ans < 2) $ans = 3; else 
+		                     if ($ans < 4) $ans = 2; else $ans = 1;"
+		    },
+		    "inte": {
+		        "question": "6,21,34,36,37,41,61,69,73",
+		        "action": "avg",
+		        "chs_name": "人际关系敏感",
+		        "ans_do": "if ($ans == 1) $ans = 9; else
+		                    if ($ans < 1.1) $ans = 8; else  
+		                    if ($ans < 1.3) $ans = 7; else
+		                    if ($ans < 1.4) $ans = 6; else 
+		                    if($ans <1.6 ) $ans=4;	else
+		                     if ($ans < 2) $ans = 3; else 
+		                     if ($ans < 4) $ans = 2; else $ans = 1;"
+		    },
+		    "depr": {
+		        "question": "5,14,15,20,22,26,29,30,31,32,54,71,79",
+		        "action": "avg",
+		        "chs_name": "忧郁",
+		        "ans_do": "if ($ans == 1) $ans = 9; else
+		                    if ($ans < 1.1) $ans = 8; else  
+		                    if ($ans < 1.3) $ans = 7; else
+		                    if ($ans < 1.4) $ans = 6; else 
+		                    if($ans <1.6 ) $ans=4;	else
+		                     if ($ans < 2) $ans = 3; else 
+		                     if ($ans < 4) $ans = 2; else $ans = 1;"
+		    },
+		    "anxi": {
+		        "question": "2,17,23,33,39,57,72,78,80,86",
+		        "action": "avg",
+		        "chs_name": "焦虑",
+		        "ans_do": "if ($ans == 1) $ans = 9; else
+		                    if ($ans < 1.1) $ans = 8; else  
+		                    if ($ans < 1.3) $ans = 7; else
+		                    if ($ans < 1.4) $ans = 6; else 
+		                    if($ans <1.6 ) $ans=4;	else
+		                     if ($ans < 2) $ans = 3; else 
+		                     if ($ans < 4) $ans = 2; else $ans = 1;"
+		    },
+		    "host": {
+		        "question": "11,24,63,67,74,81",
+		        "action": "avg",
+		        "chs_name": "敌对",
+		        "ans_do": "if ($ans == 1) $ans = 9; else
+		                    if ($ans < 1.1) $ans = 8; else  
+		                    if ($ans < 1.3) $ans = 7; else
+		                    if ($ans < 1.4) $ans = 6; else 
+		                    if($ans <1.6 ) $ans=4;	else
+		                     if ($ans < 2) $ans = 3; else 
+		                     if ($ans < 4) $ans = 2; else $ans = 1;"
+		    },
+		    "phob": {
+		        "question": "13,25,47,50,70,75,82",
+		        "action": "avg",
+		        "chs_name": "恐怖",
+		        "ans_do":  "if ($ans == 1) $ans = 9; else
+		                    if ($ans < 1.1) $ans = 8; else  
+		                    if ($ans < 1.3) $ans = 7; else
+		                    if ($ans < 1.4) $ans = 6; else 
+		                    if($ans <1.6 ) $ans=4;	else
+		                     if ($ans < 2) $ans = 3; else 
+		                     if ($ans < 4) $ans = 2; else $ans = 1;"
+		    },
+		    "parn": {
+		        "question": "8,18,43,68,76,83",
+		        "action": "avg",
+		        "chs_name": "偏执",
+		        "ans_do":  "if ($ans == 1) $ans = 9; else
+		                    if ($ans < 1.1) $ans = 8; else  
+		                    if ($ans < 1.3) $ans = 7; else
+		                    if ($ans < 1.4) $ans = 6; else 
+		                    if($ans <1.6 ) $ans=4;	else
+		                     if ($ans < 2) $ans = 3; else 
+		                     if ($ans < 4) $ans = 2; else $ans = 1;"
+		    },
+		    "psyc": {
+		        "question": "7,16,35,62,77,84,85,87,88,90",
+		        "action": "avg",
+		        "chs_name": "精神病性",
+		        "ans_do":  "if ($ans == 1) $ans = 9; else
+		                    if ($ans < 1.1) $ans = 8; else  
+		                    if ($ans < 1.3) $ans = 7; else
+		                    if ($ans < 1.4) $ans = 6; else 
+		                    if($ans <1.6 ) $ans=4;	else
+		                     if ($ans < 2) $ans = 3; else 
+		                     if ($ans < 4) $ans = 2; else $ans = 1;"
+		    },
+		    "qtfm": {
+		        "question": "19,44,59,60,64,66,89",
+		        "action": "avg",
+		        "chs_name": "其它",
+		        "ans_do": "if ($ans == 1) $ans = 9; else
+		                    if ($ans < 1.1) $ans = 8; else  
+		                    if ($ans < 1.3) $ans = 7; else
+		                    if ($ans < 1.4) $ans = 6; else 
+		                    if($ans <1.6 ) $ans=4;	else
+		                     if ($ans < 2) $ans = 3; else 
+		                     if ($ans < 4) $ans = 2; else $ans = 1;"
+		    }
+    },
+    "EPQA":{
+		    "epqae": {
+		        "question": "1,5,10,13,14,17,21,25,29,33,37,41,45,49,53,55,61,65,71,80,84",
+		        "action": "sum",
+		        "chs_name": "内外向",
+		        "ans_do": "$ans=$ans/10"
+		    },
+		    "epqan": {
+		        "question": "3,7,12,15,19,23,27,31,35,39,43,47,51,57,59,63,67,69,73,74,77,78,82,86",
+		        "action": "sum",
+		        "chs_name": "神经质",
+		        "ans_do": "$ans=10-$ans/10"
+		    },
+		    "epqap": {
+		        "question": "2,6,9,11,18,22,26,30,34,38,42,46,50,56,62,66,68,72,75,76,81,85,88",
+		        "action": "sum",
+		        "chs_name": "精神质",
+		        "ans_do":"$ans=10-$ans/10"
+		    },
+		    "epqal": {
+		        "question": "4,8,16,20,24,28,32,36,40,44,48,52,54,58,60,64,70,79,83,87",
+		        "action": "sum",
+		        "chs_name": "掩饰性",
+		        "ans_do": "$ans=10-$ans/10"
+		    }
+    },
+    "CPI":{
+
+		    "do": {
+		        "question": "26,27,57,83,89,91,130,153,161,170,174,181,193,199,205,109,213,224,227",
+		        "action": "sum",
+		        "chs_name": "支配性",
+		        "ans_do": "$ans=$ans/10"
+		    },
+		    "cs": {
+		        "question": "8,18,23,36,43,50,79,83,95,99,113,115,139,149",
+		        "action": "sum",
+		        "chs_name": "进取性",
+		        "ans_do": "$ans=$ans/10"
+		    },
+		    "sy": {
+		        "question": "1,25,38,46,53,54,57,64,72,81,83,120,130,136,146,147",
+		        "action": "sum",
+		        "chs_name": "社交性",
+		        "ans_do": "$ans=$ans/10"
+		    },
+		    "sp": {
+		        "question": "3,11,23,25,28,34,38,40,46,53,89,99,103,113,116,126,131",
+		        "action": "sum",
+		        "chs_name": "自在性",
+		        "ans_do": "$ans=$ans/10"
+		    },
+		    "sa": {
+		        "question": "4,16,17,57,89,91,113,130,147,154",
+		        "action": "sum",
+		        "chs_name": "自承性",
+		        "ans_do": "$ans=$ans/10"
+		    },
+		    "wb": {
+		        "question": "7,35,48,96,117,134,155,159,166,172,178,180,187,191,202,204,206,214,217,220",
+		        "action": "sum",
+		        "chs_name": "幸福感",
+		        "ans_do": "$ans=$ans/10"
+		    },
+		    "re": {
+		        "question": "21,24,30,37,39,41,58,65,69,82,101,104,106,132,143,150",
+		        "action": "sum",
+		        "chs_name": "责任感",
+		        "ans_do": "$ans=$ans/10"
+		    },
+		    "so": {
+		        "question": "71,82,84,107,157,169,171,186,195,196,197,201,207,211,216,218,219,221,225,229",
+		        "action": "sum",
+		        "chs_name": "社会化",
+		        "ans_do": "$ans=$ans/10"
+		    },
+		    "sc": {
+		        "question": "3,14,20,22,26,42,53,59,68,74,85,86,90,92,94,96,116,121,129,135,141,142,152,154,155,156",
+		        "action": "sum",
+		        "chs_name": "自制力",
+		        "ans_do": "$ans=$ans/10"
+		    },
+		    "po": {
+		        "question": "7,12,33,48,50,74,77,88,92,93,102,110,123,129,134,148,152",
+		        "action": "sum",
+		        "chs_name": "宽容性",
+		        "ans_do": "$ans=$ans/10"
+		    },
+		    "gi": {
+		        "question": "6,15,20,22,32,35,42,44,49,52,55,73,75,78,85,90,100,116,118,133,141,151",
+		        "action": "sum",
+		        "chs_name": "好印象",
+		        "ans_do": "$ans=$ans/10"
+		    },
+		    "cm": {
+		        "question": "158,160,162,163,168,173,176,177,182,188,192,215,226",
+		        "action": "sum",
+		        "chs_name": "同众性",
+		        "ans_do": "$ans=$ans/10"
+		    },
+		    "ac": {
+		        "question": "14,24,61,72,76,80,86,87,98,107,117,121,125,137,144",
+		        "action": "sum",
+		        "chs_name": "遵循成就",
+		        "ans_do": "$ans=$ans/10"
+		    },
+		    "ai": {
+		        "question": "4,19,29,60,62,66,70,102,111,119,127,128,139,152",
+		        "action": "sum",
+		        "chs_name": "独立成就",
+		        "ans_do": "$ans=$ans/10"
+		    },
+		    "ie": {
+		        "question": "25,40,57,83,99,130,136,146,179,185,208,210,212,222",
+		        "action": "sum",
+		        "chs_name": "精干性",
+		        "ans_do": "$ans=$ans/10"
+		    },
+		    "py": {
+		        "question": "5,27,47,51,67,72,94,105,112,114,145",
+		        "action": "sum",
+		        "chs_name": "心理性",
+		        "ans_do": "$ans=$ans/10"
+		    },
+		    "fx": {
+		        "question": "164,165,167,175,183,184,189,190,194,198,203,223,228,230",
+		        "action": "sum",
+		        "chs_name": "灵活性",
+		        "ans_do":   "if ($ans == 100) $ans = 10; else
+		                    if ($ans > 80) $ans = 9; else  
+		                    if ($ans > 65) $ans = 8; else
+		                    if ($ans > 30) $ans = 5; else 
+		                    if ($ans > 10) $ans = 2;else $ans = 1;"
+		    },
+		    "fe": {
+		        "question": "9,13,28,31,42,45,56,65,71,104,107,108,122,124,138,140",
+		        "action": "sum",
+		        "chs_name": "女性化",
+		        "ans_do": "$ans=$ans/10"
+		    }	
+    },
+    "SPM":{
+		    "spma": {
+		        "question": "1,2,3,4,5,6,7,8,9,10,11,12",
+		        "action": "sum",
+		        "chs_name": "SPM(A)",
+		        "ans_do": "if ($ans == 1) $ans = 9; else
+		                    if ($ans == 2) $ans = 7.5; else  
+		                    if ($ans == 3) $ans = 6; else
+		                    if ($ans == 4) $ans = 5; else 
+		                     if ($ans == 5) $ans = 4; else $ans = 1;"
+		    },
+		    "spmb": {
+		        "question": "13,14,15,16,17,18,19,20,21,22,23,24",
+		        "action": "sum",
+		        "chs_name": "SPM(B)",
+		        "ans_do": "if ($ans == 1) $ans = 9; else
+		                    if ($ans == 2) $ans = 7.5; else  
+		                    if ($ans == 3) $ans = 6; else
+		                    if ($ans == 4) $ans = 5; else 
+		                     if ($ans == 5) $ans = 4; else $ans = 1;"
+		    },
+		    "spmc": {
+		        "question": "25,26,27,28,29,30,31,32,33,34,35,36",
+		        "action": "sum",
+		        "chs_name": "SPM(C)",
+		        "ans_do": "if ($ans == 1) $ans = 9; else
+		                    if ($ans == 2) $ans = 7.5; else  
+		                    if ($ans == 3) $ans = 6; else
+		                    if ($ans == 4) $ans = 5; else 
+		                     if ($ans == 5) $ans = 4; else $ans = 1;"
+		    },
+		    "spmd": {
+		        "question": "37,38,39,40,41,42,43,44,45,46,47,48",
+		        "action": "sum",
+		        "chs_name": "SPM(D)",
+		        "ans_do": "if ($ans == 1) $ans = 9; else
+		                    if ($ans == 2) $ans = 7.5; else  
+		                    if ($ans == 3) $ans = 6; else
+		                    if ($ans == 4) $ans = 5; else 
+		                     if ($ans == 5) $ans = 4; else $ans = 1;"
+		    },
+		    "spme": {
+		        "question": "49,50,51,52,53,54,55,56,57,58,59,60",
+		        "action": "sum",
+		        "chs_name": "SPM(E)",
+		        "ans_do":"if ($ans == 1) $ans = 9; else
+		                    if ($ans == 2) $ans = 7.5; else  
+		                    if ($ans == 3) $ans = 6; else
+		                    if ($ans == 4) $ans = 5; else 
+		                     if ($ans == 5) $ans = 4; else $ans = 1;"
+		    },
+		    "spm": {
+		        "factor": "spma,spmb,spmc,spmd,spme",
+		        "action": "spma+spmb+spmc+spmd+spme",
+		        "chs_name": "SPM"
+		    },
+		    "spmabc": {
+		        "factor": "spma,spmb,spmc",
+		        "action": "spma+spmb+spmc",
+		        "chs_name": "SPM(A、B、C)"
+		    }
+    }
+}

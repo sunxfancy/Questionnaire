@@ -9,7 +9,7 @@
 //配置数据库
 $dbserver   = "localhost";
 $dbusername = "root";
-$dbpassword = "12306";
+$dbpassword = "";
 $database   = 'questionnaire';
 //其他配置
 $title = '系统数据字典';

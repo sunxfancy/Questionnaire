@@ -1,5 +1,10 @@
 <?php
 
+    //setting default time_zone
+    ini_set('error_reporting', E_ALL);
+    date_default_timezone_set('PRC');
+   
+
 try {
 
     // $config = new Phalcon\Config\Adapter\Ini('../app/config/config.ini');
@@ -18,15 +23,16 @@ try {
 
     //Create a DI
     $di = new Phalcon\DI\FactoryDefault();
-
+ 
 	//Setup the database service
     $di->set('db', function() use ($config) {
         return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
             "host"     => $config->database->host,
             "username" => $config->database->username,
             "password" => $config->database->password,
-            "dbname"   => $config->database->dbname,
-            'charset'  => 'UTF8'
+            "dbname"   => $config->database->name,
+            'charset'  => 'UTF8',
+        	
         ));
     });
 
@@ -128,6 +134,26 @@ try {
             return new \Phalcon\Mvc\Model\Metadata\Memory();
         }
     });
+   
+ /**
+   * setting model caching service
+   */
+	$di->set('modelsCache' , function() use ($config) {
+	//frontend   a day
+		$frontCache = new \Phalcon\Cache\Frontend\Data(
+		array(
+			'lifetime'=>86400
+ 		));
+		$cache = new \Phalcon\Cache\Backend\Memcache(
+				$frontCache,
+				array(
+						"host" => "localhost",
+						"port" => "11211"
+				)
+		);
+		return $cache;  
+   });
+    	
 
     //Handle the request
     $app = new \Phalcon\Mvc\Application($di);
@@ -136,4 +162,6 @@ try {
 
 } catch(\Phalcon\Exception $e) {
      echo "PhalconException: ", $e->getMessage();
+} catch(PDOException $e){
+	die('数据库连接失败-'.$e->getMessage());
 }

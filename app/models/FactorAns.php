@@ -1,27 +1,9 @@
 <?php
 
-
 class FactorAns extends \Phalcon\Mvc\Model 
 {
-
-    /**
-     * @var integer
-     *
-     */
-    public $id;
-
-    /**
-     * @var integer
-     *
-     */
     public $score;
-
-    /**
-     * @var integer
-     *
-     */
     public $std_score;
-
     /**
      * @var integer
      *
@@ -34,5 +16,10 @@ class FactorAns extends \Phalcon\Mvc\Model
      */
     public $factor_id;
 
-
+    public $ans_score;
+    
+    public function initialize(){
+    	$this->belongsTo('factor_id','Factor','id');
+    	$this->belongsTo('examinee_id', 'Examinee','id');
+    }
 }

@@ -1,4 +1,4 @@
-﻿// JavaScript source code
+// JavaScript source code
 function Leo_question(index_i, que, kind, ans) {
     this.index = index_i;
     this.ques = que;
@@ -50,7 +50,6 @@ function Leo_question(index_i, que, kind, ans) {
             var newRadio = document.createElement("input");
             newRadio.type = "radio";
             newRadio.name = index_i + "";
-
             var newspan = document.createElement("span");
             answersdiv.style.width = "100%";
             newspan.style.fontSize = "22px";
@@ -146,24 +145,11 @@ function changeColor(t) {
    
 }
 
-function checkcheckbox(name) {
-    var b = false;
-    var e = document.getElementsByName(name);
-    for (var i = 0; i < e.length; i++) {
-        if (e[i].checked) {
-            b = true;
-        }
-    }
-    if (!b) {
-        $("#newdiv_" + name).css('background-color',"gray");
-    } else {
-        $("#newdiv_" + name).css('background-color',"green");
-    }
-}
 
-function checkOver3(name) {
+
+function checkOver3() {
     var b = 0;
-    var e = document.getElementsByName(name);
+    var e = document.getElementsByTagName("input");
     for (var i = 0; i < e.length; i++) {
         if (e[i].checked) {
             b ++;
@@ -192,32 +178,31 @@ function clickCheckBox(t) {
 
 }
 
-function Leo_checkcomplete() {
-
-        var now_ans=get_ans_str(Leo_now_index);
-        refreshCookie(Leo_now_index,now_ans);
-        var badques = new Array();
-        for (var i = 0; i < questionlength; i++) {
-            if (document.getElementById("newdiv_" + i).style.backgroundColor=='gray') {
-                badques.push((i + 1));
-            }
-        }
-        if (badques.length != 0) {
-            alert("您的答题是不完整的，其中第" + badques + "题缺少必要的答案！请继续答题！");
-            changepage(badques[0] - 1,true);
-        } else {
-            var t = confirm("您确定要提交吗？");
-            if (t) {
-                
-                alert("感谢您的配合，我们将在答案提交完毕后，进入问卷调查");
-                //跳转代码
-                //window.location.href = "testinfo.html";
-            }
-        }
-    }
 
 
 /*cookie操作*/
+//初始化cookie
+function initCookie(q_length,user){
+        var ans_cookie=$.cookie(user);
+        if(!ans_cookie){
+            var ans_array=new Array(q_length);
+            for(var i=0;i<q_length;i++){
+                ans_array[i]='0';
+            }
+            $.cookie(user,ans_array.join("|"),{experies:7});
+            changepage(0,false);
+        }else{
+            initCookie_title(ans_cookie);
+        }
+    }
 
+ function refreshCookie(index,new_ans,user){
+         var ans_cookie=$.cookie(user);
+         var ans_array=ans_cookie.split('|');
+         ans_array[index]=new_ans;
+         ans_str=ans_array.join("|");
+         $.cookie(user,ans_str,{expires:7});
+    }
 
+    
 

@@ -1,0 +1,172 @@
+{
+	"zb_ldnl":{
+		"index":"zb_pdyjcnl,zb_zzglnl,zb_cxnl,zb_ybnl,zb_dlgznl",
+		"action":"(2*(zb_pdyjcnl + zb_zzglnl)+ zb_cxnl + zb_ybnl+ zb_dlgznl)/7",
+		"chs_name": "领导能力"
+	},
+
+	"zb_pdyjcnl":{
+		"factor":"X4,H,chg,Y3,ord,end,aut,X3",
+		"action":"(1.5*(X4 + H)+chg +Y3 + ord+end +aut +X3)/8",
+		"chs_name": "判断与决策能力"
+	},
+
+	"zb_zzglnl":{
+		"factor":"dom,ord,H,X4,Y2,ach,end,aut,re,do",
+		"action":"(1.5*(dom + ord) + H + X4 + Y2 + ach + end + aut + re + do)/11",
+		"chs_name": "组织管理能力"
+	},
+
+	"zb_fxx":{
+		"factor":"H,chg,M,Q2,I,sp,sa,A",
+		"action":"(1.5*(H + chg) + M + Q2 + I + sp + sa + A)/9",
+		"chs_name": "风险性"
+	},
+
+	"zb_dlgznl":{
+		"factor":"aut,Q2,dom,ai,ach,exh,def,Q1,H,E,ie",
+		"action":"(1.5*(aut + Q2) + dom + ai + ach + exh + def + Q1 + H + E + ie)/12",
+		"chs_name": "独立工作能力"
+	},
+
+	"zb_cxnl":{
+		"factor":"Y3,H,chg,M,I,F,Q1,L,A,fx,py,end,Y4",
+		"action":"(1.5*(Y3 + H + chg) + M + I + F + Q1 + L + A + fx + py + end + Y4)/14.5",
+		"chs_name": "创新能力"
+
+	},
+
+	"zb_ybnl":{
+		"factor":"X1,Y4,Y3,chg,ach,Q1,I,B,Q3",
+		"action":"(1.5*(X1 + Y4) + Y3 + chg + ach + Q1 + I + B + Q3)/10",
+		"chs_name": "应变能力"
+	},
+
+	"zb_jlx":{
+		"factor":"Q3,sc,sa,po,G,fx,so,int",
+		"action":"(1.5*(Q3 + sc) + sa + po + G + fx + so + int)/9",
+		"chs_name": "纪律性"
+	},
+
+	"zb_fxnl":{
+		"factor":"spmd,Y3,int,B,Y4,Y2,end,Q2,ord,E,L",
+		"action":"(1.5*(spmd + Y3 + int) + B + Y4 + Y2 + end + Q2 + ord + E + L)/12.5",
+		"chs_name": "分析能力"
+	},
+
+	"zb_gnnl":{
+		"factor":"spme,spmd,Y2,ai,ac,chg,aut,dom,Q2,N,fx,ie",
+		"action":"(1.5*(spme + spmd + Y2) + ai + ac + chg + aut + dom + Q2 + N + fx + ie)/13.5",
+		"chs_name": "归纳能力"
+	},
+
+	"zb_zrx":{
+		"factor":"re,G,C,Q2,ach,end,ac,ai,def,aut,ord,dom",
+		"action":"(2*(re + G + C + Q2) + ach + end + ac + ai + def + aut + ord + dom)/16",
+		"chs_name": "责任心"
+	},
+
+	"zb_cxd":{
+		"factor":"con,epqal,gi,wb,Q3,re,cm",
+		"action":"(1.5*(con + epqal) + gi + wb + Q3 + re + cm)/8",
+		"chs_name": "诚信度"
+	},
+
+	"zb_grjzqx":{
+		"factor":"ach,Y2,cs,exh,dom,nur,aff,aba,def,gi,wb,Q3,sc,po",
+		"action":"(2*(ach + Y2 + cs) + exh + dom + nur + aff + aba + def + gi + wb + Q3 + sc +po)/17",
+		"chs_name": "个人价值取向"
+	},
+
+	"zb_tdjs":{
+		"factor":"ac,A,Y2,aff,def,ach,ord,end,aut,cs,ai",
+		"action":"(1.5*(ac + A + Y2) + aff + def + ach + ord + end + aut + cs +ai)/12.5",
+		"chs_name": "团队精神"
+		
+	},
+
+	"zb_gztd":{
+		"factor":"re,Q2,G,ord,end,sc,Y4",
+		"action":"(1.5*(re + Q2) + G + ord + end + sc + Y4)/8",
+		"chs_name": "工作态度"
+	},
+
+	"zb_gzzf":{
+		"children":"X4,zb_rjgxtjsp,chg,Y3,Q3,spmabc,aff",
+		"children_type":"1,0,1,1,1,1,1",
+		"action":"(1.5*(X4 + zb_rjgxtjsp) + chg + Y3 + Q3 + spmabc + aff)/8",
+		"chs_name": "工作作风"
+	},
+
+	"zb_rnx":{
+		"factor":"po,nur,aff,ac,aba,def,X1,A,L,E",
+		"action":"(1.5*(po + nur + aff) + ac + aba + def + X1 + A + L + E)/11.5",
+		"chs_name": "容纳性"
+	},
+
+	"zb_bxx":{
+		"factor":"exh,gi,cm,wb,sy,aut,dom,agg,Q2",
+		"action":"(1.5*(exh + gi + cm) + wb + sy + aut + dom + agg + Q2)/10.5",
+		"chs_name": "表现性"
+	},
+
+	"zb_rjgxtjsp":{
+		"factor":"po,aff,nur,def,E,X3,N,inte,I,aba,suc,fx",
+		"action":"(1.5*(po + aff + nur) + def + E + X3 + N + inte + I + aba + suc +fx)/13.5",
+		"chs_name": "人际关系调节水平"
+	},
+
+	"zb_tzjl":{
+		"factor":"soma,obse,epqap,epqan,F,M,G,I",
+		"action":"(1.5*(soma + obse) + epqap + epqan + F + M + G + I)/9",
+		"chs_name": "体质精力"
+	},
+
+	"zb_xg":{
+		"factor":"X2,epqae,A,sy,sa,sp,F,exh,spmabc,I",
+		"action":"(1.5*(X2 + epqae + A) + sy + sa + sp + F + exh + spmabc + I)/11.5",
+		"chs_name": "性格"
+	},
+
+	"zb_qxkzsp":{
+		"factor":"Y1,sc,C,G,Q3,F,I,po,N,epqan",
+		"action":"(1.5*(Y1 + sc + C) + G + Q3 + F + I + po + N + epqan)/11.5",
+		"chs_name": "情绪控制水平"
+	},
+
+	"zb_syhjsp":{
+		"factor":"Y4,fx,sp,O,sc,po,Q4,X1",
+		"action":"(1.5*(Y4 + fx) + sp + O + sc + po + Q4 + X1)/9",
+		"chs_name": "适应环境水平"
+	},
+
+	"zb_zz":{
+		"factor":"ai,end,E,G,aut,def,agg,Q2,H,L,parn",
+		"action":"(1.5*(ai + end + E) + G + aut + def + agg + Q2 + H + L + parn)/12.5",
+		"chs_name": "执着"
+	},
+
+	"zb_xljksp":{
+		"factor":"Y1,C,sc,X1,sa,Q3,py,O,Q4,A",
+		"action":"(1.5*(Y1 + C + sc + X1) + sa + Q3 + py + O + Q4+ A)/12",
+		"chs_name": "心理健康水平"
+	},
+
+	"zb_sjnl":{
+		"factor":"sy,aff,def,end,agg,I,F,epqae,A,L,E,sp",
+		"action":"(1.5*(sy + aff + def + end) + agg + I + F + epqae + A + L + E +sp)/14",
+		"chs_name": "社交水平"
+	},
+
+	"zb_chd":{
+		"factor":"B,spm,Y4,Y2,Y3,chg,ai,ac,ie,N",
+		"action":"(1.5*(B + spm + Y4) + Y2 + Y3 + chg + ai + ac + ie + N)/11.5",
+		"chs_name": "聪慧度"
+	},
+
+	"zb_jmng":{
+		"factor":"ie,N,fx,sc,po,sa,Y4",
+		"action":"(1.5*(ie + N) + fx + sc + po + sa + Y4)/8",
+		"chs_name": "精明能干"
+	}
+}

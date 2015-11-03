@@ -8,12 +8,6 @@ class IndexAns extends \Phalcon\Mvc\Model
      * @var integer
      *
      */
-    public $id;
-
-    /**
-     * @var integer
-     *
-     */
     public $score;
 
     /**
@@ -28,5 +22,9 @@ class IndexAns extends \Phalcon\Mvc\Model
      */
     public $examinee_id;
 
-
+    public function initialize()
+    {
+        $this->belongsTo('index_id',  'Index','id');
+        $this->belongsTo('examinee_id', 'Examinee', 'id');
+    }
 }

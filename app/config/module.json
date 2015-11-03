@@ -1,0 +1,49 @@
+{
+	"胜任力" : {
+		"mk_ldl": {
+			"children" : "zb_ldnl,zb_pdyjcnl,zb_zzglnl,zb_fxx",
+			"chs_name": "领导力"
+		},
+		"mk_zysz": {
+			"children" : "zb_dlgznl,zb_cxnl,zb_tdjs,zb_gztd,zb_gzzf",
+			"chs_name": "职业素质"
+		},
+		"mk_swnl": {
+			"children" : "zb_jlx,zb_fxnl,zb_gnnl",
+			"chs_name" : "思维能力"
+		},
+		"mk_tdpz": {
+			"children" : "zb_zrx,zb_cxd,zb_grjzqx,zb_rnx",
+			"chs_name" : "态度品质"
+		},
+		"mk_zynl": {
+			"children" : "zb_bxx,zb_ybnl,zb_jmng,zb_rjgxtjsp,zb_chd",
+			"chs_name" : "专业能力"
+		},
+		"mk_grtz": {
+			"children" : "zb_tzjl,zb_xg,zb_qxkzsp,zb_syhjsp,zb_sjnl,zb_zz,zb_xljksp",
+			"chs_name" : "个人特质"
+		}
+	},
+	"素质测评模块" : {
+		"mk_xljk": {
+			"children" : "zb_xljksp,zb_qxkzsp,zb_syhjsp,zb_rjgxtjsp,zb_xg,zb_zz,zb_fxx",
+			"chs_name" : "心理健康"
+		},
+		"mk_szjg": {
+			"children" : "zb_zrx,zb_cxd,zb_grjzqx,zb_tdjs,zb_gztd,zb_gzzf,zb_bxx,zb_rnx",
+			"chs_name" : "素质结构"
+		},
+		"mk_ztjg": {
+			"children" : "zb_chd,zb_jmng,zb_jlx,zb_tzjl,zb_fxnl,zb_gnnl",
+			"chs_name" : "智体结构"
+		},
+		"mk_nljg": {
+			"children" : "zb_dlgznl,zb_cxnl,zb_ybnl,zb_pdyjcnl,zb_zzglnl,zb_sjnl,zb_ldnl",
+			"chs_name" : "能力结构"
+		}
+	}
+}
+
+
+

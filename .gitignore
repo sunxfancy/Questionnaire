@@ -1,11 +1,20 @@
+Ç°¶Ë´úÂë/zfw_Demo/*
 cache/cachefile/*.txt
 cache/volt/*.php
 cache/temp/*.xls
+cache/model/*
 doc/
 cache/backup/*.bak
 app/config/config.ini
 app/config/config.php
-public/upload/*.xls
+public/upload/*
+public/template/*
+public/pcharts/*
+public/words/*
+public/wordexport/*
+public/pictmp/*
+public/tmp/*
+public/project/*
 .idea/
 .phpintel/
 question.sublime-project
@@ -13,3 +22,4 @@ question.sublime-workspace
 *.*~
 .fuse_hidden*
 *.bak
+memcached-win64/*

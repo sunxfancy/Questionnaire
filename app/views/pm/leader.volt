@@ -1,36 +1,83 @@
+<!--引入时间控件样式表-->
+<link rel="stylesheet" href="/datetimepicker/bootstrap-datetimepicker.min.css" />
+<!--引入时间控件js-->
+<script type="text/javascript" src= '/datetimepicker/bootstrap.min.js'></script>
+<script type="text/javascript" src="/datetimepicker/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
+<!-- jqgrid 组件-->
 <script type="text/javascript" src="/jqGrid/js/jquery.jqGrid.min.js"></script>
 <script type="text/javascript" src="/jqGrid/js/i18n/grid.locale-cn.js"></script>
-<script type="text/javascript" src="/js/bootstrap.js"></script>
-<script type="text/javascript" src="/lib/bootstrap-datepicker.js"></script>
-<script type="text/javascript" src="/lib/bootstrap-datetimepicker.js"></script>
-
-
+<!--jqgrid 辅助-->
+<script type="text/javascript" src="/jqGrid/js/jqgrid.assist.js"></script>
+<!--文件上传 -->
+<script src='/fileupload/ajaxfileupload.js'></script>
+<!--pm 页面公用函数库-->
+<script src='/js/pm.assit.js'></script>
 
 <div style="width:100%;height:460px;overflow:hidden;">
     <table id="grid-table"></table>
     <div id="grid-pager"></div>   
-  
-    <div style="width:100%;height:40px;text-align:center;margin: 5px 10px;">
-        <form class="form-inline" method="POST" action="/pm/uploadleader" enctype="multipart/form-data">
-            <div class="form-group">
-                <input type="file" name="file" input maxlength="100" style="height:30px;cursor:pointer;">
+
+    <div style="width:100%;height:40px;text-align:center; margin: 5px 10px;">
+            <div class="form-group" style='display:inline-block;'>
+                <a href='/template/leader.xls'>
+                    <button  class="btn btn-info" style='width:150px;'>
+                	<i class="glyphicon glyphicon-collapse-down"></i>
+                	导入模板下载
+                </button>
+                </a>
             </div>
-            <div class="form-group">
-                <button class="btn btn-success" type="submit" >导入</button>
+            &nbsp;&nbsp;
+            <div class='form-group' style='display:inline-block;'>
+            <span class="btn btn-success fileinput-button" style='width:150px;'>
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>上传领导列表</span>
+                    <input onchange = 'checkFile2();' accept="application/msexcel" type="file" id='file2' name='file2' style='opacity:0; position:absolute; top:0;left:0;cursor:pointer; width:150px;'>
+            </span>
+            <span class="label label-default" id='file2_state'>未选择</span>
             </div>
-            <div class="form-group">
-                <a class="btn btn-primary" href="#">导出</a>
+            &nbsp;&nbsp;
+            <div class='form-group' style='display:inline-block;'>
+            <button id='submit2' type='button' class="btn btn-danger start" style='width:150px;'>
+                    <i class="glyphicon glyphicon-upload"></i>
+                    <span>导入</span>
+            </button>
             </div>
-        </form>
-    </div>
+            &nbsp;&nbsp;
+            <div class='form-group' style='display:inline-block;'>
+            <button type='button' onclick='exportLeaders()' class="btn btn-primary start" style='width:150px;'>
+                    <i class="glyphicon glyphicon-download"></i>
+                    <span>导出</span>
+            </button>
+            </div>    
+        </div>
 </div>
-
-
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">提示信息</h4>
+        </div>
+        <div class="modal-body"></div>
+        <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>
 <script type="text/javascript">
-    jQuery(function($) {
+$('#myModal').on('hidden.bs.modal', function (e) {
+        $('.Leo_question').css('width','860px')
+});
+$('#myModal').on('hide.bs.modal', function (e) {
+        $('.Leo_question').css('width','860px')
+});  
+$(function(){
+    $('#submit2').attr('disabled',true);
+    getInfo();
+    function getInfo(){
+        var lastsel;
         var grid_selector = "#grid-table";
         var pager_selector = "#grid-pager";
-        
         //resize to fit page size
         $(window).on('resize.jqGrid', function () {
             $(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
@@ -42,117 +89,201 @@
                 $(grid_selector).jqGrid( 'setGridWidth', parent_column.width() );
             }
         })
-
+        
         jQuery(grid_selector).jqGrid({
-            subGrid : false,
-
             url: "/pm/listleader",
+            editurl: "/pm/updateleader",
             datatype: "json",
             height: '270px',
-            shrinkToFit:true,
-            forceFit:true,
-            autowidth: true,
-            colNames:[' ', '领导编号','姓名', '最后登录时间', '密码'],
+            shrinkToFit:false,
+            hidegrid:false,
+            autowidth:true,
             colModel:[
-                {name:'myac',index:'', width:70, fixed:true, sortable:false, resize:false,
-                    formatter:'actions', 
-                    formatoptions:{ 
-                        keys:true,    
-                        delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
-                    }
-                },
-                {name:'username',index:'username', sorttype:"int",width:100, editable: false,align:'center'},
-                {name:'name',index:'name', sortable:true, width:100,sorttype:"string", editable:true,align:'center'},
-                {name:'last_login',index:'last_login',width:250, sortable:false, sorttype:"string", editable:true,align:'center'},
-                {name:'password',index:'password',width:100, sortable:false, sorttype:"string", editable:true,align:'center'},
-                
+                     {   name:'id',  label:'用户id',  index:'id',  width:100, fixed:true, resizable:false, editable:false,sortable:false, sorttype:"int", align:'center',
+                         hidden:true,
+                     },
+                     {   name:'username',  label:'领导编号',  index:'username',  width:200, fixed:true, resizable:false, editable:true,sortable:true, sorttype:"int", align:'center',
+                         search:true, searchoptions: { sopt: ['eq'], },
+                         searchrules:{ required: true, integer:true,},
+                         //设为可编辑，显示时再设为不可变
+                         editoptions:{ 
+                            dataInit:function(element) { 
+                            $(element).attr('disabled', 'disabled');
+                            
+                            } 
+                         }
+                     },
+                     
+                     {  name:'name', label:'姓名',  index:'name', width:180, fixed:true, resizable:false,  editable:true,sortable:true, align:'center',
+                        editrules:{required : true, }, 
+                        search:true, searchoptions: {  sopt: ['eq']  },
+                        searchrules:{ required: true, },
+                     },
+
+                     {  name:'password', label:'用户密码', index:'password', width:160, fixed:true, resizable:false, sortable:false, editable:true, align:'center',
+                        editrules:{required : true, }, 
+                        search:false, 
+                     },
+                     {  name:'last_login', label:'最后登录时间', index:'last_login', width:300, fixed:true, resizable:false,  sortable:true, editable:false, align:'center',
+                        search:true, searchoptions: {  sopt: ['bw', 'ew'],
+                        dataInit:function(element) { 
+                            $(element).parent().addClass("input-group date form_date");
+                            $(element).addClass('form-control');
+                            $(element).datetimepicker({
+                                language: 'zh-CN', //汉化 
+                                format:'yyyy-mm-dd' , 
+                                autoclose:true,
+                                minView:2,
+                            }); 
+                            
+                            } 
+                         },
+                           searchrules:{required:true,}
+                       
+                     },                
             ], 
-            
             viewrecords : true, 
-            rowNum:10,
-            rowList:[10,20,30],
+            rowNum:20,
+            rowList:[20,40,60,80,100,120,140,160,180,200],
             pager : pager_selector,
             altRows: true,
-            toppager: false,
-            
+            emptyrecords: "<span style='color:red'>还未添加记录</span>", 
+            loadComplete : function(data) {
+                if(data.error){
+                         $('.Leo_question').css('width','843px')
+                         $('.modal-body').html('');
+                         $('.modal-body').html(
+                         "<p class=\"bg-danger\" style='padding:20px;'>"+data.error+ "</p>"
+                         );
+                        $('.modal-footer').html('');
+                        $('.modal-footer').html(
+                         "<a href='/managerlogin'><button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'>重新登录</button></a>"
+                        );
+                        $('#myModal').modal({
+                         keyboard:true,
+                         backdrop:'static'
+                       })
+                }
+                var table = this;
+                setTimeout(function(){
+                    updatePagerIcons(table);
+                    enableTooltips(table);
+                }, 0);
+            },
+            reloadAfterSubmit:true,
+            caption: "项目管理",
             multiselect: true,
             //multikey: "ctrlKey",
             multiboxonly: true,
     
-            loadComplete : function() {
-                var table = this;
-                setTimeout(function(){
-                    styleCheckbox(table);
-                    
-                    updateActionIcons(table);
-                    updatePagerIcons(table);
-                    enableTooltips(table);
-                }, 0);
-
-                        
-
-            },
-    
-            editurl: "/pm/updateleader",//nothing is saved
-            caption: "用户账户管理"
-    
-            ,autowidth: true
-    
         });
-        $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
-    
-        //switch element when editing inline
-        function aceSwitch( cellvalue, options, cell ) {
-            setTimeout(function(){
-                $(cell) .find('input[type=checkbox]')
-                    .addClass('ace ace-switch ace-switch-5')
-                    .after('<span class="lbl"></span>');
-            }, 0);
-        }
-    
-
+        
         //navButtons
-        jQuery(grid_selector).jqGrid('navGrid',pager_selector,
-            {   //navbar options
-                edit: true,
-                editicon : 'ace-icon fa fa-pencil blue',
-                add: true,
-                addicon : 'ace-icon fa fa-plus-circle purple',
-                del: true,
-                delicon : 'ace-icon fa fa-trash-o red',
-                search: true,
-                searchicon : 'ace-icon fa fa-search orange',
-                refresh: true,
-                refreshicon : 'ace-icon fa fa-refresh green',
-                view: true,
-                viewicon : 'ace-icon fa fa-search-plus grey',
-            },
-            {
-                //edit record form
-                //closeAfterEdit: true,
-                //width: 700,
-                recreateForm: true,
-                beforeShowForm : function(e) {
+        var add_options={
+                    left:10,
+                    top:10,
+                    afterSubmit:function(res,rowid){
+                        var result = eval('(' + res.responseText + ')');   
+                        if(result.error) {
+                        $('.Leo_question').css('width','843px')
+                         $('.modal-body').html('');
+                         $('.modal-body').html(
+                         "<p class=\"bg-danger\" style='padding:20px;'>"+result.error+ "</p>"
+                         );
+                        $('.modal-footer').html('');
+                        $('.modal-footer').html(
+                         "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">返回修改</button>"
+                        );
+                        $('#myModal').modal({
+                         keyboard:true,
+                         backdrop:'static'
+                       })
+
+                       // return false; 返回jqgrid相关的数据格式
+                        return [false, 'fail',0];   
+                        }else{
+                        $('.Leo_question').css('width','843px')
+                         $('.modal-body').html('');
+                         $('.modal-body').html(
+                         "<p class=\"bg-success\" style='padding:20px;'>记录添加成功</p>"
+                         );
+                        $('.modal-footer').html('');
+                        $('.modal-footer').html(
+                         "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">关闭提示</button>"
+                        );
+                        $('#myModal').modal({
+                         keyboard:true,
+                         backdrop:'static'
+                      })
+                        return [true, 'success'];
+                        }
+                    },
+                    beforeShowForm : function(e) {
                     var form = $(e[0]);
-                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
+                    .wrapInner('<div class="widget-header" />')
+                    //password 不可编辑
+                    $('#password').attr('disabled', true);
+                    $('#password').val('**系统自动生成**');
                     style_edit_form(form);
-                }
-            },
-            {
-                //new record form
-                //width: 700,
-                closeAfterAdd: true,
-                recreateForm: true,
-                viewPagerButtons: false,
-                beforeShowForm : function(e) {
+                    },
+                    reloadAfterSubmit:true,
+                    closeAfterAdd:true
+ 
+        };
+        var edit_options={
+                    left:10,
+                    top:10,
+                    afterSubmit:function(res,rowid){
+                        var result = eval('(' + res.responseText + ')');   
+                        if(result.error) {
+                        $('.Leo_question').css('width','843px')
+                         $('.modal-body').html('');
+                         $('.modal-body').html(
+                         "<p class=\"bg-danger\" style='padding:20px;'>"+result.error+ "</p>"
+                         );
+                        $('.modal-footer').html('');
+                        $('.modal-footer').html(
+                         "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">返回修改</button>"
+                        );
+                        $('#myModal').modal({
+                         keyboard:true,
+                         backdrop:'static'
+                       })
+
+                       // return false; 返回jqgrid相关的数据格式
+                        return [false, 'fail',0];   
+                        }else{
+                        $('.Leo_question').css('width','843px')
+                         $('.modal-body').html('');
+                         $('.modal-body').html(
+                         "<p class=\"bg-success\" style='padding:20px;'>记录更新成功</p>"
+                         );
+                        $('.modal-footer').html('');
+                        $('.modal-footer').html(
+                         "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">关闭提示</button>"
+                        );
+                        $('#myModal').modal({
+                         keyboard:true,
+                         backdrop:'static'
+                      })
+                        return [true, 'success'];
+                        }
+                    },
+                    beforeShowForm : function(e) {
                     var form = $(e[0]);
                     form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
                     .wrapInner('<div class="widget-header" />')
                     style_edit_form(form);
-                }
-            },
-            {
-                //delete record form
+                    },
+                    reloadAfterSubmit:true,
+                    closeAfterEdit:true
+ 
+        };
+        var del_options = {
+                top : 80,  //位置
+                left: 300, //位置
+                reloadAfterSubmit: true,
                 recreateForm: true,
                 beforeShowForm : function(e) {
                     var form = $(e[0]);
@@ -163,125 +294,210 @@
                     
                     form.data('styled', true);
                 },
-                onClick : function(e) {
-                    alert(1);
-                }
+                closeAfterDelete: true,
+                afterSubmit : function(response, postdata){
+                    var result = eval('(' + response.responseText + ')');  
+                    if(result.error){
+                         $('.Leo_question').css('width','843px')
+                         $('.modal-body').html('');
+                         $('.modal-body').html(
+                         "<p class=\"bg-danger\" style='padding:20px;'>"+result.error+ "</p>"
+                         );
+                        $('.modal-footer').html('');
+                        $('.modal-footer').html(
+                         "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">返回修改</button>"
+                        );
+                        $('#myModal').modal({
+                         keyboard:true,
+                         backdrop:'static'
+                       })
+
+                       // return false; 返回jqgrid相关的数据格式
+                        
+                       return [true,"修改失败",0];
+                    }else{
+                        $('.Leo_question').css('width','843px')
+                         $('.modal-body').html('');
+                         $('.modal-body').html(
+                         "<p class=\"bg-success\" style='padding:20px;'>记录删除成功</p>"
+                         );
+                        $('.modal-footer').html('');
+                        $('.modal-footer').html(
+                         "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">关闭提示</button>"
+                        );
+                        $('#myModal').modal({
+                         keyboard:true,
+                         backdrop:'static'
+                      })
+
+                      // return true;
+
+                      return [true,""]
+                    }
+                 },
+        }
+        jQuery(grid_selector).jqGrid('navGrid',pager_selector,
+            {   //navbar options
+                add: true,
+           addicon : 'ace-icon fa fa-plus-circle purple',
+           addtext:'添加',
+                edit: true,
+                editicon : 'ace-icon fa fa-pencil blue',
+                edittext:'编辑',
+                del: true,
+                delicon : 'ace-icon fa fa-trash-o red',
+                deltext:'删除',
+                refresh: true,
+                refreshicon : 'ace-icon fa fa-refresh green',
+                refreshtext:'刷新',
+                search:true,
+                searchicon : 'ace-icon fa fa-search orange',
+                searchtext:'搜索',
+                view: true,
+                viewicon : 'ace-icon fa fa-search-plus grey',
+                viewtext:'查看',
+                
             },
-            {
-                //search form
-                recreateForm: true,
+            //edit,
+            edit_options,
+            // {//add
+                // },
+            add_options,
+            //del
+            del_options,
+            {//search
+                top : 80,  //位置
+                left: 300, //位置 
+                multipleSearch: false,
+                caption:'搜索查询...',
+                Reset: '重置',
+                Find:'查询',
+                closeAfterSearch:true,
                 afterShowSearch: function(e){
                     var form = $(e[0]);
                     form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
                     style_search_form(form);
                 },
-                afterRedraw: function(){
-                    style_search_filters($(this));
-                }
-                ,
-                multipleSearch: true,
             },
-            {
-                //view record form
-                recreateForm: true,
-                beforeShowForm: function(e){
-                    var form = $(e[0]);
-                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
-                }
-            }
-        )
-
-        function style_edit_form(form) {
-            //enable datepicker on "sdate" field and switches for "stock" field
-            form.find('input[name=sdate]').datepicker({format:'yyyy-mm-dd' , autoclose:true})
-                .end().find('input[name=stock]')
-                    .addClass('ace ace-switch ace-switch-5').after('<span class="lbl"></span>');
-                       //don't wrap inside a label element, the checkbox value won't be submitted (POST'ed)
-                      //.addClass('ace ace-switch ace-switch-5').wrap('<label class="inline" />').after('<span class="lbl"></span>');
-    
-            //update buttons classes
-            var buttons = form.next().find('.EditButton .fm-button');
-            buttons.addClass('btn btn-sm').find('[class*="-icon"]').hide();//ui-icon, s-icon
-            buttons.eq(0).addClass('btn-primary').prepend('<i class="ace-icon fa fa-check"></i>');
-            buttons.eq(1).prepend('<i class="ace-icon fa fa-times"></i>')
-            
-            buttons = form.next().find('.navButton a');
-            buttons.find('.ui-icon').hide();
-            buttons.eq(0).append('<i class="ace-icon fa fa-chevron-left"></i>');
-            buttons.eq(1).append('<i class="ace-icon fa fa-chevron-right"></i>');       
-        }
-    
-        function style_delete_form(form) {
-            var buttons = form.next().find('.EditButton .fm-button');
-            buttons.addClass('btn btn-sm btn-white btn-round').find('[class*="-icon"]').hide();//ui-icon, s-icon
-            buttons.eq(0).addClass('btn-danger').prepend('<i class="ace-icon fa fa-trash-o"></i>');
-            buttons.eq(1).addClass('btn-default').prepend('<i class="ace-icon fa fa-times"></i>')
-        }
-        
-        function style_search_filters(form) {
-            form.find('.delete-rule').val('X');
-            form.find('.add-rule').addClass('btn btn-xs btn-primary');
-            form.find('.add-group').addClass('btn btn-xs btn-success');
-            form.find('.delete-group').addClass('btn btn-xs btn-danger');
-        }
-        function style_search_form(form) {
-            var dialog = form.closest('.ui-jqdialog');
-            var buttons = dialog.find('.EditTable')
-            buttons.find('.EditButton a[id*="_reset"]').addClass('btn btn-sm btn-info').find('.ui-icon').attr('class', 'ace-icon fa fa-retweet');
-            buttons.find('.EditButton a[id*="_query"]').addClass('btn btn-sm btn-inverse').find('.ui-icon').attr('class', 'ace-icon fa fa-comment-o');
-            buttons.find('.EditButton a[id*="_search"]').addClass('btn btn-sm btn-purple').find('.ui-icon').attr('class', 'ace-icon fa fa-search');
-        }
-        
-        function beforeDeleteCallback(e) {
-            var form = $(e[0]);
-            if(form.data('styled')) return false;
-            
-            form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-            style_delete_form(form);
-            
-            form.data('styled', true);
-        }
-        
-        function beforeEditCallback(e) {
-            var form = $(e[0]);
-            form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-            style_edit_form(form);
-        }
-    
-        function styleCheckbox(table) {
-
-        }
-        
-        function updateActionIcons(table) {
-
-        }
-        function pickDate( cellvalue, options, cell ) {
-            setTimeout(function(){
-                $(cell) .find('input[type=text]')
-                        .datetimepicker({format:'yyyy-mm-dd hh:ii' , autoclose:true}); 
-            }, 0);
-        }
-        //replace icons with FontAwesome icons like above
-        function updatePagerIcons(table) {
-            var replacement = 
-            {
-                'ui-icon-seek-first' : 'ace-icon fa fa-angle-double-left bigger-140',
-                'ui-icon-seek-prev' : 'ace-icon fa fa-angle-left bigger-140',
-                'ui-icon-seek-next' : 'ace-icon fa fa-angle-right bigger-140',
-                'ui-icon-seek-end' : 'ace-icon fa fa-angle-double-right bigger-140'
-            };
-            $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
-                var icon = $(this);
-                var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
+            {//view
+                top : 10,  //位置
+                left: 10, //位置 
+             }, 
+             {//refresh
                 
-                if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
-            })
-        }
-    
-        function enableTooltips(table) {
-            $('.navtable .ui-pg-button').tooltip({container:'body'});
-            $(table).find('.ui-pg-div').tooltip({container:'body'});
-        }
+             }
+            
+        );
+           
+}
+});
 
+//$('#file1').change(function(){
+//  console.log('444');
+ //   checkFile1();
+//}) 
+
+
+$('#submit2').click(function(){
+      var path = $("#file2").val();
+       if(path == '' || path == undefined){
+              showError('请先选择要上传的文件');
+              return false;   
+       }
+       path=path.replace('/','\\');
+       var path_arr = path.split('\\');
+       var filename = path_arr.pop();
+       if(!checkFileType(filename)){
+              showError('文件类型错误，请先下载模板！');
+              return false;   
+       }
+        $('.Leo_question').css('width','843px');    
+        $('.modal-body').html("<p class=\"bg-success\" style='padding:20px;'>系统正在导入领导列表，请勿关闭浏览器</p>"+"<div style='text-align:center; padding:5px 10px 10px 10px;'><img src='/image/loading.gif' style='width:300px' /></div>");
+        $('.modal-footer').html('');
+        $('#myModal').modal({keyboard:true, backdrop:'static'});
+        $.ajaxFileUpload ({
+        url:'/pm/uploadLeader', //你处理上传文件的服务端
+        secureuri:false, //与页面处理代码中file相对应的ID值
+        fileElementId:'file2',
+        dataType: 'json', //返回数据类型:text，xml，json，html,scritp,jsonp五种
+        success: function (data) {
+            if(data.error){
+                showError(data.error);
+            }else{
+            clearFileInput(document.getElementById('file2'));
+            checkFile2();
+            jQuery("#grid-table").trigger("reloadGrid");
+            $('.modal-body').html('');
+            $('.modal-body').html( "<p class=\"bg-success\" style='padding:20px;'>领导信息导入完成!</p>");
+            $('.modal-footer').html('');
+            $('.modal-footer').html("<button type=\"button\" class=\"btn btn-success\" data-dismiss=\"modal\">关闭提示</button>"
+            );
+            $('#myModal').modal({keyboard:true, backdrop:'static'});
+            //成功返回后的操作
+           }
+
+        }
+        });
+})
+
+function checkFile2(){
+    if($('#file2').val() != ''){
+        $('#file2_state').removeClass('label-default');
+        $('#file2_state').addClass('label-success');
+        $('#file2_state').html('已选择');
+        $('#submit2').attr('disabled', false);
+    }else{
+        $('#file2_state').removeClass('label-success');
+        $('#file2_state').addClass('label-default');
+        $('#file2_state').html('未选择');
+        $('#submit2').attr('disabled', true);
+   }
+} 
+function exportLeaders(){
+    downloadWait('正在生成领导列表');
+    $.post('/file/exportRole/3', function(data){
+        if (data.error){
+            downloadError(data.error);
+        }else {
+            var msg = "<a href='"+data.success.substr( 1, data.success.length-1)+"'>领导列表</a>";
+            downloadSuccess(msg);
+        }
     });
+}
+function downloadWait(msg){
+    $('.Leo_question').css('width','843px');    
+    $('.modal-body').html("<p class=\"bg-success\" style='padding:20px;'>"+msg+"</p>"+"<div style='text-align:center; padding:5px 10px 10px 10px;'><img src='/image/loading.gif' style='width:300px' /></div>");
+    $('.modal-footer').html('');
+    $('#myModal').modal({keyboard:true, backdrop:'static'});
+}
+function downloadError(msg){
+    $('.Leo_question').css('width','843px')
+    $('.modal-body').html('');
+    $('.modal-body').html(
+        "<p class=\"bg-danger\" style='padding:20px;'>"+msg+ "</p>"
+    );
+    $('.modal-footer').html('');
+    $('.modal-footer').html(
+        "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">返回</button>"
+    );
+    $('#myModal').modal({
+        keyboard:true,
+        backdrop:'static'
+    })
+}
+function downloadSuccess(msg){
+    $('.Leo_question').css('width','843px')
+    $('.modal-body').html('');
+    $('.modal-body').html(
+        "<p class=\"bg-success\" style='padding:20px;'>"+msg+ "</p>"
+    );
+    $('.modal-footer').html('');
+    $('.modal-footer').html(
+       "<button type=\"button\" class=\"btn btn-primary\" style='padding:5px 20px;'data-dismiss=\"modal\">关闭</button>"
+    );
+    $('#myModal').modal({
+        keyboard:true,
+        backdrop:'static'
+    })
+}
 </script>

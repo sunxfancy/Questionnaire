@@ -40,11 +40,15 @@ class Manager extends \Phalcon\Mvc\Model
      */
     public $name;
 
-
     /**
-     * @var datetime
+     * @var string
+     *
      */
     public $last_login;
+
+	public function initialize(){
+		$this->belongsTo('project_id', 'Project', 'id');
+	}
 
     public static function checkLogin($username,$password)
     {
