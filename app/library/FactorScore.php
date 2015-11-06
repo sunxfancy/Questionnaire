@@ -141,7 +141,7 @@ class FactorScore{
 	 */
 	public static function handleFactors($examinee_id){
 		#加载内存表
-		if(!self::$memory_state){
+		if(!self::$memory_state) {
 			self::loadMemoryTable();
 		}
 		if(empty(self::$examinee_info)){
@@ -209,10 +209,10 @@ class FactorScore{
 	 */
 	protected static function calEPQA(&$resultsets){
 		#首先判断是否需要写入epqa相关的因子分数
-		if(empty(self::$factors_list_all)){
+		if(empty(self::$factors_list_all)) {
 			self::getFactorsAll($resultsets->examinee_id);
 		}
-		if(!isset(self::$factors_list_all['EPQA'])){
+		if(!isset(self::$factors_list_all['EPQA'])) {
 			#true 表示不用写入EPQA的相关因子
 			return true;
 		}
@@ -706,6 +706,8 @@ class FactorScore{
 				}else{
 					$std_score = 50;
 				}
+				// std_score 第一位 智力等级  之后位为 百分等级
+				
 				$flag = substr($std_score,0,1);
 				if ($flag == 1) { $ans_score = 9; 
 				}else if ($flag == 2) {$ans_score = 7.5; 

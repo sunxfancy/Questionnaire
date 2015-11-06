@@ -120,7 +120,6 @@
         });
     });
 
-    $(document).ready(function(){
         $("#submit").click(function(){
             var comment = {
                 "advantage1" : $("#advantage1").val(),
@@ -133,8 +132,51 @@
                 "disadvantage3" : $("#disadvantage3").val(),
                 "remark" : $("#remark").val(),
             };
-            $.post('/interviewer/interview/'+{{examinee_id}},comment,callbk);
+            if ($("#advantage1").val()!= '' && $("#advantage2").val() != '' && $("#advantage3").val() != '' && $("#advantage4").val() != '' && $("#advantage2").val() != '' ){
+            	if (  $("#disadvantage1").val() != '' &&  $("#disadvantage2").val() != '' &&  $("#disadvantage3").val() != ''){
+            		if ($("#remark").val()!=''){
+            			 $('.Leo_question').css('width','843px')
+                         $('.modal-body').html('');
+                         $('.modal-body').html(
+                         "<p class=\"bg-danger\" style='padding:20px;'>被试面询信息提交后，将不可再修改，请确认！</p>"
+                     );
+                    $('.modal-footer').html('');
+                    $('.modal-footer').html(
+                        "<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">返回修改</button>"+
+                        "<button type=\"button\" class=\"btn btn-primary\" onclick='submit();'>确认</button>"
+                    );
+                 $('#myModal').modal({
+                    keyboard:true,
+                    backdrop:'static'
+                 })
+            			
+            		}else{
+            			submit();
+            		}
+            	}else{
+            		submit();
+            	}
+            }else{
+            	submit();
+            }
         });
+        
+        
+        function submit(){
+        	 var comment = {
+                "advantage1" : $("#advantage1").val(),
+                "advantage2" : $("#advantage2").val(),
+                "advantage3" : $("#advantage3").val(),
+                "advantage4" : $("#advantage4").val(),
+                "advantage5" : $("#advantage5").val(),
+                "disadvantage1" : $("#disadvantage1").val(),
+                "disadvantage2" : $("#disadvantage2").val(),
+                "disadvantage3" : $("#disadvantage3").val(),
+                "remark" : $("#remark").val(),
+            };
+        	$.post('/interviewer/interview/'+{{examinee_id}},comment,callbk);
+        }
+        
         function callbk(data){
             if(data.success){
                 $('.Leo_question').css('width','843px')
@@ -153,7 +195,7 @@
                 // alert("评论提交成功！点击“确定”返回主页面。");
                 // window.location.href = '/interviewer/index'
             }else{
-                $('.Leo_question').css('width','843px')
+                 $('.Leo_question').css('width','843px')
                  $('.modal-body').html('');
                  $('.modal-body').html(
                      "<p class=\"bg-danger\" style='padding:20px;'>"+data.error+ "</p>"
@@ -168,5 +210,5 @@
                  })
             }
         }
-    });
+
 </script>

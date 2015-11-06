@@ -15,7 +15,7 @@ class MemoryTable {
 	 * @throws Exception
 	 * @return boolean
 	 */
-	public static function loader(){
+	public static function loader() {
 		foreach(self::$mysql_memory_list as $value){
 			self::startMysqlMemoryTable($value);
 		}

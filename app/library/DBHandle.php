@@ -523,18 +523,17 @@ class DBHandle {
     }
 
     //插入个体报告评语描述信息
-    public static function insertReportComment($data){
+    public static function insertChildIndexComment($data){
         try{
             $manager     = new TxManager();
             $transaction = $manager->get();
             foreach($data as $value){
-                $reportcomment = new ReportComment();
-                $reportcomment->setTransaction($transaction);
+                $childindexcomment = new ChildIndexComment();
+                $childindexcomment->setTransaction($transaction);
                 foreach($value as $key=>$svalue){
-                    $reportcomment->$key = $svalue;
-                    echo $key;echo " :   ";echo $svalue;echo "<br/>";
+                    $childindexcomment->$key = $svalue;
                 }
-                if($reportcomment->save() == false) {
+                if( $childindexcomment->save() == false) {
                      $transaction->rollback('数据更新失败-3');
                 }
             }
@@ -544,17 +543,16 @@ class DBHandle {
             throw new Exception($e->getMessage());
         }
     }
-    //插入胜任力指标描述
-    public static function insertCompetency($data){
+    #插入胜任力指标描述
+    public static function insertCompetency($data) {
         try{
             $manager     = new TxManager();
             $transaction = $manager->get();
             foreach($data as $value){
                 $competencycomment = new CompetencyComment();
                 $competencycomment->setTransaction($transaction);
-                foreach($value as $key=>$svalue){
-                    $competencycomment->$key = $svalue;
-                    echo $key;echo " :   ";echo $svalue;echo "<br/>";
+                foreach($value as $skey=>$svalue){
+                    $competencycomment->$skey = $svalue;
                 }
                 if($competencycomment->save() == false) {
                      $transaction->rollback('数据更新失败-3');
@@ -566,6 +564,27 @@ class DBHandle {
             throw new Exception($e->getMessage());
         }
     }
+    #插入综合评价的28指标评语
+    public static function insertComprehensive($data){
+    	try{
+    		$manager     = new TxManager();
+    		$transaction = $manager->get();
+    		foreach($data as $value){
+    			$comprehensivecomment = new ComprehensiveComment();
+    			$comprehensivecomment ->setTransaction($transaction);
+    			foreach($value as $skey=>$svalue){
+    				$comprehensivecomment ->$skey = $svalue;
+    			}
+    			if($comprehensivecomment->save() == false) {
+    				$transaction->rollback('数据更新失败-3');
+    			}
+    		}
+    		$transaction->commit();
+    		return true;
+    	}catch (TxFailed $e) {
+    		throw new Exception($e->getMessage());
+    	}
+    }
 
      //插入指标与因子中间层
     public static function insertMiddle($data){
@@ -576,9 +595,9 @@ class DBHandle {
             foreach($data as $key=>$value){
                 $middle = new MiddleLayer();
                 $middle->setTransaction($transaction);
-                $middle->name = $key;
-                $middle->children = $value['children'];
-                $middle->father   = $value['father'];
+                foreach ($value as $skey=>$svalue ){
+                	$middle->$skey = $svalue;
+                }
                 if($middle->save() == false) {
                      $transaction->rollback('数据更新失败-3');
                 }

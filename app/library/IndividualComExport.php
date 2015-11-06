@@ -30,8 +30,10 @@ class IndividualComExport extends \Phalcon\Mvc\Controller
 		$data['school'] = '';
 		$data['degree'] = '';
 		if (isset($json['education'])){
-			$data['school']  = $json['education'][0]['school'];
-			$data['degree']  = $json['education'][0]['degree'];
+			if (isset($json['education'][0])){ //必须是有相应的记录项
+				$data['school']  = $json['education'][0]['school'];
+				$data['degree']  = $json['education'][0]['degree'];
+			}
 		}
 		$time_str = '';
 		$time = $examinee->exam_time;
@@ -44,7 +46,10 @@ class IndividualComExport extends \Phalcon\Mvc\Controller
 		$data['exam_time'] = $time_str;
 		$data['works'] = '';
 		if (isset($json['work'])){
-			$data['works'] = $json['work'];
+			if (isset($json['work'][0])){ //必须是有相应的记录项
+				$data['works'] = $json['work'];
+			}
+			
 		}
 		$data['exam_time_flag'] = array();
 		if ($examinee->exam_time > 10800) {
@@ -197,17 +202,22 @@ class IndividualComExport extends \Phalcon\Mvc\Controller
 	 			   'align'=>'center'
 	 	)
 	 	);
-	 	$row = $table->addRow(600);
-	 	$row->addCell(2500, array('valign'=>'center'))->addText("工作单位",array('size'=>14),array('alignment'=>'center'));
-	 	$row->addCell(2500, array('valign'=>'center'))->addText('部门',array('size'=>14),array('alignment'=>'center'));
-	 	$row->addCell(2500, array('valign'=>'center'))->addText('职位',array('size'=>14),array('alignment'=>'center'));
-	 	$row->addCell(2500, array('valign'=>'center'))->addText('工作时间',array('size'=>14),array('alignment'=>'center'));
-	 	foreach($data['works'] as $value){
-	 		$table->addRow(600);
-	 		$table->addCell(2500,array('valign'=>'center'))->addText($value['employer'],array('size'=>14),array('alignment'=>'center'));
-	 		$table->addCell(2500,array('valign'=>'center'))->addText($value['unit'],array('size'=>14),array('alignment'=>'center'));
-	 		$table->addCell(2500,array('valign'=>'center'))->addText($value['duty'],array('size'=>14),array('alignment'=>'center'));
-	 		$table->addCell(2500,array('valign'=>'center'))->addText($value['date'],array('size'=>14),array('alignment'=>'center'));
+	 	//判断工作经历是否为空
+	 	if(empty($data['works'])){
+	 		$section->addText('空');
+	 	}else{
+	 		$row = $table->addRow(600);
+	 		$row->addCell(2500, array('valign'=>'center'))->addText("工作单位",array('size'=>14),array('alignment'=>'center'));
+	 		$row->addCell(2500, array('valign'=>'center'))->addText('部门',array('size'=>14),array('alignment'=>'center'));
+	 		$row->addCell(2500, array('valign'=>'center'))->addText('职位',array('size'=>14),array('alignment'=>'center'));
+	 		$row->addCell(2500, array('valign'=>'center'))->addText('工作时间',array('size'=>14),array('alignment'=>'center'));
+	 		foreach($data['works'] as $value){
+	 			$table->addRow(600);
+	 			$table->addCell(2500,array('valign'=>'center'))->addText($value['employer'],array('size'=>14),array('alignment'=>'center'));
+	 			$table->addCell(2500,array('valign'=>'center'))->addText($value['unit'],array('size'=>14),array('alignment'=>'center'));
+	 			$table->addCell(2500,array('valign'=>'center'))->addText($value['duty'],array('size'=>14),array('alignment'=>'center'));
+	 			$table->addCell(2500,array('valign'=>'center'))->addText($value['date'],array('size'=>14),array('alignment'=>'center'));
+	 		}
 	 	}
 	 	$section->addTextBreak(1,array('size'=>14),array('lineHeight'=>1.5));
 	 	$text = '    测试要求3小时，以'.$data['exam_time'].'完成，'.$data['name'].$data['exam_time_flag']['value'].'，且回答'.$data['exam_auth_flag']['value'].'，说明其阅读'.$data['exam_evalute'].'。 ';
@@ -240,10 +250,10 @@ class IndividualComExport extends \Phalcon\Mvc\Controller
  			$j = 0;
  			$comments = array();
  			foreach($value['detail'] as $svalue){
- 				$advantages = ReportComment::findFirst(array(
- 						'name=?1',
- 						'bind'=>array(1=>$svalue['chs_name'])))->advantage;
- 				$advantage = explode("|", $advantages);
+ 				$advantages = ChildIndexComment::findFirst(array(
+ 						'child_chs_name=?1 AND index_chs_name=?2',
+ 						'bind'=>array(1=>$svalue['chs_name'], 2=>$value['chs_name'])))->advantage;
+ 				$advantage = json_decode($advantages, true);
  				$rand_key = array_rand($advantage);
  				$convert_array = array('一','二','三');
  				$comments[]= $convert_array[$j++].$advantage[$rand_key];
@@ -279,10 +289,10 @@ class IndividualComExport extends \Phalcon\Mvc\Controller
 	 		$j = 0;
 	 		$comments = array();
 	 		foreach($value['detail'] as $svalue){
-	 			$advantages = ReportComment::findFirst(array(
-	 					'name=?1',
-	 					'bind'=>array(1=>$svalue['chs_name'])))->disadvantage;
-	 			$advantage = explode("|", $advantages);
+	 			$advantages = ChildIndexComment::findFirst(array(
+ 						'child_chs_name=?1 AND index_chs_name=?2',
+ 						'bind'=>array(1=>$svalue['chs_name'], 2=>$value['chs_name'])))->disadvantage;
+	 			$advantage = json_decode($advantages,true);
 	 			$rand_key = array_rand($advantage);
 	 			$convert_array = array('一','二','三');
 	 			$comments [] = $convert_array[$j++].$advantage[$rand_key];
@@ -355,24 +365,15 @@ class IndividualComExport extends \Phalcon\Mvc\Controller
 	 					));
 	 		}
 	 		$i = 0;
-	 		
 	 		foreach($new_key_array as $value ){
 	 			$section->addTitle($value,2);
 	 			$textrun = $section->addTextRun(array('lineHeight'=>1.5));
 	 			$textrun->addText($data['name'], array('size'=>14,'color'=>'blue'));
-	 			$result = $this->modelsManager->createBuilder()
-	 					->columns(array(
-	 					'comment as comment',
-	 					))
-			 			->from('FourIndexsComment')
-			 			->inwhere('name', $index_array[$i])
-			 			->getQuery()
-			 			->execute();
-	 			$result = $result->toArray();
+	 			//综合项指标评语  ComprehensiveComment 
 	 			$comment = array();
-	 			$comment[] = $result[0]['comment'];
-	 			$comment[] = $result[1]['comment'];
-	 			$comment[] = $result[2]['comment'];
+	 			foreach ($index_array[$i] as $value ){
+	 				$comment[] = ComprehensiveComment::findFirst(array('index_chs_name = ?1', 'bind'=>array(1=>$value)))->comment;	
+	 			}
 	 			$textrun->addText(implode('；', $comment), array('size'=>14));
 	 			$textrun->addText('。', array('size'=>14));
 	 		}

@@ -268,10 +268,15 @@ class ProjectComExport extends \Phalcon\Mvc\Controller{
 				$advantage_three[$factor_info['chs_name']] = array();
 				$advantage_count ++ ;
 				//优势因子获取优势评语
-				$advantage_comment = ReportComment::findFirst(array(
-						'name=?1',
-						'bind'=>array(1=>$factor_info['chs_name'])))->advantage;
-				$advantage_comment_array = explode("|", $advantage_comment);
+				//取 28项指标的下属
+// 				$advantage_comment = ReportComment::findFirst(array(
+// 						'name=?1',
+// 						'bind'=>array(1=>$factor_info['chs_name'])))->advantage;
+// 				$advantage_comment_array = explode("|", $advantage_comment);
+				$advantage_comment = ChildIndexComment::findFirst(
+					array('index_chs_name = ?1 AND child_chs_name =?2','bind'=>array(1=>$advantage_record['chs_name'], 2=>$factor_info['chs_name']))
+				)->advantage;
+				$advantage_comment_array = json_decode($advantage_comment, true);
 				$rand_key = array_rand($advantage_comment_array);
 				$comment = $advantage_comment_array[$rand_key]; //优势因子评语
 				$advantage_three[$factor_info['chs_name']]['comment'] = $comment;
@@ -355,10 +360,15 @@ class ProjectComExport extends \Phalcon\Mvc\Controller{
 				$disadvantage_three[$factor_info['chs_name']] = array();
 				$disadvantage_count ++ ;
 				//劣势因子获取劣势因子
-				$disadvantage_comment = ReportComment::findFirst(array(
-						'name=?1',
-						'bind'=>array(1=>$factor_info['chs_name'])))->disadvantage;
-				$disadvantage_comment_array = explode("|", $disadvantage_comment);
+// 				$disadvantage_comment = ReportComment::findFirst(array(
+// 						'name=?1',
+// 						'bind'=>array(1=>$factor_info['chs_name'])))->disadvantage;
+// 				$disadvantage_comment_array = explode("|", $disadvantage_comment);
+				$disadvantage_comment = ChildIndexComment::findFirst(
+						array('index_chs_name = ?1 AND child_chs_name =?2','bind'=>array(1=>$disadvantage_record['chs_name'], 2=>$factor_info['chs_name']))
+				)->disadvantage;
+				$disadvantage_comment_array = json_decode($disadvantage_comment, true);
+				
 				$rand_key = array_rand($disadvantage_comment_array);
 				$comment = $disadvantage_comment_array[$rand_key]; //优势因子评语
 				$disadvantage_three[$factor_info['chs_name']]['comment'] = $comment;
@@ -412,7 +422,14 @@ class ProjectComExport extends \Phalcon\Mvc\Controller{
 			}
 			$number_tk = 1; 
 			foreach($comprehensive_data as $comprehensive_record ){
-				$module_record = MemoryCache::getModuleDetail($comprehensive_record['name_in_table']); //根据数据库中存储的模块名称获取模块的下属children ，之后按照原有的children顺序来排列指标得分
+				
+				$module_record = Module::findFirst(
+				array(
+						"name = ?1",
+						'bind' => array(1=>$comprehensive_record['name_in_table']),
+						
+				)
+		);//MemoryCache::getModuleDetail($comprehensive_record['name_in_table']); //根据数据库中存储的模块名称获取模块的下属children ，之后按照原有的children顺序来排列指标得分
 				$children = explode(',', $module_record->children );
 				$search_array = array();
 				foreach($comprehensive_record['children'] as $com_value ){
@@ -440,25 +457,12 @@ class ProjectComExport extends \Phalcon\Mvc\Controller{
 				}
 				//前三指标评语
 				$three_index = array_slice($comprehensive_record['children'], 0, 3 );
-				$index_array = array();
-				foreach($three_index as $three_value) {
-					$index_array[] = $three_value['chs_name'];
-				}
-				$result = $this->modelsManager->createBuilder()
-				->columns(array(
-						'comment as comment',
-				))
-				->from('FourIndexsComment')
-				->inwhere('name', $index_array) //用in的地方顺序都被自然的存储顺序改变了~~~~
-				->getQuery()
-				->execute();
-				$result = $result->toArray();
 				$comment = array();
-				foreach($result as $value ){
-					$comment[] = $value['comment'];
+				foreach($three_index as $three_value) {
+					$comment[] = ComprehensiveComment::findFirst(array('index_chs_name = ?1','bind'=>array(1=>$three_value['chs_name'])))->comment;
 				}
 				$section->addTextBreak();
-				$section->addText(implode(';', $comment).'。', $defaultParagraphStyle);
+				$section->addText(implode('；', $comment).'。', $defaultParagraphStyle);
 				$section->addTextBreak();
 				
 			}
