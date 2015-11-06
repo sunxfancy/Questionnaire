@@ -955,7 +955,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 		$year = floor($project_id / 100 );
 		$path = './project/'.$year.'/'.$project_id.'/system/report/v1/';
 		$path_url = '/project/'.$year.'/'.$project_id.'/system/report/v1/';
-		$name = $project_id.'_project_data.docx'; //name 相同
+		$name = $project_id.'_project_data.xls'; //name 相同
 		//先判断修改是否存在
 		if (file_exists($path.$name)){
 			//修改文件存在;

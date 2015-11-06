@@ -158,7 +158,12 @@ class individualComData extends \Phalcon\Mvc\Controller{
 	
 	public function getindividualComprehensive($examinee_id){
 		$project_id = $this->self_check($examinee_id);
-		$project_detail = MemoryCache::getProjectDetail($project_id);
+		$project_detail = ProjectDetail::findFirst(
+			  array (
+			  		"project_id = :project_id:",
+			  		'bind' => array ('project_id' => $project_id),
+
+		));
 		if(empty($project_detail) || empty($project_detail->module_names)){
 			throw new Exception('项目配置信息有误');
 		}
@@ -169,7 +174,12 @@ class individualComData extends \Phalcon\Mvc\Controller{
 			if (!in_array($value, $exist_module_array)){
 				continue;
 			}
-			$module_record = MemoryCache::getModuleDetail($value);
+			$module_record = Module::findFirst(
+				array(
+						"name = ?1",
+						'bind' => array(1=>$value),
+				)
+			);
 			$children = $module_record->children;
 			$children_array = explode(',', $children);
 			$result_1 = $this->modelsManager->createBuilder()
@@ -251,7 +261,12 @@ class individualComData extends \Phalcon\Mvc\Controller{
 		$project_id = $this->self_check($examinee_id);
 		//判断项目是否选中该因子
 		$factor_id = '';
-		$factor_names = json_decode(MemoryCache::getProjectDetail($project_id)->factor_names,true);
+		$factor_info = ProjectDetail::findFirst(
+			  array (
+			  		"project_id = :project_id:",
+			  		'bind' => array ('project_id' => $project_id),
+		));
+		$factor_names = json_decode($factor_info->factor_names,true);
 		if (isset($factor_names['EPQA'])){
 			if (!in_array($factor_name, $factor_names['EPQA'])){
 				return true;

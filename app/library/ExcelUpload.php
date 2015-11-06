@@ -160,81 +160,6 @@ class  ExcelUpload {
 		}
 		return $ans;
 	}
-
-	/**
-	* 处理报告评语库上传
-	* 此处需按照模板来改动
-	*/
-	public function handleReportComment(){
-		$array1 = self::handleReportCommentsheet1();
-		$array2 = self::handleReportCommentsheet2();
-		for ($i=0; $i < count($array1); $i++) { 
-			$array1[$i]['id'] = $i+1;
-			$array1[$i]['disadvantage'] = $array2[$i]['disadvantage'];
-		}
-		return $array1;
-	}
-
-	public function handleReportCommentsheet1(){
-		$currentSheet = self::$objPHPExcel->getSheet(0);
-		$rowCount = $currentSheet->getHighestRow();
-		$columnMax = $currentSheet->getHighestColumn();
-		$ans = array();
-		for( $currentRow = 1; $currentRow <= $rowCount; $currentRow ++ ){
-			$record = array();
-			$choices = array();
-			for ($column = 'C'; $column <= $columnMax; $column++) {
-				//列数是以A列开始
-	            $value = $currentSheet->getCell($column.$currentRow)->getValue();
-	            $value = trim($value);
-	            if(empty($value)){
-	             	//行结束
-	             	break;
-           		}
-	            if( $column == 'C'){
-	             	$record['name'] = $value;
-	             	continue;
-	            }
-	            $choices[] = $value;
-    		}
-    		if (!empty($choices)) {
-    			$record['advantage'] = implode('|', $choices);
-	    		$ans[] = $record;
-    		}
-		}
-		return $ans;
-	}
-
-	public function handleReportCommentsheet2(){
-		$currentSheet = self::$objPHPExcel->getSheet(1);
-		$rowCount = $currentSheet->getHighestRow();
-		$columnMax = $currentSheet->getHighestColumn();
-		$ans = array();
-		for( $currentRow = 1; $currentRow <= $rowCount; $currentRow ++ ){
-			$record = array();
-			$choices = array();
-			for ($column = 'C'; $column <= $columnMax; $column++) {
-				//列数是以A列开始
-	            $value = $currentSheet->getCell($column.$currentRow)->getValue();
-	            $value = trim($value);
-	            if(empty($value)){
-	             	//行结束
-	             	break;
-           		}
-	            if( $column == 'C'){
-	             	$record['name'] = $value;
-	             	continue;
-	            }
-	            $choices[] = $value;
-    		}
-    		if (!empty($choices)) {
-    			$record['disadvantage'] = implode('|', $choices);
-	    		$ans[] = $record;
-    		}
-		}
-		return $ans;
-	}
-	
 	/**
 	 * 被试信息上传
 	 * 由于被试信息表数据量不定，因此采取逐条插入的方式
@@ -340,7 +265,7 @@ class  ExcelUpload {
 	/**
 	 * 处理面巡专家导入和领导导入
 	 */
-	public function handleIL(){
+	public function handleIL() {
 		$currentSheet = self::$objPHPExcel->getSheet(0);
 		$rowCount = $currentSheet->getHighestRow();
 		$start = 3;
@@ -356,76 +281,216 @@ class  ExcelUpload {
 		}
 		return $ans;
 	}
+	
 
 	/**
-	 * 处理胜任力指标导入
+	 * 处理报告评语库上传
+	 * 此处需按照模板来改动
 	 */
-	public function handleCompetency(){
-		$array1 = self::handleCompetencySheet1();
-		$array2 = self::handleCompetencySheet2();
-		for ($i=0; $i < count($array1); $i++) { 
-			$array1[$i]['id'] = $i+1;
-			$array1[$i]['disadvantage'] = $array2[$i]['disadvantage'];
-		}
-		return $array1;
-	}
-
-	public function handleCompetencySheet1(){
+	public function handleComprehensive() {
 		$currentSheet = self::$objPHPExcel->getSheet(0);
 		$rowCount = $currentSheet->getHighestRow();
 		$columnMax = $currentSheet->getHighestColumn();
+		//只有两列 一列名称一列评语
 		$ans = array();
-		for( $currentRow = 1; $currentRow <= $rowCount; $currentRow ++ ){
-			$record = array();
-			$choices = array();
-			for ($column = 'A'; $column <= $columnMax; $column++) {
-				//列数是以A列开始
-	            $value = $currentSheet->getCell($column.$currentRow)->getValue();
-	            $value = trim($value);
-	            if(empty($value)){
-	             	//行结束
-	             	break;
-           		}
-	            if( $column == 'A'){
-	             	$record['name'] = $value;
-	             	continue;
-	            }
-	            $choices[] = $value;
-    		}
-    		if (!empty($choices)) {
-    			$record['advantage'] = implode('|', $choices);
-	    		$ans[] = $record;
-    		}
+		for( $currentRow = 1; $currentRow <= $rowCount; $currentRow ++ ) {
+			$inner_array = array();
+			$value = $currentSheet->getCell('A'.$currentRow)->getValue();
+			$value = trim($value);
+			$inner_array['index_chs_name'] = $value;
+			$value = $currentSheet->getCell('B'.$currentRow)->getValue();
+			$value = trim($value);
+			$inner_array['comment'] = $value;
+			$index_info = Index::findFirst(array('chs_name =:chs_name:','bind'=>array('chs_name'=>$inner_array['index_chs_name'])));
+			if (!isset($index_info->id)){
+				throw new Exception( 'Error not find in table index '.print_r($inner_array['index_chs_name'], true));
+			}
+			$inner_array['index_id']  = $index_info->id;
+			$ans[] = $inner_array;
 		}
 		return $ans;
 	}
-	public function handleCompetencySheet2(){
-		$currentSheet = self::$objPHPExcel->getSheet(1);
+
+	/**
+	 * 胜任力指标评语导入
+	 */
+	public function handleCompetency(){
+		$data_1 = $this->hanldleCompentencySheetByNumber(0);
+		$data_2 = $this->hanldleCompentencySheetByNumber(1);
+		$rtn_data =array();
+		foreach($data_1 as $key=>$value){
+			$inner_array = array();
+			$index_info = Index::findFirst(array('chs_name =:chs_name:','bind'=>array('chs_name'=>$value['name'])));
+			if (!isset($index_info->id)){
+				throw new Exception( 'Error not find in table index '.print_r($value['name'], true));
+			}
+			$inner_array['index_id']  = $index_info->id;
+			$inner_array['index_chs_name'] = $value['name'];
+			$inner_array['advantage'] = $value['advantage'];
+			$inner_array['disadvantage'] = $data_2[$key]['disadvantage'];
+			if ($value['name'] != $data_2[$key]['name'] ){
+				throw new Exception('Error not find '.print_r($value['name']));
+			}
+			$rtn_data[] = $inner_array;
+		}
+		return $rtn_data; 
+	}
+	
+	public function hanldleCompentencySheetByNumber($number) {
+		$currentSheet = self::$objPHPExcel->getSheet($number);
 		$rowCount = $currentSheet->getHighestRow();
 		$columnMax = $currentSheet->getHighestColumn();
+		$columnMax++; //表示累加到多一列
 		$ans = array();
-		for( $currentRow = 1; $currentRow <= $rowCount; $currentRow ++ ){
+		for( $currentRow = 1; $currentRow <= $rowCount; $currentRow ++ ) {
+			//A列获取指标名称，其他咧获取相应的评语
 			$record = array();
 			$choices = array();
-			for ($column = 'A'; $column <= $columnMax; $column++) {
-				//列数是以A列开始
-	            $value = $currentSheet->getCell($column.$currentRow)->getValue();
-	            $value = trim($value);
-	            if(empty($value)){
+			for ($column = 'A'; $column != $columnMax; $column++) {
+				$value = $currentSheet->getCell($column.$currentRow)->getValue();
+				$value = trim($value);
+				 if(empty($value)){
 	             	//行结束
 	             	break;
            		}
 	            if( $column == 'A'){
 	             	$record['name'] = $value;
-	             	continue;
-	            }
-	            $choices[] = $value;
-    		}
-    		if (!empty($choices)) {
-    			$record['disadvantage'] = implode('|', $choices);
-	    		$ans[] = $record;
-    		}
+	            }else{
+           			$choices[] = $value;
+           		}
+	           
+			}
+			if ($number === 0 ){
+				//优势评语
+				$record['advantage'] = json_encode($choices, JSON_UNESCAPED_UNICODE);
+				$ans[] = $record;
+			}else {
+				//劣势评语
+				$record['disadvantage'] = json_encode($choices, JSON_UNESCAPED_UNICODE);
+				$ans[] = $record;
+			}
+			
 		}
 		return $ans;
 	}
-}
+	
+	
+	#处理综合表中28项指标下属的评价
+	public function handleChildComment(){
+		$data_1 = $this->hanldleChildSheetByNumber(0);
+		$data_2 = $this->hanldleChildSheetByNumber(1);
+		$rtn_data =array();
+		foreach($data_1 as $key=>$value){
+			$inner_array = array();
+			$index_info = Index::findFirst(array('chs_name =:chs_name:','bind'=>array('chs_name'=>$value['index_name'])));
+			if (!isset($index_info->id)){
+				throw new Exception( 'Error not find in table index '.print_r($value['index_name'], true));
+			}
+			$inner_array['index_id']  = $index_info->id;
+			$inner_array['index_chs_name'] = $value['index_name'];
+			$inner_array['child_chs_name'] = $value['child_name'];
+			$inner_array['advantage'] = $value['advantage'];
+			$inner_array['disadvantage'] = $data_2[$key]['disadvantage'];
+			if ($value['index_name'] != $data_2[$key]['index_name'] || $value['child_name'] != $data_2[$key]['child_name']){
+				throw new Exception('Error not find '.print_r($value['index_name'] ));
+			}
+			$rtn_data[] = $inner_array;
+		}
+		return $rtn_data;
+		#以下为测试代码
+// 		$not_child = array();
+// 		$child = array();
+// 		foreach($data_1 as $key=>$value){
+// 			$inner_array = array();
+// 			$index_info = Index::findFirst(array('chs_name =:chs_name:','bind'=>array('chs_name'=>$value['index_name'])));
+// 			if (!isset($index_info->id)){
+// 				throw new Exception( 'Error not find in table index '.print_r($value['index_name'], true));
+// 			}
+// 			//加一个判定指标判定
+// 			if ($index_info->name == 'zb_ldnl'){
+// 				//zb_ldnl 0,0,0,0,0
+// 				$child_info = Index::findFirst(array('chs_name =:chs_name:','bind'=>array('chs_name'=>$value['child_name'])));
+// 				if (!isset($child_info->id)){
+// 					$not_child[] = $value['index_name'].'-'.$value['child_name'];
+// 				}else {
+// 					$child[$value['index_name']][] = $child_info->name;
+// 				}
+// 			}else if ($index_info->name == 'zb_gzzf'){
+// 				//zb_gzzf 1,0,1,1,1,1,1
+// 				//X4,zb_rjgxtjsp,chg,Y3,Q3,spmabc,aff
+// 				if ($value['child_name'] == '人际关系调节水平'){
+// 					$child_info = Index::findFirst(array('chs_name =:chs_name:','bind'=>array('chs_name'=>$value['child_name'])));
+// 					if (!isset($child_info->id)){
+// 						$not_child[] = $value['index_name'].'-'.$value['child_name'];
+// 					}else {
+// 						$child[$value['index_name']][] = $child_info->name;
+// 					}
+// 				}else{
+// 					$child_info = Factor::findFirst(array('chs_name =:chs_name:','bind'=>array('chs_name'=>$value['child_name'])));
+// 					if (!isset($child_info->id)){
+// 						$not_child[] = $value['index_name'].'-'.$value['child_name'];
+// 					}else {
+// 						$child[$value['index_name']][] = $child_info->name;
+// 					}
+// 				}
+				
+// 			}else {
+// 				//下属全为因子的情况
+// 					$child_info = Factor::findFirst(array('chs_name =:chs_name:','bind'=>array('chs_name'=>$value['child_name'])));
+// 					if (!isset($child_info->id)){
+// 						$not_child[] = $value['index_name'].'-'.$value['child_name'];
+// 					}else {
+// 						$child[$value['index_name']][] = $child_info->name;
+// 					}
+// 			}
+// 		}
+		
+		
+	}
+	
+	public function hanldleChildSheetByNumber($number){
+		$currentSheet = self::$objPHPExcel->getSheet($number);
+		$rowCount = $currentSheet->getHighestRow();
+		$columnMax = $currentSheet->getHighestColumn();
+		$columnMax++; //表示累加到多一列
+		$ans = array();
+		for( $currentRow = 1; $currentRow <= $rowCount; $currentRow ++ ) {
+			//A列获取指标名称，其他咧获取相应的评语
+			//先判断是不是空行
+			$flag = $currentSheet->getCell('B'.$currentRow)->getValue();
+			if (empty(trim($flag))){
+				continue;
+				//空行则直接跳过
+			}
+			$record = array();
+			$choices = array();
+			for ($column = 'B'; $column != $columnMax; $column++) {
+				$value = $currentSheet->getCell($column.$currentRow)->getValue();
+				$value = trim($value);
+				if(empty($value)){
+					//行结束
+					break;
+				}
+				if ( $column == 'B'){
+					$record['index_name'] = $value;
+				}else if ( $column == 'C' ){
+					$record['child_name'] = $value;
+				}else {
+					$choices[] = $value;
+				}
+		
+			}
+			if ($number === 0 ){
+				//优势评语
+				$record['advantage'] = json_encode($choices, JSON_UNESCAPED_UNICODE);
+				$ans[] = $record;
+			}else {
+				//劣势评语
+				$record['disadvantage'] = json_encode($choices, JSON_UNESCAPED_UNICODE);
+				$ans[] = $record;
+			}
+		}
+		return $ans;
+	}
+	
+}	

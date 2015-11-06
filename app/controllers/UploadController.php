@@ -523,11 +523,80 @@ class UploadController extends \Phalcon\Mvc\Controller {
 			return ;
 		}
 	}	
-
+	
+	
+	/**
+	 * 中间层导入 完成
+	 */
 	public function insertMiddleAction(){
+		die('finished -|-_-|-');
 		$middle_file = __DIR__ . "/../../app/config/middlelayer.json";
 		$middle_json = $this->loadJson($middle_file);
-		DBHandle::insertMiddle($middle_json);
+		#中间层测试通过
+// 		$not_child = array();
+// 		$child = array();
+// 		foreach ($middle_json as $key =>$value ){
+// 			$index_info = Index::findFirst(array('chs_name =:chs_name:','bind'=>array('chs_name'=>$value['father'])));
+// 			$childen_array = explode(',',$value['children']);
+// 			//加一个判定指标判定
+// 			foreach ($childen_array as $child_value ) {
+// 				if ($index_info->name == 'zb_ldnl'){
+// 					//zb_ldnl 0,0,0,0,0
+// 					$child_info = Index::findFirst(array('chs_name =:chs_name:','bind'=>array('chs_name'=>$child_value)));
+// 					if (!isset($child_info->id)){
+// 						$not_child[] =$value['father'].'-'.$child_value;
+// 					}else {
+// 						$child[$value['father']][] = $child_value;
+// 					}
+// 				}else if ($index_info->name == 'zb_gzzf'){
+// 					//zb_gzzf 1,0,1,1,1,1,1
+// 					//X4,zb_rjgxtjsp,chg,Y3,Q3,spmabc,aff
+// 					if ($child_value == '人际关系调节水平'){
+// 						$child_info = Index::findFirst(array('chs_name =:chs_name:','bind'=>array('chs_name'=>$child_value)));
+// 						if (!isset($child_info->id)){
+// 							$not_child[] =$value['father'].'-'.$child_value;
+// 						}else {
+// 							$child[$value['father']][] = $child_value;
+// 						}
+// 					}else{
+// 						$child_info = Factor::findFirst(array('chs_name =:chs_name:','bind'=>array('chs_name'=>$child_value)));
+// 						if (!isset($child_info->id)){
+// 							$not_child[] =$value['father'].'-'.$child_value;
+// 						}else {
+// 							$child[$value['father']][] = $child_value;
+// 						}
+// 					}
+				
+// 				}else {
+// 					//下属全为因子的情况
+// 					$child_info = Factor::findFirst(array('chs_name =:chs_name:','bind'=>array('chs_name'=>$child_value)));
+// 					if (!isset($child_info->id)){
+// 						$not_child[] =$value['father'].'-'.$child_value;
+// 					}else {
+// 						$child[$value['father']][] = $child_value;
+// 					}
+// 				}
+					
+// 			}
+// 		}
+// 		echo '<pre>';
+// 		if (!empty($not_child)){
+// 			print_r($not_child);
+// 		}else{
+// 			print_r($child);
+// 		}
+		
+		$ans =array();
+		foreach ($middle_json as $key=>$value){
+			$inner_array = array();
+			$inner_array['name'] = $key;
+			$inner_array['father_chs_name'] = $value['father'];
+			$inner_array['children'] = $value['children'];
+			$index_info = Index::findFirst(array('chs_name =:chs_name:','bind'=>array('chs_name'=>$value['father'])));
+			$inner_array['index_id'] = $index_info->id;
+			$ans[] = $inner_array;
+		}
+		DBHandle::insertMiddle($ans);
 	}
 	public function loadJson($filename, $toarray = true)
 	{
@@ -535,8 +604,8 @@ class UploadController extends \Phalcon\Mvc\Controller {
 		$json_string = preg_replace('/[\r\n]/', '', $json_string);
 		$json = json_decode($json_string, $toarray);
 		if ($json == null) {
-			// echo json_last_error_msg();
-			// throw new Exception(json_last_error_msg());
+			echo json_last_error_msg();
+			throw new Exception(json_last_error_msg());
 		} 
 		return $json;
 	}

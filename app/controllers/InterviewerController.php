@@ -51,7 +51,7 @@ class InterviewerController extends Base
             return;
         }
         if(!empty($interview_record->advantage)){
-            $this->dataReturn(array('error'=>'面巡意见已填写完整，不可再更改！'));
+            $this->dataReturn(array('error'=>'面询意见已填写完整，不可再更改！'));
             return;
         }
         $advantage1    = $this->request->getPost('advantage1');

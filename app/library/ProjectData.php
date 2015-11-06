@@ -4,7 +4,12 @@ class ProjectData extends \Phalcon\Mvc\Controller {
 	
 	public function getindividualComprehensive($examinee_id){
 		$project_id = Examinee::findFirst($examinee_id)->project_id;
-		$project_detail = MemoryCache::getProjectDetail($project_id);
+		$project_detail = 	ProjectDetail::findFirst(
+		array (
+		"project_id = :project_id:",
+		'bind' => array ('project_id' => $project_id),
+		)
+		);
 		if(empty($project_detail) || empty($project_detail->module_names)){
 			throw new Exception('项目配置信息有误');
 		}
@@ -15,7 +20,12 @@ class ProjectData extends \Phalcon\Mvc\Controller {
 			if (!in_array($value, $exist_module_array)){
 				continue;
 			}
-			$module_record = MemoryCache::getModuleDetail($value);
+			$module_record = Module::findFirst(
+				array(
+						"name = ?1",
+						'bind' => array(1=>$value),
+				)
+			);
 			$children = $module_record->children;
 			$children_array = explode(',', $children);
 			$result_1 = $this->modelsManager->createBuilder()
@@ -41,8 +51,9 @@ class ProjectData extends \Phalcon\Mvc\Controller {
 			//对指标层进行遍历查找中间层,以及children
 			foreach($module_array_score[$key] as &$index_info ) {
 				$middle = array();
-				$middle = MiddleLayer::find(array('father=?1', 'bind'=>array(1=>$index_info['chs_name'])))->toArray();
+				$middle = MiddleLayer::find(array('father_chs_name=?1', 'bind'=>array(1=>$index_info['chs_name'])))->toArray();
 				$children = array();
+				$index_info['count'] = count(explode(',',$index_info['children']));
 				$children = $this->getChildrenOfIndexDesc($index_info['name'], $index_info['children'], $examinee_id);
 				$tmp = array();
 				$children = $this->foo($children, $tmp);
@@ -118,9 +129,8 @@ class ProjectData extends \Phalcon\Mvc\Controller {
 			->orderBy('IndexAns.score desc')
 			->getQuery()
 			->execute();
-			echo '<pre>';
-			$result = array_merge($result_1->toArray(), $result_2->toArray());
-				
+
+			$result = array_merge($result_1->toArray(), $result_2->toArray());	
 			$scores = array();
 			foreach ($result as $record) {
 				$scores[] = $record['score'];

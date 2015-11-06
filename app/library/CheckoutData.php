@@ -30,7 +30,7 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 			$index = Index::findFirst(array('id=?1','bind'=>array(1=>$strong_value['id'])));
 			$strong_value['chs_name'] = $index->chs_name;
 			$middle = array();
-			$middle = MiddleLayer::find(array('father=?1', 'bind'=>array(1=>$strong_value['chs_name'])))->toArray();
+			$middle = MiddleLayer::find(array('father_chs_name=?1', 'bind'=>array(1=>$strong_value['chs_name'])))->toArray();
 			$children = array();
 			$children = $this->getChildrenOfIndexDesc($index->name, $index->children, $examinee_info->id);
 			foreach($children as &$children_info){
@@ -49,12 +49,6 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 				$outter_tmp_score = 0;
 
 				foreach ($middle_children as $children_name){
-					// if ($children_name == '组织能力' || $children_name == '判断与决策能力'){
-					// 	echo "<pre>";
-					// 	print_r($middle_children);
-					// 	print_r($children);
-					// 	exit();
-					// }
 					$inner_tmp = array();
 					$key = array_search($children_name, $children);
 					$number = (intval($key)+4)/4;
@@ -80,7 +74,7 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 			$index = Index::findFirst(array('id=?1','bind'=>array(1=>$strong_value['id'])));
 			$strong_value['chs_name'] = $index->chs_name;
 			$middle = array();
-			$middle = MiddleLayer::find(array('father=?1', 'bind'=>array(1=>$strong_value['chs_name'])))->toArray();
+			$middle = MiddleLayer::find(array('father_chs_name=?1', 'bind'=>array(1=>$strong_value['chs_name'])))->toArray();
 			$children = array();
 			$children = $this->getChildrenOfIndexDesc($index->name, $index->children, $examinee_info->id);
 			$children = array_reverse($children);
@@ -218,7 +212,13 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 	
 	public function getindividualComprehensive($examinee_id){
 		$project_id = Examinee::findFirst($examinee_id)->project_id;
-		$project_detail = MemoryCache::getProjectDetail($project_id);
+		$project_detail = 
+		ProjectDetail::findFirst(
+		array (
+		"project_id = :project_id:",
+		'bind' => array ('project_id' => $project_id),
+		));
+		
 		if(empty($project_detail) || empty($project_detail->module_names)){
 			throw new Exception('项目配置信息有误');
 		}
@@ -229,7 +229,10 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 			if (!in_array($value, $exist_module_array)){
 				continue;
 			}
-			$module_record = MemoryCache::getModuleDetail($value);
+			$module_record =Module::findFirst(
+			array(
+			"name = ?1",
+			'bind' => array(1=>$value)) );
 			$children = $module_record->children;
 			$children_array = explode(',', $children);
 			$result_1 = $this->modelsManager->createBuilder()
@@ -282,4 +285,143 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 		}
 		return $result;
 	}
+	
+	#获取个人的16PF数据
+	public static function get16PFdata($examinee_info){
+		$projectdetail = ProjectDetail::findFirst(array('project_id=?1','bind'=>array(1=>$examinee_info->project_id)));
+		$factors = json_decode($projectdetail->factor_names,true);
+		if (!isset($factors['16PF'])){
+			return null;
+		}
+		$ans = array();
+		foreach ($factors['16PF'] as $key=>$value){
+			$inner_array = array();
+			$factor_info = Factor::findFirst($key);
+			$inner_array['chs_name'] = $factor_info->chs_name;
+			$factor_score_info = FactorAns::findFirst(array('factor_id = ?1 AND examinee_id =?2','bind'=>array(1=>$key,2=>$examinee_info->id)));
+			$inner_array['score'] = $factor_score_info->score;
+			$inner_array['std_score'] = $factor_score_info->std_score;
+			$ans[$value] = $inner_array;
+		}
+		return $ans;
+	}
+	#获取个人的EPPS数据
+	public static function getEPPSdata($examinee_info){
+		$projectdetail = ProjectDetail::findFirst(array('project_id=?1','bind'=>array(1=>$examinee_info->project_id)));
+		$factors = json_decode($projectdetail->factor_names,true);
+		if (!isset($factors['EPPS'])){
+			return null;
+		}
+		$ans = array();
+		$score_array = array();
+		$last_array = array();
+		foreach ($factors['EPPS'] as $key=>$value){
+			$inner_array = array();
+			$factor_info = Factor::findFirst($key);
+			$inner_array['chs_name'] = $factor_info->chs_name;
+			$factor_score_info = FactorAns::findFirst(array('factor_id = ?1 AND examinee_id =?2','bind'=>array(1=>$key,2=>$examinee_info->id)));
+			$inner_array['std_score'] = intval($factor_score_info->std_score);
+			if ($inner_array['chs_name'] == '稳定系数') {
+				$last_array = $inner_array;
+			}else{
+				$ans[] = $inner_array;
+				$score_array[] = $inner_array['std_score'];
+			}	
+		}
+		array_multisort($score_array,SORT_DESC, $ans);
+		$i = 1;
+		foreach ($ans as &$value){
+			$value['rank'] = $i++;
+		}
+		if (!empty($last_array)){
+			$tmp = array();
+			$tmp['chs_name'] =  $last_array['chs_name'];
+			$tmp['std_score'] = $last_array['std_score'];
+			$tmp['rank'] = '';
+			$ans[] = $tmp;
+		}
+		return $ans;
+	}
+	#获取个人的SCL数据
+	public static function getSCLdata($examinee_info){
+		$projectdetail = ProjectDetail::findFirst(array('project_id=?1','bind'=>array(1=>$examinee_info->project_id)));
+		$factors = json_decode($projectdetail->factor_names,true);
+		if (!isset($factors['SCL'])){
+			return null;
+		}
+		$ans = array();
+		foreach ($factors['SCL'] as $key=>$value){
+			$inner_array = array();
+			$factor_info = Factor::findFirst($key);
+			$inner_array['chs_name'] = $factor_info->chs_name;
+			$factor_score_info = FactorAns::findFirst(array('factor_id = ?1 AND examinee_id =?2','bind'=>array(1=>$key,2=>$examinee_info->id)));
+			$inner_array['std_score'] = $factor_score_info->std_score;
+			$ans[] = $inner_array;
+		}
+		return $ans;
+	}
+	
+	#获取个人的EPQA数据
+	public static function getEPQAdata($examinee_info){
+		$projectdetail = ProjectDetail::findFirst(array('project_id=?1','bind'=>array(1=>$examinee_info->project_id)));
+		$factors = json_decode($projectdetail->factor_names,true);
+		if (!isset($factors['EPQA'])){
+			return null;
+		}
+		$ans = array();
+		foreach ($factors['EPQA'] as $key=>$value){
+			$inner_array = array();
+			$factor_info = Factor::findFirst($key);
+			$inner_array['chs_name'] = $factor_info->chs_name;
+			$factor_score_info = FactorAns::findFirst(array('factor_id = ?1 AND examinee_id =?2','bind'=>array(1=>$key,2=>$examinee_info->id)));
+			$inner_array['std_score'] = $factor_score_info->std_score;
+			$inner_array['score'] = $factor_score_info->score;
+			$inner_array['name'] = $factor_info->name;
+			$ans[] = $inner_array;
+		}
+		return $ans;
+	}
+	
+	#获取个人的CPI数据
+	public static function getCPIdata($examinee_info){
+		$projectdetail = ProjectDetail::findFirst(array('project_id=?1','bind'=>array(1=>$examinee_info->project_id)));
+		$factors = json_decode($projectdetail->factor_names,true);
+		if (!isset($factors['CPI'])){
+			return null;
+		}
+		$ans = array();
+		foreach ($factors['CPI'] as $key=>$value){
+			$inner_array = array();
+			$factor_info = Factor::findFirst($key);
+			$inner_array['chs_name'] = $factor_info->chs_name;
+			$factor_score_info = FactorAns::findFirst(array('factor_id = ?1 AND examinee_id =?2','bind'=>array(1=>$key,2=>$examinee_info->id)));
+			$inner_array['std_score'] = $factor_score_info->std_score;
+			$inner_array['score'] = $factor_score_info->score;
+			//$inner_array['name'] = $factor_info->name;
+			$ans[$factor_info->name] = $inner_array;
+		}
+		return $ans;
+	}
+	
+	#获取个人的SPM数据
+	public static function getSPMdata($examinee_info){
+		$projectdetail = ProjectDetail::findFirst(array('project_id=?1','bind'=>array(1=>$examinee_info->project_id)));
+		$factors = json_decode($projectdetail->factor_names,true);
+		if (!isset($factors['SPM'])){
+			return null;
+		}
+		$ans = array();
+		foreach ($factors['SPM'] as $key=>$value) {
+			$inner_array = array();
+			$factor_info = Factor::findFirst($key);
+			$inner_array['chs_name'] = $factor_info->chs_name;
+			$factor_score_info = FactorAns::findFirst(array('factor_id = ?1 AND examinee_id =?2','bind'=>array(1=>$key,2=>$examinee_info->id)));
+			$inner_array['std_score'] = intval($factor_score_info->std_score);
+			$inner_array['score'] = $factor_score_info->score;
+			//$inner_array['name'] = $factor_info->name;
+			$ans[$factor_info->name] = $inner_array;
+		}
+		return $ans;
+	}
+	
 }

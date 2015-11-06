@@ -79,9 +79,9 @@ class CompetencyData extends \Phalcon\Mvc\Controller
 		foreach($rt['advantage']['value'] as &$value){
 			$value['score'] =  sprintf("%.1f", $value['score']* 12) ;
 			$comment = CompetencyComment::findFirst(array(
-					'name=?1',
+					'index_chs_name=?1',
 					'bind'=>array(1=>$value['chs_name'])))->advantage;
-			$comment = explode("|", $comment);
+			$comment = json_decode($comment,true);
 			$rand_key = array_rand($comment);
 			$value['comment'] = $comment[$rand_key];
 			$sum += $value['score'];
@@ -90,9 +90,9 @@ class CompetencyData extends \Phalcon\Mvc\Controller
 			
 			$value['score'] =  sprintf("%.1f", $value['score']* 12) ;
 			$comment = CompetencyComment::findFirst(array(
-					'name=?1',
+					'index_chs_name=?1',
 					'bind'=>array(1=>$value['chs_name'])))->disadvantage;
-			$comment = explode("|", $comment);
+			$comment = json_decode($comment,true);
 			$rand_key = array_rand($comment);
 			$value['comment'] = $comment[$rand_key];
 			$sum += $value['score'];
@@ -231,18 +231,18 @@ class CompetencyData extends \Phalcon\Mvc\Controller
 		foreach($rt['advantage']['value'] as &$value){
 			$value['score'] =  sprintf("%.1f", $value['score']* 12) ;
 			$comment = CompetencyComment::findFirst(array(
-					'name=?1',
+					'index_chs_name=?1',
 					'bind'=>array(1=>$value['chs_name'])))->advantage;
-			$comment = explode("|", $comment);
+			$comment = json_decode($comment,true);
 			$rand_key = array_rand($comment);
 			$value['comment'] = $comment[$rand_key];
 		}
 		foreach($rt['disadvantage']['value'] as &$value){
 			$value['score'] =  sprintf("%.1f", $value['score']* 12) ;
 			$comment = CompetencyComment::findFirst(array(
-					'name=?1',
+					'index_chs_name=?1',
 					'bind'=>array(1=>$value['chs_name'])))->disadvantage;
-			$comment = explode("|", $comment);
+			$comment = json_decode($comment,true);
 			$rand_key = array_rand($comment);
 			$value['comment'] = $comment[$rand_key];
 		}
@@ -454,9 +454,9 @@ class CompetencyData extends \Phalcon\Mvc\Controller
 		foreach($rt['advantage']['value'] as &$value){
 			$value['score'] =  sprintf("%.1f", $value['score']* 12) ;
 			$comment = CompetencyComment::findFirst(array(
-					'name=?1',
+					'index_chs_name=?1',
 					'bind'=>array(1=>$value['chs_name'])))->advantage;
-			$comment = explode("|", $comment);
+			$comment = json_decode($comment,true);
 			$rand_key = array_rand($comment);
 			$value['comment'] = $comment[$rand_key];
 			$sum += $value['score'];
@@ -465,9 +465,9 @@ class CompetencyData extends \Phalcon\Mvc\Controller
 			
 			$value['score'] =  sprintf("%.1f", $value['score']* 12) ;
 			$comment = CompetencyComment::findFirst(array(
-					'name=?1',
+					'index_chs_name=?1',
 					'bind'=>array(1=>$value['chs_name'])))->disadvantage;
-			$comment = explode("|", $comment);
+			$comment = json_decode($comment,true);
 			$rand_key = array_rand($comment);
 			$value['comment'] = $comment[$rand_key];
 			$sum += $value['score'];
