@@ -1,5 +1,5 @@
 
-<div style="font-size:80px;color:white;margin-top:80px;font-family:'华文行楷';">政府部门测评系统</div>
+<div style="font-size:60px;color:white;margin-top:80px;font-family:'华文行楷';">北京市政法系统领导干部胜任力测评软件</div>
 <div class="Leo_login">
     <div style='font-size:40px;color:purple;text-align:center;padding:30px 0;'>欢&nbsp;迎&nbsp;登&nbsp;录</div>
     <div style='text-align:center'>
