@@ -11,7 +11,7 @@ class PmController extends Base
 	#主页面, 在主页面生成相关跳转
     public function indexAction(){
         $this->view->setTemplateAfter('base2');
-        $this->leftRender('北京政法系统人才测评项目管理平台');
+        $this->leftRender('项 目 管 理 平 台');
         $page = $this->request->getPost('page', 'int');
         if (empty($page)){
         	$page = 0;
@@ -517,6 +517,31 @@ class PmController extends Base
 			$data = array();
 			$data[0]['name']       = $this->request->getPost('name', 'string');
 			$data[0]['sex']		   = $this->request->getPost('sex', 'int');
+			//-------------start  为页面添加的人员完善信息
+			$data[0]['native'] = '';
+			$data[0]['education'] = ''; 
+			$data[0]['degree'] = '';
+			$data[0]['birthday'] = '1970-01-01';
+			$data[0]['politics']=  '';
+			$data[0]['professional']=  '';
+			$data[0]['team']= '';
+			$data[0]['employer']=  '';
+			$data[0]['unit']= '';
+			$data[0]['duty']=  '';
+			$tmp_array = array();
+			$tmp_array['education'] = array();
+			$tmp_array['work'] = array();
+			$data[0]['other'] = $tmp_array;
+			$tmp_array_2 = array();
+			foreach($data[0] as $key=>$value){
+				if ($key == 'sex'){
+					$value = $value == 1 ?'男':'女';
+				}
+				$tmp_array_2[$key] = $value;
+			}
+			$data[0]['init_data'] = json_encode($tmp_array_2, JSON_UNESCAPED_UNICODE);
+			$data[0]['other'] = json_encode($tmp_array, JSON_UNESCAPED_UNICODE);
+			//-------------end
 			try{
 				PmDB::insertExaminee($data, $project_id, $type);
 			}catch(Exception $e){
