@@ -183,7 +183,7 @@ class WordChart {
 		
 		$date = date('H_i_s');
 		$stamp = rand(100,900);
-		$fileName = './tmp/_'.$project_id.$date.'_'.$stamp.'.jpeg';
+		$fileName = './tmp/'.$project_id.$date.'_'.$stamp.'.jpeg';
 		$graph->Stroke($fileName);
 		return $fileName;
 		
@@ -262,7 +262,7 @@ class WordChart {
 	
 		$date = date('H_i_s');
 		$stamp = rand(100,900);
-		$fileName = './tmp/_'.$project_id.$date.'_'.$stamp.'.jpeg';
+		$fileName = './tmp/'.$project_id.$date.'_'.$stamp.'.jpeg';
 		$graph->Stroke($fileName);
 		return $fileName;
 	
@@ -303,7 +303,7 @@ class WordChart {
 		
 		$date = date('H_i_s');
 		$stamp = rand(100,900);
-		$fileName = './tmp/_'.$project_id.$date.'_'.$stamp.'.jpeg';
+		$fileName = './tmp/'.$project_id.$date.'_'.$stamp.'.jpeg';
 		$graph->Stroke($fileName);
 		return $fileName;
 	}
