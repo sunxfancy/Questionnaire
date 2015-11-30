@@ -26,6 +26,9 @@ class ProjectDataExport  extends \Phalcon\Mvc\Controller
 		       ->execute()
 			   ->toArray();
 		//异常处理 
+		if(empty($examinee)){
+			throw new Exception('项目的被试人数为0,无法进行项目数据表生成');
+		}
 		$members_not_finished = array();
 		foreach($examinee as $value){
 			if ($value['state'] < 4 ){
