@@ -10,7 +10,11 @@ class ManagerloginController extends Base
     }
 
     public function indexAction(){
-			
+    	$state = Utils::getBrowserDetail($this->request);
+    	if (!$state ){
+    		$this->response->redirect('/error/lowbrowser');
+    		$this->view->disable();
+    	}
     }
 
     public function loginAction(){

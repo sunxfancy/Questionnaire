@@ -108,7 +108,12 @@ function datadeal(data){
 		$('#module_state').addClass('label-danger');
         $('#module_state').html('未完成');
 	}
-	
+	//edit by brucewyh 修复ie10下出现的问题  对象空值
+	if (!data.ans && typeof(data.ans)!="undefined" && data.ans!=0 )
+    {
+           return ;
+    }
+    //edit end 
     var ans=data.ans.split("|");
     choices = ans;
     for (var i = 0; i < ans.length; i++) {
