@@ -252,6 +252,36 @@ $("#submit").click(function(){
         "duty"          :$("#duty").val(),
         "team"          :$("#team").val()
     }
+    //edit by brucewyh 修复个人信息必须完整的检查
+    var b_error = 0;
+    for(var value in base_info ){
+    	$("#"+value).css("border","black solid 0px");
+    	if (base_info[value] =="")
+        {
+            b_error = 1;
+          $("#"+value).css("border","red solid 1px");
+        }
+    }
+    if(b_error){
+                $('.Leo_question').css('width','843px')
+                 $('.modal-body').html('');
+                 $('.modal-body').html(
+                     "<p class=\"bg-danger\" style='padding:20px;'>请完善个人信息</p>"
+                     );
+                 $('.modal-footer').html('');
+                 $('.modal-footer').html(
+                    "<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">返回修改</button>"
+                    //+"&nbsp;&nbsp;&nbsp;<a href='/'><button type=\"button\" class=\"btn btn-primary\">退出</button></a>"
+                 );
+                 $('#myModal').modal({
+                    keyboard:true,
+                    backdrop:'static'
+                 })
+        if(spinner){ spinner.stop(); }
+        return ;	
+    }
+    //edit end 
+    
     $.post('/examinee/submit', base_info, function(data){
      
      if(data.error){

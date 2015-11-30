@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="ch-ZN" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-
     <meta charset="utf-8" />
-    <title>北京市政法系统领导干部胜任力测评软件</title>
+    <meta name="renderer" content="webkit">
+    <title>北京市政法系统领导干部胜任力测评系统</title>
     <link rel="stylesheet" type="text/css" href="/pagecss/admin.min.css">
     <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/css/Leo_global_css.css" />
     <link rel="stylesheet" type="text/css" href="/css/css/Leo_normal_css.css" />
-    <script type='text/javascript' src='/datetimepicker/jquery-1.8.3.min.js'></script>
+    <script type='text/javascript' src='/js/jquery.js'></script>
     <script type='text/javascript' src='/lib/jquery.cookie.js'></script>
     <script type='text/javascript' src='/js/spin.js'></script>
     <script type='text/javascript'  src="/bootstrap/js/bootstrap.min.js"></script>

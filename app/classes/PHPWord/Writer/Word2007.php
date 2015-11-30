@@ -96,7 +96,9 @@ class Word2007 extends AbstractWriter implements WriterInterface
     public function save($filename = null)
     {
         $filename = $this->getTempFile($filename);
+
         $zip = $this->getZipArchive($filename);
+
         $phpWord = $this->getPhpWord();
 
         // Content types
@@ -138,6 +140,7 @@ class Word2007 extends AbstractWriter implements WriterInterface
             }
         }
 
+      
         // Close zip archive and cleanup temp file
         $zip->close();
         $this->cleanupTempFile();

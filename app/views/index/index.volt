@@ -1,14 +1,14 @@
 
-<div style="font-size:60px;color:white;margin-top:80px;font-family:'华文行楷';">北京市政法系统领导干部胜任力测评软件</div>
+<div style="font-size:60px;color:white;margin-top:80px;font-family:'华文行楷';">北京市政法系统领导干部胜任力测评系统</div>
 <div class="Leo_login">
     <div style='font-size:40px;color:purple;text-align:center;padding:30px 0;'>欢&nbsp;迎&nbsp;登&nbsp;录</div>
     <div style='text-align:center'>
         <label for='username'><span style='font-size:25px;font-family: Microsoft YaHei UI; font-weight:normal;'>账&nbsp;号&nbsp;&nbsp;</span></label>
-        <input autofocus required class='form-control' id='username' style='display:inline-block;height:36px;font-size:20px;width:180px;'/>
+        <input autofocus required class='form-control' id='username' style='display:inline-block;height:36px;width:180px;font-size:20px;padding:2px 10px;'/>
     </div>
     <div style='text-align:center;margin-top:10px;'>
         <label for='password'><span style='font-size:25px;font-family: Microsoft YaHei UI; font-weight:normal;'>密&nbsp;码&nbsp;&nbsp;</span></label>
-        <input required type='password' class='form-control' id='password' style='display:inline-block;height:36px;font-size:20px;width:180px;'/>
+        <input required type='password' class='form-control' id='password' style='display:inline-block;height:36px;padding:2px 10px;font-size:20px;width:180px;'/>
     </div>
     <div style="height:30px;"></div>
     <div style="text-align:center">
