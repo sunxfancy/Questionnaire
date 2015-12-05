@@ -42,7 +42,7 @@ class LeaderController extends Base
         $this->view->setVar('other',$examinee->other);
     }
 
-    public function getOtherAction($examinee_id){
+    public function getotherAction($examinee_id){
         $examinee = Examinee::findFirst($examinee_id);
         $this->dataBack(array("other"=>$examinee->other));
     }

@@ -744,12 +744,12 @@ class PmController extends Base
 		return $rt;
 	}
 	#被试信息导出页面
-	public function examineeDownloadAction(){
+	public function examineedownloadAction(){
 		$this->view->setTemplateAfter('base2');
 		$this->leftRender('相 关 数 据 处 理');
 	}
     #获取被试算分的状态
-    public function getReportStateAction(){
+    public function getreportstateAction(){
         $this->view->disable();
         $manager = $this->session->get('Manager');
         if (empty($manager)){
@@ -779,7 +779,7 @@ class PmController extends Base
         }
     }
     #所有被试人员进行算分处理 ----一键算分
-    public function oneKeyCalculateAction(){
+    public function onekeycalculateAction(){
         $this->view->disable();
         $manager = $this->session->get('Manager');
         if (empty($manager)){
@@ -801,7 +801,7 @@ class PmController extends Base
         $calcual_error = array(); // 在算分过程中出现错误的人员
         foreach ( $examinees as $examinee_record ){
         	if ($examinee_record['state'] == 0 ){
-        		$not_exam = $examinee_record['number'].'-'.$examinee_record['name'].'-还未参加测评';
+        		$not_exam[] = $examinee_record['number'].'-'.$examinee_record['name'].'-还未参加测评';
         	}else if ($examinee_record['state'] < 4 ){
         		try{
         			BasicScore::handlePapers($examinee_record['id']);
@@ -817,10 +817,12 @@ class PmController extends Base
         		//...
         	}
         }
+        //先反馈回未参与考试的人员
         if (!empty($not_exam)){
         	$this->dataReturn(array('error'=>$not_exam));
         	return ;
         }
+        //后反馈回算分失败的人员
         if (!empty($calcual_error)){
         	$this->dataReturn(array('error'=>$calcual_error));
         	return ;
@@ -829,7 +831,7 @@ class PmController extends Base
         return ;
     }    
 	#导出被试信息列表
-	public function examineeExportAction(){
+	public function examineeexportAction(){
 		$project_id = $this->session->get('Manager')->project_id;
 		$examinee = Examinee::find(array(
 				'project_id = :project_id:',
@@ -986,7 +988,7 @@ class PmController extends Base
 		}
 	}
 	#上传面巡专家列表
-	public function uploadInterviewerAction(){
+	public function uploadinterviewerAction(){
 		#严格json格式{ '···' : '···'},json_encode 无法实现
 		try{
 			$file_path = null;
@@ -1107,7 +1109,7 @@ class PmController extends Base
 		$this->view->setVar('manager_id',$manager_id);
 	}
 	#获取面询专家信息
-	public function getInterviewerAction(){
+	public function getinterviewerAction(){
 		$this->view->disable();
 		$manager_id = $this->request->getPost('manager_id', 'int');
 		$manager = Manager::findFirst($manager_id);
@@ -1671,7 +1673,7 @@ class PmController extends Base
 		}
     }
     #领导导出界面
-    public function leaderExportAction(){
+    public function leaderexportAction(){
     	$result = $this->roleInfo('L');
     	$excelExport = new ExcelExport();
     	$excelExport->LeaderExport($result);

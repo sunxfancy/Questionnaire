@@ -308,6 +308,122 @@ class WordChart {
 		return $fileName;
 	}
 	
+	#生成十项报表中EPQA 第一个图表
+	public static function scatter_horiz_Graph_epqa_1($data,$examinee) {		
+		// Create the image
+		$image = imagecreatefrompng('./images/EPQA_1.png');
+		// Create some colors
+		$white = imagecolorallocate($image, 255, 255, 255);
+		$black = imagecolorallocate($image, 0, 0, 0);
+		// Replace path by your own font path
+		$font = './fonts/simsun.ttf';
+		// Add some shadow to the text
+		$labels_array = array(
+			"内外向"=>1,"神经质"=>2,"精神质"=>3,"掩饰性"=>4	
+		);
+		foreach ($data as $value) {
+			if(isset($labels_array[$value['chs_name']])){
+				$row = $labels_array[$value['chs_name']];
+				$y = 60 + ($row-1)*36;
+				$x = 87+(466*$value['std_score']/100);
+				imagettftext($image, 7, 0, $x, $y, $black, $font, '●');
+			}
+		}
+// 		$red = imagecolorallocate($image,255,0,0);//创建一个颜色，以供使用
+// 		imageline($image,30,30,240,140,$red);
+		
+// 		//$red = imagecolorallocate($image,255,0,0);//创建一个颜色，以供使用
+// 		self::MDashedLine($image,60,60,240,140,$white);
+		
+		$fileName = './tmp/'.$examinee->id.'_epqa_1.png';
+		if(file_exists($fileName)){
+			unlink($fileName);
+		}
+		imagepng ( $image , $fileName);
+		imagedestroy ( $image );
+		return $fileName;
+	}
+	private static function MDashedLine($image, $x0, $y0, $x1, $y1, $fg, $bg)
+	{
+		$st = array($fg, $fg, $fg, $fg, $bg, $bg, $bg, $bg);
+		ImageSetStyle($image, $st);
+		ImageLine($image, $x0, $y0, $x1, $y1, IMG_COLOR_STYLED);
+	}
+	
+	#生成十项报表中EPQA 第二个图表
+	public static function scatter_horiz_Graph_epqa_2($data,$examinee) {		
+		// Create the image
+		$image = imagecreatefrompng('./images/EPQA_2.png');
+		// Create some colors
+		$white = imagecolorallocate($image, 255, 255, 255);
+		$black = imagecolorallocate($image, 0, 0, 0);
+		// Replace path by your own font path
+		$font = './fonts/simsun.ttf';
+		// Add some shadow to the text
+		$labels_array = array(
+			"内外向","神经质",
+		);
+		if($data[0]['chs_name'] == $labels_array[0] && $data[1]['chs_name'] == $labels_array[1] ){
+			$x = 66 + ($data[0]['std_score']/100)*472;
+			if( $data[1]['std_score'] >= 25 ){
+				$y = 494 - 469*(($data[1]['std_score']-25)/75);
+				imagettftext($image, 7, 0, $x, $y, $black, $font, '●');
+			}
+		}
+// 		$red = imagecolorallocate($image,255,0,0);//创建一个颜色，以供使用
+// 		imageline($image,30,30,240,140,$red);
+		
+// 		//$red = imagecolorallocate($image,255,0,0);//创建一个颜色，以供使用
+// 		self::MDashedLine($image,60,60,240,140,$white);
+		
+		$fileName = './tmp/'.$examinee->id.'_epqa_2.png';
+		if(file_exists($fileName)){
+			unlink($fileName);
+		}
+		imagepng ( $image , $fileName);
+		imagedestroy ( $image );
+		return $fileName;
+	}
+	#十项报表CPI中图表
+	public static function scatter_horiz_Graph_cpi($data, $examinee){
+		// Create the image
+		$image = imagecreatefrompng('./images/CPI_1.png');
+		// Create some colors
+		$white = imagecolorallocate($image, 255, 255, 255);
+		$black = imagecolorallocate($image, 0, 0, 0);
+		// Replace path by your own font path
+		$font = './fonts/simsun.ttf';
+		// Add some shadow to the text
+		$labels_array = array(
+			"支配性"=>1,"进取性"=>2,"社交性"=>3,"自在性"=>4,"自承性"=>5,"幸福感"=>6,
+			"责任感"=>7,"社会化"=>8,"自制力"=>9,"宽容性"=>10,"好印象"=>11,"同众性"=>12,
+			"遵循成就"=>13,"独立成就"=>14,"精干性"=>15,
+			"心理性"=>16,"灵活性"=>17,"女性化"=>18
+		);
+		foreach ($data as $value){
+			if(isset($labels_array[$value['chs_name']])){
+				$row = $labels_array[$value['chs_name']];
+				$y = 80+($row-1)*37;
+				$x = 94 + ( 456 * ($value['std_score']/100));
+				imagettftext($image, 7, 0, $x, $y, $black, $font, '●');
+			}
+		}
+// 		$red = imagecolorallocate($image,255,0,0);//创建一个颜色，以供使用
+// 		imageline($image,30,30,240,140,$red);
+		
+// 		//$red = imagecolorallocate($image,255,0,0);//创建一个颜色，以供使用
+// 		self::MDashedLine($image,60,60,240,140,$white);
+		
+		$fileName = './tmp/'.$examinee->id.'_cpi.png';
+		if(file_exists($fileName)){
+			unlink($fileName);
+		}
+		imagepng ( $image , $fileName);
+		imagedestroy ( $image );
+		return $fileName;
+	}
+	
+	
 	
 	
 	
