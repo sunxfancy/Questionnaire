@@ -13,7 +13,7 @@ class CommentController extends \Phalcon\Mvc\Controller {
 	
 	}
 	
-	public function uploadCompetencyAction(){
+	public function uploadcompetencyAction(){
 		die('finished -|-_-|-');
 		try{
 			$file_path = './comment/competency_comment.xls';
@@ -28,7 +28,7 @@ class CommentController extends \Phalcon\Mvc\Controller {
 		}
 	}
 	
-	public function uploadComprehensiveAction(){
+	public function uploadcomprehensiveAction(){
 		die('finished -|-_-|-');
 		try{
 			$file_path = './comment/comprehensive_comment.xlsx';
@@ -45,7 +45,7 @@ class CommentController extends \Phalcon\Mvc\Controller {
 	}
 	
 	
-	public function uploadChildrenOfIndexAction(){
+	public function uploadchildrenofindexAction(){
 		die('finished -|-_-|-');
 		try{
 			$file_path = './comment/childrenOfIndexComment.xlsx';

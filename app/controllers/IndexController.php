@@ -20,7 +20,7 @@ class IndexController extends Base
 	{
 		$state = Utils::getBrowserDetail($this->request);
 		if (!$state ){
-			$this->response->redirect('/error/lowbrowser');
+			$this->response->redirect('/wrong/lowbrowser/examinee');
 			$this->view->disable();
 		}
 	}

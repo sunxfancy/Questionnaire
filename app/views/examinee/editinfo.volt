@@ -254,9 +254,9 @@ $("#submit").click(function(){
     }
     //edit by brucewyh 修复个人信息必须完整的检查
     var b_error = 0;
-    for(var value in base_info ){
+    for(var value in base_info ) {
     	$("#"+value).css("border","black solid 0px");
-    	if (base_info[value] =="")
+    	if (base_info[value] == "" && value != 'team' )
         {
             b_error = 1;
           $("#"+value).css("border","red solid 1px");

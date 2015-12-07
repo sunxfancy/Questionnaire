@@ -1,6 +1,4 @@
 <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href='/fileupload/jquery.fileupload-ui.css'>
-<link href='/fileupload/jquery.fileupload.css'>
 <script src="/bootstrap/js/bootstrap.min.js"></script>
 <script src='/ichart/ichart.latest.min.js'></script>
 

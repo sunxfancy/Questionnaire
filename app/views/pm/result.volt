@@ -121,6 +121,23 @@
 </div>
 <hr size="2" color="#FF0000" style="width:90%;"/>
 
+<div style="width:100%;height:40px;text-align:left; margin: 5px 40px;">
+    <div class="form-group" style='display:inline-block;font-size:20px;'>
+        <span class="text-primary" ><i class='glyphicon glyphicon-tag' style='font-size:15px;'></i></span>需求量表统计结果<span style='visibility: hidden'>位位位位</span>
+    </div>
+    &nbsp;&nbsp;
+    <div class='form-group' style='display:inline-block;'>
+        <a href = '#' onclick="downloadInqueryData()">
+            <button type='button' class="btn btn-primary start" style='width:150px;'>
+                <i class="glyphicon glyphicon-download"></i>
+                <span>导出</span>
+            </button>
+        </a>
+    </div>
+</div>
+<hr size="2" color="#FF0000" style="width:90%;"/>
+
+
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -241,6 +258,32 @@ function downloadProjectData(){
         }
     });
 }
+
+function isArray(o) {  
+  return Object.prototype.toString.call(o) === '[object Array]';   
+} 
+
+function downloadInqueryData() {
+	downloadWait('正在生成需求量表统计结果！');
+    $.post('/file/getinqueryans',function(data){
+        if (data.error){
+        	if(isArray(data.error)){
+        		    //打印未完成名单
+            var not = data.error;
+            var msg ='还有如下被试未完成需求量表作答【'+ not.length+'人】：<br />';
+            for(var i = 0, len = not.length; i < len; i++ ){
+                msg+= (not[i]+'<br />');
+            }
+            downloadError(msg);   
+        	}else{
+        		 downloadError(data.error);
+        	} 
+        }else{
+            downloadSuccess(data.success);
+        }
+    });
+}
+
 function downloadWait(msg){
     $('.Leo_question').css('width','840px');    
     $('.modal-body').html("<p class=\"bg-success\" style='padding:20px;'>"+msg+"</p>"+"<div style='text-align:center; padding:5px 10px 10px 10px;'><img src='/image/loading.gif' style='width:300px' /></div>");
