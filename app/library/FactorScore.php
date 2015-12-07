@@ -709,7 +709,7 @@ class FactorScore{
 				}else if ($score >= $spmmd->B5) {
 					$std_score = 45;
 				}else{
-					$std_score = 50;
+					$std_score = 51;
 				}
 				// std_score 第一位 智力等级  之后位为 百分等级
 				
