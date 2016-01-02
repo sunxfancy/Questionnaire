@@ -485,6 +485,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 	public function getallindividualcomprehesiveAction($type){
 		$this->view->disable();
 		//个体报告的导出必须是manager
+		set_time_limit(0);
 		$manager = $this->session->get('Manager');
 		if(empty($manager)){
 			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!'));
@@ -802,6 +803,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 	#报告打包下载-- file_type 1 2 | file_new 1 2 | 
 	#原版综合 1  1 ， 原版胜任力 1  2 ， 修改版综合2  1 ，修改版胜任力 2 2 
 	public function packagefilesAction($file_type, $file_new){
+		set_time_limit(0);
 		$manager = $this->session->get('Manager');
 		if(empty($manager)) {
 			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!')) ;
@@ -943,6 +945,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 	}
 	#获取项目总体数据
 	public function getprojectdataAction(){
+		set_time_limit(0);
 		$this->view->disable();
 		//个体报告的导出必须是manager
 		$manager = $this->session->get('Manager');
@@ -983,6 +986,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 	
 	#生成被试人员的十项报表----可重复生成
 	public function getpersonalresultsbyprojectAction() {
+		set_time_limit(0);
 		$this->view->disable();
 		//十项报表的导出必须是manager pm & interviwer
 		$manager = $this->session->get('Manager');
@@ -1053,6 +1057,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 	
 	#生成被试人员需求量表结果页面 ---- 可重复生成
 	public function getinqueryansAction() {
+		set_time_limit(0);
 		$this->view->disable();
 		//个体报告的导出必须是manager
 		$manager = $this->session->get('Manager');
