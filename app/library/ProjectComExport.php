@@ -8,7 +8,7 @@ class ProjectComExport extends \Phalcon\Mvc\Controller{
 	 */
 	public  $wordHandle = null;
 	public function report($project_id){
-		set_time_limit(0);
+
 		$data = new ProjectComData();
 		$data->project_check($project_id);
 		$chart = new WordChart();

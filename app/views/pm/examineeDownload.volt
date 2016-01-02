@@ -33,18 +33,13 @@
         <span class="label label-default" id='score'>未完成</span>
     </div>
 </div>
-
-<!--添加被试人员的十项报表整体导出 -->
-
 <div style="height:40px;margin-left:40px;">
-    <div class='form-group' style='display:inline-block;'>
-        <button  type='button' onclick="tenSheetDownload()" class="btn btn-primary start" style=''>
-            <i class="glyphicon glyphicon-send"></i>&nbsp;十项报表打包下载
+  <div class='form-group' style='display:inline-block;'>
+     <button  type='button' onclick="tenSheetDownload()" class="btn btn-primary start" style=''>
+            <i class="glyphicon glyphicon-send"></i>&nbsp;十项报表下载
         </button>
     </div>
 </div>
-
-
 <div style="height:40px;margin-left:40px;">
     <div class="form-group" style='display:inline-block;font-size:20px;'>
         <span class="text-primary" ><i class='glyphicon glyphicon-tag' style='font-size:15px;'></i></span>个人综合素质报告
@@ -424,7 +419,7 @@ function oneKeyCalculate(){
         if (data.error){
             if (isArray(data.error)){
                 //打印未完成名单
-            var msg ='一键算分失败：';
+            var msg ='一键算分失败';
             msg += "<table class=\"table table-hover\"  style='margin-bottom:0;margin-top:0;'>";
             msg +='<caption><b style=\'color:red;\'></b></caption>';
             var not = data.error;
@@ -528,38 +523,6 @@ function exportExaminees(){
         }
     });
 }
-
-function isObject(obj){
-    return (typeof obj=='object')&&obj.constructor==Object;
-} 
-
-function tenSheetDownload(){
-	downloadWait('正在生成测试人员的十项报表！');
-    $.post('/file/getpersonalresultsbyproject', function(data){
-        if (data.error){
-        	if(isObject(data.error)){
-        		var msg ='';
-            msg += "<table class=\"table table-hover\"  style='margin-bottom:0;margin-top:0;'>";
-            var not = data.error.error;
-            if(not.length != 0 ){
-            	 msg +='<caption><b style=\'color:red;\'>打包失败</b></caption>';
-            	for(var i = 0, len = not.length; i < len; i++ ){
-                msg+=('<tr><td>'+not[i]+'</td></tr>');
-                }
-            }
-            msg +='</table>';
-            downloadError(msg); 
-        	}else{
-        		 downloadError(data.error);
-        	}
-        }else {
-           // var msg = "点击下载<a href='"+data.success.substr( 1, data.success.length-1)+"'></a>";
-            var msg = "点击下载<a href='"+data.success.success.substr( 1, data.success.success.length-1)+"'>测评人员十项报表数据包</a>";
-            downloadSuccess(msg);
-        }
-    });
-}
-
 function downloadWait(msg){
     $('.Leo_question').css('width','843px');    
     $('.modal-body').html("<p class=\"bg-success\" style='padding:20px;'>"+msg+"</p>"+"<div style='text-align:center; padding:5px 10px 10px 10px;'><img src='/image/loading.gif' style='width:300px' /></div>");
@@ -596,6 +559,68 @@ function downloadSuccess(msg){
         backdrop:'static'
     })
 }
+function isObject(obj){
+
+    return (typeof obj=='object')&&obj.constructor==Object;
+
+} 
+
+
+
+function tenSheetDownload(){
+
+   downloadWait('正在生成个人十项报表数据：');
+
+    $.post('/file/getpersonalresultsbyproject', function(data){
+
+        if (data.error){
+
+           if(isObject(data.error)){
+
+               var msg ='';
+
+            msg += "<table class=\"table table-hover\"  style='margin-bottom:0;margin-top:0;'>";
+
+            var not = data.error.error;
+
+            if(not.length != 0 ){
+
+                msg +='<caption><b style=\'color:red;\'>十项报表生成失败：</b></caption>';
+
+               for(var i = 0, len = not.length; i < len; i++ ){
+
+                msg+=('<tr><td>'+not[i]+'</td></tr>');
+
+                }
+
+            }
+
+            msg +='</table>';
+
+            downloadError(msg); 
+
+           }else{
+
+                downloadError(data.error);
+
+           }
+
+        }else {
+
+           // var msg = "鐐瑰嚮涓嬭浇<a href='"+data.success.substr( 1, data.success.length-1)+"'></a>";
+
+            var msg = "请点击下载<a href='"+data.success.success.substr( 1, data.success.success.length-1)+"'>个人十项报表 </a>";
+
+            downloadSuccess(msg);
+
+        }
+
+    });
+
+}
+
+
+
 </script>
 
    

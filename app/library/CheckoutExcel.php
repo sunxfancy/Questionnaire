@@ -1,5 +1,6 @@
 <?php
-	/**
+	use PhpOffice\PhpWord\PhpWord;
+/**
 	 * @usage 十项报表数据统计
 	 *
 	 */
@@ -87,6 +88,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
     	$objActSheet->getDefaultRowDimension()->setRowHeight(21);
     	$objActSheet->getDefaultColumnDimension()->setWidth(7);
     	$objActSheet->mergeCells('A1:L1');
+    	$objActSheet->getColumnDimension('L')->setWidth(9);
     	$objActSheet->setCellValue("A1",'测评人员个人基本情况');
     	$objActSheet->getStyle("A1")->getFont()->setBold(true);
     	$this->position($objActSheet, 'A1');
@@ -325,22 +327,22 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
     }
    # 3 16pf 
     public function checkout16pf($examinee, $objActSheet){
-        $objActSheet->getDefaultRowDimension()->setRowHeight(12);
-    	$objActSheet->getColumnDimension('A')->setWidth(12);
-        $objActSheet->getColumnDimension('B')->setWidth(8);
+        $objActSheet->getDefaultRowDimension()->setRowHeight(16);
+    	$objActSheet->getColumnDimension('A')->setWidth(11);
+        $objActSheet->getColumnDimension('B')->setWidth(7);
         $objActSheet->getColumnDimension('C')->setWidth(8);
-        $objActSheet->getColumnDimension('D')->setWidth(15);
-        $objActSheet->getColumnDimension('E')->setWidth(2.5);
-        $objActSheet->getColumnDimension('F')->setWidth(2.5);
-        $objActSheet->getColumnDimension('G')->setWidth(2.5);
-        $objActSheet->getColumnDimension('H')->setWidth(2.5);
-        $objActSheet->getColumnDimension('I')->setWidth(2.5);
-        $objActSheet->getColumnDimension('J')->setWidth(2.5);
-        $objActSheet->getColumnDimension('K')->setWidth(2.5);
-        $objActSheet->getColumnDimension('L')->setWidth(2.5);
-        $objActSheet->getColumnDimension('M')->setWidth(2.5);
+        $objActSheet->getColumnDimension('D')->setWidth(19);
+        $objActSheet->getColumnDimension('E')->setWidth(2);
+        $objActSheet->getColumnDimension('F')->setWidth(2);
+        $objActSheet->getColumnDimension('G')->setWidth(2);
+        $objActSheet->getColumnDimension('H')->setWidth(2);
+        $objActSheet->getColumnDimension('I')->setWidth(2);
+        $objActSheet->getColumnDimension('J')->setWidth(2);
+        $objActSheet->getColumnDimension('K')->setWidth(2);
+        $objActSheet->getColumnDimension('L')->setWidth(2);
+        $objActSheet->getColumnDimension('M')->setWidth(2);
         $objActSheet->getColumnDimension('N')->setWidth(2.8);
-        $objActSheet->getColumnDimension('O')->setWidth(15);
+        $objActSheet->getColumnDimension('O')->setWidth(21);
         $objActSheet->mergeCells('A1:O2');
         $objActSheet->setCellValue('A1','卡特尔十六种人格因素(16PF)测验结果');
         $objActSheet->getStyle("A1")->getFont()->setBold(true);
@@ -450,14 +452,19 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         }
         $objActSheet->getStyle('A7:O'.$lastRow)->applyFromArray($styleArray);
         
-        $objActSheet->mergeCells('A'.$startRow.':O'.$startRow);
-        $startRow++;
-        $objActSheet->mergeCells('A'.$startRow.':O'.$startRow);
-        $startRow++;
-        $objActSheet->mergeCells('A'.$startRow.':O'.$startRow);
+//         $objActSheet->mergeCells('A'.$startRow.':O'.$startRow);
+//         $startRow++;
+//         $objActSheet->mergeCells('A'.$startRow.':O'.$startRow);
+//         $startRow++;
+//         $objActSheet->mergeCells('A'.$startRow.':O'.$startRow);
+//         //edit bruce_w 2015-12-9 分页打印
+//       	$startRow+=8;
+        
         $firstRow = $startRow;
+        $objActSheet->mergeCells('A'.$startRow.':O'.$startRow);
         $objActSheet->setCellValue('A'.$startRow,'次级因素计算结果及其简要解释');
         $this->position($objActSheet, 'A'.$startRow, 'left');
+        $objActSheet->getStyle('A'.$startRow)->getFont()->setBold(true);
         $startRow++;
         $objActSheet->mergeCells('A'.$startRow.':B'.$startRow);
         $objActSheet->setCellValue('A'.$startRow,'因素名称');
@@ -557,7 +564,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
    # 4 EPPS
     public function checkoutEpps($examinee,$objActSheet){
         $objActSheet->getDefaultColumnDimension()->setWidth(12);
-        $objActSheet->getDefaultRowDimension()->setRowHeight(21);
+        $objActSheet->getDefaultRowDimension()->setRowHeight(16);
         $objActSheet->mergeCells('A1:F1');
         $objActSheet->setCellValue('A1','爱德华个人偏好（EPPS）测试结果');
         $objActSheet->getStyle("A1")->getFont()->setBold(true);
@@ -607,16 +614,22 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         
         $objActSheet->setCellValue("A6","测试项目");
         $this->position($objActSheet,'A6');
+        $objActSheet->getStyle('A6')->getFont()->setBold(true);
         $objActSheet->setCellValue("B6","得分");   
         $this->position($objActSheet,'B6');
+        $objActSheet->getStyle('B6')->getFont()->setBold(true);
         $objActSheet->setCellValue("C6","得分排序");
         $this->position($objActSheet,'C6');
+        $objActSheet->getStyle('C6')->getFont()->setBold(true);
         $objActSheet->setCellValue("D6","测试项目");
         $this->position($objActSheet,'D6');
+        $objActSheet->getStyle('D6')->getFont()->setBold(true);
         $objActSheet->setCellValue("E6","得分");
         $this->position($objActSheet,'E6');
+        $objActSheet->getStyle('E6')->getFont()->setBold(true);
         $objActSheet->setCellValue("F6","得分排序");
         $this->position($objActSheet,'F6');
+        $objActSheet->getStyle('F6')->getFont()->setBold(true);
         $data = CheckoutData::getEPPSdata($examinee);
         if (empty($data)){
         	return ;
@@ -662,7 +675,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
        	if ($data[$count-1]['chs_name'] == '稳定系数'){
        		--$count;
        	}
-       	$startRow++;
+//        	$startRow++;
        	$objActSheet->mergeCells('A'.$startRow.':F'.$startRow);
        	$objActSheet->setCellValue('A'.$startRow,'被测者的'.$count.'种需要倾向按其大小顺序依次排列为: ');
        	$this->position($objActSheet,'A'.$startRow, 'left');
@@ -690,7 +703,9 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
        	);
        	$objActSheet->getStyle('A'.$firstRow.':F'.($startRow+1))->applyFromArray($styleArray);
        	$startRow+=2;
-       	$startRow++;
+//        	$startRow++;
+//        	//edit bruce_w 2015-12-9 分页打印
+//        	$startRow+=14;
        	$objActSheet->mergeCells('A'.$startRow.':F'.$startRow);
        	$objActSheet->setCellValue('A'.$startRow,'被测者的主要特点是: ');
        	$this->position($objActSheet,'A'.$startRow, 'left');
@@ -739,7 +754,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
     }
    # 5 SCL
     public function checkoutScl($examinee , $objActSheet){
-        $objActSheet->getDefaultRowDimension()->setRowHeight(22);
+        $objActSheet->getDefaultRowDimension()->setRowHeight(16);
         $objActSheet->getDefaultColumnDimension()->setWidth(15);
         $objActSheet->mergeCells('A1:E1');
         $objActSheet->setCellValue('A1','SCL90 测试结果');
@@ -812,7 +827,9 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $objActSheet->getStyle('D3:E'.$lastRow)->applyFromArray($styleArray);
         
         $startRow++;
-        $startRow++;
+//         $startRow++;
+//         //edit bruce_w 2015-12-9 分页打印
+//         $startRow+=19;
         $objActSheet->mergeCells('A'.$startRow.':E'.$startRow);
         $objActSheet->setCellValue('A'.$startRow,'SCL-90测试结果解释 ');
         $this->position($objActSheet,'A'.$startRow);
@@ -849,46 +866,46 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
     }
    # 6 EPQA
     public function checkoutEpqa($examinee,$objActSheet){
-        $objActSheet->getDefaultRowDimension()->setRowHeight(22);
+        $objActSheet->getDefaultRowDimension()->setRowHeight(16);
         $objActSheet->getDefaultColumnDimension()->setWidth(10);
-        $objActSheet->mergeCells('A1:I1');
+        $objActSheet->mergeCells('A1:H1');
         $objActSheet->setCellValue('A1','爱克森个性问卷成人 (EPQA) 结果');
         $objActSheet->getStyle('A1')->getFont()->setBold(true);
         $this->position($objActSheet, 'A1');
    	    $objActSheet->setCellValue('A2','分类号');
-   	    $this->position($objActSheet, 'A3');
-   	    $objActSheet->mergeCells('B2:C2');
-        $objActSheet->setCellValue('D2','编号');
+   	    $this->position($objActSheet, 'A2');
+   	   // $objActSheet->mergeCells('B2:C2');
+        $objActSheet->setCellValue('C2','编号');
+        $this->position($objActSheet, 'C2');
+        $objActSheet->mergeCells('D2:E2');
+        $objActSheet->setCellValue('D2',$examinee->number);
         $this->position($objActSheet, 'D2');
-        $objActSheet->mergeCells('E2:F2');
-        $objActSheet->setCellValue('E2',$examinee->number);
-        $this->position($objActSheet, 'E2');
-        $objActSheet->setCellValue('G2','姓名');
+        $objActSheet->setCellValue('F2','姓名');
+        $this->position($objActSheet, 'F2');
+        $objActSheet->mergeCells('G2:H2');
+        $objActSheet->setCellValue('G2',$examinee->name);
         $this->position($objActSheet, 'G2');
-        $objActSheet->mergeCells('H2:I2');
-        $objActSheet->setCellValue('H2',$examinee->name);
-        $this->position($objActSheet, 'H2');
         $objActSheet->setCellValue('A3','性别');
         $this->position($objActSheet, 'A3');
-        $objActSheet->mergeCells('B3:C3');
+       //$objActSheet->mergeCells('B3:C3');
         $objActSheet->setCellValue('B3',$examinee->sex == "1" ? "男" : "女");
         $this->position($objActSheet, 'B3');
-        $objActSheet->setCellValue('D3','年龄');
-        $this->position($objActSheet, 'D3');
-        $objActSheet->mergeCells('E3:F3');
+        $objActSheet->setCellValue('C3','年龄');
+        $this->position($objActSheet, 'C3');
+        $objActSheet->mergeCells('D3:E3');
         $age = floor(FactorScore::calAge($examinee->birthday,$examinee->last_login));
-        $this->position($objActSheet, 'E3');
-        $objActSheet->setCellValue('E3',$age);
+        $this->position($objActSheet, 'D3');
+        $objActSheet->setCellValue('D3',$age);
+        $objActSheet->setCellValue('F3','');
+        $objActSheet->mergeCells('G3:H3');
         $objActSheet->setCellValue('G3','');
-        $objActSheet->mergeCells('H3:I3');
-        $objActSheet->setCellValue('H3','');
         $objActSheet->setCellValue('A4','日期');
         $this->position($objActSheet, 'A4');
-        $objActSheet->mergeCells('B4:I4');
+        $objActSheet->mergeCells('B4:H4');
         $date  = explode(' ',$examinee->last_login)[0];
         $objActSheet->setCellValue('B4',$date);
         $this->position($objActSheet, 'B4', 'left');
-        $objActSheet->mergeCells('D4:I4');
+        $objActSheet->mergeCells('D4:H4');
         $styleArray = array(
         		'borders' => array(
         				'allborders' => array(
@@ -898,9 +915,9 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         				),
         		),
         );
-        $objActSheet->getStyle('A2:I4')->applyFromArray($styleArray);
+        $objActSheet->getStyle('A2:H4')->applyFromArray($styleArray);
         
-        $objActSheet->mergeCells('A5:I5');
+        $objActSheet->mergeCells('A5:H5');
         $objActSheet->setCellValue('C6','因子名称');
         $this->position($objActSheet, 'C6');
         $objActSheet->setCellValue('D6','代号');
@@ -937,7 +954,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
       	} 
       	$objActSheet->getStyle('C6:F'.$lastRow)->applyFromArray($styleArray);
       	$startRow++;
-      	$objActSheet->mergeCells('A'.$startRow.':I'.$startRow);
+      	$objActSheet->mergeCells('A'.$startRow.':H'.$startRow);
       	$objActSheet->setCellValue('A'.$startRow,' 爱森克个性问卷(成人)(EPQA)各因子的含义 ');
       	$this->position($objActSheet,'A'.$startRow, 'left');
       	$objActSheet->getStyle('A'.$startRow)->getFont()->setBold(true);
@@ -950,30 +967,41 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
       			    "神经质"=>"神经质 (N)：分数特高的特点是情绪不稳，焦虑，紧张，易怒，往往又有抑郁。睡眠不好，患有各种心身障碍。情绪过分，对各种刺激的反应都过于强烈，情绪激发后又很难平复下来。由于强烈的情绪反应而影响了他的正常适应。不可理喻，甚至有时走上危险道路。在与外向结合时，这种人是容易冒火的和不休息的，以至激动，进攻。概括地说，是一个紧张的人，好抱偏见，以至错误。分数特低的特点是倾向于情绪反应缓慢，弱，即使激起了情绪也很快平复下来。通常是平静的，即使生点气也是有节制的，并且不紧张。",							
     				"精神质"=>"精神质 (P)：分数高的成人的特点是独身，不关心人，常有些麻烦，在哪里都不合适。可能是残忍的，不人道的，缺乏同情心，感觉迟钝。对人抱敌意，即令是对亲友也如此。进攻，即使是喜爱的人。喜欢一些古怪的不平常的事情，不惧安危，喜恶作剧，总要捣乱。",						
     			    "掩饰性"=>"掩饰性 (L)：测定被试的“掩饰”倾向，即不真实的回答。同时也有测量被试的纯朴性的作用。它没有划分有无掩饰的确切标准，要看所测样本的一般水平以及被试的年龄。一般来说，成人的L分因年龄而升高，儿童则因年龄而减低。"							
-      			);
+      			);      	
+
       	foreach( $data as $value){
       		//每个因子合并三行 
-      		$objActSheet->mergeCells('A'.$startRow.':I'.($startRow+4));
+      		$next_plus = 0;
+      		if($value['chs_name'] == "内外向" ){
+      			$next_plus = 7;
+      		}else if ( $value['chs_name'] == "神经质" ){
+      			$next_plus = 6;
+      		}else if  ( $value['chs_name'] == "精神质" ) {
+      			$next_plus = 3;
+      		}else {
+      			$next_plus = 3;
+      		}
+      		$objActSheet->mergeCells('A'.$startRow.':H'.($startRow+$next_plus));   		
       		$objActSheet->setCellValue('A'.$startRow, $pingyu_array[$value['chs_name']]);
       		$this->position($objActSheet,'A'.$startRow,'left');
       		$objActSheet->getStyle('A'.$startRow)->getAlignment()->setWrapText(true);
-      		$startRow+=4;
+      		$startRow+=$next_plus;
       		$lastRow = $startRow;
       		$startRow ++;
       	}
       	
       	$string = "以上所列特点是极端例子，实际上很少有如此典型的人，大多是两极端之间，不过是倾向某一端而已。在解释时应注意，正常人也具有神经质和精神质，高级神经的活动如果在不利因素影响下向病理方面发展，神经质可以发展成神经症，精神质可以发展成精神病。因此，神经质和精神质并不是病理的，不过有些精神病和罪犯是在前者的基础上发展来的。";							
       	$firstRow = $startRow;
-      	$objActSheet->mergeCells('A'.$startRow.':I'.($startRow+4));
+      	$objActSheet->mergeCells('A'.$startRow.':H'.($startRow+4));
       	$objActSheet->setCellValue('A'.$startRow, $string);
       	$this->position($objActSheet,'A'.$startRow,'left');
       	$objActSheet->getStyle('A'.$startRow)->getAlignment()->setWrapText(true);
       	$startRow+=4;
       	$lastRow = $startRow;
       	$startRow ++;
-      	$objActSheet->getStyle('A'.$firstRow.':I'.$lastRow)->applyFromArray($styleArray);
-      	$startRow++;
-      	$objActSheet->mergeCells("A".$startRow.":I".$startRow);
+      	$objActSheet->getStyle('A'.$firstRow.':H'.$lastRow)->applyFromArray($styleArray);
+      	$startRow+=8;
+      	$objActSheet->mergeCells("A".$startRow.":H".$startRow);
       	$objActSheet->setCellValue('A'.$startRow, '爱克森个性问卷成人 (EPQA) 结果剖析	');
       	$this->position($objActSheet, 'A'.$startRow);
       	$objActSheet->getStyle('A'.$startRow)->getFont()->setBold(true);
@@ -981,21 +1009,28 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
       	$filePath = WordChart::scatter_horiz_Graph_epqa_1($data, $examinee);
       	$objDrawing = new PHPExcel_Worksheet_Drawing();
       	$objDrawing->setPath($filePath);
+      	$width = 14.48*39;
+      	$height = 5.48*39;
+      	$objDrawing->setWidthAndHeight($width, $height);
       	$objDrawing->setCoordinates("A".$startRow);
       	$objDrawing->setWorksheet($objActSheet);
-      	$startRow+=9;
+      	$startRow+=12;
+      	//edit bruce_w 2015-12-9 分页打印
       	$filePath = WordChart::scatter_horiz_Graph_epqa_2($data, $examinee);
-      	$objDrawing = new PHPExcel_Worksheet_Drawing();
-      	$objDrawing->setPath($filePath);
-      	$objDrawing->setCoordinates("A".$startRow);
-      	$objDrawing->setWorksheet($objActSheet);
+      	$objDrawing1 = new PHPExcel_Worksheet_Drawing();
+      	$objDrawing1->setPath($filePath);
+      	$width = 14.92*38;
+      	$height = 12.49*38;
+      	$objDrawing1->setWidthAndHeight($width, $height);
+      	$objDrawing1->setCoordinates("A".$startRow);
+      	$objDrawing1->setWorksheet($objActSheet);
       	
       	
 			
     }
    # 7 CPI
     public function checkoutCpi($examinee,$objActSheet){
-        $objActSheet->getDefaultRowDimension()->setRowHeight(22);
+        $objActSheet->getDefaultRowDimension()->setRowHeight(16);
         $objActSheet->getDefaultColumnDimension()->setWidth(12);
         $objActSheet->mergeCells('A1:F1');
         $objActSheet->setCellValue('A1','青年性格问卷（CPI）测试结果');
@@ -1165,7 +1200,9 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
        	 $objActSheet->getStyle('A'.$firstRow.':F'.$lastRow)->applyFromArray($styleArray);
        	 $startRow++;
        	 $startRow++;
-       	 $objActSheet->mergeCells("A".$startRow.":H".$startRow);
+       	 //edit bruce_w 2015-12-9 分页打印
+       	 $startRow+=20;
+       	 $objActSheet->mergeCells("A".$startRow.":F".$startRow);
        	 $objActSheet->setCellValue('A'.$startRow, '青年性格问卷测试(CPI)剖析图');
        	 $this->position($objActSheet, 'A'.$startRow);
        	 $objActSheet->getStyle('A'.$startRow)->getFont()->setBold(true);
@@ -1173,12 +1210,15 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
        	 $filePath = WordChart::scatter_horiz_Graph_cpi($data, $examinee);
        	 $objDrawing = new PHPExcel_Worksheet_Drawing();
        	 $objDrawing->setPath($filePath);
+       	 $width = 15*39;
+       	 $height = 20*39;
+       	 $objDrawing->setWidthAndHeight($width, $height);
        	 $objDrawing->setCoordinates("A".$startRow);
        	 $objDrawing->setWorksheet($objActSheet);
     }
    # 8 SPM 
     public function checkoutSpm($examinee, $objActSheet){
-        $objActSheet->getDefaultRowDimension()->setRowHeight(22);
+        $objActSheet->getDefaultRowDimension()->setRowHeight(21);
         $objActSheet->getDefaultColumnDimension()->setWidth(12);
         $objActSheet->mergeCells('A1:F1');
         $objActSheet->setCellValue('A1','SPM瑞文标准推理测验结果');
@@ -1292,7 +1332,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $objActSheet->getColumnDimension('D')->setWidth(12);
         $objActSheet->getColumnDimension('E')->setWidth(12);
         //settings
-        $objActSheet->getDefaultRowDimension()->setRowHeight(21);
+        $objActSheet->getDefaultRowDimension()->setRowHeight(16);
         $objActSheet->mergeCells('A1:E1');
         $objActSheet->setCellValue('A1','TQT人才测评系统    28指标排序（8+5）');
         $objActSheet->getStyle('A1')->getFont()->setBold(true);
@@ -1396,7 +1436,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
     }
     #10 结构
     public function checkoutModuleResult($examinee,$objActSheet){
-    	$objActSheet->getDefaultRowDimension()->setRowHeight(21);
+    	$objActSheet->getDefaultRowDimension()->setRowHeight(16);
 		$objActSheet->getColumnDimension('A')->setWidth(20);
         $objActSheet->getColumnDimension('B')->setWidth(20);
         $objActSheet->getColumnDimension('C')->setWidth(20);
