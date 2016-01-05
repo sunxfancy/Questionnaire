@@ -5,10 +5,7 @@ cache/temp/*.xls
 cache/model/*
 doc/
 cache/backup/*.bak
-app/config/config.ini
-app/config/config.php
 public/upload/*
-public/template/*
 public/pcharts/*
 public/words/*
 public/wordexport/*
