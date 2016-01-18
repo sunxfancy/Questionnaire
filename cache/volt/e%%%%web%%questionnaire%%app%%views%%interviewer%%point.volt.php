@@ -1,9 +1,9 @@
 <script type="text/javascript" src= '/datetimepicker/bootstrap.min.js'></script>
 
 <div class="Leo_question"  style="overflow:auto;">
-    <div class="title" style="text-align:center;padding:8px;font-size:26px;">您对&nbsp;{{ name }}&nbsp;的意见及建议</div>
+    <div class="title" style="text-align:center;padding:8px;font-size:26px;">您对&nbsp;<?php echo $name; ?>&nbsp;的意见及建议</div>
     <div class="point" style="text-align:center;">
-        <table border="1" cellspacing="0" cellpadding="0" style="margin: 0 auto;font-size:18px;" name='{{examinee_id}}'>
+        <table border="1" cellspacing="0" cellpadding="0" style="margin: 0 auto;font-size:18px;" name='<?php echo $examinee_id; ?>'>
             <tr>
                 <td rowspan="5" style="width:100px;">优势</td>
                 <td colspan="4" style="width:550px;">1. <input name="text" type="name" class="inputtxt" style="border:0px;padding:3px;width:520px;font-size:18px;" id="advantage1"></td>
@@ -82,7 +82,7 @@
     });
 
     $(function(){
-        $.post('/interviewer/getPoint/'+{{examinee_id}}, function(data){
+        $.post('/interviewer/getPoint/'+<?php echo $examinee_id; ?>, function(data){
             if (data.error) {
                  $('.Leo_question').css('width','843px')
                  $('.modal-body').html('');
@@ -132,7 +132,7 @@
             "disadvantage3" : $("#disadvantage3").val(),
             "remark" : $("#remark").val(),
         };
-    	$.post('/interviewer/interview/'+{{examinee_id}},comment,callbk);
+    	$.post('/interviewer/interview/'+<?php echo $examinee_id; ?>,comment,callbk);
     }
         
         function callbk(data){
