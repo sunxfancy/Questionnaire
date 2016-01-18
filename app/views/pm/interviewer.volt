@@ -28,7 +28,7 @@
             <div class='form-group' style='display:inline-block;'>
             <span class="btn btn-success fileinput-button" style='width:150px;'>
                     <i class="glyphicon glyphicon-plus"></i>
-                    <span>上传面巡专家列表</span>
+                    <span>上传面询专家列表</span>
                     <input onchange = 'checkFile1();' accept="application/msexcel" type="file" id='file1' name='file1' style='opacity:0; position:absolute; top:0;left:0;cursor:pointer; width:150px;'>
             </span>
             <span class="label label-default" id='file1_state'>未选择</span>

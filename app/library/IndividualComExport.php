@@ -371,7 +371,7 @@ class IndividualComExport extends \Phalcon\Mvc\Controller
 	 			$textrun->addText($data['name'], array('size'=>14,'color'=>'blue'));
 	 			//综合项指标评语  ComprehensiveComment 
 	 			$comment = array();
-	 			foreach ($index_array[$i] as $value ){
+	 			foreach ($index_array[$i++] as $value ){
 	 				$comment[] = ComprehensiveComment::findFirst(array('index_chs_name = ?1', 'bind'=>array(1=>$value)))->comment;	
 	 			}
 	 			$textrun->addText(implode('；', $comment), array('size'=>14));
