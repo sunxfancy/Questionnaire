@@ -17,11 +17,18 @@
             <i class="glyphicon glyphicon-fast-backward"></i>&nbsp;返回上层</button>
         </form>
     </div> 
-    <div class='form-group' style='margin-left:40px;'>
+    <div style="display:block;">
+    <div class='form-group' style='margin-left:40px;display:inline-block;'>
             <button class="btn btn-primary" onclick='exportExaminees()' style='width:100px;' type='button'>
                 <i class="glyphicon glyphicon-download"></i>&nbsp;列表下载
             </button>
     </div> 
+    <div class='form-group' style='margin-left:40px;display:inline-block;'>
+            <button class="btn btn-primary" onclick='exportExamineesSimple()' style='width:100px;' type='button'>
+                <i class="glyphicon glyphicon-download"></i>&nbsp;简表下载
+            </button>
+    </div>
+     </div>
     <div class="form-group">
         <div style="display:inline-block;margin-left:40px;font-size:26px;color:red;">批量下载</div>
     </div>  
@@ -200,7 +207,8 @@ var uploader_1 = new plupload.Uploader({
     filters : {
         max_file_size : '40mb',
         mime_types: [
-            // {title : "word files", extensions : "docx"},
+            // {title : "word files", extensions : "docx"},
+
         ]
     },
 
@@ -234,7 +242,8 @@ var uploader_1 = new plupload.Uploader({
         },
         // Error: function(up, err) {
             // document.getElementById('console').appendChild(document.createTextNode("\nError #" + err.code + ": " + err.message));
-        // }
+        // }
+
     }
 });
 
@@ -251,7 +260,8 @@ var uploader_2 = new plupload.Uploader({
     filters : {
         max_file_size : '40mb',
         mime_types: [
-            // {title : "word files", extensions : "docx"},
+            // {title : "word files", extensions : "docx"},
+
         ]
     },
 
@@ -288,11 +298,14 @@ var uploader_2 = new plupload.Uploader({
             // document.getElementById('console').innerHTML +=
             	 // "<table class=\"table table-hover\"><tr><td>Error:"+err.message+ "</td><td><b>文件类型错误</b></td></tr></table>"
             // ;
-        // }
+        // }
+
     }
 });
 
-uploader_2.init();
+uploader_2.init();
+
+
 //已上传文件的情况查询
 function checkUploaded(args){
 	 var number = args.id.substr( args.id.length-1, 1);
@@ -464,7 +477,8 @@ function oneKeyReport(number){
             }
         }else{
             downloadSuccess('一键生成成功');
-        }
+        }
+
     });
 }
 
@@ -519,6 +533,18 @@ function exportExaminees(){
             downloadError(data.error);
         }else {
         	var msg = "<a href='"+data.success.substr( 1, data.success.length-1)+"'>被试人员列表</a>";
+            downloadSuccess(msg);
+        }
+    });
+}
+
+function exportExamineesSimple(){
+    downloadWait('正在生成被试人员列表');
+    $.post('/file/exportRole/4', function(data){
+        if (data.error){
+            downloadError(data.error);
+        }else {
+            var msg = "<a href='"+data.success.substr( 1, data.success.length-1)+"'>被试人员列表</a>";
             downloadSuccess(msg);
         }
     });
