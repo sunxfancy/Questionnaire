@@ -2,3 +2,4 @@ cache/*
 public/project/*
 public/tmp/*
 public/upload/*
+app/config/config.php
