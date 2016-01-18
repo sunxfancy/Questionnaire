@@ -26,6 +26,10 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 			$rtn_array['strong'] = array_slice($result, 0, 8);
 			$rtn_array['weak']   = array_reverse(array_slice($result, $index_count-6, 5));
 		}
+		
+		echo '<pre>';
+		print_r($rtn_array);
+		
 		$strong_exist_array = array();
 		foreach($rtn_array['strong'] as &$strong_value){
 			$index = Index::findFirst(array('id=?1','bind'=>array(1=>$strong_value['id'])));
@@ -43,9 +47,9 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 			$tmp = array();
 			$children = $this->foo($children, $tmp);
 			
-// 			echo '<pre>';
-// 			print_r($children);
-// 			exit();
+			echo '<pre>';
+			print_r($children);
+			return;
 			
 			$strong_value['children'] = array();
 			$number_count = 0;
