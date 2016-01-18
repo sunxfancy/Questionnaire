@@ -77,13 +77,18 @@ try {
 
         return $volt;
     }, true);
-
+	
+	//phalcon Case insesitive routing || url:https://forum.phalconphp.com/discussion/1824/case-insesitive-routing-how-to-
+    if (isset($_GET['_url'])) {
+    	$_GET['_url'] = strtolower($_GET['_url']);
+    }
+    
     //setroutes
-    $di->set('router', function ()
-    {
-        require __DIR__.'/../app/config/routes.php';
-        return $router;
-    });
+//     $di->set('router', function ()
+//     {
+//         require __DIR__.'/../app/config/routes.php';
+//         return $router;
+//     });
 
     $usecdn = $config->resource->useCDN;
     $di->set('usecdn',function () use($usecdn)

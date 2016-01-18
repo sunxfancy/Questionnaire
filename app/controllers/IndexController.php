@@ -18,7 +18,11 @@ class IndexController extends Base
 	
 	public function indexAction()
 	{
-		
+		$state = Utils::getBrowserDetail($this->request);
+		if (!$state ){
+			$this->response->redirect('/wrong/lowbrowser/examinee');
+			$this->view->disable();
+		}
 	}
 
 	public function loginAction(){

@@ -77,6 +77,7 @@ class CompetencyExport
 		$cell7_19 = $table->addCell(1000);
 		$cell7_19->getStyle()->setGridSpan(9);
 		//add chart
+
 		$chart = new WordChart();
 		$fileName = $chart->radarGraph_3($examinee_data,$project_data, $project_id);
 		if (file_exists($fileName)){
@@ -87,7 +88,8 @@ class CompetencyExport
 							'wrappingStyle'=>'square',
 					 ));
 		}
-		
+
+
 		$cell7_19->addText("主要优势有五点：",$titleFontStyle);
 		$array1 = array('一','二','三','四','五');
 		$i = 0;

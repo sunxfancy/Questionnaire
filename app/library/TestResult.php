@@ -1,24 +1,64 @@
 <?php
 
-    /**
-     * Created by PhpStorm.
-     * User: XYN
-     * Date: 10/27/14
-     * Time: 10:57 PM
-     */
+class TestResult extends \Phalcon\Mvc\Model{
+	public function test(){
+		$result_1 = $this->modelsManager->createBuilder()
+		->columns(array(
+				'name as name'
+		))
+		->from('FourIndexsComment')
+		->orderBy('name')
+		->getQuery()
+		->execute()
+		->toArray();
+		$tmp = array();
+		$result_1 = $this->foo($result_1, $tmp);
 
-    /*
-     * result_type 数据类型　0代表仅获取部分列表　1代表修改test的值
-     * parts 当前test所选的part的编号列表　array 仅当　result_type=1时有效
-     * test 当前修改的test array 仅当　result_type=1时有效
-     * type 0或1 代表选题类型 暂不可用 全为0
-     *　part_list 当前type所有下的part列表
-     */
-    class TestResult
-    {
-        var $result_type;
-        var $parts;
-        var $test;
-        var $type;
-        var $part_list;
-    }
+		$result_2 = $this->modelsManager->createBuilder()
+		->columns(array(
+				'chs_name'
+		))
+		->from('Index')
+		->orderBy('chs_name')
+		->getQuery()
+		->execute()
+		->toArray();
+		$tmp = array();
+		$result_2 = $this->foo($result_2, $tmp);
+		
+		$tmp = array();
+		$count = 0 ; 
+		foreach ($result_1 as $key=>$value ){
+			$inner_tmp = array();
+			$inner_tmp[] = $value;
+			$inner_tmp[] = $result_2[$key];
+			if ($value != $result_2[$key]){
+				$inner_tmp[] = '不同';
+				$count++;
+			}else {
+				$inner_tmp[] = '';
+			}
+			$tmp[] = $inner_tmp;
+		}
+		echo $count;
+		echo '<br />';
+		
+		return $tmp;
+		
+	}
+	
+	#辅助方法 --降维
+	private function foo($arr, &$rt) {
+		if (is_array($arr)) {
+			foreach ($arr as $v) {
+				if (is_array($v)) {
+					$this->foo($v, $rt);
+				} else {
+					$rt[] = $v;
+				}
+			}
+		}
+		return $rt;
+	}
+	
+}

@@ -3,27 +3,12 @@
 class CompetencyComment extends \Phalcon\Mvc\Model 
 {
 
-    /**
-     * @var integer
-     *primary key
-     */
-    public $id;
 
-    /**
-     * @var text
-     *
-     */
-    public $name;
+	public $index_id;
+	
+	public $index_chs_name;
 
-    /**
-     * @var text
-     * 
-     */
     public $advantage;
 
-    /**
-     * @var text
-     * 
-     */
     public $disadvantage;
 }

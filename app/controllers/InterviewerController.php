@@ -51,7 +51,7 @@ class InterviewerController extends Base
             return;
         }
         if(!empty($interview_record->advantage)){
-            $this->dataReturn(array('error'=>'面巡意见已填写完整，不可再更改！'));
+            $this->dataReturn(array('error'=>'面询意见已填写完整，不可再更改！'));
             return;
         }
         $advantage1    = $this->request->getPost('advantage1');
@@ -88,7 +88,7 @@ class InterviewerController extends Base
     }
 
     //进入添加意见页面时获取面询专家的意见
-    public function getPointAction($examinee_id){
+    public function getpointAction($examinee_id){
         $interviewer = $this->session->get('Manager');
         if(empty($interviewer)){
             $this->dataReturn(array('error'=>'用户信息获取失败,请重新登录'));

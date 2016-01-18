@@ -1,14 +1,14 @@
 
-<div style="font-size:80px;color:white;margin-top:80px;font-family:'华文行楷';">政府部门测评系统</div>
-<div class="Leo_login">
-    <div style='font-size:40px;color:purple;text-align:center;padding:30px 0;'>后&nbsp;台&nbsp;登&nbsp;录&nbsp;入&nbsp;口</div>
+<div style="font-size:65px;color:white;margin-top:195px;margin-left:-55px;font-family:'华文中宋';">北京市政法系统领导干部<br /><span style='visibility: hidden;'>欢迎页&nbsp;</span>胜任力测评系统</div>
+<div class="Leo_login" style='position:absolute;top:180px;right:150px;'>
+    <div style='font-size:40px;color:purple;text-align:center;padding:30px 0;color:white;'>后&nbsp;台&nbsp;登&nbsp;录&nbsp;入&nbsp;口</div>
     <div style='text-align:center'>
         <label for='username'><span style='font-size:25px;font-family: Microsoft YaHei UI; font-weight:normal;'>账&nbsp;号&nbsp;&nbsp;</span></label>
-        <input autofocus required class='form-control' id='username' style='display:inline-block;height:36px;font-size:20px;width:180px;'/>
+        <input autofocus required class='form-control' id='username' style='display:inline-block;height:36px;font-size:20px;width:180px;padding:2px 10px;'/>
     </div>
     <div style='text-align:center;margin-top:10px;'>
         <label for='password'><span style='font-size:25px;font-family: Microsoft YaHei UI; font-weight:normal;'>密&nbsp;码&nbsp;&nbsp;</span></label>
-        <input required type='password' class='form-control' id='password' style='display:inline-block;height:36px;font-size:20px;width:180px;'/>
+        <input required type='password' class='form-control' id='password' style='display:inline-block;height:36px;font-size:20px;width:180px; padding:2px 10px;'/>
     </div>
     <div style="height:30px;"></div>
     <div style="text-align:center">

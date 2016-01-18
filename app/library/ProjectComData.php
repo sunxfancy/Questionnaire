@@ -32,7 +32,12 @@ class ProjectComData extends \Phalcon\Mvc\Controller {
 	public function getComprehensiveData($project_id){
 		$this->project_check($project_id);
 		#判断项目详细信息中是否有职业素质相关的模块
-		$project_detail = MemoryCache::getProjectDetail($project_id);
+		$project_detail = ProjectDetail::findFirst(
+			  array (
+			  		"project_id = :project_id:",
+			  		'bind' => array ('project_id' => $project_id),
+		)
+		);
 		if(empty($project_detail) || empty($project_detail->module_names)){
 			throw new Exception('项目配置信息有误');
 		}
@@ -45,7 +50,12 @@ class ProjectComData extends \Phalcon\Mvc\Controller {
 			if (!in_array($value, $exist_module_array)){
 				continue;
 			}
-			$module_record = MemoryCache::getModuleDetail($value);
+			$module_record = Module::findFirst(
+				array(
+						"name = ?1",
+						'bind' => array(1=>$value),
+				)
+		);
 			$children = $module_record->children;
 			$children_array = explode(',', $children);
 			//获取某项模块下所有指标的平均分
@@ -354,12 +364,14 @@ class ProjectComData extends \Phalcon\Mvc\Controller {
 			$value = array();
 		}
 		$examinee_ids = $this->modelsManager->createBuilder()
-			->columns(array( 'Examinee.id as id' ))
+			->columns(array( 'Examinee.id as id, Examinee.name as name,Examinee.number as number' ))
 			->from('Examinee')
 			->where('Examinee.type =0 AND Examinee.project_id = '.$project_id)
 			->getQuery()
 			->execute()
 			->toArray();
+		//若参与测试的用户没有答需求量表，这在系统上是不完备的，需要对每一个用户的需求量表的解答结果进行统计
+		$not_finished = array();
 		foreach($examinee_ids as $svalue){
 			$option = $this->modelsManager->createBuilder()
 			->columns(array( 'InqueryAns.option as option' ))
@@ -368,10 +380,19 @@ class ProjectComData extends \Phalcon\Mvc\Controller {
 			->getQuery()
 			->execute()
 			->toArray();
+			if(empty($option)){
+				$not_finished[] = $svalue['number'].'-'.$svalue['name'];
+				continue;
+			}
 			$level = ord(substr($option[0]['option'], 0 ,1)) -ord('a') ;
 			$level_examines[$level][] = $svalue['id'];			
 		}
-		return array_combine($level_array,$level_examines);
+		//edit brucew 2015-12-22
+		if(empty($not_finished)){
+			return array_combine($level_array,$level_examines);
+		}else{
+			throw new Exception('以下用户未参与需求量表答题：【'.count($not_finished).'人】<br />'.implode('<br />', $not_finished));
+		}
 	}
 
 

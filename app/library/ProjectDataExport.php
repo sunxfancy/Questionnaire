@@ -5,13 +5,9 @@
 require_once("../app/classes/PHPExcel.php");
 class ProjectDataExport  extends \Phalcon\Mvc\Controller
 {
-	
-	
 	public function excelExport($project_id){
 	 	PHPExcel_CachedObjectStorageFactory::cache_in_memory_serialized;
-	 	
 	 	$objPHPExcel = new PHPExcel();
-	 	set_time_limit(0);
 	 	$objPHPExcel->createSheet(0);
 	 	$objPHPExcel->setActiveSheetIndex(0); //设置第一个内置表
 	 	$objActSheet = $objPHPExcel->getActiveSheet(); // 获取当前活动的表
@@ -30,6 +26,9 @@ class ProjectDataExport  extends \Phalcon\Mvc\Controller
 		       ->execute()
 			   ->toArray();
 		//异常处理 
+		if(empty($examinee)){
+			throw new Exception('项目的被试人数为0,无法进行项目数据表生成');
+		}
 		$members_not_finished = array();
 		foreach($examinee as $value){
 			if ($value['state'] < 4 ){
@@ -45,7 +44,9 @@ class ProjectDataExport  extends \Phalcon\Mvc\Controller
 		}
 	 	$i = 0; 
 	 	$result = new ProjectData();
-	 	$start_column = 'F';
+	 	$start_column = 'D';
+	 	$last = 'D';
+	 	$last_data = null;
 	 	foreach ($examinee as $examinee_info) {
 	 		$data  = array();
 	 		$data  = $result->getindividualComprehensive($examinee_info['id']);
@@ -53,9 +54,13 @@ class ProjectDataExport  extends \Phalcon\Mvc\Controller
 	 			$this->makeTable($data, $objActSheet);
 	 			
 	 		}
-	 		$this->joinTable( $data, $objActSheet, $start_column++, $examinee_info['number']);
+	 		$last = $start_column;
+	 		$last_data =  $data;
+	 		$this->joinTable( $data, $objActSheet, $start_column++, $examinee_info['number']);	
 	 		$i ++ ;
 	 	}
+	 	// 计算平均值
+	 	$this->joinAvg($objActSheet, $last_data, 'D', $last );
 	 	
 	 	//根据项目第一人成绩统计打表
 	 	
@@ -66,157 +71,248 @@ class ProjectDataExport  extends \Phalcon\Mvc\Controller
 	 	$objWriter->save($file_name);
 	 	return $file_name;
 	}
-	public function joinTable(&$data,$objActSheet, $column_flag, $examinee_id){
-		$current_row = 2;
-		$start_column = $column_flag;
-		$row_merge_count = 0;
-		$column_merge_count = 0;
+	
+	public function position($objActSheet, $pos, $h_align='center', $v_align ='center'){
+		$objActSheet->getStyle($pos)->getAlignment()->setHorizontal($h_align);
+		$objActSheet->getStyle($pos)->getAlignment()->setVertical($v_align);
+	
+	}
+	public function joinAvg($objActSheet,$data, $startColumn, $endColumn){
+		$column_flag = $endColumn;
+		$column_flag++;
+		$jiange_1 = $column_flag;
+		$column_flag++;
+		$jiange_2 = $column_flag;
+		$column_flag++;
+		$objActSheet->getColumnDimension($column_flag)->setWidth(20);
+		$startRow = 1;
+		$i = 0;
 		foreach ($data as $module_name =>$module_detail ){
-			$end_row = $this->_endRow($current_row, $row_merge_count);
-			$end_column = $this->_endColumn($start_column, $column_merge_count);
-			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, $examinee_id,null,20,null, null, null, true);	
-			$this->_nextRow($current_row, $end_row, $row_merge_count);
-			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, '综合分',null,20,null, null, null, true);
-			$this->_nextRow($current_row, $end_row, $row_merge_count);
+			$i++;
+			if ($i == 1 ){
+				$startRow++;
+			}
+			$startRow++;
+			$objActSheet->setCellValue($column_flag.$startRow,'平均分');
+			$this->position($objActSheet, $column_flag.$startRow);
+			$objActSheet->getStyle($column_flag.$startRow)->getFont()->setBold(true);
+			$startRow++;
 			$index_count = count($module_detail);
 			for ($current_index_number = 0; $current_index_number < $index_count; $current_index_number ++ ){
+				$objActSheet->getStyle($jiange_1.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+				$objActSheet->getStyle($jiange_1.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+				$objActSheet->getStyle($jiange_2.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+				$objActSheet->getStyle($jiange_2.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+				$objActSheet->getStyle($column_flag.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+				$objActSheet->getStyle($column_flag.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+				$startRow++;
 				$index_chosed_detail = $module_detail[$current_index_number];
-				$end_row = $this->_endRow($current_row, $row_merge_count);
 				foreach ($index_chosed_detail['detail'] as $index_name){
-					$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$index_name['score'],null,20,null, null, null, false);
-				    $this->_nextRow($current_row, $end_row, $row_merge_count);
+					$objActSheet->setCellValue($column_flag.$startRow,"=AVERAGE(".$startColumn.$startRow.":".$endColumn.$startRow.')');
+					$objActSheet->getStyle($column_flag.$startRow)->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_BLUE);
+					$this->position($objActSheet, $column_flag.$startRow);
+					$objActSheet->getStyle($column_flag.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+					$objActSheet->getStyle($column_flag.$startRow)->getFill()->getStartColor()->setARGB(PHPExcel_Style_Color::COLOR_YELLOW);
+					$startRow++;
 				}
-				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$index_chosed_detail['score'],null,20,null, null, null, false);
-				$this->_nextRow($current_row, $end_row, $row_merge_count);
-				$this->_nextRow($current_row, $end_row, $row_merge_count);
-				$this->_nextRow($current_row, $end_row, $row_merge_count);
+				$startRow++;
+				$objActSheet->getStyle($jiange_1.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+				$objActSheet->getStyle($jiange_1.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+				$objActSheet->getStyle($jiange_2.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+				$objActSheet->getStyle($jiange_2.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+				$objActSheet->getStyle($column_flag.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+				$objActSheet->getStyle($column_flag.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
 			}
-				
+			$startRow++;
 		}
-		foreach ($data as $module_name =>$module_detail ){	
-			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'综合分',null,20,null, null, null, false);	
+		$i = 0;
+		foreach ($data as $module_name =>$module_detail ){
+			$startRow++;
+			$objActSheet->setCellValue($column_flag.$startRow,'评价结果');
+			$this->position($objActSheet, $column_flag.$startRow);
+			$objActSheet->getStyle($column_flag.$startRow)->getFont()->setBold(true);
+			$startRow++;
+			$objActSheet->getStyle($jiange_1.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+			$objActSheet->getStyle($jiange_1.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+			$objActSheet->getStyle($jiange_2.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+			$objActSheet->getStyle($jiange_2.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+			$objActSheet->getStyle($column_flag.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+			$objActSheet->getStyle($column_flag.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
 			$index_count = count($module_detail);
 			for ($current_index_number = 0; $current_index_number < $index_count; $current_index_number ++ ){
+				$startRow++;
 				$index_chosed_detail = $module_detail[$current_index_number];
-				$this->_nextRow($current_row, $end_row, $row_merge_count);
-				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$index_chosed_detail['score'],null,20,null, null, null, false);
+				$objActSheet->setCellValue($column_flag.$startRow,'');
+				$this->position($objActSheet, $column_flag.$startRow);
 			}
-			$this->_nextRow($current_row, $end_row, $row_merge_count);
-			$this->_nextRow($current_row, $end_row, $row_merge_count);
-			$this->_nextRow($current_row, $end_row, $row_merge_count);	
-		
+			$startRow++;
+			$objActSheet->getStyle($jiange_1.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+			$objActSheet->getStyle($jiange_1.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+			$objActSheet->getStyle($jiange_2.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+			$objActSheet->getStyle($jiange_2.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+			$objActSheet->getStyle($column_flag.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+			$objActSheet->getStyle($column_flag.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+			$startRow++;
 		}
+		
+	}
+	
+	public function joinTable(&$data,$objActSheet, $column_flag, $examinee_id){
+		$objActSheet->getColumnDimension($column_flag)->setWidth(20);
+		$startRow = 1;
+		$i = 0;
+		foreach ($data as $module_name =>$module_detail ){
+			$i++;
+			if ($i == 1 ){
+				$startRow++;
+				$objActSheet->setCellValue($column_flag.$startRow,$examinee_id);
+				$this->position($objActSheet, $column_flag.$startRow);
+				$objActSheet->getStyle($column_flag.$startRow)->getFont()->setBold(true);
+				$objActSheet->getStyle($column_flag.$startRow)->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+			}
+			$startRow++;
+			$objActSheet->setCellValue($column_flag.$startRow,'综合分');
+			$this->position($objActSheet, $column_flag.$startRow);
+			$objActSheet->getStyle($column_flag.$startRow)->getFont()->setBold(true);
+			$startRow++;
+			$index_count = count($module_detail);
+			for ($current_index_number = 0; $current_index_number < $index_count; $current_index_number ++ ){
+				$objActSheet->getStyle($column_flag.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+				$objActSheet->getStyle($column_flag.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+				$startRow++;
+				$index_chosed_detail = $module_detail[$current_index_number];
+				foreach ($index_chosed_detail['detail'] as $index_name){
+					$objActSheet->setCellValue($column_flag.$startRow,$index_name['score']);
+					$this->position($objActSheet, $column_flag.$startRow);
+					$startRow++;
+				}
+				$startRow++;
+				$objActSheet->getStyle($column_flag.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+				$objActSheet->getStyle($column_flag.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+			}
+			$startRow++;
+		}
+		$i = 0;
+		foreach ($data as $module_name =>$module_detail ){
+			$startRow++;
+			$objActSheet->setCellValue($column_flag.$startRow,'综合分');
+			$this->position($objActSheet, $column_flag.$startRow);
+			$objActSheet->getStyle($column_flag.$startRow)->getFont()->setBold(true);
+			$startRow++;
+			$objActSheet->getStyle($column_flag.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+			$objActSheet->getStyle($column_flag.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+			$index_count = count($module_detail);
+			for ($current_index_number = 0; $current_index_number < $index_count; $current_index_number ++ ){
+				$startRow++;
+				$index_chosed_detail = $module_detail[$current_index_number];
+				$objActSheet->setCellValue($column_flag.$startRow,$index_chosed_detail['score']);
+				$this->position($objActSheet, $column_flag.$startRow);
+			}
+			$startRow++;
+			$objActSheet->getStyle($column_flag.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+			$objActSheet->getStyle($column_flag.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+			$startRow++;
+		}
+		
 	}
 	public function makeTable(&$data,$objActSheet){
 		//settings
-		$objActSheet->getDefaultRowDimension()->setRowHeight(21);
-		$objActSheet->getDefaultColumnDimension()->setWidth(12);
+		$objActSheet->getDefaultRowDimension()->setRowHeight(15);
+		$objActSheet->getColumnDimension('A')->setWidth(30);
+		$objActSheet->getColumnDimension('B')->setWidth(20);
+		$objActSheet->getColumnDimension('C')->setWidth(15);
 		$name_array = array('一','二','三','四');
-		$current_row   = 1;
-		$row_merge_count = 0;
+		$startRow = 1;
 		$i = 0;
 		foreach ($data as $module_name =>$module_detail ){
-			$start_column = 'B';
-			$end_row = $this->_endRow($current_row, $row_merge_count);
-			$column_merge_count = 6;
-			$end_column = $this->_endColumn($start_column, $column_merge_count);
-			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, $name_array[$i++].'、'.$module_name.'评价指标',null,12,18, null, null, true);
+			$objActSheet->mergeCells('A'.$startRow.':E'.$startRow);
+			$objActSheet->setCellValue('A'.$startRow,$name_array[$i++].'、'.$module_name.'评价指标');
+			$this->position($objActSheet, 'A'.$startRow);
+			$objActSheet->getRowDimension($startRow)->setRowHeight(30);
+			$objActSheet->getStyle('A'.$startRow)->getFont()->setBold(true);
+			if ($i == 1 ){
+				$startRow++;
+				$objActSheet->setCellValue('A'.$startRow,'被试编号');
+				$this->position($objActSheet, 'A'.$startRow);
+				$objActSheet->getStyle('A'.$startRow)->getFont()->setBold(true);
+				$objActSheet->getStyle('A'.$startRow)->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+			}
+			$startRow++;
+			$objActSheet->setCellValue('A'.$startRow,'评价指标');
+			$this->position($objActSheet, 'A'.$startRow);
+			$objActSheet->getStyle('A'.$startRow)->getFont()->setBold(true);
+			$objActSheet->setCellValue('B'.$startRow,'组合因素');
+			$this->position($objActSheet, 'B'.$startRow);
+			$objActSheet->getStyle('B'.$startRow)->getFont()->setBold(true);
+			$startRow++;
 			
-			$this->_nextRow($current_row, $end_row, $row_merge_count);
-			$start_column = 'A';
-			$column_merge_count = 1;
-			$end_column = $this->_endColumn($start_column, $column_merge_count);
-			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, '被试编号',null,12,null, null, null, true);
-			$this->_nextColumn($start_column, $end_column, $column_merge_count);
-			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, '',null,12,null, null, null, true);
-			
-			$this->_nextRow($current_row, $end_row, $row_merge_count);
-			$start_column = 'A';
-			$column_merge_count = 1;
-			$end_column = $this->_endColumn($start_column, $column_merge_count);
-			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, '',null,12,null, null, null, true);
-			$this->_nextColumn($start_column, $end_column, $column_merge_count);
-			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, '组合因素',null,12,null, null, null, true);
 			$index_count = count($module_detail);
 			for ($current_index_number = 0; $current_index_number < $index_count; $current_index_number ++ ){
+				$objActSheet->getStyle('A'.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+				$objActSheet->getStyle('A'.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+				$objActSheet->getStyle('B'.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+				$objActSheet->getStyle('B'.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+				$objActSheet->getStyle('C'.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+				$objActSheet->getStyle('C'.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+				$startRow++;
 				$index_chosed_detail = $module_detail[$current_index_number];
-				$this->_nextRow($current_row, $end_row, $row_merge_count);
-				$current_row_flag = $current_row;
-				$start_column = 'A';
-				$column_merge_count  = 1; 
-				$end_column = $this->_endColumn($start_column, $column_merge_count);
-				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, $index_chosed_detail['chs_name'],null,12,null, null, null, false);
-				$this->_nextRow($current_row, $end_row, $row_merge_count);
-				$start_column = 'A';
-				$column_merge_count  = 1;
-				$end_column = $this->_endColumn($start_column, $column_merge_count);
-				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,  count($index_chosed_detail['detail']),null,12,null, 'left', null, false);
-				$inner_count = 0;
-				$current_row = $current_row_flag;
-				$row_merge_count = 0;
-				$end_row = $this->_endRow($current_row, $row_merge_count);
+				$objActSheet->setCellValue('A'.$startRow,$index_chosed_detail['chs_name']);
+				$this->position($objActSheet, 'A'.$startRow,'left');
+				$objActSheet->setCellValue('A'.($startRow+1), $index_chosed_detail['count']);
+				$this->position($objActSheet, 'A'.($startRow+1),'left');
 				foreach ($index_chosed_detail['detail'] as $index_name){
-					if ($inner_count == 0 || $inner_count == 1){
-						$start_column = 'C';
-						$column_merge_count  = 1;
-						$end_column = $this->_endColumn($start_column, $column_merge_count);
-						$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$index_name['name'],null,12,null, null, null, false);
-					}else {
-						$start_column = 'A';
-						$column_merge_count  = 1;
-						$end_column = $this->_endColumn($start_column, $column_merge_count);
-						$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'',null,12,null, null, null, false);
-						$column_merge_count  = 1;
-						$this->_nextColumn($start_column, $end_column, $column_merge_count);
-						$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$index_name['name'],null,12,null, null, null, false);
-					}
-					$inner_count++;
-					$this->_nextRow($current_row, $end_row, $row_merge_count);	
+					$objActSheet->setCellValue('B'.$startRow,$index_name['name']);
+					$this->position($objActSheet, 'B'.$startRow);
+					$startRow++;
 				}
-				$start_column = 'A';
-				$column_merge_count  = 1;
-				$end_column = $this->_endColumn($start_column, $column_merge_count);
-				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'',null,12,null, null, null, false);
-				$column_merge_count  = 1;
-				$this->_nextColumn($start_column, $end_column, $column_merge_count);
-				$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,'',null,12,null, null, null, false);
-				$this->_nextRow($current_row, $end_row, $row_merge_count);
-				$this->_nextRow($current_row, $end_row, $row_merge_count);
+				$startRow++;
+				$objActSheet->getStyle('A'.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+				$objActSheet->getStyle('A'.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+				$objActSheet->getStyle('B'.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+				$objActSheet->getStyle('B'.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+				$objActSheet->getStyle('C'.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+				$objActSheet->getStyle('C'.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
 			}
-			
+			$startRow++;
 		}
 		$i = 0;
 		foreach ($data as $module_name =>$module_detail ){
-			$start_column = 'B';
-			$end_row = $this->_endRow($current_row, $row_merge_count);
-			$column_merge_count = 6;
-			$end_column = $this->_endColumn($start_column, $column_merge_count);
-			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, $name_array[$i++].'、'.$module_name.'评价指标',null,12,18, null, null, true);
-			
-			$this->_nextRow($current_row, $end_row, $row_merge_count);
-			$start_column = 'A';
-			$column_merge_count = 1;
-			$end_column = $this->_endColumn($start_column, $column_merge_count);
-			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, '评价指标',null,12,null, null, null, true);
-			$this->_nextColumn($start_column, $end_column, $column_merge_count);
-			$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, '组合因素（项）',null,12,null, null, null, true);
-		
+			$objActSheet->mergeCells('A'.$startRow.':E'.$startRow);
+			$objActSheet->setCellValue('A'.$startRow,$name_array[$i++].'、'.$module_name.'评价指标');
+			$this->position($objActSheet, 'A'.$startRow);
+			$objActSheet->getRowDimension($startRow)->setRowHeight(30);
+			$objActSheet->getStyle('A'.$startRow)->getFont()->setBold(true);
+			$startRow++;
+			$objActSheet->setCellValue('A'.$startRow,'评价指标');
+			$this->position($objActSheet, 'A'.$startRow);
+			$objActSheet->getStyle('A'.$startRow)->getFont()->setBold(true);
+			$objActSheet->setCellValue('B'.$startRow,'组合因素');
+			$this->position($objActSheet, 'B'.$startRow);
+			$objActSheet->getStyle('B'.$startRow)->getFont()->setBold(true);
+			$startRow++;
+			$objActSheet->getStyle('A'.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+			$objActSheet->getStyle('A'.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+			$objActSheet->getStyle('B'.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+			$objActSheet->getStyle('B'.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+			$objActSheet->getStyle('C'.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+			$objActSheet->getStyle('C'.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
 			$index_count = count($module_detail);
 			for ($current_index_number = 0; $current_index_number < $index_count; $current_index_number ++ ){
+					$startRow++;
 					$index_chosed_detail = $module_detail[$current_index_number];
-					$this->_nextRow($current_row, $end_row, $row_merge_count);
-					$start_column = 'A';
-					$column_merge_count  = 1;
-					$end_column = $this->_endColumn($start_column, $column_merge_count);
-					$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,$index_chosed_detail['chs_name'],null,12,null, null, null, false);
-					$column_merge_count  = 1;
-					$this->_nextColumn($start_column, $end_column, $column_merge_count);
-					$this->_setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row,count($index_chosed_detail['detail']),null,12,null, null, null, false);	
+					$objActSheet->setCellValue('A'.$startRow,$index_chosed_detail['chs_name']);
+					$this->position($objActSheet, 'A'.$startRow);
+					$objActSheet->setCellValue('B'.$startRow,$index_chosed_detail['count']);
+					$this->position($objActSheet, 'B'.$startRow);
 			}
-			$this->_nextRow($current_row, $end_row, $row_merge_count);
-			$this->_nextRow($current_row, $end_row, $row_merge_count);
-			
-				
+			$startRow++;
+			$objActSheet->getStyle('A'.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+			$objActSheet->getStyle('A'.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+			$objActSheet->getStyle('B'.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+			$objActSheet->getStyle('B'.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+			$objActSheet->getStyle('C'.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+			$objActSheet->getStyle('C'.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
+			$startRow++;
 		}
 	}
 	
@@ -233,98 +329,5 @@ class ProjectDataExport  extends \Phalcon\Mvc\Controller
 			}
 		}
 		return $rt;
-	}
-	/**
-	 * @usage 表格填写
-	 * @param $objActSheet 当前活动表
-	 * @param $start_column 起始列
-	 * @param $current_row 起始行
-	 * @param $end_column 结束列
-	 * @param $end_row 结束行
-	 * @param $value 值
-	 * @param $rowHeight 行高    默认 21
-	 * @param $colWidth 列宽    默认8.38
-	 * @param $fontSize 字号  默认 14
-	 * @param $h_alignment 水平对齐方式
-	 * @param $v_alignment 竖直对齐方式
-	 * @param $bold 是否为粗体 默认为false
-	 */
-	private function _setCellValue($objActSheet, $start_column, $current_row, $end_column, $end_row, $value, $rowHeight = null, $colWidth = null, $fontSize = null, $h_alignment = null, $v_alignment = null, $bold = false){
-		if (!empty($rowHeight)){
-			$objActSheet->getRowDimension($current_row)->setRowHeight($rowHeight);
-		}else{
-			$objActSheet->getRowDimension($current_row)->setRowHeight(21);
-		}
-		if (!empty($colWidth)){
-			$objActSheet->getColumnDimension($start_column)->setWidth($colWidth);
-		}else{
-			$objActSheet->getColumnDimension($start_column)->setWidth(8.38);
-		}
-		if (!empty($fontSize)){
-			$objActSheet->getStyle("$start_column$current_row")->getFont()->setSize($fontSize);
-		}else{
-			$objActSheet->getStyle("$start_column$current_row")->getFont()->setSize(14);
-		}
-		if (!empty($v_alignment)){
-			$objActSheet->getStyle("$start_column$current_row")->getAlignment()->setVertical($v_alignment);
-		}else{
-			//默认垂直居中
-			$objActSheet->getStyle("$start_column$current_row")->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
-		}
-		if (!empty($h_alignment)){
-			$objActSheet->getStyle("$start_column$current_row")->getAlignment()->setHorizontal($h_alignment);
-		}else{
-			// 默认为水平居中
-			$objActSheet->getStyle("$start_column$current_row")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-		}
-		if ($bold){
-			$objActSheet->getStyle("$start_column$current_row")->getFont()->setBold(true);
-		}
-		$objActSheet->getStyle("$start_column$current_row")->getAlignment()->setWrapText(true);//自动换行
-		$objActSheet->mergeCells("$start_column$current_row:$end_column$end_row");
-		$objActSheet->setCellValue("$start_column$current_row",$value);
-	}
-	/**
-	 * @usage 下一行
-	 * @param 当前开始行  $current_row
-	 * @param 当前结束行  $end_row
-	 * @param 下一行的合并行数  $row_merge_count
-	 * @return 下一行的开始  $current_row 下一行的结束  $end_row
-	 */
-	private function _nextRow(&$current_row, &$end_row, $row_merge_count){
-		$this->_nextColumn($current_row, $end_row, $row_merge_count);
-	}
-	/**
-	 * @usage 获取表格结束行
-	 * @param 开始行  $current_row
-	 * @param 合并行数  $row_merge_count
-	 * @return 结束行  $end_column
-	 */
-	private function _endRow($current_row, $row_merge_count){
-		return $this->_endColumn($current_row, $row_merge_count);
-	}
-	/**
-	 *
-	 * @param 当前开始列 $start_column
-	 * @param 当前结束列 $end_column
-	 * @param 下一格的合并列数 $column_merge_count
-	 * @return 下一格的开始列 $start_column, 下一格的结束列 $end_column
-	 */
-	private function _nextColumn(&$start_column, &$end_column, $column_merge_count){
-		$start_column = ++ $end_column;
-		$end_column = $this->_endColumn($start_column, $column_merge_count);
-	}
-	/**
-	 * @usage 获取表格结束列
-	 * @param 开始列  $start_column
-	 * @param 合并格数  $column_merge_count
-	 * @return 结束列  $end_column
-	 */
-	private function _endColumn($start_column, $column_merge_count){
-		$end_column = $start_column;
-		while($column_merge_count--){
-			++$end_column;
-		}
-		return $end_column;
 	}
 }

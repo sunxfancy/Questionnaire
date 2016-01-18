@@ -50,15 +50,15 @@
 </div>
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">提示信息</h4>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">提示信息</h4>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer"></div>
         </div>
-        <div class="modal-body"></div>
-        <div class="modal-footer"></div>
     </div>
-  </div>
 </div>
 <script type='text/javascript'>
 $('#myModal').on('hidden.bs.modal', function (e) {

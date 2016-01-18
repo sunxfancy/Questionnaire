@@ -1,7 +1,0 @@
-//enable datepicker
-function pickDate( cellvalue, options, cell ) {
-	setTimeout(function(){
-		$(cell) .find('input[type=text]')
-				.datepicker({format:'yyyy-mm-dd' , autoclose:true}); 
-	}, 0);
-}

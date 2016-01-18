@@ -9,7 +9,7 @@ class AdminController extends Base
     public function indexAction(){
     	$manager = $this->session->get('Manager');
     	if(empty($manager)){
-    		$this->response->redirect('/error/index/manager');
+    		$this->response->redirect('/wrong/index/manager');
     		$this->view->disable();
     	}else{
     		$this->leftRender('项 目 管 理');
@@ -19,7 +19,7 @@ class AdminController extends Base
     public function addnewAction(){
     	$manager = $this->session->get('Manager');
     	if(empty($manager)){
-    		$this->response->redirect('/error/index/manager');
+    		$this->response->redirect('/wrong/index/manager');
     		$this->view->disable();
     	}else{
     		$this->leftRender('新 建 项 目');
@@ -191,7 +191,7 @@ class AdminController extends Base
     public function detailAction($project_id) { 
     	$manager = $this->session->get('Manager');
     	if(empty($manager)){
-    		$this->response->redirect('/error/index/manager');
+    		$this->response->redirect('/wrong/index/manager');
     		$this->view->disable();
     	}else{
     		$this->leftRender('项 目 详 情');

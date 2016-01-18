@@ -16,7 +16,7 @@ class ExamineeController extends Base
 		$exminee = $this->session->get('Examinee');
  		// $this->session->remove('Examinee');
 		if(empty($exminee)){
-			$this->response->redirect('/error/index/examinee');
+			$this->response->redirect('/wrong/index/examinee');
 			$this->view->disable();
 		}else{
 			$this->leftRender("需求量表");
@@ -43,7 +43,7 @@ class ExamineeController extends Base
         	}
         } 
     }
-    public function getInqueryAction(){
+    public function getinqueryAction(){
  		// $this->session->remove('Examinee');
     	$exminee = $this->session->get('Examinee');
     	if(empty($exminee)){
@@ -82,7 +82,7 @@ class ExamineeController extends Base
         }
     }
 
-    public function getInqueryAnsAction(){
+    public function getinqueryAnsAction(){
     	$exminee = $this->session->get('Examinee');
     	if(empty($exminee)){
     		$this->dataReturn(array('error'=>'用户信息获取失败'));
@@ -108,7 +108,7 @@ class ExamineeController extends Base
 		$exminee = $this->session->get('Examinee');
 		// $this->session->remove('Examinee');
 		if(empty($exminee)){
-			$this->response->redirect('/error/index/examinee');
+			$this->response->redirect('/wrong/index/examinee');
 			$this->view->disable();
 		}else{
 			$this->leftRender("答题");
@@ -166,7 +166,7 @@ class ExamineeController extends Base
         return ;
     }
 
-    public function getExamAnswerAction(){
+    public function getexamanswerAction(){
     	$id = $this->session->get('Examinee')->id;
     	$total_time=$this->request->getPost("total_time","int");
     	if($total_time){
@@ -204,7 +204,7 @@ class ExamineeController extends Base
     public function editinfoAction(){
     	$exminee = $this->session->get('Examinee');
         if(empty($exminee)){
-        	$this->response->redirect('/error/index/examinee');
+        	$this->response->redirect('/wrong/index/examinee');
         	$this->view->disable();
         }else{
         	 $this->leftRender("个 人 信 息 填 写");

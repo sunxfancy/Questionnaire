@@ -9,7 +9,7 @@ use Phalcon\Mvc\Model\Transaction\Manager as TxManager;
 	 * 		   2.Examinee表中存有examinee_id, 及相应的project_id , state, QuestionAns表中有相应记录
 	 * 		   3.对比project_detail
 	 * @Date 2015-9-1
-	 */
+	 */ 
 class FactorScore{
 	
 	private static $error_state = 2;
@@ -141,7 +141,7 @@ class FactorScore{
 	 */
 	public static function handleFactors($examinee_id){
 		#加载内存表
-		if(!self::$memory_state){
+		if(!self::$memory_state) {
 			self::loadMemoryTable();
 		}
 		if(empty(self::$examinee_info)){
@@ -209,10 +209,10 @@ class FactorScore{
 	 */
 	protected static function calEPQA(&$resultsets){
 		#首先判断是否需要写入epqa相关的因子分数
-		if(empty(self::$factors_list_all)){
+		if(empty(self::$factors_list_all)) {
 			self::getFactorsAll($resultsets->examinee_id);
 		}
-		if(!isset(self::$factors_list_all['EPQA'])){
+		if(!isset(self::$factors_list_all['EPQA'])) {
 			#true 表示不用写入EPQA的相关因子
 			return true;
 		}
@@ -309,13 +309,14 @@ class FactorScore{
 			$rt_array_record = array();
 			#判断要写入的因子是否存在于之前的结果集中，若不存在，则置为0
 			$score = 0;
-			if(isset($score_array[$value])){
+			if(isset($score_array[$value])) {
 				if($value == 'con'){
 					$score = $score_array[$value];
 				}else{
 					$score = $score_array[$value]-1;
 				}
 			}
+			
 			$std_score = $score;
 			$ans_score = 0;
 		 	if($value != 'con'){
@@ -409,7 +410,7 @@ class FactorScore{
 	 */
 	protected static function calSCL(&$resultsets){
 		#首先判断是否需要写入scl相关的因子分数
-		if(empty(self::$factors_list_all)){
+		if(empty(self::$factors_list_all)) {
 			self::getFactorsAll($resultsets->examinee_id);
 		}
 		if(!isset(self::$factors_list_all['SCL'])){
@@ -420,20 +421,20 @@ class FactorScore{
 		$question_ans_array = self::getAnswers($resultsets);
 		#计算SCL因子的原始分，标准分，最终分
 		$rt_array = array();
-		foreach(self::$factors_list_all['SCL'] as $key=>$value){
+		foreach(self::$factors_list_all['SCL'] as $key=>$value) {
 			$factor_info = MemoryCache::getFactorDetail($value);
 			$question_array = explode(',',$factor_info->children);
 			$score = 0;
 			$std_score = 0;
 			$factor_total_score = 0;
 			$question_number = 0;
-			foreach($question_array as $skey){
+			foreach($question_array as $skey) {
 				if(isset($question_ans_array[$skey])){
 					$factor_total_score += $question_ans_array[$skey];
 					$question_number++;
 				}
 			}
-			if( $question_number!=0 ){
+			if( $question_number !=0 ) {
 				$score = sprintf("%.2f",$factor_total_score/$question_number);
 			}
 			$std_score  = $score;
@@ -473,14 +474,17 @@ class FactorScore{
 		if(empty(self::$examinee_info)){
 			self::getExamineeInfo($resultsets->examinee_id);
 		}
-		$dm =  self::$examinee_info['sex'] == 1? 8 : 9;
+		//来自wjz，edit by brucew 男 8 女 9     
+// 				   Case "一般成人"
+//                 If sex = "男" Then
+//                     cmdm = "8"
+//                 Else
+//                     cmdm = "9"
+//                 End If
+//			wjz 中人员的类别不仅仅有一般成人，还有其他多种类型
+		$dm =  self::$examinee_info['sex'] == 1 ? 8 : 9;
 		#整理16PF题目答案
 		$question_ans_array = self::getAnswers($resultsets);
-// 		/**
-// 		 * 注： 此处由于因子中存在包含因子的情况，因此，如果我们按照直接求所需因子的得分，那么能会遗漏包含着的但不需要的因子，因此采取最大集，之后与所需相匹配
-// 		 */
-// 		$factors_in_paper = MemoryCache::getFactors($resultsets->paper_id);
-		
 		#确定所有涉及的因子，不再进行全局遍历
 		$array_all_use = array();
 		foreach(self::$factors_list_all['16PF'] as $key=>$value) {
@@ -545,6 +549,7 @@ class FactorScore{
 				$rt_array[$key] = $array_record;
 			}
 		}
+
 		#后8项(至多)复杂因子计算
 		foreach($array_all_use as $key => $value){
 			$factor_record = MemoryCache::getFactorDetail($value);
@@ -704,8 +709,10 @@ class FactorScore{
 				}else if ($score >= $spmmd->B5) {
 					$std_score = 45;
 				}else{
-					$std_score = 50;
+					$std_score = 51;
 				}
+				// std_score 第一位 智力等级  之后位为 百分等级
+				
 				$flag = substr($std_score,0,1);
 				if ($flag == 1) { $ans_score = 9; 
 				}else if ($flag == 2) {$ans_score = 7.5; 
