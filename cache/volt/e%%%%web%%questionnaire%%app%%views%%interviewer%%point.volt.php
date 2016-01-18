@@ -132,8 +132,24 @@
             "disadvantage3" : $("#disadvantage3").val(),
             "remark" : $("#remark").val(),
         };
-    	$.post('/interviewer/interview/'+<?php echo $examinee_id; ?>,comment,callbk);
-    }
+        if($("#advantage1").val() == '' && $("#advantage2").val() == '' && $("#advantage3").val() == '' && $("#advantage4").val() == '' && $("#advantage5").val() == '' && $("#disadvantage1").val() == '' && $("#disadvantage2").val() == '' && $("#disadvantage3").val() == '' && $("#remark").val() == '' ){
+            $('.Leo_question').css('width','843px')
+            $('.modal-body').html('');
+            $('.modal-body').html(
+                "<p class=\"bg-danger\" style='padding:20px;'>"+"评论为空，不能提交！"+ "</p>"
+                );
+            $('.modal-footer').html('');
+            $('.modal-footer').html(
+                "<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">关闭提示</button>"
+            );
+            $('#myModal').modal({
+                keyboard:true,
+                backdrop:'static'
+            })
+        }else{
+    	   $.post('/interviewer/interview/'+<?php echo $examinee_id; ?>,comment,callbk);
+        }
+    })
         
         function callbk(data){
             if(data.success){
@@ -144,14 +160,13 @@
                      );
                  $('.modal-footer').html('');
                  $('.modal-footer').html(
-                    "<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">关闭提示</button>"
+                    "<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">留在本页</button>"+"<span>&nbsp;&nbsp;</span>"+"<a href='/interviewer/index'><button type=\"button\" class=\"btn btn-primary\"  onclick=\"check();\">返回主页面</button></a>"
                  );
                  $('#myModal').modal({
                     keyboard:true,
                     backdrop:'static'
                  })
-                // alert("评论提交成功！点击“确定”返回主页面。");
-                // window.location.href = '/interviewer/index'
+                //window.location.href = '/interviewer/index';
             }else{
                  $('.Leo_question').css('width','843px')
                  $('.modal-body').html('');
