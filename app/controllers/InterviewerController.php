@@ -50,10 +50,6 @@ class InterviewerController extends Base
             $this->dataReturn(array('error'=>'被试id错误！'));
             return;
         }
-        if(!empty($interview_record->advantage)){
-            $this->dataReturn(array('error'=>'面询意见已填写完整，不可再更改！'));
-            return;
-        }
         $advantage1    = $this->request->getPost('advantage1');
         $advantage2    = $this->request->getPost('advantage2');
         $advantage3    = $this->request->getPost('advantage3');
