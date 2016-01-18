@@ -105,7 +105,7 @@ class UploadController extends \Phalcon\Mvc\Controller {
 	/**
 	 * 题库文件上传总调度,分控到各个上传单位
 	 */
-	public function uploadspmAction(){
+	public function uploadtkAction(){
 		if ($this->request->hasFiles()) {
 			foreach ($this->request->getUploadedFiles() as $file) {
 				 if(empty($file->getName())){
@@ -288,7 +288,7 @@ class UploadController extends \Phalcon\Mvc\Controller {
 	/**
 	 * 上传EPQA
 	 */
-	public function uploadepqaction(){
+	public function uploadEPQAAction(){
 		$params = $this->dispatcher->getParams();
 		$state = self::uploadParamsCheck($params, 'EPQA');
 		if (!$state){
