@@ -98,7 +98,6 @@ class FileController extends \Phalcon\Mvc\Controller {
 			return ;
 		}
 
-
 		$this->dataReturn(array("success"=>"点击下载 <a href='".$anstable."'>原始答案</a>"));
 		
 

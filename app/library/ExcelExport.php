@@ -250,9 +250,9 @@ class ExcelExport
 
 
         $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
-        $file_name_trans = './tmp/'.$examinee->number.$examinee->name.'_anstable.xls';
+        $file_name_trans = '/tmp/'.$examinee->number.$examinee->name.'_anstable.xls';
         $file_name= iconv("utf-8", "gb2312", $file_name_trans);
-        $objWriter->save($file_name);
+        $objWriter->save(".".$file_name);
         return $file_name_trans; 
     }
 
