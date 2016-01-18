@@ -2,6 +2,7 @@
 <link rel="stylesheet" href="/datetimepicker/bootstrap-datetimepicker.min.css" />
 <!--引入时间控件js-->
 <script type='text/javascript' src='/datetimepicker/jquery-1.8.3.min.js'></script>
+<script type="text/javascript" src='/lib/jquery.cookie.js'></script>
 <script type="text/javascript" src= '/datetimepicker/bootstrap.min.js'></script>
 <script type="text/javascript" src="/datetimepicker/bootstrap-datetimepicker.js"></script>
 <script type="text/javascript" src="/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
@@ -223,18 +224,61 @@ function getInfo(url){
         });
 }
 function renderring(data){
-    $('#name').val(data.name);
-    $('#sex').val(data.sex);
-    $('#education').val(data.education);
-    $('#degree').val(data.degree);
-    $('#birthday').val(data.birthday);
-    $('#native').val(data.native);
-    $("#politics").val(data.politics);
-    $("#professional").val(data.professional);
-    $("#employer").val(data.employer);
-    $("#unit").val(data.unit);
-    $("#duty").val(data.duty);
-    $("#team").val(data.team);
+
+    // for (var i = id_array.length - 1; i >= 0; i--) {
+    //     var arr_name=id_array[i];
+    //     var name=$.cookie({{number}}+arr_name);
+    //     name?$('#'+arr_name).val(name):$('#'+arr_name).val(data[arr_name]);
+    // };
+
+    var name=$.cookie({{number}}+"name");
+    name?$('#name').val(name):$('#name').val(data.name);
+
+    var sex=$.cookie({{number}}+"sex");
+    sex?$('#sex').val(sex):$('#sex').val(data.sex);
+
+    var education=$.cookie({{number}}+"education");
+    education?$('#education').val(education):$('#education').val(data.education);
+
+    var degree=$.cookie({{number}}+"degree");
+    degree?$('#degree').val(degree):$('#degree').val(data.degree);
+
+    var birthday=$.cookie({{number}}+"birthday");
+    birthday?$('#birthday').val(birthday):$('#birthday').val(data.birthday);
+
+    var native=$.cookie({{number}}+"native");
+    native?$('#native').val(native):$('#native').val(data.native);
+
+    var politics=$.cookie({{number}}+"politics");
+    politics?$('#politics').val(politics):$('#politics').val(data.politics);
+
+    var professional=$.cookie({{number}}+"professional");
+    professional?$('#professional').val(professional):$('#professional').val(data.professional);
+
+    var employer=$.cookie({{number}}+"employer");
+    employer?$('#employer').val(employer):$('#employer').val(data.employer);
+
+    var unit=$.cookie({{number}}+"unit");
+    unit?$('#unit').val(unit):$('#unit').val(data.unit);
+
+    var duty=$.cookie({{number}}+"duty");
+    duty?$('#duty').val(duty):$('#duty').val(data.duty);
+
+    var team=$.cookie({{number}}+"team");
+    team?$('#team').val(team):$('#team').val(data.team);
+
+    // $('name').val(data.name);
+    // $('#sex').val(data.sex);
+    // $('#education').val(data.education);
+    // $('#degree').val(data.degree);
+    // $('#birthday').val(data.birthday);
+    // $('#native').val(data.native);
+    // $("#politics").val(data.politics);
+    // $("#professional").val(data.professional);
+    // $("#employer").val(data.employer);
+    // $("#unit").val(data.unit);
+    // $("#duty").val(data.duty);
+    // $("#team").val(data.team);
 }
 $("#submit").click(function(){
 	 spinner = new Spinner().spin(target);
@@ -686,3 +730,67 @@ function dateCon(d,num){
     +(d.getMonth()+1)
 }
 </script> 
+<script type="text/javascript">
+    
+
+    $(function(){
+        // for (var i = id_array.length - 1; i >= 0; i--) {
+        //     name=id_array[i];
+        //     $("#"+name).change(function(){
+        //         alert($("#"+name).val());
+        //         $.cookie({{number}}+name,$("#"+name).val(),{experies:7});
+        //     });
+        // };
+// var id_array=["name","sex","education","degree","native","politics","professional","employer","unit","duty","team"];
+
+       
+       $("#name").bind('input propertychange',function(){
+            $.cookie({{number}}+"name",$("#name").val(),{experies:7});
+        });
+            
+        $("#sex").bind('input propertychange',function(){
+            $.cookie({{number}}+"sex",$("#sex").val(),{experies:7});
+        });
+
+        $("#education").bind('input propertychange',function(){
+            $.cookie({{number}}+"education",$("#education").val(),{experies:7});
+        });
+
+        $("#degree").bind('input propertychange',function(){
+            $.cookie({{number}}+"degree",$("#degree").val(),{experies:7});
+        });
+
+        $("#native").bind('input propertychange',function(){
+            $.cookie({{number}}+"native",$("#native").val(),{experies:7});
+        });
+
+        $("#birthday").bind('input propertychange',function(){
+            $.cookie({{number}}+"birthday",$("#birthday").val(),{experies:7});
+        });
+
+        $("#politics").bind('input propertychange',function(){
+            $.cookie({{number}}+"politics",$("#politics").val(),{experies:7});
+        });
+
+        $("#professional").bind('input propertychange',function(){
+            $.cookie({{number}}+"professional",$("#professional").val(),{experies:7});
+        });
+
+        $("#employer").bind('input propertychange',function(){
+            $.cookie({{number}}+"employer",$("#employer").val(),{experies:7});
+        });
+
+        $("#unit").bind('input propertychange',function(){
+            $.cookie({{number}}+"unit",$("#unit").val(),{experies:7});
+        });
+
+        $("#duty").bind('input propertychange',function(){
+            $.cookie({{number}}+"duty",$("#duty").val(),{experies:7});
+        });
+
+        $("#team").bind('input propertychange',function(){
+            $.cookie({{number}}+"team",$("#team").val(),{experies:7});
+        });
+    
+    });
+</script>
