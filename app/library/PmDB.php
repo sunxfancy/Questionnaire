@@ -280,7 +280,7 @@ class PmDB
     		$questions_numbers[$key] = array_unique($value, SORT_NUMERIC);
     	}
     	sort($questions_numbers);
-        return $question_numbers;
+        return $questions_numbers;
     }
     /**
      * @usage input 因子名数组
