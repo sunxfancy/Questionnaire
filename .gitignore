@@ -2,6 +2,7 @@ cache/*
 public/project/*
 public/tmp/*
 public/upload/*
+public/*
 .project
 .buildpath
 app/config/config.php

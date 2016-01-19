@@ -1394,9 +1394,13 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         		 	$this->position($objActSheet,'D'.$startRow);
         		 	$objActSheet->setCellValue('E'.$startRow,$svalue['number']);
         		 	$this->position($objActSheet,'E'.$startRow);
-        		 	$lastRow = $startRow;
         		 	$startRow++;
         		 }
+        		 $objActSheet->setCellValue('D'.$startRow,$eight['score']);
+        		 $objActSheet->getStyle('D'.$startRow)->getFont()->setBold(true);
+        		 $this->position($objActSheet,'D'.$startRow);
+        		 $lastRow = $startRow;
+        		 $startRow++;
         		 $objActSheet->getStyle('A'.$firstRow.':E'.$lastRow)->applyFromArray($styleArray);
         	$i++;
         	}
@@ -1428,6 +1432,11 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         		 	$lastRow = $startRow;
         		 	$startRow++;
         		}
+        		$objActSheet->setCellValue('D'.$startRow,$eight['score']);
+        		$objActSheet->getStyle('D'.$startRow)->getFont()->setBold(true);
+        		$this->position($objActSheet,'D'.$startRow);
+        		$lastRow = $startRow;
+        		$startRow++;
         		$objActSheet->getStyle('A'.$firstRow.':E'.$lastRow)->applyFromArray($styleArray);
         		$i++;
         	}

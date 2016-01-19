@@ -115,6 +115,11 @@ class ProjectDataExport  extends \Phalcon\Mvc\Controller
 					$objActSheet->getStyle($column_flag.$startRow)->getFill()->getStartColor()->setARGB(PHPExcel_Style_Color::COLOR_YELLOW);
 					$startRow++;
 				}
+				$objActSheet->setCellValue($column_flag.$startRow,"=AVERAGE(".$startColumn.$startRow.":".$endColumn.$startRow.')');
+				$this->position($objActSheet, $column_flag.$startRow);
+				$objActSheet->getStyle($column_flag.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+				$objActSheet->getStyle($column_flag.$startRow)->getFill()->getStartColor()->setARGB(PHPExcel_Style_Color::COLOR_YELLOW);
+				$startRow++;
 				$startRow++;
 				$objActSheet->getStyle($jiange_1.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
 				$objActSheet->getStyle($jiange_1.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
@@ -186,10 +191,16 @@ class ProjectDataExport  extends \Phalcon\Mvc\Controller
 					$this->position($objActSheet, $column_flag.$startRow);
 					$startRow++;
 				}
+				//add index score
+				$objActSheet->setCellValue($column_flag.$startRow,$index_chosed_detail['score']);
+				$this->position($objActSheet, $column_flag.$startRow);
+				$startRow++;
 				$startRow++;
 				$objActSheet->getStyle($column_flag.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
 				$objActSheet->getStyle($column_flag.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
 			}
+			
+			
 			$startRow++;
 		}
 		$i = 0;
@@ -265,6 +276,9 @@ class ProjectDataExport  extends \Phalcon\Mvc\Controller
 					$this->position($objActSheet, 'B'.$startRow);
 					$startRow++;
 				}
+// 				$objActSheet->setCellValue($column_flag.$startRow,$index_chosed_detail['score']);
+// 				$this->position($objActSheet, $column_flag.$startRow);
+				$startRow++;
 				$startRow++;
 				$objActSheet->getStyle('A'.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
 				$objActSheet->getStyle('A'.$startRow)->getFill()->getStartColor()->setARGB('FFA9A9A9');
