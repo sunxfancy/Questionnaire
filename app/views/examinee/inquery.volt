@@ -18,9 +18,9 @@
                 <img style="height: 40px;" id="Leo_pagedown" src="../images/right.png" />
             </td><td style="width:20%;">
                 <img style="height: 40px;" id="Leo_checkup" src="../images/signin.png"  />
-            </td><!-- <td style="width:20%;">
+            </td> <td style="width:20%;">
                 <button style="height: 40px;;" id="Leo_All" value="全选A" />
-            </td> --></tr>            
+            </td></tr>            
         </table>
     </div>
 </div>  
@@ -67,7 +67,7 @@ $(function(){
          $.cookie("ans_cookie"+{{ number }}, ans.join("|"), {experies:7});
          initCookie(questions.length,"ans_cookie"+{{ number }} );
      });
-
+  
 
      $("#Leo_pagedown").click(function(){
         changepage(Leo_now_index+1,true);
