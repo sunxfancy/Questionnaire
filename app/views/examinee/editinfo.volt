@@ -503,19 +503,17 @@ function start_gqgrid(){
                   editrules:{required : true} ,
                   
                 },
-                { name:'school', label:'毕业院校',     index:'school',     width:140, fixed:true, sortable:false, editable:true,   resize:false, align:'center', 
+                { name:'school', label:'毕业院校<span style="color:red;font-size:16px;">&nbsp;*</span>',     index:'school',     width:140, fixed:true, sortable:false, editable:true,   resize:false, align:'center', 
                   editrules:{required : true} ,
                  
                 },
-                { name:'profession', label:'专业', index:'profession', width:140, fixed:true, sortable:false, editable:true,   resize:false, align:'center', 
+                { name:'profession', label:'专业<span style="color:red;font-size:16px;">&nbsp;*</span>', index:'profession', width:140, fixed:true, sortable:false, editable:true,   resize:false, align:'center', 
                   editrules:{required : true} ,
                  
                 },
                 { name:'degree', label:'所获学位',  index:'degree',     width:80,  fixed:true, sortable:false, editable:true,   resize:false, align:'center', 
-                  editrules:{required : true} ,
-                 
                 },
-                { name:'begintime',  label:'开始时间', index:'begintime',  width:100, fixed:true, sortable:false, sorttype:'date' , editable:true,   resize:false, align:'center', 
+                { name:'begintime',  label:'开始时间<span style="color:red;font-size:16px;">&nbsp;*</span>', index:'begintime',  width:100, fixed:true, sortable:false, sorttype:'date' , editable:true,   resize:false, align:'center', 
                   editrules:{required : true, custom:true, custom_func: begin_datecheck,}, 
                   editoptions: { dataInit: function(element) { 
                             $(element).parent().addClass("input-group date form_date");
@@ -533,13 +531,11 @@ function start_gqgrid(){
                             }).on('changeDate',function(el){
                             	$('#endtime').datetimepicker('setStartDate', $(element).val());
                             })
-                            } 
-                           
-                        },
-                     
+                            }        
+                        },         
                 },
                 {
-                  name:'endtime',   label:'结束时间',  index:'endtime',  width:100, fixed:true, sortable:false, sorttype:'date', editable:true,   resize:false, align:'center', 
+                  name:'endtime',   label:'结束时间<br /><span style="font-size:5px;">【不填即为至今】</span>',  index:'endtime',  width:100, fixed:true, sortable:false, sorttype:'date', editable:true,   resize:false, align:'center', 
                   editrules:{ custom:true, custom_func:end_datecheck,}, 
                   editoptions: { dataInit: function(element) { 
                             $(element).parent().addClass("input-group date form_date");
@@ -560,6 +556,13 @@ function start_gqgrid(){
                              
                             } 
                         },
+                        formatter:function(cellvalue){
+                        if(cellvalue == ''||cellvalue == null){
+                            return '至今';
+                        }else{
+                            return cellvalue;
+                        }
+                    }, 
                 	
                 },
             ],
@@ -624,16 +627,16 @@ function start_gqgrid(){
                 { name:'id',   label:'序号',    index:'id',       width:40,   fixed:true, editable:false, sortable:false, resize:false, align:'center', 
                   editrules:{required : true} ,
                 },
-                { name:'employer',label:'就职单位', index:'employer', width:140,  fixed:true, editable:true,  sortable:false, resize:false, align:'center', 
+                { name:'employer',label:'就职单位<span style="color:red;font-size:16px;">&nbsp;*</span>', index:'employer', width:140,  fixed:true, editable:true,  sortable:false, resize:false, align:'center', 
                   editrules:{required : true} ,
                 },
-                { name:'unit',    label:'部门', index:'unit',     width:140,  fixed:true, editable:true,  sortable:false, resize:false, align:'center', 
+                { name:'unit',    label:'部门<span style="color:red;font-size:16px;">&nbsp;*</span>', index:'unit',     width:140,  fixed:true, editable:true,  sortable:false, resize:false, align:'center', 
                   editrules:{required : true} ,
                 },
-                { name:'duty',     label:'岗位/职务',index:'duty',     width:80,   fixed:true, editable:true,  sortable:false, resize:false, align:'center', 
+                { name:'duty',     label:'岗位/职务<span style="color:red;font-size:16px;">&nbsp;*</span>',index:'duty',     width:80,   fixed:true, editable:true,  sortable:false, resize:false, align:'center', 
                   editrules:{required : true} ,
                 },
-                 { name:'begintime',  label:'开始时间', index:'begintime',  width:100, fixed:true, sortable:false, sorttype:'date' , editable:true,   resize:false, align:'center', 
+                 { name:'begintime',  label:'开始时间<span style="color:red;font-size:16px;">&nbsp;*</span>', index:'begintime',  width:100, fixed:true, sortable:false, sorttype:'date' , editable:true,   resize:false, align:'center', 
                   editrules:{required : true, custom:true, custom_func: begin_datecheck,}, 
                   editoptions: { dataInit: function(element) { 
                             $(element).parent().addClass("input-group date form_date");
@@ -644,6 +647,7 @@ function start_gqgrid(){
                             autoclose:true,
                             startView:3,
                             minView:3,
+
                             })
                             .on('hide',function(el){
                                   //$(element).unwrap('<div class="input-group date form_date"></div>')
@@ -657,7 +661,7 @@ function start_gqgrid(){
                      
                 },
                 {
-                  name:'endtime',   label:'结束时间',  index:'endtime',  width:100, fixed:true, sortable:false, sorttype:'date', editable:true,   resize:false, align:'center', 
+                  name:'endtime',   label:'结束时间<br /><span style="font-size:5px;">【不填即为至今】</span>',  index:'endtime',  width:100, fixed:true, sortable:false, sorttype:'date', editable:true,   resize:false, align:'center', 
                   editrules:{ custom:true, custom_func:end_datecheck,}, 
                   editoptions: { dataInit: function(element) { 
                             $(element).parent().addClass("input-group date form_date");
@@ -668,6 +672,7 @@ function start_gqgrid(){
                             autoclose:true,
                             startView:3,
                             minView:3,
+                            
                             }).on('hide',function(el){
                                   //$(element).unwrap('<div class="input-group date form_date"></div>')
                                   //$(element).removeClass('form-control')
@@ -677,8 +682,14 @@ function start_gqgrid(){
                             })
                              
                             } 
-                        },
-                    
+                        }, 
+                        formatter:function(cellvalue){
+                            if(cellvalue == ''||cellvalue == null){
+                                return '至今';
+                            }else{
+                                return cellvalue;
+                            }
+                        },  
                 },
                 ], 
             viewrecords : true, 
