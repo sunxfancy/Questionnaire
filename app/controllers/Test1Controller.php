@@ -8,11 +8,11 @@ class Test1Controller extends \Phalcon\Mvc\Controller {
 	
 	public function testAction(){
 		
-		$examinee_info = Examinee::findFirst(1794);	
-
-		$checkout_data = new CheckoutData();
-
-		$rtn = $checkout_data->getEightAddFive($examinee_info);
+		$project_data = new ProjectData();
+		
+		$rtn = $project_data->getindividualComprehensive(1794);
+		
+		echo '<pre>';
 		
 		print_r($rtn);
 		
