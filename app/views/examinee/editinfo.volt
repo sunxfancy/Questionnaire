@@ -512,8 +512,6 @@ function start_gqgrid(){
                  
                 },
                 { name:'degree', label:'所获学位',  index:'degree',     width:80,  fixed:true, sortable:false, editable:true,   resize:false, align:'center', 
-                  editrules:{required : true} ,
-                 
                 },
                 { name:'begintime',  label:'开始时间<span style="color:red;font-size:16px;">&nbsp;*</span>', index:'begintime',  width:100, fixed:true, sortable:false, sorttype:'date' , editable:true,   resize:false, align:'center', 
                   editrules:{required : true, custom:true, custom_func: begin_datecheck,}, 
@@ -533,13 +531,11 @@ function start_gqgrid(){
                             }).on('changeDate',function(el){
                             	$('#endtime').datetimepicker('setStartDate', $(element).val());
                             })
-                            } 
-                           
-                        },
-                     
+                            }        
+                        },         
                 },
                 {
-                  name:'endtime',   label:'结束时间',  index:'endtime',  width:100, fixed:true, sortable:false, sorttype:'date', editable:true,   resize:false, align:'center', 
+                  name:'endtime',   label:'结束时间<br /><span style="font-size:5px;">【不填即为至今】</span>',  index:'endtime',  width:100, fixed:true, sortable:false, sorttype:'date', editable:true,   resize:false, align:'center', 
                   editrules:{ custom:true, custom_func:end_datecheck,}, 
                   editoptions: { dataInit: function(element) { 
                             $(element).parent().addClass("input-group date form_date");
@@ -560,6 +556,13 @@ function start_gqgrid(){
                              
                             } 
                         },
+                        formatter:function(cellvalue){
+                        if(cellvalue == ''||cellvalue == null){
+                            return '至今';
+                        }else{
+                            return cellvalue;
+                        }
+                    }, 
                 	
                 },
             ],
@@ -644,6 +647,7 @@ function start_gqgrid(){
                             autoclose:true,
                             startView:3,
                             minView:3,
+
                             })
                             .on('hide',function(el){
                                   //$(element).unwrap('<div class="input-group date form_date"></div>')
@@ -657,7 +661,7 @@ function start_gqgrid(){
                      
                 },
                 {
-                  name:'endtime',   label:'结束时间',  index:'endtime',  width:100, fixed:true, sortable:false, sorttype:'date', editable:true,   resize:false, align:'center', 
+                  name:'endtime',   label:'结束时间<br /><span style="font-size:5px;">【不填即为至今】</span>',  index:'endtime',  width:100, fixed:true, sortable:false, sorttype:'date', editable:true,   resize:false, align:'center', 
                   editrules:{ custom:true, custom_func:end_datecheck,}, 
                   editoptions: { dataInit: function(element) { 
                             $(element).parent().addClass("input-group date form_date");
@@ -668,6 +672,7 @@ function start_gqgrid(){
                             autoclose:true,
                             startView:3,
                             minView:3,
+                            
                             }).on('hide',function(el){
                                   //$(element).unwrap('<div class="input-group date form_date"></div>')
                                   //$(element).removeClass('form-control')
@@ -677,8 +682,14 @@ function start_gqgrid(){
                             })
                              
                             } 
-                        },
-                    
+                        }, 
+                        formatter:function(cellvalue){
+                            if(cellvalue == ''||cellvalue == null){
+                                return '至今';
+                            }else{
+                                return cellvalue;
+                            }
+                        },  
                 },
                 ], 
             viewrecords : true, 
