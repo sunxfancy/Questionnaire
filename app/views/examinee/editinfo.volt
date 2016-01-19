@@ -557,7 +557,7 @@ function start_gqgrid(){
                             } 
                         },
                         formatter:function(cellvalue){
-                        if(cellvalue == ''||cellvalue == null){
+                        if(cellvalue == '今' ){
                             return '至今';
                         }else{
                             return cellvalue;
@@ -684,7 +684,7 @@ function start_gqgrid(){
                             } 
                         }, 
                         formatter:function(cellvalue){
-                            if(cellvalue == ''||cellvalue == null){
+                            if(cellvalue == '今'){
                                 return '至今';
                             }else{
                                 return cellvalue;
