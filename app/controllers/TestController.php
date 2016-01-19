@@ -5,6 +5,7 @@ class TestController extends \Phalcon\Mvc\Controller {
 	public function testAction(){
 		$age = FactorScore::calAge('1980-07-2', '2015-11-06');
 		echo $age;
+		echo $age;
 		exit();
 		
 	}
