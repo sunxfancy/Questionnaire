@@ -117,7 +117,8 @@ class ProjectDataExport  extends \Phalcon\Mvc\Controller
 				}
 				$objActSheet->setCellValue($column_flag.$startRow,"=AVERAGE(".$startColumn.$startRow.":".$endColumn.$startRow.')');
 				$this->position($objActSheet, $column_flag.$startRow);
-				$startRow++;
+				$objActSheet->getStyle($column_flag.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+				$objActSheet->getStyle($column_flag.$startRow)->getFill()->getStartColor()->setARGB(PHPExcel_Style_Color::COLOR_YELLOW);
 				$startRow++;
 				$startRow++;
 				$objActSheet->getStyle($jiange_1.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
@@ -277,7 +278,6 @@ class ProjectDataExport  extends \Phalcon\Mvc\Controller
 				}
 // 				$objActSheet->setCellValue($column_flag.$startRow,$index_chosed_detail['score']);
 // 				$this->position($objActSheet, $column_flag.$startRow);
-				$startRow++;
 				$startRow++;
 				$startRow++;
 				$objActSheet->getStyle('A'.$startRow)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
