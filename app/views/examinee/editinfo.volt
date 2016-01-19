@@ -379,14 +379,14 @@ function begin_datecheck (value,colName) {
 function end_datecheck (value,colName) {
 	//表示至今
 	
-	if(value == null || value == ''){
+	if(value == '至今' || value == ''){
 	return [true, ''];	
 	}
     var pattern = new RegExp("^[1-9][0-9]{3}[.](0?[1-9]|1[012])$");
     if (value.match(pattern) ) {
         return [true, ''];
     }else{
-        return [false, colName+"格式如:2014.07"];
+        return [false, colName+"格式如:2014.07或者填写\"至今\"或者置为空"];
     }
 }
 

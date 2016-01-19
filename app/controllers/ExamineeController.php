@@ -309,7 +309,11 @@ class ExamineeController extends Base
     					 $json['education'][$i]['id'] = $i+1;
     					 $date_array = explode('-' ,$json['education'][$i]['date']);
     					 $json['education'][$i]['begintime'] =  $date_array[0];
-    					 $json['education'][$i]['endtime'] = $date_array[1];
+						 if( $date_array[1]  == '今'){
+						 	$json['education'][$i]['endtime'] = "至今";
+						 }else{
+						 	$json['education'][$i]['endtime'] = $date_array[1];
+						 }
     					 unset( $json['education'][$i]['date']);
     					 $tmp_array[] = $json['education'][$i]; 
     				}
@@ -360,6 +364,9 @@ class ExamineeController extends Base
 			$new_array['degree']     = $this->request->getPost('degree', 'string');
 			$begintime    = $this->request->getPost('begintime', 'string');
 			$endtime      = $this->request->getPost('endtime', 'string');
+			if ( $endtime == '' || $endtime == '至今') {
+				$endtime = '至今';
+			}
 			$id = $this->request->getPost('id', 'int');
 			$new_array['date'] = $begintime.'-'.$endtime;
 			if(empty($id)){
@@ -419,7 +426,11 @@ class ExamineeController extends Base
     					 $json['work'][$i]['id'] = $i+1;
     					 $date_array = explode('-' ,$json['work'][$i]['date']);
     					 $json['work'][$i]['begintime'] =  $date_array[0];
-    					 $json['work'][$i]['endtime'] = $date_array[1];
+    					 if ($date_array[1] == '今') {
+    					 	$json['work'][$i]['endtime'] = '至今';
+    					 }else {
+    					 	$json['work'][$i]['endtime'] = $date_array[1];
+    					 }
     					 unset( $json['work'][$i]['date']);
     					 $tmp_array[] = $json['work'][$i];
     				}
@@ -469,6 +480,9 @@ class ExamineeController extends Base
 			$new_array['date']       = $this->request->getPost('date', 'string');
 			$begintime    = $this->request->getPost('begintime', 'string');
 			$endtime      = $this->request->getPost('endtime', 'string');
+			if ( $endtime == '' || $endtime == '至今') {
+				$endtime = '至今';
+			}
 			$id = $this->request->getPost('id', 'int');
 			$new_array['date'] = $begintime.'-'.$endtime;
 			if(empty($id)){
