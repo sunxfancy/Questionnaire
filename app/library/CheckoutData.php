@@ -41,31 +41,37 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 			}
 			$strong_value['count'] = count($children);
 			$tmp = array();
-			$children = $this->foo($children, $tmp);
-			
-// 			echo '<pre>';
-// 			print_r($children);
-// 			exit();
-			
+			$children = $this->foo($children, $tmp);	
+			//先进行去重选择
+			$child_xuhao = array();
+			$qiansan = 1; 
+			for($i = 0, $len = count($children); $i < $len; $i += 4 ){
+				if (in_array($children[$i], $strong_exist_array )){
+					$child_xuhao[$children[$i]] = null;
+				}else{
+					if ($qiansan > 3 ){
+						$child_xuhao[$children[$i]] = null;
+					}else {
+						$child_xuhao[$children[$i]] = $qiansan++;
+						$strong_exist_array[] = $children[$i];
+					}	
+				}
+			}
+
 			$strong_value['children'] = array();
 			$number_count = 0;
 			foreach ($middle as $middle_info ){
 				$outter_tmp = array();
 				$middle_children = explode(',',$middle_info['children']);
 				$outter_tmp_score = 0;
-
 				foreach ($middle_children as $children_name){
 					$inner_tmp = array();
 					$key = array_search($children_name, $children);
-					$number = (intval($key)+4)/4;
-					if ( $number > 3 ){
-						$number = null;
-					}
 					$inner_tmp['name'] = $children_name;
 					$inner_tmp['raw_score'] = $children[$key+3];
 					$inner_tmp['ans_score'] = $children[$key+1];
 					$outter_tmp_score += $inner_tmp['ans_score'];
-					$inner_tmp['number']    = $number;
+					$inner_tmp['number'] = $child_xuhao[$children_name];
 					$strong_value['children'][] = $inner_tmp;
 				}
 				$outter_tmp['name'] = null;
@@ -74,7 +80,7 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 				$outter_tmp['number'] = null;
 				$strong_value['children'][] = $outter_tmp;
 			}
-		}
+		}		
 		//进行逆向重排列
 		$week_exist_array = array();
 		foreach($rtn_array['weak'] as &$strong_value){
@@ -93,6 +99,21 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 			$strong_value['count'] = count($children);
 			$tmp = array();
 			$children = $this->foo($children, $tmp);
+			//先进行去重选择
+			$child_xuhao = array();
+			$qiansan = 1;
+			for($i = 0, $len = count($children); $i < $len; $i += 4 ){
+				if (in_array($children[$i], $week_exist_array )){
+					$child_xuhao[$children[$i]] = null;
+				}else{
+					if ($qiansan > 3 ){
+						$child_xuhao[$children[$i]] = null;
+					}else {
+						$child_xuhao[$children[$i]] = $qiansan++;
+						$week_exist_array[] = $children[$i];
+					}
+				}
+			}
 			$strong_value['children'] = array();
 			$number_count = 0;
 			foreach ($middle as $middle_info ){
@@ -102,15 +123,11 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 				foreach ($middle_children as $children_name){
 					$inner_tmp = array();
 					$key = array_search($children_name, $children);
-					$number = (intval($key)+4)/4;
-					if ( $number > 3 ){
-						$number = null;
-					}
 					$inner_tmp['name'] = $children_name;
 					$inner_tmp['raw_score'] = $children[$key+3];
 					$inner_tmp['ans_score'] = $children[$key+1];
 					$outter_tmp_score += $inner_tmp['ans_score'];
-					$inner_tmp['number']    = $number;
+					$inner_tmp['number']    =  $child_xuhao[$children_name];
 					$strong_value['children'][] = $inner_tmp;
 				}
 				$outter_tmp['name'] = null;
