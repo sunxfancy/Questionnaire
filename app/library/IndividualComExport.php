@@ -239,8 +239,6 @@ class IndividualComExport extends \Phalcon\Mvc\Controller
 	 				));
 	 	}
 	 	$section->addPageBreak();
-	 	
-	 	
 	 	$section->addTitle('二、测评结果', 1);
 	 	$section->addTitle('1、突出优势',2);
 	 	foreach($data['advantage'] as $value){
@@ -276,11 +274,8 @@ class IndividualComExport extends \Phalcon\Mvc\Controller
  								'wrappingStyle'=>'square',
  						));
  			}
- 			$section->addTextBreak();
- 			
+ 			$section->addTextBreak();	
 	 	}
-
-
 	 	$section->addTitle('2、需要改进方面',2);
 	 	foreach($data['disadvantage'] as $value){
 	 		$section->addTitle($value['chs_name'],3);
@@ -318,7 +313,7 @@ class IndividualComExport extends \Phalcon\Mvc\Controller
 	 		$section->addTextBreak();
 	 	
 	 	}
-	 	$section->addTextBreak();
+	 	$section->addPageBreak();
 	 	$section->addTitle('三、综合评价', 1);
 	 	if (empty($data['com'])){
 	 		$section->addText('素质测评模块没有被选中', array('size'=>14,'bold'=>true,), array('lineHeight'=>1.5));
@@ -379,7 +374,7 @@ class IndividualComExport extends \Phalcon\Mvc\Controller
 	 		}
 	 		$section->addTextBreak();
 	 	}
-	 	
+	 	$section->addPageBreak();
 	 	$section->addTitle('四、结论与建议', 1);
 	 	$table = $section->addTable(
 	 		array('borderSize'=>1, 
