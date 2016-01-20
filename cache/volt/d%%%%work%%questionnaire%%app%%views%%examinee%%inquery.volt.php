@@ -67,7 +67,7 @@ $(function(){
          $.cookie("ans_cookie"+<?php echo $number; ?>, ans.join("|"), {experies:7});
          initCookie(questions.length,"ans_cookie"+<?php echo $number; ?> );
      });
-
+  
 
      $("#Leo_pagedown").click(function(){
         changepage(Leo_now_index+1,true);
