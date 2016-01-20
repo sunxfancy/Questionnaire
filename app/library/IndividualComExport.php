@@ -204,7 +204,7 @@ class IndividualComExport extends \Phalcon\Mvc\Controller
 	 	);
 	 	//判断工作经历是否为空
 	 	if(empty($data['works'])){
-	 		$section->addText('空');
+	 		$section->addText("空",array('size'=>14),array('lineHeight'=>1.5));
 	 	}else{
 	 		$row = $table->addRow(600);
 	 		$row->addCell(2500, array('valign'=>'center'))->addText("工作单位",array('size'=>14),array('alignment'=>'center'));

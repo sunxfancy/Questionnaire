@@ -244,16 +244,18 @@ class individualComData extends \Phalcon\Mvc\Controller{
 		}
 		$rt['value'] = $rate;
 		//计算个人的指标平均成绩，得到评价等级
-		$average = $sum/$count_all;
-		if( $average > 5.8 ){
-						$rt['level'] = 1;
-			}else if ( $average > 5.3 ) {
-						$rt['level'] = 2;
-			}else if ( $average > 5.0 ) {
-						$rt['level'] = 3;
-			}else {
-						$rt['level'] = 4;
-			}
+		// 改用ReportData方法
+		// $average = $sum/$count_all;
+		// if( $average > 5.8 ){
+		// 				$rt['level'] = 1;
+		// 	}else if ( $average > 5.3 ) {
+		// 				$rt['level'] = 2;
+		// 	}else if ( $average > 5.0 ) {
+		// 				$rt['level'] = 3;
+		// 	}else {
+		// 				$rt['level'] = 4;
+		// 	}
+		$rt['level'] = ReportData::getLevel($examinee_id);
 		return $rt;
 	}	
 	public function IsHidden($examinee_id){
