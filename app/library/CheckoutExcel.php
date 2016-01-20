@@ -11,6 +11,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
     public function excelExport($examinee){
         PHPExcel_CachedObjectStorageFactory::cache_in_memory_serialized;
         $objPHPExcel = new PHPExcel();
+        set_time_limit(0);
         #1 -- finish
         $objPHPExcel->createSheet(0);
         $objPHPExcel->setActiveSheetIndex(0); //设置第一个内置表
@@ -785,12 +786,30 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $date  = explode(' ',$examinee->last_login)[0];
         $objActSheet->setCellValue('B8',$date);
         $this->position($objActSheet, 'B8');
+        // 添加总分与隐形项目数统计
+        //获取个人的SCL试卷答案统计
+        $scl_paper_id = Paper::findFirst( array( "name = ?1", 'bind' => array(1=>"SCL")))->id;
+        $scl_question_ans = QuestionAns::findFirst(array("paper_id = ?1 AND examinee_id = ?2", 'bind'=>array(1=>$scl_paper_id, 2=>$examinee->id)));
+        $scl_score_str = $scl_question_ans->score;
+        $scl_score_arr = explode('|', $scl_score_str);
+        $yinxing_count = 0;
+        $scl_total_score = 0;
+        foreach($scl_score_arr as $value ){
+        	if ($value != 1 ){
+        		$yinxing_count++;
+        	}
+        	$scl_total_score+=$value;
+        }
         $objActSheet->setCellValue('A9','总分');
         $this->position($objActSheet, 'A9');
+        $objActSheet->setCellValue('B9',$scl_total_score);
+        $this->position($objActSheet, 'B9');
         $objActSheet->setCellValue('A10','总均分');
         $this->position($objActSheet, 'A10');
         $objActSheet->setCellValue('A11','阴性项目数');
         $this->position($objActSheet, 'A11');
+        $objActSheet->setCellValue('B11',$yinxing_count);
+        $this->position($objActSheet, 'B11');
         $objActSheet->setCellValue('A12','阳性项目数');
         $this->position($objActSheet, 'A12');
         $objActSheet->setCellValue('A13','阳性症状均分');
@@ -1006,27 +1025,46 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
       	$this->position($objActSheet, 'A'.$startRow);
       	$objActSheet->getStyle('A'.$startRow)->getFont()->setBold(true);
       	$startRow++;
+//       	$filePath = WordChart::scatter_horiz_Graph_epqa_1($data, $examinee);
+//       	$objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
+//       	$objDrawing->setPath($filePath);
+//       	$width = 14.48*39;
+//       	$height = 5.48*39;
+//       	$objDrawing->setWidthAndHeight($width, $height);
+//       	$objDrawing->setCoordinates("A".$startRow);
+//       	$objDrawing->setWorksheet($objActSheet);
       	$filePath = WordChart::scatter_horiz_Graph_epqa_1($data, $examinee);
-      	$objDrawing = new PHPExcel_Worksheet_Drawing();
-      	$objDrawing->setPath($filePath);
+      	$objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
+      	$gdImage = imagecreatefrompng($filePath);
+      	$objDrawing->setImageResource($gdImage);
+      	$objDrawing->setRenderingFunction(PHPExcel_Worksheet_MemoryDrawing::RENDERING_JPEG);
+      	$objDrawing->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
       	$width = 14.48*39;
       	$height = 5.48*39;
       	$objDrawing->setWidthAndHeight($width, $height);
       	$objDrawing->setCoordinates("A".$startRow);
       	$objDrawing->setWorksheet($objActSheet);
       	$startRow+=12;
-      	//edit bruce_w 2015-12-9 分页打印
-      	$filePath = WordChart::scatter_horiz_Graph_epqa_2($data, $examinee);
-      	$objDrawing1 = new PHPExcel_Worksheet_Drawing();
-      	$objDrawing1->setPath($filePath);
-      	$width = 14.92*38;
-      	$height = 12.49*38;
-      	$objDrawing1->setWidthAndHeight($width, $height);
-      	$objDrawing1->setCoordinates("A".$startRow);
-      	$objDrawing1->setWorksheet($objActSheet);
-      	
-      	
-			
+//       	//edit bruce_w 2015-12-9 分页打印
+//       	$filePath = WordChart::scatter_horiz_Graph_epqa_2($data, $examinee);
+//       	$objDrawing1 = new PHPExcel_Worksheet_MemoryDrawing();
+//       	$objDrawing1->setPath($filePath);
+//       	$width = 14.92*38;
+//       	$height = 12.49*38;
+//       	$objDrawing1->setWidthAndHeight($width, $height);
+//       	$objDrawing1->setCoordinates("A".$startRow);
+//       	$objDrawing1->setWorksheet($objActSheet);
+      	 $filePath = WordChart::scatter_horiz_Graph_epqa_2($data, $examinee);
+       	 $objDrawing3 = new PHPExcel_Worksheet_MemoryDrawing();
+       	 $gdImage = imagecreatefrompng($filePath);
+       	 $objDrawing3->setImageResource($gdImage);
+       	 $objDrawing3->setRenderingFunction(PHPExcel_Worksheet_MemoryDrawing::RENDERING_JPEG);
+       	 $objDrawing3->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
+       	 $width = 14.92*38;
+      	 $height = 12.49*38;
+       	 $objDrawing3->setWidthAndHeight($width, $height);
+       	 $objDrawing3->setCoordinates("A".$startRow);
+       	 $objDrawing3->setWorksheet($objActSheet);
     }
    # 7 CPI
     public function checkoutCpi($examinee,$objActSheet){
@@ -1207,14 +1245,18 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
        	 $this->position($objActSheet, 'A'.$startRow);
        	 $objActSheet->getStyle('A'.$startRow)->getFont()->setBold(true);
        	 $startRow++;
+       	 $startRow++;
        	 $filePath = WordChart::scatter_horiz_Graph_cpi($data, $examinee);
-       	 $objDrawing = new PHPExcel_Worksheet_Drawing();
-       	 $objDrawing->setPath($filePath);
+       	 $objDrawing3 = new PHPExcel_Worksheet_MemoryDrawing();
+       	 $gdImage = imagecreatefrompng($filePath);
+       	 $objDrawing3->setImageResource($gdImage);
+       	 $objDrawing3->setRenderingFunction(PHPExcel_Worksheet_MemoryDrawing::RENDERING_JPEG);
+       	 $objDrawing3->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
        	 $width = 15*39;
        	 $height = 20*39;
-       	 $objDrawing->setWidthAndHeight($width, $height);
-       	 $objDrawing->setCoordinates("A".$startRow);
-       	 $objDrawing->setWorksheet($objActSheet);
+       	 $objDrawing3->setWidthAndHeight($width, $height);
+       	 $objDrawing3->setCoordinates("A".$startRow);
+       	 $objDrawing3->setWorksheet($objActSheet);
     }
    # 8 SPM 
     public function checkoutSpm($examinee, $objActSheet){
