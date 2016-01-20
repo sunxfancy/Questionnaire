@@ -26,6 +26,20 @@ class  ExcelUpload {
 	 * CPI  230道题 231行
 	 * 
 	* */
+
+	public function handleTestExaminee(){
+		$currentSheet = self::$objPHPExcel->getSheet();
+		$data=array();
+		$data['name']=$currentSheet->getCell("C2")->getValue();
+		$data['sex']=($currentSheet->getCell("D2")->getValue()=="男")?1:0;
+		$data['last_login']=$currentSheet->getCell("F2")->getValue();
+		$data['birthday']=$currentSheet->getCell("P2")->getValue();
+		$ans=array();
+		$ans[]=$data;
+		return $data;
+		//return NULL;
+
+	}
 	public function handleSheetOne($type){
 		$currentSheet = self::$objPHPExcel->getSheet(0);
 		$columnCount = $currentSheet->getHighestColumn();

@@ -15,6 +15,14 @@ class ExamineeController extends Base
 	public function inqueryAction(){
 		$exminee = $this->session->get('Examinee');
  		// $this->session->remove('Examinee');
+        $inquery_ans=InqueryAns::findFirst(array(
+                "examinee_id=?1",
+                "bind"=>array(1=>$exminee->id)
+            ));
+
+        if($inquery_ans){
+            $this->response->redirect('/examinee/editinfo');
+        }
 		if(empty($exminee)){
 			$this->response->redirect('/wrong/index/examinee');
 			$this->view->disable();
