@@ -96,6 +96,78 @@ class ExcelExport
         $objWriter->save($file_name);
         return $file_name;
     }
+public function anstableExport($examinee){
+      //参数$examinee已经被验证过了，为了安全，再一次进行验证
+        if (!isset($examinee->id) ){
+          return false;
+        }
+        if ($examinee->state < 1 ){
+          return false;
+        }
+
+        $objPHPExcel = new PHPExcel();
+        $objActSheet = $objPHPExcel->getActiveSheet();
+        $objPHPExcel->getProperties()->setTitle($examinee->id.'原始答案');
+        $objPHPExcel->getProperties()->setSubject($examinee->id.'原始答案');
+        /**
+         * 设置单元格的值
+         */
+
+        /**
+         * 设置单元格的值
+         */
+
+        #第二列
+        $objActSheet->setCellValue('B1','需求量表');
+        $inquery_ans=InqueryAns::findFirst(array(
+          "examinee_id=?1",
+          "bind"=>array(1=>$examinee->id)
+          ));
+        $anstable_arr=explode("|", $inquery_ans->option);
+
+        foreach ($anstable_arr as $key => $anstable_ar) {
+          # code...
+          $objActSheet->setCellValue('B'.($key+2),$anstable_ar);
+        }
+        $charsets=array("C","D","E","F","G","H");
+        $answers=QuestionAns::find(array(
+            "examinee_id=?1",
+            "bind"=>array(1=>$examinee->id)
+          ));
+        #第三~八列
+        $max=0;
+        foreach ($charsets as $key => $charset) {
+          # code...
+          $paper_id=$answers[$key]->paper_id;
+
+          $paper=Paper::findFirst($paper_id);
+          $objActSheet->setCellValue($charset."1",$paper->name);
+          $answer=$answers[$key]->option;
+          $lists=$answers[$key]->question_number_list;
+          $anstables=explode("|", $answer);
+          $list=explode("|", $lists);
+          foreach ($anstables as $i => $anstable) {
+              # code...
+              $objActSheet->setCellValue($charset.(intval($list[$i])+1),$anstable);
+          }
+          $max<sizeof($list)&&$max=sizeof($list);
+        }
+
+        $objActSheet->setCellValue('A1',"题号");
+        for ($i=0; $i < $max ; $i++) { 
+          # code...
+          $objActSheet->setCellValue('A'.($i+2),$i+1);
+        }
+
+        
+
+
+        $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
+        $file_name_trans = '/tmp/'.$examinee->number.$examinee->name.'_anstable.xls';
+        $file_name= iconv("utf-8", "gb2312", $file_name_trans);
+        $objWriter->save(".".$file_name);
+        return $file_name_trans; 
+    }
 
     /*
      *面询专家导出

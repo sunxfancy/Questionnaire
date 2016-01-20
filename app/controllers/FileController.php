@@ -66,6 +66,42 @@ class FileController extends \Phalcon\Mvc\Controller {
 			}
 		}
 	}
+	public function mgetindividualanstableAction(){
+		$this->view->disable();
+		$examinee_id = $this->request->getPost('examinee_id', 'int');
+		if (empty($examinee_id)){
+			$this->dataReturn(array('error'=>'请求参数不完整!'));
+			return ;
+		}
+
+		$manager = $this->session->get('Manager');
+		if(empty($manager)){
+			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!'));
+			return ;
+		}
+		$examinee = Examinee::findFirst($examinee_id);
+		if (!isset($examinee->id) ){
+			$this->dataReturn(array('error'=>'无效的用户编号'));
+			return ;
+		}
+		if ($examinee->state < 1 ){
+			$this->dataReturn(array('error'=>'用户测评流程还未完成！'));
+			return ;
+		}
+		//对于原始答案，目录结构中不进行保留，因此，不必进行存在性和修改情况的判断
+		$excelexport=new ExcelExport();
+		$anstable=$excelexport->anstableExport($examinee);
+		if($anstable==false){
+			$this->dataReturn(array('error'=>'用户测评流程还未完成！'));
+			return ;
+		}
+
+		$this->dataReturn(array("success"=>"点击下载 <a href='".$anstable."'>原始答案</a>"));
+		
+
+
+
+	}
 	# 个人综合评价报告导出(领导操作)
 	public function lgetindividualcomreportAction(){
 		$this->view->disable();
