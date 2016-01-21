@@ -40,13 +40,22 @@
         <span class="label label-default" id='score'>未完成</span>
     </div>
 </div>
-<div style="height:40px;margin-left:40px;">
+<div style="height:40px;margin-left:40px;display:inline-block;">
   <div class='form-group' style='display:inline-block;'>
      <button  type='button' onclick="tenSheetDownload()" class="btn btn-primary start" style=''>
             <i class="glyphicon glyphicon-send"></i>&nbsp;十项报表下载
         </button>
     </div>
 </div>
+
+<div style="height:40px;margin-left:40px;display:inline-block;">
+  <div class='form-group' style='display:inline-block;'>
+     <button  type='button' onclick="ansTableDownload()" class="btn btn-primary start" style=''>
+            <i class="glyphicon glyphicon-send"></i>&nbsp;原始答案下载
+        </button>
+    </div>
+</div>
+
 <div style="height:40px;margin-left:40px;">
     <div class="form-group" style='display:inline-block;font-size:20px;'>
         <span class="text-primary" ><i class='glyphicon glyphicon-tag' style='font-size:15px;'></i></span>个人综合素质报告
@@ -645,6 +654,57 @@ function tenSheetDownload(){
 
 }
 
+function ansTableDownload(){
+
+   downloadWait('正在生成原始答案：');
+
+    $.post('/file/getanstablebyproject', function(data){
+
+        if (data.error){
+
+           if(isObject(data.error)){
+
+               var msg ='';
+
+            msg += "<table class=\"table table-hover\"  style='margin-bottom:0;margin-top:0;'>";
+
+            var not = data.error.error;
+
+            if(not.length != 0 ){
+
+                msg +='<caption><b style=\'color:red;\'>原始答案生成失败：</b></caption>';
+
+               for(var i = 0, len = not.length; i < len; i++ ){
+
+                msg+=('<tr><td>'+not[i]+'</td></tr>');
+
+                }
+
+            }
+
+            msg +='</table>';
+
+            downloadError(msg); 
+
+           }else{
+
+                downloadError(data.error);
+
+           }
+
+        }else {
+
+           // var msg = "鐐瑰嚮涓嬭浇<a href='"+data.success.substr( 1, data.success.length-1)+"'></a>";
+
+            var msg = "请点击下载<a href='"+data.success.success.substr( 1, data.success.success.length-1)+"'>原始答案 </a>";
+
+            downloadSuccess(msg);
+
+        }
+
+    });
+
+}
 
 
 </script>
