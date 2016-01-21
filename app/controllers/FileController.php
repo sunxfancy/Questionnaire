@@ -1150,24 +1150,24 @@ class FileController extends \Phalcon\Mvc\Controller {
 				'number'
 		))
 		->from('Examinee')
-		->where('Examinee.project_id = '.$manager->project_id .' AND Examinee.type = 0 AND Examinee.state >= 4 ')
+		->where('Examinee.project_id = '.$manager->project_id .' AND Examinee.type = 0 AND Examinee.state >= 1 ')
 		->getQuery()
 		->execute()
 		->toArray();
 		if(empty($examinees)){
-			$this->dataReturn(array('error'=>'目前没有被试完成测评，无法生成十项报表'));
+			$this->dataReturn(array('error'=>'目前没有被试完成答题，无法生成原始答案'));
 			return;
 		}
 		// 根据目录结构判断文件是否存在
 		$year = floor($manager->project_id/ 100 );
-		$path = './project/'.$year.'/'.$manager->project_id.'/individual/personal_result/';
-		$path_url = '/project/'.$year.'/'.$manager->project_id.'/individual/personal_result/';
+		$path = './project/'.$year.'/'.$manager->project_id.'/individual/personal_anstable/';
+		$path_url = '/project/'.$year.'/'.$manager->project_id.'/individual/personal_anstable/';
 		
 		//遍历完成的被试集判断其是否已经生成了十项报表
 		$finished_list = array();
 		$not_finished_list =array();
 		foreach($examinees as $examinee) {
-			$name = $examinee['number'].'_personal_result.xls';
+			$name = $examinee['number'].'_personal_anstable.xls';
 			if(file_exists($path.$name)) {
 				$finished_list[] = $examinee['number'];
 			}else{

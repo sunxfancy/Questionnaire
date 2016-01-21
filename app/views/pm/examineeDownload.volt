@@ -40,18 +40,19 @@
         <span class="label label-default" id='score'>未完成</span>
     </div>
 </div>
+
 <div style="height:40px;margin-left:40px;display:inline-block;">
   <div class='form-group' style='display:inline-block;'>
-     <button  type='button' onclick="tenSheetDownload()" class="btn btn-primary start" style=''>
-            <i class="glyphicon glyphicon-send"></i>&nbsp;十项报表下载
+     <button  type='button' onclick="ansTableDownload()" class="btn btn-primary start" style=''>
+            <i class="glyphicon glyphicon-send"></i>&nbsp;原始答案下载
         </button>
     </div>
 </div>
 
 <div style="height:40px;margin-left:40px;display:inline-block;">
   <div class='form-group' style='display:inline-block;'>
-     <button  type='button' onclick="ansTableDownload()" class="btn btn-primary start" style=''>
-            <i class="glyphicon glyphicon-send"></i>&nbsp;原始答案下载
+     <button  type='button' onclick="tenSheetDownload()" class="btn btn-primary start" style=''>
+            <i class="glyphicon glyphicon-send"></i>&nbsp;十项报表下载
         </button>
     </div>
 </div>
