@@ -66,6 +66,8 @@ class FileController extends \Phalcon\Mvc\Controller {
 			}
 		}
 	}
+
+	#个人原始答案导出
 	public function mgetindividualanstableAction(){
 		$this->view->disable();
 		$examinee_id = $this->request->getPost('examinee_id', 'int');
@@ -971,10 +973,16 @@ class FileController extends \Phalcon\Mvc\Controller {
 				$this->dataReturn(array('success'=>$file_name));
 				return ;
 				break;
+			case 4 : 
+				$result = Examinee::find(array('project_id = ?1 AND type = 0 ', 'bind'=>array(1=>$manager->project_id)));
+				$file_name = $excelExport->ExamineeExportSimple($result, $manager->project_id); 
+				$this->dataReturn(array('success'=>$file_name));
+				return ;
+				break;
 			default : $this->dataReturn(array('error'=>'参数错误-'.$type)) ;return ;
 		}
 		}catch(Exception $e){
-			$this->dataReturn(array('error'=>'列表生成失败')) ;
+			$this->dataReturn(array('error'=>"文件生成失败")) ;
 			return ;
 		}
 		
