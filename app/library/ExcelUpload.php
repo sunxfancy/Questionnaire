@@ -26,6 +26,65 @@ class  ExcelUpload {
 	 * CPI  230道题 231行
 	 * 
 	* */
+
+
+
+	public function handleTestExaminee(){
+			$currentSheet = self::$objPHPExcel->getSheet();
+			$data = array();
+			$data[0]['sex']	 = trim($currentSheet->getCell("D2")->getValue())=="男"?1:0;
+			$data[0]['native'] = '';
+			$data[0]['education'] = ''; 
+			$data[0]['degree'] = '';
+			$data[0]['birthday'] = trim($currentSheet->getCell("P2")->getValue());
+			$data[0]['last_login']= trim($currentSheet->getCell("F2")->getValue());
+			$data[0]['politics']=  '';
+			$data[0]['professional']=  '';
+			$data[0]['team']= '';
+			$data[0]['employer']=  '';
+			$data[0]['unit']= '';
+			$data[0]['duty']=  '';
+			$tmp_array = array();
+			$tmp_array['education'] = array();
+			$tmp_array['work'] = array();
+			$data[0]['other'] = $tmp_array;
+			$tmp_array_2 = array();
+			foreach($data[0] as $key=>$value){
+				if ($key == 'sex'){
+					$value = $value == 1 ?'男':'女';
+				}
+				$tmp_array_2[$key] = $value;
+			}
+			$data[0]['init_data'] = json_encode($tmp_array_2, JSON_UNESCAPED_UNICODE);
+			$data[0]['other'] = json_encode($tmp_array, JSON_UNESCAPED_UNICODE);
+			
+			return $data;
+
+	}
+
+	public function handleOption($location){
+		$option_table=array('','a','b','c','d','e','f','g','h');
+		$currentSheet = self::$objPHPExcel->getSheet();
+		$option = trim($currentSheet->getCell($location)->getValue());
+		$option=strtolower($option);
+		$option=str_split($option);
+		$number=array();
+		foreach ($option as $key => $option_single) {
+			# code...
+				if(intval($option[$key]!=0)){
+					$option[$key]=$option_table[intval($option_single)];
+				}
+				$number[]=$key+1;
+			}
+		
+		$ret=array();
+		$ret[0]=implode("|", $option);
+		$ret[1]=implode("|", $number);
+
+		return $ret;
+		
+
+	}
 	public function handleSheetOne($type){
 		$currentSheet = self::$objPHPExcel->getSheet(0);
 		$columnCount = $currentSheet->getHighestColumn();
