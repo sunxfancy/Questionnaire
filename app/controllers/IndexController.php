@@ -13,6 +13,7 @@ class IndexController extends Base
 {
 	public function initialize()
     {
+    	parent::initialize();
         $this->view->setTemplateAfter('base1');
     }
 	

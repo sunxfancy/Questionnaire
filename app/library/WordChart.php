@@ -340,7 +340,7 @@ class WordChart {
 			unlink($fileName);
 		}
 		imagepng ( $image , $fileName);
-		imagedestroy ( $image );
+		//imagedestroy ( $image );
 		return $fileName;
 	}
 	private static function MDashedLine($image, $x0, $y0, $x1, $y1, $fg, $bg)
@@ -381,7 +381,7 @@ class WordChart {
 			unlink($fileName);
 		}
 		imagepng ( $image , $fileName);
-		imagedestroy ( $image );
+		//imagedestroy ( $image );
 		return $fileName;
 	}
 	#十项报表CPI中图表
@@ -419,7 +419,7 @@ class WordChart {
 			unlink($fileName);
 		}
 		imagepng ( $image , $fileName);
-		imagedestroy ( $image );
+		//imagedestroy ( $image );
 		return $fileName;
 	}
 	
