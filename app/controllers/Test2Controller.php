@@ -6,6 +6,7 @@ class Test2Controller extends \Phalcon\Mvc\Controller {
 	
 	public function initialize(){
 		$this->response->setHeader("Content-Type", "text/html; charset=utf-8");
+		set_time_limit(0);
 	}
 
 	
@@ -110,7 +111,7 @@ function initModule($project_id){
     		PmDB::insertProjectDetail($project_detail_info);
     		#模块配置的类型设为true
     		#需求量表的上传设为false
-    		echo "success";
+    		//echo "success";
     		return;
     	}catch(Exception $e){
     		echo "fail";
@@ -137,7 +138,7 @@ function initExaminee($project_id,$url,$arr){
 				echo '记录插入失败！';
 				return;
 			}
-		echo '记录插入成功！';
+		//echo '记录插入成功！';
 }
 
 function initProject($project_id,$manager_id,$manager_pwd){
@@ -185,6 +186,7 @@ function initExamineeAns($id,$url){
     	if(is_dir($url)){
     		if ($dh = opendir($url)) 
 			{
+				
 	        	while (($file = readdir($dh)) !== false)
 				{
 					if($file!="." && $file!="..")

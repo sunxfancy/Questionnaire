@@ -1099,6 +1099,77 @@ class FileController extends \Phalcon\Mvc\Controller {
 		}
 	}
 	
+	#生成被试人员的原始答案-----可重复生成
+	public function getanstablebyprojectAction() {
+		set_time_limit(0);
+		$this->view->disable();
+		//原始答案的导出必须是manager pm & interviwer
+		$manager = $this->session->get('Manager');
+		if(empty($manager)){
+			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!'));
+			return ;
+		}
+		//获取项目中完成答题的人员列表----全部都是除去了绿色通道人员 ---- 且被试已经完成了指标算分
+		$examinees = $this->modelsManager->createBuilder()
+		->columns(array(
+				'number'
+		))
+		->from('Examinee')
+		->where('Examinee.project_id = '.$manager->project_id .' AND Examinee.type = 0 AND Examinee.state >= 4 ')
+		->getQuery()
+		->execute()
+		->toArray();
+		if(empty($examinees)){
+			$this->dataReturn(array('error'=>'目前没有被试完成测评，无法生成十项报表'));
+			return;
+		}
+		// 根据目录结构判断文件是否存在
+		$year = floor($manager->project_id/ 100 );
+		$path = './project/'.$year.'/'.$manager->project_id.'/individual/personal_result/';
+		$path_url = '/project/'.$year.'/'.$manager->project_id.'/individual/personal_result/';
+		
+		//遍历完成的被试集判断其是否已经生成了十项报表
+		$finished_list = array();
+		$not_finished_list =array();
+		foreach($examinees as $examinee) {
+			$name = $examinee['number'].'_personal_result.xls';
+			if(file_exists($path.$name)) {
+				$finished_list[] = $examinee['number'];
+			}else{
+				try{
+					$examinee_info = Examinee::findFirst(array('number=?1','bind'=>array(1=>$examinee['number'])));
+					$checkout_excel = new CheckoutExcel();
+					$report_tmp_name = $checkout_excel->excelExport($examinee_info);
+					$report_name = $path.$name;
+					$file = new FileHandle();
+					$file->movefile($report_tmp_name, $report_name);
+					//清空临时文件 主要在tmp中
+					$file->clearfiles('./tmp/', $examinee_info->id);	
+					$finished_list[] = $examinee['number'];
+				}catch(Exception $e){
+					$not_finished_list[] = $examinee['number'] .'-生成失败-原因：'.$e->getMessage();
+				}
+			}
+		}
+		if(empty($finished_list)) {
+			$this->dataReturn(array('error'=>array('error'=>$not_finished_list)));
+			return;
+		}
+		//打包已完成的人员十项报表
+		//$path 存在
+		try{
+			$file_name = 'personal_results_package';
+			$zipfile = new FileHandle();
+			$zipfile->clearfiles('./tmp/', $manager->project_id);
+			$file_path = $zipfile->packageZip($path, $manager->project_id, $file_name);
+			$this->dataReturn(array('success'=>array('success'=>$file_path,'error'=>$not_finished_list)));
+			return ;	
+		}catch(Exception $e){
+			$this->dataReturn(array('error'=>$e->Message()));
+			return ;
+		}
+	}
+	
 	#生成被试人员需求量表结果页面 ---- 可重复生成
 	public function getinqueryansAction() {
 		set_time_limit(0);

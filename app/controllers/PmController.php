@@ -7,6 +7,7 @@ class PmController extends Base
 {
     public function initialize(){
         parent::initialize();
+        set_time_limit(0);
     }
 	#主页面, 在主页面生成相关跳转
     public function indexAction(){
