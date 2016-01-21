@@ -317,7 +317,7 @@ class ExamineeController extends Base
     					 $json['education'][$i]['id'] = $i+1;
     					 $date_array = explode('-' ,$json['education'][$i]['date']);
     					 $json['education'][$i]['begintime'] =  $date_array[0];
-						 if( $date_array[1]  == '今'){
+						 if( $date_array[1]  == '今' || $date_array[1]  == '' ){
 						 	$json['education'][$i]['endtime'] = "至今";
 						 }else{
 						 	$json['education'][$i]['endtime'] = $date_array[1];
@@ -434,7 +434,7 @@ class ExamineeController extends Base
     					 $json['work'][$i]['id'] = $i+1;
     					 $date_array = explode('-' ,$json['work'][$i]['date']);
     					 $json['work'][$i]['begintime'] =  $date_array[0];
-    					 if ($date_array[1] == '今') {
+    					 if ($date_array[1] == '今' || $date_array[1]  == '') {
     					 	$json['work'][$i]['endtime'] = '至今';
     					 }else {
     					 	$json['work'][$i]['endtime'] = $date_array[1];
