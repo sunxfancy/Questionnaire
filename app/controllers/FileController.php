@@ -276,8 +276,8 @@ class FileController extends \Phalcon\Mvc\Controller {
 		$year = floor($examinee_info->project_id/ 100 );
 		$path = './project/'.$year.'/'.$examinee_info->project_id.'/individual/personal_result/';
 		$path_url = '/project/'.$year.'/'.$examinee_info->project_id.'/individual/personal_result/';
-		$name = $examinee_info->number.'_personal_result.xls';
-		if(file_exists($path.$name)){
+		$name = $examinee_info->number.'_personal_result.xlsx';
+		if(file_exists($path.$name)) {
 			$this->dataReturn(array('success'=>'点击下载&nbsp;<a href=\''.$path_url.$name."' style='color:blue;text-decoration:underline;'>个人测评十项报表</a>"));
 			return ;
 		}else{
@@ -1053,7 +1053,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 		$finished_list = array();
 		$not_finished_list =array();
 		foreach($examinees as $examinee) {
-			$name = $examinee['number'].'_personal_result.xls';
+			$name = $examinee['number'].'_personal_result.xlsx';
 			if(file_exists($path.$name)) {
 				$finished_list[] = $examinee['number'];
 			}else{
