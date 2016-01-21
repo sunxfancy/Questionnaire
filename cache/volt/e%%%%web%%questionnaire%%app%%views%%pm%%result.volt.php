@@ -119,6 +119,20 @@
         </a>
     </div>
 </div>
+<div style="width:100%;height:40px;text-align:left; margin: 5px 40px;">
+    <div class="form-group" style='display:inline-block;font-size:20px;'>
+        <span class="text-primary" ><i class='glyphicon glyphicon-tag' style='font-size:15px;'></i></span>人才综合素质评估数据<span style='visibility: hidden'>位位</span>
+    </div>
+    &nbsp;&nbsp;
+    <div class='form-group' style='display:inline-block;'>
+        <a href = '#' onclick="downloadProjectEvaluation()">
+            <button type='button' class="btn btn-primary start" style='width:150px;'>
+                <i class="glyphicon glyphicon-download"></i>
+                <span>导出</span>
+            </button>
+        </a>
+    </div>
+</div>
 <hr size="2" color="#FF0000" style="width:90%;"/>
 
 <div style="width:100%;height:40px;text-align:left; margin: 5px 40px;">
@@ -251,6 +265,16 @@ function downloadSystemReport(){
 function downloadProjectData(){
     downloadWait('正在生成人才综合测评总体数据！');
     $.post('/file/getProjectData',function(data){
+        if (data.error){
+            downloadError(data.error);
+        }else{
+            downloadSuccess(data.success);
+        }
+    });
+}
+function downloadProjectEvaluation(){
+    downloadWait('正在生成人才综合素质评估数据！');
+    $.post('/file/getProjectEvaluation',function(data){
         if (data.error){
             downloadError(data.error);
         }else{

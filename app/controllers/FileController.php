@@ -95,12 +95,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 			$this->dataReturn(array('error'=>'用户测评流程还未完成！'));
 			return ;
 		}
-
 		$this->dataReturn(array("success"=>"点击下载 <a href='".$anstable."'>原始答案</a>"));
-		
-
-
-
 	}
 	# 个人综合评价报告导出(领导操作)
 	public function lgetindividualcomreportAction(){
@@ -1012,6 +1007,46 @@ class FileController extends \Phalcon\Mvc\Controller {
 				$file->clearfiles('./tmp/', $project_id);
 				//返回路径
 				$this->dataReturn(array('success'=>'点击下载<a href=\''. $path_url.$name."' style='color:blue;text-decoration:underline;'>人才综合测评总体数据</a>"));
+				return ;
+			}catch(Exception $e){
+				$this->dataReturn(array('error'=>$e->getMessage()));
+				return ;
+			}
+		}
+	}
+	#获取项目总体数据
+	public function getprojectevaluationAction(){
+		set_time_limit(0);
+		$this->view->disable();
+		//个体报告的导出必须是manager
+		$manager = $this->session->get('Manager');
+		if(empty($manager)){
+			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!'));
+			return ;
+		}
+		// 根据目录结构判断文件是否存在
+		$project_id = $manager->project_id;
+		$year = floor($project_id / 100 );
+		$path = './project/'.$year.'/'.$project_id.'/system/report/v1/';
+		$path_url = '/project/'.$year.'/'.$project_id.'/system/report/v1/';
+		$name = $project_id.'_project_evaluation.xls'; //name 相同
+		//先判断修改是否存在
+		if (file_exists($path.$name)){
+			//修改文件存在;
+			$this->dataReturn(array('success'=>'点击下载<br /><br /><a href=\''.$path_url.$name."' style='color:blue;text-decoration:underline;'>人才综合素质评估数据</a><br /><br />"));
+			return ;
+		}else{
+			//生成文件，之后返回下载路径
+			try{
+				$report =   new ProjectEvaluationExport();
+				$report_tmp_name = $report->excelExport($project_id);
+				$report_name = $path.$name;
+				$file = new FileHandle();
+				$file->movefile($report_tmp_name, $report_name);
+				//清空临时文件 主要在tmp中
+				$file->clearfiles('./tmp/', $project_id);
+				//返回路径
+				$this->dataReturn(array('success'=>'点击下载<a href=\''. $path_url.$name."' style='color:blue;text-decoration:underline;'>人才综合素质评估数据</a>"));
 				return ;
 			}catch(Exception $e){
 				$this->dataReturn(array('error'=>$e->getMessage()));
