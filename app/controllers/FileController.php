@@ -126,7 +126,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 		}
 		//对于原始答案，目录结构中不进行保留，因此，不必进行存在性和修改情况的判断
 		$dataexport=new IndividualDataExport();
-		$anstable=$dataexport->excelExport($examinee_id);
+		$anstable=$dataexport->excelExport($examinee_id,$manager);
 		if($anstable==false){
 			$this->dataReturn(array('error'=>'用户测评流程还未完成！'));
 			return ;
@@ -1271,7 +1271,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 			}else{
 				try{
 					$dataexport=new IndividualDataExport();
-					$data=$dataexport->excelExport($examinee->id);
+					$data=$dataexport->excelExport($examinee->id,$manager);
 					if($data==false){
 						throw new Exception("error", 1);
 					}else{

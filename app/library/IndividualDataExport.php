@@ -5,7 +5,7 @@
 require_once("../app/classes/PHPExcel.php");
 class IndividualDataExport  extends \Phalcon\Mvc\Controller
 {
-	public function excelExport($examinee_id){
+	public function excelExport($examinee_id,$manager){
 	 	PHPExcel_CachedObjectStorageFactory::cache_in_memory_serialized;
 	 	$objPHPExcel = new PHPExcel();
 	 	$objPHPExcel->createSheet(0);
@@ -26,10 +26,12 @@ class IndividualDataExport  extends \Phalcon\Mvc\Controller
  		$last_data =  $data;
  		$this->joinTable( $data, $objActSheet, $start_column++, $examinee['number']);	
 	 	$objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
-	 	$path =  '/tmp/';
-	 	// $handle = new FileHandle();
-	 	// $handle->mk_dir('.'.$path);
-	 	$file_name =$path.$examinee_id.'_individual_data.xls';
+
+	 	$year = floor($manager->project_id/ 100 );
+	 	$path =  '/project/'.$year.'/'.$manager->project_id.'/individual/individual_data/';
+	 	$handle = new FileHandle();
+	 	$handle->mk_dir('.'.$path);
+	 	$file_name =$path.$examinee['number'].'_individual_data.xls';
 	 	$objWriter->save(".".$file_name);
 	 	return $file_name;
 	}
