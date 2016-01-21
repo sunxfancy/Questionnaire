@@ -5,6 +5,7 @@ class ExamineeController extends Base
 	private static $paper_name_array = array('16PF','EPPS','SCL','EPQA','CPI','SPM');
     
 	public function initialize(){
+		parent::initialize();
         $this->view->setTemplateAfter('base3');
     }
 	#设置examinee转到/

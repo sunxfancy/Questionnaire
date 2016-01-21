@@ -10,10 +10,10 @@
  * 所有控制器的基类，负责公用任务处理
  */
 class Base extends \Phalcon\Mvc\Controller
-{
+{	
     public function initialize()
     {
-        Phalcon\Tag::prependTitle('政法委胜任力测评软件 | ');
+    	$this->view->setVar('website_locale_name','北京市政法系统干部胜任力测评系统');
         $this->response->setHeader("Content-Type", "text/html; charset=utf-8");
     }
 

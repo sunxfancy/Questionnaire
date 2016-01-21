@@ -11,6 +11,9 @@
 */
 class InterviewerController extends Base
 {
+	public function initialize() {
+		parent::initialize();
+	}
 	public function indexAction(){
         $this->view->setTemplateAfter('base2');
         $this->leftRender('人 员 面 询');
