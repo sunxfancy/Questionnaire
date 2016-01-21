@@ -183,7 +183,7 @@ class ExcelExport
     }
 
     #用户原始答案导出
-    public function anstableExport($examinee){
+    public function anstableExport($examinee,$manager){
       //参数$examinee已经被验证过了，为了安全，再一次进行验证
         if (!isset($examinee->id) ){
           return false;
@@ -245,12 +245,12 @@ class ExcelExport
           # code...
           $objActSheet->setCellValue('A'.($i+2),$i+1);
         }
-
-        
-
-
         $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
-        $file_name_trans = '/tmp/'.$examinee->number.$examinee->name.'_anstable.xls';
+        $year = floor($manager->project_id/ 100 );
+        $path="/project/".$year."/".$manager->project_id."/individual/personal_anstable/";
+        $handle=new FileHandle();
+        $handle->mk_dir(".".$path);
+        $file_name_trans = $path.$examinee->number."_personal_anstable.xls";
         $file_name= iconv("utf-8", "gb2312", $file_name_trans);
         $objWriter->save(".".$file_name);
         return $file_name_trans; 
