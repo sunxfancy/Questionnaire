@@ -386,7 +386,7 @@ function end_datecheck (value,colName) {
     if (value.match(pattern) ) {
         return [true, ''];
     }else{
-        return [false, colName+"格式如:2014.07或者填写\"至今\"或者置为空"];
+        return [false, "结束时间：格式如:2014.07或者填写\"至今\"或者置为空"];
     }
 }
 

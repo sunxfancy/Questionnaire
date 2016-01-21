@@ -1,5 +1,8 @@
 
-<div style="font-size:65px;color:white;margin-top:195px;margin-left:-55px;font-family:'华文中宋';">北京市政法系统领导干部<br /><span style='visibility: hidden;'>欢迎页&nbsp;</span>胜任力测评系统</div>
+<div style="font-size:65px;color:white;font-family:'华文中宋'; position:absolute; top:200px;right:520px; text-align:right; width:720px;">
+	{{ website_locale_name }}
+</div>
+
 <div class="Leo_login" style='position:absolute;top:180px;right:150px;'>
     <div style='font-size:40px;color:purple;text-align:center;padding:30px 0;color:white;'>欢&nbsp;迎&nbsp;登&nbsp;录</div>
     <div style='text-align:center'>

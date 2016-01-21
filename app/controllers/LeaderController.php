@@ -12,6 +12,7 @@
 class LeaderController extends Base
 {
 	public function indexAction(){
+		parent::initialize();
         $this->view->setTemplateAfter('base2');
         $this->leftRender('测 评 结 果');
     }

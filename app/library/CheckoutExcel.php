@@ -11,6 +11,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
     public function excelExport($examinee){
         PHPExcel_CachedObjectStorageFactory::cache_in_memory_serialized;
         $objPHPExcel = new PHPExcel();
+        set_time_limit(0);
         #1 -- finish
         $objPHPExcel->createSheet(0);
         $objPHPExcel->setActiveSheetIndex(0); //设置第一个内置表
@@ -46,7 +47,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $objPHPExcel->setActiveSheetIndex(5); 
         $objActSheet = $objPHPExcel->getActiveSheet(); 
         $objActSheet->setTitle( '6.epqa');
-     	$this->checkoutEpqa($examinee,$objActSheet);
+        $this->checkoutEpqa($examinee, $objActSheet);
 // 		#7 
         $objPHPExcel->createSheet(6);
         $objPHPExcel->setActiveSheetIndex(6);  
@@ -71,9 +72,8 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $objActSheet = $objPHPExcel->getActiveSheet(); 
         $objActSheet->setTitle('10.结构');
         $this->checkoutModuleResult($examinee,$objActSheet);
-
-        $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
-        $file_name = './tmp/'.$examinee->id.'_checkout.xls';
+        $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
+        $file_name = './tmp/'.$examinee->id.'_checkout.xlsx';
         $objWriter->save($file_name);
         return $file_name;
     }
@@ -84,7 +84,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
     }
     
     //导出个人信息
-    public function checkoutPerson($examinee,$objActSheet){
+    public function checkoutPerson(&$examinee,&$objActSheet){
     	$objActSheet->getDefaultRowDimension()->setRowHeight(21);
     	$objActSheet->getDefaultColumnDimension()->setWidth(7);
     	$objActSheet->mergeCells('A1:L1');
@@ -273,7 +273,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
 		
     }
    # 2 TQT 
-    public function checkoutIndex($examinee,$objActSheet){
+    public function checkoutIndex(&$examinee,&$objActSheet){
     	//settings
     	$objActSheet->getDefaultRowDimension()->setRowHeight(21);
     	$objActSheet->getDefaultColumnDimension()->setWidth(10);
@@ -326,7 +326,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
     	$objActSheet->getStyle('A5:H'.$lastRow)->applyFromArray($styleArray);
     }
    # 3 16pf 
-    public function checkout16pf($examinee, $objActSheet){
+    public function checkout16pf(&$examinee, &$objActSheet){
         $objActSheet->getDefaultRowDimension()->setRowHeight(16);
     	$objActSheet->getColumnDimension('A')->setWidth(11);
         $objActSheet->getColumnDimension('B')->setWidth(7);
@@ -562,7 +562,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         
     }
    # 4 EPPS
-    public function checkoutEpps($examinee,$objActSheet){
+    public function checkoutEpps(&$examinee,&$objActSheet){
         $objActSheet->getDefaultColumnDimension()->setWidth(12);
         $objActSheet->getDefaultRowDimension()->setRowHeight(16);
         $objActSheet->mergeCells('A1:F1');
@@ -753,7 +753,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
        	
     }
    # 5 SCL
-    public function checkoutScl($examinee , $objActSheet){
+    public function checkoutScl(&$examinee , &$objActSheet){
         $objActSheet->getDefaultRowDimension()->setRowHeight(16);
         $objActSheet->getDefaultColumnDimension()->setWidth(15);
         $objActSheet->mergeCells('A1:E1');
@@ -785,12 +785,30 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $date  = explode(' ',$examinee->last_login)[0];
         $objActSheet->setCellValue('B8',$date);
         $this->position($objActSheet, 'B8');
+        // 添加总分与隐形项目数统计
+        //获取个人的SCL试卷答案统计
+        $scl_paper_id = Paper::findFirst( array( "name = ?1", 'bind' => array(1=>"SCL")))->id;
+        $scl_question_ans = QuestionAns::findFirst(array("paper_id = ?1 AND examinee_id = ?2", 'bind'=>array(1=>$scl_paper_id, 2=>$examinee->id)));
+        $scl_score_str = $scl_question_ans->score;
+        $scl_score_arr = explode('|', $scl_score_str);
+        $yinxing_count = 0;
+        $scl_total_score = 0;
+        foreach($scl_score_arr as $value ){
+        	if ($value != 1 ){
+        		$yinxing_count++;
+        	}
+        	$scl_total_score+=$value;
+        }
         $objActSheet->setCellValue('A9','总分');
         $this->position($objActSheet, 'A9');
+        $objActSheet->setCellValue('B9',$scl_total_score);
+        $this->position($objActSheet, 'B9');
         $objActSheet->setCellValue('A10','总均分');
         $this->position($objActSheet, 'A10');
         $objActSheet->setCellValue('A11','阴性项目数');
         $this->position($objActSheet, 'A11');
+        $objActSheet->setCellValue('B11',$yinxing_count);
+        $this->position($objActSheet, 'B11');
         $objActSheet->setCellValue('A12','阳性项目数');
         $this->position($objActSheet, 'A12');
         $objActSheet->setCellValue('A13','阳性症状均分');
@@ -865,7 +883,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $objActSheet->getStyle('A'.$firstRow.':E'.$lastRow)->applyFromArray($styleArray);
     }
    # 6 EPQA
-    public function checkoutEpqa($examinee,$objActSheet){
+    public function checkoutEpqa(&$examinee,&$objActSheet){
         $objActSheet->getDefaultRowDimension()->setRowHeight(16);
         $objActSheet->getDefaultColumnDimension()->setWidth(10);
         $objActSheet->mergeCells('A1:H1');
@@ -1006,30 +1024,54 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
       	$this->position($objActSheet, 'A'.$startRow);
       	$objActSheet->getStyle('A'.$startRow)->getFont()->setBold(true);
       	$startRow++;
+//       	$filePath = WordChart::scatter_horiz_Graph_epqa_1($data, $examinee);
+//       	$objDrawing = new PHPExcel_Worksheet_Drawing();
+//       	$objDrawing->setPath($filePath);
+//       	$width = 14.48*39;
+//       	$height = 5.48*39;
+//       	$objDrawing->setWidthAndHeight($width, $height);
+//       	$objDrawing->setCoordinates("A".$startRow);
+//       	$objDrawing->setWorksheet($objActSheet);
       	$filePath = WordChart::scatter_horiz_Graph_epqa_1($data, $examinee);
-      	$objDrawing = new PHPExcel_Worksheet_Drawing();
-      	$objDrawing->setPath($filePath);
+      	$objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
+      	$gdImage = imagecreatefrompng($filePath);
+      	$objDrawing->setImageResource($gdImage);
+      	$objDrawing->setName('epqa-1');
+      	$objDrawing->setRenderingFunction(PHPExcel_Worksheet_MemoryDrawing::RENDERING_PNG);
+      	$objDrawing->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
       	$width = 14.48*39;
       	$height = 5.48*39;
+      	$objDrawing->setResizeProportional(false);
       	$objDrawing->setWidthAndHeight($width, $height);
       	$objDrawing->setCoordinates("A".$startRow);
       	$objDrawing->setWorksheet($objActSheet);
       	$startRow+=12;
-      	//edit bruce_w 2015-12-9 分页打印
-      	$filePath = WordChart::scatter_horiz_Graph_epqa_2($data, $examinee);
-      	$objDrawing1 = new PHPExcel_Worksheet_Drawing();
-      	$objDrawing1->setPath($filePath);
-      	$width = 14.92*38;
-      	$height = 12.49*38;
-      	$objDrawing1->setWidthAndHeight($width, $height);
-      	$objDrawing1->setCoordinates("A".$startRow);
-      	$objDrawing1->setWorksheet($objActSheet);
-      	
-      	
-			
+//       	//edit bruce_w 2015-12-9 分页打印
+//       	$filePath = WordChart::scatter_horiz_Graph_epqa_2($data, $examinee);
+//       	$objDrawing1 = new PHPExcel_Worksheet_Drawing();
+//       	$objDrawing1->setPath($filePath);
+//       	$width = 14.92*38;
+//       	$height = 12.49*38;
+//       	$objDrawing1->setWidthAndHeight($width, $height);
+//       	$objDrawing1->setCoordinates("A".$startRow);
+//       	$objDrawing1->setWorksheet($objActSheet);
+      	 $filePath = WordChart::scatter_horiz_Graph_epqa_2($data, $examinee);
+       	 $objDrawing2 = new PHPExcel_Worksheet_MemoryDrawing();
+       	 $gdImage = imagecreatefrompng($filePath);
+       	 $objDrawing2->setImageResource($gdImage);
+       	 $objDrawing2->setName('epqa-2');
+       	 $objDrawing2->setRenderingFunction(PHPExcel_Worksheet_MemoryDrawing::RENDERING_PNG);
+       	 $objDrawing2->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
+       	 $width = 14.92*38;
+      	 $height = 12.49*38;
+      	 $objDrawing2->setResizeProportional(false);
+       	 $objDrawing2->setWidthAndHeight($width, $height);
+       	 $objDrawing2->setCoordinates("A".$startRow);
+       	 $objDrawing2->setWorksheet($objActSheet);
+       	 
     }
    # 7 CPI
-    public function checkoutCpi($examinee,$objActSheet){
+    public function checkoutCpi(&$examinee,&$objActSheet){
         $objActSheet->getDefaultRowDimension()->setRowHeight(16);
         $objActSheet->getDefaultColumnDimension()->setWidth(12);
         $objActSheet->mergeCells('A1:F1');
@@ -1200,24 +1242,30 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
        	 $objActSheet->getStyle('A'.$firstRow.':F'.$lastRow)->applyFromArray($styleArray);
        	 $startRow++;
        	 $startRow++;
-       	 //edit bruce_w 2015-12-9 分页打印
+//        	 //edit bruce_w 2015-12-9 分页打印
        	 $startRow+=20;
        	 $objActSheet->mergeCells("A".$startRow.":F".$startRow);
        	 $objActSheet->setCellValue('A'.$startRow, '青年性格问卷测试(CPI)剖析图');
        	 $this->position($objActSheet, 'A'.$startRow);
        	 $objActSheet->getStyle('A'.$startRow)->getFont()->setBold(true);
        	 $startRow++;
+       	 $startRow++;
        	 $filePath = WordChart::scatter_horiz_Graph_cpi($data, $examinee);
-       	 $objDrawing = new PHPExcel_Worksheet_Drawing();
-       	 $objDrawing->setPath($filePath);
+       	 $objDrawing3 = new PHPExcel_Worksheet_MemoryDrawing();
+       	 $gdImage = imagecreatefrompng($filePath);
+       	 $objDrawing3->setImageResource($gdImage);
+       	 $objDrawing3->setRenderingFunction(PHPExcel_Worksheet_MemoryDrawing::RENDERING_PNG);
+       	 $objDrawing3->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
        	 $width = 15*39;
        	 $height = 20*39;
-       	 $objDrawing->setWidthAndHeight($width, $height);
-       	 $objDrawing->setCoordinates("A".$startRow);
-       	 $objDrawing->setWorksheet($objActSheet);
+       	 $objDrawing3->setResizeProportional(false);
+       	 $objDrawing3->setName('cpi-1');
+       	 $objDrawing3->setWidthAndHeight($width, $height);
+       	 $objDrawing3->setCoordinates("A".$startRow);
+       	 $objDrawing3->setWorksheet($objActSheet);
     }
    # 8 SPM 
-    public function checkoutSpm($examinee, $objActSheet){
+    public function checkoutSpm(&$examinee, &$objActSheet){
         $objActSheet->getDefaultRowDimension()->setRowHeight(21);
         $objActSheet->getDefaultColumnDimension()->setWidth(12);
         $objActSheet->mergeCells('A1:F1');
@@ -1317,7 +1365,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $this->position($objActSheet,'B6');
     }
    # 9. 8+5 表
-    public function checkoutEightAddFive($examinee,$objActSheet){
+    public function checkoutEightAddFive(&$examinee,&$objActSheet){
         $strong = array(
             '【强项指标1】【最优】','【强项指标2】【次优】','【强项指标3】【三优】','【强项指标4】【四优】','【强项指标5】【五优】','【强项指标6】【六优】','【强项指标7】【七优】','【强项指标8】【八优】'
         );
@@ -1444,7 +1492,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         }
     }
     #10 结构
-    public function checkoutModuleResult($examinee,$objActSheet){
+    public function checkoutModuleResult(&$examinee,&$objActSheet){
     	$objActSheet->getDefaultRowDimension()->setRowHeight(16);
 		$objActSheet->getColumnDimension('A')->setWidth(20);
         $objActSheet->getColumnDimension('B')->setWidth(20);

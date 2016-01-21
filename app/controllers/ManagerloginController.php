@@ -6,6 +6,7 @@
 class ManagerloginController extends Base
 {
     public function initialize(){
+    	parent::initialize();
         $this->view->setTemplateAfter('base1');
     }
 
