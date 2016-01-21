@@ -13,7 +13,7 @@ class Base extends \Phalcon\Mvc\Controller
 {	
     public function initialize()
     {
-    	$this->view->setVar('website_locale_name','北京市政法系统干部胜任力测评系统');
+    	$this->view->setVar('website_locale_name','北京市政法系统领导干部胜任力测评软件');
         $this->response->setHeader("Content-Type", "text/html; charset=utf-8");
     }
 

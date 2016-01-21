@@ -1,5 +1,5 @@
 
-<div style="font-size:65px;color:white;font-family:'华文中宋'; position:absolute; top:180px;right:520px; text-align:right; width:600px;">
+<div style="font-size:65px;color:white;font-family:'华文中宋'; position:absolute; top:200px;right:520px; text-align:right; width:720px;">
 	{{ website_locale_name }}
 </div>
 
