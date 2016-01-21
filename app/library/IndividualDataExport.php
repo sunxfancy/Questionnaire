@@ -26,8 +26,11 @@ class IndividualDataExport  extends \Phalcon\Mvc\Controller
  		$last_data =  $data;
  		$this->joinTable( $data, $objActSheet, $start_column++, $examinee['number']);	
 	 	$objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
-	 	$file_name = './tmp/'.$examinee_id.'_individual_data.xls';
-	 	$objWriter->save($file_name);
+	 	$path =  '/tmp/';
+	 	// $handle = new FileHandle();
+	 	// $handle->mk_dir('.'.$path);
+	 	$file_name =$path.$examinee_id.'_individual_data.xls';
+	 	$objWriter->save(".".$file_name);
 	 	return $file_name;
 	}
 	
