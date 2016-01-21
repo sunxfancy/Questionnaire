@@ -66,6 +66,8 @@ class FileController extends \Phalcon\Mvc\Controller {
 			}
 		}
 	}
+
+	#个人原始答案导出
 	public function mgetindividualanstableAction(){
 		$this->view->disable();
 		$examinee_id = $this->request->getPost('examinee_id', 'int');
@@ -95,12 +97,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 			$this->dataReturn(array('error'=>'用户测评流程还未完成！'));
 			return ;
 		}
-
 		$this->dataReturn(array("success"=>"点击下载 <a href='".$anstable."'>原始答案</a>"));
-		
-
-
-
 	}
 	# 个人综合评价报告导出(领导操作)
 	public function lgetindividualcomreportAction(){
@@ -971,10 +968,16 @@ class FileController extends \Phalcon\Mvc\Controller {
 				$this->dataReturn(array('success'=>$file_name));
 				return ;
 				break;
+			case 4 : 
+				$result = Examinee::find(array('project_id = ?1 AND type = 0 ', 'bind'=>array(1=>$manager->project_id)));
+				$file_name = $excelExport->ExamineeExportSimple($result, $manager->project_id); 
+				$this->dataReturn(array('success'=>$file_name));
+				return ;
+				break;
 			default : $this->dataReturn(array('error'=>'参数错误-'.$type)) ;return ;
 		}
 		}catch(Exception $e){
-			$this->dataReturn(array('error'=>'列表生成失败')) ;
+			$this->dataReturn(array('error'=>"文件生成失败")) ;
 			return ;
 		}
 		
@@ -1019,6 +1022,46 @@ class FileController extends \Phalcon\Mvc\Controller {
 			}
 		}
 	}
+	#获取项目总体数据
+	public function getprojectevaluationAction(){
+		set_time_limit(0);
+		$this->view->disable();
+		//个体报告的导出必须是manager
+		$manager = $this->session->get('Manager');
+		if(empty($manager)){
+			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!'));
+			return ;
+		}
+		// 根据目录结构判断文件是否存在
+		$project_id = $manager->project_id;
+		$year = floor($project_id / 100 );
+		$path = './project/'.$year.'/'.$project_id.'/system/report/v1/';
+		$path_url = '/project/'.$year.'/'.$project_id.'/system/report/v1/';
+		$name = $project_id.'_project_evaluation.xls'; //name 相同
+		//先判断修改是否存在
+		if (file_exists($path.$name)){
+			//修改文件存在;
+			$this->dataReturn(array('success'=>'点击下载<br /><br /><a href=\''.$path_url.$name."' style='color:blue;text-decoration:underline;'>人才综合素质评估数据</a><br /><br />"));
+			return ;
+		}else{
+			//生成文件，之后返回下载路径
+			try{
+				$report =   new ProjectEvaluationExport();
+				$report_tmp_name = $report->excelExport($project_id);
+				$report_name = $path.$name;
+				$file = new FileHandle();
+				$file->movefile($report_tmp_name, $report_name);
+				//清空临时文件 主要在tmp中
+				$file->clearfiles('./tmp/', $project_id);
+				//返回路径
+				$this->dataReturn(array('success'=>'点击下载<a href=\''. $path_url.$name."' style='color:blue;text-decoration:underline;'>人才综合素质评估数据</a>"));
+				return ;
+			}catch(Exception $e){
+				$this->dataReturn(array('error'=>$e->getMessage()));
+				return ;
+			}
+		}
+	}
 	
 	#生成被试人员的十项报表----可重复生成
 	public function getpersonalresultsbyprojectAction() {
@@ -1054,6 +1097,77 @@ class FileController extends \Phalcon\Mvc\Controller {
 		$not_finished_list =array();
 		foreach($examinees as $examinee) {
 			$name = $examinee['number'].'_personal_result.xlsx';
+			if(file_exists($path.$name)) {
+				$finished_list[] = $examinee['number'];
+			}else{
+				try{
+					$examinee_info = Examinee::findFirst(array('number=?1','bind'=>array(1=>$examinee['number'])));
+					$checkout_excel = new CheckoutExcel();
+					$report_tmp_name = $checkout_excel->excelExport($examinee_info);
+					$report_name = $path.$name;
+					$file = new FileHandle();
+					$file->movefile($report_tmp_name, $report_name);
+					//清空临时文件 主要在tmp中
+					$file->clearfiles('./tmp/', $examinee_info->id);	
+					$finished_list[] = $examinee['number'];
+				}catch(Exception $e){
+					$not_finished_list[] = $examinee['number'] .'-生成失败-原因：'.$e->getMessage();
+				}
+			}
+		}
+		if(empty($finished_list)) {
+			$this->dataReturn(array('error'=>array('error'=>$not_finished_list)));
+			return;
+		}
+		//打包已完成的人员十项报表
+		//$path 存在
+		try{
+			$file_name = 'personal_results_package';
+			$zipfile = new FileHandle();
+			$zipfile->clearfiles('./tmp/', $manager->project_id);
+			$file_path = $zipfile->packageZip($path, $manager->project_id, $file_name);
+			$this->dataReturn(array('success'=>array('success'=>$file_path,'error'=>$not_finished_list)));
+			return ;	
+		}catch(Exception $e){
+			$this->dataReturn(array('error'=>$e->Message()));
+			return ;
+		}
+	}
+	
+	#生成被试人员的原始答案-----可重复生成
+	public function getanstablebyprojectAction() {
+		set_time_limit(0);
+		$this->view->disable();
+		//原始答案的导出必须是manager pm & interviwer
+		$manager = $this->session->get('Manager');
+		if(empty($manager)){
+			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!'));
+			return ;
+		}
+		//获取项目中完成答题的人员列表----全部都是除去了绿色通道人员 ---- 且被试已经完成了指标算分
+		$examinees = $this->modelsManager->createBuilder()
+		->columns(array(
+				'number'
+		))
+		->from('Examinee')
+		->where('Examinee.project_id = '.$manager->project_id .' AND Examinee.type = 0 AND Examinee.state >= 4 ')
+		->getQuery()
+		->execute()
+		->toArray();
+		if(empty($examinees)){
+			$this->dataReturn(array('error'=>'目前没有被试完成测评，无法生成十项报表'));
+			return;
+		}
+		// 根据目录结构判断文件是否存在
+		$year = floor($manager->project_id/ 100 );
+		$path = './project/'.$year.'/'.$manager->project_id.'/individual/personal_result/';
+		$path_url = '/project/'.$year.'/'.$manager->project_id.'/individual/personal_result/';
+		
+		//遍历完成的被试集判断其是否已经生成了十项报表
+		$finished_list = array();
+		$not_finished_list =array();
+		foreach($examinees as $examinee) {
+			$name = $examinee['number'].'_personal_result.xls';
 			if(file_exists($path.$name)) {
 				$finished_list[] = $examinee['number'];
 			}else{
@@ -1144,7 +1258,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 			//return ;
 			unlink($path.$name);
 		}
-//else{
+		//else{
 			//生成文件，之后返回下载路径
 			try{
 				$report =   new InqueryExcel();
@@ -1161,8 +1275,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 				$this->dataReturn(array('error'=>$e->getMessage()));
 				return ;
 			}
-// 		}
-		
+ 		//}
 	}
 	
 	public function testAction(){

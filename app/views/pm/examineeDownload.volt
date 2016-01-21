@@ -17,11 +17,18 @@
             <i class="glyphicon glyphicon-fast-backward"></i>&nbsp;返回上层</button>
         </form>
     </div> 
-    <div class='form-group' style='margin-left:40px;'>
+    <div style="display:block;">
+    <div class='form-group' style='margin-left:40px;display:inline-block;'>
             <button class="btn btn-primary" onclick='exportExaminees()' style='width:100px;' type='button'>
                 <i class="glyphicon glyphicon-download"></i>&nbsp;列表下载
             </button>
     </div> 
+    <div class='form-group' style='margin-left:40px;display:inline-block;'>
+            <button class="btn btn-primary" onclick='exportExamineesSimple()' style='width:100px;' type='button'>
+                <i class="glyphicon glyphicon-download"></i>&nbsp;简表下载
+            </button>
+    </div>
+     </div>
     <div class="form-group">
         <div style="display:inline-block;margin-left:40px;font-size:26px;color:red;">批量下载</div>
     </div>  
@@ -33,13 +40,22 @@
         <span class="label label-default" id='score'>未完成</span>
     </div>
 </div>
-<div style="height:40px;margin-left:40px;">
+<div style="height:40px;margin-left:40px;display:inline-block;">
   <div class='form-group' style='display:inline-block;'>
      <button  type='button' onclick="tenSheetDownload()" class="btn btn-primary start" style=''>
             <i class="glyphicon glyphicon-send"></i>&nbsp;十项报表下载
         </button>
     </div>
 </div>
+
+<div style="height:40px;margin-left:40px;display:inline-block;">
+  <div class='form-group' style='display:inline-block;'>
+     <button  type='button' onclick="ansTableDownload()" class="btn btn-primary start" style=''>
+            <i class="glyphicon glyphicon-send"></i>&nbsp;原始答案下载
+        </button>
+    </div>
+</div>
+
 <div style="height:40px;margin-left:40px;">
     <div class="form-group" style='display:inline-block;font-size:20px;'>
         <span class="text-primary" ><i class='glyphicon glyphicon-tag' style='font-size:15px;'></i></span>个人综合素质报告
@@ -200,7 +216,8 @@ var uploader_1 = new plupload.Uploader({
     filters : {
         max_file_size : '40mb',
         mime_types: [
-            // {title : "word files", extensions : "docx"},
+            // {title : "word files", extensions : "docx"},
+
         ]
     },
 
@@ -234,7 +251,8 @@ var uploader_1 = new plupload.Uploader({
         },
         // Error: function(up, err) {
             // document.getElementById('console').appendChild(document.createTextNode("\nError #" + err.code + ": " + err.message));
-        // }
+        // }
+
     }
 });
 
@@ -251,7 +269,8 @@ var uploader_2 = new plupload.Uploader({
     filters : {
         max_file_size : '40mb',
         mime_types: [
-            // {title : "word files", extensions : "docx"},
+            // {title : "word files", extensions : "docx"},
+
         ]
     },
 
@@ -288,11 +307,14 @@ var uploader_2 = new plupload.Uploader({
             // document.getElementById('console').innerHTML +=
             	 // "<table class=\"table table-hover\"><tr><td>Error:"+err.message+ "</td><td><b>文件类型错误</b></td></tr></table>"
             // ;
-        // }
+        // }
+
     }
 });
 
-uploader_2.init();
+uploader_2.init();
+
+
 //已上传文件的情况查询
 function checkUploaded(args){
 	 var number = args.id.substr( args.id.length-1, 1);
@@ -464,7 +486,8 @@ function oneKeyReport(number){
             }
         }else{
             downloadSuccess('一键生成成功');
-        }
+        }
+
     });
 }
 
@@ -519,6 +542,18 @@ function exportExaminees(){
             downloadError(data.error);
         }else {
         	var msg = "<a href='"+data.success.substr( 1, data.success.length-1)+"'>被试人员列表</a>";
+            downloadSuccess(msg);
+        }
+    });
+}
+
+function exportExamineesSimple(){
+    downloadWait('正在生成被试人员列表');
+    $.post('/file/exportRole/4', function(data){
+        if (data.error){
+            downloadError(data.error);
+        }else {
+            var msg = "<a href='"+data.success.substr( 1, data.success.length-1)+"'>被试人员列表</a>";
             downloadSuccess(msg);
         }
     });
@@ -619,6 +654,57 @@ function tenSheetDownload(){
 
 }
 
+function ansTableDownload(){
+
+   downloadWait('正在生成原始答案：');
+
+    $.post('/file/getanstablebyproject', function(data){
+
+        if (data.error){
+
+           if(isObject(data.error)){
+
+               var msg ='';
+
+            msg += "<table class=\"table table-hover\"  style='margin-bottom:0;margin-top:0;'>";
+
+            var not = data.error.error;
+
+            if(not.length != 0 ){
+
+                msg +='<caption><b style=\'color:red;\'>原始答案生成失败：</b></caption>';
+
+               for(var i = 0, len = not.length; i < len; i++ ){
+
+                msg+=('<tr><td>'+not[i]+'</td></tr>');
+
+                }
+
+            }
+
+            msg +='</table>';
+
+            downloadError(msg); 
+
+           }else{
+
+                downloadError(data.error);
+
+           }
+
+        }else {
+
+           // var msg = "鐐瑰嚮涓嬭浇<a href='"+data.success.substr( 1, data.success.length-1)+"'></a>";
+
+            var msg = "请点击下载<a href='"+data.success.success.substr( 1, data.success.success.length-1)+"'>原始答案 </a>";
+
+            downloadSuccess(msg);
+
+        }
+
+    });
+
+}
 
 
 </script>
