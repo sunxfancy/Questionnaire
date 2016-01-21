@@ -191,6 +191,22 @@ $(function(){
                         },   
                         
                      }, 
+                      {  name:'state', label:'导出原始答案', index:'state', sortable:false,width:120, fixed:true, resizable:false, editable: false,align:'center',
+                        search:false,
+                        viewable:true,
+                        formatter:function(cellvalue,options,rowObject){
+                            if (rowObject.state >= 1) {
+                                return "<div class='ui-pg-div ui-inline-edit' data-original-title='导出原始答案'>"+
+                                "<span style='visibility:hidden;'>&nbsp;</span>"+
+                                "<span class=\"text-primary\" style='cursor:pointer'><i class=\"glyphicon glyphicon-download\" onclick='downloadAnsTable("+rowObject.id+")'></i></span>"+
+                                "<span style='visibility:hidden;'>&nbsp;</span></div>"
+                         
+                            }else {
+                                return '';
+                            } 
+                            
+                        },
+                     }, 
                      {  name:'state', label:'导出结果', index:'state', sortable:false,width:90, fixed:true, resizable:false, editable: false,align:'center',
                         search:false,
                         viewable:true,
@@ -253,22 +269,7 @@ $(function(){
                         },
                      }, 
 
-                     {  name:'state', label:'导出原始答案', index:'state', sortable:false,width:120, fixed:true, resizable:false, editable: false,align:'center',
-                        search:false,
-                        viewable:true,
-                        formatter:function(cellvalue,options,rowObject){
-                            if (rowObject.state >= 1) {
-                                return "<div class='ui-pg-div ui-inline-edit' data-original-title='导出原始答案'>"+
-                                "<span style='visibility:hidden;'>&nbsp;</span>"+
-                                "<span class=\"text-primary\" style='cursor:pointer'><i class=\"glyphicon glyphicon-download\" onclick='downloadAnsTable("+rowObject.id+")'></i></span>"+
-                                "<span style='visibility:hidden;'>&nbsp;</span></div>"
-                         
-                            }else {
-                                return '';
-                            } 
-                            
-                        },
-                     }, 
+                    
                      
                       
                     
