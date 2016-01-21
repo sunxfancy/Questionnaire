@@ -162,7 +162,7 @@ try {
 
     //Handle the request
     $app = new \Phalcon\Mvc\Application($di);
-
+    
     echo $app->handle()->getContent();
 
 } catch(\Phalcon\Exception $e) {
