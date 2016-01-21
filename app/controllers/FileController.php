@@ -1179,7 +1179,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 			//return ;
 			unlink($path.$name);
 		}
-//else{
+		//else{
 			//生成文件，之后返回下载路径
 			try{
 				$report =   new InqueryExcel();
@@ -1196,8 +1196,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 				$this->dataReturn(array('error'=>$e->getMessage()));
 				return ;
 			}
-// 		}
-		
+ 		//}
 	}
 	
 	public function testAction(){
