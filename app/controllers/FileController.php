@@ -70,6 +70,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 	#个人原始答案导出
 	public function mgetindividualanstableAction(){
 		$this->view->disable();
+		$manager->$this->session->get("Manager");
 		$examinee_id = $this->request->getPost('examinee_id', 'int');
 		if (empty($examinee_id)){
 			$this->dataReturn(array('error'=>'请求参数不完整!'));
@@ -92,7 +93,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 		}
 		//对于原始答案，目录结构中不进行保留，因此，不必进行存在性和修改情况的判断
 		$excelexport=new ExcelExport();
-		$anstable=$excelexport->anstableExport($examinee);
+		$anstable=$excelexport->anstableExport($examinee,$manager);
 		if($anstable==false){
 			$this->dataReturn(array('error'=>'用户测评流程还未完成！'));
 			return ;
@@ -1147,13 +1148,12 @@ class FileController extends \Phalcon\Mvc\Controller {
 		//获取项目中完成答题的人员列表----全部都是除去了绿色通道人员 ---- 且被试已经完成了指标算分
 		$examinees = $this->modelsManager->createBuilder()
 		->columns(array(
-				'number'
+				'number','id','state'
 		))
 		->from('Examinee')
 		->where('Examinee.project_id = '.$manager->project_id .' AND Examinee.type = 0 AND Examinee.state >= 1 ')
 		->getQuery()
-		->execute()
-		->toArray();
+		->execute();
 		if(empty($examinees)){
 			$this->dataReturn(array('error'=>'目前没有被试完成答题，无法生成原始答案'));
 			return;
@@ -1162,25 +1162,22 @@ class FileController extends \Phalcon\Mvc\Controller {
 		$year = floor($manager->project_id/ 100 );
 		$path = './project/'.$year.'/'.$manager->project_id.'/individual/personal_anstable/';
 		$path_url = '/project/'.$year.'/'.$manager->project_id.'/individual/personal_anstable/';
-		
 		//遍历完成的被试集判断其是否已经生成了十项报表
 		$finished_list = array();
 		$not_finished_list =array();
 		foreach($examinees as $examinee) {
-			$name = $examinee['number'].'_personal_anstable.xls';
+			$name = $examinee->number.'_personal_anstable.xls';
 			if(file_exists($path.$name)) {
-				$finished_list[] = $examinee['number'];
+				$finished_list[] = $examinee->number;
 			}else{
 				try{
-					$examinee_info = Examinee::findFirst(array('number=?1','bind'=>array(1=>$examinee['number'])));
-					$checkout_excel = new CheckoutExcel();
-					$report_tmp_name = $checkout_excel->excelExport($examinee_info);
-					$report_name = $path.$name;
-					$file = new FileHandle();
-					$file->movefile($report_tmp_name, $report_name);
-					//清空临时文件 主要在tmp中
-					$file->clearfiles('./tmp/', $examinee_info->id);	
-					$finished_list[] = $examinee['number'];
+					$excelexport=new ExcelExport();
+					$anstable=$excelexport->anstableExport($examinee,$manager);
+					if($anstable==false){
+						throw new Exception("error", 1);
+					}else{
+						$finished_list[]=$examinee->number;
+					}
 				}catch(Exception $e){
 					$not_finished_list[] = $examinee['number'] .'-生成失败-原因：'.$e->getMessage();
 				}
@@ -1193,7 +1190,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 		//打包已完成的人员十项报表
 		//$path 存在
 		try{
-			$file_name = 'personal_results_package';
+			$file_name = 'personal_anstable_package';
 			$zipfile = new FileHandle();
 			$zipfile->clearfiles('./tmp/', $manager->project_id);
 			$file_path = $zipfile->packageZip($path, $manager->project_id, $file_name);
