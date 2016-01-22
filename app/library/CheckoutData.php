@@ -154,8 +154,11 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 		}
 		return $rt;
 	}
+	//edit by brucew 8+5 将因子score替换为 std_score 
 	public function getChildrenOfIndexDesc($index_name, $children, $examinee_id){
 		$children_array = explode(',',$children);
+		//根据指标进行相关因子转换，转换的因子先进行排序，返回值。
+		
 		if ($index_name == 'zb_ldnl'){
 			//zb_ldnl 0,0,0,0,0
 			$result = $this->modelsManager->createBuilder()
@@ -180,7 +183,7 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 					'Factor.chs_name as chs_name',
 					'FactorAns.ans_score as score',
 					'Factor.name as name',
-					'FactorAns.score as raw_score'
+					'FactorAns.std_score as raw_score'
 					
 			))
 			->from('Factor')
@@ -219,7 +222,7 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 					'Factor.chs_name as chs_name',
 					'FactorAns.ans_score as score',
 					'Factor.name as name',
-					'FactorAns.score as raw_score'
+					'FactorAns.std_score as raw_score'
 			))
 			->from('Factor')
 			->inwhere('Factor.name', $children_array)
