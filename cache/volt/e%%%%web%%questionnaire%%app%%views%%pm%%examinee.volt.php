@@ -191,6 +191,38 @@ $(function(){
                         },   
                         
                      }, 
+                      {  name:'state', label:'导出原始答案', index:'state', sortable:false,width:120, fixed:true, resizable:false, editable: false,align:'center',
+                        search:false,
+                        viewable:true,
+                        formatter:function(cellvalue,options,rowObject){
+                            if (rowObject.state >= 1) {
+                                return "<div class='ui-pg-div ui-inline-edit' data-original-title='导出原始答案'>"+
+                                "<span style='visibility:hidden;'>&nbsp;</span>"+
+                                "<span class=\"text-primary\" style='cursor:pointer'><i class=\"glyphicon glyphicon-download\" onclick='downloadAnsTable("+rowObject.id+")'></i></span>"+
+                                "<span style='visibility:hidden;'>&nbsp;</span></div>"
+                         
+                            }else {
+                                return '';
+                            } 
+                            
+                        },
+                     }, 
+                     {  name:'state', label:'导出因子分数', index:'state', sortable:false,width:120, fixed:true, resizable:false, editable: false,align:'center',
+                        search:false,
+                        viewable:true,
+                        formatter:function(cellvalue,options,rowObject){
+                            if (rowObject.state >= 4) {
+                                return "<div class='ui-pg-div ui-inline-edit' data-original-title='导出因子分数'>"+
+                                "<span style='visibility:hidden;'>&nbsp;</span>"+
+                                "<span class=\"text-primary\" style='cursor:pointer'><i class=\"glyphicon glyphicon-download\" onclick='downloadIndividualData("+rowObject.id+")'></i></span>"+
+                                "<span style='visibility:hidden;'>&nbsp;</span></div>"
+                         
+                            }else {
+                                return '';
+                            } 
+                            
+                        },
+                     }, 
                      {  name:'state', label:'导出结果', index:'state', sortable:false,width:90, fixed:true, resizable:false, editable: false,align:'center',
                         search:false,
                         viewable:true,
@@ -253,22 +285,7 @@ $(function(){
                         },
                      }, 
 
-                     {  name:'state', label:'导出原始答案', index:'state', sortable:false,width:120, fixed:true, resizable:false, editable: false,align:'center',
-                        search:false,
-                        viewable:true,
-                        formatter:function(cellvalue,options,rowObject){
-                            if (rowObject.state >= 1) {
-                                return "<div class='ui-pg-div ui-inline-edit' data-original-title='导出原始答案'>"+
-                                "<span style='visibility:hidden;'>&nbsp;</span>"+
-                                "<span class=\"text-primary\" style='cursor:pointer'><i class=\"glyphicon glyphicon-download\" onclick='downloadAnsTable("+rowObject.id+")'></i></span>"+
-                                "<span style='visibility:hidden;'>&nbsp;</span></div>"
-                         
-                            }else {
-                                return '';
-                            } 
-                            
-                        },
-                     }, 
+                    
                      
                       
                     
@@ -602,9 +619,20 @@ function downloadComReport(examinee_id){
     	}
     });
 }
+
 function downloadAnsTable(examinee_id){
     downloadWait('正在生成个人原始答案！');
     $.post('/file/mgetindividualanstable', {'examinee_id':examinee_id}, function(data){
+        if (data.error){
+            downloadError(data.error);
+        }else{
+            downloadSuccess(data.success);
+        }
+    });
+}
+function downloadIndividualData(examinee_id){
+    downloadWait('正在生成个人因子分数数据表！');
+    $.post('/file/mgetindividualdata', {'examinee_id':examinee_id}, function(data){
         if (data.error){
             downloadError(data.error);
         }else{
