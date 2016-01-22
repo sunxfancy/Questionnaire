@@ -156,6 +156,8 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 	}
 	public function getChildrenOfIndexDesc($index_name, $children, $examinee_id){
 		$children_array = explode(',',$children);
+		//根据指标进行相关因子转换，转换的因子先进行排序，返回值。
+		
 		if ($index_name == 'zb_ldnl'){
 			//zb_ldnl 0,0,0,0,0
 			$result = $this->modelsManager->createBuilder()
