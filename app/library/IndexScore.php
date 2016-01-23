@@ -200,8 +200,67 @@ class IndexScore {
 				eval($code);
 				$index_ans[$value] = $score;
 				if(isset(self::$factors_list['rjgxtjsptmp'])){ unset(self::$factors_list['rjgxtjsptmp']);}
-			}
+			}	
 		}	
+		
+		//edit by brucew 对6个特殊指标得分进行重写
+		foreach ($index_ans as $key => $value ){
+			$flag = false;
+			switch($key) {
+				//人际关系调节水平--恃强性 E &敏感性 I
+				case "zb_rjgxtjsp": 
+					$old_code = "(1.5*(po + aff + nur) + def + E + X3 + N + inte + I + aba + suc +fx)/13.5";
+					$new_code ="(1.5*(po + aff + nur) + def + (10-E) + X3 + N + inte + (10-I) + aba + suc +fx)/13.5";
+					$flag = true;
+					break;
+				//社交水平--恃强性 E&怀疑性 L
+				case "zb_sjnl": 
+					$old_code = "(1.5*(sy + aff + def + end) + agg + I + F + epqae + A + L + E +sp)/14";
+					$new_code = "(1.5*(sy + aff + def + end) + agg + I + F + epqae + A + (10-L) + (10-E) +sp)/14";
+					$flag = true;
+					break;
+				//容纳性--恃强性E
+				case "zb_rnx": 
+					$old_code = "(1.5*(po + nur + aff) + ac + aba + def + X1 + A + L + E)/11.5";
+					$new_code = "(1.5*(po + nur + aff) + ac + aba + def + X1 + A + L + (10-E))/11.5";
+					$flag = true;
+					break;
+				//诚信度 -- 好印象gi
+				case "zb_cxd": 
+					$old_code = "(1.5*(con + epqal) + gi + wb + Q3 + re + cm)/8";
+					$new_code = "(1.5*(con + epqal) + (10-gi) + wb + Q3 + re + cm)/8";
+					$flag = true;
+					break;
+				//情绪控制水平 -- 兴奋性F &敏感性 I
+				case "zb_qxkzsp": 
+					$old_code = "(1.5*(Y1 + sc + C) + G + Q3 + F + I + po + N + epqan)/11.5";
+					$new_code = "(1.5*(Y1 + sc + C) + G + Q3 + (10-F) + (10-I) + po + N + epqan)/11.5";
+					$flag = true;
+					break;
+				//个人价值取向 -- 好印象gi
+				case "zb_grjzqx" : 
+					$old_code = "(2*(ach + Y2 + cs) + exh + dom + nur + aff + aba + def + gi + wb + Q3 + sc +po)/17";
+					$new_code = "(2*(ach + Y2 + cs) + exh + dom + nur + aff + aba + def + (10-gi) + wb + Q3 + sc +po)/17";
+					$flag = true;
+					break;
+				default: #do nothing;
+					break;
+			}
+			if ($flag) {
+				$new_code = preg_replace('/[a-zA-Z][a-zA-Z0-9]*/', 'self::$factors_list[\'$0\']', $new_code);
+				$matches = array();
+				preg_match_all('/self\:\:\$factors\_list\[\'[a-zA-Z][a-zA-Z0-9]*\'\]/', $new_code, $matches);
+				foreach($matches[0] as $skey=>$svalue){
+					if(!isset($svalue)){
+						eval("$svalue = 0;");
+					}
+				}
+				$new_code =  "\$score = sprintf(\"%.2f\",$new_code);";
+				eval($new_code);
+				$index_ans[$key] = $score;
+			}
+		}
+		//---end edit 
 		try{
 			$manager     = new TxManager();
 			$transaction = $manager->get();	

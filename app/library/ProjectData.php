@@ -82,78 +82,83 @@ class ProjectData extends \Phalcon\Mvc\Controller {
 	}
 	
 	public function getChildrenOfIndexDesc($index_name, $children, $examinee_id){
-		$children_array = explode(',',$children);
-		if ($index_name == 'zb_ldnl'){
-			//zb_ldnl 0,0,0,0,0
-			$result = $this->modelsManager->createBuilder()
-			->columns(array(
-					'Index.chs_name as chs_name',
-					'IndexAns.score as score',
-					'Index.name as name'
-			))
-			->from('Index')
-			->inwhere('Index.name', $children_array)
-			->join('IndexAns', 'IndexAns.index_id = Index.id AND IndexAns.examinee_id = '.$examinee_id)
-			->orderBy('IndexAns.score desc')
-			->getQuery()
-			->execute();
-			return $result->toArray();
-		}else if ($index_name == 'zb_gzzf'){
-			//zb_gzzf 1,0,1,1,1,1,1
-			//X4,zb_rjgxtjsp,chg,Y3,Q3,spmabc,aff
-			$children_1_array = array('X4','chg','Y3','Q3','spmabc','aff');
-			$result_1 = $this->modelsManager->createBuilder()
-			->columns(array(
-					'Factor.chs_name as chs_name',
-					'FactorAns.ans_score as score',
-					'Factor.name as name',
+		
+		$modifyFactors = new ModifyFactors();
+		return $modifyFactors->getChildrenOfIndexDescForIndividual($index_name, $children, $examinee_id);
+		
+		
+// 		$children_array = explode(',',$children);
+// 		if ($index_name == 'zb_ldnl'){
+// 			//zb_ldnl 0,0,0,0,0
+// 			$result = $this->modelsManager->createBuilder()
+// 			->columns(array(
+// 					'Index.chs_name as chs_name',
+// 					'IndexAns.score as score',
+// 					'Index.name as name'
+// 			))
+// 			->from('Index')
+// 			->inwhere('Index.name', $children_array)
+// 			->join('IndexAns', 'IndexAns.index_id = Index.id AND IndexAns.examinee_id = '.$examinee_id)
+// 			->orderBy('IndexAns.score desc')
+// 			->getQuery()
+// 			->execute();
+// 			return $result->toArray();
+// 		}else if ($index_name == 'zb_gzzf'){
+// 			//zb_gzzf 1,0,1,1,1,1,1
+// 			//X4,zb_rjgxtjsp,chg,Y3,Q3,spmabc,aff
+// 			$children_1_array = array('X4','chg','Y3','Q3','spmabc','aff');
+// 			$result_1 = $this->modelsManager->createBuilder()
+// 			->columns(array(
+// 					'Factor.chs_name as chs_name',
+// 					'FactorAns.ans_score as score',
+// 					'Factor.name as name',
 			
-			))
-			->from('Factor')
-			->inwhere('Factor.name', $children_1_array)
-			->join('FactorAns', 'Factor.id = FactorAns.factor_id AND FactorAns.examinee_id = '.$examinee_id)
-			->orderBy('FactorAns.ans_score desc')
-			->getQuery()
-			->execute();
+// 			))
+// 			->from('Factor')
+// 			->inwhere('Factor.name', $children_1_array)
+// 			->join('FactorAns', 'Factor.id = FactorAns.factor_id AND FactorAns.examinee_id = '.$examinee_id)
+// 			->orderBy('FactorAns.ans_score desc')
+// 			->getQuery()
+// 			->execute();
 	
-			$children_2_array = array('zb_rjgxtjsp');
-			$result_2 =    $this->modelsManager->createBuilder()
-			->columns(array(
-					'Index.chs_name as chs_name',
-					'IndexAns.score as score',
-					'Index.name as name'
-			))
-			->from('Index')
-			->inwhere('Index.name', $children_2_array)
-			->join('IndexAns', 'IndexAns.index_id = Index.id AND IndexAns.examinee_id = '.$examinee_id)
-			->orderBy('IndexAns.score desc')
-			->getQuery()
-			->execute();
+// 			$children_2_array = array('zb_rjgxtjsp');
+// 			$result_2 =    $this->modelsManager->createBuilder()
+// 			->columns(array(
+// 					'Index.chs_name as chs_name',
+// 					'IndexAns.score as score',
+// 					'Index.name as name'
+// 			))
+// 			->from('Index')
+// 			->inwhere('Index.name', $children_2_array)
+// 			->join('IndexAns', 'IndexAns.index_id = Index.id AND IndexAns.examinee_id = '.$examinee_id)
+// 			->orderBy('IndexAns.score desc')
+// 			->getQuery()
+// 			->execute();
 
-			$result = array_merge($result_1->toArray(), $result_2->toArray());	
-			$scores = array();
-			foreach ($result as $record) {
-				$scores[] = $record['score'];
-			}
-			array_multisort($scores, SORT_DESC, $result );
-			return $result;
-		}else {
-			// 1,.,.,.,.,1
-			$result = $this->modelsManager->createBuilder()
-			->columns(array(
-					'Factor.chs_name as chs_name',
-					'FactorAns.ans_score as score',
-					'Factor.name as name',
-			))
-			->from('Factor')
-			->inwhere('Factor.name', $children_array)
-			->join('FactorAns', 'Factor.id = FactorAns.factor_id AND FactorAns.examinee_id = '.$examinee_id)
-			->orderBy('FactorAns.ans_score desc')
-			->getQuery()
-			->execute();
-			return $result->toArray();
+// 			$result = array_merge($result_1->toArray(), $result_2->toArray());	
+// 			$scores = array();
+// 			foreach ($result as $record) {
+// 				$scores[] = $record['score'];
+// 			}
+// 			array_multisort($scores, SORT_DESC, $result );
+// 			return $result;
+// 		}else {
+// 			// 1,.,.,.,.,1
+// 			$result = $this->modelsManager->createBuilder()
+// 			->columns(array(
+// 					'Factor.chs_name as chs_name',
+// 					'FactorAns.ans_score as score',
+// 					'Factor.name as name',
+// 			))
+// 			->from('Factor')
+// 			->inwhere('Factor.name', $children_array)
+// 			->join('FactorAns', 'Factor.id = FactorAns.factor_id AND FactorAns.examinee_id = '.$examinee_id)
+// 			->orderBy('FactorAns.ans_score desc')
+// 			->getQuery()
+// 			->execute();
+// 			return $result->toArray();
 	
-		}
+// 		}
 	}
 	#辅助方法 --降维
 	private function foo($arr, &$rt) {
