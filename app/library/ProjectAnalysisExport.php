@@ -15,9 +15,17 @@ class ProjectAnalysisExport extends \Phalcon\Mvc\Controller{
         //获取第一题选项及下属人员id
         $data = new ProjectComData();
         $result = $data->getBaseLevels($project_id);
+        $project_examinee = Examinee::find(array(
+            'project_id =?1 and type = 0',
+            'bind'=>array(1=>$project_id)))->toArray();
+        $project_examinees = array();
+        foreach ($project_examinee as $key => $value) {
+            $project_examinees[] = $value['id'];
+        }
+       
 
         //统计
-        $objPHPExcel->createSheet(0);
+        /*$objPHPExcel->createSheet(0);
         $objPHPExcel->setActiveSheetIndex(0); //设置第一个内置表
         $objActSheet = $objPHPExcel->getActiveSheet(); // 获取当前活动的表
         $objActSheet->setTitle('统计');
@@ -31,7 +39,22 @@ class ProjectAnalysisExport extends \Phalcon\Mvc\Controller{
             $objActSheet->setTitle($key);
             $this->optionExport($value,$objActSheet);
             $i++;
-        }
+        }*/
+        //28项全
+        $i = 1;
+        // $objPHPExcel->createSheet(intval($i));   //添加一个表
+        // $objPHPExcel->setActiveSheetIndex(intval($i));   //设置第2个表为活动表，提供操作句柄
+        // $objActSheet = $objPHPExcel->getActiveSheet(); // 获取当前活动的表
+        // $objActSheet->setTitle('28综合（全）');
+        // $this->comprehensiveExport($result,$objActSheet);
+        // $i++;
+        //28项简
+        $objPHPExcel->createSheet(intval($i));   //添加一个表
+        $objPHPExcel->setActiveSheetIndex(intval($i));   //设置第2个表为活动表，提供操作句柄
+        $objActSheet = $objPHPExcel->getActiveSheet(); // 获取当前活动的表
+        $objActSheet->setTitle('28综合（简）');
+        $this->simpleComprehensiveExport($project_examinees,$result,$objActSheet);
+        $i++;
  		
         //导出
         $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
@@ -91,6 +114,65 @@ class ProjectAnalysisExport extends \Phalcon\Mvc\Controller{
         }
         // 计算平均值
         $this->joinAvg($objActSheet, $last_data, 'D', $last );
+    }
+    //28项全
+    public function comprehensiveExport($result,$objActSheet){
+        $i = 0; 
+        $start_column = 'D';
+        $last = 'D';
+        $last_data = null;
+        $score = new ModifyFactors();
+        foreach ($result as $key => $value) {
+            $data  = array();
+            $data  = $score->getindividualComprehensive($svalue);
+            if ($i === 0 ) {
+                $this->makeTable($data, $objActSheet); 
+            }
+            $last = $start_column;
+            $last_data =  $data;
+            $number = Examinee::findFirst($svalue)->number;
+            $this->joinTable( $data, $objActSheet, $start_column++, $number);  
+            $i ++ ;
+        }
+    }
+    //28项简
+    public function simpleComprehensiveExport($project_examinees,$result,$objActSheet){
+        $objActSheet->getDefaultColumnDimension()->setWidth(15);
+        $score = new ProjectComData();
+        $project_data = $score->IndexAvgOfExaminees($project_examinees);
+        
+        
+        $objActSheet->setCellValue('C1',"总体");
+        $startRow = 2; 
+        $i = 0;
+        $lastRow = 2;
+        foreach ($project_data as $key=>$value ) {
+            $objActSheet->getColumnDimension("A")->setWidth(10);
+            $objActSheet->setCellValue("A".$startRow,$i+1);
+            $this->position($objActSheet, "A".$startRow);
+            $objActSheet->getColumnDimension("B")->setWidth(20);
+            $objActSheet->setCellValue("B".$startRow,$value['chs_name']);
+            $this->position($objActSheet, "B".$startRow);
+            $objActSheet->setCellValue("C".$startRow,$value['score']);
+            $this->position($objActSheet, "C".$startRow);
+            $lastRow = $startRow;
+            $startRow++;
+            $i++;
+        }
+        $column = 'D';
+        foreach ($result as $key => $value) {
+            $data = $score->IndexAvgOfExaminees($value);
+            $this->joinScore($data,$objActSheet,$column++,$key);
+        }
+    }
+    public function joinScore($data,$objActSheet,$startColumn,$key){
+        $objActSheet->setCellValue($startColumn."1",$key);
+        $startRow = 2;
+        foreach ($data as $key => $value) {
+            $objActSheet->setCellValue($startColumn.$startRow,$value['score']);
+            $this->position($objActSheet, $startColumn.$startRow);
+            $startRow ++;
+        }
     }
 
     public function joinAvg($objActSheet,$data, $startColumn, $endColumn){

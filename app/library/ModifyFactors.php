@@ -467,7 +467,7 @@ class ModifyFactors extends \Phalcon\Mvc\Controller{
 	 * @param 被试id号 $examinees 集合 array 
 	 * @return 指标及其下属排序数组 array[下属中文名， 下属英文名， 下属最终分 ];
 	 */
-	public function getChildrenOfIndexDescForExaminess($index_name, $children, $examinees){
+	public function getChildrenOfIndexDescForExaminees($index_name, $children, $examinees){
 		$children_array = explode(',',$children);
 		if ($index_name == 'zb_ldnl'){
 			//zb_ldnl 0,0,0,0,0
