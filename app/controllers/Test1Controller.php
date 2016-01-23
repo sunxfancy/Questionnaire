@@ -7,13 +7,12 @@ class Test1Controller extends \Phalcon\Mvc\Controller {
 	}
 	
 	public function testAction(){
-		
-		  $scl_paper_id = Paper::findFirst( array( "name = ?1", 'bind' => array(1=>"SCL")))->id;
-		  $examinee =(object)array();
-		  $examinee->id = 1794;
-		  $scl_question_ans = QuestionAns::findFirst(array("paper_id = ?1 AND examinee_id = ?2", 'bind'=>array(1=>$scl_paper_id, 2=>$examinee->id)));
-		  echo '<pre>';
-		  print_r($scl_question_ans->score);
+			
+		  $index_name = "zb_rjgxtjsp";
+		  $children = "po,aff,nur,def,E,X3,N,inte,I,aba,suc,fx";
+		  $examinee_id = 1794;
+		  $test = new ModifyFactors;
+		  $test->getChildrenOfIndexDesc($index_name, $children, $examinee_id);
 		
 	}
 	

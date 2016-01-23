@@ -172,87 +172,90 @@ class ProjectComData extends \Phalcon\Mvc\Controller {
 	
 	#获取项目的指标下属因子的得分排序返回
 	public function getChildrenOfProjectIndexDesc($index_name, $children, $project_id){
-		$children_array = explode(',',$children);
-		if ($index_name == 'zb_ldnl'){
-			//zb_ldnl 0,0,0,0,0
-			$result = $this->modelsManager->createBuilder()
-			->columns(array(
-					'Index.chs_name as chs_name',
-					'AVG(IndexAns.score) as score',
-					'Index.id as id'
-			))
-			->from('Examinee')
-			->join('IndexAns', 'IndexAns.examinee_id = Examinee.id AND Examinee.type =0 AND Examinee.project_id = '.$project_id)
-			->join('Index', 'IndexAns.index_id = Index.id')
-			->inwhere('Index.name', $children_array)
-			->groupBy('Index.name')
-			->orderBy('AVG(IndexAns.score) desc')
-			->getQuery()
-			->execute();
-			return $result->toArray();
-		}
-		else if ($index_name == 'zb_gzzf'){
-			//zb_gzzf 1,0,1,1,1,1,1
-			//X4,zb_rjgxtjsp,chg,Y3,Q3,spmabc,aff
-			$children_1_array = array('X4','chg','Y3','Q3','spmabc','aff');
-			$result_1 = $this->modelsManager->createBuilder()
-			->columns(array(
-					'Factor.chs_name as chs_name',
-					'AVG(FactorAns.ans_score) as score',
-					'Factor.id as id'
-			))
-			->from('Examinee')
-			->join('FactorAns', 'FactorAns.examinee_id = Examinee.id AND Examinee.type =0 AND Examinee.project_id = '.$project_id)
-			->join('Factor', 'FactorAns.factor_id = Factor.id')
-			->inwhere('Factor.name', $children_1_array)
-			->groupBy('Factor.name')
-			->orderBy('AVG(FactorAns.ans_score) desc')
-			->getQuery()
-			->execute();
-			$children_2_array = array('zb_rjgxtjsp');
-			$result_2 = $this->modelsManager->createBuilder()
-			->columns(array(
-					'Index.chs_name as chs_name',
-					'AVG(IndexAns.score) as score',
-					'Index.id as id'
-			))
-			->from('Examinee')
-			->join('IndexAns', 'IndexAns.examinee_id = Examinee.id AND Examinee.type =0 AND Examinee.project_id = '.$project_id)
-			->join('Index', 'IndexAns.index_id = Index.id')
-			->inwhere('Index.name',$children_2_array )
-			->groupBy('Index.name')
-			->orderBy('AVG(IndexAns.score) desc')
-			->getQuery()
-			->execute();
-			
-			$result = array_merge($result_1->toArray(), $result_2->toArray());
-			$scores = array();
-			foreach ($result as $record) {
-				$scores[] = $record['score'];
-			}
-			array_multisort($scores, SORT_DESC, $result );
-			return $result;
-		}
-		else {
-			// 1,.,.,.,.,1
-			$result = $this->modelsManager->createBuilder()
-			->columns(array(
-					'Factor.chs_name as chs_name',
-					'AVG(FactorAns.ans_score) as score',
-					'Factor.id as id'
-					
-			))
-			->from('Examinee')
-			->join('FactorAns', 'FactorAns.examinee_id = Examinee.id AND Examinee.type =0 AND Examinee.project_id = '.$project_id)
-			->join('Factor', 'FactorAns.factor_id = Factor.id')
-			->inwhere('Factor.name', $children_array)
-			->groupBy('Factor.name')
-			->orderBy('AVG(FactorAns.ans_score) desc')
-			->getQuery()
-			->execute();
-			return $result->toArray();
 		
-		}
+		$modifyFactors = new ModifyFactors();
+		return $modifyFactors->getChildrenOfIndexDescForProject($index_name, $children, $project_id);
+// 		$children_array = explode(',',$children);
+// 		if ($index_name == 'zb_ldnl'){
+// 			//zb_ldnl 0,0,0,0,0
+// 			$result = $this->modelsManager->createBuilder()
+// 			->columns(array(
+// 					'Index.chs_name as chs_name',
+// 					'AVG(IndexAns.score) as score',
+// 					'Index.id as id'
+// 			))
+// 			->from('Examinee')
+// 			->join('IndexAns', 'IndexAns.examinee_id = Examinee.id AND Examinee.type =0 AND Examinee.project_id = '.$project_id)
+// 			->join('Index', 'IndexAns.index_id = Index.id')
+// 			->inwhere('Index.name', $children_array)
+// 			->groupBy('Index.name')
+// 			->orderBy('AVG(IndexAns.score) desc')
+// 			->getQuery()
+// 			->execute();
+// 			return $result->toArray();
+// 		}
+// 		else if ($index_name == 'zb_gzzf'){
+// 			//zb_gzzf 1,0,1,1,1,1,1
+// 			//X4,zb_rjgxtjsp,chg,Y3,Q3,spmabc,aff
+// 			$children_1_array = array('X4','chg','Y3','Q3','spmabc','aff');
+// 			$result_1 = $this->modelsManager->createBuilder()
+// 			->columns(array(
+// 					'Factor.chs_name as chs_name',
+// 					'AVG(FactorAns.ans_score) as score',
+// 					'Factor.id as id'
+// 			))
+// 			->from('Examinee')
+// 			->join('FactorAns', 'FactorAns.examinee_id = Examinee.id AND Examinee.type =0 AND Examinee.project_id = '.$project_id)
+// 			->join('Factor', 'FactorAns.factor_id = Factor.id')
+// 			->inwhere('Factor.name', $children_1_array)
+// 			->groupBy('Factor.name')
+// 			->orderBy('AVG(FactorAns.ans_score) desc')
+// 			->getQuery()
+// 			->execute();
+// 			$children_2_array = array('zb_rjgxtjsp');
+// 			$result_2 = $this->modelsManager->createBuilder()
+// 			->columns(array(
+// 					'Index.chs_name as chs_name',
+// 					'AVG(IndexAns.score) as score',
+// 					'Index.id as id'
+// 			))
+// 			->from('Examinee')
+// 			->join('IndexAns', 'IndexAns.examinee_id = Examinee.id AND Examinee.type =0 AND Examinee.project_id = '.$project_id)
+// 			->join('Index', 'IndexAns.index_id = Index.id')
+// 			->inwhere('Index.name',$children_2_array )
+// 			->groupBy('Index.name')
+// 			->orderBy('AVG(IndexAns.score) desc')
+// 			->getQuery()
+// 			->execute();
+			
+// 			$result = array_merge($result_1->toArray(), $result_2->toArray());
+// 			$scores = array();
+// 			foreach ($result as $record) {
+// 				$scores[] = $record['score'];
+// 			}
+// 			array_multisort($scores, SORT_DESC, $result );
+// 			return $result;
+// 		}
+// 		else {
+// 			// 1,.,.,.,.,1
+// 			$result = $this->modelsManager->createBuilder()
+// 			->columns(array(
+// 					'Factor.chs_name as chs_name',
+// 					'AVG(FactorAns.ans_score) as score',
+// 					'Factor.id as id'
+					
+// 			))
+// 			->from('Examinee')
+// 			->join('FactorAns', 'FactorAns.examinee_id = Examinee.id AND Examinee.type =0 AND Examinee.project_id = '.$project_id)
+// 			->join('Factor', 'FactorAns.factor_id = Factor.id')
+// 			->inwhere('Factor.name', $children_array)
+// 			->groupBy('Factor.name')
+// 			->orderBy('AVG(FactorAns.ans_score) desc')
+// 			->getQuery()
+// 			->execute();
+// 			return $result->toArray();
+		
+// 		}
 	}
 	
 	##通过因子找到项目中各层群人数的因子得分情况
