@@ -190,7 +190,6 @@ class ProjectComData extends \Phalcon\Mvc\Controller {
 	
 	#获取项目的指标下属因子的得分排序返回
 	public function getChildrenOfProjectIndexDesc($index_name, $children, $project_id){
-		
 		$modifyFactors = new ModifyFactors();
 		return $modifyFactors->getChildrenOfIndexDescForProject($index_name, $children, $project_id);
 // 		$children_array = explode(',',$children);
@@ -536,19 +535,5 @@ class ProjectComData extends \Phalcon\Mvc\Controller {
 		}
 		return $rt;
 	}
-
-
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }
