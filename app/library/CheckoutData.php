@@ -155,84 +155,86 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 		return $rt;
 	}
 	//edit by brucew 8+5 将因子score替换为 std_score 
-	public function getChildrenOfIndexDesc($index_name, $children, $examinee_id){
-		$children_array = explode(',',$children);
-		//根据指标进行相关因子转换，转换的因子先进行排序，返回值。
+	public function getChildrenOfIndexDesc($index_name, $children, $examinee_id){	
+		$modifyFactors = new ModifyFactors();
+		return $modifyFactors->getChildrenOfIndexDescFor85( $index_name,  $children,  $examinee_id );
+// 		$children_array = explode(',',$children);
+// 		//根据指标进行相关因子转换，转换的因子先进行排序，返回值。
 		
-		if ($index_name == 'zb_ldnl'){
-			//zb_ldnl 0,0,0,0,0
-			$result = $this->modelsManager->createBuilder()
-			->columns(array(
-					'Index.chs_name as chs_name',
-					'IndexAns.score as score',
-					'Index.name as name'
-			))
-			->from('Index')
-			->inwhere('Index.name', $children_array)
-			->join('IndexAns', 'IndexAns.index_id = Index.id AND IndexAns.examinee_id = '.$examinee_id)
-			->orderBy('IndexAns.score desc')
-			->getQuery()
-			->execute();
-			return $result->toArray();
-		}else if ($index_name == 'zb_gzzf'){
-			//zb_gzzf 1,0,1,1,1,1,1
-			//X4,zb_rjgxtjsp,chg,Y3,Q3,spmabc,aff
-			$children_1_array = array('X4','chg','Y3','Q3','spmabc','aff');
-			$result_1 = $this->modelsManager->createBuilder()
-			->columns(array(
-					'Factor.chs_name as chs_name',
-					'FactorAns.ans_score as score',
-					'Factor.name as name',
-					'FactorAns.std_score as raw_score'
+// 		if ($index_name == 'zb_ldnl'){
+// 			//zb_ldnl 0,0,0,0,0
+// 			$result = $this->modelsManager->createBuilder()
+// 			->columns(array(
+// 					'Index.chs_name as chs_name',
+// 					'IndexAns.score as score',
+// 					'Index.name as name'
+// 			))
+// 			->from('Index')
+// 			->inwhere('Index.name', $children_array)
+// 			->join('IndexAns', 'IndexAns.index_id = Index.id AND IndexAns.examinee_id = '.$examinee_id)
+// 			->orderBy('IndexAns.score desc')
+// 			->getQuery()
+// 			->execute();
+// 			return $result->toArray();
+// 		}else if ($index_name == 'zb_gzzf'){
+// 			//zb_gzzf 1,0,1,1,1,1,1
+// 			//X4,zb_rjgxtjsp,chg,Y3,Q3,spmabc,aff
+// 			$children_1_array = array('X4','chg','Y3','Q3','spmabc','aff');
+// 			$result_1 = $this->modelsManager->createBuilder()
+// 			->columns(array(
+// 					'Factor.chs_name as chs_name',
+// 					'FactorAns.ans_score as score',
+// 					'Factor.name as name',
+// 					'FactorAns.std_score as raw_score'
 					
-			))
-			->from('Factor')
-			->inwhere('Factor.name', $children_1_array)
-			->join('FactorAns', 'Factor.id = FactorAns.factor_id AND FactorAns.examinee_id = '.$examinee_id)
-			->orderBy('FactorAns.ans_score desc')
-			->getQuery()
-			->execute();
+// 			))
+// 			->from('Factor')
+// 			->inwhere('Factor.name', $children_1_array)
+// 			->join('FactorAns', 'Factor.id = FactorAns.factor_id AND FactorAns.examinee_id = '.$examinee_id)
+// 			->orderBy('FactorAns.ans_score desc')
+// 			->getQuery()
+// 			->execute();
 				
-			$children_2_array = array('zb_rjgxtjsp');
-			$result_2 =    $this->modelsManager->createBuilder()
-			->columns(array(
-					'Index.chs_name as chs_name',
-					'IndexAns.score as score',
-					'Index.name as name'
-			))
-			->from('Index')
-			->inwhere('Index.name', $children_2_array)
-			->join('IndexAns', 'IndexAns.index_id = Index.id AND IndexAns.examinee_id = '.$examinee_id)
-			->orderBy('IndexAns.score desc')
-			->getQuery()
-			->execute();
-			//echo '<pre>';
-			$result = array_merge($result_1->toArray(), $result_2->toArray());
+// 			$children_2_array = array('zb_rjgxtjsp');
+// 			$result_2 =    $this->modelsManager->createBuilder()
+// 			->columns(array(
+// 					'Index.chs_name as chs_name',
+// 					'IndexAns.score as score',
+// 					'Index.name as name'
+// 			))
+// 			->from('Index')
+// 			->inwhere('Index.name', $children_2_array)
+// 			->join('IndexAns', 'IndexAns.index_id = Index.id AND IndexAns.examinee_id = '.$examinee_id)
+// 			->orderBy('IndexAns.score desc')
+// 			->getQuery()
+// 			->execute();
+// 			//echo '<pre>';
+// 			$result = array_merge($result_1->toArray(), $result_2->toArray());
 			
-			$scores = array();
-			foreach ($result as $record) {
-				$scores[] = $record['score'];
-			}
-			array_multisort($scores, SORT_DESC, $result );
-			return $result;
-		}else {
-			// 1,.,.,.,.,1
-			$result = $this->modelsManager->createBuilder()
-			->columns(array(
-					'Factor.chs_name as chs_name',
-					'FactorAns.ans_score as score',
-					'Factor.name as name',
-					'FactorAns.std_score as raw_score'
-			))
-			->from('Factor')
-			->inwhere('Factor.name', $children_array)
-			->join('FactorAns', 'Factor.id = FactorAns.factor_id AND FactorAns.examinee_id = '.$examinee_id)
-			->orderBy('FactorAns.ans_score desc')
-			->getQuery()
-			->execute();
-			return $result->toArray();
+// 			$scores = array();
+// 			foreach ($result as $record) {
+// 				$scores[] = $record['score'];
+// 			}
+// 			array_multisort($scores, SORT_DESC, $result );
+// 			return $result;
+// 		}else {
+// 			// 1,.,.,.,.,1
+// 			$result = $this->modelsManager->createBuilder()
+// 			->columns(array(
+// 					'Factor.chs_name as chs_name',
+// 					'FactorAns.ans_score as score',
+// 					'Factor.name as name',
+// 					'FactorAns.std_score as raw_score'
+// 			))
+// 			->from('Factor')
+// 			->inwhere('Factor.name', $children_array)
+// 			->join('FactorAns', 'Factor.id = FactorAns.factor_id AND FactorAns.examinee_id = '.$examinee_id)
+// 			->orderBy('FactorAns.ans_score desc')
+// 			->getQuery()
+// 			->execute();
+// 			return $result->toArray();
 	
-		}
+// 		}
 	}
 	
 	#10 结构数据
