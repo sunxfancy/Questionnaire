@@ -100,6 +100,40 @@ class FileController extends \Phalcon\Mvc\Controller {
 		}
 		$this->dataReturn(array("success"=>"点击下载 <a href='".$anstable."'>原始答案</a>"));
 	}
+
+	#生成个人的结果分析表analysis_eva....
+	public function mgetindividualanalysisAction(){
+		$this->view->disable();
+		$manager=$this->session->get("Manager");
+		$examinee_id = $this->request->getPost('examinee_id', 'int');
+		if (empty($examinee_id)){
+			$this->dataReturn(array('error'=>'请求参数不完整!'));
+			return ;
+		}
+
+		$manager = $this->session->get('Manager');
+		if(empty($manager)){
+			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!'));
+			return ;
+		}
+		$examinee = Examinee::findFirst($examinee_id);
+		if (!isset($examinee->id) ){
+			$this->dataReturn(array('error'=>'无效的用户编号'));
+			return ;
+		}
+		if ($examinee->state < 4 ){
+			$this->dataReturn(array('error'=>'用户测评流程还未完成！'));
+			return ;
+		}
+		//对于原始答案，目录结构中不进行保留，因此，不必进行存在性和修改情况的判断
+		$excelexport=new ExcelExport();
+		$anstable=$excelexport->personalanalysisExport($examinee,$manager);
+		if($anstable==false){
+			$this->dataReturn(array('error'=>'用户测评流程还未完成！'));
+			return ;
+		}
+		$this->dataReturn(array("success"=>"点击下载 <a href='".$anstable."'>个人分析表</a>"));
+	}
 	#个人因子分数导出
 	public function mgetindividualdataAction(){
 		$this->view->disable();
@@ -1096,7 +1130,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 			}
 		}
 	}
-	
+
 	#生成被试人员的十项报表----可重复生成
 	public function getpersonalresultsbyprojectAction() {
 		set_time_limit(0);
@@ -1300,7 +1334,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 			return ;
 		}
 	}
-	
+
 	
 	#生成被试人员需求量表结果页面 ---- 可重复生成
 	public function getinqueryansAction() {
@@ -1374,7 +1408,6 @@ class FileController extends \Phalcon\Mvc\Controller {
 			}
  		//}
 	}
-	
 	public function testAction(){
 		try{
 			WordChart::scatter_horiz_Graph_epqa_1();
