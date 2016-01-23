@@ -396,7 +396,7 @@ class ModifyFactors extends \Phalcon\Mvc\Controller{
 				//人际关系调节水平--恃强性 E &敏感性 I
 				case "zb_rjgxtjsp":
 					foreach ($result as &$value1){
-						if ($value1['name'] == 'E' || $value1['name'] == 'I'){
+						if ($value1['chs_name'] == '恃强性' || $value1['chs_name'] == '敏感性'){
 							$value1['score'] = 10 - $value1['score'];
 						}
 						$scores[] = $value1['score'];
@@ -405,7 +405,7 @@ class ModifyFactors extends \Phalcon\Mvc\Controller{
 					//社交水平--恃强性 E&怀疑性 L
 				case "zb_sjnl":
 					foreach ($result as &$value2){
-						if ($value2['name'] == 'E' || $value2['name'] == 'L'){
+						if ($value2['chs_name'] == '恃强性' || $value2['chs_name'] == '怀疑性'){
 							$value2['score'] = 10 - $value2['score'];
 						}
 						$scores[] = $value2['score'];
@@ -414,7 +414,7 @@ class ModifyFactors extends \Phalcon\Mvc\Controller{
 					//容纳性--恃强性E
 				case "zb_rnx":
 					foreach ($result as &$value3){
-						if ($value3['name'] == 'E'){
+						if ($value3['chs_name'] == '恃强性'){
 							$value3['score'] = 10 - $value3['score'];
 						}
 						$scores[] = $value3['score'];
@@ -423,7 +423,7 @@ class ModifyFactors extends \Phalcon\Mvc\Controller{
 					//诚信度 -- 好印象gi
 				case "zb_cxd":
 					foreach ($result as &$value4){
-						if ($value4['name'] == 'gi'){
+						if ($value4['chs_name'] == '好印象'){
 							$value4['score'] = 10 - $value4['score'];
 						}
 						$scores[] = $value4['score'];
@@ -432,7 +432,7 @@ class ModifyFactors extends \Phalcon\Mvc\Controller{
 					//情绪控制水平 -- 兴奋性F &敏感性 I
 				case "zb_qxkzsp":
 					foreach ($result as &$value5){
-						if ($value5['name'] == 'F' || $value5['name'] == 'I'){
+						if ($value5['chs_name'] == '兴奋性' || $value5['chs_name'] == '敏感性'){
 							$value5['score'] = 10 - $value5['score'];
 						}
 						$scores[] = $value5['score'];
@@ -441,7 +441,7 @@ class ModifyFactors extends \Phalcon\Mvc\Controller{
 					//个人价值取向 -- 好印象gi
 				case "zb_grjzqx" :
 					foreach ($result as &$value6){
-						if ($value6['name'] == 'gi'){
+						if ($value6['chs_name'] == '好印象'){
 							$value6['score'] = 10 - $value6['score'];
 						}
 						$scores[] = $value6['score'];
@@ -467,7 +467,7 @@ class ModifyFactors extends \Phalcon\Mvc\Controller{
 	 * @param 被试id号 $examinees 集合 array 
 	 * @return 指标及其下属排序数组 array[下属中文名， 下属英文名， 下属最终分 ];
 	 */
-	public function getChildrenOfIndexDescForExaminess($index_name, $children, $examinees){
+	public function getChildrenOfIndexDescForExaminees($index_name, $children, $examinees){
 		$children_array = explode(',',$children);
 		if ($index_name == 'zb_ldnl'){
 			//zb_ldnl 0,0,0,0,0
@@ -479,7 +479,7 @@ class ModifyFactors extends \Phalcon\Mvc\Controller{
 			))
 			->from('Examinee')
 			->join('IndexAns', 'IndexAns.examinee_id = Examinee.id')
-			->inwhere('Examinee.id', $examiness)
+			->inwhere("IndexAns.examinee_id" , $examinees)
 			->join('Index', 'IndexAns.index_id = Index.id')
 			->inwhere('Index.name', $children_array)
 			->groupBy('Index.name')
@@ -500,7 +500,7 @@ class ModifyFactors extends \Phalcon\Mvc\Controller{
 			))
 			->from('Examinee')
 			->join('FactorAns', 'FactorAns.examinee_id = Examinee.id')
-			->inwhere('Examinee.id', $examiness)
+			->inwhere("FactorAns.examinee_id" , $examinees)
 			->join('Factor', 'FactorAns.factor_id = Factor.id')
 			->inwhere('Factor.name', $children_1_array)
 			->groupBy('Factor.name')
@@ -516,7 +516,7 @@ class ModifyFactors extends \Phalcon\Mvc\Controller{
 			))
 			->from('Examinee')
 			->join('IndexAns', 'IndexAns.examinee_id = Examinee.id')
-			->inwhere('Examinee.id', $examiness)
+			->inwhere("IndexAns.examinee_id" , $examinees)
 			->join('Index', 'IndexAns.index_id = Index.id')
 			->inwhere('Index.name',$children_2_array )
 			->groupBy('Index.name')
@@ -543,7 +543,7 @@ class ModifyFactors extends \Phalcon\Mvc\Controller{
 			))
 			->from('Examinee')
 			->join('FactorAns', 'FactorAns.examinee_id = Examinee.id')
-			->inwhere('Examinee.id', $examiness)
+			->inwhere("FactorAns.examinee_id" , $examinees)
 			->join('Factor', 'FactorAns.factor_id = Factor.id')
 			->inwhere('Factor.name', $children_array)
 			->groupBy('Factor.name')
@@ -553,11 +553,11 @@ class ModifyFactors extends \Phalcon\Mvc\Controller{
 			->toArray();
 			//edit by brucew 2016-01-23 添加指标-因子特例计算
 			$scores = array();
-			switch($index_name){
+					switch($index_name){
 				//人际关系调节水平--恃强性 E &敏感性 I
 				case "zb_rjgxtjsp":
 					foreach ($result as &$value1){
-						if ($value1['name'] == 'E' || $value1['name'] == 'I'){
+						if ($value1['chs_name'] == '恃强性' || $value1['chs_name'] == '敏感性'){
 							$value1['score'] = 10 - $value1['score'];
 						}
 						$scores[] = $value1['score'];
@@ -566,7 +566,7 @@ class ModifyFactors extends \Phalcon\Mvc\Controller{
 					//社交水平--恃强性 E&怀疑性 L
 				case "zb_sjnl":
 					foreach ($result as &$value2){
-						if ($value2['name'] == 'E' || $value2['name'] == 'L'){
+						if ($value2['chs_name'] == '恃强性' || $value2['chs_name'] == '怀疑性'){
 							$value2['score'] = 10 - $value2['score'];
 						}
 						$scores[] = $value2['score'];
@@ -575,7 +575,7 @@ class ModifyFactors extends \Phalcon\Mvc\Controller{
 					//容纳性--恃强性E
 				case "zb_rnx":
 					foreach ($result as &$value3){
-						if ($value3['name'] == 'E'){
+						if ($value3['chs_name'] == '恃强性'){
 							$value3['score'] = 10 - $value3['score'];
 						}
 						$scores[] = $value3['score'];
@@ -584,7 +584,7 @@ class ModifyFactors extends \Phalcon\Mvc\Controller{
 					//诚信度 -- 好印象gi
 				case "zb_cxd":
 					foreach ($result as &$value4){
-						if ($value4['name'] == 'gi'){
+						if ($value4['chs_name'] == '好印象'){
 							$value4['score'] = 10 - $value4['score'];
 						}
 						$scores[] = $value4['score'];
@@ -593,7 +593,7 @@ class ModifyFactors extends \Phalcon\Mvc\Controller{
 					//情绪控制水平 -- 兴奋性F &敏感性 I
 				case "zb_qxkzsp":
 					foreach ($result as &$value5){
-						if ($value5['name'] == 'F' || $value5['name'] == 'I'){
+						if ($value5['chs_name'] == '兴奋性' || $value5['chs_name'] == '敏感性'){
 							$value5['score'] = 10 - $value5['score'];
 						}
 						$scores[] = $value5['score'];
@@ -602,7 +602,7 @@ class ModifyFactors extends \Phalcon\Mvc\Controller{
 					//个人价值取向 -- 好印象gi
 				case "zb_grjzqx" :
 					foreach ($result as &$value6){
-						if ($value6['name'] == 'gi'){
+						if ($value6['chs_name'] == '好印象'){
 							$value6['score'] = 10 - $value6['score'];
 						}
 						$scores[] = $value6['score'];
