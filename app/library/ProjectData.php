@@ -81,6 +81,93 @@ class ProjectData extends \Phalcon\Mvc\Controller {
 		return $module_array_score;
 	}
 	
+	/**
+	 * @usage 28项全     不同层被试人员的平均成绩
+	 */
+	public function getlevelsComprehensive($examinee_ids){
+		$project_id = Examinee::findFirst($examinee_ids[0])->project_id;
+		$project_detail = 	ProjectDetail::findFirst(
+		array (
+		"project_id = :project_id:",
+		'bind' => array ('project_id' => $project_id),
+		)
+		);
+		if(empty($project_detail) || empty($project_detail->module_names)){
+			throw new Exception('项目配置信息有误');
+		}
+		$exist_module_array = explode(',',$project_detail->module_names);
+		$module_array = array("心理健康"=>'mk_xljk',"素质结构"=>'mk_szjg',"智体结构"=>'mk_ztjg',"能力结构"=>'mk_nljg');
+		$module_array_score = array();
+		foreach($module_array as $key => $value){
+			if (!in_array($value, $exist_module_array)){
+				continue;
+			}
+			$module_record = Module::findFirst(
+				array(
+						"name = ?1",
+						'bind' => array(1=>$value),
+				)
+			);
+			$children = $module_record->children;
+			$children_array = explode(',', $children);
+			$result_1 = $this->modelsManager->createBuilder()
+			->columns(array(
+					'Index.chs_name as chs_name',
+					'Index.name as name',
+					'AVG(IndexAns.score) as score',
+					'Index.children as children'
+			))
+			->from('Index')
+			->inwhere('Index.name', $children_array)
+			->join('IndexAns', 'IndexAns.index_id = Index.id')
+			->inwhere("IndexAns.examinee_id", $examinee_ids)
+			->orderBy('AVG(IndexAns.score) desc')
+			->groupBy('Index.name')
+			->getQuery()
+			->execute()
+			->toArray();
+			//进行规范排序
+			$module_array_score[$key] = array();
+			foreach($result_1 as &$result_1_record){
+				$skey = array_search($result_1_record['name'], $children_array);
+				$module_array_score[$key][$skey] = $result_1_record;
+			}
+			//对指标层进行遍历查找中间层,以及children
+			
+			$modifyData = new ModifyFactors();
+			foreach($module_array_score[$key] as &$index_info ) {
+				$middle = array();
+				$middle = MiddleLayer::find(array('father_chs_name=?1', 'bind'=>array(1=>$index_info['chs_name'])))->toArray();
+				$children = array();
+				$index_info['count'] = count(explode(',',$index_info['children']));
+				$children = $modifyData->getChildrenOfIndexDescForExaminees($index_info['name'], $index_info['children'], $examinee_ids);
+				//$children = $this->getChildrenOfIndexDesc($index_info['name'], $index_info['children'], $examinee_id);
+				$tmp = array();
+				$children = $this->foo($children, $tmp);
+				$tmp_detail = array();
+				foreach ($middle as $middle_info ){
+					$outter_tmp = array();
+					$middle_children = explode(',',$middle_info['children']);
+					$outter_tmp_score = 0;
+					foreach ($middle_children as $children_name){
+						$skey = array_search($children_name, $children);
+						$inner_tmp = array();
+						$inner_tmp['name'] = $children_name;
+						$inner_tmp['score'] = $children[$skey+1];
+						$outter_tmp_score += $inner_tmp['score'];
+						$tmp_detail[] = $inner_tmp;
+					}
+					$outter_tmp['name'] = null;
+					$outter_tmp['score'] = $outter_tmp_score;
+					$tmp_detail[] = $outter_tmp;
+				}
+				$index_info['detail'] = $tmp_detail;
+				
+			}
+		}
+		return $module_array_score;
+	}
+	
 	public function getChildrenOfIndexDesc($index_name, $children, $examinee_id){
 		
 		$modifyFactors = new ModifyFactors();
