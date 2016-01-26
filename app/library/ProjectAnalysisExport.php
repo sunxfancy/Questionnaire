@@ -22,10 +22,22 @@ class ProjectAnalysisExport extends \Phalcon\Mvc\Controller{
         foreach ($project_examinee as $key => $value) {
             $project_examinees[] = $value['id'];
         }
+        $project_data = $data->IndexAvgOfExamineesDesc($project_examinees);
+        $index_count = count($project_data);
+        $rtn_array = array();
+        if ($index_count < 5 ){
+            $rtn_array['strong'] = array_slice($project_data, 0, $index_count);
+            $rtn_array['weak']   = array();
+        }else if( $index_count < 8 ){
+            $rtn_array['strong'] = array_slice($project_data, 0, 5);
+            $rtn_array['weak']   = array_reverse(array_slice($project_data, 5, $index_count-8));
+        }else {
+            $rtn_array['strong'] = array_slice($project_data, 0, 5);
+            $rtn_array['weak']   = array_reverse(array_slice($project_data, $index_count-4, 3));
+        }
        
-
         //统计
-        /*$objPHPExcel->createSheet(0);
+        $objPHPExcel->createSheet(0);
         $objPHPExcel->setActiveSheetIndex(0); //设置第一个内置表
         $objActSheet = $objPHPExcel->getActiveSheet(); // 获取当前活动的表
         $objActSheet->setTitle('统计');
@@ -39,21 +51,41 @@ class ProjectAnalysisExport extends \Phalcon\Mvc\Controller{
             $objActSheet->setTitle($key);
             $this->optionExport($value,$objActSheet);
             $i++;
-        }*/
-        //28项全
-        $i = 1;
-        // $objPHPExcel->createSheet(intval($i));   //添加一个表
-        // $objPHPExcel->setActiveSheetIndex(intval($i));   //设置第2个表为活动表，提供操作句柄
-        // $objActSheet = $objPHPExcel->getActiveSheet(); // 获取当前活动的表
-        // $objActSheet->setTitle('28综合（全）');
-        // $this->comprehensiveExport($result,$objActSheet);
-        // $i++;
+        }
+        // 28项全
+        $objPHPExcel->createSheet(intval($i));   //添加一个表
+        $objPHPExcel->setActiveSheetIndex(intval($i));   //设置第2个表为活动表，提供操作句柄
+        $objActSheet = $objPHPExcel->getActiveSheet(); // 获取当前活动的表
+        $objActSheet->setTitle('28综合（全）');
+        $this->comprehensiveExport($project_examinees,$result,$objActSheet);
+        $i++;
         //28项简
         $objPHPExcel->createSheet(intval($i));   //添加一个表
         $objPHPExcel->setActiveSheetIndex(intval($i));   //设置第2个表为活动表，提供操作句柄
         $objActSheet = $objPHPExcel->getActiveSheet(); // 获取当前活动的表
         $objActSheet->setTitle('28综合（简）');
         $this->simpleComprehensiveExport($project_examinees,$result,$objActSheet);
+        $i++;
+        //五优
+        $objPHPExcel->createSheet(intval($i));   //添加一个表
+        $objPHPExcel->setActiveSheetIndex(intval($i));   //设置第2个表为活动表，提供操作句柄
+        $objActSheet = $objPHPExcel->getActiveSheet(); // 获取当前活动的表
+        $objActSheet->setTitle('优5分析');
+        $this->fiveAdvantageExport($project_examinees,$rtn_array['strong'],$result,$objActSheet);
+        $i++;
+        //三劣
+        $objPHPExcel->createSheet(intval($i));   //添加一个表
+        $objPHPExcel->setActiveSheetIndex(intval($i));   //设置第2个表为活动表，提供操作句柄
+        $objActSheet = $objPHPExcel->getActiveSheet(); // 获取当前活动的表
+        $objActSheet->setTitle('劣3分析');
+        $this->threeDisadvantageExport($project_examinees,$rtn_array['weak'],$result,$objActSheet);
+        $i++;
+        //综合素质分析
+        $objPHPExcel->createSheet(intval($i));   //添加一个表
+        $objPHPExcel->setActiveSheetIndex(intval($i));   //设置第2个表为活动表，提供操作句柄
+        $objActSheet = $objPHPExcel->getActiveSheet(); // 获取当前活动的表
+        $objActSheet->setTitle('制作综合素质分析');
+        // $this->analysisExport($project_id,$result,$objActSheet);
         $i++;
  		
         //导出
@@ -116,22 +148,25 @@ class ProjectAnalysisExport extends \Phalcon\Mvc\Controller{
         $this->joinAvg($objActSheet, $last_data, 'D', $last );
     }
     //28项全
-    public function comprehensiveExport($result,$objActSheet){
+    public function comprehensiveExport($project_examinees,$result,$objActSheet){
+        $project_data = new ProjectData();
+        $com_data = $project_data->getlevelsComprehensive($project_examinees);
+        $this->joinTable( $com_data, $objActSheet, 'C', '总体');
+
         $i = 0; 
         $start_column = 'D';
         $last = 'D';
         $last_data = null;
-        $score = new ModifyFactors();
         foreach ($result as $key => $value) {
             $data  = array();
-            $data  = $score->getindividualComprehensive($svalue);
+            $data  = $project_data->getlevelsComprehensive($value);
             if ($i === 0 ) {
                 $this->makeTable($data, $objActSheet); 
             }
             $last = $start_column;
             $last_data =  $data;
-            $number = Examinee::findFirst($svalue)->number;
-            $this->joinTable( $data, $objActSheet, $start_column++, $number);  
+            $number = Examinee::findFirst($value)->number;
+            $this->joinTable( $data, $objActSheet, $start_column++, $key);  
             $i ++ ;
         }
     }
@@ -140,7 +175,6 @@ class ProjectAnalysisExport extends \Phalcon\Mvc\Controller{
         $objActSheet->getDefaultColumnDimension()->setWidth(15);
         $score = new ProjectComData();
         $project_data = $score->IndexAvgOfExaminees($project_examinees);
-        
         
         $objActSheet->setCellValue('C1',"总体");
         $startRow = 2; 
@@ -163,6 +197,111 @@ class ProjectAnalysisExport extends \Phalcon\Mvc\Controller{
         foreach ($result as $key => $value) {
             $data = $score->IndexAvgOfExaminees($value);
             $this->joinScore($data,$objActSheet,$column++,$key);
+        }
+    }
+    //五优
+    public function fiveAdvantageExport($project_examinees,$advantage,$result,$objActSheet){
+        $objActSheet->getDefaultColumnDimension()->setWidth(15);
+        $children_score = new ModifyFactors();
+
+        $startRow = 2;
+        foreach ($advantage as $key => $value) {
+            $tempRow1 = $startRow;
+            $data = $children_score->getChildrenOfIndexDescForExaminees($value['name'], $value['children'], $project_examinees);
+            $objActSheet->setCellValue('A'.$tempRow1,$value['chs_name']);
+            $objActSheet->setCellValue('B'.$tempRow1,'总体');
+            $tempRow1 ++;
+            foreach ($data as $sskey => $ssvalue) {
+                $objActSheet->setCellValue('A'.$tempRow1,$ssvalue['chs_name']);
+                $objActSheet->setCellValue('B'.$tempRow1,$ssvalue['score']);
+                $tempRow1 ++;
+            }
+
+            $startColumn = 'C';
+            foreach ($result as $skey => $svalue) {
+                $tempRow = $startRow;
+                $data = $children_score->getChildrenOfIndexDescForExaminees($value['name'], $value['children'], $svalue);
+                $objActSheet->setCellValue($startColumn.($tempRow++),$skey);
+                foreach ($data as $sskey => $ssvalue) {
+                    $objActSheet->setCellValue($startColumn.$tempRow,$ssvalue['score']);
+                    $tempRow ++;
+                }
+                $startColumn ++;
+            }
+            $startRow = $tempRow + 1; 
+        }
+    }
+    //三劣
+    public function threeDisadvantageExport($project_examinees,$disadvantage,$result,$objActSheet){
+        $objActSheet->getDefaultColumnDimension()->setWidth(15);
+        $children_score = new ModifyFactors();
+
+        $startRow = 2;
+        foreach ($disadvantage as $key => $value) {
+            $tempRow1 = $startRow;
+            $data = $children_score->getChildrenOfIndexDescForExaminees($value['name'], $value['children'], $project_examinees);
+            $objActSheet->setCellValue('A'.$tempRow1,$value['chs_name']);
+            $objActSheet->setCellValue('B'.$tempRow1,'总体');
+            $tempRow1 ++;
+            foreach ($data as $sskey => $ssvalue) {
+                $objActSheet->setCellValue('A'.$tempRow1,$ssvalue['chs_name']);
+                $objActSheet->setCellValue('B'.$tempRow1,$ssvalue['score']);
+                $tempRow1 ++;
+            }
+            
+            $startColumn = 'C';
+            foreach ($result as $skey => $svalue) {
+                $tempRow = $startRow;
+                $data = $children_score->getChildrenOfIndexDescForExaminees($value['name'], $value['children'], $svalue);
+                $objActSheet->setCellValue($startColumn.($tempRow++),$skey);
+                foreach ($data as $sskey => $ssvalue) {
+                    $objActSheet->setCellValue($startColumn.$tempRow,$ssvalue['score']);
+                    $tempRow ++;
+                }
+                $startColumn ++;
+            }
+            $startRow = $tempRow + 1; 
+        }
+    }
+    //制作综合素质分析
+    public function analysisExport($project_id,$result,$objActSheet){
+        $objActSheet->getDefaultColumnDimension()->setWidth(15);
+        $examinee = Examinee::find(array(
+            'project_id =?1',
+            'bind'=>array(1=>$project_id)))->toArray();
+        $examinees = array();
+        foreach ($examinee as $key=>$value) {
+            $examinees[] = $value['id'];
+        }
+        $data = new CheckoutData();
+        $result = $data->getIndexScoreOfModule($project_id,$examinees);
+        print_r($examinees);
+        exit();
+        $startRow = 2;
+        foreach ($disadvantage as $key => $value) {
+            $tempRow1 = $startRow;
+            $data = $children_score->getChildrenOfIndexDescForExaminees($value['name'], $value['children'], $project_examinees);
+            $objActSheet->setCellValue('A'.$tempRow1,$value['chs_name']);
+            $objActSheet->setCellValue('B'.$tempRow1,'总体');
+            $tempRow1 ++;
+            foreach ($data as $sskey => $ssvalue) {
+                $objActSheet->setCellValue('A'.$tempRow1,$ssvalue['chs_name']);
+                $objActSheet->setCellValue('B'.$tempRow1,$ssvalue['score']);
+                $tempRow1 ++;
+            }
+            
+            $startColumn = 'C';
+            foreach ($result as $skey => $svalue) {
+                $tempRow = $startRow;
+                $data = $children_score->getChildrenOfIndexDescForExaminees($value['name'], $value['children'], $svalue);
+                $objActSheet->setCellValue($startColumn.($tempRow++),$skey);
+                foreach ($data as $sskey => $ssvalue) {
+                    $objActSheet->setCellValue($startColumn.$tempRow,$ssvalue['score']);
+                    $tempRow ++;
+                }
+                $startColumn ++;
+            }
+            $startRow = $tempRow + 1; 
         }
     }
     public function joinScore($data,$objActSheet,$startColumn,$key){

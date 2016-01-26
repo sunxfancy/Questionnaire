@@ -287,6 +287,65 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 		}
 		return $module_array_score;
 	}
+	#总体数据分析表--小模块下指标得分
+	public function getIndexScoreOfModule($project_id,$examinee_ids){
+		$project_detail = ProjectDetail::findFirst(array (
+		"project_id = :project_id:",
+		'bind' => array ('project_id' => $project_id),));
+		
+		if(empty($project_detail) || empty($project_detail->module_names)){
+			throw new Exception('项目配置信息有误');
+		}
+		$exist_module_array = explode(',',$project_detail->module_names);
+		$module_array = array("心理健康"=>'mk_xljk',"素质结构"=>'mk_szjg',"智体结构"=>'mk_ztjg',"能力结构"=>'mk_nljg');
+		$module_array_score = array();
+		foreach($module_array as $key => $value){
+			if (!in_array($value, $exist_module_array)){
+				continue;
+			}
+			$module_record =Module::findFirst(array(
+			"name = ?1",
+			'bind' => array(1=>$value)));
+			$children = $module_record->children;
+			$children_array = explode(',', $children);
+			// $result_1 = $this->modelsManager->createBuilder()
+			// ->columns(array(
+			// 		'Index.chs_name as chs_name',
+			// 		'Index.name as name',
+			// 		'AVG(IndexAns.score) as score'
+			// ))
+			// ->from('Index')
+			// ->inwhere('Index.name', $children_array)
+			// ->join('IndexAns', 'IndexAns.index_id = Index.id AND IndexAns.examinee_id = Examinee.id')
+			// ->join('Examinee')
+			// ->inwhere('Examinee.id', $examinee_ids)
+			// ->orderBy('IndexAns.score desc')
+			// ->getQuery()
+			// ->execute()
+			// ->toArray();
+			$result1 = $this->modelsManager->createBuilder()
+			->columns(array(
+					'Index.name as name',
+					'Index.chs_name as chs_name',
+					'AVG(IndexAns.score) as score'
+			))
+			->from('Examinee')
+			->inwhere('Examinee.id', $examinee_ids)
+			->join('IndexAns', 'IndexAns.examinee_id = Examinee.id AND IndexAns.id = Index.id')
+			->join('Index')
+			->inwhere('Index.name',$children_array)
+			->groupBy('Index.id')
+			->getQuery()
+			->execute();
+			//进行规范排序
+			$module_array_score[$key] = array();
+			foreach($result_1 as &$result_1_record){
+				$skey = array_search($result_1_record['name'], $children_array);
+				$module_array_score[$key][$skey] = $result_1_record;
+			}
+		}
+		return $module_array_score;
+	}
 	#28 项指标排序
 	public function getIndexdesc($examinee_id){
 		$result = $this->modelsManager->createBuilder()

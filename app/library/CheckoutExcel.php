@@ -794,7 +794,7 @@ class CheckoutExcel extends \Phalcon\Mvc\Controller{
         $yinxing_count = 0;
         $scl_total_score = 0;
         foreach($scl_score_arr as $value ){
-        	if ($value != 1 ){
+        	if ($value == 1 ){
         		$yinxing_count++;
         	}
         	$scl_total_score+=$value;
