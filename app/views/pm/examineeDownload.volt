@@ -55,6 +55,13 @@
         </button>
     </div>
 </div>
+<div style="height:40px;margin-left:40px;display:inline-block;">
+  <div class='form-group' style='display:inline-block;'>
+     <button  type='button' onclick="personanalysisDownload()" class="btn btn-primary start" style=''>
+            <i class="glyphicon glyphicon-send"></i>&nbsp;个人分析表下载
+        </button>
+    </div>
+</div>
 
 <div style="height:40px;margin-left:40px;display:inline-block;">
   <div class='form-group' style='display:inline-block;'>
@@ -608,7 +615,55 @@ function isObject(obj){
 
 } 
 
+function personanalysisDownload(){
+    downloadWait('正在生成个人分析表数据：');
 
+    $.post('/file/getpersonalanalysisbyproject', function(data){
+
+        if (data.error){
+
+           if(isObject(data.error)){
+
+               var msg ='';
+
+            msg += "<table class=\"table table-hover\"  style='margin-bottom:0;margin-top:0;'>";
+
+            var not = data.error.error;
+
+            if(not.length != 0 ){
+
+                msg +='<caption><b style=\'color:red;\'>个人分析表生成失败：</b></caption>';
+
+               for(var i = 0, len = not.length; i < len; i++ ){
+
+                msg+=('<tr><td>'+not[i]+'</td></tr>');
+
+                }
+
+            }
+
+            msg +='</table>';
+
+            downloadError(msg); 
+
+           }else{
+
+                downloadError(data.error);
+
+           }
+
+        }else {
+
+           // var msg = "鐐瑰嚮涓嬭浇<a href='"+data.success.substr( 1, data.success.length-1)+"'></a>";
+
+            var msg = "请点击下载<a href='"+data.success.success.substr( 1, data.success.success.length-1)+"'>个人分析表(全) </a>";
+
+            downloadSuccess(msg);
+
+        }
+
+    });
+}
 
 function tenSheetDownload(){
 
