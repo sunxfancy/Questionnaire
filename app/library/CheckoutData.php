@@ -299,6 +299,7 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 		$exist_module_array = explode(',',$project_detail->module_names);
 		$module_array = array("心理健康"=>'mk_xljk',"素质结构"=>'mk_szjg',"智体结构"=>'mk_ztjg',"能力结构"=>'mk_nljg');
 		$module_array_score = array();
+		$sum = array();
 		foreach($module_array as $key => $value){
 			if (!in_array($value, $exist_module_array)){
 				continue;
@@ -308,43 +309,37 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 			'bind' => array(1=>$value)));
 			$children = $module_record->children;
 			$children_array = explode(',', $children);
-			// $result_1 = $this->modelsManager->createBuilder()
-			// ->columns(array(
-			// 		'Index.chs_name as chs_name',
-			// 		'Index.name as name',
-			// 		'AVG(IndexAns.score) as score'
-			// ))
-			// ->from('Index')
-			// ->inwhere('Index.name', $children_array)
-			// ->join('IndexAns', 'IndexAns.index_id = Index.id AND IndexAns.examinee_id = Examinee.id')
-			// ->join('Examinee')
-			// ->inwhere('Examinee.id', $examinee_ids)
-			// ->orderBy('IndexAns.score desc')
-			// ->getQuery()
-			// ->execute()
-			// ->toArray();
-			$result1 = $this->modelsManager->createBuilder()
+			$result_1 = $this->modelsManager->createBuilder()
 			->columns(array(
-					'Index.name as name',
+					'Index.name as aname',
 					'Index.chs_name as chs_name',
-					'AVG(IndexAns.score) as score'
+					'AVG(IndexAns.score) as score',
+					'Index.id as id'
 			))
 			->from('Examinee')
-			->inwhere('Examinee.id', $examinee_ids)
-			->join('IndexAns', 'IndexAns.examinee_id = Examinee.id AND IndexAns.id = Index.id')
-			->join('Index')
-			->inwhere('Index.name',$children_array)
-			->groupBy('Index.id')
+			->join('IndexAns', 'IndexAns.examinee_id = Examinee.id')
+			->inwhere('IndexAns.examinee_id' , $examinee_ids)
+			->join('Index', 'IndexAns.index_id = Index.id')
+			->inwhere('Index.name', $children_array)
+			->groupBy('Index.name')
 			->getQuery()
-			->execute();
+			->execute()
+			->toArray();
+			$sum[$key] = 0;
+			foreach ($result_1 as $keys => $values) {
+				$sum[$key] += $values['score'];
+			}
 			//进行规范排序
 			$module_array_score[$key] = array();
 			foreach($result_1 as &$result_1_record){
-				$skey = array_search($result_1_record['name'], $children_array);
+				$skey = array_search($result_1_record['aname'], $children_array);
 				$module_array_score[$key][$skey] = $result_1_record;
 			}
 		}
-		return $module_array_score;
+		$score_array = array(
+			'score' => $module_array_score,
+			'sum' => $sum);
+		return $score_array;
 	}
 	#28 项指标排序
 	public function getIndexdesc($examinee_id){

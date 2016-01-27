@@ -85,7 +85,7 @@ class ProjectAnalysisExport extends \Phalcon\Mvc\Controller{
         $objPHPExcel->setActiveSheetIndex(intval($i));   //设置第2个表为活动表，提供操作句柄
         $objActSheet = $objPHPExcel->getActiveSheet(); // 获取当前活动的表
         $objActSheet->setTitle('制作综合素质分析');
-        // $this->analysisExport($project_id,$result,$objActSheet);
+        $this->analysisExport($project_id,$result,$objActSheet);
         $i++;
  		
         //导出
@@ -274,34 +274,56 @@ class ProjectAnalysisExport extends \Phalcon\Mvc\Controller{
             $examinees[] = $value['id'];
         }
         $data = new CheckoutData();
-        $result = $data->getIndexScoreOfModule($project_id,$examinees);
-        print_r($examinees);
-        exit();
-        $startRow = 2;
-        foreach ($disadvantage as $key => $value) {
-            $tempRow1 = $startRow;
-            $data = $children_score->getChildrenOfIndexDescForExaminees($value['name'], $value['children'], $project_examinees);
-            $objActSheet->setCellValue('A'.$tempRow1,$value['chs_name']);
+        $result_1 = $data->getIndexScoreOfModule($project_id,$examinees);
+        $tempRow1 = 2;
+        foreach ($result_1['score'] as $key => $value) {
+            $objActSheet->setCellValue('A'.$tempRow1,$key);
             $objActSheet->setCellValue('B'.$tempRow1,'总体');
             $tempRow1 ++;
-            foreach ($data as $sskey => $ssvalue) {
-                $objActSheet->setCellValue('A'.$tempRow1,$ssvalue['chs_name']);
-                $objActSheet->setCellValue('B'.$tempRow1,$ssvalue['score']);
+            $inner_count = count($value);
+            for($loop_i = 0; $loop_i < $inner_count; $loop_i ++ ){
+                $objActSheet->setCellValue('A'.$tempRow1,$value[$loop_i]['chs_name']);
+                $this->position($objActSheet,'A'.$tempRow1);
+                $objActSheet->setCellValue('B'.$tempRow1,$value[$loop_i]['score']);
+                $this->position($objActSheet,'B'.$tempRow1);
                 $tempRow1 ++;
             }
-            
-            $startColumn = 'C';
-            foreach ($result as $skey => $svalue) {
-                $tempRow = $startRow;
-                $data = $children_score->getChildrenOfIndexDescForExaminees($value['name'], $value['children'], $svalue);
-                $objActSheet->setCellValue($startColumn.($tempRow++),$skey);
-                foreach ($data as $sskey => $ssvalue) {
-                    $objActSheet->setCellValue($startColumn.$tempRow,$ssvalue['score']);
+            $tempRow1 ++;
+        }
+        $objActSheet->setCellValue('A'.$tempRow1,'综合素质');
+        $objActSheet->setCellValue('B'.$tempRow1,'总体');
+        $tempRow1 ++;
+        foreach ($result_1['sum'] as $key => $value) {
+            $objActSheet->setCellValue('A'.$tempRow1,$key);
+            $this->position($objActSheet,'A'.$tempRow1);
+            $objActSheet->setCellValue('B'.$tempRow1,$value);
+            $this->position($objActSheet,'B'.$tempRow1);
+            $tempRow1 ++;
+        }
+
+        $startRow = 2;
+        $startColumn = 'C';
+        foreach ($result as $key => $value) {
+            $tempRow = $startRow;
+            $data1 = $data->getIndexScoreOfModule($project_id,$value);
+            foreach ($data1['score'] as $skey => $svalue) {
+                $objActSheet->setCellValue($startColumn.($tempRow++),$key);
+                $inner_count = count($svalue);
+                for($loop_i = 0; $loop_i < $inner_count; $loop_i ++ ){
+                    $objActSheet->setCellValue($startColumn.$tempRow,$svalue[$loop_i]['score']);
+                    $this->position($objActSheet,$startColumn.$tempRow);
                     $tempRow ++;
                 }
-                $startColumn ++;
+                $tempRow ++;
             }
-            $startRow = $tempRow + 1; 
+            $objActSheet->setCellValue($startColumn.$tempRow,$key);
+            $tempRow ++;
+            foreach ($data1['sum'] as $keys => $values) {
+                $objActSheet->setCellValue($startColumn.$tempRow,$values);
+                $this->position($objActSheet,$startColumn.$tempRow);
+                $tempRow ++;
+            }
+            $startColumn ++;
         }
     }
     public function joinScore($data,$objActSheet,$startColumn,$key){
