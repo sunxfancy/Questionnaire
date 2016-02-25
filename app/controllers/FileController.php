@@ -1268,6 +1268,72 @@ class FileController extends \Phalcon\Mvc\Controller {
 			return ;
 		}
 	}
+	#生成打包的所有个人分析表
+	public function getpersonalanalysisbyprojectAction(){
+		set_time_limit(0);
+		$this->view->disable();
+		//原始答案的导出必须是manager pm & interviwer
+		$manager = $this->session->get('Manager');
+		if(empty($manager)){
+			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!'));
+			return ;
+		}
+		//获取项目中完成答题的人员列表----全部都是除去了绿色通道人员 ---- 且被试已经完成了指标算分
+		$examinees = $this->modelsManager->createBuilder()
+		->columns(array(
+				'number','id','state','name'
+		))
+		->from('Examinee')
+		->where('Examinee.project_id = '.$manager->project_id .' AND Examinee.type = 0 AND Examinee.state >= 4 ')
+		->getQuery()
+		->execute();
+		if(empty($examinees)){
+			$this->dataReturn(array('error'=>'目前没有被试完成答题，无法生成原始答案'));
+			return;
+		}
+		// 根据目录结构判断文件是否存在
+		$year = floor($manager->project_id/ 100 );
+		$path = './project/'.$year.'/'.$manager->project_id.'/individual/personal_analysis_evaluation/';
+		$path_url = '/project/'.$year.'/'.$manager->project_id.'/individual/personal_analysis_evaluation/';
+		//遍历完成的被试集判断其是否已经生成了个人分析表
+		$finished_list = array();
+		$not_finished_list =array();
+		foreach($examinees as $examinee) {
+			$name = $examinee->number.'_personal_analysis_evaluation.xls';
+			if(file_exists($path.$name)) {
+				$finished_list[] = $examinee->number;
+			}else{
+				try{
+					$excelexport=new ExcelExport();
+					$anstable=$excelexport->personalanalysisExport($examinee,$manager);
+					if($anstable==false){
+						throw new Exception("error", 1);
+					}else{
+						$finished_list[]=$examinee->number;
+					}
+				}catch(Exception $e){
+					$not_finished_list[] = $examinee['number'] .'-生成失败-原因：'.$e->getMessage();
+				}
+			}
+		}
+		if(empty($finished_list)) {
+			$this->dataReturn(array('error'=>array('error'=>$not_finished_list)));
+			return;
+		}
+		//打包已完成的人员十项报表
+		//$path 存在
+		try{
+			$file_name =' _personal_analysis_evaluation_package';
+			$zipfile = new FileHandle();
+			$zipfile->clearfiles('./tmp/', $manager->project_id);
+			$file_path = $zipfile->packageZip($path, $manager->project_id, $file_name);
+			$this->dataReturn(array('success'=>array('success'=>$file_path,'error'=>$not_finished_list)));
+			return ;	
+		}catch(Exception $e){
+			$this->dataReturn(array('error'=>$e->Message()));
+			return ;
+		}
+	}
 	#生成被试人员的因子分数表-----可重复生成
 	public function getindividualdatabyprojectAction() {
 		set_time_limit(0);

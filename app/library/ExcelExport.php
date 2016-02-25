@@ -325,14 +325,16 @@ class ExcelExport extends \Phalcon\Mvc\Controller
         $objPHPExcel->getProperties()->setSubject($examinee->id.'analysis_evaluation');
 
 
-        $this->fillSheet1($objPHPExcel,$examinee);
+        
         // $indexs=$this->getindividualComprehensive($examinee->id);
         // $indexChildren=$this->getIndexsChildren('zb_xljksp',$examinee);
         // echo '<pre/>';
         // print_r($indexs);
         // print_r($indexChildren);
-          $objActSheet2=$objPHPExcel -> createSheet();
-          $this->fillSheet2($objActSheet2,$examinee);
+          $objActSheet2=$objPHPExcel -> createSheet(1);
+          $cachePos=$this->fillSheet2($objActSheet2,$examinee);
+         //print_r($cachePos);
+          $this->fillSheet1($objPHPExcel,$examinee,$cachePos);
 
           $objActSheet3=$objPHPExcel -> createSheet();
           $this->fillSheet3($objActSheet3,$examinee);
@@ -368,8 +370,11 @@ class ExcelExport extends \Phalcon\Mvc\Controller
       }
     }
 
-    function fillSheet1($objPHPExcel,$examinee){
-        $objActSheet = $objPHPExcel->getActiveSheet(0);
+    function fillSheet1($objPHPExcel,$examinee,$cachePos){
+            $cells=array();
+            $values=array();
+            $objPHPExcel->setActiveSheetIndex(0);
+            $objActSheet = $objPHPExcel->getActiveSheet();
             $objActSheet -> setTitle("28指标位置");
             
 
@@ -382,14 +387,24 @@ class ExcelExport extends \Phalcon\Mvc\Controller
 
             foreach ($indexs as $key => $index) {
               # code...
-              $objActSheet->setCellValue('A'.($key+2),$key+1);
-              $objActSheet->setCellValue('B'.($key+2),$index->chs_name);
-
+              $chname=$index->chs_name;
+              $cells[]='A'.($key+2);
+              $values[]=$key+1;
+              $cells[]='B'.($key+2);
+              $values[]=$chname;
+              $cells[]='D'.($key+2);
+              $values[]=$cachePos[$chname][0];
+              $cells[]='E'.($key+2);
+              $values[]=$cachePos[$chname][2];
+              $cells[]='F'.($key+2);
+              $values[]=$cachePos[$chname][1];              
             }
+            $this->fillCell($cells,$values,$objActSheet);
     }
 
     function fillSheet2($objActSheet,$examinee){
-      $objActSheet->setTitle('Sheet1');
+          $cachePos=array();
+          $objActSheet->setTitle('Sheet1');
           $objActSheet->getColumnDimension('A')->setWidth(20);
           $objActSheet->mergeCells('B1:E1');
           $objActSheet->getStyle('B1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
@@ -429,6 +444,9 @@ class ExcelExport extends \Phalcon\Mvc\Controller
               $indexChildren=$this->getIndexsChildren($index_name,$examinee);
               $cells[]='A'.$offset;
               $values[]=$indexChildren['chs_name'];
+              //记录各分数所在位置
+              $cachePos[$indexChildren['chs_name']]=array();
+              $cachePos[$indexChildren['chs_name']][]=$offset-1;
               $cells[]='A'.($offset+1);
               $values[]=$indexChildren['count'];
               $children=$indexChildren['children'];
@@ -443,6 +461,12 @@ class ExcelExport extends \Phalcon\Mvc\Controller
                 $values[]=$child['ans_score'];
                 $offset++;
               }
+              $cells[]='D'.$offset;
+              $values[]=$module_index['score'];
+              $cachePos[$indexChildren['chs_name']][]=$offset+1-$cachePos[$indexChildren['chs_name']][0];
+              $offset++;
+              $cachePos[$indexChildren['chs_name']][]=$offset-1;
+
               $objActSheet->getStyle('A'.$offset.':E'.$offset)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
               $objActSheet->getStyle('A'.$offset.':E'.$offset)->getFill()->getStartColor()->setARGB('FF808080');
               $offset++;
@@ -455,6 +479,7 @@ class ExcelExport extends \Phalcon\Mvc\Controller
 
 
           $this->fillCell($cells,$values,$objActSheet);
+          return $cachePos;
     }
     function fillSheet3($objActSheet,$examinee){
       $objActSheet -> setTitle("All items");

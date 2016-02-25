@@ -1,44 +1,46 @@
 <?php
 	require_once ("../app/classes/PHPExcel.php");
 	class Test3Controller extends Base {
-		public function personalanalysisExport($examinee,$manager){
-			$objPHPExcel = new PHPExcel();
-			$objPHPExcel->getProperties()->setTitle($examinee->id.'analysis_evaluation');
-		    $objPHPExcel->getProperties()->setSubject($examinee->id.'analysis_evaluation');
+		public function indexAction(){
+			$examinee=Examinee::findFirst(2048);
+			$manager=Manager::findFirst(2);
+			// $objPHPExcel = new PHPExcel();
+			// $objPHPExcel->getProperties()->setTitle($examinee->id.'analysis_evaluation');
+		 //    $objPHPExcel->getProperties()->setSubject($examinee->id.'analysis_evaluation');
 
 
-		    $this->fillSheet1($objPHPExcel,$examinee);
-		    // $indexs=$this->getindividualComprehensive($examinee->id);
-		    // $indexChildren=$this->getIndexsChildren('zb_xljksp',$examinee);
-		    // echo '<pre/>';
-		    // print_r($indexs);
-		    // print_r($indexChildren);
-	       	$objActSheet2=$objPHPExcel -> createSheet();
-	       	$this->fillSheet2($objActSheet2,$examinee);
+		    //$this->fillSheet1($objPHPExcel,$examinee);
+		    $indexs=$this->getindividualComprehensive($examinee->id);
+		    $indexChildren=$this->getIndexsChildren('zb_xljksp',$examinee);
+		    echo '<pre/>';
+		    print_r($indexs);
+		    print_r($indexChildren);
+	  //      	$objActSheet2=$objPHPExcel -> createSheet();
+	  //      	$this->fillSheet2($objActSheet2,$examinee);
 
-	        $objActSheet3=$objPHPExcel -> createSheet();
-	        $this->fillSheet3($objActSheet3,$examinee);
+	  //       $objActSheet3=$objPHPExcel -> createSheet();
+	  //       $this->fillSheet3($objActSheet3,$examinee);
 
-			$objActSheet4=$objPHPExcel -> createSheet();
-	        $this->fillSheet4($objActSheet4,$examinee);
+			// $objActSheet4=$objPHPExcel -> createSheet();
+	  //       $this->fillSheet4($objActSheet4,$examinee);
 
-	        $objActSheet5=$objPHPExcel -> createSheet();
-	        $this->fillSheet5($objActSheet5,$examinee);
+	  //       $objActSheet5=$objPHPExcel -> createSheet();
+	  //       $this->fillSheet5($objActSheet5,$examinee);
 
-	        $objActSheet = $objPHPExcel->createSheet();
-	        $this->fillSheet6($objActSheet,$examinee);
+	  //       $objActSheet = $objPHPExcel->createSheet();
+	  //       $this->fillSheet6($objActSheet,$examinee);
 
 
-		    $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
-	        $year = floor($manager->project_id/ 100 );
-	        $path="/project/".$year."/".$manager->project_id."/individual/personal_analysis_evaluation/";
-	        if(!is_dir(".".$path)){
-	        	$handle=new FileHandle();
-	        	$handle->mk_dir(".".$path);
-	        }
-	        $file_name_trans = $path.$examinee->number."_personal_analysis_evaluation.xls";
-	        $file_name= iconv("utf-8", "gb2312", $file_name_trans);
-	        $objWriter->save(".".$file_name);
+		 //    $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
+	  //       $year = floor($manager->project_id/ 100 );
+	  //       $path="/project/".$year."/".$manager->project_id."/individual/personal_analysis_evaluation/";
+	  //       if(!is_dir(".".$path)){
+	  //       	$handle=new FileHandle();
+	  //       	$handle->mk_dir(".".$path);
+	  //       }
+	  //       $file_name_trans = $path.$examinee->number."_personal_analysis_evaluation.xls";
+	  //       $file_name= iconv("utf-8", "gb2312", $file_name_trans);
+	  //       $objWriter->save(".".$file_name);
 			
 		}
 
