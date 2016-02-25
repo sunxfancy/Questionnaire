@@ -114,6 +114,43 @@ class ProjectComData extends \Phalcon\Mvc\Controller {
 		->execute();
 		 return $result->toArray();
 	}
+	#获取部分人员的指标平均分---
+	public function IndexAvgOfExaminees($examinee_ids){
+		$result = $this->modelsManager->createBuilder()
+		->columns(array(
+				// 'Index.name as name',
+				'Index.chs_name as chs_name',
+				'AVG(IndexAns.score) as score'
+		))
+		->from('Examinee')
+		->join('IndexAns', 'IndexAns.examinee_id = Examinee.id')
+		->inwhere('Examinee.id', $examinee_ids)
+		->join('Index', 'Index.id = IndexAns.index_id')
+		->groupBy('Index.id')
+		->getQuery()
+		->execute();
+		 return $result->toArray();
+	}
+	#获取部分人员的指标平均分---DESC
+	public function IndexAvgOfExamineesDesc($examinee_ids){
+		$result = $this->modelsManager->createBuilder()
+		->columns(array(
+				'Index.name as name',
+				'Index.chs_name as chs_name',
+				'Index.children as children',
+				'AVG(IndexAns.score) as score'
+		))
+		->from('Examinee')
+		->join('IndexAns', 'IndexAns.examinee_id = Examinee.id')
+		->inwhere('Examinee.id', $examinee_ids)
+		->join('Index', 'Index.id = IndexAns.index_id')
+		->groupBy('Index.id')
+		->orderBy('AVG(IndexAns.score) desc')
+		->getQuery()
+		->execute();
+		 return $result->toArray();
+	}
+
 	
 	#获取项目总体的优势指标--并得到其下属因子的得分排序完成的五优以及其下因子的排序结果
 	public function getProjectAdvantages($project_id){

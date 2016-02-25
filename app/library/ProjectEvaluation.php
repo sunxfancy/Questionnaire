@@ -4,7 +4,7 @@ class ProjectEvaluation extends \Phalcon\Mvc\Controller {
 	
 	public function getIndividualEvaluation($examinee_id){
 		$index_ans = IndexAns::find(array(
-			'examinee_id'=>1,
+			'examinee_id =?1',
 			'bind'=>array(1=>$examinee_id)));
 		$score = 0;
 		$count = 0;

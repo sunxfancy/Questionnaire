@@ -5,6 +5,7 @@
 
 <!-- <div class="form-group" style='text-align:center;font-size:26px;color:red;margin-top:10px;'> 综&nbsp;合&nbsp;素&nbsp;质
 </div> -->
+<div style="">
 <hr size="2" color="#FF0000" style="width:90%;"/>
 
 <div style="width:100%;height:40px;text-align:center; margin: 5px 10px;">
@@ -133,7 +134,20 @@
         </a>
     </div>
 </div>
-<hr size="2" color="#FF0000" style="width:90%;"/>
+<div style="width:100%;height:40px;text-align:left; margin: 5px 40px;">
+    <div class="form-group" style='display:inline-block;font-size:20px;'>
+        <span class="text-primary" ><i class='glyphicon glyphicon-tag' style='font-size:15px;'></i></span>总体数据分析<span style='visibility: hidden'>位位位位位位</span>
+    </div>
+    &nbsp;&nbsp;
+    <div class='form-group' style='display:inline-block;'>
+        <a href = '#' onclick="downloadProjectAnalysis()">
+            <button type='button' class="btn btn-primary start" style='width:150px;'>
+                <i class="glyphicon glyphicon-download"></i>
+                <span>导出</span>
+            </button>
+        </a>
+    </div>
+</div>
 
 <div style="width:100%;height:40px;text-align:left; margin: 5px 40px;">
     <div class="form-group" style='display:inline-block;font-size:20px;'>
@@ -150,6 +164,7 @@
     </div>
 </div>
 <hr size="2" color="#FF0000" style="width:90%;"/>
+</div>
 
 
 <!-- Modal -->
@@ -283,6 +298,16 @@ function downloadProjectEvaluation(){
     });
 }
 
+function downloadProjectAnalysis(){
+    downloadWait('正在生成总体数据分析表！');
+    $.post('/file/getProjectAnalysis',function(data){
+        if (data.error){
+            downloadError(data.error);
+        }else{
+            downloadSuccess(data.success);
+        }
+    });
+}
 function isArray(o) {  
   return Object.prototype.toString.call(o) === '[object Array]';   
 } 

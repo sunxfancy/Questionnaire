@@ -100,40 +100,6 @@ class FileController extends \Phalcon\Mvc\Controller {
 		}
 		$this->dataReturn(array("success"=>"点击下载 <a href='".$anstable."'>原始答案</a>"));
 	}
-
-	#生成个人的结果分析表analysis_eva....
-	public function mgetindividualanalysisAction(){
-		$this->view->disable();
-		$manager=$this->session->get("Manager");
-		$examinee_id = $this->request->getPost('examinee_id', 'int');
-		if (empty($examinee_id)){
-			$this->dataReturn(array('error'=>'请求参数不完整!'));
-			return ;
-		}
-
-		$manager = $this->session->get('Manager');
-		if(empty($manager)){
-			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!'));
-			return ;
-		}
-		$examinee = Examinee::findFirst($examinee_id);
-		if (!isset($examinee->id) ){
-			$this->dataReturn(array('error'=>'无效的用户编号'));
-			return ;
-		}
-		if ($examinee->state < 4 ){
-			$this->dataReturn(array('error'=>'用户测评流程还未完成！'));
-			return ;
-		}
-		//对于原始答案，目录结构中不进行保留，因此，不必进行存在性和修改情况的判断
-		$excelexport=new ExcelExport();
-		$anstable=$excelexport->personalanalysisExport($examinee,$manager);
-		if($anstable==false){
-			$this->dataReturn(array('error'=>'用户测评流程还未完成！'));
-			return ;
-		}
-		$this->dataReturn(array("success"=>"点击下载 <a href='".$anstable."'>个人分析表</a>"));
-	}
 	#个人因子分数导出
 	public function mgetindividualdataAction(){
 		$this->view->disable();
@@ -1090,7 +1056,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 			}
 		}
 	}
-	#获取项目总体数据
+	#获取项目总体数据评估
 	public function getprojectevaluationAction(){
 		set_time_limit(0);
 		$this->view->disable();
@@ -1130,7 +1096,46 @@ class FileController extends \Phalcon\Mvc\Controller {
 			}
 		}
 	}
-
+	#获取项目总体数据分析
+	public function getprojectanalysisAction(){
+		set_time_limit(0);
+		$this->view->disable();
+		//导出必须是manager
+		$manager = $this->session->get('Manager');
+		if(empty($manager)){
+			$this->dataReturn(array('error'=>'用户信息失效，请重新登录!'));
+			return ;
+		}
+		// 根据目录结构判断文件是否存在
+		$project_id = $manager->project_id;
+		$year = floor($project_id / 100 );
+		$path = './project/'.$year.'/'.$project_id.'/system/report/v1/';
+		$path_url = '/project/'.$year.'/'.$project_id.'/system/report/v1/';
+		$name = $project_id.'_project_analysis.xls'; //name 相同
+		//先判断修改是否存在
+		if (file_exists($path.$name)){
+			//修改文件存在;
+			$this->dataReturn(array('success'=>'点击下载<br /><br /><a href=\''.$path_url.$name."' style='color:blue;text-decoration:underline;'>总体数据分析</a><br /><br />"));
+			return ;
+		}else{
+			//生成文件，之后返回下载路径
+			try{
+				$report =   new ProjectAnalysisExport();
+				$report_tmp_name = $report->excelExport($project_id);
+				$report_name = $path.$name;
+				$file = new FileHandle();
+				$file->movefile($report_tmp_name, $report_name);
+				//清空临时文件 主要在tmp中
+				$file->clearfiles('./tmp/', $project_id);
+				//返回路径
+				$this->dataReturn(array('success'=>'点击下载<a href=\''. $path_url.$name."' style='color:blue;text-decoration:underline;'>总体分析数据</a>"));
+				return ;
+			}catch(Exception $e){
+				$this->dataReturn(array('error'=>$e->getMessage()));
+				return ;
+			}
+		}
+	}
 	#生成被试人员的十项报表----可重复生成
 	public function getpersonalresultsbyprojectAction() {
 		set_time_limit(0);
@@ -1400,7 +1405,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 			return ;
 		}
 	}
-
+	
 	
 	#生成被试人员需求量表结果页面 ---- 可重复生成
 	public function getinqueryansAction() {
@@ -1474,6 +1479,7 @@ class FileController extends \Phalcon\Mvc\Controller {
 			}
  		//}
 	}
+	
 	public function testAction(){
 		try{
 			WordChart::scatter_horiz_Graph_epqa_1();
