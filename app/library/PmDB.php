@@ -276,11 +276,14 @@ class PmDB
     			$i++;
     		}
     	}
+        $question_array = array();
     	foreach($questions_numbers as $key=>$value){
-    		$questions_numbers[$key] = array_unique($value, SORT_NUMERIC);
+    		$value = array_unique($value, SORT_NUMERIC);
+            foreach ($value as $skey => $svalue) {
+                $question_array[$key][] = $svalue;
+            }   
     	}
-    	sort($questions_numbers);
-        return $questions_numbers;
+        return $question_array;
     }
     /**
      * @usage input 因子名数组

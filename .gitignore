@@ -3,6 +3,7 @@ public/project/*
 public/tmp/*
 public/upload/*
 public/*
+public/DATA/*
 .project
 .buildpath
 app/config/config.php

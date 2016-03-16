@@ -67,10 +67,19 @@ class IndexScore {
 		$indexs_name_str = $project_detail->index_names;
 		$indexs_name_array = explode(',', $indexs_name_str);
 		$array_after = array();
+		$next_index = array();
 		foreach ($indexs_name_array as $value ){
 			$index_detail = MemoryCache::getIndexDetail($value);
-			if($value =='zb_ldnl' || $value == 'zb_gzzf'){
+			if($value =='zb_ldnl'){
 				$array_after[$index_detail->id] = $value;
+				self::$indexs_list[3] = 'zb_pdyjcnl';
+				self::$indexs_list[4] = 'zb_zzglnl';
+				self::$indexs_list[7] = 'zb_cxnl';
+				self::$indexs_list[8] = 'zb_ybnl';
+				self::$indexs_list[6] = 'zb_dlgznl';
+			}else if($value == 'zb_gzzf'){
+				$array_after[$index_detail->id] = $value;
+				self::$indexs_list[20] = 'zb_rjgxtjsp';
 			}else{
 				self::$indexs_list[$index_detail->id] = $value;
 			}
@@ -78,6 +87,7 @@ class IndexScore {
 		foreach($array_after as $key => $value){
 			self::$indexs_list[$key] = $value;
 		}
+		array_unique(self::$indexs_list);
 		unset($array_after);
 	}
 	/**

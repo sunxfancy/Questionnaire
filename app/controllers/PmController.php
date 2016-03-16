@@ -814,6 +814,7 @@ class PmController extends Base
         		}catch(Exception $e){
         			$calcual_error[] =  $examinee_record['number'].'-'.$examinee_record['name'].'-算分过程中失败，原因：'.$e->getMessage();
         		}
+                
         	}else{
         		//...
         	}
