@@ -228,7 +228,7 @@ $(function(){
                         viewable:true,
                         formatter:function(cellvalue,options,rowObject){
                             if (rowObject.state >= 4) {
-                                return "<div class='ui-pg-div ui-inline-edit' data-original-title='导出因子分数'>"+
+                                return "<div class='ui-pg-div ui-inline-edit' data-original-title='导出个人分析表'>"+
                                 "<span style='visibility:hidden;'>&nbsp;</span>"+
                                 "<span class=\"text-primary\" style='cursor:pointer'><i class=\"glyphicon glyphicon-download\" onclick='downloadAnalysis("+rowObject.id+")'></i></span>"+
                                 "<span style='visibility:hidden;'>&nbsp;</span></div>"

@@ -144,12 +144,13 @@ class FactorScore{
 		if(!self::$memory_state) {
 			self::loadMemoryTable();
 		}
-		if(empty(self::$examinee_info)){
-			#false表示已经写入完成
+		//3.15 刘衡 多人计算时都是使用第一人数据，所以强制每次都要查表
+		// if(empty(self::$examinee_info)){
+		// 	#false表示已经写入完成
 			if(!self::getExamineeInfo($examinee_id)){
 				return false;
 			}
-		}
+		// }
 		#读取project_detail
 		if(empty(self::$factors_list_all)){
 			self::getFactorsAll($examinee_id);
@@ -168,6 +169,7 @@ class FactorScore{
 					case 'SPM'  : $rtn_array_paper = self::calSPM($question_ans_record); break;
 					default : throw new Exception (self::$error_state."-不存在试卷-$paper_name");
 				}	
+				
 				if(is_bool($rtn_array_paper) || empty($rtn_array_paper)){
 						continue;
 				}
@@ -185,6 +187,7 @@ class FactorScore{
 						if(isset($isWrited->factor_id)){
 							continue;
 						}
+
 						$factor_ans = new FactorAns();
 						$factor_ans->setTransaction($transaction);
 						$factor_ans->examinee_id = $examinee_id;
@@ -201,6 +204,7 @@ class FactorScore{
 					throw new Exception($e->getMessage());
 				}
 			}
+
 			return true;
 	}
 	
@@ -256,6 +260,7 @@ class FactorScore{
 		 		case 'epqae':
 		 			$m = $epqamd->EM;
 		 			$sd = $epqamd->ESD;
+
 		 			$std_score = sprintf("%.2f",50 + (10 * ($score - $m)) / $sd);
 		 			$ans_score = sprintf("%.2f",$std_score/10);
 		 		    break;
