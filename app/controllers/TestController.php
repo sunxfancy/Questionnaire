@@ -30,4 +30,10 @@ class TestController extends \Phalcon\Mvc\Controller {
 		exit(); 
 	
 	}
+
+	public function test4Action(){
+		$efb=new EFB();
+		$efb->fillExcel(1111);
+
+	}
 }
