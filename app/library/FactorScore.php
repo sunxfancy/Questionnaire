@@ -307,6 +307,16 @@ class FactorScore{
 		$score_array = explode('|', $resultsets->score);
 		$score_array = array_count_values ($score_array);
 		unset($score_array['']);
+		//标准分算法修改--刘衡--0328
+		arsort($score_array);
+		
+		$std_array = array(20,20,19,17,17,16,13,13,13,12,12,11,10,9,8);
+		$i = 0;
+		$std_score_array = array();
+		foreach ($score_array as $key => $value) {
+			$std_score_array[$key] = $std_array[$i];
+			$i ++; 
+		}
 		$score_array['con'] = self::getEPPSCon($resultsets);
 		#根据$factors_list_all['epps'];
 		$rt_array = array();
@@ -317,12 +327,15 @@ class FactorScore{
 			if(isset($score_array[$value])) {
 				if($value == 'con'){
 					$score = $score_array[$value];
+					$std_score = $score;
 				}else{
 					$score = $score_array[$value]-1;
+					$std_score = $std_score_array[$value];
 				}
 			}
 			
-			$std_score = $score;
+			//$std_score = $score;
+			
 			$ans_score = 0;
 		 	if($value != 'con'){
 		 		$ans_score = sprintf("%.2f",$std_score/2.8);
@@ -340,6 +353,7 @@ class FactorScore{
 		 	$rt_array[$key] = $rt_array_record;		 	
 		}
 		return $rt_array;
+
 	}
 	/**
 	 * CPI 匹配 sum
