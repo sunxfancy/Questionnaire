@@ -64,7 +64,8 @@ class FileHandle {
 	 */
 	public function packageZip($file_path, $project_id, $file_name){
 		$is_exist_path = './tmp/'.$project_id.'_'.$file_name.'.zip';
-		if (file_exists($is_exist_path)){
+		//if (file_exists($is_exist_path)){
+		if(0){
 			return $is_exist_path;
 		}else{
 			//生成zip文件
