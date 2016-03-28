@@ -294,7 +294,7 @@ class EFB extends \Phalcon\Mvc\Controller{
 					$last_array = $factor_ans[$key];
 				}else{
 					$ret[] = $factor_ans[$key];
-					$score_array[] = intval($factor_ans[$key]['std_score']);
+					$score_array[] = intval($factor_ans[$key]['score']);
 				}
 				array_multisort($score_array,SORT_DESC, $ret);
 				$i = 1;

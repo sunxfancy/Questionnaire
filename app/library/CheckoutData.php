@@ -404,11 +404,12 @@ class CheckoutData extends \Phalcon\Mvc\Controller {
 			$inner_array['chs_name'] = $factor_info->chs_name;
 			$factor_score_info = FactorAns::findFirst(array('factor_id = ?1 AND examinee_id =?2','bind'=>array(1=>$key,2=>$examinee_info->id)));
 			$inner_array['std_score'] = intval($factor_score_info->std_score);
+			$inner_array['score'] = intval($factor_score_info->score);
 			if ($inner_array['chs_name'] == '稳定系数') {
 				$last_array = $inner_array;
 			}else{
 				$ans[] = $inner_array;
-				$score_array[] = $inner_array['std_score'];
+				$score_array[] = $inner_array['score'];
 			}	
 		}
 		array_multisort($score_array,SORT_DESC, $ans);
