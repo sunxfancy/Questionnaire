@@ -345,6 +345,10 @@ class EFB extends \Phalcon\Mvc\Controller{
 		}
 
         foreach ($information as $key => $info) {
+        	$file_name = $path.$info['info']['number'].'_personal_result.xlsx';
+        	if(file_exists($file_name)){
+        		continue;
+        	}
         	clearstatcache();
         	#the 1st sheet
         	PHPExcel_CachedObjectStorageFactory::cache_in_memory_serialized;
