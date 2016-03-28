@@ -32,8 +32,11 @@ class TestController extends \Phalcon\Mvc\Controller {
 	}
 
 	public function test4Action(){
-		$efb=new EFB();
-		$efb->fillExcel(1111);
+		if(file_exists('./project/11/1111/personal_result/')){
+			echo "ok";
+		}else{
+			mkdir('./project/11/1111/');
+		}
 
 	}
 }

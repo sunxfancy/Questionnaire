@@ -320,12 +320,30 @@ class EFB extends \Phalcon\Mvc\Controller{
 		return $ret;
 	}
 
+	function newdir($dir){
+		if(!file_exists($dir)){
+			$dir_array=explode("/", $dir);
+		}
+		$tem="";
+		foreach ($dir_array as $key => $value) {
+			# code...
+			$tem.=$value.'/';
+			if(file_exists($tem)){
+				continue;
+			}else{
+				mkdir($tem);
+			}
+		}
+	}
 	public function fillExcel($project_id){
 		$information=$this->collectInformation($project_id);
 		$scl_paper_id = Paper::findFirst( array( "name = ?1", 'bind' => array(1=>"SCL")))->id;
 		$year = floor($project_id/ 100 );
 		$path = './project/'.$year.'/'.$project_id.'/individual/personal_result/';
-		
+		if(!file_exists($path)){
+			$this->newdir($path);
+		}
+
         foreach ($information as $key => $info) {
         	clearstatcache();
         	#the 1st sheet
